@@ -1,19 +1,15 @@
 ---
 layout: page
 title: "about"
-date: 2014-02-01 12:11
-comments: true
-sharing: true
-footer: true
+comments: false
+sharing: false
+footer: false
 ---
-# About Me
--
-Hi, my name is Balaji Vajjala.
 
-I’m a generalist and a software developer, so people sometimes call me a “coding architect” which I’m perfectly happy with.
+# About ME
 
-I’m fascinated by the new trends in software delivery which is all about speed (delivering the changes faster to your users) and reliability (not letting the changes disrupt the existing business). These trends are generally referred to by the term DevOps.
+Over 15+ years of experience in IT Industry with specialization in Configuration and Quality Management, including planning, executing, for many Fortune 500 customers. My experience and specialties encompass agile and lean software development principles, as well as project management and Software Release Management. These principles are applied via delivery automation, continuous integration and delivery, and constant feedback to stakeholders. My focus is on enabling development/engineering professionals, as well as project, program, and technical leads on the benefits of adaptive automation processes.
 
-If I would have more time I would spend it on some of the other state-of-the-art stuff like cloud hosting, mobile app development, NoSql databases, infrastructure as code, …
+I am currently working as a Senior DevOps Engineer at Angie's List, with a primary focus on Build and Release and Delivery Automation Engineering. Headquartered in Indianapolis, Angie's List helps consumers find detailed reviews on roofers, plumbers, dentists and more. Our team is responsible for building the main website, mobile apps, reporting tools, etc. My responsibilities involve setting the overall Delivery Automation strategy, via investments in automation at several layers of the Technology stack to implement a Continuous Deployment/Delivery pipeline. These investments enable the engineering team to deliver features at a rapid rate, while not comprising our quality principles. The role also requires steady interaction with Engineering & Product Management and OPS Group to set quarterly delivery goals and metrics
 
-Feel free to contact me: bvajjala@gmail.com
+Prior to joining Angie's List, I worked as a Lead CM Architect for HP Enterprise Services We engaged potential clients to revolutionize their IT practices. Many waste a large portion of their budgets on antiquated processes, tools, and practices, especially around Delivery. I was tasked with engaging these potential clients, to build Delivery Automation strategies, and teams to address their quality concerns, with an eye towards agile optimization.
