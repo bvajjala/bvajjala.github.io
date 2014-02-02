@@ -54,9 +54,9 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.
 
 # Each layout uses the default asides, but they can have their own asides instead. Simply uncomment the lines below
 # and add an array with the asides you want to use.
-# blog_index_asides:
-# post_asides:
-# page_asides:
+blog_index_asides:
+post_asides:
+page_asides: [custome/asides/about.html, asides/github.html, asides/delicious.html, asides/pinboard.html, asides/googleplus.html]
 
 # ----------------------- #
 #   3rd Party Settings    #
