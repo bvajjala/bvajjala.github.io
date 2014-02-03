@@ -6,9 +6,7 @@ comments: true
 sharing: true
 footer: true
 ---
-# Balaji Vajjala Resume
-
-Contact: at gmail, `balaji.vajjala`, Main Street, Carmel, IN 46032, (610) 888-4986 (M), [Linked In](http://www.linkedin.com/ln/bvajjala).
+Contact: at gmail, `balaji.vajjala`, Main Street, Carmel, IN 46032, (610) 888-4986 (M), [Linked In](http://www.linkedin.com/in/bvajjala).
 
 # Overview
 
@@ -21,7 +19,7 @@ Contact: at gmail, `balaji.vajjala`, Main Street, Carmel, IN 46032, (610) 888-49
 
 # Education
 
-- Introduction to CMMI, Carnegie Mellon Univerist.
+- Introduction to CMMI, Carnegie Mellon Univeristy**.
 - M.E (Elect Engg), Andhra University, India
 - B.E (Elect Engg) Andhra University, India
 
