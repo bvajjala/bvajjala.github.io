@@ -119,6 +119,7 @@ If your changes addresses a blueprint or a bug, be sure to mention them in the c
 
 Implements: blueprint BLUEPRINT
 Closes-Bug: ####### (Partial-Bug or Related-Bug are options)
+{% endcodeblock %}
 
 For example:
 
