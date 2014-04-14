@@ -4,7 +4,7 @@
   <title><![CDATA[Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T14:35:05-04:00</updated>
+  <updated>2014-04-14T14:38:35-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,10 +14,13 @@
 
   
   <entry>
+    
     <title type="html"><![CDATA[Deploy/Release Workflow from GitHub]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/04/deploy-slash-release-workflow-from-github/"/>
+    
     <updated>2014-02-04T09:50:50-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/04/deploy-slash-release-workflow-from-github</id>
+    
     <content type="html"><![CDATA[<h1>## Workflow : Deploying/Release Apps from Development to Production  ##</h1>
 
 <p>Deploying is a big part of the lives of most of our Engineering employees. We don&rsquo;t have a release manager and there are no set weekly deploys. Developers and designers are responsible for shipping new stuff themselves as soon as it&rsquo;s ready. This means that deploying needs to be as smooth and safe a process as possible.</p>
@@ -62,13 +65,17 @@ Not too long ago, however, this system wasn&rsquo;t very smart. A branch could a
 
 <p>Most of the magic is handled by an internal deployment service called Heaven. At its core, Heaven is a catalog of Capistrano recipes wrapped up in a Sinatra application with a JSON API. Many of our applications are deployed using generic recipes, but more complicated apps can define their own to specify additional deployment steps. Wiring it up to Janky, along with clever use of post-receive hooks and the GitHub API, lets us hack on the niceties over time. Hubot is the central interface to both Janky and Heaven, giving everyone in Campfire great visibility into what’s happening all of the time. As of this writing, 75 individual applications are deployed by Heaven.</p>
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[OpenStack : Git Gerrit and Jenkins Workflow]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/"/>
+    
     <updated>2014-02-03T14:54:23-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow</id>
+    
     <content type="html"><![CDATA[<h1>Gerrit Workflow</h1>
 
 <p><img src="http://bvajjala.github.io/downloads/code/GerritGitJenkinsWorkflow.png" title="Git Gerrit Jenkins Workflow" alt="Alt text in case picture load fails" /></p>
@@ -259,13 +266,17 @@ Not too long ago, however, this system wasn&rsquo;t very smart. A branch could a
 
 <h3>1.4.6 Add dependency</h3>
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[Designing A RESTful API That Doesn't Suck]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/"/>
+    
     <updated>2014-02-03T14:23:30-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck</id>
+    
     <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2013/03/22/designing-a-restful-api-that-doesn-t-suck.html">Designing A RESTful API That Doesn&rsquo;t Suck</a></h2>
 
 <p>As we&rsquo;re getting closer to shipping the first version of <a href="http://devo.ps">devo.ps</a> and we are joined by a few new team members, the team took the time to review the few principles we followed when designing our RESTful JSON API. A lot of these can be found on <a href="https://blog.apigee.com/taglist/rest_api_design">apigee&rsquo;s blog</a> (a recommended read). Let me give you the gist of it:</p>
@@ -310,13 +321,17 @@ Not too long ago, however, this system wasn&rsquo;t very smart. A branch could a
 </ul>
 
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[I Can Haz Init Script]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/i-can-haz-init-script/"/>
+    
     <updated>2014-02-03T14:21:03-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/i-can-haz-init-script</id>
+    
     <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2013/06/19/I-can-haz-init-script.html">I Can Haz Init Script</a></h2>
 
 <p>Something went awfully wrong, and a rogue process is eating up all of the resources on one of your servers. You have no other choice but to restart it. No big deal, really; this is the age of disposable infrastructure after all. Except when it comes back up, everything starts going awry. Half the stuff supposed to be running is down and it&rsquo;s screwing with the rest of your setup.</p>
@@ -391,13 +406,17 @@ through:</p>
 
 <p>And by the way, things are not much better with applications, though we&rsquo;re trying our best to improve things there too with things like <a href="https://github.com/Unitech/pm2">pm2</a> (fresh and shinny, more about it in a later post).</p>
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[Goodbye node-forever]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/goodbye-node-forever/"/>
+    
     <updated>2014-02-03T14:15:10-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/goodbye-node-forever</id>
+    
     <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2013/06/26/goodbye-node-forever-hello-pm2.html">Goodbye node-forever, hello PM2</a></h2>
 
 <p><img src="http://apps.hemca.com/pm2/pres/pm22.png" alt="pm2 logo" /></p>
@@ -582,13 +601,17 @@ roadmap that we&rsquo;ll get right at once we have a stable core:</p>
 
 <p>Special thanks to <a href="https://github.com/makara">Makara Wang</a> for concepts/tools and <a href="https://github.com/rlidwka">Alex Kocharin</a> for advices and pull requests.</p>
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[Ansible Simply Kicks Ass]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/ansible-simply-kicks-ass/"/>
+    
     <updated>2014-02-03T14:12:31-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/ansible-simply-kicks-ass</id>
+    
     <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2013/07/03/ansible-simply-kicks-ass.html">Ansible Simply Kicks Ass</a></h2>
 
 <p>The devo.ps team has been putting quite a few tools to the test over the years when it comes to managing infrastructures. We&rsquo;ve developed some ourselves and have adopted others. While the choice to use one over another is not always as clear-cut as we&rsquo;d like (I&rsquo;d love to rant about monitoring but will leave that for a later post), we&rsquo;ve definitely developed kind of a crush for <a href="https://github.com/ansible/ansible">Ansible</a> in the past 6 months. We went through years of using Puppet, then Chef and more recently Salt Stack, before Ansible gained unanimous adoption among our team.</p>
@@ -622,13 +645,17 @@ Ansible up and running is as easy as:</p>
 
 <p>Et voila! You gotta appreciate the simple things in life. Especially the life of a sysadmin.</p>
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[Code Reuse With Node.js]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/code-reuse-with-node-dot-js/"/>
+    
     <updated>2014-02-03T14:09:35-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/code-reuse-with-node-dot-js</id>
+    
     <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2013/07/11/code-reuse-with-nodejs.html">Code Reuse With Node.js</a></h2>
 
 <p><img src="http://devo.ps/images/posts/recycle.png" alt="Code recycling" /></p>
@@ -832,13 +859,17 @@ module.exports = function(obj){
 </ul>
 
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[Automation And Friction]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/automation-and-friction/"/>
+    
     <updated>2014-02-03T14:06:45-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/automation-and-friction</id>
+    
     <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2013/06/20/automation-and-friction.html">Automation And Friction</a></h2>
 
 <p>I&rsquo;ll admit that the devo.ps team is a lazy bunch; we like to forget about things, especially the hard stuff. Dealing with a complex process invariably leads one of us to vent about how &ldquo;we should automate that stuff&rdquo;. That&rsquo;s what our team does day and night:</p>
@@ -885,13 +916,17 @@ module.exports = function(obj){
 
 <p>Really, try it. It&rsquo;s worth the investment.</p>
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[101 On DevOps And How We Plan On Helping]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/101-on-devops-and-how-we-plan-on-helping/"/>
+    
     <updated>2014-02-03T13:54:32-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/101-on-devops-and-how-we-plan-on-helping</id>
+    
     <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2012/10/23/101-on-development-and-operations.html">101 On DevOps And How We Plan On Helping</a></h2>
 
 <p>Here&rsquo;s what usually happens: on one side the development team wants to push new features as fast as possible to production, while on the other side, operations are trying to keep things stable. Both teams are evaluated on
@@ -914,13 +949,17 @@ strong collaboration and organizational skills. All of this take time. Best prac
 </ul>
 
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[Farewell to Regular Web Development Approaches]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/farewell-to-regular-web-development-approaches/"/>
+    
     <updated>2014-02-03T13:52:12-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/farewell-to-regular-web-development-approaches</id>
+    
     <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">Farewell to Regular Web Development Approaches</a></h2>
 
 <p>At my <a href="http://wiredcraft.com">previous company</a>, we built Web applications for medium to large organizations, often in the humanitarian and non-profit space, facing original problems revolving around data. Things like building the
@@ -952,13 +991,17 @@ overall maintainability. More importantly, we&rsquo;ve freed a lot of our resour
 
 <p>If you haven&rsquo;t tried building things that way yet, give it a try honestly (when relevant); it may be a larger initial investment in some cases but you&rsquo;ll come out on top at almost every level.</p>
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[Why We Dropped Swagger And I/O Docs]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/why-we-dropped-swagger-and-i-slash-o-docs/"/>
+    
     <updated>2014-02-03T13:49:24-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/why-we-dropped-swagger-and-i-slash-o-docs</id>
+    
     <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2013/02/07/why-we-dropped-iodocs-and-swagger.html">Why We Dropped Swagger And I/O Docs</a></h2>
 
 <p>As we started investing in <a href="http://bvajjala.github.io/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">our new strategy</a> at <a href="http://wiredcraft.com">my previous company</a>, we looked around for solutions to document APIs. It may not be the sexiest part of the project, but documentation is the first step to designing a good API. And I mean <strong>first</strong> as in &ldquo;before you even start writing tests&rdquo; (yes, you should be writing tests first too).</p>
@@ -982,13 +1025,17 @@ overall maintainability. More importantly, we&rsquo;ve freed a lot of our resour
 
 <p>Carte is intentionally crude: <a href="https://github.com/devo-ps/carte">have a look at the README and hack at will</a>. Drop us a shout at <a href="https://twitter.com/devo_ps">@devo_ps</a> if you need help or want to suggest a feature.</p>
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[Best Practices: It's Always or Never]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/best-practices-its-always-or-never/"/>
+    
     <updated>2014-02-03T13:45:48-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/best-practices-its-always-or-never</id>
+    
     <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2013/02/11/best-practices-it-s-always-or-never.html">Best Practices: It&rsquo;s Always Or Never ( And Preferably Always)</a></h2>
 
 <p><img src="http://farm3.staticflickr.com/2584/4103140420_b98ee1ac62_z.jpg" alt="Messy cables" /></p>
@@ -1028,13 +1075,17 @@ from the equation. Doing so is helping you to reduce the human factor and free y
 
 <p><em><a href="http://www.flickr.com/photos/comedynose/4103140420/">Picture from comedy_nose</a></em></p>
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[Troubleshooting 5minutes on a yet Unknown Box]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/troubleshooting-5minutes-on-a-yet-unknown-box/"/>
+    
     <updated>2014-02-03T13:34:05-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/troubleshooting-5minutes-on-a-yet-unknown-box</id>
+    
     <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2013/03/06/troubleshooting-5minutes-on-a-yet-unknown-box.html">First 5 Minutes Troubleshooting A Server</a></h2>
 
 <p>Back when our team was dealing with operations, optimization and scalability at <a href="http://wiredcraft.com">our previous company</a>, we had our fair share of troubleshooting poorly performing applications and infrastructures of various sizes, often large (think CNN or the World Bank). Tight deadlines, &ldquo;exotic&rdquo; technical stacks and lack of information usually made for memorable experiences.</p>
@@ -1247,13 +1298,17 @@ understanding of:</p>
 
 <p>You may even have found the actual root cause. If not, you should be in a good place to start digging further, with the knowledge that you&rsquo;ve covered the obvious.</p>
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[ZooKeeper vs. Doozer vs. Etcd]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/zookeeper-vs-doozer-vs-etcd/"/>
+    
     <updated>2014-02-03T13:18:39-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/zookeeper-vs-doozer-vs-etcd</id>
+    
     <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2013/09/11/zookeeper-vs-doozer-vs-etcd.html">ZooKeeper vs. Doozer vs. Etcd</a></h2>
 
 <p>While <a href="http://devo.ps">devo.ps</a> is fast approaching a public release, the team has been dealing with an increasingly complex infrastructure. We more recently faced an interesting issue; how do you share configuration across a cluster of servers? More importantly, how do you do so in a resilient, secure, easily deployable and speedy fashion?</p>
@@ -1395,13 +1450,17 @@ to either customize its data propagation approach, or build our own solution
 that will answer some needs it is not likely to answer (we&rsquo;ve already looked
 into doing so with ZeroMQ and Go).</p>
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[DevOps Tools and Utilities]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/01/devops-tools-and-utilities/"/>
+    
     <updated>2014-02-01T13:13:05-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/01/devops-tools-and-utilities</id>
+    
     <content type="html"><![CDATA[<h1>DevOps Tool chain</h1>
 
 <p>A list of utilities to support configuration management tools. This was produced by the panelists of the Configuration Mgmt Workflow panel at LOPSA-EAST in 2013. One of the attendees also took notes: <a href="http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel">http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel</a></p>
@@ -1664,13 +1723,17 @@ into doing so with ZeroMQ and Go).</p>
 </ul>
 
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[Erlang Factory Lite 2013]]></title>
     <link href="http://bvajjala.github.io/blog/2013/11/23/efl-toronto-2013/"/>
+    
     <updated>2013-11-23T07:00:00-05:00</updated>
     <id>http://bvajjala.github.io/blog/2013/11/23/efl-toronto-2013</id>
+    
     <content type="html"><![CDATA[<p>For the last four months I&rsquo;ve been actively involved in organizing EFL in Toronto.
 Now when the conference is over I want to take a few minutes to express my appreciation to all the people who made it happen.</p>
 
@@ -1688,13 +1751,17 @@ Now when the conference is over I want to take a few minutes to express my appre
 
 <p>Thank you all! Without you this conference wouldn&rsquo;t be possible.</p>
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[Managing docker services with this one easy trick]]></title>
     <link href="http://bvajjala.github.io/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick/"/>
+    
     <updated>2013-10-20T15:46:00-04:00</updated>
     <id>http://bvajjala.github.io/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick</id>
+    
     <content type="html"><![CDATA[<p>I have been having a lot of internal debate about the idea of running more than one service in a docker container.   A Docker container is built to run a single process in the foreground and to live for only as long as that process is running.  This is great in a utopian world where servers are immutable and sysadmins drink tiki drinks on the beach,  however it doesn&rsquo;t always translate well to the real world.</p>
 
 <p>Examples where you might want to be able to run multiple servers span from the simple use case of running <code>sshd</code> as well as your application to running a web app such as <code>wordpress</code> where you might want both <code>apache</code> and <code>mysql</code> running in the same container.</p>
@@ -1867,13 +1934,17 @@ Now when the conference is over I want to take a few minutes to express my appre
 </pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo find . -uid 0   -exec rm -rfv {} \;</span></code></pre></td></tr></table></div></figure>
 
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[Vagrant, Docker and Ansible, WTF?]]></title>
     <link href="http://bvajjala.github.io/blog/2013/09/25/vagrant-docker-and-ansible-wtf/"/>
+    
     <updated>2013-09-25T08:00:00-04:00</updated>
     <id>http://bvajjala.github.io/blog/2013/09/25/vagrant-docker-and-ansible-wtf</id>
+    
     <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2013/09/25/vagrant-docker-and-ansible-wtf.html">Vagrant, Docker and Ansible. WTF?</a></h2>
 
 <p>Given that we&rsquo;re building a SaaS that helps our client managing their infrastructure, our team is pretty familiar with leveraging VMs and configuration management tools. We&rsquo;ve actually been heavy users of Vagrant and <a href="http://devo.ps/blog/2013/07/03/ansible-simply-kicks-ass.html">Ansible</a> for
@@ -2252,13 +2323,17 @@ complementary:</p>
 <p>It takes a bit of reading to get more familiar with these tools, and we&rsquo;ll likely follow up on this post in the next few weeks. However, especially as a small team, this kind of technology allows you to automate and commoditize huge parts of your development and ops workflows. We strongly encourage you to make that investment. It has helped us tremendously increase the pace and
 quality of our throughput.</p>
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[Creating immutable servers with chef and docker.io]]></title>
     <link href="http://bvajjala.github.io/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/"/>
+    
     <updated>2013-09-07T18:18:00-04:00</updated>
     <id>http://bvajjala.github.io/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io</id>
+    
     <content type="html"><![CDATA[<p>Building applications in a <a href="http://docker.io">docker.io</a> Dockerfile is relatively simple,  but sometimes you want to just install the application exactly as you would normally via already built chef cookbooks.   Turns out this is actually pretty simple.</p>
 
 <p>The first thing you&rsquo;ll need to do is build a container with chef-client and berkshelf installed.   You can grab the one I&rsquo;ve built by running <code>docker pull paulczar/chef-solo</code> or build one youself from a <code>Dockerfile</code> that looks a little something like the following&hellip;</p>
@@ -2391,13 +2466,17 @@ quality of our throughput.</p>
 
 <p>To run the resultant <code>docker.io</code> container you simply need to run <code>$ docker run -d -p 80 demo/kibana3</code></p>
 ]]></content>
+    
   </entry>
   
   <entry>
+    
     <title type="html"><![CDATA[12PM bug in Java]]></title>
     <link href="http://bvajjala.github.io/blog/2013/07/28/java-12pm-bug/"/>
+    
     <updated>2013-07-28T08:00:00-04:00</updated>
     <id>http://bvajjala.github.io/blog/2013/07/28/java-12pm-bug</id>
+    
     <content type="html"><![CDATA[<p>I&rsquo;ve recently hit on a nasty bug in Java. It sits in <code>Date</code> class and shows up only at noon!
 I&rsquo;m going to demonstrate it using Groovy shell, but you can reproduce it in plain Java environment too.</p>
 
@@ -2495,6 +2574,7 @@ I&rsquo;m going to demonstrate it using Groovy shell, but you can reproduce it i
 
 <p>I&rsquo;m actually quite surprised that this bug survived through JDK 1.7.0_09, and neither Sun nor Oracle hasn&rsquo;t fixed it yet.</p>
 ]]></content>
+    
   </entry>
   
 </feed>
