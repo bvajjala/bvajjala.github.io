@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Regex | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/regex/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T14:12:32-04:00</updated>
+  <updated>2014-04-14T14:20:52-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Parsing Files Using Groovy Regex]]></title>
+    <title type="html"><![CDATA[Parsing files using Groovy regex]]></title>
     <link href="http://bvajjala.github.io/blog/2009/10/22/parsing-files-using-groovy-regex/"/>
     <updated>2009-10-22T08:00:00-04:00</updated>
     <id>http://bvajjala.github.io/blog/2009/10/22/parsing-files-using-groovy-regex</id>
@@ -217,7 +217,7 @@ java.lang.IllegalArgumentException: id to load is required for loading
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Groovy Regular Expressions]]></title>
+    <title type="html"><![CDATA[Groovy regular expressions]]></title>
     <link href="http://bvajjala.github.io/blog/2009/09/25/groovy-regular-expressions/"/>
     <updated>2009-09-25T08:00:00-04:00</updated>
     <id>http://bvajjala.github.io/blog/2009/09/25/groovy-regular-expressions</id>

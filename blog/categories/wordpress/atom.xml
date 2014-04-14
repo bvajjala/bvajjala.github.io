@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Wordpress | Balaji Vajjala's Blog]]></title>
+  <title><![CDATA[Category: wordpress | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/wordpress/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T14:12:32-04:00</updated>
+  <updated>2014-04-14T14:20:52-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Moving From a Self Hosted Wordpress Blog to Blogger]]></title>
+    <title type="html"><![CDATA[Moving from a self hosted Wordpress blog to Blogger]]></title>
     <link href="http://bvajjala.github.io/blog/2012/10/21/moving-from-a-self-hosted-wordpress-blog-to-blogger/"/>
     <updated>2012-10-21T15:15:00-04:00</updated>
     <id>http://bvajjala.github.io/blog/2012/10/21/moving-from-a-self-hosted-wordpress-blog-to-blogger</id>

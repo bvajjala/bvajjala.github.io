@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T14:12:32-04:00</updated>
+  <updated>2014-04-14T14:20:52-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[12PM Bug in Java]]></title>
+    <title type="html"><![CDATA[12PM bug in Java]]></title>
     <link href="http://bvajjala.github.io/blog/2013/07/28/java-12pm-bug/"/>
     <updated>2013-07-28T08:00:00-04:00</updated>
     <id>http://bvajjala.github.io/blog/2013/07/28/java-12pm-bug</id>
@@ -114,7 +114,7 @@ I&rsquo;m going to demonstrate it using Groovy shell, but you can reproduce it i
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Flexible Language]]></title>
+    <title type="html"><![CDATA[Flexible language]]></title>
     <link href="http://bvajjala.github.io/blog/2012/11/22/flexible-language/"/>
     <updated>2012-11-22T07:00:00-05:00</updated>
     <id>http://bvajjala.github.io/blog/2012/11/22/flexible-language</id>

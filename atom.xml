@@ -4,7 +4,7 @@
   <title><![CDATA[Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T14:12:32-04:00</updated>
+  <updated>2014-04-14T14:20:52-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Deploy/Release Workflow From GitHub]]></title>
+    <title type="html"><![CDATA[Deploy/Release Workflow from GitHub]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/04/deploy-slash-release-workflow-from-github/"/>
     <updated>2014-02-04T09:50:50-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/04/deploy-slash-release-workflow-from-github</id>
@@ -262,7 +262,7 @@ Not too long ago, however, this system wasn&rsquo;t very smart. A branch could a
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Designing a RESTful API That Doesn't Suck]]></title>
+    <title type="html"><![CDATA[Designing A RESTful API That Doesn't Suck]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/"/>
     <updated>2014-02-03T14:23:30-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck</id>
@@ -394,7 +394,7 @@ through:</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Goodbye Node-forever]]></title>
+    <title type="html"><![CDATA[Goodbye node-forever]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/goodbye-node-forever/"/>
     <updated>2014-02-03T14:15:10-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/goodbye-node-forever</id>
@@ -835,7 +835,7 @@ module.exports = function(obj){
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Automation and Friction]]></title>
+    <title type="html"><![CDATA[Automation And Friction]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/automation-and-friction/"/>
     <updated>2014-02-03T14:06:45-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/automation-and-friction</id>
@@ -888,7 +888,7 @@ module.exports = function(obj){
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[101 on DevOps and How We Plan on Helping]]></title>
+    <title type="html"><![CDATA[101 On DevOps And How We Plan On Helping]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/101-on-devops-and-how-we-plan-on-helping/"/>
     <updated>2014-02-03T13:54:32-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/101-on-devops-and-how-we-plan-on-helping</id>
@@ -955,7 +955,7 @@ overall maintainability. More importantly, we&rsquo;ve freed a lot of our resour
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Why We Dropped Swagger and I/O Docs]]></title>
+    <title type="html"><![CDATA[Why We Dropped Swagger And I/O Docs]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/why-we-dropped-swagger-and-i-slash-o-docs/"/>
     <updated>2014-02-03T13:49:24-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/why-we-dropped-swagger-and-i-slash-o-docs</id>
@@ -1031,7 +1031,7 @@ from the equation. Doing so is helping you to reduce the human factor and free y
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Troubleshooting 5minutes on a Yet Unknown Box]]></title>
+    <title type="html"><![CDATA[Troubleshooting 5minutes on a yet Unknown Box]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/troubleshooting-5minutes-on-a-yet-unknown-box/"/>
     <updated>2014-02-03T13:34:05-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/03/troubleshooting-5minutes-on-a-yet-unknown-box</id>
@@ -1691,7 +1691,7 @@ Now when the conference is over I want to take a few minutes to express my appre
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Managing Docker Services With This One Easy Trick]]></title>
+    <title type="html"><![CDATA[Managing docker services with this one easy trick]]></title>
     <link href="http://bvajjala.github.io/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick/"/>
     <updated>2013-10-20T15:46:00-04:00</updated>
     <id>http://bvajjala.github.io/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick</id>
@@ -2255,7 +2255,7 @@ quality of our throughput.</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Creating Immutable Servers With Chef and docker.io]]></title>
+    <title type="html"><![CDATA[Creating immutable servers with chef and docker.io]]></title>
     <link href="http://bvajjala.github.io/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/"/>
     <updated>2013-09-07T18:18:00-04:00</updated>
     <id>http://bvajjala.github.io/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io</id>
@@ -2394,7 +2394,7 @@ quality of our throughput.</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[12PM Bug in Java]]></title>
+    <title type="html"><![CDATA[12PM bug in Java]]></title>
     <link href="http://bvajjala.github.io/blog/2013/07/28/java-12pm-bug/"/>
     <updated>2013-07-28T08:00:00-04:00</updated>
     <id>http://bvajjala.github.io/blog/2013/07/28/java-12pm-bug</id>

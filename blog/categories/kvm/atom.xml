@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Kvm | Balaji Vajjala's Blog]]></title>
+  <title><![CDATA[Category: kvm | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/kvm/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T14:12:32-04:00</updated>
+  <updated>2014-04-14T14:20:52-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -235,7 +235,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Moving VMs From VMWare to KVM]]></title>
+    <title type="html"><![CDATA[Moving VMs from VMWare to KVM]]></title>
     <link href="http://bvajjala.github.io/blog/2012/12/09/moving-vms-from-vmware-to-kvm/"/>
     <updated>2012-12-09T13:17:00-05:00</updated>
     <id>http://bvajjala.github.io/blog/2012/12/09/moving-vms-from-vmware-to-kvm</id>

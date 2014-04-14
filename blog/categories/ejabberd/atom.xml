@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ejabberd | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/ejabberd/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T14:12:32-04:00</updated>
+  <updated>2014-04-14T14:20:52-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Integrating RabbitMQ With Ejabberd]]></title>
+    <title type="html"><![CDATA[Integrating RabbitMQ with ejabberd]]></title>
     <link href="http://bvajjala.github.io/blog/2010/03/31/integrating-rabbitmq-with-ejabberd/"/>
     <updated>2010-03-31T08:00:00-04:00</updated>
     <id>http://bvajjala.github.io/blog/2010/03/31/integrating-rabbitmq-with-ejabberd</id>
@@ -86,7 +86,7 @@ $ ln -s ~/.erlang.cookie
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Get Started With Ejabberd]]></title>
+    <title type="html"><![CDATA[Get started with ejabberd]]></title>
     <link href="http://bvajjala.github.io/blog/2010/02/23/get-started-with-ejabberd/"/>
     <updated>2010-02-23T07:00:00-05:00</updated>
     <id>http://bvajjala.github.io/blog/2010/02/23/get-started-with-ejabberd</id>
