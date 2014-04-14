@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Plugin Management | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/plugin-management/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Hudson - pinned/pinning plugins]]></title>
+    <link href="http://bvajjala.github.io/blog/2010/09/07/hudson-pinned-slash-pinning-plugins/"/>
+    <updated>2010-09-07T19:14:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2010/09/07/hudson-pinned-slash-pinning-plugins</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/hudson_logo.png" title="&lsquo;Hudson Logo&rsquo;" >If you wish to &ldquo;hang on&rdquo; to a certain plugin which shipps with hudson.war just unpin it in the Manage Hudson >> Manage Plugins page &ndash; this option is availabe sine <a href="http://www.hudson-ci.org/download/war/1.374/hudson.war">1.374 release</a> (and you can alwasy grab the latest @: <a href="http://www.hudson-ci.org/latest/hudson.war">latest</a>)</p>
+
+<p>See full explanation below quoted from <a href="http://wiki.hudson-ci.org">hudson wiki</a>:</p>
+
+<p>The notion of <strong>pinned plugins</strong> applies to plugins that are bundled with Hudson, such as the Subversion plugin.</p>
+
+<p>Normally, when you upgrade/downgrade Hudson, its built-in plugins overwrite whatever versions of the plugins you currently have in $HUDSON_HOME. This ensures that you use the consistent version of those plugins. However, this behavior also means that those plugins can be never manually updated, as every time you start Hudson they&rsquo;ll be replaced by the bundled versions.</p>
+
+<p>So when you manually update those bundled plugins, Hudson will mark those plugins as pinned to the particular version. Pinned plugins will never be overwritten by the bundled plugins during Hudson boot up. However, by definition, with pinned plugins you lose the benefit of automatic upgrade when you upgrade Hudson.</p>
+
+<p>So the plugin manager in Hudson allows you to explicitly unpin plugins. On file system, Hudson creates an empty file called $HUDSON_HOME/plugins/plugin.hpi.pinned to indicate the pinning. This file can be manually created/deleted to control the pinning behavior.</p>
+]]></content>
+  </entry>
+  
+</feed>

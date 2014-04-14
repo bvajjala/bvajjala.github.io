@@ -1,0 +1,974 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Omniauth Identity is a great identity provide that shipped with Omniauth 1.0 it can be a bit simple at times. I wanted to add a simple terms and &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/page/9">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2012/04/12/add-terms-and-conditions-validation-to-omniauth-identity/">Add Terms & Conditions Validation to Omniauth Identity</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-12T00:32:00-04:00" pubdate data-updated="true">Apr 12<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div class="entry-content"><p><a href="https://github.com/intridea/omniauth-identity">Omniauth Identity</a> is a great identity provide that shipped with Omniauth 1.0 it can be a bit simple at times. I wanted to add a simple terms and conditions check on signup to my registration form and this is what I came up with.</p>
+
+<p>For this example I assume you already have a Omniauth Identity setup much like explained in <a href="http://railscasts.com/episodes/304-omniauth-identity">this Railscast</a>.</p>
+
+<h2>Step 1 - app/views/identities/new.html.erb</h2>
+
+<p>Add a checkbox to your form.</p>
+
+<div><script src='https://gist.github.com/2368233.js'></script>
+<noscript><pre><code>&lt;div class=&quot;field&quot;&gt;
+  &lt;%= label_tag :conditions %&gt;&lt;br&gt;
+  &lt;%= check_box_tag :conditions %&gt;
+&lt;/div&gt;</code></pre></noscript></div>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/04/12/add-terms-and-conditions-validation-to-omniauth-identity/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2012/04/10/the-hackday-manifesto/">The Hack Day Manifesto</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-10T15:30:00-04:00" pubdate data-updated="true">Apr 10<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>One of my friends, <a href="http://artisanofcode.com/">Dan</a>, started a document called <a href="http://hackdaymanifesto.com/">&ldquo;The Hack Day Manifesto&rdquo;</a> on the #GeeksOfLondon IRC channel a few days back. With the help of our community we managed to update it to a full document and it&rsquo;s now live.</p>
+
+<p>It&rsquo;s a must read if you ever plan to run a hack day or hackathon.</p>
+
+<p>It&rsquo;s already signed by quite a few hackday organisers including the GeeksOfLondon team and you can add your own name by simply <a href="https://github.com/hackdaymanifesto/hackdaymanifesto.github.com/">forking</a>, adding your name, and making a pull request.</p>
+
+<p><img class="center" src="/images/blog/2012/thehackdaymanifesto.png"></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2012/04/07/a-new-blog/">A New Blog</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-07T15:17:00-04:00" pubdate data-updated="true">Apr 7<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>It has been a while since I last blogged, and to be fair I&rsquo;ve been kinda busy, but I also was frustrated with my old blog. It was bloated and heavy to load, all mainly due to Wordpress and Site5&rsquo;s shared hosting. Wordpress started as a nice blogging platform but lately it has been pissing me off (more on this), and I realised that running a whole PHP script for pages that barely ever change is stupid.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/04/07/a-new-blog/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2012/03/29/bypassing-the-google-feed-api-cache/">Bypassing the Google Feed API Cache</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-29T23:22:00-04:00" pubdate data-updated="true">Mar 29<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="center" src="/images/posts/google_feed_api_meme.png"></p>
+
+<p>I noticed recently that the download count of the packages in my <a href="https://github.com/kmees/Octopress-NuGet-Aside">NuGet Aside</a> didn&rsquo;t update properly. As I <a href="/blog/2012/02/29/nuget-aside-for-octopress/">mentioned earlier</a>, I use the <a href="https://developers.google.com/feed/">Google Feed API</a> to get the data from the NuGet Gallery feed of an author. This indicrection is needed because the NuGet Gallery API doesn&rsquo;t support the <strong>jsonp</strong> response type (yet). Anyway, the problem is that Google caches the feeds heavily and only adds new entries but doesn&rsquo;t update existing ones. This means that the packages keep their download count of the first request.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/03/29/bypassing-the-google-feed-api-cache/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2012/02/29/nuget-aside-for-octopress/">NuGet Aside for Octopress</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-29T15:37:00-05:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I just finished as aside for <a href="http://www.octopress.org">Octopress</a> that list the
+Top N downloaded packages where you are an author. It also adds a link to your
+NuGet gallery profile if you have one. The style is basically the same as the style of the github aside.</p>
+
+<p>Since there is no official way to publish 3rd party add-ons for Octopress yet, I
+created a <a href="https://github.com/kmees/Octopress-NuGet-Aside">github repository</a> with the required files and setup instructions in the <a href="https://github.com/kmees/Octopress-NuGet-Aside/blob/master/README.md">ReadMe</a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/12/30/cfengine-puppet-and-chef-part-3/">CFEngine Puppet and Chef Part 3</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-30T20:11:00-05:00" pubdate data-updated="true">Dec 30<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>At the end of the last installment, we used Puppet to create a Chef server. That brings us full circle, and the only thing we have left to do is examine how Chef works. We&rsquo;ll do that by looking at the code that gave us our original CFEngine server.</p>
+
+<h2> Chef </h2>
+
+
+<p><img class="right" src="http://farm4.staticflickr.com/3024/2417315604_ba73be6be2.jpg" width="300" height="300"></p>
+
+<p>Since they&rsquo;re both written in Ruby, people tend to compare Puppet and Chef. This is natural since they have a lot in common. Both are convergence based configuration management tools inspired by CFEngine. Both have stand alone discovery agents (facter and ohai, respectively), as well as RESTful APIs for gleaning node information from the server. It turns out, however, that Chef actually has a lot more in common with CFEngine.</p>
+
+<p>Like CFEngine, Chef copies policy from the server and evaluates it on the edges. This allows for high scalability, since the server isn&rsquo;t doing very much. Think of web application that does most of its work in the browser instead of on the server.</p>
+
+<p>A Chef recipe is a collection of convergent <a href=http://wiki.opscode.com/display/chef/Resources target="_blank">resource</a> statements, and serves as the basic unit of intent. This is analogous to a CFEngine promise bundle. The Chef run list is how recipe ordering is defined, and is directly comparible to CFEngine&rsquo;s bundlesqeuence. Using this approach makes it easy to reason about what&rsquo;s going on when writing infrastructure as code.</p>
+
+<h2> Chef Specials </h2>
+
+
+
+
+<h3> Imperative programming and declarative interface </h3>
+
+
+<p>While it&rsquo;s true that Chef is just &ldquo;pure ruby&rdquo; and therefore imperative, to say that Chef is imperative without considering the declarative interface to resources is disingenuous at best. Using nothing but Chef resources, recipes look very much like their CFEngine and Puppet counterparts. The non-optimally ordered Chef version of NTP converges in the same number of runs as the CFEngine example from the first installment. This is because the <a href=http://www.iu.hio.no/~mark/papers/immune.pdf target="_blank">underlying science</a> of convergent operators is the same.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># service</span>
+</span><span class='line'><span class="n">service</span> <span class="s2">&quot;ntp&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">action</span> <span class="o">[</span> <span class="ss">:enable</span><span class="p">,</span> <span class="ss">:start</span> <span class="o">]</span>
+</span><span class='line'>  <span class="n">ignore_failure</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># file </span>
+</span><span class='line'><span class="n">template</span> <span class="s2">&quot;/etc/ntp.conf&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">source</span> <span class="s2">&quot;ntp.conf.erb&quot;</span>
+</span><span class='line'>  <span class="n">owner</span> <span class="s2">&quot;root&quot;</span>
+</span><span class='line'>  <span class="n">group</span> <span class="s2">&quot;root&quot;</span>
+</span><span class='line'>  <span class="n">mode</span> <span class="mo">0644</span>
+</span><span class='line'>  <span class="n">notifies</span> <span class="ss">:restart</span><span class="p">,</span> <span class="s2">&quot;service[ntp]&quot;</span>
+</span><span class='line'>  <span class="n">ignore_failure</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># package </span>
+</span><span class='line'><span class="n">package</span> <span class="s2">&quot;ntp&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">action</span> <span class="ss">:install</span>
+</span><span class='line'>  <span class="n">ignore_failure</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href=http://bit.ly/vPixyI target="_blank">When and where order matters</a>, imperative ordering isolated within a recipe is the most intuitive way for sysadmins to accomplish tasks within the convergent model. &ldquo;Install a package, edit a config file, and start the service&rdquo; is how most people think about the task. Imperative ordering of declarative statements give the best of both worlds. When order does NOT matter, it&rsquo;s safe to re-arrange recipe ordering in the Chef run list.</p>
+
+<h3> Multiphase execution </h3>
+
+
+<p>The real trick to effective Chef cookbook development is to understand the <a href=http://wiki.opscode.com/display/chef/Anatomy+of+a+Chef+Run target="_blank">Anatomy of a Chef Run</a>. When a Chef recipe is evaluated in the compilation phase, encountered resources are added to the Resource Collection, which is an array of evaluated resources with deferred execution.</p>
+
+<p>The compile phase of this recipe would add 99 uniquely named, 12 oz, convergent beer_bottles to the collection, and the configure phase would take them down and pass them around. Subsequent runs would do nothing.</p>
+
+<figure class='code'><figcaption><span>thanks jtimberman! </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">size</span> <span class="o">=</span> <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+</span><span class='line'>
+</span><span class='line'><span class="mi">99</span><span class="o">.</span><span class="n">downto</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">beer_bottle</span> <span class="s2">&quot;bottle-</span><span class="si">#{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">oz</span> <span class="n">size</span>
+</span><span class='line'>    <span class="n">action</span> <span class="o">[</span> <span class="ss">:take_down</span><span class="p">,</span> <span class="ss">:pass_around</span> <span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The idea is that you can take advantage of the full power of Ruby to make decisions about what to declare about your resources. Most people just use the built in Chef APIs to consult chef-server for topology information about their infrastructure. However, there&rsquo;s nothing stopping you from importing random Ruby modules and accessing existing SQL databases instead.</p>
+
+<p>Want to name name servers after your Facebook friends? <a href=http://rfacebook.rubyforge.org/ type="_blank">Go for it.</a> Want your MOTD to list all James Brown albums released between 1980 and 1990? <a href=https://github.com/buntine/discogs type="_blank">Not a problem</a>. The important part is that things are ultimately managed with a declarative, idempotent, and convergent resource interface.</p>
+
+<h2> cfengine.rb </h2>
+
+
+<p>Let&rsquo;s take a look at the recipe that gave us our original CFEngine server.</p>
+
+<p>File /Users/balajivajjala/Development/opress-src/bvajjala.github.io/source/downloads/code/cookbooks/cfengine/recipes/server.rb could not be found</p>
+
+<h2> Topology management </h2>
+
+
+<p>When a node is bootstrapped with Chef, a run list of roles or recipes is requested by the node itself. After that, the host is found by recipes running elsewhere in the infrastructure by <a href=http://bit.ly/vI5Z9l target="_blank">searching</a> for roles or attributes. This is contrasted from the CFEngine and Puppet techniques of matching classes based on a hostname, FQDN, IP, or other found information.</p>
+
+<p>This approach has the effect of decoupling a node&rsquo;s name from its functionality. Line 10 in <code>cfengine.rb</code> above searches out node objects and later be passes them to the <code>promises-server.cf.erb</code> template for authorization.</p>
+
+<h2> Wrapping up </h2>
+
+
+<p>So there you have it folks. Chef making CFEngine making Puppet making Chef. These tools can be used to automate literally anything, and they&rsquo;re pretty easy to use once you figure out how they work. I was going to throw some Bcfg2 and LCFG in there just for fun, but I only had some much free time =)</p>
+
+<p>Configuration mangement is like a portal.</p>
+
+<p>-s</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/12/30/cfengine-puppet-and-chef-part-2/">CFEngine Puppet and Chef Part 2</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-30T20:10:00-05:00" pubdate data-updated="true">Dec 30<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In the previous installment, we used Chef to configure CFEngine to serve policy that allowed us to create a Puppet service. In this one, we&rsquo;ll have Chef use that Puppet service to create a Chef server. If you think this is a ridiculous thing to do, I would be inclined to agree with you. However, this is my blog so I make the rules.</p>
+
+<h2> Puppet </h2>
+
+
+<p>Puppet at its core works like CFEngine. Statements in Puppet are convergent operators, in that they are declarative (and therefore idempotent), and convergent in that they check a resource&rsquo;s state before taking any action. Like the NTP example from the CFEngine installment, non-optimally ordered execution will usually work itself out after repeated Puppet runs.</p>
+
+<p>Unlike CFEngine, where policy is copied and evaluated on the edges, Puppet clients connect to the Puppet server where configuration is determined based on a certificate CN. A catalog of serialized configuration data is shipped back to the client for execution. This catalog is computed based on the contents of the manifests stored on the server, as well as a collection of <a href=http://puppetlabs.com/puppet/related-projects/facter target="_blank">facts</a> collected from the clients. Puppet facts, like CFEngine hard classes, are discoverable things about a node such as OS version, hostname, kernel version, network information, etc.</p>
+
+<p><img class="left" src="http://images3.wikia.nocookie.net/__cb20050917222913/memoryalpha/en/images/d/d6/Coffee_replicates_then_mug.jpg" width="300" height="300"></p>
+
+<p>Puppet works a bit like the food replicators in Star Trek. <a href=http://docs.puppetlabs.com/references/stable/type.html target="_blank">Resources</a> make up the basic atoms of a system, and the precise configuration of each must be defined. If a resource is defined twice in a manifest with conflicting states, Puppet refuses to run.</p>
+
+<p>Ordering can be specified though <code>require</code> statements that set up relations between resources. These are used to build a <a href=http://en.wikipedia.org/wiki/Directed_graph target="_blank">directed graph</a>, which Puppet sorts <a href=http://en.wikipedia.org/wiki/Topological_sorting>topologically</a> and uses to determine the final ordering. If a resource in a chain fails for some reason, dependent resources down the graph will be skipped.</p>
+
+<p>This allows for isolation of non-related resources collections. For example, if a package repository for some reason fails to deliver the &lsquo;httpd&rsquo; package, its dependent configuration file and service resources will be skipped. This has nothing to do with an SSH resource collection, so the resources concerning that service will be executed even though the httpd collection had previously failed.</p>
+
+<p>Just be careful not to create the coffee without the cup.</p>
+
+<h2> chef.pp </h2>
+
+
+<p>Let&rsquo;s examine a Puppet manifest that creates a Chef server on Centos 6.</p>
+
+<p>File /Users/balajivajjala/Development/opress-src/bvajjala.github.io/source/downloads/code/cookbooks/cfengine/files/default/server/puppet/manifests/classes/chef.pp could not be found</p>
+
+<h2> Picking it apart </h2>
+
+
+<p>Line 1 is a Puppet class definition. This groups the resource statments between together, allowing us to assign <code>chef-server</code> to a node based on its hostname. This can be accomplished with an explicit nodes.pp definition, or with an external node classifier.</p>
+
+<p>Line 3 is an <code>exec</code> resource, which we can later refer to with its name: <code>rbel6-release</code>. When using <code>exec</code> resources, it&rsquo;s up to you to specify a convergence check. In this case, we used the <code>unless</code> keyword to check the return status of an rpm command. The same goes for <code>command</code> promise types in CFEngine, or an <code>execute</code> resources in Chef.</p>
+
+<p>Line 9 is an example of an array variable, which is iterated over in line 21, much like a CFEngine slist.</p>
+
+<p>Everything else is a standard Puppet resource declaration, each of which have a type, a name, and an argument list. Like CFEngine promises, each type has various intentions available under the hood. Packages can be installed. Services can be running or stopped, and files can be present with certain contents and permissions.</p>
+
+<p>Refer to the Puppet <a href=http://docs.puppetlabs.com/ target="_blank">documentation</a> for more details.</p>
+
+<h2> On to Chef </h2>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife bootstrap centos6-3 -r <span class="s1">&#39;role[affs-chef]&#39;</span> -N <span class="s2">&quot;affs-chef-1.example.com&quot;</span> -E development -d affs-omnibus-pre -x root
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/12/30/cfengine-puppet-and-chef-part-1/">CFEngine Puppet and Chef Part 1</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-30T20:09:00-05:00" pubdate data-updated="true">Dec 30<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2> Introduction </h2>
+
+
+<p>Over the past few years, the topic of Infrastructure Automation has received a huge amount of attention. The three most commonly used tools for doing this (in order of appearance) are CFEngine, Puppet, and Chef. This article explores each of them by using one to set up another. If you have a chef-server or Hosted Chef account, you can follow along by following the instructions in the setup section. (Full disclosure: I work for Opscode, creators of Chef.)</p>
+
+<h2> Infrastructure </h2>
+
+
+<p><a href=http://www.infrastructures.org target="_blank">“Infrastructure”</a> turns out to be the hardest thing to explain when discussing automation, yet is the most critical to understand. In this context, Infrastructure isn’t anything physical (or virtualized) like servers or networks. Instead, what we’re talking about is all the “stuff” that is configured across machines to enable an application or service.</p>
+
+<p>In practice, “stuff” translates to operating system baselines, kernel settings, disk mounts, OS user accounts, directories, symlinks, software installations, configuration files, running processes, etc. People of the ITIL persuasion may think of these as Configuration Items. Units of management are composed into larger constructs, and complexity arises as these arrangements become more intricate.</p>
+
+<p>Services running in an Infrastructure need to communicate with each other, and do so via networks. Even when running on a single node, things still communicate over a loopback address or a Unix domain socket. This means that Infrastructure has a topology, which is in itself yet another thing to manage.</p>
+
+<h2> Automation </h2>
+
+
+<p><img class="left" src="http://upload.wikimedia.org/wikipedia/commons/7/75/Duck_of_Vaucanson.jpg"></p>
+
+<p>Here is a picture of a duck.</p>
+
+<p>This duck happens to be an <a href=http://en.wikipedia.org/wiki/Automaton target="_blank">automaton</a>. An automaton is a self-operating machine. This one pretends to digest grain. It interacts with its environment by taking input and producing output. To continue operating, the duck requires maintenance. It needs to be wound, cleaned, and repaired. Automated services running on a computer are no different.</p>
+
+<p>Once turned on, an automated service takes input, does something useful, then leaves logs and other data in its wake. Its machinery is the arrangement of software installation, configuration, and the running state of a process. Maintenance is performed in a <a href=http://en.wikipedia.org/wiki/Autonomic_Computing target="_blank">control loop</a>, where an agent comes around at regular intervals inspecting its parts and fixing anything that’s broken.</p>
+
+<p>In automated configuration management, the name of the game is hosting policy. The agents that build and maintain systems pull down blueprints and set to work building our automatons. When systems come back up from maintenance or new ones spring into existence, they configure themselves by downloading policy from the server.</p>
+
+<h2> Setup </h2>
+
+
+<p>If you&rsquo;d like to follow along by configuring your own machines with knife, follow the setup instructions <a href=/cfchefipuppetengine-setup target="_blank">here</a>. The setup will get your Chef workstation configured, code checked out from my blog git repo, and uploaded to chef-server for use. Otherwise, you can just browse the source <a href=https://github.com/someara/affs-blog target="_blank">here</a></p>
+
+<h2> CFEngine </h2>
+
+
+<p><img class="right" src="http://farm1.staticflickr.com/120/293693669_59574a7640_m.jpg" title="A picture of what a cloud may look like" ></p>
+
+<p>CFEngine is a system based on <a href=http://research.iu.hio.no/papers/rosegarden.pdf target="_blank">promise</a> <a href=http://project.iu.hio.no/papers/origin2.pdf target="_blank">theory</a>. Promises are the basic atoms of the CFEngine universe. They have names, types, and intentions (among other things), and each acts as a convergent operator to move its subject toward an intended state. Like the parts in our duck, promises are assembled to create a larger whole.</p>
+
+<p>Promises of various types are capable of different things. Promises of type &ldquo;package&rdquo; can interact with a package manager to make sure somthing is installed or removed, while a promise of type &ldquo;file&rdquo;, can copy, edit, and set permissions. Processes can be started or stopped, and commands can be ran if needed. Read all about them in the CFEngine <a href=http://cfengine.com/manuals/cf3-reference.html target="_blank">reference manual</a>.</p>
+
+<p>Promises provide a <a href=http://c2.com/cgi/wiki?DeclarativeDefinition target="_blank">declarative</a> interface to resources under management, which has the remarkably handy attribute of being <a href=http://en.wikipedia.org/wiki/Idempotence target="_blank">idempotent</a>. An idempotent function gives the same result when applied multiple times. This allows our duck repairing maintence loop (in the form of cf-agent on a cron) to come around and safely execute instructions without having to worry about side effects. Consider &ldquo;the line &lsquo;foo&rsquo; should exist in the file&rdquo; vs &ldquo;append &lsquo;foo&rsquo; to the end of the file&rdquo;; the non-declarative &lsquo;append&rsquo; would not be safe to repeat.</p>
+
+<p><a href=http://en.wikipedia.org/wiki/Convergence_(mathematics) target="_blank">Convergent</a> maintenance refers to the continuous repair of a system towards a desired state. At the individual promise level, convergence happens in a single run of the maintenance loop. If a package is supposed to be installed but isn&rsquo;t, action will be taken to fix it. If a process is not running but should be, action will be taken again. Convergence in a larger system of promises can take multiple runs if things are processed in a non-optimal order. Consider the following:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Start the NTP service.
+</span><span class='line'>Make sure the NTP configuration file is correct, restart the NTP service if repaired.
+</span><span class='line'>Install the NTP package.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Assuming a system with a base install, the first promise would fail to be kept. The NTP binary is not available, since we haven&rsquo;t installed its package yet. The second promise would write the configuration file, but fail to restart the service. The third promise would succeed, assuming an appropriate package repo was available and functioning properly. After the first run is complete, the system has converged closer to where we want it to be, but isn&rsquo;t quite there yet. Applying the functions again gets us closer to our goal.</p>
+
+<p>The second run of the loop would succeed in starting the service, but would be using the wrong configuration file. The package install from the previous loop clobbered the one written previously. Promise number two would fix the config and restart the service, and the third would do nothing because the package is already installed. Finally, we&rsquo;ve converged to our desired system state. A third loop would take no actions at all.</p>
+
+<h2> Kicking things off </h2>
+
+
+<p>To set up a CFEngine server, invoke the following Chef command:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife bootstrap centos6-1 -r <span class="s1">&#39;role[cfengine]&#39;</span> -N <span class="s2">&quot;cfengine-1.example.com&quot;</span> -E development -d affs-omnibus-pre -x root
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When Chef is done doing its thing, you&rsquo;ll end up with a functioning CFEngine policy host, happily promising to serve policy. Log into the freshly configured machine and check it out. Three things have happened. First, the cfengine package itself has been installed. Second, two directories have been created and populated: <code>/var/cfengine/inputs</code>, and <code>/var/cfengine/masterfiles</code>.</p>
+
+<p>The <code>inputs</code> directory contains configuration for the CFEngine itself, which includes a promise to make the contents of <code>masterfiles</code> available for distribution. When a CFEngine client comes up, it will copy the contents of <code>/var/cfengine/masterfiles</code> from the server into its own <code>inputs</code> directory.</p>
+
+<h2> Examining policy </h2>
+
+
+<p>CFEngine&rsquo;s main configuration file is <code>promises.cf</code>, from which everything else flows.  Here&rsquo;s a short snippet:</p>
+
+<figure class='code'><figcaption><span>promises.cf snippet </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">body</span> <span class="n">common</span> <span class="n">control</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">bundlesequence</span>  <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;update&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;garbage_collection&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;cfengine&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;puppet_server&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">inputs</span>  <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;update.cf&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;cfengine_stdlib.cf&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;cfengine.cf&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;garbage_collection.cf&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;puppet.cf&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The bundlesequence section tells cf-agent what promise bundles to execute, and in what order. The one we&rsquo;re examining today is named puppet_server, found in <code>puppet.cf</code></p>
+
+<p>File /Users/balajivajjala/Development/opress-src/bvajjala.github.io/source/downloads/code/cookbooks/cfengine/templates/default/inputs/puppet.cf.erb could not be found</p>
+
+<p>A promise bundle is CFEngine&rsquo;s basic unit of intent. It&rsquo;s a place to logically group related promises. Within a bundle, CFEngine processes things with <a href=http://cfengine.com/manuals/cf3-reference.html#Normal-ordering target="_blank">normal ordering</a>. That is, variables are converged first, then classes, then files, then packages, and so on. I wrote the bundle sections in normal order to make it easier to read, but they could be rearranged and still have the same effect. Without going into too much detail about the language, I&rsquo;ll give a couple hints to help with groking the example.</p>
+
+<p>First, in CFEngine, the word &lsquo;class&rsquo; does not mean what it normally does in other programming languages. Instead, classes are boolean flags that describe context. Classes can be &lsquo;hard classes&rsquo;, which are discovered attributes about the environment (hostname, operating system, time, etc), or &lsquo;soft classes&rsquo;, which are defined by the programmer. In the above example, puppetmaster_enabled and iptables_enabled are soft classes set based on the return status of a command. In the place of <code>if</code> or <code>case</code> statements, boolean checks on classes are used.</p>
+
+<p>Second, there are no control statements like <code>for</code> or <code>while</code>. Instead, when lists are encountered they are automatically iterated. Check out the packages section for examples of both class decisions and list iteration. Given those two things, you should be able to work your way through the example. However, there&rsquo;s really no getting around reading the reference manual if you want to learn CFEngine.</p>
+
+<h2> On to Puppet </h2>
+
+
+<p>Finally, let&rsquo;s go ahead and use Chef to bring up a CFEngine client, which will be turned into a Puppet server.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife bootstrap centos6-2 -r <span class="s1">&#39;role[puppet]&#39;</span> -N <span class="s2">&quot;puppet-1.example.com&quot;</span> -E development -d affs-omnibus-pre -x root
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The first run will fail, since the host&rsquo;s IP isn&rsquo;t yet in the cfengine server&rsquo;s allowed hosts lists. Complete the convergence by running these commands:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife ssh <span class="s2">&quot;role:cfengine&quot;</span> -a ipaddress chef-client
+</span><span class='line'>knife ssh <span class="s2">&quot;role:puppet&quot;</span> -a ipaddress chef-client
+</span><span class='line'>knife ssh <span class="s2">&quot;role:puppet&quot;</span> -a ipaddress chef-client
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And viola! A working Puppet server, serving policy.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/11/29/migration-to-octopress/">Migration to Octopress</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-11-29T23:44:00-05:00" pubdate data-updated="true">Nov 29<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I am currently migrating my blog from <em>Wordpress</em> to <em>Octopress</em>. The main
+reason for the migration is the awful (at least for coding blogs) post editor in
+Wordpress. With the migration I can write the posts in Markdown and Vim which,
+hopefully, leads to more posts !</p>
+
+<p>And because Octopress is new and shiny and geeky !</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/11/27/announcing-ribbot-com-build-your-own-reddithacker-news-style-discussion-forum/">Announcing Ribbot.com - Build Your Own Reddit/Hacker News Style Discussion Forum</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-11-27T22:04:33-05:00" pubdate data-updated="true">Nov 27<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I launched a new site about a week ago &ndash; <a href="http://ribbot.com">Ribbot.com</a> .  It allows you to create better discussion forums online.</p>
+
+<p><a href="http://ribbot.com"><img src="http://s3.amazonaws.com/oldbloguploads/2011/11/Screen-Shot-2011-11-26-at-7.27.19-PM-500x377.png" alt="" /></a></p>
+
+<p>If you&rsquo;ve ever used Hacker News, Reddit, StackOverflow, or 37Signals Answers &ndash; these are all examples of a new breed of forum that has emerged online and tends to be much better than than traditional forums.</p>
+
+<p>Traditional forums often have low quality discussions, and are a place for a vocal minority to rant online.  Many companies avoid user discussion forums because they&rsquo;re worried about giving people a public place to rant.</p>
+
+<p>Ribbot allows anyone to create one of these new types of discussion forums (like the sites mentioned above) with the following features:</p>
+
+<ul>
+<li><p>User voting and reputation</p></li>
+<li><p>Threaded comments</p></li>
+<li><p>Post and comment ranking algorithms</p></li>
+</ul>
+
+
+<p><a href="http://ribbot.com"><img src="http://s3.amazonaws.com/oldbloguploads/2011/11/Screen-Shot-2011-11-26-at-7.27.39-PM-500x377.png" alt="" /></a></p>
+
+<p>Here&rsquo;s how they work: if someone posts something off-topic or unproductive then they are quickly down-voted by the community, and their content is less likely to be seen.  Likewise, if someone posts something helpful or insightful, they are quickly up-voted by the community and their content is more likely to be seen.  The net result of this is that (with enough users) you are more likely to see good content when you visit the forum, and hopefully contribute some yourself.</p>
+
+<p>Who might want a new forum like this?  You never quite know (and I&rsquo;m eager to find out) but my hunch is this might be useful for:</p>
+
+<ul>
+<li><p><strong>Businesses</strong>: most companies would like to have user discussion forums because they are a great way to reduce customer support costs. Instead of having customer support reps answering the same questions over and over, users can answer each other&rsquo;s questions &ndash; and those answers become public for all to find later (Ribbot lets you search old content easily).  Traditionally, most businesses have been skittish about user discussion forums because they become a public place for a vocal minority of users to rant (see Google Groups). But I believe this new style of forum with the features mentioned above largely solves this quality problem, and businesses will be more likely to adopt it (or their users will for them).</p></li>
+<li><p><strong>Question &amp; Answer sites</strong>: these have become very popular lately (see StackExchange and Quora) but there still isn&rsquo;t an easy way for people to start their own QA site on any topic. StackExchange originally started with this vision but they decided to cut off the long tail of smaller topic sites (a mistake in my opinion). Ribbot would allow any special interest group or company to create their own.</p></li>
+<li><p><strong>Link aggregation sites</strong>: many community sites have grown up around sharing relevant or interesting links on a particular topic (Hacker News is an example of this where the majority of posts are links to external sites with some discussion around them happening in the comments). These are more oriented around timely &ldquo;latest news and events&rdquo; links.</p></li>
+<li><p><strong>Special interest groups</strong>: these could be around health (people with some particular  condition), sports, hobbies, tech stuff (open source projects), classes &amp; learning, etc.  Basically, anything people are using Google Groups for now could work better on Ribbot.</p></li>
+</ul>
+
+
+<p>Ribbot is a good fit for the use cases above because it&rsquo;s customizable.  You can change the terminology of the site to reflect questions and answers, link submissions, posts and comments, or anything you&rsquo;d like.  You can also allow only certain types of submission (links, posts, questions, etc).  Three other features allow customization (some of these are still under development):</p>
+
+<ul>
+<li><p><strong>Themes</strong>: Ribbot supports custom themes (much like Tumblr) which I hope will eventually create many diverse and beautiful sites.  Any designer can share (and sell) a custom theme on Ribbot.</p></li>
+<li><p><strong>Custom domains</strong>: By default Ribbot gives you a subdomain site (again, like Tumblr). But you will soon be able to host the forum on any custom domain of your choosing.</p></li>
+<li><p><strong>Monetization options</strong>: Ribbot is completely free if you are ok with some ads on the site. But I wanted a way for forum owners and moderators to monetize their sites and be compensated for their work. So with the paid option (see pricing <a href="http://ribbot.com/pricing">here</a>) you are able to run your own ads and turn a profit. My hope is that a number of forums will generate sufficient traction so that their owners can eventually make it a full time gig. For others, I imagine it could make a nice side income or hobby project.  Many businesses I suspect will keep the paid option and run it entirely without ads &ndash; the customer support savings would make it more than worth it.</p></li>
+</ul>
+
+
+<p>In short, I think Ribbot will help people build better discussion forums online across a variety of topics.</p>
+
+<h3>Final notes:</h3>
+
+<p>Ribbot is still in an early beta.</p>
+
+<p>To give Ribbot a try you can <strong><a href="http://support.ribbot.com">visit the Ribbot support forum</a></strong>. This is both the support forum for the site and a demo of the product itself.</p>
+
+<p>As always, <strong>please send me your feedback and first impressions in the support forum or in the comments below</strong>. I always love to hear feedback from people on how/if it can be useful to them (or why it&rsquo;s not).</p>
+
+<p>And finally, you can create your own Ribbot forum <a href="http://ribbot.com">right here on the homepage</a> if you want to try it out.</p>
+
+<p>Until next time, keep breaking free!
+Brian Armstrong</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/10/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/8/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

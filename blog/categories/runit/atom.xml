@@ -4,7 +4,7 @@
   <title><![CDATA[Category: runit | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/runit/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T15:32:24-04:00</updated>
+  <updated>2014-04-14T15:50:34-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -56,7 +56,7 @@ $ ./demo.sh
 <h1>Date: 10/20/2013</h1>
 
 <p>FROM paulczar/jre7
-MAINTAINER Paul Czarkowski &ldquo;<a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#58;&#112;&#x61;&#x75;&#108;&#64;&#112;&#x61;&#x75;&#x6c;&#99;&#x7a;&#46;&#x6e;&#x65;&#116;">&#x70;&#x61;&#117;&#108;&#x40;&#x70;&#x61;&#117;&#x6c;&#99;&#x7a;&#x2e;&#x6e;&#101;&#x74;</a>&rdquo;</p>
+MAINTAINER Paul Czarkowski &ldquo;<a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#58;&#112;&#97;&#x75;&#x6c;&#64;&#x70;&#97;&#117;&#108;&#x63;&#x7a;&#46;&#110;&#x65;&#116;">&#x70;&#97;&#117;&#x6c;&#64;&#112;&#97;&#x75;&#x6c;&#x63;&#122;&#x2e;&#x6e;&#x65;&#x74;</a>&rdquo;</p>
 
 <p>RUN apt-get update</p>
 

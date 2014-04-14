@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>05 - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="05 Apr 9th, 2014 5.3 Create a transient environment Learning Objectives
+Transient Environments
+Run the Transient Environment job
+View the Transient &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/devopsincloud/05/05.03.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">05</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-09T11:42:00-04:00" pubdate data-updated="true">Apr 9<span>th</span>, 2014</time></p>
+  </header>
+  
+  <ul>
+<li>5.3 Create a transient environment
+
+<ul>
+<li>Learning Objectives</li>
+<li>Transient Environments</li>
+<li>Run the Transient Environment job</li>
+<li>View the Transient Environment code and infrastructure</li>
+</ul>
+</li>
+</ul>
+
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+
+<h1>5.3 Create a transient environment</h1>
+
+<h2>Learning Objectives</h2>
+
+<p>By the end of this lesson you will be able to:</p>
+
+<ul>
+<li>Implement the capability to have transient environments.</li>
+</ul>
+
+
+<h2>Transient Environments</h2>
+
+<p><img src="https://s3.amazonaws.com/www.devopscloud.com/ppt/Slide25.jpg" alt="Slide1" /></p>
+
+<h2>Run the Transient Environment job</h2>
+
+<ol>
+<li>Go to <a href="http://IPADDRESS:8080/jenkins/job/Transient/.">http://IPADDRESS:8080/jenkins/job/Transient/.</a> <strong>IPADDRESS</strong> is the IP Address assigned to you when you launched the <a href="https://console.aws.amazon.com/cloudformation/">Jenkins stack</a>.</li>
+<li>Select the <strong>Configure</strong> link for the Jenkins job. View the job configuration.</li>
+</ol>
+
+
+<h2>View the Transient Environment code and infrastructure</h2>
+
+<ol>
+<li><p>From the AWSCLI instance, open up the <strong>devopsinthecloud/scripts/sqs_receive_message.rb</strong> file. You can also find the file by visiting <a href="https://github.com/stelligent/devopsinthecloud/blob/master/scripts/sqs_receive_message.rb">https://github.com/stelligent/devopsinthecloud/blob/master/scripts/sqs_receive_message.rb</a></p>
+
+<p>&#8220;`
+$ cd devopsinthecloud/scripts</p>
+
+<p>&#8220;`</p>
+
+<p>&#8220;`
+$ sudo vim sqs_receive_message.rb</p>
+
+<p>&#8220;`</p></li>
+<li><p>This script is configured in Jenkins to run every night.</p></li>
+</ol>
+
+
+  
+    <footer>
+      <p class="meta">
+        
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-09T11:42:00-04:00" pubdate data-updated="true">Apr 9<span>th</span>, 2014</time>
+        
+      </p>
+      
+        <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/devopsincloud/05/05.03.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/devopsincloud/05/05.03.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      
+    </footer>
+  
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

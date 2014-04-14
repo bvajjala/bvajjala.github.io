@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Continuous Delivery with Docker and Jenkins - part II - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="A few weeks ago I started talking about how we use Docker and Jenkins for Continuous Delivery in our staging environment. Today, we are open-sourcing &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-ii">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Continuous Delivery With Docker and Jenkins - Part II</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-21T14:41:15-05:00" pubdate data-updated="true">Feb 21<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>A few weeks ago I started talking about how we use <a href="2014-02-21-continuous-delivery-with-docker-and-jenkins-part-i">Docker and Jenkins for Continuous Delivery</a> in our staging environment. Today, we are open-sourcing a simple bash utility for managing inter-container dependencies, <a href="https://github.com/bv2012/dockerize">Dockerize</a>.</p>
+
+<p>Before I go into specifics, I want to describe our workflow with Jenkins and Docker from a high-level perspective.</p>
+
+<ul>
+<li><p>let’s take the <a href="https://github.com/bv2012/hi_sinatra-docker">hi_sinatra</a> Ruby example app. It has its own GitHub repository and we have a simple, non-git Jenkins job for it.</p></li>
+<li><p>every commit pushed to GitHub, regardless of the branch, triggers a Jenkins build (via Amazon SQS). All Jenkins builds will result in a Docker image. A successful build will produce a running Docker container. A failed build will produce a stopped container which can be investigated by either looking at the logs or starting it with a tty attached.</p></li>
+<li><p>if Docker doesn’t have a <strong>hi_sinatra:master</strong> pre-built image, a new one will be created from the master branch. This master image gets re-built every time there’s a commit against the master branch. Having a master image speeds up image builds considerably (eg. installing Ruby gems, installing node modules, C extensions etc). The resulting image won’t use any caching and all intermediary images will be removed. Just to clarify, this image will not be shipped into production.</p></li>
+<li><p>if a Docker image with that app’s name, branch name and git commit sha doesn’t exist, we want Docker to build it for us. At this point, we’re interested to have the eg. <strong>hi_sinatra:second-blog-post.a8e8e83 </strong>Docker image available.</p></li>
+<li><p>before a new container can be started from the image that we’ve just built, all services that the app requires must be running in their own independent containers. Our <strong>hi_sinatra</strong> example app requires a running Redis server.</p></li>
+<li><p>when all dependent services are running in their own containers, we start a container from the newly built app image (in our example, <strong>hi_sinatra:second-blog-post.a8e8e83</strong>). All dependent containers will have their IPs exposed via env options, eg. docker run -e REDIS_HOST=172.17.0.8 -d &hellip;</p></li>
+<li><p>before our <strong>hi_sinatra app</strong> starts in its new Docker container, all tests must pass both unit, integration and acceptance. Full stack tests (also known as acceptance tests) use sandbox services, but they are setup via the same Docker containers that will be made available in production. Code portability is Docker’s strongest point, we’re making full use of it.</p></li>
+<li><p>if everything worked as expected, including interactions with all external services, this Docker image will be tagged as production. The service responsible for bringing up new Docker containers from the latest production images will take it from here.</p></li>
+</ul>
+
+
+<p>Docker containers running on the CI are available only on our office network, anyone inside it can connect to them. All that it takes to get an instance for a specific app (and all its dependencies) is to push a new branch to GitHub.</p>
+
+<h2>Dockerize</h2>
+
+<p>Dockerize acts as a Docker proxy, meaning that all commands which it does not understand get forwarded to the docker binary. Dockerize has just 2 dependencies: bash &amp; git.</p>
+
+<p>The previously described workflow as a single shell command:</p>
+
+<pre><code>dockerize boot cambridge-healthcare/hi_sinatra-docker hi_sinatra
+</code></pre>
+
+<p>The hi_sinatra app comes with 2 files that Dockerize picks up on:</p>
+
+<ul>
+<li><p>dockerize.containers which defines dependencies on other containers (another service such as Redis server or another app)</p></li>
+<li><p>dockerize.envs which will forward specific environment variables from the Docker host into the container</p></li>
+</ul>
+
+
+<p>The Vagrantfile that comes with hi_sinatra will get you up and running with Docker, Jenkins and now Dockerize. The quickest way to try the whole setup (<a href="2014-02-21-continuous-delivery-with-docker-and-jenkins-part-i">provided you have Vagrant installed</a>):</p>
+
+<pre><code>git clone https://github.com/cambridge-healthcare/hi_sinatra-docker.git
+cd hi_sinatra-docker
+vagrant up
+</code></pre>
+
+<p>By the time the VM gets provisioned, there will be a running version of <strong>hi_sinatra</strong> inside a Docker container using a Redis server running in a separate container for tracking requests. Use the IP address and port displayed at the end of the Vagrant run to access the hi_sinatra app in your browser.</p>
+
+<h2>Jenkins + Dockerize</h2>
+
+<p>Dockerize makes Jenkins integration with Docker incredibly simple. In the Jenkins instance running on the Vagrant VM that we have just built, add the following job through the Jenkins web interface:</p>
+
+<p>| Job name | hi_sinatra  |
+| Job type | Build a free-style software project |
+| Build| Execute shell   |</p>
+
+<p>This is the shell command which you will need to use for the build execution:</p>
+
+<pre><code>/bin/bash -c "source $HOME/.profile &amp;&amp; dockerize boot cambridge-healthcare/hi_sinatra-docker hi_sinatra"
+</code></pre>
+
+<p>Every successful Jenkins build will now result in a running Docker container.</p>
+
+<p>CI setups are always opinionated. We have a few more additions such as Campfire notifications, Amazon SQS integration with GitHub and a few others which are specific to our infrastructure. The above Jenkins integration example with Docker is meant to be a most conservative starting point for your own setup.</p>
+
+<p>Until next time!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-21T14:41:15-05:00" pubdate data-updated="true">Feb 21<span>st</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/continuous-delivery/'>Continuous Delivery</a>, <a class='category' href='/blog/categories/docker/'>Docker</a>, <a class='category' href='/blog/categories/jenkins/'>Jenkins</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-ii/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-ii/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-i/" title="Previous Post: Continuous Delivery with Docker and Jenkins - part I">&laquo; Continuous Delivery with Docker and Jenkins - part I</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/" title="Next Post: Jenkins Job Builder and How to Extned it">Jenkins Job Builder and How to Extned it &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

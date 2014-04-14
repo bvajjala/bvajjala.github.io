@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Puppet | Balaji Vajjala's Blog]]></title>
+  <title><![CDATA[Category: puppet | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/puppet/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T15:32:24-04:00</updated>
+  <updated>2014-04-14T15:50:34-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,271 +14,118 @@
 
   
   <entry>
-    <title type="html"><![CDATA[DevOps Tools and Utilities]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/02/01/devops-tools-and-utilities/"/>
-    <updated>2014-02-01T13:13:05-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/02/01/devops-tools-and-utilities</id>
-    <content type="html"><![CDATA[<h1>DevOps Tool chain</h1>
-
-<p>A list of utilities to support configuration management tools. This was produced by the panelists of the Configuration Mgmt Workflow panel at LOPSA-EAST in 2013. One of the attendees also took notes: <a href="http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel">http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel</a></p>
-
-<h2>Individual level: IDE / syntax highlighting etc</h2>
-
-<h2>Puppet:</h2>
+    <title type="html"><![CDATA[Vagrant+Puppet+FPM=Amazeballs]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/"/>
+    <updated>2013-04-07T18:23:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs</id>
+    <content type="html"><![CDATA[<p>Lately I&rsquo;ve been doing a lot of prototyping with <a href="http://www.vagrantup.com/">Vagrant</a>, specifically for a couple of distinct activities:&ndash;</p>
 
 <ul>
-<li>vim &ndash; <a href="https://github.com/rodjek/vim-puppet">https://github.com/rodjek/vim-puppet</a></li>
-<li>TextMate &amp; sublime text 2 &ndash; <a href="https://github.com/masterzen/puppet-textmate-bundle">https://github.com/masterzen/puppet-textmate-bundle</a></li>
-<li>gepetto (<a href="http://cloudsmith.github.io/geppetto/">http://cloudsmith.github.io/geppetto/</a>),</li>
-<li>emacs</li>
+<li>building puppet modules using <a href="https://github.com/elasticdog/puppet-sandbox">the excellent puppet sandbox</a> project</li>
+<li>and building RPM packages with <a href="https://github.com/jordansissel/fpm">FPM</a>.</li>
 </ul>
 
 
-<h2>Chef:</h2>
+<p>I realized I was spending a bunch of time flipping back and forth between Vagrant environments and I had no quick way to utilize RPMs built with FPM inside my puppet modules.</p>
+
+<!--more-->
+
+
+<p>An idea was born.   I forked off the <a href="https://github.com/paulczar/puppet-sandbox">puppet sandbox</a> project and added a Yum repo module <code>repository</code> to the standalone puppet provisioner that vagrant uses when it first brings up a box.   It adds a Yum repo on the puppet server called <code>sandbox</code> and adds a repo file to the client boxes pointing to the repo.   Now I can simply push an RPM to <code>packages/rpm</code> and run <code>vagrant provision puppet</code> which reruns puppet and rebuilds the yum repo.</p>
+
+<p>Given that I often flip back and forth between Ubuntu and CentOS boxes I also created <code>Vagrantfile.centos63</code> and <code>Vagrantfile.precise64</code> so I can swiftly destroy the existing environment and bring up another of a different flavour by simply symlinking <code>Vagrantfile</code> to the appropriate file.</p>
+
+<p>This worked out pretty well for a while until I realized I was still jumping back and forth between vagrant environments and I realized I had another improvement to make.   So I then went on to create a definition in the puppet sandbox <code>Vagrantfile</code> file for a <code>FPM server</code> and a new module in the provisioner to install FPM on it.   Given that this module simply adds a few packages this module works for both CentOS and Ubuntu.</p>
+
+<p>I also created a couple of sample scripts to download source and build RPMs for both Redis and Elasticsearch which get pushed via the provisioner to <code>/tmp/redis-rpm.sh</code> and <code>/tmp/elasticsearch-rpm.sh</code></p>
+
+<p>Now ( For CentOS boxes at least ) I can very quickly iterate on puppet modules and create RPM packages on the fly and have them instantly available.   The process is very simple and looks a little something like this :</p>
+
+<p><code>
+$ git clone https://github.com/paulczar/puppet-sandbox
+$ cd puppet-sandbox
+$ vagrant up puppet fpm client1
+$ vagrant ssh fpm
+[vagrant@fpm ~]$ sudo /tmp/redis-rpm.sh
+  ...
+  ... A bunch of scrolling text while files are downloaded and rpm is built
+  ...
+[vagrant@fpm ~]$ exit
+$ vagrant provision puppet
+$ vagrant ssh client1
+[vagrant@client1 ~]$ sudo yum clean all
+[vagrant@client1 ~]$ sudo yum -y install redis
+[vagrant@client1 ~]$ sudo service redis-server start
+[vagrant@client1 ~]$ redis-cli ping
+PONG
+[vagrant@client1 ~]$
+</code></p>
+
+<p>If I&rsquo;m building a puppet module that needs redis I can now add the following to it&rsquo;s init.pp ( or more properly create a module for redis and request it from the module I&rsquo;m building )</p>
+
+<p>```
+  package { &lsquo;redis&rsquo;:</p>
+
+<pre><code>ensure =&gt; 'present';
+</code></pre>
+
+<p>  }
+```</p>
+
+<p>Of course Debian/Ubuntu doesn&rsquo;t use Yum/RPM for package management.    I&rsquo;d love to accept a pull request from somebody who wants to extend it to also support a local APT repository.   I left breadcrumbs in the <code>repository</code> module for some appropriate classes to be spliced in&hellip;</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How to run apt-get update before Puppet]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/02/05/how-to-run-apt-get-update-before-puppet/"/>
+    <updated>2013-02-05T14:56:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/02/05/how-to-run-apt-get-update-before-puppet</id>
+    <content type="html"><![CDATA[<p>One of the problems I keep running into with Puppet is that the packages I&rsquo;m trying to install are very new and I need to run <code>apt-get update</code> to update the repositories. Because Puppet does not run scripts it gets rather annoying to get the update to run before you install any packages.</p>
+
+<p>I found a lot of solutions around the web but this one seems to work best for me.</p>
+
+<script src="https://gist.github.com/cbetta/4714469.js"></script>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Some notes on Puppet]]></title>
+    <link href="http://bvajjala.github.io/blog/2012/11/12/some-notes-on-puppet/"/>
+    <updated>2012-11-12T16:40:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2012/11/12/some-notes-on-puppet</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve been playing with <a href="http://puppetlabs.com/">Puppet</a> recently in order to finally teach myself a bit about server management. I decided for Puppet because&hellip; well&hellip; I didn&rsquo;t have time to play with <a href="http://www.opscode.com/chef/">Chef</a> yet.</p>
+
+<p>I can&rsquo;t show any of my code because it contains some stuff I&rsquo;d rather not open up, but here are some of my global notes on Puppet that I wanted to share.</p>
+
+<h2>The good</h2>
 
 <ul>
-<li>vim,</li>
-<li>TextMate,</li>
-<li>Sublime Text: <a href="http://www.youtube.com/watch?v=4VtDj_ar1Xg">http://www.youtube.com/watch?v=4VtDj_ar1Xg</a> (video), <a href="https://github.com/cabeca/SublimeChef">https://github.com/cabeca/SublimeChef</a> (GitHub)</li>
-<li>Emacs: chef-mode <a href="https://github.com/mpasternacki/chef-mode">https://github.com/mpasternacki/chef-mode</a></li>
+<li><strong>It did the job.</strong> I now have a few scripts that I can use to quickly setup a server for Rails, including NGINX, PostgreSQL, Unicorn, Monit, and much more.</li>
+<li><strong>Quick deployment.</strong> I can now deploy a new Rails app to a server within minutes!</li>
+<li><strong><a href="http://docs.puppetlabs.com/learning/">The Learning Puppet series</a></strong> is a good starting point and explains most of the basics</li>
+<li><strong>Low tech.</strong> Running a puppet script really doesn&rsquo;t involve much more than running: <code>puppet apply path/to/puppet/file.pp</code></li>
 </ul>
 
 
-<h3>CFEngine:</h3>
+<h2>The bad</h2>
 
 <ul>
-<li>vim &ndash; <a href="https://github.com/neilhwatson/vim_cf3">https://github.com/neilhwatson/vim_cf3</a></li>
-<li>emacs &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/cfengine.el">https://github.com/cfengine/core/blob/master/contrib/cfengine.el</a></li>
-<li>kate &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml">https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml</a></li>
-<li>eclipse &ndash; <a href="https://cfengine.com/eclipse-cfengine-editor">https://cfengine.com/eclipse-cfengine-editor</a></li>
-<li>Sublime Text &ndash; <a href="https://github.com/kebori/sublime-cfengine3">https://github.com/kebori/sublime-cfengine3</a></li>
+<li><strong>No single server deployment solution.</strong> There doesn&rsquo;t seem to be a best practice on how to use puppet with just one server. I know that the serious people will have to manage many many servers, but I think that they could make Puppet more accessible to newcomers by having a good solid solution for their own server. Many of us learn new things by trying them out for our own hobby projects before using them in big-business contexts. I have resorted to using Capistrano for deployment, but it just feels wrong somehow.</li>
+<li><strong>Not many great modules.</strong> Puppet has a modules system which allows anyone to package their solutions and share them with the community. Sadly most of the modules are old, unmaintained, and often broken. Additionally the modules often don&rsquo;t solve the problems in a way that I&rsquo;d like them to, forcing me to write my own.</li>
+<li><strong>Convoluted language.</strong> Puppet requires Ruby to run, but the DSL is not Ruby, nor is it Javascript, or JSON,or YAML, or anything else that so many developers already know. The architecture for defining classes, types, and modules is convoluted, backwards, and feels very awkward. I think one of the reasons why there aren&rsquo;t many well written modules is very much related to this.</li>
+<li><strong>Compiling from source.</strong> One of the biggest missing features seems to be some good architecture for installing anything that isn&rsquo;t packaged up. I often want to run a different Ruby, Nginx, Apache, PHP version than is in the package repositories. I know this is a hard problem, but again I wish there was some kind of best practice.</li>
+<li><strong>Ordering from hell.</strong> Puppet does not run your actions in order as specified in your <code>.pp</code> file. Instead you can tell it if something has a requirement. In my experience almost everything has a requirement and specifying the orders is becoming a nightmare and a real frustration.</li>
+<li><strong>Missing features.</strong> There are a few features that are still missing. One of the most important ones (in my eyes) is the ability to generate a folder recursively (e.g. <code>mkdir -p path/with/multiple/folders</code>). Instead you are now forced to create every layer as a new statement.</li>
 </ul>
 
 
-<h2>Local Testing</h2>
+<h2>Conclusion</h2>
 
-<ul>
-<li>Vagrant &ndash;</li>
-<li>VMware</li>
-<li>OpenStack</li>
-<li>Cloud?</li>
-<li>All of the above?</li>
-</ul>
+<p>Puppet will do for now, but I wish it was a bit more opinionated in how it thought it should be used. The language is not pretty and very verbose, and its lack of best practices for single server deployment is a real omission.</p>
 
-
-<h2>Revision Control : Which tool? Which workflow?</h2>
-
-<ul>
-<li>Github Flow &ndash; <a href="http://scottchacon.com/2011/08/31/github-flow.html">http://scottchacon.com/2011/08/31/github-flow.html</a></li>
-<li>git-flow &ndash; <a href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a></li>
-<li>Git Dynamic Environments &ndash;</li>
-<li><ul>
-<li><a href="https://puppetlabs.com/blog/git-workflow-and-puppet-environments/">https://puppetlabs.com/blog/git-workflow-and-puppet-environments/</a> ,</li>
-</ul>
-</li>
-<li><ul>
-<li><a href="https://github.com/adrienthebo/puppet-git-hooks">https://github.com/adrienthebo/puppet-git-hooks</a></li>
-</ul>
-</li>
-</ul>
-
-
-<h2>Commit hooks</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>erb,</li>
-<li>pp parser,</li>
-<li>yaml, <a href="https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit">https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>fc pre-commit: <a href="https://github.com/gregf/chef-git-hooks">https://github.com/gregf/chef-git-hooks</a></li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>Subversion: <a href="http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html">http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html</a></li>
-<li>Git: <a href="https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit">https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit</a></li>
-</ul>
-
-
-<h2>Style / Lint tools</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>puppet-lint &ndash; <a href="http://puppet-lint.com/,">http://puppet-lint.com/,</a></li>
-<li>puppet-cleaner &ndash; <a href="https://github.com/santana/puppet-cleaner,">https://github.com/santana/puppet-cleaner,</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>tailor,</li>
-<li>foodcritic</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>cf-promises (with GCC-style warnings)</li>
-</ul>
-
-
-<h2>Testing manifests / recipes</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>rspec-puppet,</li>
-<li>?cucumber-puppet (discontiued)?</li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>chefspec,</li>
-<li>minitest-handler,</li>
-<li>rspec-chef,</li>
-<li>cucumber-chef,</li>
-<li>test-kitchen</li>
-</ul>
-
-
-<h2>Marshalling / Assembling Code &amp; Dependencies</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>librarian-puppet &ndash; <a href="https://github.com/rodjek/librarian-puppet">https://github.com/rodjek/librarian-puppet</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>berkshelf,</li>
-<li>librarian</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>cf-sketch &ndash; <a href="https://github.com/cfengine/design-center/wiki/Design-Center-Tools">https://github.com/cfengine/design-center/wiki/Design-Center-Tools</a></li>
-</ul>
-
-
-<h2>Continuous Integration</h2>
-
-<ul>
-<li>Jenkins CI</li>
-<li>Travis CI</li>
-<li>Atlassian Bamboo?</li>
-<li>TeamCity?</li>
-</ul>
-
-
-<h2>Orchestration</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>MCollective</li>
-</ul>
-
-
-<h3>Chef :</h3>
-
-<ul>
-<li>has “knife ssh” and Pushy support coming for push jobs</li>
-</ul>
-
-
-<h2>Canary testing &amp; Prod vs QA vs test environments (not prod vs QA app code)</h2>
-
-<h3>Puppet</h3>
-
-<ul>
-<li>serverspec <a href="http://serverspec.org/">http://serverspec.org/</a></li>
-<li>rspec-system <a href="https://github.com/puppetlabs/rspec-system">https://github.com/puppetlabs/rspec-system</a></li>
-<li>nagios checks/ plugins</li>
-</ul>
-
-
-<h3>Chef</h3>
-
-<ul>
-<li>has knife-flip from Etsy, flips nodes into a test environment</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>Remote context class matching using remoteclassesmatching (Enterprise)</li>
-</ul>
-
-
-<h2>Provisioning VM&rsquo;s in the cloud?</h2>
-
-<h3>Chef:</h3>
-
-<ul>
-<li>knife ec2 server create&hellip;</li>
-<li>spiceweasel somefile.yml</li>
-<li>knife openstack&hellip;</li>
-<li>knife server create&hellip;</li>
-</ul>
-
-
-<p>Clouds include Azure, Openstack, Rackspace, etc. EC2 OpsWorks (although some limitations since it’s an older version)</p>
-
-<h2>Puppet:</h2>
-
-<ul>
-<li>puppet node_aws create / puppet node_vmware create</li>
-<li>Puppet RAL for AWS, OpenStack, CloudStack:
-  ec2_instance { “instance_name”: type => t1.large, az => ‘USWest’, ensure => present, …. }</li>
-<li>Razor (bare metal)</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li><a href="https://github.com/cfengine/design-center/tree/master/sketches/cloud">https://github.com/cfengine/design-center/tree/master/sketches/cloud</a></li>
-</ul>
-
-
-<h3>Chef</h3>
-
-<ul>
-<li>Crowbar has Chef server integrated, although I don’t know that much about it.</li>
-<li>Joyent also has a Chef “dataset” that they support.</li>
-</ul>
-
-
-<h2>Team Workflow</h2>
-
-<h3>Puppet: &ndash;?</h3>
-
-<h3>Chef:</h3>
-
-<ul>
-<li>knife-spork (has handlers to notify people)</li>
-</ul>
-
+<p>Does anyone know how Chef performs in these regards?</p>
 ]]></content>
   </entry>
   

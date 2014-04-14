@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T15:32:24-04:00</updated>
+  <updated>2014-04-14T15:50:34-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -12,6 +12,87 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[I Can Haz Init Script]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/02/03/i-can-haz-init-script/"/>
+    <updated>2014-02-03T14:21:03-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/02/03/i-can-haz-init-script</id>
+    <content type="html"><![CDATA[<h2><a href="/blog/2013/06/19/I-can-haz-init-script.html">I Can Haz Init Script</a></h2>
+
+<p>Something went awfully wrong, and a rogue process is eating up all of the resources on one of your servers. You have no other choice but to restart it. No big deal, really; this is the age of disposable infrastructure after all. Except when it comes back up, everything starts going awry. Half the stuff supposed to be running is down and it&rsquo;s screwing with the rest of your setup.</p>
+
+<p><img src="/images/posts/y-u-no-guy.png" alt="INIT SCRIPTS, Y U NO LIKE?" /></p>
+
+<p>You don&rsquo;t get to think about them very often, but init scripts are a key piece of a sound, scalable strategy for your infrastructure. It&rsquo;s a <a href="">mandatory best practice</a>. Period. And there are quite a few things in the way of getting them to work properly at scale in production environments. It&rsquo;s a tough world out there.</p>
+
+<h3>What we&rsquo;re dealing with…</h3>
+
+<h4>Packages</h4>
+
+<p>Often enough, you&rsquo;re gonna end up installing a service using the package manager of your distro: <code>yum</code>, <code>apt-get</code>, you name it. These packages usually come with an init script that should get you started.</p>
+
+<p>Sadly, as your architecture grows in complexity, you&rsquo;ll probably run into some walls. Wanna have multiple memcache buckets, or several instances of redis running on the same box? You&rsquo;re out of luck buddy. Time to hack your way
+through:</p>
+
+<ul>
+<li>Redefine your start logic,</li>
+<li>Load one or multiple config files from <code>/etc/defaults</code> or <code>/etc/sysconfig</code>,</li>
+<li>Deal with the PIDs, log and lock files,</li>
+<li>Implement conditional logic to start/stop/restart one or more of the services,</li>
+<li>Realize you&rsquo;ve messed something up,</li>
+<li>Same player shoot again.</li>
+</ul>
+
+
+<p>Honestly: PITA.</p>
+
+<h4>Built from source</h4>
+
+<p>First things first: <strong>you shouldn&rsquo;t be building from source</strong> (unless you really, really need to).</p>
+
+<p>Now if you do, you&rsquo;ll have to be thorough: there may be samples of init scripts in there, but you&rsquo;ll have to dig them out. <code>/contrib</code>, <code>/addons</code>, …it&rsquo;s never in the same place.</p>
+
+<p>And that makes things &ldquo;fun&rdquo; when you&rsquo;re <a href="http://devo.ps/blog/2013/03/06/troubleshooting-5minutes-on-a-yet-unknown-box.html">trying to unscrew things on a box</a>:</p>
+
+<ul>
+<li>You figured out that MySQL is running from <code>/home/user/src/mysql</code>,</li>
+<li>You check if there&rsquo;s an init script: no luck this time…</li>
+<li>You try to understand what exactly launched <code>mysqld_safe</code>,</li>
+<li>You spend a while digging into the bash history smiling at typos,</li>
+<li>You stumble on a <code>run.sh</code> script (uncommented, of course) in the home directory. Funny enough, it seems to be starting everything from MySQL, NGINX and php-fpm to the coffee maker.</li>
+<li>You make a mental note to try and track down the &ldquo;genius&rdquo; who did that mess of a job, and get busy with converting everything to a proper init script.</li>
+</ul>
+
+
+<p>Great.</p>
+
+<h3>Why existing solutions suck</h3>
+
+<p>Well, based on what we&rsquo;ve just seen, you really only have two options:</p>
+
+<ol>
+<li> <strong>DIY</strong>; but if you&rsquo;re good at what you do, you&rsquo;re probably also lazy. You may do it the first couple times, but that&rsquo;s not gonna scale, especially when dealing with the various flavors of init daemons (upstart, systemd…),</li>
+<li> <strong>Use that thing called &ldquo;the Internet&rdquo;</strong>; you read through forum pages, issue queues, gists and if you&rsquo;re lucky you&rsquo;ll find a perfect one (or more likely 10 sucky ones). Kudos to all those of whom shared their work, but you&rsquo;ll probably be back to option 1.</li>
+</ol>
+
+
+<h3>We can do better than this</h3>
+
+<p>You&rsquo;ll find a gazillion websites for pictures of kittens, but as far as I know, there is no authoritative source for init scripts. That&rsquo;s just not right: we have to fix it. A few things I&rsquo;m aiming for:</p>
+
+<ul>
+<li><strong>Scalable</strong>; allow for multiple instances of a service to be started at once from different config files (see the memcache/redis example),</li>
+<li><strong>Secure</strong>; ensure <code>configtest</code> is run before a restart/reload (because, you know, a faulty config file preventing the service to restart is kind of a bummer),</li>
+<li><strong>Smart</strong>; ensuring for example that the cache is aggressively flushed before restarting your database (so that you don&rsquo;t end-up waiting 50 min for the DB to cleanly shutdown).</li>
+</ul>
+
+
+<p><a href="https://github.com/devo-ps/init-scripts">I&rsquo;ve just created a repo</a> where I&rsquo;ll be dumping various init scripts that will hopefully be helpful to others. I&rsquo;d love to get suggestions or help.</p>
+
+<p>And by the way, things are not much better with applications, though we&rsquo;re trying our best to improve things there too with things like <a href="https://github.com/Unitech/pm2">pm2</a> (fresh and shinny, more about it in a later post).</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Troubleshooting 5minutes on a yet Unknown Box]]></title>

@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Creating a Secure Deployment Pipeline in Amazon Web Services - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Many organizations require a secure infrastructure. I’ve yet to meet a customer that says that security isn’t a concern. But, the decision on “how &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2014/03/23/creating-a-secure-deployment-pipeline-in-amazon-web-services">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Creating a Secure Deployment Pipeline in Amazon Web Services</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-23T11:24:27-04:00" pubdate data-updated="true">Mar 23<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Many organizations require a secure infrastructure. I’ve yet to meet a customer that says that security isn’t a concern. But, the decision on “how secure?” should be closely associated with a risk analysis for your organization.</p>
+
+<p>Since Amazon Web Services (AWS) is often referred to as a “public cloud”, people sometimes infer that “public” must mean it’s “out in the public” for all to see. I’ve always seen “public/private clouds” as an
+unfortunate use of terms. In this context, public means more like
+“Public Utility”. People often interpret “private clouds” to be
+inherently more secure. Assuming that “public cloud” = less secure and
+“private cloud” = more secure couldn’t be further from the truth. Like
+most things, it’s all about how you architect your infrastructure. While
+you can define your infrastructure to have open access, AWS provides
+many tools to create a truly secure infrastructure while eliminating
+access to all but only authorized users.</p>
+
+<p>I’ve created an initial list of many of the practices we use. We don’t
+employ all these practices in all situations, as it often depends on our
+customers’ particular security requirements. But, if someone asked me
+“How do I create a secure AWS infrastructure using a Deployment
+Pipeline?”, I’d offer some of these practices in the solution. I’ll be
+expanding these over the next few weeks, but I want to start with some
+of our practices.</p>
+
+<p><strong>AWS Security</strong></p>
+
+<p>* After initial AWS account creation and login, configure
+<a href="https://aws.amazon.com/iam/" title="AWS IAM">IAM</a> so that there’s no need to
+use the AWS root account\
+ * Apply least privilege to all IAM accounts. Be very careful about who
+gets Administrator access.\
+ * Enable all IAM password rules\
+ * Enable MFA for all users\
+ * Secure all data at rest\
+ * Secure all data in transit\
+ * Put all AWS resources in a <a href="https://aws.amazon.com/vpc/" title="Virtual Private Cloud">Virtual Private
+Cloud</a> (VPC).\
+ * No EC2 Key Pairs should be shared with others. Same goes for Access
+Keys.\
+ * Only open required ports to the Internet. For example, with the
+exception of, say, port 80, no security groups should have a CIDR Source
+of 0.0.0.0/0). The bastion host might have access to port 22 (SSH), but
+you should enable
+<a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing" title="CIDR">CIDR</a>
+to limit access to specific subnets. Using a VPC is a part of a solution
+to eliminate Internet access. No canonical environments should have
+SSH/RDP access.\
+ * Use IAM to limit access to specific AWS resources and/or
+remove/limit AWS console access\
+ * Apply a bastion host configuration to reduce your attack profile\
+ * Use <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html" title="IAM Roles">IAM
+Roles</a>
+so that there’s no need to configure Access Keys on the instances\
+ * Use resource-level permissions in EC2 and RDS\
+ * Use SSE to secure objects in S3 buckets\
+ * Share initial IAM credentials with others through a secure mechanism
+(e.g. <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard" title="AES">AES-256
+encryption</a>)\
+ * Use and monitor AWS
+<a href="https://aws.amazon.com/cloudtrail/" title="AWS CloudTrail">CloudTrail</a> logs</p>
+
+<p><strong>Deployment Pipeline</strong></p>
+
+<p>A deployment pipeline is a staged process in which the complete software
+system is built and tested with every change. Team members receive
+feedback as it completes each stage. With most customers, we usually
+construct between 4-7 deployment pipeline stages and the pipeline only
+goes to the next stage if the previous stages were successful. If a
+stage fails, the whole pipeline instance fails. The first stage (often
+referred to as the “Commit Stage”) will usually take no more than 10
+minutes to complete. Other stages may take longer than this. Most stages
+require no human intervention as the software system goes through more
+extensive testing on its way to production. With a deployment pipeline,
+software systems can be released at any time the business chooses to do
+so. Here are some of the security-based practices we employ in
+constructing a deployment pipeline.</p>
+
+<p>* Automate everything: Networking (VPC, Route 53) Compute (EC2),
+Storage, etc. All <em>AWS</em> automation should be defined in
+<a href="https://aws.amazon.com/cloudformation/" title="CloudFormation">CloudFormation</a>.
+All environment configuration should be defined using infrastructure
+automation scripts – such as Chef, Puppet, etc.\
+ * Version Everything: Application Code, Configuration, Infrastructure
+and Data\
+ * Manage your binary dependencies. Be specific about binary version
+numbers. Ensure you have control over these binaries.\
+ * Lockdown pipeline environments. Do not allow SSH/RDP access to any
+environment in the deployment pipeline\
+ * For project that require it, use permissions on the CI server or
+Deployment application to limit who can run deployments in certain
+environments – such as QA, Pre-Production and Production. When you have
+a policy in which all changes are applied through automation and
+environments are locked down, this usually becomes less of a concern.
+But, it can still be a requirements on some teams.\
+ * Use the Disposable Environments pattern – instances are terminated
+once every few days. This approach reduces the attack profile\
+ * Log everything outside of the EC2 instances (so that they can be
+access later). Ensure these log files are encrypted e.g. securely
+through S3)\
+ * All canonical changes are only applied through automation that are
+part of the deployment pipeline. This includes application,
+configuration, infrastructure and data change. Infrastructure patch
+management would be a part of the pipeline just like any outer software
+system change.\
+ * No one has access to nor can make direct changes to pipeline
+environments\
+ * Create high-availability systems Multi-AZ, <a href="https://aws.amazon.com/autoscaling/" title="Auto Scaling">Auto
+Scaling</a>, <a href="https://aws.amazon.com/elasticloadbalancing/" title="ELB">Elastic
+Load Balancing</a> and
+Route 53\
+ * For non-Admin AWS users, only provide access to AWS through a secure
+<a href="https://en.wikipedia.org/wiki/Continuous_integration" title="Continuous Integration">Continuous
+Integration</a>
+(CI) server or a self-service application\
+ * Use Self-Service Deployments and give developers full SSH/RDP access
+to their self-service deployment. Only their particular EC2 Key Pair can
+access the instance(s) associated with the deployment. Self-Service
+Deployments can be defined in the CI server or a lightweight
+self-service application.\
+ * Provide capability for any authorized user to perform a self-service
+deployment with full SSH/RDP access to the environment they created
+(while eliminating outside access)\
+ * Run two active environments – We’ve yet to do this for customers,
+but if you want to eliminate all access to the canonical production
+environment, you might choose to run two active environments at once so
+that engineers can access the non-production environment to troubleshoot
+a problem in which the environment has the exact same configuration and
+data so you’re troubleshooting accurately.\
+ * Run automated infrastructure tests to test for security
+vulnerabilities (e.g. cross-site scripting, SQL injections, etc.) with
+every change committed to the version-control repository as part of the
+deployment pipeline.</p>
+
+<p><strong>FAQ</strong></p>
+
+<p>* <strong>What is a canonical environment?</strong> It’s your system of record. You
+want your canonical environment to be solely defined in source code and
+versioned. If someone makes a change to the canonical system and it
+affects everyone it should only be done through automation. While you
+can use a self-service deployment to get a copy of the canonical system,
+any direct change you make to the environment is isolated and never made
+part of the canonical system unless code is committed to the
+version-control repository.\
+ * <strong>How can I troubleshoot if I cannot directly access canonical
+environments?</strong> Using a self-service deployment, you can usually
+determine the cause of the problem. If it’s a data-specific problem, you
+might import a copy of the production database. If this isn’t possible
+for time or security reasons, you might run multiple versions of the
+application at once.\
+ * <strong>Why should we dispose of environments regularly?</strong> Two primary
+reasons. The first is to reduce your attack profile (i.e. if
+environments always go up and down, it’s more difficult to hone in on
+specific resources. The second reason is that it ensures that all team
+members are used to applying all canonical changes through automation
+and not relying on environments to always be up and running somewhere.\
+ * <strong>Why should we lockdown environments?</strong> To prevent people from
+making disruptive environment changes that don’t go through the
+version-control repository.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-23T11:24:27-04:00" pubdate data-updated="true">Mar 23<span>rd</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/aws/'>AWS</a>, <a class='category' href='/blog/categories/cd/'>CD</a>, <a class='category' href='/blog/categories/ci/'>CI</a>, <a class='category' href='/blog/categories/devops/'>DevOps</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2014/03/23/creating-a-secure-deployment-pipeline-in-amazon-web-services/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2014/03/23/creating-a-secure-deployment-pipeline-in-amazon-web-services/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/" title="Previous Post: CI and Test Automation utilizing OpenStack">&laquo; CI and Test Automation utilizing OpenStack</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/" title="Next Post: 6 reasons why large enterprises should move to Amazon Web Services">6 reasons why large enterprises should move to Amazon Web Services &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

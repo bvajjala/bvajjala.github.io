@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: scripting | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/scripting/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Install Xcode CLI Tools via Script]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/07/13/install-xcode-cli-tools-via-script/"/>
+    <updated>2013-07-13T22:24:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/07/13/install-xcode-cli-tools-via-script</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/xcode_cli.png" title="&lsquo;Xcode CLI Tools&rsquo;" >
+Well just got a mac from my new project <a href="http://www.facebook.com/photo.php?fbid=10151661183017850&amp;l=69918509f3">FB Status</a>&hellip; &ndash; couldn&rsquo;t resist it :)</p>
+
+<p>One of the tasks was to setup an environment, and learn what a mac is :), a few days later I&rsquo;m in love but still I need a way to destroy an recover
+my environment.
+I have a few plans like bash_it / oh_my_zsh &amp; others, but until then I put togter a few scripts [ more to come ], the first of them is this one installing Xcode CLI Tools on Mac OSX Mountain Lion.</p>
+
+<p>Install or (un-install) with the following simple command:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;sudo bash &amp;lt; &amp;lt;<span class="o">(</span>curl -L https://raw.github.com/hagzag/xcode-cli-install/master/install.sh<span class="o">)</span>
+</span><span class='line'>sudo bash &amp;lt; &amp;lt;<span class="o">(</span>curl -L https://raw.github.com/hagzag/xcode-cli-install/master/uninstall.sh<span class="o">)</span>
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The essence &hellip; see the rest on <a href="https://github.com/hagzag/xcode-cli-install">Github</a></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>detect_osx_version<span class="o">()</span> <span class="o">{</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;result<span class="o">=</span><span class="sb">`</span>sw_vers -productVersion<span class="sb">`</span>
+</span><span class='line'>...
+</span><span class='line'><span class="nv">osxversion</span><span class="o">=</span><span class="s2">&quot;10.8&quot;</span>
+</span><span class='line'><span class="nv">osxvername</span><span class="o">=</span><span class="s2">&quot;Mountain Lion&quot;</span>
+</span><span class='line'><span class="nv">cltools</span><span class="o">=</span>xcode462_cltools_10_86938259a.dmg
+</span><span class='line'><span class="nv">mountpath</span><span class="o">=</span><span class="s2">&quot;/Volumes/Command Line Tools (Mountain Lion)&quot;</span>
+</span><span class='line'><span class="nv">mpkg</span><span class="o">=</span><span class="s2">&quot;Command Line Tools (Mountain Lion).mpkg&quot;</span>
+</span><span class='line'><span class="nv">pkg_url</span><span class="o">=</span><span class="s2">&quot;https://www.dropbox.com/s/hw45wvjxrkrl59x/xcode462_cltools_10_86938259a.dmg&quot;</span>
+</span><span class='line'><span class="nv">pkgmd5</span><span class="o">=</span><span class="s2">&quot;90c5db99a589c269efa542ff0272fc28&quot;</span>
+</span><span class='line'>...
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;<span class="o">}</span>
+</span><span class='line'>download_tools <span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> -f /tmp/<span class="nv">$cltools</span> <span class="o">]</span>; <span class="k">then</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;if <span class="o">[</span> <span class="sb">`</span>md5 -q /tmp/<span class="nv">$cltools</span><span class="sb">`</span> <span class="o">=</span> <span class="s2">&quot;${pkgmd5}&quot;</span> <span class="o">]</span>; <span class="k">then</span>
+</span><span class='line'><span class="k">  </span><span class="nb">echo</span> -e <span class="s2">&quot;$info $cltools already downloaded to /tmp/$cltools.&quot;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'><span class="k">   </span>rm -f /tmp/<span class="nv">$cltools</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="k">else</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;cd /tmp &amp;amp;&amp;amp; wget <span class="nv">$pkg_url</span> -O ./<span class="nv">$cltools</span>
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="k">fi</span>
+</span><span class='line'><span class="o">}</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;install_tools<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="c"># Mount the Command Line Tools dmg</span>
+</span><span class='line'>  <span class="nb">echo</span> -e &amp;ldquo;<span class="nv">$info</span> Mounting Command Line Tools&amp;hellip;&amp;rdquo;
+</span><span class='line'>  hdiutil mount -nobrowse /tmp/<span class="nv">$cltools</span>
+</span><span class='line'>  <span class="c"># Run the Command Line Tools Installer</span>
+</span><span class='line'>  <span class="nb">echo</span> -e &amp;ldquo;<span class="nv">$info</span> Installing Command Line Tools&amp;hellip;&amp;rdquo;
+</span><span class='line'>  installer -pkg &amp;ldquo;<span class="nv">$mountpath</span>/<span class="nv">$mpkg</span>&amp;rdquo; -target &amp;ldquo;/Volumes/Macintosh HD&amp;rdquo;
+</span><span class='line'>  <span class="c"># Unmount the Command Line Tools dmg</span>
+</span><span class='line'>  <span class="nb">echo</span> -e &amp;ldquo;<span class="nv">$info</span> Unmounting Command Line Tools&amp;hellip;&amp;rdquo;
+</span><span class='line'>  hdiutil unmount &amp;ldquo;<span class="nv">$mountpath</span>&amp;rdquo;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="nv">gcc_bin</span><span class="o">=</span>&lt;code&gt;which gcc&lt;/code&gt;
+</span><span class='line'>  gcc &amp;mdash;version &amp;amp;&gt;/dev/null &amp;amp;&amp;amp; <span class="nb">echo</span> -e &amp;ldquo;<span class="nv">$info</span> gcc found in <span class="nv">$gcc_bin</span>&amp;rdquo;
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><img class="right" src="/assets/images/DropBox_logo.png" title="&lsquo;DropBox logo&rsquo;" ></p>
+
+<p>I took the liberty (not sure it&rsquo;s mine to take &hellip; but still), locating Xcode CLI tools for both mountain lion (10.8) and Lion (10.7) on <a href="http://www.dropbox.com">DropBox</a>, ecause Apple (like Oracle and other Giants) won&rsquo;t let you download without a userid / pass which is quite irretating &hellip;</p>
+
+<p>As Always hope you guy&rsquo;s enjoy this.
+HP</p>
+]]></content>
+  </entry>
+  
+</feed>

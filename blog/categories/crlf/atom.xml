@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: CRLF | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/crlf/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Apprentelly Ant-1.80RC1 has been release on the 12th of January 2010]]></title>
+    <link href="http://bvajjala.github.io/blog/2010/01/06/Ant-early-release/"/>
+    <updated>2010-01-06T09:11:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2010/01/06/Ant-early-release</id>
+    <content type="html"><![CDATA[<p>Apparently without us noticing it is the 12th of January already and Ant 1.80RC1 has been released :)</p>
+
+<p><img src="/assets/images/ant-180RC1.PNG" alt="Ant - 1.80RC1" /></p>
+]]></content>
+  </entry>
+  
+</feed>

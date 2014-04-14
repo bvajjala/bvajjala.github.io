@@ -1,0 +1,396 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Creating a Secure Deployment Pipeline in AWS - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Amazon Web Services (AWS) OpsWorks was released one year ago this month. In the past year, we’ve used OpsWorks on several Cloud Delivery projects at &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2014/03/11/creating-a-secure-deployment-pipeline-in-aws">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Creating a Secure Deployment Pipeline in AWS</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-11T10:11:47-04:00" pubdate data-updated="true">Mar 11<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="/downloads/code/opsworks_automation_stack.jpg" alt="" />
+<a href="https://aws.amazon.com/opsworks/">Amazon Web Services (AWS) OpsWorks</a> was released one year ago this month. In the past year, we’ve used OpsWorks on several Cloud Delivery projects at <a href="http://stelligent.com/">Stelligent</a> and at some of our customers. This article describes what’s worked for us and our customers. One of our core aims with any customer is to create a fully repeatable process for delivering software. To us, this translates into several more specific objectives. For each process we automate, the process must be fully documented, tested, scripted, versioned and continuous. This article describes how we achieved each of these five objectives in delivering OpsWorks solutions to our customers. In creating any solution, we version any and every asset required to create the software system. With the exception of certain binary packages, the entire software system gets described in code. This includes the application code, configuration, infrastructure and data.</p>
+
+<p>As a note, we’ve developed other AWS solutions without OpsWorks using CloudFormation, Chef, Puppet and some of the other tools mentioned here, but the purpose of this is to describe our approach when using OpsWorks.</p>
+
+<h2>AWS Tools</h2>
+
+<p>AWS has over 30 services and we use a majority of these services when creating deployment pipelines for continuous delivery and automating infrastructure. However, we typically use only a few services directly when building these infrastructure. For instance, when creating infrastructure with OpsWorks, we’ll use the AWS Ruby SDK to provision the OpsWorks resources and CloudFormation for the resources we cannot provision through OpsWorks. We use these three services to access services such as EC2, Route 53, VPC, S3, Elastic Load Balancing, Auto Scaling, etc. These three services are described below.</p>
+
+<h2>AWS OpsWorks</h2>
+
+<p>– OpsWorks is an infrastructure orchestration and event modeling service for provisioning infrastructure resources. It also enables you to call out to Chef cookbooks (more on Chef later). The OpsWorks model logically defines infrastructure in terms of stacks, layers and apps. Within stacks, you can define layers; within layers you can define applications and within applications, you can run deployments. An event model automatically triggers events against these stacks (e.g. Setup, Configure, Deploy, Undeploy, Shutdown). As mentioned, we use the AWS API (through the Ruby SDK) to script the provisioning of all OpsWorks behavior. We never manually make changes to OpsWorks through the console (we make these changes to the versioned AWS API scripts).</p>
+
+<h2>CloudFormation</h2>
+
+<p>– We use CloudFormation to automatically provision resources that we cannot provision directly through OpsWorks. For example, while OpsWorks connects with Virtual Private Clouds (VPC)s and Elastic Load Balancer (ELB)s, you cannot provision VPC or ELB directly through OpsWorks. Since we choose to script all infrastructure provisioning and workflow, we wrote CloudFormation templates for defining VPCs, ELBs, Relational Database Service (RDS) and Elasticache. We orchestrate the workflow in Jenkins so that these resources are automatically provisioned prior to provisioning the OpsWorks stacks. This way, the OpsWorks stacks can consume these resources that were provisioned in the CloudFormation templates. As with any other program, these templates are version-controlled.</p>
+
+<h2>AWS API</h2>
+
+<p>(using Ruby SDK) – We use the AWS Ruby SDK to script the provisioning of OpsWorks stacks. While we avoid using the SDK directly for most other AWS services (because we can use CloudFormation), we chose to use the SDK for scripting OpsWorks because CloudFormation does not currently support OpsWorks. Everything that you might do using the OpsWorks dashboard – creating stacks, JSON configuration, calling out to Chef, deployments – are all written in Ruby programs that utilize the OpsWorks portion of the AWS API.</p>
+
+<h2>Infrastructure Automation</h2>
+
+<p>There are other non-AWS specific tools that we use in automating infrastructure. One of them is the infrastructure automation tool, Chef. Chef Solo is called from OpsWorks. We use infrastructure automation tools to script and as a way to document the process of provisioning infrastructure.</p>
+
+<h2>Chef</h2>
+
+<p>– OpsWorks is designed to run Chef cookbooks (i.e. scripts/programs). Ultimately, Chef is where a bulk of the behavior for provisioning environments is defined – particularly once the EC2 instance is up and running. In Chef, we write recipes (logically stored in cookbooks) to install and configure web servers such as Apache and Nginx or application servers such as Rails and Tomcat. All of these Chef recipes are version-controlled and called from OpsWorks or CloudFormation.</p>
+
+<h2>Ubuntu</h2>
+
+<p> – When using OpsWorks and there’s no specific operating system flavor requirement from our customer, we choose to use Ubuntu 12.04 LTS. We do this for two reasons. The first is that at the time of this writing, OpsWorks supports two Linux flavors: Amazon Linux and Ubuntu 12.04 LTS. The reason we choose Ubuntu is because it allows us to use Vagrant (more on Vagrant later). Vagrant provides us a way to test our Chef infrastructure automation scripts locally – increasing our infrastructure development speed.</p>
+
+<h2>Supporting Tools</h2>
+
+<p>Other supporting tools such as Jenkins, Vagrant and Cucumber help with Continuous Integration, local infrastructure development and testing. Each are described below.</p>
+
+<h2>Jenkins</h2>
+
+<p> – Jenkins is a Continuous Integration server, but we also use it to orchestrate the coarse-grained workflow for the Cloud Delivery system and infrastructure for our customers. We use Jenkins fairly regularly in creating Cloud Delivery solutions for our customers. We configure Jenkins to run Cucumber features, build scripts, automated tests, static analysis, AWS Ruby SDK programs, CloudFormation templates and many more activities. Since Jenkins is an infrastructure component as well, we’ve automated the creation in OpsWorks and Chef and it also runs Cucumber features that we’ve written. These scripts and configuration are stored in Git as well and we can simply type a single command to get the Jenkins environment up and running. Any canonical changes to the Jenkins server are made by modifying the programs or configuration stored in Git.</p>
+
+<h2>Vagrant##</h2>
+
+<p>– Vagrant runs a virtualized environment on your desktop and comes with support for certain OS flavors and environments. As mentioned, we use Vagrant to run and test our infrastructure automation scripts locally to increase the speed of development. In many cases, what might take 30-40 minutes to run the same Chef cookbooks can take 4-5 minutes to run locally in Vagrant – significantly increase our infrastructure development productivity.</p>
+
+<h2>Cucumber</h2>
+
+<p> – We use Cucumber to write infrastructure specifications in code called features. This provides executable documented specifications that get run with each Jenkins build. Before we write any Chef, OpsWorks or CloudFormation code, we write Cucumber features. When completed, these features are run automatically after the Chef, OpsWorks and/or CloudFormation scripts provision the infrastructure to ensure the infrastructure is meeting the specifications described in the features. At first, these features are written without step definitions (i.e. they don’t actually verify behavior against the infrastructure), but then we iterate through a process of writing programs to automate the infrastructure provisioning while adding step definitions and refining the Cucumber features. Once all of this is hooked up to the Jenkins Continuous Integration server, it provisions the infrastructure and then runs the infrastructure tests/features written in Cucumber. Just like writing XUnit tests for the application code, this approach ensures our infrastructure behaves as designed and provides a set of regression tests that are run with every change to any part of the software system. So, Cucumber helps us document the feature as well as automate infrastructure tests. We also write usage and architecture documentation in READMEs, wikis, etc.</p>
+
+<p>A list of the AWS tools we utilized are enumerated below.</p>
+
+<p>We applied the on-demand usability of the cloud with a proven continuous delivery approach to build an automated one click method for building and deploying software into scripted production environments.</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Tool </th>
+<th> What is it? </th>
+<th> Our Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>  AWS EC2      </td>
+<td> Cloud-based virtual hardware instances       </td>
+<td> We use EC2 for all of our virtual hardware needs. All instances, from development to production are run on EC2</td>
+</tr>
+<tr>
+<td></td>
+<td> AWS S3 </td>
+<td> Cloud-based storage </td>
+<td> We use S3 as both a binary repository and a place to store successful build artifacts.</td>
+</tr>
+<tr>
+<td></td>
+<td> AWS IAM </td>
+<td> User-based access to AWS resources </td>
+<td> We create users dynamically and use their AWS access and secret access keys so we don’t have to store credentials as properties.</td>
+</tr>
+<tr>
+<td></td>
+<td> AWS CloudWatch </td>
+<td>System monitoring</td>
+<td> Monitors all instances in production. If an instance takes an abnormal amount of strain or shuts down unexpectedly, SNS sends an email to designated parties.</td>
+</tr>
+<tr>
+<td></td>
+<td> AWS SNS </td>
+<td> Email notifications </td>
+<td> When an environment is created or a deployment is run, SNS is used to send notifications to affected parties.</td>
+</tr>
+<tr>
+<td></td>
+<td>Cucumber </td>
+<td> Acceptance testing </td>
+<td> Cucumber is used for testing at almost every step of the way. We use Cucumber to test infrastructure, deployments and application code to ensure correct functionality. Cucumber’s unique english-ess  verbiage allows both technical personnel and customers to communicate using an executable test.</td>
+</tr>
+<tr>
+<td></td>
+<td> Liquibase </td>
+<td> Automated database change management </td>
+<td> Liquibase is used for all database changesets. When a change is necessary within the database, it is made to a liquibase changelog.xml.</td>
+</tr>
+<tr>
+<td></td>
+<td>AWS CloudFormation </td>
+<td> Templating language for orchestrating all AWS resources </td>
+<td> CloudFormation is used for creating a fully working Jenkins environment and Target environment. For instance for the Jenkins environment it creates the EC2 instance with CloudWatch monitoring alarms, associated IAM user, SNS notification topic, everything required for Jenkins to build. This along with Jenkins are the major pieces of the infrastructure.</td>
+</tr>
+<tr>
+<td></td>
+<td>AWS SimpleDB </td>
+<td> Cloud-based NoSQL database </td>
+<td> SimpleDB is used for storing dynamic property configuration and passing properties through the CD Pipeline. As part of the environment creation process, we store multiple values such as IP addresses that we need when deploying the application to the created environment.</td>
+</tr>
+<tr>
+<td></td>
+<td>Jenkins </td>
+<td> We’re using Jenkins to implement a CD pipeline using the Build Pipeline plugin.</td>
+<td> Jenkins runs the CD pipeline which does the building, testing, environment creation and deploying. Since the CD pipeline is also code (i.e. configuration code), we version our Jenkins configuration.</td>
+</tr>
+<tr>
+<td></td>
+<td> Capistrano </td>
+<td> Deployment automation </td>
+<td> Capistrano orchestrates and automates deployments. Capistrano is a Ruby-based deployment DSL that can be used to deploy to multiple platforms including Java, Ruby and PHP. It is called as part of the CD pipeline and deploys to the target environment.</td>
+</tr>
+<tr>
+<td></td>
+<td>Puppet </td>
+<td> Infrastructure automation </td>
+<td> Puppet takes care of the environment provisioning. CloudFormation requests the environment and then calls Puppet to do the dynamic configuration. We configured Puppet to install, configure, and manage the packages, files and services.</td>
+</tr>
+<tr>
+<td></td>
+<td> Git </td>
+<td> Version control system </td>
+<td> Git is the version control repository where every piece of the Manatee infrastructure is stored. This includes the environment scripts such as the Puppet modules, the CloudFormation templates, Capistrano deployment scripts, etc.</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-11T10:11:47-04:00" pubdate data-updated="true">Mar 11<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2014/03/11/creating-a-secure-deployment-pipeline-in-aws/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2014/03/11/creating-a-secure-deployment-pipeline-in-aws/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/03/11/continuous-delivery-patterns/" title="Previous Post: Continuous Delivery Patterns">&laquo; Continuous Delivery Patterns</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/03/11/tools-in-aws-for-implementing-continuous-deployment-pipeline/" title="Next Post: Tools in AWS for Implementing Continuous Deployment pipeline">Tools in AWS for Implementing Continuous Deployment pipeline &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

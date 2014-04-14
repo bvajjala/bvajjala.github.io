@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Marketing | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/marketing/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Something I coded up for fun...]]></title>
+    <link href="http://bvajjala.github.io/blog/2011/02/22/something-i-coded-up-for-fun/"/>
+    <updated>2011-02-22T02:33:45-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2011/02/22/something-i-coded-up-for-fun</id>
+    <content type="html"><![CDATA[<p>I put <a href="http://mybestpic.org">this website</a> together over the last few weeks that I thought you might like.</p>
+
+<p>It&rsquo;s quite simple.  Basically you can hold a &ldquo;photo contest&rdquo; and see which photo your friends like best.</p>
+
+<p>Here are a few examples&hellip;</p>
+
+<ol>
+<li>Choose a photo of yourself.</li>
+</ol>
+
+
+<p><a href="http://mybestpic.org/lTmQAr"><img src="http://s3.amazonaws.com/oldbloguploads/2011/02/Screen-shot-2011-02-21-at-6.24.24-PM-500x360.png" alt="" /></a></p>
+
+<ol>
+<li>Choose artwork or travel photos.</li>
+</ol>
+
+
+<p><a href="http://mybestpic.org/0AbTrQ"><img src="http://s3.amazonaws.com/oldbloguploads/2011/02/Screen-shot-2011-02-21-at-6.22.17-PM-500x360.png" alt="" /></a></p>
+
+<ol>
+<li>For downright silliness.</li>
+</ol>
+
+
+<p><a href="http://mybestpic.org/ac8crN"><img src="http://s3.amazonaws.com/oldbloguploads/2011/02/Screen-shot-2011-02-21-at-6.23.10-PM-500x360.png" alt="" /></a></p>
+
+<p>I&rsquo;ll do a follow up post in a week or so with more details on the idea and results of the site.  But for now&hellip;</p>
+
+<h1><a href="http://mybestpic.org">Try it out</a> and let me know what you think!</h1>
+]]></content>
+  </entry>
+  
+</feed>

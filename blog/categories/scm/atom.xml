@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: SCM | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/scm/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Subversion hot-backup change in 1.6.11]]></title>
+    <link href="http://bvajjala.github.io/blog/2011/07/19/Subversion-hot-backup-change-in/"/>
+    <updated>2011-07-19T09:11:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2011/07/19/Subversion-hot-backup-change-in</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/subversion.jpg" title="&lsquo;Subversion Logo&rsquo;" >An important notice to users of the hot-backup.py utility which ships with subversion.</p>
+
+<p>I found our nightly backup of subversion was failing with the following error:</p>
+
+<pre><code>svnadmin: Can't open file '/pathtorepo/db/fsfs.conf': No such file or directory
+</code></pre>
+
+<p>What was troubling me was:</p>
+
+<ol>
+<li>How come a file is missing in my svn repository &ndash; nothing has changes (As far as I know &hellip; :)</li>
+<li>hot-backup.py script hasen&rsquo;t changed much, how come my version has changed ?</li>
+</ol>
+
+
+<p>So I looked up the subversion&rsquo;s change log: <a href="http://svn.apache.org/repos/asf/subversion/tags/1.6.12/CHANGES">http://svn.apache.org/repos/asf/subversion/tags/1.6.12/CHANGES</a> which is the latest release (1.6.12) and took a look on my svn machine to find which version was installed and I found 1.6.12 was indeed in talled and in 1.6.11 release notes you will find:</p>
+
+<pre><code>* make 'svnadmin hotcopy' copy the fsfs config file (r905303)
+</code></pre>
+
+<p>In addition I took a look at hot-bakup.py change log under: <a href="http://svn.apache.org/viewvc/subversion/trunk/tools/backup/hot-backup.py.in?view=log,">http://svn.apache.org/viewvc/subversion/trunk/tools/backup/hot-backup.py.in?view=log,</a> and found that indeed the fsfs file has be included in the hotbackup script since the 1.6.11 version of the file (see link speified above).</p>
+
+<p>Googeling on the fsfs.conf subject led me to: <a href="http://comments.gmane.org/gmane.comp.version-control.subversion.user/97647">http://comments.gmane.org/gmane.comp.version-control.subversion.user/97647</a> which noted the same exact issue.</p>
+
+<p><strong>How do we solve this issue</strong><strong>?</strong></p>
+
+<ol>
+<li>Create a test repository &ndash; svnadmin create /tmp/svntest which will create the fsfs.conf under /tmp/svntest/db/fsfs.conf</li>
+<li>Copy the fsfs.conf to your svnroot/db directory and walla you have the fsfs.conf (what this file does is a different topic)</li>
+</ol>
+
+
+<p>Please note:</p>
+
+<p>1. The svnadmin upgrade &ndash;<strong>Doesn&rsquo;t add this file so unless you are using an old veriosn of the hot-backup.py script your backups will fail!!!</strong> (beleive me I tried).</p>
+
+<p>2. If you update subverison &ndash; don&rsquo;t forget to run <em>svnadmin upgrade /pathto yourrepo/</em> or you miss all the point of upgrading</p>
+
+<p>So I&rsquo;ve learened that subversion was upgraded (again which doesn&rsquo;t say your repository was upgraded!!!) &ndash; but when? &ndash; considering the fact I am running CentOS &ndash; and I didn&rsquo;t have to compile SVN from source and start checking the subversion binaries Creation / Update time I used RPM to tell me when subverions was installed and there is was:</p>
+
+<pre><code>[root@dev ~]# rpm -qi subversion
+Name        : subversion                   Relocations: (not relocatable)
+Version     : 1.6.12                       Vendor: Dag Apt Repository
+Release     : 0.1.el5.rf                   Build Date: Tue 22 Jun 2010 12:55:11 PM IDT
+Install Date: Mon 19 Jul 2010 12:36:54 AM IDT      Build Host: lisse.hasselt.wieers.com
+Group       : Development/Tools             Source RPM: subversion-1.6.12-0.1.el5.rf.src.rpm
+Size        : 21247326                         License: BSD
+Signature   : DSA/SHA1, Tue 22 Jun 2010 04:46:18 PM IDT, Key ID a20e52146b8d79e6
+Packager    : Dag Wieers 
+</code></pre>
+
+<p>I think the <a href="http://search.twitter.com/search?q=%231">#1</a> lesson learned here is before you upgrade read the release notes, see if it impacts you environment in any way &ndash; then you can upgrade.</p>
+
+<p>Hope you find this useful.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SVN bash_completion - Subversion productivity boost]]></title>
+    <link href="http://bvajjala.github.io/blog/2011/02/06/svn-bash-completion/"/>
+    <updated>2011-02-06T16:01:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2011/02/06/svn-bash-completion</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/subversion.jpg" title="&lsquo;Subversion Logo&rsquo;" >Remembering all the svn switches / CLI options, not necessary, well unless you are using some nifty GUI tool you will definitely need this one.</p>
+
+<p>Just google &ldquo;Subversoin bash completion&rdquo; and you will find yourself <a href="http://worksintheory.org/files/misc/bash_completion_svn">here</a></p>
+
+<p>so grab is, source it and use it:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>apt-get install bash-completion
+</span><span class='line'>wget &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://worksintheory.org/files/misc/bash_completion_svn&quot;</span>&gt;http://worksintheory.org/files/misc/bash_completion_svn&lt;/a&gt; -O /etc/bash_completion.d/subversion
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>You are good to go.</p>
+
+<p><strong>Please note:</strong>
+Installing the bash_completion deb package adds a bunch of bash completion helpers see full list by running:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>dpkg -L bash-completion
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>All the magic however is in this short file:
+/etc/profile.d/bash_completion.sh and anything you place under <em>/etc/bash_completion.d/</em> will automatically be sourced upon login &hellip;</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Apprentelly Ant-1.80RC1 has been release on the 12th of January 2010]]></title>
+    <link href="http://bvajjala.github.io/blog/2010/01/06/Ant-early-release/"/>
+    <updated>2010-01-06T09:11:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2010/01/06/Ant-early-release</id>
+    <content type="html"><![CDATA[<p>Apparently without us noticing it is the 12th of January already and Ant 1.80RC1 has been released :)</p>
+
+<p><img src="/assets/images/ant-180RC1.PNG" alt="Ant - 1.80RC1" /></p>
+]]></content>
+  </entry>
+  
+</feed>

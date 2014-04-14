@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: hackdays | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/hackdays/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[On PhoneGap/Cordova and cross platform mobile development]]></title>
+    <link href="http://bvajjala.github.io/blog/2012/06/04/on-phonegap-slash-cordova-and-cross-platform-mobile-development/"/>
+    <updated>2012-06-04T12:34:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2012/06/04/on-phonegap-slash-cordova-and-cross-platform-mobile-development</id>
+    <content type="html"><![CDATA[<p>So last weekend I was at <a href="http://overtheair.org/">Over The Air 2012</a> &ndash; on of my favorite regular Hack days &ndash; and for the first time I decided to actually try and make a &ldquo;native&rdquo; mobile app.</p>
+
+<p>Seeing as I don&rsquo;t want to have to redo the app for every platform I decided to try out one of the more famous cross platform development frameworks: <a href="http://phonegap.com/">PhoneGap</a>.</p>
+
+<p>Here are some of the things I discovered during the weekend:</p>
+
+<ul>
+<li>PhoneGap isn&rsquo;t really a framework. It&rsquo;s really nothing more than a wrapper around a local HTML page with an extra JS library to access native features like the camera, local storage, etc.</li>
+<li>Although <a href="http://jquerymobile.com/">jQuery Mobile</a> looks very nice, it seems to emulate iOS, making it look out of place on any Android or Windows device.</li>
+<li>PhoneGap in combination with jQuery Mobile allows you to very quickly make a static native app, but as soon as you want to add any dynamics it seems to become quite hard. You will need some kind of JS MVC to tie it all together.</li>
+<li>I had a play with <a href="http://knockoutjs.com/">KnockoutJS</a> &ndash; which we already use at <a href="http://emberads.com">EmberAds</a> &ndash; but it had its issues:
+
+<ul>
+<li>Good tutorials on how to integrate with jQuery Mobile were missing, and I was encountering rendering issues.</li>
+<li>It&rsquo;s not really a MVC, and tying it to template partials seemed harder than it should.</li>
+<li>Automatic storage of models to local storage/server was missing.</li>
+</ul>
+</li>
+</ul>
+
+
+<p>So although I&rsquo;m happy with the work we did on the first version of our app it clearly will need a rewrite in time to be viable. Here&rsquo;s some of the research I&rsquo;ve done so far:</p>
+
+<ul>
+<li>I will probably replace Knockout with <a href="http://backbonejs.org/">BackboneJS</a> which seems to be more flexible and actually support storing to server and/or local storage.</li>
+<li>Alternatively I might look at <a href="http://docs.sencha.com/touch/2-0/">Sensa Touch 2.0</a> which seems to be more than just a UI framework but actually also include a full MVC framework.</li>
+<li>I found some tutorial describing how to integrate PhoneGap, jQuery Mobile, and Backbone, <a href="https://github.com/ccoenraets/backbone-directory/tree/master/jquerymobile">including a bootstrapped app</a> that integrates them all in a way I might be able to re-use.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[OpenCodeCamp - Where the best of HackDays and BarCamps come together]]></title>
+    <link href="http://bvajjala.github.io/blog/2012/05/08/opencodecamp-where-the-best-of-hackdays-and-barcamps-come-together/"/>
+    <updated>2012-05-08T12:18:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2012/05/08/opencodecamp-where-the-best-of-hackdays-and-barcamps-come-together</id>
+    <content type="html"><![CDATA[<h3>tl;dr</h3>
+
+<p>I want to run a new kind of event: <strong>OpenCodeCamp</strong> (working title). OpenCodeCamp should be an event that promotes knowledge sharing and skills swapping amongst developers of any age or level of experience. It should be free of commercialism, competition, sexism, racism, age-ism and accessible to developers of any seniority.</p>
+
+<p>Read the full post and leave a comment if you want to get involved.</p>
+
+<!-- more -->
+
+
+<h3>Where did this come from?</h3>
+
+<p>I love HackDays but I have some issues with where they are going as you may have noticed <a href="http://blog.cristianobetta.com/2012/01/14/the-end-of-an-era/index.html">here</a>, <a href="/blog/2012/04/29/what-i-miss-about-hackdays-dot-dot-dot/">here</a>, and <a href="http://hackdaymanifesto.com/">here</a>. I also love BarCamps, having been to many and having organised a few, but I noticed that HackDays and BarCamps are diverging in purpose and format.</p>
+
+<p>Our contact at <a href="http://www.city.ac.uk/">City University</a> where we ran 2 BarCamps once described BarCamps as &ldquo;free learning events&rdquo;. Anyone can come in and learn, and most people will do their best to teach others whatever knowledge they have. It brings together anyone interested enough in learning new things and with an open mind to share their own skills and knowledge in return.</p>
+
+<p>In my eyes (though I might be wrong) this is how HackDays were when they started. They were events where anyone could come to play with new programming languages and platforms, learn about new concepts and ideas, and collaborate on interesting and crazy new ideas. Sadly from there the events have become increasingly more competitive, lowering the amount of true knowledge sharing that is done, and making the events ever more closed off to anyone from outside of the particular industry that the HackDay focusses on.</p>
+
+<h3>Proposing OpenCodeCamp (working title)</h3>
+
+<p>So here is what I want to do instead: I want to run an event that promotes knowledge sharing and skills swapping amongst developers of any age or level of experience. Inspired by the <a href="http://barcamp.org/w/page/405173/TheRulesOfBarCamp">rules of BarCamp</a>, I think OpenCodeCamp should have the following rules:</p>
+
+<ul>
+<li><strong>Rule #1 &ndash; No spectators, only participants</strong> &ndash; Like with BarCamps the goal at a OpenCodeCamp is that everyone participates. You should be either involved in teaching, learning, or creating new technologies for someone else to use. If you wanted to find the nice networking you normally find at a conference, then go to a conference.</li>
+<li><strong>Rule #2 &ndash; OpenCodeCamp is for everyone</strong> &ndash; Attending OpenCodeCamp should not require you to have any experience in the topic for that camp. There should be enough people to even get the new people excited and learning new things.</li>
+<li><strong>Rule #3 &ndash; Technology over data sets</strong> &ndash; It&rsquo;s great that a company has a great API to search for any cat picture on the internet, but at a OpenCodeCamp we rather have them talk about how they created the API than what is in the data set or how it can be used to make money.</li>
+<li><strong>Rule #4 &ndash; No competitions</strong> &ndash; Competitions take away from the sharing aspect of OpenCodeCamp and should therefore be avoided.</li>
+<li><strong>Rule #5 &ndash; Permanence over fashion</strong> &ndash; Try and imagine that what you create during OpenCodeCamp should be usable in 10 years time. That might mean making it open source. This way the product also doesn&rsquo;t have to indefinitely run on the original developer&rsquo;s server.</li>
+<li><strong>Rule #6 &ndash; [INSERT YOURS]</strong> &ndash; This list is far from done. Let me know if you think something should be added.</li>
+</ul>
+
+
+<p>I don&rsquo;t have a definite format for this event yet. I&rsquo;m thinking of something somewhere in between a HackDay and a BarCamp/unconference but we need to deal with a few small issues including:</p>
+
+<ul>
+<li><strong>What format?</strong> &ndash; Should this be a 1 day or 2 day event, with or without overnight, with sessions or more open spaces, etc?</li>
+<li><strong>How to measure outcome?</strong> &ndash; The one thing I like about HackDays (in contrary to BarCamps) is that at the end you can say &ldquo;This is what was created&rdquo;. Should we have people present what they did at the end, even if it isn&rsquo;t anything visible? I personally like the idea but I think it might get very boring.</li>
+<li><strong>Should Open Source be an inherent part to the event?</strong> &ndash; One way to measure outcome is to make it a rule that anything that is generated during the weekend should be contributing to Open Source. I&rsquo;m not sure if this should be a &ldquo;Open Source OpenCodeCamp&rdquo; or inherently part of OpenCodeCamp.</li>
+<li><strong>How to keep this out of the hands of companies and PR agencies?</strong> &ndash; I&rsquo;d hate for OpenCodeCamp to go the way of a HackDay and somehow get abused by companies to be made more and more of a tool to get cheap labor out of developers. I think we can prevent this by making a good set of rules, and I&rsquo;m not sure if we should do anything more than that.</li>
+<li><strong>Who&rsquo;s paying?</strong> &ndash; One of the reasons we&rsquo;ve seen more and more HackDays is because companies can see a nice return of investment on putting a few bucks into a HackDay which in return gives them a few nice prototypes they can show to their investors (a.k.a. cheap labor). How would companies react to an event where their APIs are not at the centre of attention.</li>
+<li><strong>Change the name?</strong> &ndash; There is already something called <a href="http://en.wikipedia.org/wiki/Code_Camp">CodeCamp</a> out there but this name was the best I could come up with. Any other suggestions?</li>
+</ul>
+
+
+<h3>How to help out?</h3>
+
+<p>Leave a comment here or send me an email with any suggestions. Also feel free to share this article with anyone you think might be interested in helping out.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[What I miss about HackDays]]></title>
+    <link href="http://bvajjala.github.io/blog/2012/04/29/what-i-miss-about-hackdays-dot-dot-dot/"/>
+    <updated>2012-04-29T17:49:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2012/04/29/what-i-miss-about-hackdays-dot-dot-dot</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve been attending HackDays since 2007 when I travelled to Alexandra Palace for the first <a href="http://upcoming.yahoo.com/event/173371/LONDON/London/Yahoo-BBC-Hackday-2007/Alexandra-Palace/">HackDay organised by Yahoo and the BBC</a>. I was a n00b at that time (some might say I still am, #shakesfist) and I had no idea what to build. At the time I was trying to learn how to use web frameworks and at the HackDay I got my first exposures to APIs, Django, Rails, OpenID and much more. I don&rsquo;t think I made anything that weekend, but damn did I learn a lot!</p>
+
+<p>Since then we&rsquo;ve come a long way; HackDays are no longer just organised by big organisations. There&rsquo;s pretty much one happening every weekend (sometimes more), and they are more often than not focussed around a topic. I attended at least 20 HackDays since, and I even helped organise <a href="http://www.hackcamp.org.uk/">not 1 but 2 HackCamps</a> with <a href="http://geeksoflondon.com">GeeksOfLondon</a>.</p>
+
+<p>But lately I&rsquo;ve been noticing a little trend. I was at <a href="http://www.gamehack.co.uk/">GameHack</a> yesterday and I had come to have a fun weekend to play with some APIs, maybe play with some WebGL libraries, and get an idea of how game development works. I am not a game developer and don&rsquo;t intend to be one, but I always enjoy learning new things.</p>
+
+<!-- more -->
+
+
+<p>Much like the most recent <a href="http://musichackday.org/">MusicHackDay</a> London though, GameHack was a lot more serious than I had anticipated. Where the first MusicHackDay was mainly web developers trying to explore music APIs, the latest one mainly had people from the (online) music industry participating in teams, working with APIs and technologies they were already well practiced in.</p>
+
+<p>I felt out of my depth at MusicHackDay and GameHack. To clarify: I don&rsquo;t think this is their fault. The events are probably great for people from the relevant industries. So maybe I&rsquo;ve fallen into the expectation that my existing skills will always get me somewhere at a HackDay, or maybe I&rsquo;m disappointed that with all the skills I picked up since 2007 I&rsquo;m still out of my depth when it comes to hardware, music, video graphics, and many other skills.</p>
+
+<p>Maybe I also miss HackDays where the variety on offer is so wide that there&rsquo;s always something for someone to learn and explore, and always someone interesting to talk to and learn from. Or maybe I miss HackDays that aren&rsquo;t always about winning but more about sharing.</p>
+
+<p><strong>In the end, when a HackDay has so much great talent from an industry competing to out do each other (rather than sharing), the newbies tend to not be able to pick up any new skills, let alone be motivated to try.</strong></p>
+
+<p>I think it&rsquo;s time we look back at how HackDays were ran in 2006/2007 and evaluate what we sacrificed since. I would love to see some more events that are purely focussed around sharing, not competing.</p>
+
+<p>Inherently to me is the wording around these events. A lot of these events talk about <strong>apps</strong>, and offer rewards to <strong>continue work on the product</strong>, and call the HackDay a <strong>hackathon</strong>. All of this signals to me that it&rsquo;s more about a sprint to produce the most commercially viable bootstrapped product, rather than a camp to share and learn how to make better technology and produce better code.</p>
+
+<p>I would love for someone to run a HackDay that&rsquo;s more based on the Open Source model than the App Store model. A HackDay that rewards sharing, not competing. An event that&rsquo;s ran by the community, for the community, not by this cool new startup that would like to push their API in your face.</p>
+
+<p>Maybe I will help run this HackDay myself soon. I&rsquo;ve been running with the idea of an OpenSource HackDay for a while but am slightly occupied between EmberAds, and some of the upcoming GeeksOfLondon events.</p>
+
+<p>Let me know if you think this would be a good idea, and let me know what you think an event like that would look like.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Hack Day Manifesto]]></title>
+    <link href="http://bvajjala.github.io/blog/2012/04/10/the-hackday-manifesto/"/>
+    <updated>2012-04-10T15:30:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2012/04/10/the-hackday-manifesto</id>
+    <content type="html"><![CDATA[<p>One of my friends, <a href="http://artisanofcode.com/">Dan</a>, started a document called <a href="http://hackdaymanifesto.com/">&ldquo;The Hack Day Manifesto&rdquo;</a> on the #GeeksOfLondon IRC channel a few days back. With the help of our community we managed to update it to a full document and it&rsquo;s now live.</p>
+
+<p>It&rsquo;s a must read if you ever plan to run a hack day or hackathon.</p>
+
+<p>It&rsquo;s already signed by quite a few hackday organisers including the GeeksOfLondon team and you can add your own name by simply <a href="https://github.com/hackdaymanifesto/hackdaymanifesto.github.com/">forking</a>, adding your name, and making a pull request.</p>
+
+<p><img class="center" src="/images/blog/2012/thehackdaymanifesto.png"></p>
+]]></content>
+  </entry>
+  
+</feed>

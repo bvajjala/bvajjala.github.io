@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="When programmer and mathematician are talking about modulus or modulo, there is often a confusion what this term means. For programmer modulo means &hellip;">
+  <meta name="description" content="DevOps Tool chain A list of utilities to support configuration management tools. This was produced by the panelists of the Configuration Mgmt &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -56,9 +56,10 @@
 </form>
   
 <ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
-  <li><a href="/about">About</a></li>
+  <li><a href="/about/resume">About</a></li>
 </ul>
 
 </nav>
@@ -73,7 +74,7 @@
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2011/09/16/modulo-who/">Modulo Who?</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/02/01/devops-tools-and-utilities/">DevOps Tools and Utilities</a></h1>
       
       
     
@@ -90,18 +91,274 @@
   
 
 
-<time datetime="2011-09-16T08:00:00-04:00" pubdate data-updated="true">Sep 16<span>th</span>, 2011</time>
+<time datetime="2014-02-01T13:13:05-05:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>When programmer and mathematician are talking about modulus or modulo, there is often a confusion what this term means. For programmer <a href="http://en.wikipedia.org/wiki/Modulo_operator">modulo</a> means an operator that finds the <em>remainder</em> of division of one number by another, e.g. 5&nbsp;mod&nbsp;2 = 1. For mathematician <a href="http://en.wikipedia.org/wiki/Modular_arithmetic">modulo</a> is a <em>congruence</em> relation between two numbers: <em>a</em> and <em>b</em> are said to be congruent modulo <em>n</em>, written <em>a</em>&nbsp;&#8801;&nbsp;<em>b</em>&nbsp;(mod&nbsp;<em>n</em>), if their difference <em>a</em>&nbsp;&#8722;&nbsp;<em>b</em> is an integer multiple of <em>n</em>.</p>
+  <div class="entry-content"><h1>DevOps Tool chain</h1>
 
-<p>These two definitions are not equivalent. The former is a special case of the latter: if <em>b</em>&nbsp;mod&nbsp;<em>n</em> = <em>a</em> then <em>a</em>&nbsp;&#8801;&nbsp;<em>b</em>&nbsp;(mod&nbsp;<em>n</em>). The inverse is not true in general case. 5&nbsp;mod&nbsp;2 = 1, and 1&nbsp;&#8801;&nbsp;5&nbsp;(mod&nbsp;2) because 1&nbsp;&ndash;&nbsp;5&nbsp;=&nbsp;–4 is integer multiple of 2. Now 5&nbsp;&#8801;&nbsp;1&nbsp;(mod&nbsp;2), because 5&nbsp;&ndash;&nbsp;1&nbsp;=&nbsp;4 is evenly divisible by 2, but 1&nbsp;mod&nbsp;2 = 1, not 5.</p>
+<p>A list of utilities to support configuration management tools. This was produced by the panelists of the Configuration Mgmt Workflow panel at LOPSA-EAST in 2013. One of the attendees also took notes: <a href="http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel">http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel</a></p>
 
-<p>The biggest confusion happens when programmer and mathematician start arguing about Gauss&#8217; famous <a href="http://mathworld.wolfram.com/QuadraticReciprocityTheorem.html">Golden Theorem</a> where both definitions of modulus can be used.</p>
+<h2>Individual level: IDE / syntax highlighting etc</h2>
+
+<h2>Puppet:</h2>
+
+<ul>
+<li>vim &ndash; <a href="https://github.com/rodjek/vim-puppet">https://github.com/rodjek/vim-puppet</a></li>
+<li>TextMate &amp; sublime text 2 &ndash; <a href="https://github.com/masterzen/puppet-textmate-bundle">https://github.com/masterzen/puppet-textmate-bundle</a></li>
+<li>gepetto (<a href="http://cloudsmith.github.io/geppetto/">http://cloudsmith.github.io/geppetto/</a>),</li>
+<li>emacs</li>
+</ul>
+
+
+<h2>Chef:</h2>
+
+<ul>
+<li>vim,</li>
+<li>TextMate,</li>
+<li>Sublime Text: <a href="http://www.youtube.com/watch?v=4VtDj_ar1Xg">http://www.youtube.com/watch?v=4VtDj_ar1Xg</a> (video), <a href="https://github.com/cabeca/SublimeChef">https://github.com/cabeca/SublimeChef</a> (GitHub)</li>
+<li>Emacs: chef-mode <a href="https://github.com/mpasternacki/chef-mode">https://github.com/mpasternacki/chef-mode</a></li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li>vim &ndash; <a href="https://github.com/neilhwatson/vim_cf3">https://github.com/neilhwatson/vim_cf3</a></li>
+<li>emacs &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/cfengine.el">https://github.com/cfengine/core/blob/master/contrib/cfengine.el</a></li>
+<li>kate &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml">https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml</a></li>
+<li>eclipse &ndash; <a href="https://cfengine.com/eclipse-cfengine-editor">https://cfengine.com/eclipse-cfengine-editor</a></li>
+<li>Sublime Text &ndash; <a href="https://github.com/kebori/sublime-cfengine3">https://github.com/kebori/sublime-cfengine3</a></li>
+</ul>
+
+
+<h2>Local Testing</h2>
+
+<ul>
+<li>Vagrant &ndash;</li>
+<li>VMware</li>
+<li>OpenStack</li>
+<li>Cloud?</li>
+<li>All of the above?</li>
+</ul>
+
+
+<h2>Revision Control : Which tool? Which workflow?</h2>
+
+<ul>
+<li>Github Flow &ndash; <a href="http://scottchacon.com/2011/08/31/github-flow.html">http://scottchacon.com/2011/08/31/github-flow.html</a></li>
+<li>git-flow &ndash; <a href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a></li>
+<li>Git Dynamic Environments &ndash;</li>
+<li><ul>
+<li><a href="https://puppetlabs.com/blog/git-workflow-and-puppet-environments/">https://puppetlabs.com/blog/git-workflow-and-puppet-environments/</a> ,</li>
+</ul>
+</li>
+<li><ul>
+<li><a href="https://github.com/adrienthebo/puppet-git-hooks">https://github.com/adrienthebo/puppet-git-hooks</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Commit hooks</h2>
+
+<h3>Puppet:</h3>
+
+<ul>
+<li>erb,</li>
+<li>pp parser,</li>
+<li>yaml, <a href="https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit">https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit</a></li>
+</ul>
+
+
+<h3>Chef:</h3>
+
+<ul>
+<li>fc pre-commit: <a href="https://github.com/gregf/chef-git-hooks">https://github.com/gregf/chef-git-hooks</a></li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li>Subversion: <a href="http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html">http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html</a></li>
+<li>Git: <a href="https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit">https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit</a></li>
+</ul>
+
+
+<h2>Style / Lint tools</h2>
+
+<h3>Puppet:</h3>
+
+<ul>
+<li>puppet-lint &ndash; <a href="http://puppet-lint.com/,">http://puppet-lint.com/,</a></li>
+<li>puppet-cleaner &ndash; <a href="https://github.com/santana/puppet-cleaner,">https://github.com/santana/puppet-cleaner,</a></li>
+</ul>
+
+
+<h3>Chef:</h3>
+
+<ul>
+<li>tailor,</li>
+<li>foodcritic</li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li>cf-promises (with GCC-style warnings)</li>
+</ul>
+
+
+<h2>Testing manifests / recipes</h2>
+
+<h3>Puppet:</h3>
+
+<ul>
+<li>rspec-puppet,</li>
+<li>?cucumber-puppet (discontiued)?</li>
+</ul>
+
+
+<h3>Chef:</h3>
+
+<ul>
+<li>chefspec,</li>
+<li>minitest-handler,</li>
+<li>rspec-chef,</li>
+<li>cucumber-chef,</li>
+<li>test-kitchen</li>
+</ul>
+
+
+<h2>Marshalling / Assembling Code &amp; Dependencies</h2>
+
+<h3>Puppet:</h3>
+
+<ul>
+<li>librarian-puppet &ndash; <a href="https://github.com/rodjek/librarian-puppet">https://github.com/rodjek/librarian-puppet</a></li>
+</ul>
+
+
+<h3>Chef:</h3>
+
+<ul>
+<li>berkshelf,</li>
+<li>librarian</li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li>cf-sketch &ndash; <a href="https://github.com/cfengine/design-center/wiki/Design-Center-Tools">https://github.com/cfengine/design-center/wiki/Design-Center-Tools</a></li>
+</ul>
+
+
+<h2>Continuous Integration</h2>
+
+<ul>
+<li>Jenkins CI</li>
+<li>Travis CI</li>
+<li>Atlassian Bamboo?</li>
+<li>TeamCity?</li>
+</ul>
+
+
+<h2>Orchestration</h2>
+
+<h3>Puppet:</h3>
+
+<ul>
+<li>MCollective</li>
+</ul>
+
+
+<h3>Chef :</h3>
+
+<ul>
+<li>has “knife ssh” and Pushy support coming for push jobs</li>
+</ul>
+
+
+<h2>Canary testing &amp; Prod vs QA vs test environments (not prod vs QA app code)</h2>
+
+<h3>Puppet</h3>
+
+<ul>
+<li>serverspec <a href="http://serverspec.org/">http://serverspec.org/</a></li>
+<li>rspec-system <a href="https://github.com/puppetlabs/rspec-system">https://github.com/puppetlabs/rspec-system</a></li>
+<li>nagios checks/ plugins</li>
+</ul>
+
+
+<h3>Chef</h3>
+
+<ul>
+<li>has knife-flip from Etsy, flips nodes into a test environment</li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li>Remote context class matching using remoteclassesmatching (Enterprise)</li>
+</ul>
+
+
+<h2>Provisioning VM&rsquo;s in the cloud?</h2>
+
+<h3>Chef:</h3>
+
+<ul>
+<li>knife ec2 server create&hellip;</li>
+<li>spiceweasel somefile.yml</li>
+<li>knife openstack&hellip;</li>
+<li>knife server create&hellip;</li>
+</ul>
+
+
+<p>Clouds include Azure, Openstack, Rackspace, etc. EC2 OpsWorks (although some limitations since it’s an older version)</p>
+
+<h2>Puppet:</h2>
+
+<ul>
+<li>puppet node_aws create / puppet node_vmware create</li>
+<li>Puppet RAL for AWS, OpenStack, CloudStack:
+  ec2_instance { “instance_name”: type => t1.large, az => ‘USWest’, ensure => present, …. }</li>
+<li>Razor (bare metal)</li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li><a href="https://github.com/cfengine/design-center/tree/master/sketches/cloud">https://github.com/cfengine/design-center/tree/master/sketches/cloud</a></li>
+</ul>
+
+
+<h3>Chef</h3>
+
+<ul>
+<li>Crowbar has Chef server integrated, although I don’t know that much about it.</li>
+<li>Joyent also has a Chef “dataset” that they support.</li>
+</ul>
+
+
+<h2>Team Workflow</h2>
+
+<h3>Puppet: &ndash;?</h3>
+
+<h3>Chef:</h3>
+
+<ul>
+<li>knife-spork (has handlers to notify people)</li>
+</ul>
+
 </div>
   
   
@@ -115,7 +372,7 @@
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2011/08/06/thomaes-function/">Thomae&#8217;s Function</a></h1>
+      <h1 class="entry-title"><a href="/blog/2013/11/05/deploy-reveal-dot-js-slideshow-on-github-pages/">Deploy reveal.js Slideshow on Github-pages</a></h1>
       
       
     
@@ -132,32 +389,386 @@
   
 
 
-<time datetime="2011-08-06T08:00:00-04:00" pubdate data-updated="true">Aug 6<span>th</span>, 2011</time>
+<time datetime="2013-11-05T21:03:00-05:00" pubdate data-updated="true">Nov 5<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p><a href="http://en.wikipedia.org/wiki/Thomae%27s_function">Thomae&rsquo;s function</a> (a.k.a. Riemann function) is defined on the interval (0, 1) as follows</p>
+  <div class="entry-content"><p>Originally posted on <a href="http://www.tikalk.com">Tikal Knolwedge&rsquo;s webiste</a> @ this <a href="http://www.tikalk.com/alm/deploy-revealjs-slideshow-github-pages">link</a><br></p>
 
-<p>$$
-f(x) = \left{
-\begin{array}{l l}
-  1/q &amp; \quad \text{if $x = p/q$ is rational and $gcd(p, q) = 1$}\
-  0 &amp; \quad \text{if $x$ is irrational}\
-\end{array} \right.
-$$</p>
+<p><img class="left" src="/assets/images/gh-pages.png" title="'gh-pages'" >Deploy <a href="https://github.com/hakimel/reveal.js/">reveal.js slideshow</a> on github-pages was ridiculously easy.</p>
 
-<p>Here is the graph of this function with some points highlighted as plus symbols for better view.</p>
+<p>Cloned reveal.js master branch to my local machine:</p>
 
-<p><img class="center" src="/images/posts/thomae.jpg"></p>
+<pre><code>git clone git@github.com:hakimel/reveal.js.git
+</code></pre>
 
-<p>This function has interesting property: it&rsquo;s continuous at all irrational points. It&rsquo;s easy to see this if you notice that for any positive <em>ε</em> there is a finite number of dots above the line <em>y</em> = <em>ε</em>. That means for any irrational number <em>x</em><sub>0</sub> you can always construct a <em>δ</em>-neighbourhood that doesn&rsquo;t contain any dot from the area above the line <em>y</em> = <em>ε</em>.</p>
+<p>Remove the history &ndash; of you want to preserve history ( <strong>git remote rm origin</strong> and add your new remote)</p>
 
-<p><img class="center" src="/images/posts/thomae-e-d.jpg"></p>
+<pre><code>rm -Rf .git 
+</code></pre>
 
-<p>To generate the data file with point coordinates I wrote Common Lisp program:</p>
+<p>Add your new remote (you need to create a repository first)</p>
+
+<pre><code>git remote add origin git@github.com:tikalk-cookbooks/chef_workshop_presentation.git
+</code></pre>
+
+<p>You know the rest &hellip;</p>
+
+<pre><code>git add .
+git commit -m "Initial commit"
+git push origin master
+</code></pre>
+
+<p>In order to push master to github pages you should create a branch names <em><strong>gh-pages</strong></em> and it&nbsp;<strong>must</strong> be named that, the commit &amp; push to this branch and about 2 minuets later you can browse to your presentation on gh-pages.</p>
+
+<p><em><strong>Create a branch</strong></em>:</p>
+
+<pre><code>git branch hg-pages
+git push origin gh-pages&lt;/pre&gt;
+</code></pre>
+
+<p>updating this &quot;site&quot; can be done by editing the stuff you want on the &quot;master&quot; branch, then merge     those changes in the gh-pages branch and finally push those changes to the remote gh-pages which will automatically deploy youe reveal.js presentaion.</p>
+
+<p>the merge sould look somthing like:</p>
+
+<pre><code>hagzag-Lap-hagzag:chef_workshop_presentaion(master) $ git checkout gh-pages&amp;nbsp;
+
+hagzag-Lap-hagzag:chef_workshop_presentaion(gh-pages) $ git merge master&amp;nbsp;
+Updating 0f4f1e1..fb0d73d
+
+Fast-forward
+
+css/custom.css | &amp;nbsp; 4 ++++
+
+index.html &amp;nbsp; &amp;nbsp; | 104 +++++++++++++++++++++++++++++++++++++++++++++++++-----------    --------------------------------------------
+
+2 files changed, 53 insertions(+), 55 deletions(-)
+
+create mode 100644 css/custom.css
+
+git push origin gh-pages
+</code></pre>
+
+<p>the url is built from the followng pattern:</p>
+
+<pre><code>[github_username].github.io/[repo_name]
+</code></pre>
+
+<p>in this case:</p>
+
+<p><a href="http://tikalk-cookbooks.github.io/chef_workshop_presentation/#/">http://tikalk-cookbooks.github.io/chef_workshop_presentation/</a></p>
+
+<p>Hope you find this useful !</p>
+
+<p>HP</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/27/manage-data-bags-in-solo-mode/">Manage Data Bags in Solo Mode</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-27T15:08:00-04:00" pubdate data-updated="true">Oct 27<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/Opscode_chef_logo.png" title="'Chef Logo'" > For the past ~6 monthes or so I have been working solely with <a href="http://docs.opscode.com/chef_solo.html">chef-solo</a>.
+There are quite a few helpers for solo out there such as:</p>
+
+<ol>
+<li>soloist &ndash; <a href="https://github.com/mkocher/soloist">https://github.com/mkocher/soloist</a></li>
+<li>knife-solo &ndash; <a href="https://github.com/matschaffer/knife-solo">https://github.com/matschaffer/knife-solo</a>
+&amp; a few more.</li>
+</ol>
+
+
+<p>What kept annoying me for some time is I couldn&rsquo;t manage databas with knife whilst working in solo mode &hellip; ARRRRRRGH!!!</p>
+
+<p>It looked somthing like:</p>
+
+<pre><code>[oper@sandbox chef_repo]$ knife data bag create admins
+ERROR: The object you are looking for could not be found
+Response: &lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL /data was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.2.15 (CentOS) Server at : Port 80&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;
+</code></pre>
+
+<p>Then came <a href="https://github.com/thbishop/knife-solo_data_bag">knife-solo_data_bag</a> I am quite embaressed to say ;) I haven&rsquo;t found this sooner.
+Now with a totally bogus knife.rb file I can generate / edit / manager databags with knife-solo &amp; knife-solo_data_bag.</p>
+
+<p>Again, hope you find this useful, I know I do ;)</p>
+
+<p>HP</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/20/mounting-s3-buckets-with-f3fs/">S3 - Mounting S3 Buckets With S3fs</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-20T20:32:00-04:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/amazon-s3.png" title="'S3 logo'" >A <code>cheap</code> solution on Amazon s3 for uploading files to s3 via SSH</p>
+
+<p>I needed to upload files from my Corporate environment in a <code>push mode</code> meaning I do not open any &ldquo;special&rdquo; ports in my environemnt in order to enable users to put files on S3.
+I am curentelly testing to see how robust this solution really is but basically what I found myself doing is install s3fs (<a href="https://code.google.com/p/s3fs/">link to project page</a>) like so:</p>
+
+<pre><code>wget http://s3fs.googlecode.com/files/s3fs-1.73.tar.gz
+tar xvzf s3fs-1.73.tar.gz
+cd s3fs-1.73
+./configure --prefix=/usr
+make &amp;&amp; make install
+</code></pre>
+
+<p>I was installing this for Suse but for Amazon linux/redhat etc you might find a package see: <a href="http://rpmfind.net/linux/rpm2html/search.php?query=fuse-s3fs">here</a>.</p>
+
+<p>Once the package is installed you can use <code>s3fs</code></p>
+
+<pre><code>s3fs BUCKET:[PATH] MOUNTPOINT [OPTION]...
+
+s3fs dev_tools /mnt/dev_tools/ 
+</code></pre>
+
+<p>Worth noting you do not need to specify the s3 url, you only specify the bucket name !</p>
+
+<p>The same thing / very similir in <code>/etc/fstab</code> will look like so:</p>
+
+<pre><code>s3fs#dev_tools /mnt/dev_tools fuse allow_other,user=youruser 0 0
+</code></pre>
+
+<p>The mount opts are <strong>extreemly important</strong> &ndash; without the <code>allow_other</code> flag the user cannot write to the directory.</p>
+
+<p>This is really awesome &ndash; we now jsut need to make sure the connectivity is reliable / fast enough and this will become very usefull.</p>
+
+<p>As always hope you find this useful.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick/">Managing Docker Services With This One Easy Trick</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-20T15:46:00-04:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have been having a lot of internal debate about the idea of running more than one service in a docker container.   A Docker container is built to run a single process in the foreground and to live for only as long as that process is running.  This is great in a utopian world where servers are immutable and sysadmins drink tiki drinks on the beach,  however it doesn&rsquo;t always translate well to the real world.</p>
+
+<p>Examples where you might want to be able to run multiple servers span from the simple use case of running <code>sshd</code> as well as your application to running a web app such as <code>wordpress</code> where you might want both <code>apache</code> and <code>mysql</code> running in the same container.</p>
+
+<p>Wrapping your applications in a supervisor daemon such as <code>runit</code> seems like a perfect fit for this.  All you need to do is install <code>runit</code> as part of your <code>dockerfile</code> and then create appropriate service directories for the apps you want to run in the container.    I was doing some testing of this when I realized a quirk of <code>runit</code> which I could exploit for evil.</p>
+
+<p>To start or stop a service with <code>runit</code> is simply a matter of creating or deleting a symlink in a service directory,   so in theory if you could expose that directory to the server hosting the container you could exploit that to start and stop services from outside of the container.  <code>Docker</code> volume mapping allows exactly this!</p>
+
+<p>Below you will find examples of running three services (logstash,elasticsearch,kibana) that make up the <code>logstash</code> suite.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/25/vagrant-docker-and-ansible-wtf/">Vagrant, Docker and Ansible, WTF?</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-25T08:00:00-04:00" pubdate data-updated="true">Sep 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/09/25/vagrant-docker-and-ansible-wtf.html">Vagrant, Docker and Ansible. WTF?</a></h2>
+
+<p>Given that we&rsquo;re building a SaaS that helps our client managing their infrastructure, our team is pretty familiar with leveraging VMs and configuration management tools. We&rsquo;ve actually been heavy users of Vagrant and <a href="http://devo.ps/blog/2013/07/03/ansible-simply-kicks-ass.html">Ansible</a> for
+the past year, and it&rsquo;s helped us tremendously normalize our development process.</p>
+
+<p>As our platform grew in complexity, some additional needs emerged:</p>
+
+<ul>
+<li><strong>Containerization</strong>; we needed to be able to safely execute custom, and potentially harmful, code.</li>
+<li><strong>Weight</strong>; as we added more sub-systems to devo.ps, having full blown VMs proved to be hard to juggle with when testing and developing.</li>
+</ul>
+
+
+<p>And that&rsquo;s why we ended up adding Docker to our development workflow. We were already familiar with it (as it powers some parts of the devo.ps infrastructure) and knew there would be obvious wins. In practice, we are shipping Docker containers in a main Vagrant image and drive some of the customization and upgrade with Ansible.</p>
+
+<p>We&rsquo;ll probably write something about this approach in the coming weeks, but given the amount of confusion there is around what these technologies are, and how they&rsquo;re used, we thought we&rsquo;d give you a quick tour on how to use them together.</p>
+
+<p>Let&rsquo;s get started.</p>
+
+<h2>Vagrant</h2>
+
+<p>You&rsquo;ve probably heard about <a href="http://www.vagrantup.com/">Vagrant</a>; a healthy number of people have been writing about it in the past 6 months. For those of you who haven&rsquo;t, think of it as a VM without the GUI. At its core, Vagrant is a simple wrapper around Virtualbox/VMware.</p>
+
+<p>A few interesting features:</p>
+
+<ul>
+<li><strong>Boatloads of existing images</strong>, just check <a href="http://www.vagrantbox.es/">Vagrantbox.es</a> for example.</li>
+<li><strong>Snapshot and package your current machine</strong> to a Vagrant box file (and, consequently, share it back).</li>
+<li><strong>Ability to fine tune settings of the VM</strong>, including things like RAM, CPU, APIC…</li>
+<li><strong>Vagrantfiles</strong>. This allows you to setup your box on init: installing packages, modifying configuration, moving code around…</li>
+<li><strong>Integration with CM tools</strong> like Puppet, Chef and Ansible.</li>
+</ul>
+
+
+<p>Let&rsquo;s get it running on your machine:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>1. First, [download Vagrant](http://downloads.vagrantup.com/) 
+</span><span class='line'>     and [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
+</span><span class='line'>  2. Second, let's download an image, spin it up and SSH in:
+</span><span class='line'>   $ vagrant init precise64 http://files.vagrantup.com/precise64.box
+</span><span class='line'>   $ vagrant up
+</span><span class='line'>   $ vagrant ssh
+</span><span class='line'>  3. There's no 3.
+</span><span class='line'>  4. There's a 4 if you want to access your (soon to be) deployed app; 
+</span><span class='line'>  5. you will need to dig around the Vagrant documentation to 
+</span><span class='line'>     [perform port forwarding](http://docs.vagrantup.com/v2/networking/forwarded_ports.html), 
+</span><span class='line'>     [proper networking](http://docs.vagrantup.com/v2/networking/private_network.html) 
+</span><span class='line'>     and update manually your `Vagrantfile`.</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Docker</h2>
+
+<p><a href="http://docker.io">Docker</a> is a Linux container, written in <a href="http://golang.org">Go</a> (yay!) and based on <a href="http://en.wikipedia.org/wiki/LXC">lxc</a> (self-described as &ldquo;chroot on steroids&rdquo;) and <a href="http://en.wikipedia.org/wiki/Aufs">AUFS</a>. Instead of providing a full VM, like you get with Vagrant, Docker provides you lightweight containers, that share the same kernel and allow to safely execute independent
+processes.</p>
+
+<p>Docker is attractive for many reasons:</p>
+
+<ul>
+<li><strong>Lightweight</strong>; images are much lighter than full VMs, and spinning off a new instance is lightning fast (in the range of seconds instead of minutes).</li>
+<li><strong>Version control of the images</strong>, which makes it much more convenient to handle builds.</li>
+<li><strong>Lots of images</strong> (again), just have a look at <a href="https://index.docker.io">the docker public index of images</a>.</li>
+</ul>
+
+
+<p>Let&rsquo;s set up a Docker container on your Vagrant machine:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -176,826 +787,145 @@ $$</p>
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='common-lisp'><span class='line'><span class="p">(</span><span class="nb">defun</span> <span class="nv">rational-numbers</span> <span class="p">(</span><span class="nv">max-denominator</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">result</span> <span class="p">(</span><span class="nb">list</span><span class="p">)))</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">q</span> <span class="nv">from</span> <span class="mi">2</span> <span class="nv">to</span> <span class="nv">max-denominator</span> <span class="nb">do</span>
-</span><span class='line'>      <span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">p</span> <span class="nv">from</span> <span class="mi">1</span> <span class="nv">to</span> <span class="p">(</span><span class="nb">1-</span> <span class="nv">q</span><span class="p">)</span> <span class="nb">do</span>
-</span><span class='line'>        <span class="p">(</span><span class="nb">pushnew</span> <span class="p">(</span><span class="nb">/</span> <span class="nv">p</span> <span class="nv">q</span><span class="p">)</span> <span class="nv">result</span><span class="p">)))</span>
-</span><span class='line'>    <span class="nv">result</span><span class="p">))</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>1. SSH in Vagrant if you're not in already:
+</span><span class='line'>    
+</span><span class='line'>     $ vagrant ssh
 </span><span class='line'>
-</span><span class='line'><span class="p">(</span><span class="nb">defun</span> <span class="nv">thomae-rational-points</span> <span class="p">(</span><span class="nv">abscissae</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">mapcar</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">list</span> <span class="nv">x</span> <span class="p">(</span><span class="nb">/</span> <span class="mi">1</span> <span class="p">(</span><span class="nb">denominator</span> <span class="nv">x</span><span class="p">))))</span> <span class="nv">abscissae</span><span class="p">))</span>
+</span><span class='line'>  2. Install Docker, 
+</span><span class='line'>  [as explained on the official website](http://http://docs.docker.io/en/latest/installation/ubuntulinux/#ubuntu-precise-12-04-lts-64-bit):
+</span><span class='line'>    
+</span><span class='line'>     $ sudo apt-get update
+</span><span class='line'>     $ sudo apt-get install linux-image-generic-lts-raring linux-headers-generic-lts-raring
+</span><span class='line'>     $ sudo reboot
+</span><span class='line'>     $ sudo sh -c "curl https://get.docker.io/gpg | apt-key add -"
+</span><span class='line'>     $ sudo sh -c "echo deb http://get.docker.io/ubuntu docker main &gt; /etc/apt/sources.list.d/docker.list"
+</span><span class='line'>     $ sudo apt-get update
+</span><span class='line'>     $ sudo apt-get install lxc-docker
 </span><span class='line'>
-</span><span class='line'><span class="p">(</span><span class="nb">defun</span> <span class="nv">thomae</span> <span class="p">(</span><span class="nv">max-denominator</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">points</span> <span class="p">(</span><span class="nv">thomae-rational-points</span> <span class="p">(</span><span class="nv">rational-numbers</span> <span class="nv">max-denominator</span><span class="p">))))</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">with-open-file</span> <span class="p">(</span><span class="nc">stream</span> <span class="s">&quot;thomae.dat&quot;</span> <span class="ss">:direction</span> <span class="ss">:output</span><span class="p">)</span>
-</span><span class='line'>      <span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">point</span> <span class="nv">in</span> <span class="nv">points</span> <span class="nb">do</span>
-</span><span class='line'>        <span class="p">(</span><span class="nb">format</span> <span class="nc">stream</span> <span class="s">&quot;~4$ ~4$~%&quot;</span> <span class="p">(</span><span class="nb">first</span> <span class="nv">point</span><span class="p">)</span> <span class="p">(</span><span class="nb">second</span> <span class="nv">point</span><span class="p">))))))</span>
+</span><span class='line'>  3. Verify it worked by trying to build your first container:
+</span><span class='line'>    
+</span><span class='line'>     $ sudo docker run -i -t ubuntu /bin/bash
 </span><span class='line'>
-</span><span class='line'><span class="p">(</span><span class="nv">thomae</span> <span class="mi">500</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To create the images I used <a href="http://www.gnuplot.info/">gnuplot</a> commands:</p>
-
-<pre><code>plot "thomae.dat" using 1:2 with dots
-plot "thomae.dat" using 1:2 with points
-</code></pre>
-
-<p>and Photoshop.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2011/06/27/math-and-physics-of-benderama/">Math and Physics of Benderama</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-27T08:00:00-04:00" pubdate data-updated="true">Jun 27<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>The last episode of <a href="http://theinfosphere.org/Benderama">Futurama</a> has interesting formula involved. The entire plot is based on the Professor&rsquo;s latest invention &mdash; <a href="http://en.wikipedia.org/wiki/Banach&amp;#8211;Tarski_paradox">Banach-Tarski</a> Dupla-Shrinker &mdash; the machine that produces two copies of any object at a 60% scale. It was just a matter of time when Bender found a proper usage of this machine: to replicate himself. Then two small copies of Bender replicated themselves making four smaller copies, and so forth. At some point the Professor horrified the crew that if they don&rsquo;t stop this unlimited growth, the total mass of all Benders will eventually be so big that the entire Earth will be consumed during the process of replication. As a proof he demonstrated this formula of the mass of all generations of Bender</p>
-
-<p><img class="center" src="http://pool.theinfosphere.org/images/thumb/0/04/Benderama_Maths.png/800px-Benderama_Maths.png"></p>
-
-<p>This is a perfect toy for a science geek. The first obvious question it brings: is this formula mathematically correct? As it turns out, it is not. Considering the scale of 60%, the cubic dependency of volume on linear dimension, and the constant density of all copies, the formula should be the following</p>
-
-<p>$$
-M = \displaystyle\sum\limits<em>{n=0}^\infty 2<sup>n</sup>\left[\left(\frac{3}{5}\right)^{3n} M_0\right] = \displaystyle\sum\limits</em>{n=0}^\infty 2<sup>n</sup>\left[\left(\frac{27}{125}\right)<sup>n</sup> M_0\right] = \displaystyle\sum\limits_{n=0}^\infty\left(\frac{54}{125}\right)<sup>n</sup> M_0 = \frac{125}{71} M_0
-$$</p>
-
-<p>As you can see the total mass of infinite number of Benders actually converges to approximately 1.76 <em>M</em><sub>0</sub>. So from Math perspective there is nothing to worry about. But what if our assumption of constant density is invalid. Would it be a problem from Physics perspective? Let&rsquo;s see.</p>
-
-<p>Knowing that every new copy has a size of 0.6 of the original it was made from, we have the following formula for the size of Bender in the <em>n</em><sup>th</sup> generation</p>
-
-<p>$$
-L_n = 0.6<sup>n</sup> L_0
-$$</p>
-
-<p>This exponential function becomes very small pretty soon. In the <a href="http://www.wolframalpha.com/input/?i=0.6%5E154">154</a><sup>th</sup> generation it already reaches the <a href="http://en.wikipedia.org/wiki/Planck_length">Planck length</a>, after which the further replication is physically impossible. If we calculate the total mass of 154 Bender&rsquo;s generations using the Professor&rsquo;s formula, we get <a href="http://www.wolframalpha.com/input/?i=H%28154%29">H(154)</a> &#215; <a href="http://www.peelified.com/Futurama-Forum-1/Topic-4095-0-Benders_Weight.html">238</a> kg &#8776; 1,337.56 kg, which is nothing comparing to the Earth mass.</p>
-
-<p>So we have to admit that from both Math and Physics perspective the Professor was wrong, and there was no real threat to the Earth.</p>
-
-<p>Although the Professor&rsquo;s formula doesn&rsquo;t describe the replication process adequately, it&rsquo;s still a beautiful piece of Math because it&rsquo;s a formula of <a href="http://en.wikipedia.org/wiki/Harmonic_series_(mathematics)">harmonic series</a>. If you want to know why harmonic series is beautiful and which real processes it describes, read this nice <a href="http://plus.maths.org/content/perfect-harmony">article</a> of John H. Webb.</p>
-
-<p>And don&rsquo;t miss the next <a href="http://theinfosphere.org/Ghost_in_the_Machines">episode</a> of Futurama this Thursday :&ndash;)</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2011/06/08/functional-groovy-switch-statement/">Functional Groovy Switch Statement</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-08T08:00:00-04:00" pubdate data-updated="true">Jun 8<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In the previous <a href="/2011/06/01/reversing-groovy-switch-statement">post</a> I showed how to replace chained if-else statements in Groovy with one concise switch. It was done for the special case of if-stement where every branch was evaluated using the same condition function. Today I want to make a generalization of that technique by allowing to use different conditionals.</p>
-
-<p>Suppose your code looks like this:</p>
-
-<pre><code>if (param % 2 == 0) {
-    'even'
-} else if (param % 3 == 0) {
-    'threeven'
-} else if (0 &lt; param) {
-    'positive'
-} else {
-    'negative'
-}
-</code></pre>
-
-<p>As long as every condition operates on the same parameter, you can replace the entire chain with a switch. In this scenario <code>param</code> becomes a switch parameter and conditions become <code>case</code> parameters of Closure type. The only thing we need to do is to override <code>Closure.isCase()</code> method as I described in the previous post. The safest way to do it is to create a category class:</p>
-
-<pre><code>class CaseCategory {
-    static boolean isCase(Closure casePredicate, Object switchParameter) {
-        casePredicate.call switchParameter
-    }
-}
-</code></pre>
-
-<p>Now we can replace if-statement with the following switch:</p>
-
-<pre><code>use (CaseCategory) {
-    switch (param) {
-        case { it % 2 == 0 } : return 'even'
-        case { it % 3 == 0 } : return 'threeven'
-        case { 0 &lt; it }      : return 'positive'
-        default              : return 'negative'
-    }
-}
-</code></pre>
-
-<p>We can actually go further and extract in-line closures:</p>
-
-<pre><code>def even = {
-    it % 2 == 0
-}
-def threeven = {
-    it % 3 == 0
-}
-def positive = {
-    0 &lt; it
-}
-</code></pre>
-
-<p>After which the code becomes even more readable:</p>
-
-<pre><code>use (CaseCategory) {
-    switch (param) {
-        case even     : return 'even'
-        case threeven : return 'threeven'
-        case positive : return 'positive'
-        default       : return 'negative'
-    }
-}
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2011/06/07/nothing-new-under-sun/">Nothing New Under the Sun</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-07T08:00:00-04:00" pubdate data-updated="true">Jun 7<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Every generation of software developers needs its own fad. For my generation it was Agile, for generation before it was OOP, and before that it was another big thing. Gerald Weinberg, one of the most influential people in our industry, blogged yesterday about this issue. With over 50 years of experience in software development he knows what he is talking about. Read his <a href="http://secretsofconsulting.blogspot.com/2011/06/beyond-agile-programming.html">blog post</a> — he has a very good point.</p>
-
-<p>P.S. I&rsquo;m wondering what will be the next big thing. Will it be Cloud or <a href="/2013/01/15/embrace-big-data/">Big Data</a>?</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2011/06/05/multimethods-in-groovy/">Multimethods in Groovy</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-05T08:00:00-04:00" pubdate data-updated="true">Jun 5<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Every time I switch from Groovy to Java I have to remind myself that some things that seem so natural and work as expected in Groovy, don&rsquo;t work in Java. One of such differences is method dispatching. Groovy supports <a href="http://en.wikipedia.org/wiki/Multiple_dispatch">multiple dispatch</a>, while Java does not. Therefore the following <a href="http://www.gigamonkeys.com/book/object-reorientation-generic-functions.html#multimethods">code</a> works differently in Groovy and Java:</p>
-
-<pre><code>public class A {
-    public void foo(A a) { System.out.println("A/A"); }
-    public void foo(B b) { System.out.println("A/B"); }
-}
-public class B extends A {
-    public void foo(A a) { System.out.println("B/A"); }
-    public void foo(B b) { System.out.println("B/B"); }
-}
-public class Main {
-    public static void main(String[] args) {
-        A a = new A();
-        A b = new B();
-        a.foo(a);
-        b.foo(b);
-    }
-}
-
-$ java Main
-A/A
-B/A
-
-$ groovy Main.groovy
-A/A
-B/B
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2011/06/01/reversing-groovy-switch-statement/">Reversing Groovy Switch Statement</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-01T08:00:00-04:00" pubdate data-updated="true">Jun 1<span>st</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Recently I&rsquo;ve been working on a Groovy code that had many methods with long multibranch conditionals like this:</p>
-
-<pre><code>def parse(message, options) {
-    if (options.contains('A')) {
-        parseARule message
-    } else if (options.contains(2)) {
-        parseSmallDigitRule message
-    ...
-    } else if (options.contains(something)) {
-        parseSomeRule message
-    } else {
-        parseSomeOtherRule message
-    }
-}
-</code></pre>
-
-<p>Although this code is working, it is hard to see which branch is called under which condition. It would be much better if we could replace this code with something like Lisp <code>cond</code> macro. The best candidate for such a task in Groovy would be a <code>switch</code> statement. If we could only refactor the code above to something like following, it would significantly improve readability:</p>
-
-<pre><code>def parse(message, options) {
-    switch (options) {
-        case 'A' : return parseARule(message)
-        case 2   : return parseSmallDigitRule(message)
-        ...
-        case ... : return parseSomeRule(message)
-        default  : return parseSomeOtherRule(message)
-    }
-}
-</code></pre>
-
-<p>Unfortunately, this code doesn&rsquo;t work out of the box in Groovy, but it works if we do some metaprogramming.</p>
-
-<p>The way <code>switch</code> statement works in Groovy is a bit <a href="http://docs.codehaus.org/display/GROOVY/Logical+Branching#LogicalBranching-switchstatement">different</a> than in Java. Instead of equals() it uses isCase() method to match case-value and switch-value. The default implementation of isCase() method falls back to equals() method, but some classes, including <a href="http://groovy.codehaus.org/groovy-jdk/java/util/Collection.html#isCase(java.lang.Object)">Collection</a>, override this behaviour. That&rsquo;s why in Groovy you can do things like this:</p>
-
-<pre><code>switch (value) {
-    case ['A','E','I','O','U'] : return 'vowel'
-    case 0..9                  : return 'digit'
-    case Date                  : return 'date'
-    default                    : return 'something else'
-}
-</code></pre>
-
-<p>For our purposes we need some sort of reverse <code>switch</code>, where collection is used as a switch-value, and String and Integer are used as a case-value. To do this we need to override default implementation of isCase() method on String and Integer classes. It&rsquo;s not possible in Java, but is very easy in Groovy. You can change method implementation globally by replacing it in corresponding meta class, or locally with the help of categories. Let&rsquo;s create a category that swaps object and subject of isCase() method:</p>
-
-<pre><code>class CaseCategory {
-    static boolean isCase(String string, Collection col) {
-        reverseCase(string, col)
-    }
-    static boolean isCase(Integer integer, Collection col) {
-        reverseCase(integer, col)
-    }
-    // Add more overloaded methods here if needed
-
-    private static boolean reverseCase(left, right) {
-        right.isCase(left)
-    }
-}
-</code></pre>
-
-<p>Now we can use this category to achieve the goal we stated at the beginning of this post:</p>
-
-<pre><code>def parse(message, options) {
-    use (CaseCategory) {
-        switch (options) {
-            case 'A' : return parseARule(message)
-            case 2   : return parseSmallDigitRule(message)
-            ...
-            case ... : return parseSomeRule(message)
-            default  : return parseSomeOtherRule(message)
-        }
-    }
-}
-</code></pre>
-
-<p>If you are comfortable with global method replacement, you can amend String and Integer meta classes. In this case you don&rsquo;t need to wrap <code>switch</code> statement with <code>use</code> keyword.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2011/02/03/lazy-lists-in-groovy/">Lazy Lists in Groovy</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-02-03T07:00:00-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I like lazy evaluation, and it&rsquo;s one of the reasons I like Haskell and Clojure. Although from engineering perspective lazy evaluation is probably not the most needed feature, it&rsquo;s definitely very useful for solving some mathematical problems.</p>
-
-<p>Most languages don&rsquo;t have lazy evaluation out of the box, but you can implement it using some other language features. This is an interesting task, and I use it as a code <a href="http://en.wikipedia.org/wiki/Kata_(programming)">kata</a> which I practice every time I learn a new strict language.</p>
-
-<p>So, how to implement lazy lists in a strict language? Very simple, if the language is functional. Namely, you <em>build lazy list recursively by wrapping strict list within a function</em>. Here is, for example, the strict empty list in Groovy:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="o">[]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If we wrap it with a closure, it becomes lazy empty list:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="o">{-&gt;</span> <span class="o">[]</span> <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If we need a list with one element, we prepend (or speaking Lisp terminology <em>cons</em>) an element to lazy empty list, and make the result lazy again:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="o">{-&gt;</span> <span class="o">[</span> <span class="n">element</span><span class="o">,</span> <span class="o">{-&gt;</span> <span class="o">[]</span> <span class="o">}</span> <span class="o">]</span> <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To add more elements we continue the same process until all elements are lazily consed. Here is, for example, a lazy list with three elements <em>a</em>, <em>b</em> and <em>c</em>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="o">{-&gt;</span> <span class="o">[</span><span class="n">a</span><span class="o">,</span> <span class="o">{-&gt;</span> <span class="o">[</span><span class="n">b</span><span class="o">,</span> <span class="o">{-&gt;</span> <span class="o">[</span> <span class="n">c</span><span class="o">,</span> <span class="o">{-&gt;</span> <span class="o">[]</span> <span class="o">}</span> <span class="o">]</span> <span class="o">}</span> <span class="o">]</span> <span class="o">}</span> <span class="o">]</span> <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now, when you have an idea how to build lazy lists, let&rsquo;s build them Groovy way. We start by creating a class:</p>
-
-<figure class='code'><figcaption><span>LazyList.groovy </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kd">class</span> <span class="nc">LazyList</span> <span class="o">{</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">Closure</span> <span class="n">list</span>
+</span><span class='line'>  4. Great, but we'll need more than a vanilla Linux. To add our dependencies, for example to run a Node.js + MongoDB app, we're gonna start by creating a `Dockerfile`:
+</span><span class='line'>    
+</span><span class='line'>     FROM ubuntu
+</span><span class='line'>     MAINTAINER My Self me@example.com
+</span><span class='line'>     
+</span><span class='line'>     # Fetch Nodejs from the official repo (binary .. no hassle to build, etc.)
+</span><span class='line'>     ADD http://nodejs.org/dist/v0.10.19/node-v0.10.19-linux-x64.tar.gz /opt/
+</span><span class='line'>     
+</span><span class='line'>     # Untar and add to the PATH
+</span><span class='line'>     RUN cd /opt &amp;&amp; tar xzf node-v0.10.19-linux-x64.tar.gz
+</span><span class='line'>     RUN ln -s /opt/node-v0.10.19-linux-x64 /opt/node
+</span><span class='line'>     RUN echo "export PATH=/opt/node/bin:$PATH" &gt;&gt; /etc/profile
+</span><span class='line'>     
+</span><span class='line'>     # A little cheat for upstart ;)
+</span><span class='line'>     RUN dpkg-divert --local --rename --add /sbin/initctl
+</span><span class='line'>     RUN ln -s /bin/true /sbin/initctl
+</span><span class='line'>     
+</span><span class='line'>     # Update apt sources list to fetch mongodb and a few key packages
+</span><span class='line'>     RUN echo "deb http://archive.ubuntu.com/ubuntu precise universe" &gt;&gt; /etc/apt/sources.list
+</span><span class='line'>     RUN apt-get update
+</span><span class='line'>     RUN apt-get install -y python git
+</span><span class='line'>     RUN apt-get install -y mongodb
+</span><span class='line'>     
+</span><span class='line'>     # Finally - we wanna be able to SSH in
+</span><span class='line'>     RUN apt-get install -y openssh-server
+</span><span class='line'>     RUN mkdir /var/run/sshd
+</span><span class='line'>     
+</span><span class='line'>     # And we want our SSH key to be added
+</span><span class='line'>     RUN mkdir /root/.ssh &amp;&amp; chmod 700 /root/.ssh
+</span><span class='line'>     ADD id_rsa.pub /root/.ssh/authorized_keys
+</span><span class='line'>     RUN chmod 400 /root/.ssh/authorized_keys &amp;&amp; chown root. /root/.ssh/authorized_keys
+</span><span class='line'>     
+</span><span class='line'>     # Expose a bunch of ports .. 22 for SSH and 3000 for our node app
+</span><span class='line'>     EXPOSE 22 3000
+</span><span class='line'>     
+</span><span class='line'>     ENTRYPOINT ["/usr/sbin/sshd", "-D"]
 </span><span class='line'>
-</span><span class='line'>    <span class="kd">private</span> <span class="nf">LazyList</span><span class="o">(</span><span class="n">list</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">list</span> <span class="o">=</span> <span class="n">list</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The variable <code>list</code> encapsulates the closure wrapper of the list. We need to expose some methods that allow constructing lists using procedure described above:</p>
-
-<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kd">static</span> <span class="n">LazyList</span> <span class="nf">nil</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">new</span> <span class="nf">LazyList</span><span class="o">(</span> <span class="o">{-&gt;</span> <span class="o">[]}</span> <span class="o">)</span>
-</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  5. Let's build our image now:
+</span><span class='line'>    
+</span><span class='line'>     $ sudo docker build .
+</span><span class='line'>     
+</span><span class='line'>     # Missing file id_rsa.pub ... hahaha ! You need an ssh key for your vagrant user
+</span><span class='line'>     $ ssh-keygen
+</span><span class='line'>     $ cp -a /home/vagrant/.ssh/id_rsa.pub .
+</span><span class='line'>     
+</span><span class='line'>     # Try again
+</span><span class='line'>     $ sudo docker build .
+</span><span class='line'>     
+</span><span class='line'>     # Great Success! High Five!
 </span><span class='line'>
-</span><span class='line'>    <span class="n">LazyList</span> <span class="nf">cons</span><span class="o">(</span><span class="n">head</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">new</span> <span class="nf">LazyList</span><span class="o">(</span> <span class="o">{-&gt;</span> <span class="o">[</span><span class="n">head</span><span class="o">,</span> <span class="n">list</span><span class="o">]}</span> <span class="o">)</span>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>  6. Now, let's spin off a container with that setup and log into it (`$MY_NEW_IMAGE_ID` is the last id the build process returned to you):
+</span><span class='line'>    
+</span><span class='line'>     $ sudo docker run -p 40022:22 -p 80:3000 -d $MY_NEW_IMAGE_ID
+</span><span class='line'>     $ ssh root@localhost -p 40022</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Now we can construct lists by consing elements to empty list:</p>
+<p>You now have a Docker container, inside a Vagrant box (<em>Inception</em> style),
+ready to run a Node.js app.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">lazylist</span> <span class="o">=</span> <span class="n">LazyList</span><span class="o">.</span><span class="na">nil</span><span class="o">().</span><span class="na">cons</span><span class="o">(</span><span class="mi">4</span><span class="o">).</span><span class="na">cons</span><span class="o">(</span><span class="mi">3</span><span class="o">).</span><span class="na">cons</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="na">cons</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
+<h2>Ansible</h2>
 
+<p><a href="http://ansible.cc">Ansible</a> is an orchestration and configuration management tool written in Python. If you want to learn more about Ansible (and you should…), <a href="/blog/2013/07/03/ansible-simply-kicks-ass.html">we wrote about it a few weeks ago</a>.</p>
 
-<p>To access elements of the list we implement two standard functions, <code>car</code> and <code>cdr</code>, that return head and tail of the list respectively.</p>
-
-<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kt">def</span> <span class="nf">car</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="kt">def</span> <span class="n">lst</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">call</span><span class="o">()</span>
-</span><span class='line'>        <span class="n">lst</span> <span class="o">?</span> <span class="n">lst</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">:</span> <span class="kc">null</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kt">def</span> <span class="nf">cdr</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="kt">def</span> <span class="n">lst</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">call</span><span class="o">()</span>
-</span><span class='line'>        <span class="n">lst</span> <span class="o">?</span> <span class="k">new</span> <span class="n">LazyList</span><span class="o">(</span><span class="n">lst</span><span class="o">[</span><span class="mi">1</span><span class="o">])</span> <span class="o">:</span> <span class="n">nil</span><span class="o">()</span>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Here is how you use these functions to get first and second elements of the list constructed above</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="k">assert</span> <span class="n">lazylist</span><span class="o">.</span><span class="na">car</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span>
-</span><span class='line'><span class="k">assert</span> <span class="n">lazylist</span><span class="o">.</span><span class="na">cdr</span><span class="o">().</span><span class="na">car</span><span class="o">()</span> <span class="o">==</span> <span class="mi">2</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In Lisp there are built-in functions for various <code>car</code> and <code>cdr</code> compositions. For example, the previous assertion would be equivalent to function <code>cadr</code>. Instead of implementing all possible permutations, let&rsquo;s use Groovy metaprogramming to achieve the same goal.</p>
-
-<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kt">def</span> <span class="nf">methodMissing</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="kt">def</span> <span class="n">matcher</span> <span class="o">=</span> <span class="n">name</span> <span class="o">=~</span> <span class="s">/^c([ad]+)r$/</span>
-</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">matcher</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="n">matcher</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">1</span><span class="o">].</span><span class="na">reverse</span><span class="o">().</span><span class="na">toList</span><span class="o">().</span><span class="na">inject</span><span class="o">(</span><span class="k">this</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>                <span class="n">del</span><span class="o">,</span> <span class="n">cr</span> <span class="o">-&gt;</span> <span class="n">del</span><span class="o">.</span><span class="s2">&quot;c${cr}r&quot;</span><span class="o">()</span>
-</span><span class='line'>            <span class="o">}</span>
-</span><span class='line'>        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nf">MissingMethodException</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">)</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It might look complicated, but in reality it&rsquo;s pretty simple if you are familiar with Groovy regex and functional programming. It&rsquo;s easier to explain by example. If we pass &ldquo;caddr&rdquo; as a value of <code>name</code> parameter, the method will create a chain on method calls <code>.cdr().cdr().car()</code> which will be applied to delegate of the operation which is our LazyList object.</p>
-
-<p>With this method in place we can call car/cdr functions with arbitrary depth.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="k">assert</span> <span class="n">lazylist</span><span class="o">.</span><span class="na">caddr</span><span class="o">()</span> <span class="o">==</span> <span class="mi">3</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you create nested lazy lists, you can access any element of any nested list with this dynamic method.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">lmn</span> <span class="o">=</span> <span class="n">LazyList</span><span class="o">.</span><span class="na">nil</span><span class="o">().</span><span class="na">cons</span><span class="o">(</span><span class="s1">&#39;N&#39;</span><span class="o">).</span><span class="na">cons</span><span class="o">(</span><span class="s1">&#39;M&#39;</span><span class="o">).</span><span class="na">cons</span><span class="o">(</span><span class="s1">&#39;L&#39;</span><span class="o">)</span>
-</span><span class='line'><span class="kt">def</span> <span class="n">almnz</span> <span class="o">=</span> <span class="n">LazyList</span><span class="o">.</span><span class="na">nil</span><span class="o">().</span><span class="na">cons</span><span class="o">(</span><span class="s1">&#39;Z&#39;</span><span class="o">).</span><span class="na">cons</span><span class="o">(</span><span class="n">lmn</span><span class="o">).</span><span class="na">cons</span><span class="o">(</span><span class="s1">&#39;A&#39;</span><span class="o">)</span>
-</span><span class='line'><span class="k">assert</span> <span class="n">almnz</span><span class="o">.</span><span class="na">cadadr</span><span class="o">()</span> <span class="o">==</span> <span class="s1">&#39;M&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>With so many cons methods it&rsquo;s hard to see the structure of the list. Let&rsquo;s implement <code>lazy</code> method on ArrayList class that converts strict list to lazy. Again, we will use metaprogramming and functional techniques.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">ArrayList</span><span class="o">.</span><span class="na">metaClass</span><span class="o">.</span><span class="na">lazy</span> <span class="o">=</span> <span class="o">{</span>
-</span><span class='line'>    <span class="o">-&gt;</span> <span class="n">delegate</span><span class="o">.</span><span class="na">reverse</span><span class="o">().</span><span class="na">inject</span><span class="o">(</span><span class="n">LazyList</span><span class="o">.</span><span class="na">nil</span><span class="o">())</span> <span class="o">{</span><span class="n">list</span><span class="o">,</span> <span class="n">item</span> <span class="o">-&gt;</span> <span class="n">list</span><span class="o">.</span><span class="na">cons</span><span class="o">(</span><span class="n">item</span><span class="o">)}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now we can rewrite the previous example as follows</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">lazyfied</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;A&#39;</span><span class="o">,</span> <span class="o">[</span><span class="s1">&#39;L&#39;</span><span class="o">,</span><span class="s1">&#39;M&#39;</span><span class="o">,</span><span class="s1">&#39;N&#39;</span><span class="o">].</span><span class="na">lazy</span><span class="o">(),</span> <span class="s1">&#39;Z&#39;</span><span class="o">].</span><span class="na">lazy</span><span class="o">()</span>
-</span><span class='line'><span class="k">assert</span> <span class="n">lazyfied</span><span class="o">.</span><span class="na">cadadr</span><span class="o">()</span> <span class="o">==</span> <span class="s1">&#39;M&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>What have we accomplished so far? We learned how to build lazy lists from scratch and from strict lists. We know how to add elements to lazy lists, and how to access them. The next step is to implement <code>fold</code> function. <code>fold</code> is the <a href="http://www.cs.kent.ac.uk/people/staff/dat/miranda/whyfp90.pdf">fundamental</a> operation in functional languages, so our lazy lists must provide it.</p>
-
-<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kt">boolean</span> <span class="nf">isEmpty</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">list</span><span class="o">.</span><span class="na">call</span><span class="o">()</span> <span class="o">==</span> <span class="o">[]</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kt">def</span> <span class="nf">fold</span><span class="o">(</span><span class="n">n</span><span class="o">,</span> <span class="n">acc</span><span class="o">,</span> <span class="n">f</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">isEmpty</span><span class="o">()</span> <span class="o">?</span> <span class="n">acc</span> <span class="o">:</span> <span class="n">cdr</span><span class="o">().</span><span class="na">fold</span><span class="o">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="n">f</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">acc</span><span class="o">,</span> <span class="n">car</span><span class="o">()),</span> <span class="n">f</span><span class="o">)</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kt">def</span> <span class="nf">foldAll</span><span class="o">(</span><span class="n">acc</span><span class="o">,</span> <span class="n">f</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">isEmpty</span><span class="o">()</span> <span class="o">?</span> <span class="n">acc</span> <span class="o">:</span> <span class="n">cdr</span><span class="o">().</span><span class="na">foldAll</span><span class="o">(</span><span class="n">f</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">acc</span><span class="o">,</span> <span class="n">car</span><span class="o">()),</span> <span class="n">f</span><span class="o">)</span>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The only difference between this <code>fold</code> function and the standard one is the additional parameter <em>n</em>. We will need it later when we implement infinite lists. <code>foldAll</code> function to lazy lists is the same as standard <code>fold</code> to strict lists.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="k">assert</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">].</span><span class="na">lazy</span><span class="o">().</span><span class="na">foldAll</span><span class="o">(</span><span class="mi">0</span><span class="o">){</span> <span class="n">acc</span><span class="o">,</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">acc</span> <span class="o">+</span> <span class="n">i</span> <span class="o">}</span> <span class="o">==</span> <span class="mi">15</span>
-</span><span class='line'><span class="k">assert</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">].</span><span class="na">lazy</span><span class="o">().</span><span class="na">fold</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">1</span><span class="o">){</span> <span class="n">acc</span><span class="o">,</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">acc</span> <span class="o">*</span> <span class="n">i</span> <span class="o">}</span> <span class="o">==</span> <span class="mi">6</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>First example calculates the sum of all elements of the list, second calculates the product of first three elements.</p>
-
-<p>If you have <code>fold</code> functions you can easily implement <code>take</code> functions</p>
-
-<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kt">def</span> <span class="nf">take</span><span class="o">(</span><span class="n">n</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">fold</span><span class="o">(</span><span class="n">n</span><span class="o">,</span> <span class="o">[])</span> <span class="o">{</span><span class="n">acc</span><span class="o">,</span> <span class="n">item</span> <span class="o">-&gt;</span> <span class="n">acc</span> <span class="o">&lt;&lt;</span> <span class="n">item</span><span class="o">}</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kt">def</span> <span class="nf">takeAll</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">foldAll</span><span class="o">([])</span> <span class="o">{</span><span class="n">acc</span><span class="o">,</span> <span class="n">item</span> <span class="o">-&gt;</span> <span class="n">acc</span> <span class="o">&lt;&lt;</span> <span class="n">item</span><span class="o">}</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kt">def</span> <span class="nf">toList</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">takeAll</span><span class="o">()</span>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>take</code> is an inverse operation to <code>lazy</code></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="k">assert</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">].</span><span class="na">lazy</span><span class="o">().</span><span class="na">takeAll</span><span class="o">()</span> <span class="o">==</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
-</span><span class='line'><span class="k">assert</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">].</span><span class="na">lazy</span><span class="o">().</span><span class="na">take</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="o">==</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Our next goal is <code>map</code> function on lazy lists. Ideally I want the implementation look like this</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kt">def</span> <span class="nf">map</span><span class="o">(</span><span class="n">f</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">isEmpty</span><span class="o">()</span> <span class="o">?</span> <span class="n">nil</span><span class="o">()</span> <span class="o">:</span> <span class="n">cdr</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">f</span><span class="o">).</span><span class="na">cons</span><span class="o">(</span><span class="n">f</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">car</span><span class="o">()))</span>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>For some reason it doesn&rsquo;t work lazy way in Groovy &mdash; it&rsquo;s still strictly evaluated. Therefore I have to implement it directly with closure syntax</p>
-
-<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kt">def</span> <span class="nf">map</span><span class="o">(</span><span class="n">f</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">isEmpty</span><span class="o">()</span> <span class="o">?</span> <span class="n">nil</span><span class="o">()</span> <span class="o">:</span> <span class="k">new</span> <span class="n">LazyList</span><span class="o">(</span> <span class="o">{-&gt;</span> <span class="o">[</span><span class="n">f</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">car</span><span class="o">()),</span> <span class="n">cdr</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">f</span><span class="o">).</span><span class="na">list</span><span class="o">]}</span> <span class="o">)</span>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Unlike <code>fold</code>, lazy <code>map</code> is identical to strict <code>map</code></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="k">assert</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">].</span><span class="na">lazy</span><span class="o">().</span><span class="na">map</span><span class="o">{</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">it</span> <span class="o">}.</span><span class="na">take</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="o">==</span> <span class="o">[</span><span class="mi">2</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">6</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The following example shows one of the benefits of laziness</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="k">assert</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">6</span><span class="o">].</span><span class="na">lazy</span><span class="o">().</span><span class="na">map</span><span class="o">{</span> <span class="mi">6</span> <span class="o">/</span> <span class="n">it</span> <span class="o">}.</span><span class="na">take</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="o">==</span> <span class="o">[</span><span class="mi">6</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">2</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>map</code> didn&rsquo;t evaluate the entire list, hence there was no exception. If you evaluate the expression for all the elements, the exception will be thrown</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="k">try</span> <span class="o">{</span>
-</span><span class='line'>    <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">6</span><span class="o">].</span><span class="na">lazy</span><span class="o">().</span><span class="na">map</span><span class="o">{</span> <span class="mi">6</span> <span class="o">/</span> <span class="n">it</span> <span class="o">}.</span><span class="na">takeAll</span><span class="o">()</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'><span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">assert</span> <span class="n">e</span> <span class="k">instanceof</span> <span class="n">ArithmeticException</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>For strict lists this is a default behaviour of <code>map</code> function.</p>
-
-<p>The last function I want to implement is <code>filter</code></p>
-
-<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kt">def</span> <span class="nf">filter</span><span class="o">(</span><span class="n">p</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">isEmpty</span><span class="o">()</span> <span class="o">?</span> <span class="n">nil</span><span class="o">()</span> <span class="o">:</span>
-</span><span class='line'>            <span class="n">p</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">car</span><span class="o">())</span> <span class="o">?</span> <span class="k">new</span> <span class="n">LazyList</span><span class="o">(</span> <span class="o">{-&gt;</span> <span class="o">[</span><span class="n">car</span><span class="o">(),</span> <span class="n">cdr</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="n">p</span><span class="o">).</span><span class="na">list</span><span class="o">]}</span> <span class="o">)</span> <span class="o">:</span>
-</span><span class='line'>                <span class="n">cdr</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="n">p</span><span class="o">)</span>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In the following example we find first two elements greater than 2</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="k">assert</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">].</span><span class="na">lazy</span><span class="o">().</span><span class="na">filter</span><span class="o">{</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">it</span> <span class="o">}.</span><span class="na">take</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span> <span class="o">==</span> <span class="o">[</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>With the help of <code>car</code>/<code>cdr</code>, <code>fold</code>, <code>map</code> and <code>filter</code> you can implement any other function on lazy lists yourself. Here is, for example, the implementation of <code>zipWith</code> function</p>
-
-<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kd">static</span> <span class="kt">def</span> <span class="nf">zipWith</span><span class="o">(</span><span class="n">alist</span><span class="o">,</span> <span class="n">blist</span><span class="o">,</span> <span class="n">f</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">alist</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span> <span class="o">||</span> <span class="n">blist</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span> <span class="o">?</span> <span class="n">nil</span><span class="o">()</span> <span class="o">:</span>
-</span><span class='line'>            <span class="k">new</span> <span class="nf">LazyList</span><span class="o">(</span> <span class="o">{-&gt;</span> <span class="o">[</span>
-</span><span class='line'>                <span class="n">f</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">alist</span><span class="o">.</span><span class="na">car</span><span class="o">(),</span> <span class="n">blist</span><span class="o">.</span><span class="na">car</span><span class="o">()),</span>
-</span><span class='line'>                <span class="n">zipWith</span><span class="o">(</span><span class="n">alist</span><span class="o">.</span><span class="na">cdr</span><span class="o">(),</span> <span class="n">blist</span><span class="o">.</span><span class="na">cdr</span><span class="o">(),</span> <span class="n">f</span><span class="o">).</span><span class="na">list</span>
-</span><span class='line'>            <span class="o">]}</span> <span class="o">)</span>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now, after we implemented all lazy functions we need, let&rsquo;s define infinite lists</p>
-
-<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="nf">sequence</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="o">{-&gt;</span> <span class="o">[</span><span class="n">n</span><span class="o">,</span> <span class="n">sequence</span><span class="o">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="o">)]}</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">static</span> <span class="n">LazyList</span> <span class="nf">integers</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">new</span> <span class="nf">LazyList</span><span class="o">(</span><span class="n">sequence</span><span class="o">(</span><span class="n">n</span><span class="o">))</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">static</span> <span class="n">LazyList</span> <span class="nf">naturals</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">integers</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Infinite lists, from my point of view, is the most useful application of lazy lists</p>
+<p>Let&rsquo;s get to work. We&rsquo;re now gonna deploy an app in our container:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1012,34 +942,133 @@ B/B
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">naturals</span> <span class="o">=</span> <span class="n">LazyList</span><span class="o">.</span><span class="na">naturals</span><span class="o">()</span>
-</span><span class='line'><span class="k">assert</span> <span class="n">naturals</span><span class="o">.</span><span class="na">take</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="o">==</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>1. [Install Ansible](/blog/2013/07/03/ansible-simply-kicks-ass.html), as we showed you in our previous post.
 </span><span class='line'>
-</span><span class='line'><span class="kt">def</span> <span class="n">evens</span> <span class="o">=</span> <span class="n">naturals</span><span class="o">.</span><span class="na">map</span> <span class="o">{</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">it</span> <span class="o">}</span>
-</span><span class='line'><span class="k">assert</span> <span class="n">evens</span><span class="o">.</span><span class="na">take</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="o">==</span> <span class="o">[</span><span class="mi">2</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">6</span><span class="o">]</span>
+</span><span class='line'>  2. Prepare your inventory file (`host`):
+</span><span class='line'>    
+</span><span class='line'>     app ansible_ssh_host=127.0.0.1 ansible_ssh_port=40022
 </span><span class='line'>
-</span><span class='line'><span class="kt">def</span> <span class="n">odds</span> <span class="o">=</span> <span class="n">naturals</span><span class="o">.</span><span class="na">filter</span> <span class="o">{</span> <span class="n">it</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">}</span>
-</span><span class='line'><span class="k">assert</span> <span class="n">odds</span><span class="o">.</span><span class="na">take</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="o">==</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
+</span><span class='line'>  3. Create a simple playbook to deploy our app (`deploy.yml`):
+</span><span class='line'>    
+</span><span class='line'>     ---
+</span><span class='line'>     - hosts: app
+</span><span class='line'>       user: root
+</span><span class='line'>       tasks:
+</span><span class='line'>         # Fetch the code from github
+</span><span class='line'>         - name: Ensure we got the App code
+</span><span class='line'>           git:
+</span><span class='line'>             repo=git://github.com/madhums/node-express-mongoose-demo.git
+</span><span class='line'>             dest=/opt/node-express-mongoose-demo
+</span><span class='line'>         
+</span><span class='line'>         # NPM may or may not succeed, if you give it time, care, etc. it eventually works
+</span><span class='line'>         - name: Ensure the npm dependencies are installed
+</span><span class='line'>           command:
+</span><span class='line'>             chdir=/opt/node-express-mongoose-demo
+</span><span class='line'>             /opt/node/bin/npm install
+</span><span class='line'>           ignore_errors: yes
+</span><span class='line'>           
+</span><span class='line'>         # We will assume no changes in the default sample - or we should consider templates instead
+</span><span class='line'>         - name: Ensure the config files of the app
+</span><span class='line'>           command:
+</span><span class='line'>             creates=/opt/node-express-mongoose-demo/config/$item.js
+</span><span class='line'>             cp /opt/node-express-mongoose-demo/config/$item.example.js /opt/node-express-mongoose-demo/config/$item.js
+</span><span class='line'>           with_items:
+</span><span class='line'>             - config
+</span><span class='line'>             - imager
+</span><span class='line'>             
+</span><span class='line'>         # `initctl` is now linking to `true` and we have no access to services
+</span><span class='line'>         # Need to fake the start
+</span><span class='line'>         - name: Ensure mongodb data folders
+</span><span class='line'>           file:
+</span><span class='line'>             state=directory
+</span><span class='line'>             dest=$item
+</span><span class='line'>             owner=mongodb
+</span><span class='line'>             group=mongodb
+</span><span class='line'>           with_items:
+</span><span class='line'>             - /var/lib/mongodb
+</span><span class='line'>             - /var/log/mongodb
+</span><span class='line'>             
+</span><span class='line'>         # Super cheat combo !
+</span><span class='line'>         - name: Ensure mongodb is running
+</span><span class='line'>           shell:
+</span><span class='line'>             LC_ALL='C' /sbin/start-stop-daemon --background --start --quiet --chuid mongodb --exec  /usr/bin/mongod -- --config /etc/mongodb.conf
+</span><span class='line'>         
+</span><span class='line'>         # Cheating some more !
+</span><span class='line'>         - name: Ensure the App is running
+</span><span class='line'>           shell:
+</span><span class='line'>             chdir=/opt/node-express-mongoose-demo
+</span><span class='line'>             /opt/node/bin/npm start &amp;
 </span><span class='line'>
-</span><span class='line'><span class="k">assert</span> <span class="n">naturals</span><span class="o">.</span><span class="na">cadddddddddr</span><span class="o">()</span> <span class="o">==</span> <span class="mi">10</span>
+</span><span class='line'>  4. Run that baby:
+</span><span class='line'>    
+</span><span class='line'>     $ ansible-playbook -i host deploy.yml
 </span><span class='line'>
-</span><span class='line'><span class="kt">def</span> <span class="n">nonnegatives</span> <span class="o">=</span> <span class="n">naturals</span><span class="o">.</span><span class="na">cons</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
-</span><span class='line'><span class="k">assert</span> <span class="n">nonnegatives</span><span class="o">.</span><span class="na">cadr</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">assert</span> <span class="n">LazyList</span><span class="o">.</span><span class="na">zipWith</span><span class="o">(</span><span class="n">evens</span><span class="o">,</span> <span class="n">odds</span><span class="o">){</span> <span class="n">x</span><span class="o">,</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">}.</span><span class="na">take</span><span class="o">(</span><span class="mi">4</span><span class="o">)</span> <span class="o">==</span> <span class="o">[</span><span class="mi">2</span><span class="o">,</span><span class="mi">12</span><span class="o">,</span><span class="mi">30</span><span class="o">,</span><span class="mi">56</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>  5. We're done, point your browser at `http://localhost:80` - assuming you have performed the redirection mentioned in the initial setup of your vagrant box.</span></code></pre></td></tr></table></div></figure>
 
 
-<p>At this point you have all basic functionality implemented, and you should be able to extend this model to whatever you need in regards to lazy (infinite) lists. Happy lazy programming!</p>
+<p>That&rsquo;s it. You&rsquo;ve just deployed your app on Docker (in Vagrant).</p>
 
-<h2>Resources and links</h2>
+<h2>Let&rsquo;s wrap it up</h2>
 
-<ul>
-<li><a href="http://gist.github.com/810702">Source code</a> for this blog</li>
-<li>Lazy list implementation in <a href="https://github.com/ndpar/erlang/blob/master/src/lazy.erl">Erlang</a></li>
-<li>Lazy list implementation in <a href="https://github.com/ndpar/land-of-lisp/blob/master/lazy.lisp">Lisp</a></li>
-</ul>
+<p>So we just saw (roughly) how these tools can be used, and how they can be
+complementary:</p>
 
+<ol>
+<li> Vagrant will provide you with a full VM, including the OS. It&rsquo;s great at providing you a Linux environment for example when you&rsquo;re on MacOS.</li>
+<li> Docker is a lightweight VM of some sort. It will allow you to build contained architectures faster and cheaper than with Vagrant.</li>
+<li> Ansible is what you&rsquo;ll use to orchestrate and fine-tune things. That&rsquo;s what you want to structure your deployment and orchestration strategy.</li>
+</ol>
+
+
+<p>It takes a bit of reading to get more familiar with these tools, and we&rsquo;ll likely follow up on this post in the next few weeks. However, especially as a small team, this kind of technology allows you to automate and commoditize huge parts of your development and ops workflows. We strongly encourage you to make that investment. It has helped us tremendously increase the pace and
+quality of our throughput.</p>
 </div>
   
   
@@ -1053,7 +1082,7 @@ B/B
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2011/01/29/counting-modifications-in-git/">Counting Modifications in Git Repository</a></h1>
+      <h1 class="entry-title"><a href="/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/">Creating Immutable Servers With Chef and docker.io</a></h1>
       
       
     
@@ -1070,28 +1099,217 @@ B/B
   
 
 
-<time datetime="2011-01-29T07:00:00-05:00" pubdate data-updated="true">Jan 29<span>th</span>, 2011</time>
+<time datetime="2013-09-07T18:18:00-04:00" pubdate data-updated="true">Sep 7<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>Michael Feathers wrote a <a href="http://michaelfeathers.typepad.com/michael_feathers_blog/2011/01/measuring-the-closure-of-code.html">blog</a> about Open-Closed Principle, where he described simple technique that measures the closure of the code. I created a Groovy <a href="https://github.com/ndpar/utilities/blob/master/git-files-modified.groovy">script</a> which implements this algorithm for Git repositories. If you run it from the root of your Git project, it produces a CSV file with the statistics of how many times the files have been modified.</p>
+  <div class="entry-content"><p>Building applications in a <a href="http://docker.io">docker.io</a> Dockerfile is relatively simple,  but sometimes you want to just install the application exactly as you would normally via already built chef cookbooks.   Turns out this is actually pretty simple.</p>
 
-<p>As an example, here is the top 10 files from <a href="https://github.com/rabbitmq/rabbitmq-server">rabbitmq-server</a> repository</p>
+<p>The first thing you&rsquo;ll need to do is build a container with chef-client and berkshelf installed.   You can grab the one I&rsquo;ve built by running <code>docker pull paulczar/chef-solo</code> or build one youself from a <code>Dockerfile</code> that looks a little something like the following&hellip;</p>
 
-<pre><code>845  src/rabbit_amqqueue_process.erl
-711  src/rabbit_channel.erl
-650  src/rabbit_tests.erl
-588  src/rabbit_variable_queue.erl
-457  src/rabbit_amqqueue.erl
-448  src/rabbit_mnesia.erl
-405  src/rabbit.erl
-395  src/rabbit_reader.erl
-360  src/rabbit_msg_store.erl
-356  src/rabbit_exchange.erl
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/21/the-joy-and-pain-of-using-jekyll/">The Joy and Pain of Using Jekyll</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-21T22:48:00-04:00" pubdate data-updated="true">Aug 21<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&rsquo;ve been tempted to write a bit about Static Site Generators (SSGs) for a while now, mainly because I love them. I&rsquo;ve been using (Jekyll)[<a href="http://jekyllrb.com/">http://jekyllrb.com/</a>] for various projects for a while now and I love it. The simplified hosting, higher security, and general hackability are just a few pros that make it worth it.</p>
+
+<p>But they have also pained me, and after reading <a href="http://screamingatmyscreen.com/2013/8/the-joy-and-pain-of-using-a-static-site-generator-for-private-and-client-work/">&ldquo;The joy and pain of using a static site generator for private and client work&rdquo;</a> I thought I&rsquo;d add in my own few observations from a Jekyll perspective.</p>
+
+<h2>The joys</h2>
+
+<p>Why would I talk about Jekyll specifically? It has a lot of pros that make it
+one of the most popular SSGs out there, and hence worth dicussing. Here are just a few:</p>
+
+<ul>
+<li>It&rsquo;s extremely simple, has no predefined structure, just write HTML or Markdown and go</li>
+<li>No server side code is a big pro to me, easier deployment, easier security, simpler hosting.</li>
+<li>It&rsquo;s the default recommended SSG for <a href="http://pages.github.com/">Github Pages</a>, allowing you to use them as free hosting!</li>
+<li>Github even compiles Jekyll for you server side meaning you can use <a href="http://github.com">Github.com</a> to edit your site.</li>
+</ul>
+
+
+<h2>Pain points</h2>
+
+<p>Sadly not all is perfect and here are some of my main observations of working on a few Jekyll sites in small teams.</p>
+
+<h3>Forget about I18n</h3>
+
+<p>Most of you might not ever need any internationalisation but the day a client turns around to you and asks &ldquo;Can we translate this one page to Spanish?&rdquo; you will hate yourself for using Jekyll. Internationalisation is not standard supported and therefore a royal pain in the *** to do nice.</p>
+
+<p>Not to mention that you can&rsquo;t serve the same content in different languages under the same URL depending on the user&rsquo;s cookie or locale. Forget about it, ain&rsquo;t gonna happen.</p>
+
+<h3>No plugins on Github</h3>
+
+<p>There are a lot of plugins for Jekyll and they&rsquo;re awesome. There&rsquo;s even a few for I18n, though I never tried them. Sadly non of them are supported by Github. Sure, you can compile your code client side, then push the compiled code (including the plugin generated code) to the server. This stops you from quickly pushing any mayor changes without using a laptop.</p>
+
+<h3>No predefined structure</h3>
+
+<p>Jekyll is ridiculously simple. I think all you need is a config file and some HTML or Markdown and <strong>boom</strong> your site is there.  But when your site extends beyond a few files you quickly start adding some folders: images go into <code>/images/</code>, stylesheets into <code>/stylesheets/</code>, etc. But what about pages? Use <code>foo.html</code> or <code>foo/index.html</code>? Store the images for that pages in <code>/images/foo/</code> or <code>/foo/images/</code>?</p>
+
+<p>All of these decisions are easily made, but it does mean you need to explain every new decision to your colleagues, and it increases the technical debt when bringing onboard new developers.</p>
+
+<h3>Markdown is limited</h3>
+
+<p>I love Markdown but sometimes it can be such a pain. Especially when you want to go outside of the standard &ldquo;headers, paragraphs, links&rdquo; it can just be upsetting. Getting HTML inside Markdown to work in Jekyll used to (and probably still) require switching to a different Markdown parser, which wasn&rsquo;t supported on Github, etc.</p>
+
+<p>To be honest this is a bit of a pet peeve with Markdown, not Jekyll. Often all I want to do is just add a class to something, either a header or a link. I often wished Markdown supported something like this:</p>
+
+<script src="https://gist.github.com/cbetta/48c07f2bd1e1915aefa6.js"></script>
+
+
+<h2>Suggestions</h2>
+
+<p>In short, I think a few suggestions for the further improvements of Jekyll, Github Pages, and Markdown are at hand:</p>
+
+<ol>
+<li>Standard I18n support in Jekyll would be nice</li>
+<li>Support for some default &ldquo;safe&rdquo; plugins on Github would be amazing</li>
+<li>A generator to generate a &ldquo;default&rdquo; site structure would be nice and could help promote best practices.</li>
+<li>Markdown should support some basic classes and indexes, allowing easier application of CSS and JS.</li>
+</ol>
+
+
+<p>Alternatively I highly recommend using <a href="http://middlemanapp.com/">Middleman</a>, another SSG that seems to solve some of the pain points described above.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/16/cheffile-and-librarian-locks/">Cheffile &amp; &#8216;Librarian Locks&#8217;</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-16T00:56:00-04:00" pubdate data-updated="true">Aug 16<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/librarian.png" title="'librarian chef'" >
+If you don&rsquo;t know what librarian is &ndash; get to know it :) (it makes life much easier)[<a href="http://rubydoc.info/gems/librarian-chef">http://rubydoc.info/gems/librarian-chef</a>] than way back when &hellip;</p>
+
+<p>The most annoying thing happend to me earlier this evening, I was working on a cookbook [A chef cookbook &hellip;, I don&rsquo;t actually do the cooking at home :)], and running librarian install yielded the following error:</p>
+
+<pre><code>"Cheffile and Cheffile.lock are out of sync!"
 </code></pre>
+
+<p>So like a good boy I remoced the Cheffile.lock and ran it again resulting with the same damn error message &hellip; arrrrrr !</p>
+
+<p>So after examening my Cheffile over and over I noticed I have listed a dependency from two different location somthing like the followin [ clieng url&rsquo;s omitted from snippet ]:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> <span class="c">#!/usr/bin/env ruby</span>
+</span><span class='line'>  <span class="c">#^syntax detection</span>
+</span><span class='line'>  site <span class="s2">&quot;http://shelf.clients_domain.corp:8080&quot;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;simple_proxy&#39;</span>, :git <span class="o">=</span>&gt; <span class="s1">&#39;git://clients_domain.corp/hagzag/simple_proxy.git&#39;</span>, :ref <span class="o">=</span>&gt; <span class="s1">&#39;master&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;nw-abap&#39;</span>,     :git <span class="o">=</span>&gt; <span class="s1">&#39;git://clients_domain.corp/hagzag/nw-abap.git&#39;</span>, :ref <span class="o">=</span>&gt; <span class="s1">&#39;master&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;sapinst&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># for lvm volume creation do this once ...</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;lvm&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;sap-lvm&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>,      :site <span class="o">=</span>&gt; <span class="s1">&#39;http://community.opscode.com/api/v1&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  cookbook <span class="s1">&#39;nfs&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you look a line numbers 11 &amp; 14 you will see I am specifying the smae cookbook from tow different sources &hellip;, this is a good thing, your dependecny mechanisem / tool isn&rsquo;t making decitions for you [ unlike Maven for exmaple &hellip; ].</p>
+
+<p>So in order to avoid this error and to comtinue working I had to remove one if the lines and I was good to go.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> ...
+</span><span class='line'>  <span class="c">#cookbook &#39;line&#39;,      :site =&gt; &#39;http://community.opscode.com/api/v1&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  cookbook <span class="s1">&#39;nfs&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Another fraction on my time line &hellip;</p>
+
+<p>Enjoy.</p>
 </div>
   
   
@@ -1105,7 +1323,7 @@ B/B
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2011/01/24/git-maven/">Maven and Git</a></h1>
+      <h1 class="entry-title"><a href="/blog/2013/07/30/putting-the-web-into-webapi/">Putting the Web Into WebApi</a></h1>
       
       
     
@@ -1122,55 +1340,143 @@ B/B
   
 
 
-<time datetime="2011-01-24T07:00:00-05:00" pubdate data-updated="true">Jan 24<span>th</span>, 2011</time>
+<time datetime="2013-07-30T22:05:00-04:00" pubdate data-updated="true">Jul 30<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>More and more Maven projects are switching from Subversion to Git, and the majority of those projects make the same mistake: They configure <em>scm</em> section of POM to point to remote repository, the same way they did it in Subversion</p>
+  <div class="entry-content"><p>The .net api developers, the WebApi framework offers a compelling alternative
+to asp.net mvc for slinging json or (gasp) xml over http. One great feature
+you get out of the box is content negotiation, where WebApi will look at
+request headers to decide which format to use when processing a request
+body or sending back a response.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;scm&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;url&gt;</span>http://github.com/SpringSource/spring-batch<span class="nt">&lt;/url&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;connection&gt;</span>scm:git:git://github.com/SpringSource/spring-batch.git<span class="nt">&lt;/connection&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;developerConnection&gt;</span>scm:git:ssh://git@github.com/SpringSource/spring-batch.git<span class="nt">&lt;/developerConnection&gt;</span>
-</span><span class='line'><span class="nt">&lt;/scm&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
+<p>WebApi also includes the concept of an ApiExplorer, a built in service that
+knows about all the routes, templates and parameters an application is
+configured to handle. It even supports attaching human friendly documentation.</p>
 
+<p>With these built in perks, WebApi gets you 95% of the way there. What it
+doesn&rsquo;t do out of the box, unfortunately, is something that it says right
+on the box. It doesn&rsquo;t do web.</p>
 
-<p>By doing this they lose the main benefit of Git. They become dependent on the remote machine. And when their release depends on the remote machine, that&rsquo;s what happens: They need to release the project but the remote machine is down</p>
+<h2>HTTP, ReST and the Web</h2>
 
-<p><img class="center" src="/images/posts/github-down.jpg"></p>
+<p>There&rsquo;s been a growing buzz around the idea that writing an application
+that speaks json does not give you something that can be called ReST.
+To get to ReST nirvana your api needs to speak with hypermedia, giving
+the client, in addition to data, links and forms that can do stuff with
+the data.</p>
 
-<p>The right way of configuring Git in Maven is following</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;scm&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;url&gt;</span>scm:git:file://.<span class="nt">&lt;/url&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;connection&gt;</span>scm:git:file://.<span class="nt">&lt;/connection&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;developerConnection&gt;</span>scm:git:file://.<span class="nt">&lt;/developerConnection&gt;</span>
-</span><span class='line'><span class="nt">&lt;/scm&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This configuration is universal, and it separates two orthogonal concerns: releases and remote copies.</p>
-
-<h3>Resources</h3>
+<p>If you aren&rsquo;t familiar with this distinction, here are some resources
+that sell the concept well:</p>
 
 <ul>
-<li><a href="http://ascii.io/a/3459">Screencast</a> that shows how to work with Git in Maven projects.</li>
+<li><a href="http://martinfowler.com/articles/richardsonMaturityModel.html">Richardson Maturity Model</a></li>
+<li><a href="http://www.infoq.com/presentations/web-api-html">Building Hypermedia APIs with HTML</a> (talk by Jon Moore)</li>
+<li><a href="https://speakerdeck.com/stilkov">Many slides by Stefan Tilkov</a></li>
+<li><a href="https://speakerdeck.com/ammeep/exist-in-the-web-not-on-it">Exist In the Web &ndash; Not on it</a> by Amy Palamountain</li>
 </ul>
 
+
+<h2>Microdata</h2>
+
+<p>Jon Moore&rsquo;s work is particularly intriguing because he shows what
+you can already do with <a href="http://en.wikipedia.org/wiki/Microdata_(HTML">Microdata</a>).</p>
+
+<p>Microdata boils down to 3 attributes that you stick on elements in your
+html5 markup, and they&rsquo;re all you need to give a computer semantic
+data. You can nest properties into a scope, describe the type of data
+being represented, and even nest scopes with scopes recursively.</p>
+
+<p>Jon&rsquo;s talks show how a web client that speaks Microdata can already start
+on sites like <a href="http://ebay.com/">ebay.com</a> and find and manipulate resources
+without knowing anything ahead of time about what resources are there and
+what URLs are used to access them.</p>
+
+<h2>WebApi + Microdata</h2>
+
+<p>On the one hand we have a .net framework for writing HTTP apis that
+has pluggable support for different mime types. On the other hand we
+have html5 and Microdata. Think they could be friends?</p>
+
+<p>I&rsquo;m excited to announce HtmlMicrodataFormatter,
+a new open source (APL) project available
+on <a href="">nuget.org</a>
+and hosted on <a href="">GitHub</a>.</p>
+
+<p>When you install this package into your WebApi project, it adds two
+features.</p>
+
+<p>First, if you enter the URL for one of your api methods into a web
+browser, you get (relatively) nice, human friendly html5 back instead
+of the wall of xml you would otherwise be greeted with.</p>
+
+<p>Second, and perhaps more importantly, if you browse to ~/api,
+you will be greeted by an html5 page that includes links and
+forms for all the routes that are registered with ApiExplorer.</p>
+
+<p>If your routes are not templated, you can fill in the inputs
+and submit forms to test them out right in the browser. If your
+routes are templated, you can still use the forms in the browser,
+but you&rsquo;ll need to do some extra work to fill in the template
+and update the form action in javascript before the form is
+submitted. A future post will cover how this can be done.</p>
+
+<p>Turn on xml documentation for your project, rebuild, and now
+all the documentation comments you attach to your controllers
+and actions appear on the forms.</p>
+
+<h2>Why it Matters</h2>
+
+<p>Obviously, getting a free browser based form generated for
+each action can be a productivity boon for developers who
+are tired of writing</p>
+
+<pre><code>curl -X DELETE -H 'Accept: application/json' http://localhost:49497/api/users/fred'
+</code></pre>
+
+<p>But it&rsquo;s more than that. Make your client project use html5
+and instead of hard-coding URLs for each thing the client
+wants to do, it enters at /api, finds the form it wants,
+fills it in and submits it. The Microdata attributes in
+the response, along with links and forms, give the client
+the pieces it needs to drive state, just like Roy T. Fielding
+intended when ReST was first described.</p>
+
+<p>Have third party clients that consume your api? Now you
+don&rsquo;t have to give them a separate document or website
+that describes (out of band) how to use your api. Just
+link them to yourwebsite/api, and they can read the
+documentation and discover what they can do without
+guessing or following brittle conventions.</p>
+
+<p>Putting the web into WebApi removes the tight coupling
+between client and server. Now you can change your routes,
+rename parameters, add parameters, and the client will
+automatically see those changes reflected in the forms
+and links they see when they enter your api. No more <code>/api/v1/users</code>
+through <code>/api/v23/users</code>. No more api version headers.</p>
+
+<h2>Next Steps</h2>
+
+<p>HtmlMicrodataFormatter is pretty young and there are
+many ideas left to flesh out. For example, making it easy to add
+links and forms to the output of controller actions,
+or improving how xml documentation is collected and
+converted to html, or making it easier to link from
+resources to related resources with appropriate rel
+attributes, or, or, or…</p>
+
+<p>I hope you like HtmlMicrodataFormatter, and if you
+do, maybe get involved and help improve it by
+submitting feedback, bugs, enhancements or pull
+requests to the GitHub project.</p>
+
+<p>Similar to Jon Moore&rsquo;s python based microdata
+client, work has started on a .net dynamic
+client which I hope to share soon.</p>
 </div>
   
   
@@ -1199,23 +1505,23 @@ B/B
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow from GitHub</a>
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/">OpenStack : Git Gerrit and Jenkins Workflow</a>
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing A RESTful API That Doesn&#8217;t Suck</a>
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye node-forever</a>
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
       </li>
     
   </ul>

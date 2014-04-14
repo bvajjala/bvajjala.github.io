@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Tutorial | Balaji Vajjala's Blog]]></title>
+  <title><![CDATA[Category: tutorial | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/tutorial/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T15:32:24-04:00</updated>
+  <updated>2014-04-14T15:50:34-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,1163 +14,120 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Simple web application in Clojure]]></title>
-    <link href="http://bvajjala.github.io/blog/2012/11/08/simple-web-application-in-clojure/"/>
-    <updated>2012-11-08T07:00:00-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2012/11/08/simple-web-application-in-clojure</id>
-    <content type="html"><![CDATA[<p>This blog entry is a micro-tutorial on how to build a simple web application in Clojure. The reason I call it micro will be clear when I introduce the framework we are going to use. This tutorial will be interesting to programmers relatively new to Clojure, but who have some experience with web frameworks in other languages, for instance Spring MVC. The goal of this tutorial is to help you get started with web development in Clojure. Also I want to share my approach to web development in general and in Clojure in particular. This approach is by no means the best way to develop web applications, but because I like to watch how other people write the software, I thought somebody might be interested to see how I do it.</p>
+    <title type="html"><![CDATA[Using jenkins-cli as job Gen]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/06/16/using-jenkins-cli-as-job-gen/"/>
+    <updated>2013-06-16T01:06:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/06/16/using-jenkins-cli-as-job-gen</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/jenkins140x140.jpg" title="&lsquo;Jenkins logo small&rsquo;" >
+Well a common use case for doing stuff with Jenkins jobs / configuration [ for example: enabling jobs, disabling jobs, executing jobs etc] is to use Jenkins-cli.jar which is included in your jenkins distribution.</p>
+
+<p>In a large company where branches are branched on a daily basis and you need a build for each branch, job creation could become a bottleneck [ so could branch creation &ndash; but that a different topic :) ].</p>
+
+<p>So my use case was to create a Job Generator which would take an existing job from branch 1.0 and create a job ( &amp; the ranch but as I said different topic ) for branch 2.0 with the corresponding name, so as I mentioned thank god for Jenkins in general, Jenkins-cli and in addition to that a shell script, <a href="http://www.gnu.org/software/sed/">sed</a>, <a href="http://xmlstar.sourceforge.net/">xmlstarlet</a> and again jenkins job parameters.</p>
+
+<p>I needed a script which would export the job configuration to an xml file, search and replace for the SCM url, create the job so lets see how its done:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>execJenkinsCli<span class="o">(){</span> <span class="c"># excute jenkins-cli jar&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;    <span class="nv">jenkins_clinet_jar</span><span class="o">=</span>./jenkins-cli.jar
+</span><span class='line'>    <span class="c"># download only if it&amp;amp;#39;s newwer than the local version [ curl -z ], the cli jar should be ofthe smae jenkins version ...</span>
+</span><span class='line'>    curl -s -z ./jenkins-cli.jar <span class="k">${</span><span class="nv">JENKINS_URL</span><span class="k">}</span>/jnlpJars/jenkins-cli.jar -o <span class="k">${</span><span class="nv">jenkins_clinet_jar</span><span class="k">}</span> <span class="o">||</span> <span class="o">{</span> <span class="nb">echo</span> &amp;amp;quot;Echo  cannot obtain jenkins-cli.jar exiting&amp;amp;quot;; <span class="nb">exit </span>2;<span class="o">}</span>
+</span><span class='line'>    <span class="nv">cli_cmd</span><span class="o">=</span><span class="nv">$1</span>
+</span><span class='line'>    <span class="nv">cmd_params</span><span class="o">=</span><span class="nv">$2</span>
+</span><span class='line'>    <span class="nv">cmd_prefix</span><span class="o">=</span>&amp;amp;quot;<span class="k">${</span><span class="nv">JAVA_CMD</span><span class="k">}</span> -jar <span class="k">${</span><span class="nv">jenkins_clinet_jar</span><span class="k">}</span> -s <span class="k">${</span><span class="nv">JENKINS_URL</span><span class="k">}</span>&amp;amp;quot;
+</span><span class='line'>
+</span><span class='line'>    <span class="k">${</span><span class="nv">cmd_prefix</span><span class="k">}</span> who-am-i | grep &amp;amp;#39;Authenticated as: anonymous&amp;amp;#39; &amp;amp;amp;&amp;amp;gt;/dev/null &amp;amp;amp;&amp;amp;amp; <span class="nv">anon</span><span class="o">=</span>0
+</span><span class='line'>    <span class="c">#anon=$?</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">[</span> &amp;amp;quot;<span class="nv">$anon</span>&amp;amp;quot; !<span class="o">=</span> &amp;amp;quot;0&amp;amp;quot; <span class="o">]</span>; <span class="k">then</span>
+</span><span class='line'>            <span class="c">#printf &amp;amp;quot;[ $FUNCNAME ] using jenkins-cli with private key auth&amp;amp;quot;</span>
+</span><span class='line'>            <span class="nb">exec</span> <span class="k">${</span><span class="nv">cmd_prefix</span><span class="k">}</span> <span class="k">${</span><span class="nv">cli_cmd</span><span class="k">}</span> <span class="k">${</span><span class="nv">cmd_params</span><span class="k">}</span>
+</span><span class='line'>    <span class="k">elif</span> <span class="o">[</span> &amp;amp;quot;x&amp;amp;quot; <span class="o">=</span> &amp;amp;quot;x<span class="k">${</span><span class="nv">JENKINS_USER</span><span class="k">}</span>&amp;amp;quot; <span class="o">]</span> <span class="o">||</span> <span class="o">[</span> &amp;amp;quot;x&amp;amp;quot;  <span class="o">=</span> &amp;amp;quot;x<span class="k">${</span><span class="nv">JENKINS_PASS</span><span class="k">}</span>&amp;amp;quot; <span class="o">]</span>; <span class="k">then</span>
+</span><span class='line'><span class="k">            </span><span class="nb">printf</span> &amp;amp;quot;<span class="o">[</span> <span class="nv">$FUNCNAME</span> <span class="o">]</span> cannot determin jenkins credentials<span class="se">\n</span>&amp;amp;quot;;
+</span><span class='line'>            <span class="nb">exit </span>3;
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'><span class="k">            </span><span class="nb">exec</span> <span class="k">${</span><span class="nv">cmd_prefix</span><span class="k">}</span> <span class="k">${</span><span class="nv">cli_cmd</span><span class="k">}</span> <span class="k">${</span><span class="nv">cmd_params</span><span class="k">}</span> --username <span class="k">${</span><span class="nv">JENKINS_USER</span><span class="k">}</span> --password <span class="k">${</span><span class="nv">JENKINS_PASS</span><span class="k">}</span>
+</span><span class='line'>    <span class="k">fi</span>
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;<span class="o">}</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;execJenkinsCli get-job <span class="k">${</span><span class="nv">tmpl_job_name</span><span class="k">}</span>  | <span class="se">\</span>
+</span><span class='line'>  <span class="k">${</span><span class="nv">XML</span><span class="k">}</span> ed -O -S -P -u &amp;#39;//project/scm/locations/hudson.scm.SubversionSCM_-ModuleLocation/remote&amp;#39; -v <span class="k">${</span><span class="nv">scm_url</span><span class="k">}</span> | <span class="se">\</span>
+</span><span class='line'>  execJenkinsCli create-job <span class="k">${</span><span class="nv">new_job_name</span><span class="k">}</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  execJenkinsCli <span class="nb">enable</span>-job <span class="k">${</span><span class="nv">new_job_name</span><span class="k">}</span> <span class="c"># our template is usually disabled, thus the cloned one is too &amp;hellip;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The full jobGen wrapper script can be <a href="https://gist.github.com/hagzag/9b0d9d74d1920e248959">found here</a></p>
 
 <!-- more -->
 
 
-<h2>Problem</h2>
-
-<p>So what are we going to build? I don&rsquo;t want to build a simplistic web application for the sake of building the application. On the other hand, I want to constrain myself to small feature set to prevent this tutorial from sinking in too many details. After thinking a while I found a problem which looks pretty simple, but at the same time there is a good chance people (including myself in the first place) will actually use the program I&rsquo;m going to create. And here is the problem.</p>
-
-<p>I have a bunch of articles and e-books sitting in some directory on my home server. To be able to read those books from any computer in my home network, I run the simple Python web-server, which exposes the content of the directory via HTTP. If you are curious, here is the command I&rsquo;m using:</p>
-
-<pre><code>$ cd /path/to/your/ebook/dir
-$ python -m SimpleHTTPServer 3030
-</code></pre>
-
-<p>And here is how the &ldquo;library&rdquo; looks like in the browser</p>
-
-<p><img class="center" src="/images/posts/bookshelf1.png"></p>
-
-<p>This library application is good enough for me, mainly because it&rsquo;s functional. I can easily find the book by skimming the page or using Find command in a browser. But for the purpose of this tutorial I want to make it slightly better. For example, I can split the file names and display the books in a table view, where I can see clearly what the name of the book is, who the author is, and when it was pablished. I can even add sorting as a bonus feature. Basically, I want something like this</p>
-
-<p><img class="center" src="/images/posts/bookshelf2.png"></p>
-
-<p>As you can imagine, it shouldn&rsquo;t be hard to do this. The file names are already in the form that is easy to parse. So the question is really how to show the table data in a browser. Simple problem, minimum requirements. Let&rsquo;s see how to solve it in Clojure.</p>
-
-<h2>Tools</h2>
-
-<p>Clojure, being a Lisp descendant, is a powerful language. That means you can create your own web framework during a weekend, which many people actually do. But I think it&rsquo;s much better to take existing library, promote it, enhance it, fix the bugs if you like it. In Clojure I found such a framework, it&rsquo;s called <a href="http://www.webnoir.org/">Noir</a>. This framework is very small, so small that their developers call it micro-framework, that&rsquo;s why I&rsquo;m calling this tutorial micro-tutorial. Probably we shouldn&rsquo;t even call it framework at all, library would probably be a better name. The closest analog to Noir in other languages I know is probably <a href="http://wiki.basho.com/Webmachine.html">Webmachine</a> in Erlang, or Spring MVC in Java. I wouldn&rsquo;t compare it to Grails or Rails because those things are huge.</p>
-
-<p>Noir is not only small, it&rsquo;s also simple. You can look at their source code and understand how it works without any problem, provided you have some experience with Clojure. As a result, Noir is a perfect tool for the problem we are going to solve.</p>
-
-<p>Without further ado let&rsquo;s see how Noir works. The easiest way to set up a scaffolding of our future application is by using <a href="http://leiningen.org/">Leiningen</a>. Leiningen is a Clojure build tool, very similar to Maven. In Maven you would do mvn archetype:generate, in Leiningen you run</p>
-
-<pre><code>$ lein new noir bookshelf
-</code></pre>
-
-<p>where bookshelf is the name of our application. This creates a directory called bookshelf where you can find some Noir template files, plus Leiningen project descriptor</p>
-
-<pre><code>/.gitignore
-/project.clj
-/README.md
-/resources/public/css/
-/resources/public/css/reset.css
-/resources/public/img/
-/resources/public/js/
-/src/bookshelf/models/
-/src/bookshelf/server.clj
-/src/bookshelf/views/common.clj
-/src/bookshelf/views/welcome.clj
-/test/bookshelf/
-</code></pre>
-
-<p>You can ignore <em>.gitignore</em>, it&rsquo;s already configured properly. Before we make our initial checkin, it&rsquo;s a good practice to edit project.clj and README.md to replace FIXME&rsquo;s. We will edit README file again later when we finish the development to provide more information on how to use the application. Before we move to Noir, let&rsquo;s quickly review project.clj file</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>project.clj </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defproject </span><span class="nv">bookshelf</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;0.1.0-SNAPSHOT&amp;rdquo;</span>
-</span><span class='line'>  <span class="ss">:description</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;Bookshelf site&amp;rdquo;</span>
-</span><span class='line'>  <span class="ss">:dependencies</span> <span class="p">[[</span><span class="nv">org.clojure/clojure</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;1.4.0&amp;rdquo;]&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>             <span class="p">[</span><span class="nv">noir</span> <span class="s">&quot;1.3.0-beta3&quot;</span><span class="p">]]</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>  <span class="ss">:main</span> <span class="nv">bookshelf.server</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p><em>project.clj</em> is a Clojure version of pom.xml (in fact, you can use pom.xml if you want, Clojure perfectly understands it). First two lines are obvious. Dependency entry specifies which JAR files we need to make our application work. In our case we only need two JARs. Leiningen will check Maven central repository as well as <a href="https://clojars.org/">Clojars</a> to download the required JARs with all transitive dependencies. The last line in the project descriptor says which namespace contains the main method. In our case it is <code>bookshelf.server</code>. You can find the source of this namespace in <em>/src/bookshelf/server.clj</em> file. Let&rsquo;s take a look at this file</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/src/bookshelf/server.clj </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">ns </span><span class="nv">bookshelf.server</span>
-</span><span class='line'>  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">noir.server</span> <span class="ss">:as</span> <span class="nv">server</span><span class="p">]))</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">server/load-views-ns</span> <span class="o">&amp;</span><span class="nv">lsquo</span><span class="c1">;bookshelf.views)&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn </span><span class="nv">-main</span> <span class="p">[</span><span class="o">&amp;</span><span class="nv">amp</span><span class="c1">; m]</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">mode</span> <span class="p">(</span><span class="nb">keyword </span><span class="p">(</span><span class="nb">or </span><span class="p">(</span><span class="nb">first </span><span class="nv">m</span><span class="p">)</span> <span class="ss">:dev</span><span class="p">))</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>    <span class="nv">port</span> <span class="p">(</span><span class="nf">Integer.</span> <span class="p">(</span><span class="nb">get </span><span class="p">(</span><span class="nf">System/getenv</span><span class="p">)</span> <span class="s">&quot;PORT&quot;</span> <span class="s">&quot;8080&quot;</span><span class="p">))]</span>
-</span><span class='line'><span class="p">(</span><span class="nf">server/start</span> <span class="nv">port</span> <span class="p">{</span><span class="ss">:mode</span> <span class="nv">mode</span>
-</span><span class='line'>                    <span class="ss">:ns</span> <span class="ss">&#39;bookshelf</span><span class="p">})))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p><code>server/load-views-ns</code> specifies the prefixes of the view namespaces that will be loaded by Noir server. In our case those namespaces start with <code>bookshelf.views</code>. By default Leiningen generates two view files: <em>/bookshelf/views/common.clj</em> and <em>/bookshelf/views/welcome.clj</em>, but you can create more if your project becomes more complex. Since Noir scans namespaces by prefixes, you can even put your files in the nested directories under <em>/bookshelf/views</em>, no changes in <em>server.clj</em> required.</p>
-
-<p>To start Noir server, run</p>
-
-<pre><code>$ lein run
-</code></pre>
-
-<p>This will start Jetty web server bound to localhost at port 8080. If you want to change the default port, say to 3030, run the following command</p>
-
-<pre><code>$ export PORT=3030; lein run
-</code></pre>
-
-<p>Besides port, you can specify few other parameters such as :mode, :jetty-options, etc. (you can see all available options in the server <a href="https://github.com/noir-clojure/noir/blob/master/src/noir/server.clj">source</a>). I&rsquo;ll show below how to specify production mode, for example, when we deploy the final application.</p>
-
-<p>If you started the server with the default port, open your browser at <a href="http://localhost:8080/">http://localhost:8080</a>. You should see the Noir&rsquo;s start page</p>
-
-<p><img class="center" src="/images/posts/bookshelf3.png"></p>
-
-<p>This page by itself contains all you need to get started with Noir, so you can safely stop reading this article, and just follow the instructions on that page. Those who continue reading this tutorial and wondering where that start page is coming from, please open <em>/src/bookshelf/views/welcome.clj</em></p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/src/bookshelf/views/welcome.clj </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">ns </span><span class="nv">bookshelf.views.welcome</span>
-</span><span class='line'>  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">bookshelf.views.common</span> <span class="ss">:as</span> <span class="nv">common</span><span class="p">]</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>        <span class="p">[</span><span class="nv">noir.content.getting-started</span><span class="p">])</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>  <span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">noir.core</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">defpage</span><span class="p">]]))</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">defpage</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;/welcome&amp;rdquo; []</span>
-</span><span class='line'>  <span class="p">(</span><span class="nf">common/layout&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">[</span><span class="ss">:p</span> <span class="s">&quot;Welcome to bookshelf&quot;</span><span class="p">]))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Third line tells us that the source of the start page is in <em>noir/content/getting-started.clj</em> file. If you are curious where this file is, look <a href="https://github.com/noir-clojure/noir/blob/master/src/noir/content/getting_started.clj">here</a>. Search for <code>(defpage "/" [] …)</code> to see how the start page is defined. On your web-site you probably want the start page to be different, so you can remove <code>[noir.content.getting-started]</code> from <code>:require</code> section.</p>
-
-<p>The next thing to notice on the snippet above is <code>(defpage "/welcome" [] …)</code> function. That&rsquo;s how you define URL mappings (or routes, in Noir lingo) of your web-site. (Internally, Noir uses <a href="https://github.com/weavejester/compojure">Compojure</a> library to handle the routing.) It is similar to @RequestMapping annotations in Spring-MVC, where you specify which method is called when a user hits the given URL. As you can see, we have only one mapping at the moment, <code>/welcome</code>. Since we are building bookshelf application, let&rsquo;s rename it to <code>/books</code>. Also, to be even more explicit, let&rsquo;s rename the whole file to <em>books.clj</em>. Don&rsquo;t forget to update the namespace. Your <em>books.clj</em> file should now look like this</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/src/bookshelf/views/books.clj </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">ns </span><span class="nv">bookshelf.views.books</span>
-</span><span class='line'>  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">bookshelf.views.common</span> <span class="ss">:as</span> <span class="nv">common</span><span class="p">])</span>
-</span><span class='line'>  <span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">noir.core</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">defpage</span><span class="p">]]))</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">defpage</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;/books&amp;rdquo; []</span>
-</span><span class='line'>  <span class="p">(</span><span class="nf">common/layout&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">[</span><span class="ss">:p</span> <span class="s">&quot;Welcome to bookshelf&quot;</span><span class="p">]))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>If you go to <a href="http://localhost:8080/books">http://localhost:8080/books</a> in your browser, you should see this screen</p>
-
-<p><img class="center" src="/images/posts/bookshelf4.png"></p>
-
-<p>By looking at the source of this page, you find it a proper HTML with head and body elements. Those are generated by <a href="https://github.com/weavejester/hiccup">Hiccup</a> library, which we&rsquo;ll discuss in a moment. One thing I want to mention about defpage is that you can get the same result if you change <code>/books</code> route definition as follows</p>
-
-<pre><code>(defpage "/books" []
-  "&lt;html&gt;
-     &lt;head&gt;
-       &lt;title&gt;bookshelf&lt;/title&gt;
-     &lt;/head&gt;
-     &lt;body&gt;
-       &lt;p&gt;Welcome to bookshelf&lt;/p&gt;
-     &lt;/body&gt;
-   &lt;/html&gt;")
-</code></pre>
-
-<p>It is just a theoretical exercise, in reality nobody hard-codes the entire HTML inside the Clojure code.</p>
-
-<p>Now let&rsquo;s take look at how the page content is generated. If you look at the routing definition in <em>books.clj</em>, you see that the body of <code>defpage</code> function is a call to <code>layout</code> function defined in <em>/src/bookshelf/views/common.clj</em>. Let&rsquo;s open this file</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/src/bookshelf/views/common.clj </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">ns </span><span class="nv">bookshelf.views.common</span>
-</span><span class='line'>  <span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">noir.core</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">defpartial</span><span class="p">]]</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>    <span class="p">[</span><span class="nv">hiccup.page</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">include-css</span> <span class="nv">html5</span><span class="p">]]))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">defpartial</span> <span class="nv">layout</span> <span class="p">[</span><span class="o">&amp;</span><span class="nv">amp</span><span class="c1">; content]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nf">html5&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">[</span><span class="ss">:head</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:title</span> <span class="s">&quot;bookshelf&quot;</span><span class="p">]</span>
-</span><span class='line'> <span class="p">(</span><span class="nf">include-css</span> <span class="s">&quot;/css/reset.css&quot;</span><span class="p">)]</span>
-</span><span class='line'><span class="p">[</span><span class="ss">:body</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:div#wrapper</span>
-</span><span class='line'>  <span class="nv">content</span><span class="p">]]))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p><code>layout</code> is just a wrapper on top of <code>hiccup.core/html</code> function. Hiccup is an XML/HTML rendering library in Clojure. The idea behind it is pretty simple: You build a tree using Clojure vectors, and Hiccup transforms it to a valid HTML. If you are familiar with Groovy MarkupBuilder, it&rsquo;s the same idea. For example, let&rsquo;s define a couple of trees: head and body</p>
-
-<pre><code>(def head
-  [:head
-   [:title "bookshelf"]])
-(def body
-  [:body
-   [:div
-    [:p "Welcome to bookshelf"]]])
-</code></pre>
-
-<p>Here is what you see in REPL when it evaluates different Hiccup HTML formats (I pretty formatted them for visibility purposes)</p>
-
-<pre><code>(hiccup.page/html5 head body)
-;=&gt; "&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;title&gt;bookshelf&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div&gt;&lt;p&gt;Welcome to bookshelf&lt;/p&gt;&lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;"
-
-(hiccup.page/html4 head body)
-;=&gt; "&lt;!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\"&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;title&gt;bookshelf&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div&gt;&lt;p&gt;Welcome to bookshelf&lt;/p&gt;&lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;"
-
-(hiccup.page/xhtml head body)
-;=&gt; "&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n&lt;!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\"&gt;
-&lt;html xmlns=\"http://www.w3.org/1999/xhtml\"&gt;
-  &lt;head&gt;
-    &lt;title&gt;bookshelf&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div&gt;&lt;p&gt;Welcome to bookshelf&lt;/p&gt;&lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;"
-</code></pre>
-
-<p>Noir&rsquo;s default format is html5, the first example above. You can change it to any other format if needed.</p>
-
-<p>The last piece of <em>common.clj</em> I want to mention is <code>(include-css "/css/reset.css")</code>. This is another function from Hiccup library. It generates <code>&lt;link href="http://bvajjala.github.io/css/reset.css" rel="stylesheet" type="text/css"&gt;</code> element and inserts it in the <code>head</code> element of the page. If you recall the scaffolding we generated at the beginning, there is a directory called <em>/resources/public</em> where Noir keeps CSS files, JavaScript, and images required by your web-site. By default Noir creates <em>reset.css</em> in the corresponding subdirectory. Later we&rsquo;ll create other stylesheets and update <em>common.clj</em> appropriately.</p>
-
-<p>Now, after we covered all the basics, we are ready to build our application.</p>
-
-<h2>Controller and View</h2>
-
-<p>Let&rsquo;s build our view and controller first. While doing that we&rsquo;ll figure out what data we need from the back-end. That&rsquo;s called top-down design.</p>
-
-<p>We define controllers and views in <em>books.clj</em> file. For now I also include the model in this file. We&rsquo;ll move it to a proper namespace later when we are done with the front-end. Here is the new version of <em>books.clj</em></p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/src/bookshelf/views/books.clj </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">ns </span><span class="nv">bookshelf.views.books</span>
-</span><span class='line'>  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">bookshelf.views.common</span> <span class="ss">:as</span> <span class="nv">common</span><span class="p">])</span>
-</span><span class='line'>  <span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">noir.core</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">defpage</span><span class="p">]]</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>    <span class="p">[</span><span class="nv">hiccup.element</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">link-to</span><span class="p">]]))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn </span><span class="nv">books</span> <span class="p">[]</span>
-</span><span class='line'>  <span class="p">[{</span><span class="ss">:author</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;Fogus M., Houser C.&amp;rdquo;&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="ss">:title</span> <span class="s">&quot;The Joy Of Clojure&quot;</span>
-</span><span class='line'><span class="ss">:year</span> <span class="s">&quot;2011&quot;</span>
-</span><span class='line'><span class="ss">:format</span> <span class="s">&quot;pdf&quot;</span>
-</span><span class='line'><span class="ss">:id</span> <span class="mi">1</span><span class="p">}</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>   <span class="p">{</span><span class="ss">:author</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;Fogus M., Houser C.&amp;rdquo;&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="ss">:title</span> <span class="s">&quot;The Joy Of Clojure&quot;</span>
-</span><span class='line'><span class="ss">:year</span> <span class="s">&quot;2011&quot;</span>
-</span><span class='line'><span class="ss">:format</span> <span class="s">&quot;epub&quot;</span>
-</span><span class='line'><span class="ss">:id</span> <span class="mi">2</span><span class="p">}])</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn- </span><span class="nv">list-books</span> <span class="p">[]</span>
-</span><span class='line'>  <span class="p">[</span><span class="ss">:table</span>
-</span><span class='line'>   <span class="p">[</span><span class="ss">:thead&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">[</span><span class="ss">:tr</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:th</span> <span class="s">&quot;Author&quot;</span><span class="p">]</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:th</span> <span class="s">&quot;Title&quot;</span><span class="p">]</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:th</span> <span class="s">&quot;Published&quot;</span><span class="p">]</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:th</span> <span class="s">&quot;Format&quot;</span><span class="p">]]]</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>   <span class="p">(</span><span class="nb">into </span><span class="p">[</span><span class="ss">:tbody</span><span class="p">]</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>     <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">book</span> <span class="p">(</span><span class="nf">books</span><span class="p">)]</span>
-</span><span class='line'>       <span class="p">[</span><span class="ss">:tr</span>
-</span><span class='line'>        <span class="p">[</span><span class="ss">:td</span> <span class="p">(</span><span class="ss">:author</span> <span class="nv">book</span><span class="p">)]</span>
-</span><span class='line'>        <span class="p">[</span><span class="ss">:td</span> <span class="p">(</span><span class="ss">:title</span> <span class="nv">book</span><span class="p">)]</span>
-</span><span class='line'>        <span class="p">[</span><span class="ss">:td</span> <span class="p">(</span><span class="ss">:year</span> <span class="nv">book</span><span class="p">)]</span>
-</span><span class='line'>        <span class="p">[</span><span class="ss">:td</span> <span class="p">(</span><span class="nf">link-to</span> <span class="p">(</span><span class="nf">clojure.string/join</span> <span class="s">&quot;/&quot;</span> <span class="p">[</span><span class="s">&quot;/books&quot;</span> <span class="p">(</span><span class="ss">:id</span> <span class="nv">book</span><span class="p">)</span> <span class="p">(</span><span class="ss">:format</span> <span class="nv">book</span><span class="p">)])</span>
-</span><span class='line'>                      <span class="p">(</span><span class="ss">:format</span> <span class="nv">book</span><span class="p">))]]))])</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">defpage</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;/books&amp;rdquo; []</span>
-</span><span class='line'>  <span class="p">(</span><span class="nf">common/layout&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">(</span><span class="nf">list-books</span><span class="p">)))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>There are three functions in this file: <code>books</code> (model), <code>list-books</code> (view), and <code>/books</code> (controller/router). The controller is essentially the same as before and the model is simply a vector of maps. Each map contains the same keys as column names on the book table. View might look complicated, but there shouldn&rsquo;t be any surprise here either — it&rsquo;s again an ordinary tree. The only new element here is <code>link-to</code> function defined in <code>hiccup.element</code> namespace. We could really build it directly using <code>[:a {:href …}]</code> vector, but link-to is a standard way to do it in Hiccup.</p>
-
-<p>If you refresh <a href="http://localhost:8080/books">http://localhost:8080/books</a> now (Leiningen/Jetty supports hot redeployment), you will see this screen</p>
-
-<p><img class="center" src="/images/posts/bookshelf5.png"></p>
-
-<p>The important part of the view function is the format of the links. For the current book model the links are <a href="http://localhost:8080/books/1/pdf">http://localhost:8080/books/1/pdf</a> and <a href="http://localhost:8080/books/2/epub">http://localhost:8080/books/2/epub</a>. You can verify it by hovering the mouse over them. Those links are actually the main goal of our application. By clicking the link I want to load (or download) the book into the browser and read it. To implement this feature add the following functions to <em>books.clj</em></p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/src/bookshelf/views/books.clj (cont&rsquo;d) </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">get-file</span> <span class="p">[</span><span class="nv">id</span><span class="p">]</span>
-</span><span class='line'>  <span class="nv">nil</span><span class="p">)</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn- </span><span class="nv">ctype</span> <span class="p">[</span><span class="nv">format</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;pdf&amp;rdquo; format) &amp;ldquo;application/pdf&amp;rdquo; &amp;ldquo;text/plain&amp;rdquo;))&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">defpage</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;/books/:id/:format&amp;rdquo; {:keys [id format]}</span>
-</span><span class='line'>  <span class="p">(</span><span class="nf">content-type</span> <span class="p">(</span><span class="nf">ctype</span> <span class="nv">format</span><span class="p">)</span> <span class="p">(</span><span class="nf">java.io.ByteArrayInputStream.</span> <span class="p">(</span><span class="nf">get-file</span> <span class="nv">id</span><span class="p">))))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Ignore for a moment <code>get-file</code> function — it does nothing. Later we will move it to model namespace and implement it properly, but we need some placeholder now to compile the application. ctype is a helper function that maps the file format to HTTP content type. I have three ebook formats in my library: ePub, Mobi, and PDF. The first two are plain text formats from HTTP content type perspective. Only PDF requires special type.</p>
-
-<p>The interesting part of the snippet is the controller definition. If you ever implemented REST in Spring MVC, you should see the familiar pattern here. Like Spring, Noir (via Compojure) supports path variables. If you click on <a href="http://localhost:8080/books/1/pdf">http://localhost:8080/books/1/pdf</a> link in the browser, Noir calls the corresponding controller and binds <code>id</code> variable to &ldquo;1&rdquo; and <code>format</code> variable to &ldquo;pdf&rdquo;. When we implement <code>get-file</code> function, it should return the file with the given id as an array of bytes. Controller then wraps the array into a stream, and Noir pushes it to HTTP response. <code>content-type</code> function is defined in <em>noir.response</em> namespace, so we need to add <code>[noir.response :only [content-type]]</code> to <code>:use</code> section at the top of <em>books.clj</em>.</p>
-
-<p>That&rsquo;s it, in terms of functionality the controller and the view of our application are done.</p>
-
-<h2>Model</h2>
-
-<p>Now we need to extract the logic that creates a model from presentation tier to middle-tier. In Noir that&rsquo;s what models directory is for. In our case it&rsquo;s <em>/src/bookshelf/models</em>. Let&rsquo;s create a file called <em>db.clj</em> in that directory, and move there books and <code>get-file</code> functions from <em>bookshelf.views.books</em> namespace. We have to update <em>books.clj</em> to load the new namespace. It should now look like this</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/src/bookshelf/views/books.clj </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">ns </span><span class="nv">bookshelf.views.books</span>
-</span><span class='line'>  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">bookshelf.models.db</span> <span class="ss">:as</span> <span class="nv">db</span><span class="p">]</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>        <span class="p">[</span><span class="nv">bookshelf.views.common</span> <span class="ss">:as</span> <span class="nv">common</span><span class="p">])</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>  <span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">noir.core</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">defpage</span><span class="p">]]</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>    <span class="p">[</span><span class="nv">noir.response</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">content-type</span><span class="p">]]</span>
-</span><span class='line'>    <span class="p">[</span><span class="nv">hiccup.element</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">link-to</span><span class="p">]]))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn- </span><span class="nv">list-books</span> <span class="p">[]</span>
-</span><span class='line'>  <span class="p">[</span><span class="ss">:table</span>
-</span><span class='line'>   <span class="p">[</span><span class="ss">:thead&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">[</span><span class="ss">:tr</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:th</span> <span class="s">&quot;Author&quot;</span><span class="p">]</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:th</span> <span class="s">&quot;Title&quot;</span><span class="p">]</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:th</span> <span class="s">&quot;Published&quot;</span><span class="p">]</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:th</span> <span class="s">&quot;Format&quot;</span><span class="p">]]]</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>   <span class="p">(</span><span class="nb">into </span><span class="p">[</span><span class="ss">:tbody</span><span class="p">]</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>     <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">book</span> <span class="p">(</span><span class="nf">db/books</span><span class="p">)]</span>
-</span><span class='line'>       <span class="p">[</span><span class="ss">:tr</span>
-</span><span class='line'>        <span class="p">[</span><span class="ss">:td</span> <span class="p">(</span><span class="ss">:author</span> <span class="nv">book</span><span class="p">)]</span>
-</span><span class='line'>        <span class="p">[</span><span class="ss">:td</span> <span class="p">(</span><span class="ss">:title</span> <span class="nv">book</span><span class="p">)]</span>
-</span><span class='line'>        <span class="p">[</span><span class="ss">:td</span> <span class="p">(</span><span class="ss">:year</span> <span class="nv">book</span><span class="p">)]</span>
-</span><span class='line'>        <span class="p">[</span><span class="ss">:td</span> <span class="p">(</span><span class="nf">link-to</span> <span class="p">(</span><span class="nf">clojure.string/join</span> <span class="s">&quot;/&quot;</span> <span class="p">[</span><span class="s">&quot;/books&quot;</span> <span class="p">(</span><span class="ss">:id</span> <span class="nv">book</span><span class="p">)</span> <span class="p">(</span><span class="ss">:format</span> <span class="nv">book</span><span class="p">)])</span>
-</span><span class='line'>                      <span class="p">(</span><span class="ss">:format</span> <span class="nv">book</span><span class="p">))]]))])</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">defpage</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;/books&amp;rdquo; []</span>
-</span><span class='line'>  <span class="p">(</span><span class="nf">common/layout&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">(</span><span class="nf">list-books</span><span class="p">)))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn- </span><span class="nv">ctype</span> <span class="p">[</span><span class="nv">format</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;pdf&amp;rdquo; format) &amp;ldquo;application/pdf&amp;rdquo; &amp;ldquo;text/plain&amp;rdquo;))&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">defpage</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;/books/:id/:format&amp;rdquo; {:keys [id format]}</span>
-</span><span class='line'>  <span class="p">(</span><span class="nf">content-type</span> <span class="p">(</span><span class="nf">ctype</span> <span class="nv">format</span><span class="p">)</span> <span class="p">(</span><span class="nf">java.io.ByteArrayInputStream.</span> <span class="p">(</span><span class="nf">db/get-file</span> <span class="nv">id</span><span class="p">))))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>If you refresh your browser, nothing should change.</p>
-
-<p>All right, now it&rsquo;s time to implement our model properly. Recall that our model should scan the directory it&rsquo;s running in for the files with the format Author-Title-Year.FileFormat, and convert each of those files to byte array. Here is how I implemented it</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/src/bookshelf/models/db.clj </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">ns </span><span class="nv">bookshelf.models.db</span>
-</span><span class='line'>  <span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">clojure.java.shell</span> <span class="ss">:only</span> <span class="p">(</span><span class="nf">sh</span><span class="p">)]))</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn- </span><span class="nv">list-files</span> <span class="p">[</span><span class="nv">dir</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nf">clojure.string/split</span> <span class="p">(</span><span class="ss">:out</span> <span class="p">(</span><span class="nf">sh</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;ls&amp;rdquo; dir)) #&amp;ldquo;\n&amp;rdquo;))&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn- </span><span class="nb">parse </span><span class="p">[</span><span class="nv">file</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">when-let </span><span class="p">[</span><span class="nv">match</span> <span class="p">(</span><span class="nb">re-matches </span><span class="o">#&amp;</span><span class="nv">ldquo</span><span class="c1">;([^&amp;ndash;]+)&amp;ndash;([^&amp;ndash;]+)&amp;ndash;(\d+).(\S+)&amp;rdquo; file)]&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">(</span><span class="nb">zipmap </span><span class="p">[</span><span class="ss">:file</span> <span class="ss">:author</span> <span class="ss">:title</span> <span class="ss">:year</span> <span class="ss">:format</span><span class="p">]</span> <span class="nv">match</span><span class="p">)))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn- </span><span class="nv">add-id</span> <span class="p">[</span><span class="nv">book</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">assoc </span><span class="nv">book</span> <span class="ss">:id</span> <span class="p">(</span><span class="nf">clojure.string/replace</span> <span class="p">(</span><span class="ss">:file</span> <span class="nv">book</span><span class="p">)</span> <span class="o">#&amp;</span><span class="nv">ldquo</span><span class="c1">;[., ]&amp;rdquo; &amp;ldquo;&amp;rdquo;)))&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn </span><span class="nv">books</span> <span class="p">[]</span>
-</span><span class='line'>  <span class="p">(</span><span class="o">&amp;</span><span class="nv">ndash</span><span class="c1">;&gt;&gt; (list-files &amp;ldquo;.&amp;rdquo;) (map parse) (remove nil?) (map add-id)))&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn- </span><span class="nv">file</span> <span class="p">[</span><span class="nv">id</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">mapping</span> <span class="p">(</span><span class="nb">into </span><span class="p">{}</span> <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">b</span> <span class="p">(</span><span class="nf">books</span><span class="p">)]</span> <span class="p">[(</span><span class="ss">:id</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="ss">:file</span> <span class="nv">b</span><span class="p">)]))]</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">(</span><span class="nb">get </span><span class="nv">mapping</span> <span class="nv">id</span><span class="p">)))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn </span><span class="nv">get-file</span> <span class="p">[</span><span class="nv">id</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">with-open </span><span class="p">[</span><span class="nv">input</span>  <span class="p">(</span><span class="nf">java.io.FileInputStream.</span> <span class="p">(</span><span class="nf">file</span> <span class="nv">id</span><span class="p">))</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>          <span class="nv">buffer</span> <span class="p">(</span><span class="nf">java.io.ByteArrayOutputStream.</span><span class="p">)]</span>
-</span><span class='line'><span class="p">(</span><span class="nf">clojure.java.io/copy</span> <span class="nv">input</span> <span class="nv">buffer</span><span class="p">)</span>
-</span><span class='line'><span class="p">(</span><span class="nf">.toByteArray</span> <span class="nv">buffer</span><span class="p">)))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Let&rsquo;s take a look what each of the functions does. Function <code>list-files</code> returns a vector of file names that reside in the given directory <code>dir</code>. To find all files in the directory I&rsquo;m using <code>clojure.java.shell/sh</code> function which executes <code>ls</code> command. This works fine on Linux and Mac, but probalby doesn&rsquo;t on Windows. Function <code>parse</code> checks if the given file name has the required format. If so, it returns a map <code>{:file file, :author Author, :title Title, :year Year, :format FileFormat}</code>, otherwise it returns <code>nil</code>. <code>add-id</code> function removes dots, commas, and spaces from the file name and add the result as a book ID to the book map. Function <code>books</code> is just a composition of those three functions, and it returns the result expected by the view.</p>
-
-<p>Function <code>file</code> returns the file by given ID. The implementation above is not efficient, but my library is too small to notice any performance issues. Finally, <code>get-file</code> function finds the file by ID and returns it as a byte array. Those four lines is a pretty standard idiom which you can find in many Clojure source files.</p>
-
-<p>Now we are ready to test our application. For testing purposes I&rsquo;m going to copy a couple of e-books I recently received updates for to the project home directory. The content of this directory looks like this</p>
-
-<pre><code>.gitignore
-README.md
-Thomas D.-Programming Ruby 1.9-2010.epub
-Thomas D.-Programming Ruby 1.9-2010.pdf
-project.clj
-resources
-src
-test
-</code></pre>
-
-<p>I refresh my browser and here I can see these two books</p>
-
-<p><img class="center" src="/images/posts/bookshelf6.png"></p>
-
-<p>If I click on pdf, I can read the book in my browser</p>
-
-<p><img class="center" src="/images/posts/bookshelf7.png"></p>
-
-<p>OK, the application is functional. The next step is to make it little bit prettier.</p>
-
-<h2>Styling</h2>
-
-<p>Since our application is written in Noir framework, let&rsquo;s make it look like Noir. First, I downloaded Noir background <a href="http://www.webnoir.org/img/bg.png">image</a> and save it to <em>/resources/public/img</em> directory. Second, I created a stylesheet <em>/resources/public/css/noir.css</em> which resembles Noir&rsquo;s original</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/resources/public/css/noir.css </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nt">body</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">background</span><span class="o">:</span> <span class="m">#2a2b2b</span><span class="p">;</span>
-</span><span class='line'><span class="k">color</span><span class="o">:</span> <span class="m">#d1d9e1</span><span class="p">;</span>
-</span><span class='line'><span class="k">background</span><span class="o">:</span> <span class="sx">url(&#39;/img/bg.png&#39;)</span><span class="p">;</span>
-</span><span class='line'><span class="k">padding</span><span class="o">:</span> <span class="m">60px</span> <span class="m">60px</span><span class="p">;</span>
-</span><span class='line'><span class="k">font-family</span><span class="o">:</span> <span class="s1">&#39;Helvetica Neue&#39;</span><span class="o">,</span><span class="n">Helvetica</span><span class="o">,</span><span class="n">Verdana</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
-</span><span class='line'><span class="nt">a</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-</span><span class='line'><span class="k">color</span><span class="o">:</span> <span class="m">#d1d9e1</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
-</span><span class='line'><span class="nt">a</span><span class="nd">:hover</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">color</span><span class="o">:</span> <span class="m">#6bffbd</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
-</span><span class='line'><span class="nt">h1</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">color</span><span class="o">:</span> <span class="m">#6bffbd</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Then I updated <em>bookshelf.views.common</em> namespace to include new CSS</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/src/bookshelf/views/common.clj (cont&rsquo;d) </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">defpartial</span> <span class="nv">layout</span> <span class="p">[</span><span class="o">&amp;</span><span class="nv">amp</span><span class="c1">; content]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nf">html5&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">[</span><span class="ss">:head</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:title</span> <span class="s">&quot;Bookshelf&quot;</span><span class="p">]</span>
-</span><span class='line'> <span class="p">(</span><span class="nf">include-css</span> <span class="s">&quot;/css/reset.css&quot;</span><span class="p">)</span>
-</span><span class='line'> <span class="p">(</span><span class="nf">include-css</span> <span class="s">&quot;/css/noir.css&quot;</span><span class="p">)]</span>
-</span><span class='line'><span class="p">[</span><span class="ss">:body</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:div#wrapper</span>
-</span><span class='line'>  <span class="nv">content</span><span class="p">]]))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Finally, I want to add a header to the page in <em>bookshelf.views.books</em></p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/src/bookshelf/views/books.clj (cont&rsquo;d) </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">defpage</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;/books&amp;rdquo; []</span>
-</span><span class='line'>  <span class="p">(</span><span class="nf">common/layout&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">[</span><span class="ss">:h1</span> <span class="s">&quot;Books&quot;</span><span class="p">]</span>
-</span><span class='line'><span class="p">(</span><span class="nf">list-books</span><span class="p">)))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Refresh books web page on the browser to see the changes</p>
-
-<p><img class="center" src="/images/posts/bookshelf8.png"></p>
-
-<p>The last thing left unstyled is the book table. I won&rsquo;t style it directly, because I want to add client-side sorting to it, and I happen to know that TableSorter JavaScript library provides its own style.</p>
-
-<h2>JavaScript</h2>
-
-<p>TableSorter is a jQuery plugin, so you need to download jQuery first. Grab the latest <a href="http://code.jquery.com/jquery-1.8.2.min.js">min</a> and save it to <em>/resources/public/js</em> directory. Then, download <a href="http://tablesorter.com/docs/#Download">tablesorter.zip</a> that contains both JavaScript and stylesheet files. As before, JavaScript goes to <em>/resources/public/js</em> and stylesheets go to <em>/resources/public/css</em> directory. Here is the resources directory structure I have after everything is saved</p>
-
-<pre><code>resources/public/css/tablesorter/asc.gif
-resources/public/css/tablesorter/bg.gif
-resources/public/css/tablesorter/desc.gif
-resources/public/css/tablesorter/style.css
-resources/public/js/jquery-1.8.2.min.js
-resources/public/js/jquery.tablesorter.js
-</code></pre>
-
-<p>If you are curious, here is my <em>style.css</em>. I changed the original tablesorter css a little bit to better fit Noir theme</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/resources/public/css/style.css </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nt">table</span><span class="nc">.tablesorter</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">margin</span><span class="o">:</span><span class="m">10px</span> <span class="m">0pt</span> <span class="m">15px</span><span class="p">;</span>
-</span><span class='line'><span class="k">font-size</span><span class="o">:</span> <span class="m">10pt</span><span class="p">;</span>
-</span><span class='line'><span class="k">width</span><span class="o">:</span> <span class="m">100</span><span class="o">%</span><span class="p">;</span>
-</span><span class='line'><span class="k">text-align</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
-</span><span class='line'><span class="nt">table</span><span class="nc">.tablesorter</span> <span class="nt">thead</span> <span class="nt">tr</span> <span class="nt">th</span><span class="o">,</span> <span class="nt">table</span><span class="nc">.tablesorter</span> <span class="nt">tfoot</span> <span class="nt">tr</span> <span class="nt">th</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">color</span><span class="o">:</span> <span class="m">#000000</span><span class="p">;</span>
-</span><span class='line'><span class="k">background-color</span><span class="o">:</span> <span class="m">#b0b8c0</span><span class="p">;</span>
-</span><span class='line'><span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#2a2b2b</span><span class="p">;</span>
-</span><span class='line'><span class="k">font-size</span><span class="o">:</span> <span class="m">10pt</span><span class="p">;</span>
-</span><span class='line'><span class="k">padding</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
-</span><span class='line'><span class="nt">table</span><span class="nc">.tablesorter</span> <span class="nt">thead</span> <span class="nt">tr</span> <span class="nc">.header</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">background-image</span><span class="o">:</span> <span class="sx">url(bg.gif)</span><span class="p">;</span>
-</span><span class='line'><span class="k">background-repeat</span><span class="o">:</span> <span class="k">no-repeat</span><span class="p">;</span>
-</span><span class='line'><span class="k">background-position</span><span class="o">:</span> <span class="k">center</span> <span class="k">right</span><span class="p">;</span>
-</span><span class='line'><span class="k">cursor</span><span class="o">:</span> <span class="k">pointer</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
-</span><span class='line'><span class="nt">table</span><span class="nc">.tablesorter</span> <span class="nt">tbody</span> <span class="nt">td</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">color</span><span class="o">:</span> <span class="m">#b0b8c0</span><span class="p">;</span>
-</span><span class='line'><span class="k">padding</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
-</span><span class='line'><span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&#39;/img/bg.png&#39;)</span><span class="p">;</span>
-</span><span class='line'><span class="k">vertical-align</span><span class="o">:</span> <span class="k">top</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
-</span><span class='line'><span class="nt">table</span><span class="nc">.tablesorter</span> <span class="nt">tbody</span> <span class="nt">tr</span><span class="nc">.odd</span> <span class="nt">td</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">background-color</span><span class="o">:</span><span class="m">#F0F0F6</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
-</span><span class='line'><span class="nt">table</span><span class="nc">.tablesorter</span> <span class="nt">thead</span> <span class="nt">tr</span> <span class="nc">.headerSortUp</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">background-image</span><span class="o">:</span> <span class="sx">url(asc.gif)</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
-</span><span class='line'><span class="nt">table</span><span class="nc">.tablesorter</span> <span class="nt">thead</span> <span class="nt">tr</span> <span class="nc">.headerSortDown</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">background-image</span><span class="o">:</span> <span class="sx">url(desc.gif)</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
-</span><span class='line'><span class="nt">table</span><span class="nc">.tablesorter</span> <span class="nt">thead</span> <span class="nt">tr</span> <span class="nc">.headerSortDown</span><span class="o">,</span> <span class="nt">table</span><span class="nc">.tablesorter</span> <span class="nt">thead</span> <span class="nt">tr</span> <span class="nc">.headerSortUp</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">background-color</span><span class="o">:</span> <span class="m">#6bffbd</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>To enable tablesorter we have to update both view files. Few changes in bookshelf.views.common</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/src/bookshelf/views/common.clj </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">ns </span><span class="nv">bookshelf.views.common</span>
-</span><span class='line'>  <span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">noir.core</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">defpartial</span><span class="p">]]</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>    <span class="p">[</span><span class="nv">hiccup.page</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">include-css</span> <span class="nv">include-js</span> <span class="nv">html5</span><span class="p">]]))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">defpartial</span> <span class="nv">layout</span> <span class="p">[</span><span class="o">&amp;</span><span class="nv">amp</span><span class="c1">; content]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nf">html5&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">[</span><span class="ss">:head</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:title</span> <span class="s">&quot;Bookshelf&quot;</span><span class="p">]</span>
-</span><span class='line'> <span class="p">(</span><span class="nf">include-js</span> <span class="s">&quot;/js/jquery-1.8.2.min.js&quot;</span><span class="p">)</span>
-</span><span class='line'> <span class="p">(</span><span class="nf">include-js</span> <span class="s">&quot;/js/jquery.tablesorter.js&quot;</span><span class="p">)</span>
-</span><span class='line'> <span class="p">(</span><span class="nf">include-css</span> <span class="s">&quot;/css/reset.css&quot;</span><span class="p">)</span>
-</span><span class='line'> <span class="p">(</span><span class="nf">include-css</span> <span class="s">&quot;/css/tablesorter/style.css&quot;</span><span class="p">)</span>
-</span><span class='line'> <span class="p">(</span><span class="nf">include-css</span> <span class="s">&quot;/css/noir.css&quot;</span><span class="p">)]</span>
-</span><span class='line'><span class="p">[</span><span class="ss">:body</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:div#wrapper</span>
-</span><span class='line'>  <span class="nv">content</span><span class="p">]]))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>and few changes in <em>bookshelf.views.books</em></p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/src/bookshelf/views/books.clj </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">ns </span><span class="nv">bookshelf.views.books</span>
-</span><span class='line'>  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">bookshelf.models.db</span> <span class="ss">:as</span> <span class="nv">db</span><span class="p">]</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>        <span class="p">[</span><span class="nv">bookshelf.views.common</span> <span class="ss">:as</span> <span class="nv">common</span><span class="p">])</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>  <span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">noir.core</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">defpage</span><span class="p">]]</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>    <span class="p">[</span><span class="nv">noir.response</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">content-type</span><span class="p">]]</span>
-</span><span class='line'>    <span class="p">[</span><span class="nv">hiccup.element</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">link-to</span> <span class="nv">javascript-tag</span><span class="p">]]))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn- </span><span class="nv">list-books</span> <span class="p">[]</span>
-</span><span class='line'>  <span class="p">[</span><span class="ss">:table.tablesorter</span> <span class="p">{</span><span class="ss">:id</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;bookTable&amp;rdquo;}</span>
-</span><span class='line'>   <span class="p">[</span><span class="ss">:thead&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">[</span><span class="ss">:tr</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:th</span> <span class="s">&quot;Author&quot;</span><span class="p">]</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:th</span> <span class="s">&quot;Title&quot;</span><span class="p">]</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:th</span> <span class="s">&quot;Published&quot;</span><span class="p">]</span>
-</span><span class='line'> <span class="p">[</span><span class="ss">:th</span> <span class="s">&quot;Format&quot;</span><span class="p">]]]</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>   <span class="p">(</span><span class="nb">into </span><span class="p">[</span><span class="ss">:tbody</span><span class="p">]</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>     <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">book</span> <span class="p">(</span><span class="nf">db/books</span><span class="p">)]</span>
-</span><span class='line'>       <span class="p">[</span><span class="ss">:tr</span>
-</span><span class='line'>        <span class="p">[</span><span class="ss">:td</span> <span class="p">(</span><span class="ss">:author</span> <span class="nv">book</span><span class="p">)]</span>
-</span><span class='line'>        <span class="p">[</span><span class="ss">:td</span> <span class="p">(</span><span class="ss">:title</span> <span class="nv">book</span><span class="p">)]</span>
-</span><span class='line'>        <span class="p">[</span><span class="ss">:td</span> <span class="p">(</span><span class="ss">:year</span> <span class="nv">book</span><span class="p">)]</span>
-</span><span class='line'>        <span class="p">[</span><span class="ss">:td</span> <span class="p">(</span><span class="nf">link-to</span> <span class="p">(</span><span class="nf">clojure.string/join</span> <span class="s">&quot;/&quot;</span> <span class="p">[</span><span class="s">&quot;/books&quot;</span> <span class="p">(</span><span class="ss">:id</span> <span class="nv">book</span><span class="p">)</span> <span class="p">(</span><span class="ss">:format</span> <span class="nv">book</span><span class="p">)])</span>
-</span><span class='line'>                      <span class="p">(</span><span class="ss">:format</span> <span class="nv">book</span><span class="p">))]]))])</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">defpage</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;/books&amp;rdquo; []</span>
-</span><span class='line'>  <span class="p">(</span><span class="nf">common/layout&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">[</span><span class="ss">:h1</span> <span class="s">&quot;Books&quot;</span><span class="p">]</span>
-</span><span class='line'><span class="p">(</span><span class="nf">javascript-tag</span> <span class="s">&quot;$(document).ready(function() {$(\&quot;#bookTable\&quot;).tablesorter();});&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="p">(</span><span class="nf">list-books</span><span class="p">)))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn- </span><span class="nv">ctype</span> <span class="p">[</span><span class="nv">format</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;pdf&amp;rdquo; format) &amp;ldquo;application/pdf&amp;rdquo; &amp;ldquo;text/plain&amp;rdquo;))&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">defpage</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;/books/:id/:format&amp;rdquo; {:keys [id format]}</span>
-</span><span class='line'>  <span class="p">(</span><span class="nf">content-type</span> <span class="p">(</span><span class="nf">ctype</span> <span class="nv">format</span><span class="p">)</span> <span class="p">(</span><span class="nf">java.io.ByteArrayInputStream.</span> <span class="p">(</span><span class="nf">db/get-file</span> <span class="nv">id</span><span class="p">))))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>After we refresh the browser, we should see the final design and be able to sort the table</p>
-
-<p><img class="center" src="/images/posts/bookshelf9.png"></p>
-
-<h2>Ship it!</h2>
-
-<p>OK, we are ready to ship. But before we build a deployable artifact, we, as professional developers, should update documentation (<a href="https://github.com/ndpar/bookshelf/blob/master/README.md">README.md</a> in our case) and finalize the version of the application</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>project.clj </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defproject </span><span class="nv">bookshelf</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;0.1.0&amp;rdquo;</span>
-</span><span class='line'>  <span class="ss">:description</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;Bookshelf site&amp;rdquo;</span>
-</span><span class='line'>  <span class="ss">:dependencies</span> <span class="p">[[</span><span class="nv">org.clojure/clojure</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;1.4.0&amp;rdquo;]&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>             <span class="p">[</span><span class="nv">noir</span> <span class="s">&quot;1.3.0-beta3&quot;</span><span class="p">]]</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>  <span class="ss">:main</span> <span class="nv">bookshelf.server</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>I want to run this application as a a standalone Java web application, without any dependency on Leiningen. Therefore I have to add <code>:gen-class</code> to <em>server.clj</em></p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/src/bookshelf/server.clj </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">ns </span><span class="nv">bookshelf.server</span>
-</span><span class='line'>  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">noir.server</span> <span class="ss">:as</span> <span class="nv">server</span><span class="p">])</span>
-</span><span class='line'>  <span class="p">(</span><span class="ss">:gen-class</span><span class="p">))</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">server/load-views-ns</span> <span class="o">&amp;</span><span class="nv">lsquo</span><span class="c1">;bookshelf.views)&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn </span><span class="nv">-main</span> <span class="p">[</span><span class="o">&amp;</span><span class="nv">amp</span><span class="c1">; m]</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">mode</span> <span class="p">(</span><span class="nb">keyword </span><span class="p">(</span><span class="nb">or </span><span class="p">(</span><span class="nb">first </span><span class="nv">m</span><span class="p">)</span> <span class="ss">:dev</span><span class="p">))</span><span class="nv">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>    <span class="nv">port</span> <span class="p">(</span><span class="nf">Integer.</span> <span class="p">(</span><span class="nb">get </span><span class="p">(</span><span class="nf">System/getenv</span><span class="p">)</span> <span class="s">&quot;PORT&quot;</span> <span class="s">&quot;8080&quot;</span><span class="p">))]</span>
-</span><span class='line'><span class="p">(</span><span class="nf">server/start</span> <span class="nv">port</span> <span class="p">{</span><span class="ss">:mode</span> <span class="nv">mode</span>
-</span><span class='line'>                    <span class="ss">:ns</span> <span class="ss">&#39;bookshelf</span><span class="p">})))</span>
-</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Now package the application by running the following command</p>
-
-<pre><code>$ lein uberjar
-</code></pre>
-
-<p>As a result of this command, <em>bookshelf-0.1.0-standalone.jar</em> artifact is created in the target directory. I scp this file to my server, to the directory where my books are located, and start the app</p>
-
-<pre><code>$ export PORT=3030; nohup java -jar bookshelf-0.1.0-standalone.jar prod &gt; nohup.out 2&gt;&amp;1 &amp;
-</code></pre>
-
-<p>And that&rsquo;s basically it. We have created a simplest web application in Clojure, which might be useful by its own. But more importantly, you&rsquo;ve learned <em>how</em> to build it. I hope you enjoyed reading this tutorial as I enjoyed writing it.</p>
-
-<h2>Recap</h2>
-
-<p>If you want to create web application in Clojure, try Noir. Noir is small and easy to pick up.</p>
-
-<ul>
-<li>use defpage macro to define URL routes</li>
-<li>use defpartial macro to build views</li>
-<li>use Leiningen to run local web server</li>
-<li>use REPL to experiment with business logic</li>
-<li>have fun with Clojure</li>
-</ul>
-
-
-<h2>Resources</h2>
+<p>Tieing it all together:</p>
 
 <ol>
-<li>Long in-depth Noir tutorial: <a href="http://yogthos.net/blog/22">http://yogthos.net/blog/22</a></li>
-<li>Source code of this tutorial: <a href="https://github.com/ndpar/bookshelf">https://github.com/ndpar/bookshelf</a></li>
-<li>Noir: <a href="http://www.webnoir.org/">http://www.webnoir.org</a></li>
-<li>Hiccup: <a href="https://github.com/weavejester/hiccup">https://github.com/weavejester/hiccup</a></li>
+<li>Create a template job [preferably keep it disabled so if it has SCM triggers it doesn&#39;t start on any scm change &hellip;] &ndash; see <a href="https://gist.github.com/hagzag/62b48fee2e28a9cf32c7">this gist</a></li>
+<li><p>Create a job which will generate the jobs for you &ndash; ${PRODUCT_NAME}.JobGen &ndash; with parameters see <a href="https://gist.github.com/hagzag/cfe6f2d47d37249aed91">this gist</a>
+<img src="/assets/images/JobGen-params.png" alt="Job Gen Parameters" /></p>
+
+<ul>
+<li>  template_job [default value = ${PRODUCT_NAME}.Template]</li>
+<li>  new_job_name</li>
+<li>  scm_url [ if you don&#39;t know how to fund see<a href="http://www.tikalk.com/alm/xmlstarlet-nifty-command-line-xml-toolkit"> this section </a>]</li>
+</ul>
+</li>
+<li>Provide the required permision for this job (so only permitted people can generate jobs &hellip;)</li>
 </ol>
 
 
-<p>P.S. After I wrote the draft of this post I found another <a href="http://clojure-lab.tumblr.com/post/35207280637/clojure-web-development">tutorial</a> on Clojure web development, which even has the same name for the application! If I knew about it before, I wouldn&rsquo;t probably write mine. But since it&rsquo;s already typed, let it be published.</p>
+<p>&nbsp;</p>
+
+<p>A few workds about this script:</p>
+
+<ol>
+<li>It&#39;s just an implementation example (which I changed from the original which was working with perforce) &ndash; yet it could work wth git too :)</li>
+<li>The execJenkinsCli script does a few things here:
+
+<ul>
+<li>Download the latest jenkins-cli.jar file &ndash; useful if you update jenkins and you want (believe me you do) the client to be up2dat with the server (it will not download if its the same version &hellip;</li>
+<li>Check to see if your using a private / public key auth [ available since jenkins 1.419 ] and will change the execution accordingly</li>
+</ul>
+</li>
+</ol>
+
+
+<p>Hope you find this useful.</p>
+
+<p>HP</p>
 ]]></content>
   </entry>
   

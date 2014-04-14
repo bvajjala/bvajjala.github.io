@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: CFEngine | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/cfengine/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[CFEngine Puppet and Chef Part 3]]></title>
+    <link href="http://bvajjala.github.io/blog/2011/12/30/cfengine-puppet-and-chef-part-3/"/>
+    <updated>2011-12-30T20:11:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2011/12/30/cfengine-puppet-and-chef-part-3</id>
+    <content type="html"><![CDATA[<p>At the end of the last installment, we used Puppet to create a Chef server. That brings us full circle, and the only thing we have left to do is examine how Chef works. We&rsquo;ll do that by looking at the code that gave us our original CFEngine server.</p>
+
+<h2> Chef </h2>
+
+
+<p><img class="right <a" src="href="http://farm4.staticflickr.com/3024/2417315604_ba73be6be2.jpg">http://farm4.staticflickr.com/3024/2417315604_ba73be6be2.jpg</a>" width="300" height="300"></p>
+
+<p>Since they&rsquo;re both written in Ruby, people tend to compare Puppet and Chef. This is natural since they have a lot in common. Both are convergence based configuration management tools inspired by CFEngine. Both have stand alone discovery agents (facter and ohai, respectively), as well as RESTful APIs for gleaning node information from the server. It turns out, however, that Chef actually has a lot more in common with CFEngine.</p>
+
+<p>Like CFEngine, Chef copies policy from the server and evaluates it on the edges. This allows for high scalability, since the server isn&rsquo;t doing very much. Think of web application that does most of its work in the browser instead of on the server.</p>
+
+<p>A Chef recipe is a collection of convergent <a href=http://wiki.opscode.com/display/chef/Resources target="_blank">resource</a> statements, and serves as the basic unit of intent. This is analogous to a CFEngine promise bundle. The Chef run list is how recipe ordering is defined, and is directly comparible to CFEngine&rsquo;s bundlesqeuence. Using this approach makes it easy to reason about what&rsquo;s going on when writing infrastructure as code.</p>
+
+<h2> Chef Specials </h2>
+
+
+
+
+<h3> Imperative programming and declarative interface </h3>
+
+
+<p>While it&rsquo;s true that Chef is just &ldquo;pure ruby&rdquo; and therefore imperative, to say that Chef is imperative without considering the declarative interface to resources is disingenuous at best. Using nothing but Chef resources, recipes look very much like their CFEngine and Puppet counterparts. The non-optimally ordered Chef version of NTP converges in the same number of runs as the CFEngine example from the first installment. This is because the <a href=http://www.iu.hio.no/~mark/papers/immune.pdf target="_blank">underlying science</a> of convergent operators is the same.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;service&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">service</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">ntp</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">action</span> <span class="o">[</span> <span class="ss">:enable</span><span class="p">,</span> <span class="ss">:start</span> <span class="o">]</span>
+</span><span class='line'>  <span class="n">ignore_failure</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;file&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">template</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">ntp</span><span class="o">.</span><span class="n">conf</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">source</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">ntp</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">erb</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">owner</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">root</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">group</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">root</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">mode</span> <span class="mo">0644</span>
+</span><span class='line'>  <span class="n">notifies</span> <span class="ss">:restart</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">service</span><span class="o">[</span><span class="n">ntp</span><span class="o">]&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">ignore_failure</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;package&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">package</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">ntp</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">action</span> <span class="ss">:install</span>
+</span><span class='line'>  <span class="n">ignore_failure</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><a href=http://bit.ly/vPixyI target="_blank">When and where order matters</a>, imperative ordering isolated within a recipe is the most intuitive way for sysadmins to accomplish tasks within the convergent model. &ldquo;Install a package, edit a config file, and start the service&rdquo; is how most people think about the task. Imperative ordering of declarative statements give the best of both worlds. When order does NOT matter, it&rsquo;s safe to re-arrange recipe ordering in the Chef run list.</p>
+
+<h3> Multiphase execution </h3>
+
+
+<p>The real trick to effective Chef cookbook development is to understand the <a href=http://wiki.opscode.com/display/chef/Anatomy+of+a+Chef+Run target="_blank">Anatomy of a Chef Run</a>. When a Chef recipe is evaluated in the compilation phase, encountered resources are added to the Resource Collection, which is an array of evaluated resources with deferred execution.</p>
+
+<p>The compile phase of this recipe would add 99 uniquely named, 12 oz, convergent beer_bottles to the collection, and the configure phase would take them down and pass them around. Subsequent runs would do nothing.
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>thanks jtimberman! </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">size</span> <span class="o">=</span> <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;99.downto(1) do |i|</span>
+</span><span class='line'><span class="sr">  beer_bottle &amp;ldquo;bottle-</span><span class="si">#{</span><span class="n">i</span><span class="si">}</span><span class="sr">&amp;rdquo; do&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">oz</span> <span class="n">size</span>
+</span><span class='line'><span class="n">action</span> <span class="o">[</span> <span class="ss">:take_down</span><span class="p">,</span> <span class="ss">:pass_around</span> <span class="o">]</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The idea is that you can take advantage of the full power of Ruby to make decisions about what to declare about your resources. Most people just use the built in Chef APIs to consult chef-server for topology information about their infrastructure. However, there&rsquo;s nothing stopping you from importing random Ruby modules and accessing existing SQL databases instead.</p>
+
+<p>Want to name name servers after your Facebook friends? <a href=http://rfacebook.rubyforge.org/ type="_blank">Go for it.</a> Want your MOTD to list all James Brown albums released between 1980 and 1990? <a href=https://github.com/buntine/discogs type="_blank">Not a problem</a>. The important part is that things are ultimately managed with a declarative, idempotent, and convergent resource interface.</p>
+
+<h2> cfengine.rb </h2>
+
+
+<p>Let&rsquo;s take a look at the recipe that gave us our original CFEngine server.</p>
+
+<p>File /Users/balajivajjala/Development/opress-src/bvajjala.github.io/source/downloads/code/cookbooks/cfengine/recipes/server.rb could not be found</p>
+
+<h2> Topology management </h2>
+
+
+<p>When a node is bootstrapped with Chef, a run list of roles or recipes is requested by the node itself. After that, the host is found by recipes running elsewhere in the infrastructure by <a href=http://bit.ly/vI5Z9l target="_blank">searching</a> for roles or attributes. This is contrasted from the CFEngine and Puppet techniques of matching classes based on a hostname, FQDN, IP, or other found information.</p>
+
+<p>This approach has the effect of decoupling a node&rsquo;s name from its functionality. Line 10 in <code>cfengine.rb</code> above searches out node objects and later be passes them to the <code>promises-server.cf.erb</code> template for authorization.</p>
+
+<h2> Wrapping up </h2>
+
+
+<p>So there you have it folks. Chef making CFEngine making Puppet making Chef. These tools can be used to automate literally anything, and they&rsquo;re pretty easy to use once you figure out how they work. I was going to throw some Bcfg2 and LCFG in there just for fun, but I only had some much free time =)</p>
+
+<p>Configuration mangement is like a portal.</p>
+
+<p>-s</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CFEngine Puppet and Chef Part 2]]></title>
+    <link href="http://bvajjala.github.io/blog/2011/12/30/cfengine-puppet-and-chef-part-2/"/>
+    <updated>2011-12-30T20:10:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2011/12/30/cfengine-puppet-and-chef-part-2</id>
+    <content type="html"><![CDATA[<p>In the previous installment, we used Chef to configure CFEngine to serve policy that allowed us to create a Puppet service. In this one, we&rsquo;ll have Chef use that Puppet service to create a Chef server. If you think this is a ridiculous thing to do, I would be inclined to agree with you. However, this is my blog so I make the rules.</p>
+
+<h2> Puppet </h2>
+
+
+<p>Puppet at its core works like CFEngine. Statements in Puppet are convergent operators, in that they are declarative (and therefore idempotent), and convergent in that they check a resource&rsquo;s state before taking any action. Like the NTP example from the CFEngine installment, non-optimally ordered execution will usually work itself out after repeated Puppet runs.</p>
+
+<p>Unlike CFEngine, where policy is copied and evaluated on the edges, Puppet clients connect to the Puppet server where configuration is determined based on a certificate CN. A catalog of serialized configuration data is shipped back to the client for execution. This catalog is computed based on the contents of the manifests stored on the server, as well as a collection of <a href=http://puppetlabs.com/puppet/related-projects/facter target="_blank">facts</a> collected from the clients. Puppet facts, like CFEngine hard classes, are discoverable things about a node such as OS version, hostname, kernel version, network information, etc.</p>
+
+<p><img class="left <a" src="href="http://images3.wikia.nocookie.net/__cb20050917222913/memoryalpha/en/images/d/d6/Coffee_replicates_then_mug.jpg">http://images3.wikia.nocookie.net/__cb20050917222913/memoryalpha/en/images/d/d6/Coffee_replicates_then_mug.jpg</a>" width="300" height="300"></p>
+
+<p>Puppet works a bit like the food replicators in Star Trek. <a href=http://docs.puppetlabs.com/references/stable/type.html target="_blank">Resources</a> make up the basic atoms of a system, and the precise configuration of each must be defined. If a resource is defined twice in a manifest with conflicting states, Puppet refuses to run.</p>
+
+<p>Ordering can be specified though <code>require</code> statements that set up relations between resources. These are used to build a <a href=http://en.wikipedia.org/wiki/Directed_graph target="_blank">directed graph</a>, which Puppet sorts <a href=http://en.wikipedia.org/wiki/Topological_sorting>topologically</a> and uses to determine the final ordering. If a resource in a chain fails for some reason, dependent resources down the graph will be skipped.</p>
+
+<p>This allows for isolation of non-related resources collections. For example, if a package repository for some reason fails to deliver the &lsquo;httpd&rsquo; package, its dependent configuration file and service resources will be skipped. This has nothing to do with an SSH resource collection, so the resources concerning that service will be executed even though the httpd collection had previously failed.</p>
+
+<p>Just be careful not to create the coffee without the cup.</p>
+
+<h2> chef.pp </h2>
+
+
+<p>Let&rsquo;s examine a Puppet manifest that creates a Chef server on Centos 6.</p>
+
+<p>File /Users/balajivajjala/Development/opress-src/bvajjala.github.io/source/downloads/code/cookbooks/cfengine/files/default/server/puppet/manifests/classes/chef.pp could not be found</p>
+
+<h2> Picking it apart </h2>
+
+
+<p>Line 1 is a Puppet class definition. This groups the resource statments between together, allowing us to assign <code>chef-server</code> to a node based on its hostname. This can be accomplished with an explicit nodes.pp definition, or with an external node classifier.</p>
+
+<p>Line 3 is an <code>exec</code> resource, which we can later refer to with its name: <code>rbel6-release</code>. When using <code>exec</code> resources, it&rsquo;s up to you to specify a convergence check. In this case, we used the <code>unless</code> keyword to check the return status of an rpm command. The same goes for <code>command</code> promise types in CFEngine, or an <code>execute</code> resources in Chef.</p>
+
+<p>Line 9 is an example of an array variable, which is iterated over in line 21, much like a CFEngine slist.</p>
+
+<p>Everything else is a standard Puppet resource declaration, each of which have a type, a name, and an argument list. Like CFEngine promises, each type has various intentions available under the hood. Packages can be installed. Services can be running or stopped, and files can be present with certain contents and permissions.</p>
+
+<p>Refer to the Puppet <a href=http://docs.puppetlabs.com/ target="_blank">documentation</a> for more details.</p>
+
+<h2> On to Chef </h2>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife bootstrap centos6-3 -r &amp;lsquo;role<span class="o">[</span>affs-chef<span class="o">]</span>&amp;rsquo; -N &amp;ldquo;affs-chef-1.example.com&amp;rdquo; -E development -d affs-omnibus-pre -x root
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CFEngine Puppet and Chef Part 1]]></title>
+    <link href="http://bvajjala.github.io/blog/2011/12/30/cfengine-puppet-and-chef-part-1/"/>
+    <updated>2011-12-30T20:09:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2011/12/30/cfengine-puppet-and-chef-part-1</id>
+    <content type="html"><![CDATA[<h2> Introduction </h2>
+
+
+<p>Over the past few years, the topic of Infrastructure Automation has received a huge amount of attention. The three most commonly used tools for doing this (in order of appearance) are CFEngine, Puppet, and Chef. This article explores each of them by using one to set up another. If you have a chef-server or Hosted Chef account, you can follow along by following the instructions in the setup section. (Full disclosure: I work for Opscode, creators of Chef.)</p>
+
+<h2> Infrastructure </h2>
+
+
+<p><a href=http://www.infrastructures.org target="_blank">“Infrastructure”</a> turns out to be the hardest thing to explain when discussing automation, yet is the most critical to understand. In this context, Infrastructure isn’t anything physical (or virtualized) like servers or networks. Instead, what we’re talking about is all the “stuff” that is configured across machines to enable an application or service.</p>
+
+<p>In practice, “stuff” translates to operating system baselines, kernel settings, disk mounts, OS user accounts, directories, symlinks, software installations, configuration files, running processes, etc. People of the ITIL persuasion may think of these as Configuration Items. Units of management are composed into larger constructs, and complexity arises as these arrangements become more intricate.</p>
+
+<p>Services running in an Infrastructure need to communicate with each other, and do so via networks. Even when running on a single node, things still communicate over a loopback address or a Unix domain socket. This means that Infrastructure has a topology, which is in itself yet another thing to manage.</p>
+
+<h2> Automation </h2>
+
+
+<p><img class="left <a" src="href="http://upload.wikimedia.org/wikipedia/commons/7/75/Duck_of_Vaucanson.jpg">http://upload.wikimedia.org/wikipedia/commons/7/75/Duck_of_Vaucanson.jpg</a>"></p>
+
+<p>Here is a picture of a duck.</p>
+
+<p>This duck happens to be an <a href=http://en.wikipedia.org/wiki/Automaton target="_blank">automaton</a>. An automaton is a self-operating machine. This one pretends to digest grain. It interacts with its environment by taking input and producing output. To continue operating, the duck requires maintenance. It needs to be wound, cleaned, and repaired. Automated services running on a computer are no different.</p>
+
+<p>Once turned on, an automated service takes input, does something useful, then leaves logs and other data in its wake. Its machinery is the arrangement of software installation, configuration, and the running state of a process. Maintenance is performed in a <a href=http://en.wikipedia.org/wiki/Autonomic_Computing target="_blank">control loop</a>, where an agent comes around at regular intervals inspecting its parts and fixing anything that’s broken.</p>
+
+<p>In automated configuration management, the name of the game is hosting policy. The agents that build and maintain systems pull down blueprints and set to work building our automatons. When systems come back up from maintenance or new ones spring into existence, they configure themselves by downloading policy from the server.</p>
+
+<h2> Setup </h2>
+
+
+<p>If you&rsquo;d like to follow along by configuring your own machines with knife, follow the setup instructions <a href=/cfchefipuppetengine-setup target="_blank">here</a>. The setup will get your Chef workstation configured, code checked out from my blog git repo, and uploaded to chef-server for use. Otherwise, you can just browse the source <a href=https://github.com/someara/affs-blog target="_blank">here</a></p>
+
+<h2> CFEngine </h2>
+
+
+<p><img class="right <a" src="href="http://farm1.staticflickr.com/120/293693669_59574a7640_m.jpg">http://farm1.staticflickr.com/120/293693669_59574a7640_m.jpg</a>" title="A picture of what a cloud may look like" ></p>
+
+<p>CFEngine is a system based on <a href=http://research.iu.hio.no/papers/rosegarden.pdf target="_blank">promise</a> <a href=http://project.iu.hio.no/papers/origin2.pdf target="_blank">theory</a>. Promises are the basic atoms of the CFEngine universe. They have names, types, and intentions (among other things), and each acts as a convergent operator to move its subject toward an intended state. Like the parts in our duck, promises are assembled to create a larger whole.</p>
+
+<p>Promises of various types are capable of different things. Promises of type &ldquo;package&rdquo; can interact with a package manager to make sure somthing is installed or removed, while a promise of type &ldquo;file&rdquo;, can copy, edit, and set permissions. Processes can be started or stopped, and commands can be ran if needed. Read all about them in the CFEngine <a href=http://cfengine.com/manuals/cf3-reference.html target="_blank">reference manual</a>.</p>
+
+<p>Promises provide a <a href=http://c2.com/cgi/wiki?DeclarativeDefinition target="_blank">declarative</a> interface to resources under management, which has the remarkably handy attribute of being <a href=http://en.wikipedia.org/wiki/Idempotence target="_blank">idempotent</a>. An idempotent function gives the same result when applied multiple times. This allows our duck repairing maintence loop (in the form of cf-agent on a cron) to come around and safely execute instructions without having to worry about side effects. Consider &ldquo;the line &lsquo;foo&rsquo; should exist in the file&rdquo; vs &ldquo;append &lsquo;foo&rsquo; to the end of the file&rdquo;; the non-declarative &lsquo;append&rsquo; would not be safe to repeat.</p>
+
+<p><a href=http://en.wikipedia.org/wiki/Convergence_(mathematics) target="_blank">Convergent</a> maintenance refers to the continuous repair of a system towards a desired state. At the individual promise level, convergence happens in a single run of the maintenance loop. If a package is supposed to be installed but isn&rsquo;t, action will be taken to fix it. If a process is not running but should be, action will be taken again. Convergence in a larger system of promises can take multiple runs if things are processed in a non-optimal order. Consider the following:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Start the NTP service.
+</span><span class='line'>Make sure the NTP configuration file is correct, restart the NTP service if repaired.
+</span><span class='line'>Install the NTP package.</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Assuming a system with a base install, the first promise would fail to be kept. The NTP binary is not available, since we haven&rsquo;t installed its package yet. The second promise would write the configuration file, but fail to restart the service. The third promise would succeed, assuming an appropriate package repo was available and functioning properly. After the first run is complete, the system has converged closer to where we want it to be, but isn&rsquo;t quite there yet. Applying the functions again gets us closer to our goal.</p>
+
+<p>The second run of the loop would succeed in starting the service, but would be using the wrong configuration file. The package install from the previous loop clobbered the one written previously. Promise number two would fix the config and restart the service, and the third would do nothing because the package is already installed. Finally, we&rsquo;ve converged to our desired system state. A third loop would take no actions at all.</p>
+
+<h2> Kicking things off </h2>
+
+
+<p>To set up a CFEngine server, invoke the following Chef command:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife bootstrap centos6-1 -r &amp;lsquo;role<span class="o">[</span>cfengine<span class="o">]</span>&amp;rsquo; -N &amp;ldquo;cfengine-1.example.com&amp;rdquo; -E development -d affs-omnibus-pre -x root
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>When Chef is done doing its thing, you&rsquo;ll end up with a functioning CFEngine policy host, happily promising to serve policy. Log into the freshly configured machine and check it out. Three things have happened. First, the cfengine package itself has been installed. Second, two directories have been created and populated: <code>/var/cfengine/inputs</code>, and <code>/var/cfengine/masterfiles</code>.</p>
+
+<p>The <code>inputs</code> directory contains configuration for the CFEngine itself, which includes a promise to make the contents of <code>masterfiles</code> available for distribution. When a CFEngine client comes up, it will copy the contents of <code>/var/cfengine/masterfiles</code> from the server into its own <code>inputs</code> directory.</p>
+
+<h2> Examining policy </h2>
+
+
+<p>CFEngine&rsquo;s main configuration file is <code>promises.cf</code>, from which everything else flows.  Here&rsquo;s a short snippet:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>promises.cf snippet </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">body</span> <span class="n">common</span> <span class="n">control</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">bundlesequence</span>  <span class="o">=&gt;</span> <span class="p">{</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;&quot;update&quot;,</span>
+</span><span class='line'><span class="sr">&quot;garbage_collection&quot;,</span>
+</span><span class='line'><span class="sr">&quot;cfengine&quot;,</span>
+</span><span class='line'><span class="sr">&quot;puppet_server&quot;,</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  };&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="n">inputs</span>  <span class="o">=&gt;</span> <span class="p">{</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;&quot;update.cf&quot;,</span>
+</span><span class='line'><span class="sr">&quot;cfengine_stdlib.cf&quot;,</span>
+</span><span class='line'><span class="sr">&quot;cfengine.cf&quot;,</span>
+</span><span class='line'><span class="sr">&quot;garbage_collection.cf&quot;,</span>
+</span><span class='line'><span class="sr">&quot;puppet.cf&quot;,</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  };</span>
+</span><span class='line'><span class="sr">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The bundlesequence section tells cf-agent what promise bundles to execute, and in what order. The one we&rsquo;re examining today is named puppet_server, found in <code>puppet.cf</code></p>
+
+<p>File /Users/balajivajjala/Development/opress-src/bvajjala.github.io/source/downloads/code/cookbooks/cfengine/templates/default/inputs/puppet.cf.erb could not be found</p>
+
+<p>A promise bundle is CFEngine&rsquo;s basic unit of intent. It&rsquo;s a place to logically group related promises. Within a bundle, CFEngine processes things with <a href=http://cfengine.com/manuals/cf3-reference.html#Normal-ordering target="_blank">normal ordering</a>. That is, variables are converged first, then classes, then files, then packages, and so on. I wrote the bundle sections in normal order to make it easier to read, but they could be rearranged and still have the same effect. Without going into too much detail about the language, I&rsquo;ll give a couple hints to help with groking the example.</p>
+
+<p>First, in CFEngine, the word &lsquo;class&rsquo; does not mean what it normally does in other programming languages. Instead, classes are boolean flags that describe context. Classes can be &lsquo;hard classes&rsquo;, which are discovered attributes about the environment (hostname, operating system, time, etc), or &lsquo;soft classes&rsquo;, which are defined by the programmer. In the above example, puppetmaster_enabled and iptables_enabled are soft classes set based on the return status of a command. In the place of <code>if</code> or <code>case</code> statements, boolean checks on classes are used.</p>
+
+<p>Second, there are no control statements like <code>for</code> or <code>while</code>. Instead, when lists are encountered they are automatically iterated. Check out the packages section for examples of both class decisions and list iteration. Given those two things, you should be able to work your way through the example. However, there&rsquo;s really no getting around reading the reference manual if you want to learn CFEngine.</p>
+
+<h2> On to Puppet </h2>
+
+
+<p>Finally, let&rsquo;s go ahead and use Chef to bring up a CFEngine client, which will be turned into a Puppet server.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife bootstrap centos6-2 -r &amp;lsquo;role<span class="o">[</span>puppet<span class="o">]</span>&amp;rsquo; -N &amp;ldquo;puppet-1.example.com&amp;rdquo; -E development -d affs-omnibus-pre -x root
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The first run will fail, since the host&rsquo;s IP isn&rsquo;t yet in the cfengine server&rsquo;s allowed hosts lists. Complete the convergence by running these commands:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife ssh &amp;ldquo;role:cfengine&amp;rdquo; -a ipaddress chef-client
+</span><span class='line'>knife ssh &amp;ldquo;role:puppet&amp;rdquo; -a ipaddress chef-client
+</span><span class='line'>knife ssh &amp;ldquo;role:puppet&amp;rdquo; -a ipaddress chef-client
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>And viola! A working Puppet server, serving policy.</p>
+]]></content>
+  </entry>
+  
+</feed>

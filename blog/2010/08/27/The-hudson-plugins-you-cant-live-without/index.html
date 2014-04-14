@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>The hudson plug-ins you can't live without - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="This post was originally posted &amp; active @: http://www.tikalk.com
+As a big fan of hudson-ci I would like to take a note of the most commonly used &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2010/08/27/The-hudson-plugins-you-cant-live-without">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">The Hudson Plug-ins You Can't Live Without</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-27T09:18:00-04:00" pubdate data-updated="true">Aug 27<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img class="left" src="/assets/images/hudson_logo.png" title="'Hudson Logo'" >This post was originally posted &amp; active @: <a href="http://www.tikalk.com/node/4994">http://www.tikalk.com</a>
+As a big fan of hudson-ci I would like to take a note of the most commonly used hudson plug-ins (at least by me) needed in order to maintain a good build environment.
+This list was collected as part of my experience in the last couple of years. I am sure your may differ then mine mine :).</p>
+
+<p><strong>Setenv plug-in</strong></p>
+
+<p>The <a href="http://wiki.hudson-ci.org/display/HUDSON/Setenv+plug-in">The Setenv plug-in</a> lets you set environment variables for a job upon build execution. During migration from CruiseControl I found this plug-in extremely useful, for I could provide the imported script the exact environment it had on the CC machine without the need to change a thing in the build&rsquo;s logic / parameters, this also applied to the following recommended plug-in:</p>
+
+<p><strong>Parameterized Trigger plug-in</strong></p>
+
+<p>The <a href="http://wiki.hudson-ci.org/display/HUDSON/Parameterized+Trigger+plug-in">Parameterized Trigger</a> plug-in lets you add parameters to your build jobs that users enter when they trigger a build. This a very useful plug-in for release or deployment automation, for example, where you want to enter the version number (or label) you want to release or deploy. The biggest feature of this plug-in is the default value so even automatic / SCM triggers get a default value to execute silently.</p>
+
+<p><strong>The <a href="http://wiki.hudson-ci.org/display/HUDSON/Cygpath+plug-in">Cygpath plug-in</a></strong></p>
+
+<p><img class="left" src="/assets/images/small_cygwin-logo.jpg" title="'Cygpath plug-in'" > for a *nix oriented guy as myself, this was a great help, all our &ldquo;special&rdquo; shell script do not have to be re-written when we are running builds on Windows nodes &ndash; and yest we have too &hellip; :)</p>
+
+<p>The Cygpath gave me the opportunity to share tools between linux and windows machines this gave us the ability to maintain one tool repository for all our slave regardless of their architecture.</p>
+
+<p>And did I forget to say all you need it to enable this and automatically every batch executed on a windows slave will automatically use Cygwin ? from Cygpath wiki:</p>
+
+<ul>
+<li><p>You install Cygwin on all the Windows slaves</p></li>
+<li><p>Jobs on Hudson that assume Unix environment can now run on all the slaves (including Windows ones)</p></li>
+<li><p>In the system configuration, you use Unix paths for all your tools.</p></li>
+</ul>
+
+
+<p><strong>Promoted Builds plug-in</strong></p>
+
+<p><img class="left" src="/assets/images/promotion.png" title="'Promotion'" >Definitely the #1 plug-in on the list here &ndash; this plug-in enables you to do almost anything you can do in a certain Job but run it as a promotion task &ndash; if you wish to promote you build to your QA team for testing, or if you want to tag it in SVN or Deploy your artifacts to a maven repository, this is the plug-in you &ldquo;cannot live without&rdquo;. Without this plug-in you will need to configure a separate job or Bach Task (see <a href="http://wiki.hudson-ci.org/display/HUDSON/Batch+Task+plug-in">batch tasks plug-in</a> for more details) for every task you want to perform on your build &ndash; which makes managing Hudson job a nightmare &hellip;</p>
+
+<p><strong>Clover plug-in</strong></p>
+
+<p><img class="left" src="/assets/images/logo-clover.png" title="'Clover logo'" >
+<a href="http://www.atlassian.com/software/clover/">Clover</a> is a non-free code coverage tool which is the commercial alternative to Cobertura Emma etc, the Hudson <a href="http://wiki.hudson-ci.org/display/HUDSON/Clover+plug-in">Clover</a> plug-in is an amazing add on which integrates Clover reports and Historical reports into the build flow, which I found extremely helpful. Try configuring Clover to generate historical reports and then publish them to some third-party web server for viewing &ndash; this has made Clover integration a breeze, the challenge is even bigger with a distributed build environment which Hudson &amp; Clover plug-in have overcome.</p>
+
+<p><img src="/assets/images/CloverSS_0.png" alt="" /></p>
+
+<p>If you don&rsquo;t have Clover, as mentioned above &ndash; the <a href="http://wiki.hudson-ci.org/display/HUDSON/Cobertura+plug-in">Cobertura</a> and <a href="http://wiki.hudson-ci.org/display/HUDSON/Emma+plug-in">Emma</a> plug-ins are great too which will also integrate with:</p>
+
+<p><strong>Sonar plug-in</strong></p>
+
+<p><img class="left" src="/assets/images/sonar_0.png" title="'Sonar logo'" >
+Although I am only &ldquo;P.O.C ing&rdquo; Sonar+Hudson+Clover, The <a href="http://wiki.hudson-ci.org/display/HUDSON/Sonar+plug-in">Sonar</a> plug-in made it trivial to integrate hudson projects with Sonar. <a href="http://sonar.codehaus.org/">Sonar</a> is a powerful open source code quality metrics reporting tool, which displays code quality metrics for multiple projects in a variety of ways on a centralized web location.</p>
+
+<p>For Maven based builds you do not even need to change a line of code in order to get sonar to work which made this module a <a href="http://search.twitter.com/search?q=%232">#2</a> on my &ldquo;can&rsquo;t live without plug-ins&rdquo;.</p>
+
+<p><strong>Sectioned View plug-in<a href="http://wiki.hudson-ci.org/display/HUDSON/Setenv+plug-in"><br/>
+</a></strong></p>
+
+<p><a href="http://wiki.hudson-ci.org/display/HUDSON/Sectioned+View+plug-in">Sectioned view</a> gives you the ability to create a &ldquo;Dashboard view&rdquo; for your job(s) / project(s) &ndash; it is quite feature rich if you take a look at it&rsquo;s configuration and it is very simple to comprehend. A great example is taken from the plug-ins wiki page see:</p>
+
+<p><img src="/assets/images/sectioned.png" alt="Section view scrrenshot" /></p>
+
+<p><strong>Nested Views plug-in</strong></p>
+
+<p><a href="http://wiki.hudson-ci.org/display/HUDSON/Nested+View+plug-in">Nested view</a>s another View type which allows grouping job views into multiple levels instead of one big list of tabs &ndash; this is quite useful and the only disadvantage is you can have both a view and jobs in the same page it&rsquo;s either a nested view or a list of views &ndash; but I presume it will sure be included.</p>
+
+<p><strong>Shelve Project plug-in</strong></p>
+
+<p>If you ever wanted to Hide a jo you are working on and you also would like to prevent it from being triggered by mistake this is the plug-in for you. I often find my self setting up a job and it becomes a work in progress so hiding it to a later time is a great help &ndash; this plug-in does just that.</p>
+
+<p><strong>Bugzilla &amp; Jira plug-ins</strong> (&amp; there or others I presume)</p>
+
+<p><img class="left" src="/assets/images/bugzilla.png" title="'Bugzilla logo'" >Well the fact I need both in the same Hudson cluster and I can still have them work side by side was really important. In order for this plug-in to serve you well your CM team has to some extra work on your SCM side, that done you got yourself a link directly into your bug tracking system &ndash; the latest versions, query <a href="http://wiki.hudson-ci.org/display/HUDSON/Bugzilla+plug-in">Bugzilla</a> &amp; <a href="http://wiki.hudson-ci.org/display/HUDSON/JIRA+plug-in">Jira</a> and can display the Bug details.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-27T09:18:00-04:00" pubdate data-updated="true">Aug 27<span>th</span>, 2010</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/build-tools/'>Build Tools</a>, <a class='category' href='/blog/categories/hudson/'>Hudson</a>, <a class='category' href='/blog/categories/hudson-plugins/'>Hudson plugins</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2010/08/27/The-hudson-plugins-you-cant-live-without/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2010/08/27/The-hudson-plugins-you-cant-live-without/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2010/08/18/mac-os-xi-eleven/" title="Previous Post: Mac OS XI (Eleven)">&laquo; Mac OS XI (Eleven)</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2010/09/01/remove-the-all-view-in-hudson-plus-view-enhancement-plugins/" title="Next Post: Remove the All view in Hudson + view enhancement plugins">Remove the All view in Hudson + view enhancement plugins &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

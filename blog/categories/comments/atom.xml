@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Comments | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/comments/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Adding Facebook comments to Octopress]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/02/24/adding-facbook-comments-to-octopress/"/>
+    <updated>2013-02-24T08:47:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/02/24/adding-facbook-comments-to-octopress</id>
+    <content type="html"><![CDATA[<p>Inspired by <a href="http://blog.grambo.me.uk/blog/2012/02/20/adding-facebook-comments-to-octopress/">This post</a> Comments are now in FaceBook (Sorry disqus &hellip;).</p>
+
+<p>So now you should see something like the following (If you have JavaScript enabled of-course):
+<img src="/assets/images/FB_comments.png" title="FaceBook Comments Example" alt="FaceBook Comments" /></p>
+]]></content>
+  </entry>
+  
+</feed>

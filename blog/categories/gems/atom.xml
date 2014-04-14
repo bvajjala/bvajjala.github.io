@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: gems | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/gems/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby gems are still not safe to use]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/02/02/ruby-gems-are-not-safe-to-use/"/>
+    <updated>2013-02-02T13:24:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/02/02/ruby-gems-are-not-safe-to-use</id>
+    <content type="html"><![CDATA[<p>In the light of the recent <a href="http://rubygems.org">Rubygems.org</a> security compromise the community has been looking at ways to make Rubygems.org and Ruby gems in general more secure. The project is still ongoing and feel free to help them out on #rubygems on Freenode, but here is a highlight of what I think are some of the main issues.</p>
+
+<p>Some of the issues highlighted here are taken from <a href="http://www.youtube.com/watch?v=z-5bO0Q1J9s">Ben Smith&rsquo;s enlightening (but scary) talk at Aloha Ruby Conference</a>.</p>
+
+<h2>Disclaimer</h2>
+
+<p>I am not a security expert. I am just a Ruby developer and a gem author that is worried about the current state of the Ruby gems ecosystem. I also am worried that the next negative news around Ruby will involve the problems described below.</p>
+
+<h2>What are Ruby gems and what is Rubygems.org?</h2>
+
+<p>For those not familiar, <a href="http://rubygems.org">Rubygems.org</a> is the most popular repository of &ldquo;gems&rdquo; for the <a href="http://rubylang.org">Ruby language</a>. Gems are libraries made up out of Ruby (and optionally C) code and can be uploaded by anyone who registered for an account. Rubygems.org currently hosts 50,685 gems which have been downloaded 1,259,533,358 times since July 2009. Ruby gems are not only hosted on Rubygems.org, anyone can run their own repository but Rubygems.org is definitely the most used one.</p>
+
+<h2>Current state</h2>
+
+<p>Some parts of the current infrastructure are worrying.</p>
+
+<ul>
+<li><p><strong>Hard to tell if gems were changed on the repo.</strong> It took the Rubygems.org volunteers more than 24 hours to verify every gem&rsquo;s checksum against external mirrors.</p></li>
+<li><p><strong>Impossible to tell if gems were uploaded by gem owner.</strong> It is currently very hard to know if a gem was actually uploaded by it&rsquo;s owner. Developer machines can be compromised and a users API credentials for Rubygems.org are kept unencrypted in <code>~/gem/credentials</code>.</p></li>
+<li><p><strong>Gem owner isn&rsquo;t notified of new gem uploads.</strong> When a gem developer&rsquo;s credentials are compromised a new version of the gem can be uploaded without the gem owner ever knowing.</p></li>
+<li><p><strong>Impossible to notify a gem user of compromised gems.</strong> When a gem developer&rsquo;s credentials are compromised it is hard to notify anyone who uses any of the gems published by the developer of the situation.</p></li>
+<li><p><strong>Gems can run code on install.</strong> This is probably the most interesting attack vector in the foreseeable future. It seems this feature was relatively unintentional as it involves tying into the fact that Ruby gems can contain C code. Running code on install will mean that gems can steal the unencrypted Rubygems.org credentials which can then be used to modify the compromised user&rsquo;s gems and spread the malicious code further.</p></li>
+</ul>
+
+
+<h2>Proposals for change</h2>
+
+<ul>
+<li><p><strong>Notify gem owners of newly published gems.</strong> Adding a simple email notification to the gem owner will at least allow for easier detection of compromised gems. Sadly at this point the gem is already compromised and possibly already spread over any mirrors and downloaded by users.</p></li>
+<li><p><strong>Secure developer&rsquo;s Rubygems.org credentials.</strong> This is pretty simple. My ssh key has a passphrase on it and so should my Rubygems.org credentials. Stealing a rubygems.org API key is easy, using one that requires a passphrase a lot harder.</p></li>
+<li><p><strong>Stop running code on gem install.</strong> I totally see the need for having C extensions in a Ruby gems, and those extensions need to be compiled, but we seriously need to find a way to compile C code without allowing for the arbitrary execution of code on install of a gem.</p></li>
+<li><p><strong>Automatically mirror gems and checksums.</strong>  A system involving the automatic mirroring of gems and their checksums to other servers would definitely have made the verification of gems a lot easier in the last few days.</p></li>
+<li><p><strong>Force signing of gems.</strong> Yes, <a href="http://docs.rubygems.org/read/chapter/21">you can sign your gems</a> but almost nobody does (and neither do I). Additionally it&rsquo;s a pain to force the usage of signed keys on the gem user&rsquo;s side, not to mention the futility as most gems aren&rsquo;t signed. Signing is the way to go though and work on this has started. It&rsquo;s a difficult topic though and work is being done to make it as painless as possible for users and developers.</p></li>
+<li><p><strong>Notify gem users of unsigned/insecure gems.</strong> The rubygem binary (together with tools like <a href="http://gembundler.com/">Bundler</a>) should be updated to allow for verification of signatures which will allow it to notify gem users of unsigned or compromised gems.</p></li>
+</ul>
+
+
+<h2>How can I help?</h2>
+
+<ul>
+<li><strong>Code:</strong> <a href="https://github.com/rubygems">rubygems</a>, <a href="https://github.com/rubygems-trust">rubygems-trust</a>(fork for implementing a signed approach)</li>
+<li><strong>Discussion:</strong> #rubygems and #rubygems-trust on Freenode</li>
+</ul>
+
+
+<h2>Did I miss anything?</h2>
+
+<p>Please let me know and I&rsquo;ll add it to the list.</p>
+]]></content>
+  </entry>
+  
+</feed>

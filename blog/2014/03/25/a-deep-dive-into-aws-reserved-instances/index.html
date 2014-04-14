@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>A Deep Dive into AWS Reserved Instances - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="A Deep Dive into AWS Reserved Instances One of our primary goals at Flux7 Labs is to help our clients reduce
+their AWS costs. In fact, our product &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">A Deep Dive Into AWS Reserved Instances</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-25T09:35:27-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>A Deep Dive into AWS Reserved Instances</h3>
+
+<p>One of our primary goals at Flux7 Labs is to help our clients reduce
+their AWS costs. In fact, our product VyScale is based entirely on cost
+optimization using Spot instances. We inform our clients when it makes
+economic sense for them to buy instance reservations because
+reservations for periods of unexpected minimum usage can be beneficial.
+Reserved instances function exactly like on-demand instances, except
+that you pay an upfront fee to gain cheaper hourly rates.</p>
+
+<h3>Reserved Instance Pricing</h3>
+
+<p>There are several levels of reservations. Higher ones allow you to pay
+more up front in order to achieve a lower hourly cost. The table below
+shows the rates for various types of reserved and on-demand instances
+for m1.large instances.</p>
+
+<hr />
+
+<pre><code>           Upfront   Hourly in cents
+</code></pre>
+
+<p>  On-demand    0         24
+  Light Util   243       13.6
+  Med Util     554       8.4
+  Heavy Util   676       5.6</p>
+
+<hr />
+
+<p>At some levels of utilization it makes sense to purchase reservations,
+rather than to rely solely upon on-demand instances. By factoring in
+upfront costs, we can determine which levels warrant purchasing
+reservations. What’s surprising is that those levels are fairly low,
+especially in the case of light reservations. Even at 30% utilization,
+light-reservation costs start to break even with those of on-demand
+instances. The following graph shows equivalent hourly costs for
+reservations at various utilization levels</p>
+
+<p><a href="../../../wp-content/uploads/AWS-reserved-instances-1.png"><img src="../../../wp-content/uploads/AWS-reserved-instances-1.png" alt="Hourl rates of reserved
+instances" /></a></p>
+
+<p>To better understand these numbers in terms of total cost, as opposed to
+incremental cost, the figure below shows total annual expenditures at
+various levels. For a 100% utilization of an instance, one can reduce
+costs to almost half of Amazon’s standard pricing for reserved
+instances, and that’s without any of the bulk discounts made available
+to high-volume AWS customers. At lower levels, reservations cost almost
+twice as much as those at higher levels. However, keep in mind that, as
+a fraction of overall cost, the amount is still not very high. So, in
+cases where growth is expected, it can make sense to purchase
+reservations early.</p>
+
+<p><a href="../../../wp-content/uploads/AWS-reserved-instances-2.png"><img src="../../../wp-content/uploads/AWS-reserved-instances-2.png" alt="Annual rates of reserved
+instances" /></a></p>
+
+<h3>Do You Have A Reservation?</h3>
+
+<p>Another thing to know about Amazon’s policy is that you receive a
+guaranteed instance when you buy a reservation, whereas there is no such
+guarantee for on-demand instances. When trying to acquire an on-demand
+instance, AWS may return an error message stating that capacity is not
+available for that instance type. On the other hand, once you purchase a
+reservation Amazon guarantees that the instance will be made available
+to you at the moment you request it. If you’re using an autoscaling
+solution it can make sense to make light utilization reservations to
+handle your excess capacity, even if it costs more to guarantee uptime
+to your customers. With Amazon’s guarantee it’s no wonder that Netflix
+runs almost exclusively on reservations. As a matter of policy,
+Netflix’s use of on-demand instances indicates that more reservations
+need to be purchased.</p>
+
+<p>One thing to note is that Amazon always uses reservations first, so you
+can’t keep unused light reservations as backups while using on-demand
+instances for capacity.</p>
+
+<h3>How Amazon Handles Unused Reservations</h3>
+
+<p>Spot instances are one of the best uses of unutilized reserved capacity
+with AWS. They come with no guarantee of availability, and can be taken
+away from you at Amazon’s discretion at any time in order to fulfill
+other customers’ needs. Spot prices hover around 15% of the on-demand
+price, which allows Amazon to make a decent return on unused
+reservations and while offering reservations at a relatively low price.</p>
+
+<h3>Conclusion</h3>
+
+<p>The most common reason to use reservations is price, but there are also
+other considerations. The final decision should be based on capacity
+analysis from a business perspective.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-25T09:35:27-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/aws/'>AWS</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/" title="Previous Post: 6 reasons why large enterprises should move to Amazon Web Services">&laquo; 6 reasons why large enterprises should move to Amazon Web Services</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/" title="Next Post: Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1">Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

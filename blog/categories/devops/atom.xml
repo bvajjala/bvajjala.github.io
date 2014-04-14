@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: DevOps | Balaji Vajjala's Blog]]></title>
+  <title><![CDATA[Category: devops | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/devops/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T15:32:24-04:00</updated>
+  <updated>2014-04-14T15:50:34-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,300 +14,91 @@
 
   
   <entry>
-    <title type="html"><![CDATA[101 On DevOps And How We Plan On Helping]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/02/03/101-on-devops-and-how-we-plan-on-helping/"/>
-    <updated>2014-02-03T13:54:32-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/02/03/101-on-devops-and-how-we-plan-on-helping</id>
-    <content type="html"><![CDATA[<h2><a href="/blog/2012/10/23/101-on-development-and-operations.html">101 On DevOps And How We Plan On Helping</a></h2>
+    <title type="html"><![CDATA[Logstash + Opscode Omnibus]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/05/06/logstash-plus-opscode-omnibus/"/>
+    <updated>2013-05-06T19:03:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/05/06/logstash-plus-opscode-omnibus</id>
+    <content type="html"><![CDATA[<p>At <a href="http://devopsdays.org/events/2013-austin/">DevOps Days Austin</a> <a href="http://twitter.com/mattray">@mattray</a> did an Openspace session on <a href="https://github.com/opscode/omnibus-ruby">Omnibus</a> which is a toolset based around the concept of installing an app and all of it&rsquo;s prerequisites from source into a directory and then building a package ( either .deb or .rpm ) of that using <a href="https://github.com/jordansissel/fpm">fpm</a>.</p>
 
-<p>Here&rsquo;s what usually happens: on one side the development team wants to push new features as fast as possible to production, while on the other side, operations are trying to keep things stable. Both teams are evaluated on
-criteria that are often directly conflicting. The stronger team win one argument… Until the next crisis. And we&rsquo;re not even talking about other teams, they too have conflicting agendas to throw in the mix.</p>
+<p>Having battled many times with OS Packages trying to get newer versions of Ruby, or Redis or other software installed and having to hunt down some random package repo or manually build from source this seems like an excellent idea.</p>
 
-<p>There&rsquo;s no silver bullet for getting evryone to play nicely. That being said, having Dev and Ops on the path of cooperation is not impossible. <a href="http://en.wikipedia.org/wiki/Devops">DevOps</a> is exactly this; fostering a culture of best practices and collaboration between these teams.</p>
+<p>To learn the basics I decided to build an <a href="https://github.com/paulczar/omnibus-fpm">omnibus package for fpm</a> which helped me work out the kinks and learn the basics.</p>
 
-<p>In a very similar fashion to what happened with the agile movement, a lot of tools and approaches emerged that can help: methodologies (SCRUMs, kanban…), tools for configuration management (Chef, Puppet), orchestration, automation, logging… But at the core lies the need for nurturing a specific culture.</p>
+<!--more-->
 
-<p>Operations teams have been slower to adopt these methodologies compared to development teams. The average system administrator spend more time working in FIFO, putting up fires, rather than making long term investments in automation or setting up best practices. Moreover, operations teams are usually faced with a logic of budget cuts and cost &ldquo;optimizations&rdquo;, compared to the larger R&amp;D budget development teams seem to enjoy.</p>
 
-<p>Even when conditions (and resources) are favorable to the growth of a proper culture, recruiting the right profiles can prove very challenging. We&rsquo;re here talking about people with a wide range of skills, on-hands experience and
-strong collaboration and organizational skills. All of this take time. Best practices are forged through years of experience.</p>
+<p>From there I moved onto something a little more ambitious&hellip; <a href="http://logstash.net/">logstash</a>, which is an awesome opensource project for log aggregation and searching.</p>
 
-<p>That is why we&rsquo;re building <a href="http://devo.ps">devo.ps</a>. We&rsquo;re trying to lower the barriers of entry to this field and help professionals scale themselves in their role. We&rsquo;re a motivated team of engineers who have worked on both sides of the fence, with small to very large code bases and infrastructures. We hope to untangle the mess that often is infrastructure and application management, letting technical teams focus on the higher value tasks of the job.</p>
+<p>Using Omnibus I took the Logstash .jar file and bundled in Redis, Kibana, Kibana3(+NodeJS), RabbitMQ, Elasticsearch along with all of their depedencies into a big fat package which installs to /opt/logstash and includes init scripts and default configs for each.</p>
 
-<ul>
-<li><a href="http://devo.ps/about.html">About</a></li>
-<li><a href="http://devo.ps/blog.html">Blog</a></li>
-</ul>
+<p>The Logstash Omnibus project can be found <a href="https://github.com/paulczar/omnibus-logstash">here</a>.  I also uploaded the resultant packages for <a href="https://s3-us-west-2.amazonaws.com/paulcz-packages/logstash-omnibus-1.1.10_amd64.deb">Ubuntu 12.04</a> and <a href="https://s3-us-west-2.amazonaws.com/paulcz-packages/logstash-omnibus-1.1.10.el6.x86_64.rpm">RHEL 6</a>.</p>
 
+<p>This gives us a really powerful platform to deploy logstash and all of its prequisites in a completely repeatable manner and not have to worry about the existing versions of Ruby, Java, etc.    It also gives a super simple testing platform where a new user to logstash can install logstash with a single <code>dpkg</code> or <code>rpm</code> command and immediately be able to push logs to it via syslog or redis.</p>
+
+<p>Read more about using and building the <a href="https://github.com/paulczar/omnibus-logstash/blob/master/README.md">Logstash Omnibus package here</a></p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[DevOps Tools and Utilities]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/02/01/devops-tools-and-utilities/"/>
-    <updated>2014-02-01T13:13:05-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/02/01/devops-tools-and-utilities</id>
-    <content type="html"><![CDATA[<h1>DevOps Tool chain</h1>
-
-<p>A list of utilities to support configuration management tools. This was produced by the panelists of the Configuration Mgmt Workflow panel at LOPSA-EAST in 2013. One of the attendees also took notes: <a href="http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel">http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel</a></p>
-
-<h2>Individual level: IDE / syntax highlighting etc</h2>
-
-<h2>Puppet:</h2>
+    <title type="html"><![CDATA[Vagrant+Puppet+FPM=Amazeballs]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/"/>
+    <updated>2013-04-07T18:23:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs</id>
+    <content type="html"><![CDATA[<p>Lately I&rsquo;ve been doing a lot of prototyping with <a href="http://www.vagrantup.com/">Vagrant</a>, specifically for a couple of distinct activities:&ndash;</p>
 
 <ul>
-<li>vim &ndash; <a href="https://github.com/rodjek/vim-puppet">https://github.com/rodjek/vim-puppet</a></li>
-<li>TextMate &amp; sublime text 2 &ndash; <a href="https://github.com/masterzen/puppet-textmate-bundle">https://github.com/masterzen/puppet-textmate-bundle</a></li>
-<li>gepetto (<a href="http://cloudsmith.github.io/geppetto/">http://cloudsmith.github.io/geppetto/</a>),</li>
-<li>emacs</li>
+<li>building puppet modules using <a href="https://github.com/elasticdog/puppet-sandbox">the excellent puppet sandbox</a> project</li>
+<li>and building RPM packages with <a href="https://github.com/jordansissel/fpm">FPM</a>.</li>
 </ul>
 
 
-<h2>Chef:</h2>
+<p>I realized I was spending a bunch of time flipping back and forth between Vagrant environments and I had no quick way to utilize RPMs built with FPM inside my puppet modules.</p>
 
-<ul>
-<li>vim,</li>
-<li>TextMate,</li>
-<li>Sublime Text: <a href="http://www.youtube.com/watch?v=4VtDj_ar1Xg">http://www.youtube.com/watch?v=4VtDj_ar1Xg</a> (video), <a href="https://github.com/cabeca/SublimeChef">https://github.com/cabeca/SublimeChef</a> (GitHub)</li>
-<li>Emacs: chef-mode <a href="https://github.com/mpasternacki/chef-mode">https://github.com/mpasternacki/chef-mode</a></li>
-</ul>
+<!--more-->
 
 
-<h3>CFEngine:</h3>
+<p>An idea was born.   I forked off the <a href="https://github.com/paulczar/puppet-sandbox">puppet sandbox</a> project and added a Yum repo module <code>repository</code> to the standalone puppet provisioner that vagrant uses when it first brings up a box.   It adds a Yum repo on the puppet server called <code>sandbox</code> and adds a repo file to the client boxes pointing to the repo.   Now I can simply push an RPM to <code>packages/rpm</code> and run <code>vagrant provision puppet</code> which reruns puppet and rebuilds the yum repo.</p>
 
-<ul>
-<li>vim &ndash; <a href="https://github.com/neilhwatson/vim_cf3">https://github.com/neilhwatson/vim_cf3</a></li>
-<li>emacs &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/cfengine.el">https://github.com/cfengine/core/blob/master/contrib/cfengine.el</a></li>
-<li>kate &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml">https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml</a></li>
-<li>eclipse &ndash; <a href="https://cfengine.com/eclipse-cfengine-editor">https://cfengine.com/eclipse-cfengine-editor</a></li>
-<li>Sublime Text &ndash; <a href="https://github.com/kebori/sublime-cfengine3">https://github.com/kebori/sublime-cfengine3</a></li>
-</ul>
+<p>Given that I often flip back and forth between Ubuntu and CentOS boxes I also created <code>Vagrantfile.centos63</code> and <code>Vagrantfile.precise64</code> so I can swiftly destroy the existing environment and bring up another of a different flavour by simply symlinking <code>Vagrantfile</code> to the appropriate file.</p>
 
+<p>This worked out pretty well for a while until I realized I was still jumping back and forth between vagrant environments and I realized I had another improvement to make.   So I then went on to create a definition in the puppet sandbox <code>Vagrantfile</code> file for a <code>FPM server</code> and a new module in the provisioner to install FPM on it.   Given that this module simply adds a few packages this module works for both CentOS and Ubuntu.</p>
 
-<h2>Local Testing</h2>
+<p>I also created a couple of sample scripts to download source and build RPMs for both Redis and Elasticsearch which get pushed via the provisioner to <code>/tmp/redis-rpm.sh</code> and <code>/tmp/elasticsearch-rpm.sh</code></p>
 
-<ul>
-<li>Vagrant &ndash;</li>
-<li>VMware</li>
-<li>OpenStack</li>
-<li>Cloud?</li>
-<li>All of the above?</li>
-</ul>
+<p>Now ( For CentOS boxes at least ) I can very quickly iterate on puppet modules and create RPM packages on the fly and have them instantly available.   The process is very simple and looks a little something like this :</p>
 
+<p><code>
+$ git clone https://github.com/paulczar/puppet-sandbox
+$ cd puppet-sandbox
+$ vagrant up puppet fpm client1
+$ vagrant ssh fpm
+[vagrant@fpm ~]$ sudo /tmp/redis-rpm.sh
+  ...
+  ... A bunch of scrolling text while files are downloaded and rpm is built
+  ...
+[vagrant@fpm ~]$ exit
+$ vagrant provision puppet
+$ vagrant ssh client1
+[vagrant@client1 ~]$ sudo yum clean all
+[vagrant@client1 ~]$ sudo yum -y install redis
+[vagrant@client1 ~]$ sudo service redis-server start
+[vagrant@client1 ~]$ redis-cli ping
+PONG
+[vagrant@client1 ~]$
+</code></p>
 
-<h2>Revision Control : Which tool? Which workflow?</h2>
+<p>If I&rsquo;m building a puppet module that needs redis I can now add the following to it&rsquo;s init.pp ( or more properly create a module for redis and request it from the module I&rsquo;m building )</p>
 
-<ul>
-<li>Github Flow &ndash; <a href="http://scottchacon.com/2011/08/31/github-flow.html">http://scottchacon.com/2011/08/31/github-flow.html</a></li>
-<li>git-flow &ndash; <a href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a></li>
-<li>Git Dynamic Environments &ndash;</li>
-<li><ul>
-<li><a href="https://puppetlabs.com/blog/git-workflow-and-puppet-environments/">https://puppetlabs.com/blog/git-workflow-and-puppet-environments/</a> ,</li>
-</ul>
-</li>
-<li><ul>
-<li><a href="https://github.com/adrienthebo/puppet-git-hooks">https://github.com/adrienthebo/puppet-git-hooks</a></li>
-</ul>
-</li>
-</ul>
+<p>```
+  package { &lsquo;redis&rsquo;:</p>
 
+<pre><code>ensure =&gt; 'present';
+</code></pre>
 
-<h2>Commit hooks</h2>
+<p>  }
+```</p>
 
-<h3>Puppet:</h3>
-
-<ul>
-<li>erb,</li>
-<li>pp parser,</li>
-<li>yaml, <a href="https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit">https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>fc pre-commit: <a href="https://github.com/gregf/chef-git-hooks">https://github.com/gregf/chef-git-hooks</a></li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>Subversion: <a href="http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html">http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html</a></li>
-<li>Git: <a href="https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit">https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit</a></li>
-</ul>
-
-
-<h2>Style / Lint tools</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>puppet-lint &ndash; <a href="http://puppet-lint.com/,">http://puppet-lint.com/,</a></li>
-<li>puppet-cleaner &ndash; <a href="https://github.com/santana/puppet-cleaner,">https://github.com/santana/puppet-cleaner,</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>tailor,</li>
-<li>foodcritic</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>cf-promises (with GCC-style warnings)</li>
-</ul>
-
-
-<h2>Testing manifests / recipes</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>rspec-puppet,</li>
-<li>?cucumber-puppet (discontiued)?</li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>chefspec,</li>
-<li>minitest-handler,</li>
-<li>rspec-chef,</li>
-<li>cucumber-chef,</li>
-<li>test-kitchen</li>
-</ul>
-
-
-<h2>Marshalling / Assembling Code &amp; Dependencies</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>librarian-puppet &ndash; <a href="https://github.com/rodjek/librarian-puppet">https://github.com/rodjek/librarian-puppet</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>berkshelf,</li>
-<li>librarian</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>cf-sketch &ndash; <a href="https://github.com/cfengine/design-center/wiki/Design-Center-Tools">https://github.com/cfengine/design-center/wiki/Design-Center-Tools</a></li>
-</ul>
-
-
-<h2>Continuous Integration</h2>
-
-<ul>
-<li>Jenkins CI</li>
-<li>Travis CI</li>
-<li>Atlassian Bamboo?</li>
-<li>TeamCity?</li>
-</ul>
-
-
-<h2>Orchestration</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>MCollective</li>
-</ul>
-
-
-<h3>Chef :</h3>
-
-<ul>
-<li>has “knife ssh” and Pushy support coming for push jobs</li>
-</ul>
-
-
-<h2>Canary testing &amp; Prod vs QA vs test environments (not prod vs QA app code)</h2>
-
-<h3>Puppet</h3>
-
-<ul>
-<li>serverspec <a href="http://serverspec.org/">http://serverspec.org/</a></li>
-<li>rspec-system <a href="https://github.com/puppetlabs/rspec-system">https://github.com/puppetlabs/rspec-system</a></li>
-<li>nagios checks/ plugins</li>
-</ul>
-
-
-<h3>Chef</h3>
-
-<ul>
-<li>has knife-flip from Etsy, flips nodes into a test environment</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>Remote context class matching using remoteclassesmatching (Enterprise)</li>
-</ul>
-
-
-<h2>Provisioning VM&rsquo;s in the cloud?</h2>
-
-<h3>Chef:</h3>
-
-<ul>
-<li>knife ec2 server create&hellip;</li>
-<li>spiceweasel somefile.yml</li>
-<li>knife openstack&hellip;</li>
-<li>knife server create&hellip;</li>
-</ul>
-
-
-<p>Clouds include Azure, Openstack, Rackspace, etc. EC2 OpsWorks (although some limitations since it’s an older version)</p>
-
-<h2>Puppet:</h2>
-
-<ul>
-<li>puppet node_aws create / puppet node_vmware create</li>
-<li>Puppet RAL for AWS, OpenStack, CloudStack:
-  ec2_instance { “instance_name”: type => t1.large, az => ‘USWest’, ensure => present, …. }</li>
-<li>Razor (bare metal)</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li><a href="https://github.com/cfengine/design-center/tree/master/sketches/cloud">https://github.com/cfengine/design-center/tree/master/sketches/cloud</a></li>
-</ul>
-
-
-<h3>Chef</h3>
-
-<ul>
-<li>Crowbar has Chef server integrated, although I don’t know that much about it.</li>
-<li>Joyent also has a Chef “dataset” that they support.</li>
-</ul>
-
-
-<h2>Team Workflow</h2>
-
-<h3>Puppet: &ndash;?</h3>
-
-<h3>Chef:</h3>
-
-<ul>
-<li>knife-spork (has handlers to notify people)</li>
-</ul>
-
+<p>Of course Debian/Ubuntu doesn&rsquo;t use Yum/RPM for package management.    I&rsquo;d love to accept a pull request from somebody who wants to extend it to also support a local APT repository.   I left breadcrumbs in the <code>repository</code> module for some appropriate classes to be spliced in&hellip;</p>
 ]]></content>
   </entry>
   

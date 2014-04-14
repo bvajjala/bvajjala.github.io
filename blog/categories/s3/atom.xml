@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: s3 | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/s3/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[S3 - Mounting s3 buckets with S3fs]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/10/20/mounting-s3-buckets-with-f3fs/"/>
+    <updated>2013-10-20T20:32:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/10/20/mounting-s3-buckets-with-f3fs</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/amazon-s3.png" title="&lsquo;S3 logo&rsquo;" >A <code>cheap</code> solution on Amazon s3 for uploading files to s3 via SSH</p>
+
+<p>I needed to upload files from my Corporate environment in a <code>push mode</code> meaning I do not open any &ldquo;special&rdquo; ports in my environemnt in order to enable users to put files on S3.
+I am curentelly testing to see how robust this solution really is but basically what I found myself doing is install s3fs (<a href="https://code.google.com/p/s3fs/">link to project page</a>) like so:</p>
+
+<pre><code>wget http://s3fs.googlecode.com/files/s3fs-1.73.tar.gz
+tar xvzf s3fs-1.73.tar.gz
+cd s3fs-1.73
+./configure --prefix=/usr
+make &amp;&amp; make install
+</code></pre>
+
+<p>I was installing this for Suse but for Amazon linux/redhat etc you might find a package see: <a href="http://rpmfind.net/linux/rpm2html/search.php?query=fuse-s3fs">here</a>.</p>
+
+<p>Once the package is installed you can use <code>s3fs</code></p>
+
+<pre><code>s3fs BUCKET:[PATH] MOUNTPOINT [OPTION]...
+
+s3fs dev_tools /mnt/dev_tools/ 
+</code></pre>
+
+<p>Worth noting you do not need to specify the s3 url, you only specify the bucket name !</p>
+
+<p>The same thing / very similir in <code>/etc/fstab</code> will look like so:</p>
+
+<pre><code>s3fs#dev_tools /mnt/dev_tools fuse allow_other,user=youruser 0 0
+</code></pre>
+
+<p>The mount opts are <strong>extreemly important</strong> &ndash; without the <code>allow_other</code> flag the user cannot write to the directory.</p>
+
+<p>This is really awesome &ndash; we now jsut need to make sure the connectivity is reliable / fast enough and this will become very usefull.</p>
+
+<p>As always hope you find this useful.</p>
+]]></content>
+  </entry>
+  
+</feed>

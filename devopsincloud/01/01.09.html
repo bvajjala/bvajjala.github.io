@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>01 - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="01 Apr 9th, 2014 1.9 View and run jobs within a deployment pipeline Learning Objectives
+Create a Hosted Zone
+View and execute a deployment pipeline &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/devopsincloud/01/01.09.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">01</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-09T11:41:00-04:00" pubdate data-updated="true">Apr 9<span>th</span>, 2014</time></p>
+  </header>
+  
+  <ul>
+<li>1.9 View and run jobs within a deployment pipeline
+
+<ul>
+<li>Learning Objectives</li>
+<li>Create a Hosted Zone</li>
+<li>View and execute a deployment pipeline</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>1.9 View and run jobs within a deployment pipeline</h1>
+
+<h2>Learning Objectives</h2>
+
+<p>By the end of this lesson you will be able to:</p>
+
+<ul>
+<li>Execute jobs within a deployment pipeline.</li>
+</ul>
+
+
+<h2>Create a Hosted Zone</h2>
+
+<p>Create a Hosted Zone for a domain that you own.</p>
+
+<ol>
+<li>From the Management Console, select the Route 53 tab: <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</li>
+<li>Click the <strong>Create Hosted Zone</strong> button.</li>
+<li>Name the domain in the <strong>Domain Name</strong> field. Give it the name of a <strong>domain that you own</strong> and that you can use later. I’m using a domain that I own called <em>devopscloud.com</em>. Your domain <strong>must</strong> be different.</li>
+<li>After entering the domain name, click the <strong>Create Hosted Zone</strong> button.</li>
+<li>Select the <strong>checkbox next to the domain</strong>. You’ll see what’s called the <strong>Delegation Set</strong> in the Hosted Zone Details panel. Each of these entries is a domain server that you will enter for your domain servers with your domain registrar.</li>
+</ol>
+
+
+<h2>View and execute a deployment pipeline</h2>
+
+<ol>
+<li>Go to the Jenkins dashboard and select the <strong>CDPipeline</strong>.</li>
+<li>Click on the link labeled <strong>Start Build of Pipeline for TargetEnvironment</strong>.</li>
+<li><p>You’ll need to enter values for the <strong>PrivateBucket</strong>, <strong>PublicBucket</strong>, <strong>KeyName</strong> and <strong>HostedZone</strong>.</p>
+
+<ul>
+<li><strong>PrivateBucket</strong> &ndash; You named this bucket in the <em>Create an S3 bucket to host credentials</em> section of Lesson 1.1.</li>
+<li><strong>PublicBucket</strong> &ndash; You named this bucket in the <em>Apply a bucket policy using CloudFormation</em> section of Lesson 1.1.</li>
+<li><strong>KeyName</strong> &ndash; This key was created in the <em>Create a New Key Pair</em> section of Lesson 1.1. Be sure to include the KeyName suffix (e.g. .pem)</li>
+<li><strong>HostedZone</strong> &ndash; This is the name of the HostedZone you created in this Lesson &ndash; in the section above. Be sure to include the domain suffix (e.g. .com)</li>
+</ul>
+</li>
+<li><p>Click the <strong>Build</strong> button. It could take 30 minutes or more to execute all of the jobs.</p></li>
+</ol>
+
+
+  
+    <footer>
+      <p class="meta">
+        
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-09T11:41:00-04:00" pubdate data-updated="true">Apr 9<span>th</span>, 2014</time>
+        
+      </p>
+      
+        <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/devopsincloud/01/01.09.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/devopsincloud/01/01.09.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      
+    </footer>
+  
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

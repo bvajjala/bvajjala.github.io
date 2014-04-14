@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Views Plugin | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/views-plugin/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Remove the All view in Hudson + view enhancement plugins]]></title>
+    <link href="http://bvajjala.github.io/blog/2010/09/01/remove-the-all-view-in-hudson-plus-view-enhancement-plugins/"/>
+    <updated>2010-09-01T19:22:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2010/09/01/remove-the-all-view-in-hudson-plus-view-enhancement-plugins</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/hudson_logo.png" title="&lsquo;Hudson Logo&rsquo;" >I had tow motivations of getting rid of the All view</p>
+
+<ol>
+<li>The <em><strong>All view</strong></em> is quite annoying don&rsquo;t you think? After using Hudson for a while you have tens/hundreds of jobs lined up in a huge list &ndash; who needs that right.</li>
+<li>I wanted a &ldquo;<em><strong>hidden jobs section</strong></em>&rdquo; &ndash; Jobs no one but myself (and who ever needs access to it) can see.</li>
+</ol>
+
+
+<p>In order to get rid of it (the <em><strong>All view</strong>)****</em>simply:
+ <!-- more --></p>
+
+<ol>
+<li>Create a new view call it &ldquo;xyz&rdquo; and add what ever you want to it &ndash; and there are quite a few plugins you can adopt for see examples <a href="#vep">below</a>,</li>
+<li>Navigate to hudson >> configure hudson (<a href="http://[hudson_url]/hudson/configure">http://[hudson_url]/hudson/configure</a>) and chenge the default view to your &ldquo;xyz&rdquo; view.</li>
+<li>Select the <em><strong>All view</strong></em> in Hudson&rsquo;s home page and you should be able to delete it.</li>
+</ol>
+
+
+<p>View Enhancement plugins:</p>
+
+<ul>
+<li><a href="http://wiki.hudson-ci.org/display/HUDSON/Sectioned+View+Plugin">Sectioned View Plugin</a> &mdash;&ndash; This plugin provides a new view implementation that can be divided into sections. Each section can display different information about the selected jobs. An extension point is also provided to define new types of sections.</li>
+<li><a href="http://wiki.hudson-ci.org/display/HUDSON/Nested+View+Plugin">Nested View Plugin</a> &mdash;&ndash; View type to allow grouping job views into multiple levels instead of one big list of tabs.</li>
+<li><a href="http://wiki.hudson-ci.org/display/HUDSON/Status+View+Plugin">Status View Plugin</a> &mdash;&ndash; View type to show jobs filtered by the status of the last completed build.</li>
+<li><a href="http://wiki.hudson-ci.org/display/HUDSON/Last+Success+Description+Column+Plugin">Last Success Description Column Plugin</a> &mdash;&ndash; Column showing the last success description that can be configured in views (works with the <a href="http://wiki.hudson-ci.org/display/HUDSON/Description+Setter+Plugin">Description setter plugin</a> )</li>
+<li><p><a href="http://wiki.hudson-ci.org/display/HUDSON/Last+Success+Version+Column+Plugin">Last Success Version Column Plugin</a> &mdash;&ndash; Adds a column showing last successful version that can be configured in views.</p></li>
+<li><p><a href="http://wiki.hudson-ci.org/display/HUDSON/Last+Failure+Version+Column+Plugin">Last Failure Version Column Plugin</a> &mdash;&ndash; Adds a column showing last failed version that can be configured in views.</p></li>
+<li><a href="http://wiki.hudson-ci.org/display/HUDSON/Cron+Column+Plugin">Cron Column Plugin</a> &mdash;&ndash; View column showing the cron trigger expressions that can be configured on a job.</li>
+<li><a href="http://wiki.hudson-ci.org/display/HUDSON/Maven+Info+Plugin">Maven Info Plugin</a> &mdash;&ndash; Adds columns configurable in views to show info about Maven jobs.</li>
+<li><a href="http://wiki.hudson-ci.org/display/HUDSON/View+Job+Filters">View Job Filters</a> &mdash;&ndash; Manage multiple views and hundreds of jobs much more easily. This plug-in provides more ways to include/exclude jobs from a view, including filtering by SCM path, and by any job or build status type, as well as &ldquo;chaining&rdquo; of filters and negating filters.</li>
+<li><a href="http://wiki.hudson-ci.org/display/HUDSON/Job+Type+Column+Plugin">Job Type Column Plugin</a> &mdash;&ndash; Adds column showing job type that can be configured in views.</li>
+</ul>
+
+
+<p>I&rsquo;m sure there are others &hellip;</p>
+
+<p>Hope you find this useful I know I did :)</p>
+]]></content>
+  </entry>
+  
+</feed>

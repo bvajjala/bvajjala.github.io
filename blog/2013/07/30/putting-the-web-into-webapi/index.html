@@ -1,0 +1,383 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Putting the web into WebApi - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="The .net api developers, the WebApi framework offers a compelling alternative
+to asp.net mvc for slinging json or (gasp) xml over http. One great &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2013/07/30/putting-the-web-into-webapi">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Putting the Web Into WebApi</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-30T22:05:00-04:00" pubdate data-updated="true">Jul 30<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>The .net api developers, the WebApi framework offers a compelling alternative
+to asp.net mvc for slinging json or (gasp) xml over http. One great feature
+you get out of the box is content negotiation, where WebApi will look at
+request headers to decide which format to use when processing a request
+body or sending back a response.</p>
+
+<p>WebApi also includes the concept of an ApiExplorer, a built in service that
+knows about all the routes, templates and parameters an application is
+configured to handle. It even supports attaching human friendly documentation.</p>
+
+<p>With these built in perks, WebApi gets you 95% of the way there. What it
+doesn&rsquo;t do out of the box, unfortunately, is something that it says right
+on the box. It doesn&rsquo;t do web.</p>
+
+<h2>HTTP, ReST and the Web</h2>
+
+<p>There&rsquo;s been a growing buzz around the idea that writing an application
+that speaks json does not give you something that can be called ReST.
+To get to ReST nirvana your api needs to speak with hypermedia, giving
+the client, in addition to data, links and forms that can do stuff with
+the data.</p>
+
+<p>If you aren&rsquo;t familiar with this distinction, here are some resources
+that sell the concept well:</p>
+
+<ul>
+<li><a href="http://martinfowler.com/articles/richardsonMaturityModel.html">Richardson Maturity Model</a></li>
+<li><a href="http://www.infoq.com/presentations/web-api-html">Building Hypermedia APIs with HTML</a> (talk by Jon Moore)</li>
+<li><a href="https://speakerdeck.com/stilkov">Many slides by Stefan Tilkov</a></li>
+<li><a href="https://speakerdeck.com/ammeep/exist-in-the-web-not-on-it">Exist In the Web &ndash; Not on it</a> by Amy Palamountain</li>
+</ul>
+
+
+<h2>Microdata</h2>
+
+<p>Jon Moore&rsquo;s work is particularly intriguing because he shows what
+you can already do with <a href="http://en.wikipedia.org/wiki/Microdata_(HTML">Microdata</a>).</p>
+
+<p>Microdata boils down to 3 attributes that you stick on elements in your
+html5 markup, and they&rsquo;re all you need to give a computer semantic
+data. You can nest properties into a scope, describe the type of data
+being represented, and even nest scopes with scopes recursively.</p>
+
+<p>Jon&rsquo;s talks show how a web client that speaks Microdata can already start
+on sites like <a href="http://ebay.com/">ebay.com</a> and find and manipulate resources
+without knowing anything ahead of time about what resources are there and
+what URLs are used to access them.</p>
+
+<h2>WebApi + Microdata</h2>
+
+<p>On the one hand we have a .net framework for writing HTTP apis that
+has pluggable support for different mime types. On the other hand we
+have html5 and Microdata. Think they could be friends?</p>
+
+<p>I&rsquo;m excited to announce HtmlMicrodataFormatter,
+a new open source (APL) project available
+on <a href="">nuget.org</a>
+and hosted on <a href="">GitHub</a>.</p>
+
+<p>When you install this package into your WebApi project, it adds two
+features.</p>
+
+<p>First, if you enter the URL for one of your api methods into a web
+browser, you get (relatively) nice, human friendly html5 back instead
+of the wall of xml you would otherwise be greeted with.</p>
+
+<p>Second, and perhaps more importantly, if you browse to ~/api,
+you will be greeted by an html5 page that includes links and
+forms for all the routes that are registered with ApiExplorer.</p>
+
+<p>If your routes are not templated, you can fill in the inputs
+and submit forms to test them out right in the browser. If your
+routes are templated, you can still use the forms in the browser,
+but you&rsquo;ll need to do some extra work to fill in the template
+and update the form action in javascript before the form is
+submitted. A future post will cover how this can be done.</p>
+
+<p>Turn on xml documentation for your project, rebuild, and now
+all the documentation comments you attach to your controllers
+and actions appear on the forms.</p>
+
+<h2>Why it Matters</h2>
+
+<p>Obviously, getting a free browser based form generated for
+each action can be a productivity boon for developers who
+are tired of writing</p>
+
+<pre><code>curl -X DELETE -H 'Accept: application/json' http://localhost:49497/api/users/fred'
+</code></pre>
+
+<p>But it&rsquo;s more than that. Make your client project use html5
+and instead of hard-coding URLs for each thing the client
+wants to do, it enters at /api, finds the form it wants,
+fills it in and submits it. The Microdata attributes in
+the response, along with links and forms, give the client
+the pieces it needs to drive state, just like Roy T. Fielding
+intended when ReST was first described.</p>
+
+<p>Have third party clients that consume your api? Now you
+don&rsquo;t have to give them a separate document or website
+that describes (out of band) how to use your api. Just
+link them to yourwebsite/api, and they can read the
+documentation and discover what they can do without
+guessing or following brittle conventions.</p>
+
+<p>Putting the web into WebApi removes the tight coupling
+between client and server. Now you can change your routes,
+rename parameters, add parameters, and the client will
+automatically see those changes reflected in the forms
+and links they see when they enter your api. No more <code>/api/v1/users</code>
+through <code>/api/v23/users</code>. No more api version headers.</p>
+
+<h2>Next Steps</h2>
+
+<p>HtmlMicrodataFormatter is pretty young and there are
+many ideas left to flesh out. For example, making it easy to add
+links and forms to the output of controller actions,
+or improving how xml documentation is collected and
+converted to html, or making it easier to link from
+resources to related resources with appropriate rel
+attributes, or, or, or…</p>
+
+<p>I hope you like HtmlMicrodataFormatter, and if you
+do, maybe get involved and help improve it by
+submitting feedback, bugs, enhancements or pull
+requests to the GitHub project.</p>
+
+<p>Similar to Jon Moore&rsquo;s python based microdata
+client, work has started on a .net dynamic
+client which I hope to share soon.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-30T22:05:00-04:00" pubdate data-updated="true">Jul 30<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2013/07/30/putting-the-web-into-webapi/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2013/07/30/putting-the-web-into-webapi/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/07/13/install-xcode-cli-tools-via-script/" title="Previous Post: Install Xcode CLI Tools via Script">&laquo; Install Xcode CLI Tools via Script</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/08/16/cheffile-and-librarian-locks/" title="Next Post: Cheffile &amp; 'librarian locks'">Cheffile &amp; 'librarian locks' &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

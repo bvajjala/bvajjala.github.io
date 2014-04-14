@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Blogging | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/blogging/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Why Octopress ?]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/02/24/why-octopress/"/>
+    <updated>2013-02-24T09:11:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/02/24/why-octopress</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/octopress.png" title="&lsquo;Octopress Logo&rsquo;" >
+Yes I am a Hacker wannabe [Octopress slogen is &ldquo;A blogging framewrok for hackers&rdquo; &hellip; ].</p>
+
+<p>Now seriously, i&rsquo;ve been down the road with many blog / CMS engines, <a href="http://ww.drupal.org">Drupal</a>, <a href="http://wordpress.org/">Wordpress</a> and all I really wanted was
+a note-pad with no fancy WYSIWYG editor with a bazillion plug-ins which will enable me to embed images / videos or a simple syntax highlighter.</p>
+
+<p>So I found <a href="http://octopress.org/">Octopress</a> which is just frekin' simple to use + it&rsquo;s cheap [hosting on Github Pages]</p>
+
+<blockquote><p>Octopress is a framework designed by Brandon Mathis for Jekyll, the blog aware static site generator powering Github Pages. To start blogging with Jekyll, you have to write your own HTML templates, CSS, Javascripts and set up your configuration. But with Octopress All of that is already taken care of. Simply clone or fork Octopress, install dependencies and the theme, and you’re set.</p></blockquote>
+
+<ul>
+<li>Social links preloaded, Facebook, Twitter, disqus &amp; other are built-in</li>
+<li>Syntax high-lighting built-in</li>
+<li>there are more good reasons <a href="http://octopress.org/docs/">here</a> <a href="https://github.com/imathis/octopress/wiki/3rd-party-plugins">and here</a></li>
+</ul>
+
+
+<p>The only problem was / is migrating all the stuff I have on-line so that is still a work in progress &hellip;
+&ndash;>So I guess I&rsquo;ll have to see if this ones sticks!&lt;&ndash;</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Job configuration change in Hudson 1.372]]></title>
+    <link href="http://bvajjala.github.io/blog/2010/08/17/Job-configuration-change-in-Hudson-1.372/"/>
+    <updated>2010-08-17T09:11:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2010/08/17/Job-configuration-change-in-Hudson-1.372</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/hudson_logo.png" title="&lsquo;Hudson Logo&rsquo;" >Yesterday I upgraded hudson to the greatest an latest which was a seamless upgrade.</p>
+
+<p>A very obvious change in the Job configuration form was added instead of &ldquo;<strong>Tie Build to a node</strong>&rdquo;:
+<img src="/assets/images/old-slave-daialog_0.png" title="&lsquo;old_slave_selection_dialog&rsquo;" ></p>
+
+<p>There is now <strong>&ldquo;Restrict where this project can be run&rdquo;</strong>:</p>
+
+<p><img src="/assets/images/new-slave-daialog_0.png" title="&lsquo;new__slave_selection_dialog&rsquo;" ></p>
+
+<p>The disadvantage in this feature is if you want to a build to a node you need to know its name / node group name prior to the actual configuration. The Advantage of this feature is you can be more specific in where you want you build to run and with a large number of slaves this is quite important, <strong>Please note</strong>: &ldquo;old&rdquo; jobs aren&rsquo;t affected of this change.</p>
+]]></content>
+  </entry>
+  
+</feed>

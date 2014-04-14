@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Maven | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/maven/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T15:32:24-04:00</updated>
+  <updated>2014-04-14T15:50:34-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -70,6 +70,89 @@
 <li><a href="http://ascii.io/a/3459">Screencast</a> that shows how to work with Git in Maven projects.</li>
 </ul>
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JBoss, Selenium, Maven, Hudson, M2 Extra Steps & Files Found Trigger plugins playing well together]]></title>
+    <link href="http://bvajjala.github.io/blog/2010/09/12/JBoss-Selenium-Maven-Hudson-M2-Extra-Steps-Files-Found-Trigger-Plugins-Playing-Well-Together/"/>
+    <updated>2010-09-12T18:09:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2010/09/12/JBoss-Selenium-Maven-Hudson-M2-Extra-Steps-Files-Found-Trigger-Plugins-Playing-Well-Together</id>
+    <content type="html"><![CDATA[<p>JBoss, Selenium, Maven, Hudson, <a href="http://wiki.hudson-ci.org/display/HUDSON/M2+Extra+Steps+Plugin">M2 Extra Steps</a> &amp; <a href="http://wiki.hudson-ci.org/display/HUDSON/Files+Found+Trigger">Files Found Trigger</a> plugins &ndash; how do all these work together in a continuous build + Integration test life-cycle ?</p>
+
+<p><strong>The Story &ndash; The Use Case</strong>:</p>
+
+<p>We have two projects with two war artifacts which need to be deployed to a JBoss Application Server, whilst both webapps share a common base configuration, although the release life-cycle of each war have no correlation to the other.</p>
+
+<p>In production both application servers are running &amp; serving one another thus, Integration test should cover both JBoss instances &amp; test their web services.</p>
+
+<p>We are using selenium tests for both webapps and they need to run straight after a continuous build of each of the servers mentioned above. That said a change in project A or in project B should trigger the Integration tests job, whilst if either project A or project B are running the integration test plugin shouldn&rsquo;t run (at least until both projects / one of them is complete).</p>
+
+<p><strong>The &ldquo;work around&rdquo; &ndash; forcing the &ldquo;native Hudson&rdquo; configuration</strong> (which we didn&rsquo;t go with naturally):</p>
+
+<!-- more -->
+
+
+<p>Create a Job which builds Project A and Project B then as a downstream job will run ITest job. The problems with this method was &ndash;</p>
+
+<p><strong>1.</strong> Project A and Project B do not have the same release life-cycle therefore, I would be forced to have a separate build process for their release / chain the release of these webapps.</p>
+
+<p><strong>2.</strong> I would be building one of the projects for nothing (~ 10 minuets penalty) &ndash; if nothing changed in Project A / B why build the other for</p>
+
+<p>nothing?</p>
+
+<p>As a matter fo fact Project A doesn&rsquo;t change much, our consideration was &ndash; Project A will change once in two weeks whilst Project B will change on a daily basis &ndash; that is why we needed a smarter solution:</p>
+
+<p><strong>A more Creative </strong><strong>Solution</strong>:</p>
+
+<p><em>Step 1 &ndash; configure m2 &ldquo;extra steps&rdquo; post-build action for Project A &amp; B</em>:</p>
+
+<p>Project A &ndash; build a.war, and as a post build task it would copy the a.war into a shared location. For example purposes lets call it <em><strong>/sharedfolder</strong></em>, in Project B we would do the same.</p>
+
+<p>Upon a successful build of Project A and Project B we will result with <em><strong>/sharedfolder</strong></em> with a &amp; b war files in it. Let me point out these are two standard maven jobs which have the mvn clean install (or deploy) life-cycles and with <a href="http://wiki.hudson-ci.org/display/HUDSON/M2+Extra+Steps+Plugin">M2 extra steps plugin</a> you can run a shell / bash which will just copy a &amp; b wars to the <strong><em>/sharedfolder</em></strong>.</p>
+
+<p><img src="/assets/images/ExtraStepsPost.png" title="&lsquo;Post M2 steps&rsquo;" ></p>
+
+<p><em><strong>Please note</strong></em>: if running in distributed Hudson make <strong>/sharedfolder </strong>a location both the servers building a, b &amp; ITest Jobs can write to (NFS, SMB mount if you must).<strong><br/>
+</strong></p>
+
+<p><em>Step 2 &ndash; Add Files Found Trigger &amp; M2 Extra steps:</em></p>
+
+<p>1. Manage Hudson >> Manage plugins.</p>
+
+<p>2. Install the missing plugins (will be under the available tab if not installed already)</p>
+
+<p>3. Reload / Restart Hudson</p>
+
+<p>_Step 3 &ndash; create / configure ITest Job:<br/>
+_</p>
+
+<p>Create a freestyle (or maven depends on selenium configuration) job named <strong>Itest</strong> which has a <a href="http://wiki.hudson-ci.org/display/HUDSON/Files+Found+Trigger">Files Found Trigger</a> (SCM should be configured to checkout the selenium test &ndash; may it be Maven / Ant or whatever executes it for you :), in the Files found configuration have <strong><em>/sharedfolder </em></strong><strong>and </strong> <em><strong>a.war, b.war</strong></em> (note the &ldquo;,&rdquo; delimiter) watched for changes and configure the trigger to run every 5 / 10 minuets according to your preference &ndash; so the <strong>Files Found Trigger </strong>will test <em>/sharedfolder every $n minuets for changes in the filesystem and trigger a build accordingly.</em></p>
+
+<p><img src="/assets/images/FilesChangedTrigger_0.png" title="&lsquo;Files Changed Trigger&rsquo;" ></p>
+
+<p>I thought I was finished but The only problem was if either Project A or Project B was running I didn&rsquo;t want ITest to run until the Upstream project (either Project a  or b completes) and the built in upstream / downstream doesn&rsquo;t support &ldquo;wait for either Project A or Project B to complete&rdquo;.</p>
+
+<p>So:</p>
+
+<p><em>Step 4 &ndash; Add m2 &ldquo;extra steps&rdquo; pre-build action</em> <em>for Project A &amp; B</em>:</p>
+
+<p>I went back to Project A and Project B configuration and added a pre build snippet which removed <strong><em>/sharedfolder/a.war for Project A and </em></strong><strong><em>/sharedfolder/b.war for Project B.<br/>
+</em></strong>
+<img src="/assets/images/ExtraStepsPrenPost.png" title="&rsquo;re &amp; Post steps'" >
+<em>**</em></p>
+
+<p><strong><em>Now I have achieved &ndash; </em></strong><em>**</em>The Final result<em>**</em><strong><em>:</em></strong></p>
+
+<p><strong>1. </strong>No parallel building of Project A,B or ITest</p>
+
+<p><strong>2. </strong>ITest will be triggered wither if a.war or b.war will change (that is where the Files Found Trigger comes in)</p>
+
+<p><strong>3. </strong>I can still keep Project A &amp; Project B in their regular continuous life-cycle.</p>
+
+<p>Also<strong>note</strong> <strong>that</strong>: The FS-SCM (<a href="http://wiki.hudson-ci.org/display/HUDSON/File+System+SCM">File System SCM</a>) plugin (which seemed a good candidate at first) &ndash; will not work for you in this case, for on each change the Itest project will run. So even if Project A removed a.war this will be treated as a SCM change in the FS, and will trigger a new ITest build.</p>
+
+<p>Hope you find this tip helpful.</p>
 ]]></content>
   </entry>
   

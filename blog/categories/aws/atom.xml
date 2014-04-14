@@ -4,7 +4,7 @@
   <title><![CDATA[Category: AWS | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/aws/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T15:32:24-04:00</updated>
+  <updated>2014-04-14T15:50:34-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,269 +14,1712 @@
 
   
   <entry>
-    <title type="html"><![CDATA[DevOps Tools and Utilities]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/02/01/devops-tools-and-utilities/"/>
-    <updated>2014-02-01T13:13:05-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/02/01/devops-tools-and-utilities</id>
-    <content type="html"><![CDATA[<h1>DevOps Tool chain</h1>
+    <title type="html"><![CDATA[A case study on using 100% cloud based Resources with Automated Software Delivery]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/"/>
+    <updated>2014-04-04T14:08:01-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery</id>
+    <content type="html"><![CDATA[<h1>A Case Study on using 100% Cloud-based Resources with Automated Software Delivery</h1>
 
-<p>A list of utilities to support configuration management tools. This was produced by the panelists of the Configuration Mgmt Workflow panel at LOPSA-EAST in 2013. One of the attendees also took notes: <a href="http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel">http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel</a></p>
+<p><a href="http://stelligent.com" title="Stelligent Continuous Delivery in the Cloud">We</a>
+help – typically large – organizations create one-click software
+delivery systems so that they can deliver software in a more rapid,
+reliable and repeatable manner (AKA <a href="http://www.amazon.com/Continuous-Delivery-Deployment-Automation-Addison-Wesley/dp/0321601912" title="Continuous Delivery book">Continuous
+Delivery</a>).
+The only way this works is when Development works with Operations. As
+has been written elsewhere in this series, this means changing the
+hearts and minds of people because most organizations are used to
+working in ‘siloed’ environments. In this entry, I focus on
+implementation, by describing a real-world case study in which we have
+brought Continuous Delivery Operations to the Cloud consisting of a team
+of Systems and Software Engineers.  </p>
 
-<h2>Individual level: IDE / syntax highlighting etc</h2>
+<p>For years, we’ve helped customers in <a href="http://www.amazon.com/gp/product/0321336380/?tag=integratecom-20" title="Continuous Integration">Continuous
+Integration</a>
+and Testing so more of our work was with Developers and Testers. Several
+years ago, we hired a Sys Admin/Engineer/DBA who was passionate about
+automation. As a result of this, we began assembling multiple two-person
+“<a href="http://en.wikipedia.org/wiki/DevOps" title="DevOps on Wikipedia">DevOps</a>”
+teams consisting of a Software Engineer and a Systems Engineer both of
+whom being big-picture thinkers and not just “Developers” or “Sys
+Admins”. These days, we put together these targeted teams of Continuous
+Delivery and Cloud experts with hands-on experience as Software
+Engineers and Systems Engineers so that organizations can deliver
+software as quickly and as often as the business requires.</p>
 
-<h2>Puppet:</h2>
+<p>A couple of years ago we already had a few people in the company who
+were experimenting with using Cloud infrastructures so we thought this
+would be a great opportunity in providing cloud-based delivery
+solutions. In this case study, I cover a project we are currently
+working on for a large organization. It is a new Java-based web services
+project so we’ve been able to implement solutions using our recommended
+software delivery patterns rather than being constrained by legacy tools
+or decisions. However, as I note, we aren’t without constraints on this
+project. If I were you, I’d call “BS!” on any “case study” in which
+everything went flawlessly and assume it was an extremely small or a
+theoretical project in the author’s mind. This is the real deal. Enough
+said, on to the case study.      </p>
+
+<p><img src="https://s3.amazonaws.com/stelligent_img/aws_tools.jpg" alt="AWS Tools" /></p>
+
+<p><strong>Fast Facts</strong></p>
+
+<p><strong>Industry</strong>: Healthcare, Public Sector\
+<strong>Profile</strong>: The customer is making available to all, free of charge, a
+series of software specifications and open source software modules that
+together make up an oncology-extended Electronic Health Record
+capability.\
+<strong>Key Business Issues</strong>: The customer was seeking that all team members
+are provided “unencumbered” access to infrastructure resources without
+the usual “request and wait” queued-based procedures present in most
+organizations \
+<strong>Stakeholders</strong>: Over 100 people consisting of Developers, Testers,
+Analysts, Architects, and Project Management.\
+<strong>Solution:</strong> Continuous Delivery Operations in the Cloud\
+<strong>Key Tools/Technologies</strong>: Amazon Web Services  - AWS (Elastic Computer
+Cloud (EC2), (Simple Storage Service (S3), Elastic Block Storage (EBS),
+etc.), Jenkins, JIRA Studio, Ant, Ivy, Tomcat and PostgreSQL</p>
+
+<p><strong>The Business Problem</strong>\
+The customer was used to dealing with long drawn-out processes with
+Operations teams that lacked agility. They were accustomed to submitting
+Word documents via email to an Operations teams, attending multiple
+meetings and getting their environments setup weeks or months later. We
+were compelled to develop a solution that reduced or eliminated these
+problems that are all too common in many large organizations (Note: each
+problem is identified as a letter and number, for example: P1, and
+referred to later):</p>
+
+<ol>
+<li>Unable to deliver software to users on demand (P1)</li>
+<li>Queued requests for provisioned instances (P2)</li>
+<li>Unable to reprovision precise target environment configuration on
+demand (P3)</li>
+<li>Unable to provision instances on demand (P4)</li>
+<li>Configuration errors in target environments presenting deployment
+bottlenecks while Operations and Development teams troubleshoot
+errors (P5)</li>
+<li>Underutilized instances (P6)</li>
+<li>No visibility into purpose of instance (P7)</li>
+<li>No visibility into the costs of instance (P8)</li>
+<li>Users cannot terminate instances (P9)</li>
+<li>Increased Systems Operations personnel costs (P10)</li>
+</ol>
+
+
+<p><strong>Our Team</strong>\
+We put together a four-person team to create a solution for delivering
+software and managing the internal Systems Operations for this 100+
+person project. We also hired a part-time Security expert. The team
+consists of two Systems Engineers and two Software Engineers focused on
+Continuous Delivery and the Cloud. One of the Software Engineers is the
+Solutions Architect/PM for our team.</p>
+
+<p><strong>Our Solution</strong>\
+We began with the end in mind based on the customer’s desire for
+unencumbered access to resources. To us, “unencumbered” did not mean
+without controls; it meant providing automated services over queued
+“request and wait for the Ops guy to fulfill the request” processes. Our
+approach is that every resource is in the cloud: Software as a Service
+(SaaS), Platform as a Service (PaaS) or Infrastructure as a Service
+(IaaS) to reduce operations costs (P10) and increase efficiency. In
+doing this, effectively all project resources are available on demand in
+the cloud. We have also automated the software delivery process to
+Development and Test environments and working on the process of
+one-click delivery to production. I’ve identified the problem we’re
+solving – from above – in parentheses (P1, P8, etc.). The solution
+includes:</p>
 
 <ul>
-<li>vim &ndash; <a href="https://github.com/rodjek/vim-puppet">https://github.com/rodjek/vim-puppet</a></li>
-<li>TextMate &amp; sublime text 2 &ndash; <a href="https://github.com/masterzen/puppet-textmate-bundle">https://github.com/masterzen/puppet-textmate-bundle</a></li>
-<li>gepetto (<a href="http://cloudsmith.github.io/geppetto/">http://cloudsmith.github.io/geppetto/</a>),</li>
-<li>emacs</li>
-</ul>
-
-
-<h2>Chef:</h2>
-
-<ul>
-<li>vim,</li>
-<li>TextMate,</li>
-<li>Sublime Text: <a href="http://www.youtube.com/watch?v=4VtDj_ar1Xg">http://www.youtube.com/watch?v=4VtDj_ar1Xg</a> (video), <a href="https://github.com/cabeca/SublimeChef">https://github.com/cabeca/SublimeChef</a> (GitHub)</li>
-<li>Emacs: chef-mode <a href="https://github.com/mpasternacki/chef-mode">https://github.com/mpasternacki/chef-mode</a></li>
-</ul>
-
-
-<h3>CFEngine:</h3>
+<li><strong>On-Demand Provisioning</strong> – All hardware is provided via EC2’s
+virtual instances in the cloud, on demand (P2). We’ve developed a
+“Provisioner” (PaaS) that provides any authorized team member the
+capability to click a button and get their project-specific target
+environment (P3) in the AWS’ cloud – thus, providing unencumbered
+access to hardware resources. (P4) The Provisioner provides all
+authorized team members the capability to monitor instance usage
+(P6) and adjust accordingly. Users can terminate their own virtual
+instances (P9).</li>
+<li><strong>Continuous Delivery</strong> Solution so that the team can deliver
+software to users on demand (P1):
 
 <ul>
-<li>vim &ndash; <a href="https://github.com/neilhwatson/vim_cf3">https://github.com/neilhwatson/vim_cf3</a></li>
-<li>emacs &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/cfengine.el">https://github.com/cfengine/core/blob/master/contrib/cfengine.el</a></li>
-<li>kate &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml">https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml</a></li>
-<li>eclipse &ndash; <a href="https://cfengine.com/eclipse-cfengine-editor">https://cfengine.com/eclipse-cfengine-editor</a></li>
-<li>Sublime Text &ndash; <a href="https://github.com/kebori/sublime-cfengine3">https://github.com/kebori/sublime-cfengine3</a></li>
-</ul>
-
-
-<h2>Local Testing</h2>
-
-<ul>
-<li>Vagrant &ndash;</li>
-<li>VMware</li>
-<li>OpenStack</li>
-<li>Cloud?</li>
-<li>All of the above?</li>
-</ul>
-
-
-<h2>Revision Control : Which tool? Which workflow?</h2>
-
-<ul>
-<li>Github Flow &ndash; <a href="http://scottchacon.com/2011/08/31/github-flow.html">http://scottchacon.com/2011/08/31/github-flow.html</a></li>
-<li>git-flow &ndash; <a href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a></li>
-<li>Git Dynamic Environments &ndash;</li>
-<li><ul>
-<li><a href="https://puppetlabs.com/blog/git-workflow-and-puppet-environments/">https://puppetlabs.com/blog/git-workflow-and-puppet-environments/</a> ,</li>
+<li>Automated build script using Ant – used to drive most of the
+other automation tools</li>
+<li>Dependency Management using Ivy. We will be adding Sonatype
+Nexus</li>
+<li>Database Integration/Change using Ant and Liquibase</li>
+<li>Automated Static Analysis using Sonar (with CheckStyle,
+FindBugs, JDepend, and Cobertura)</li>
+<li>Test framework hooks for running JUnit, etc.</li>
+<li>Reusing remote Deployment custom Ant scripts that use Java
+Secure Channel and Web container configuration. However, we will
+be starting a process of using a more robust tool such as
+ControlTier to perform deployment</li>
+<li>Automated document generation using Grand, SchemaSpy (ERDs) and
+UMLGraph</li>
+<li>Continuous Integration server using Hudson</li>
+<li>Continuous Delivery pipeline system – we are customizing Hudson
+to emulate a Deployment Pipeline</li>
 </ul>
 </li>
-<li><ul>
-<li><a href="https://github.com/adrienthebo/puppet-git-hooks">https://github.com/adrienthebo/puppet-git-hooks</a></li>
+<li><strong>Issue Tracking</strong> – We’re using the JIRA Studio SaaS product from
+Atlassian (P10), which provides issue tracking, version-control
+repository, online code review and a Wiki. We also manage the
+relationship with the vendor and perform the user administration
+including workflow management and reporting.</li>
+<li><strong>Development Infrastructure</strong>&ndash; There were numerous tools selected
+by the customer for Requirements Management and Test Management and
+Execution including HP QC, LoadRunner, SoapUI, Jama Contour. Many of
+these tools were installed and managed by our team onto the EC2
+instances</li>
+<li><strong>Instance Management</strong>&ndash; Any authorized team member is able to
+monitor virtual instance usage by viewing a web-based dashboard (P6,
+P7, P8) we developed. This helps to determine instances that should
+no longer be in use or may be eating up too much money. There is a
+policy that test instances (e.g. Sprint Testing) are terminated no
+less than every two weeks. This promotes ephemeral environments and
+test automation.</li>
+<li><strong>Deployment to Production</strong> – Much of the pre-production
+infrastructure is in place, but we will be adding some additional
+automation features to make it available to users in production
+(P1). The deployment sites are unique in that we aren’t hosting a
+single instance used by all users and it’s likely the software will
+be installed at each site. One plan is to deploy separate instances
+to the cloud or to virtual instances that are shipped to the user
+centers</li>
+<li><p><strong>System Monitoring and Disaster Recovery</strong> – Using
+<a href="https://www.cloudkick.com/" title="CloudKick AWS Monitoring">CloudKick</a>
+to notify us of instance errors or anomalies. EC2 provides us with
+some monitoring as well. We will be implementing a more robust
+monitoring solution using Nagios or something similar in the coming
+months. Through automation and supporting process, we’ve implemented
+a disaster recovery solution.</p></li>
 </ul>
-</li>
-</ul>
 
 
-<h2>Commit hooks</h2>
-
-<h3>Puppet:</h3>
+<p><strong>Benefits</strong>\
+The benefits are primarily around removing the common bottlenecks from
+processes so that software can be delivered to users and team members
+more often. Also, we think our approach to providing on-demand services
+over queued-based requests increases agility and significantly reduces
+costs. Here are some of the benefits:</p>
 
 <ul>
-<li>erb,</li>
-<li>pp parser,</li>
-<li>yaml, <a href="https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit">https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit</a></li>
+<li><strong>Deliver software more often</strong> – to users and internally (testers,
+managers, demos)</li>
+<li><strong>Deliver software more quickly</strong> – since the software delivery
+process is automated, we identify the SVN tag and click a button to
+deliver the software to any environment</li>
+<li><strong>Software delivery is rapid, reliable and repeatable</strong>. All
+resources can be reproduced with a single click – source code,
+configuration, environment configuration, database and network
+configuration is all checked in and versioned and part of a single
+delivery system.</li>
+<li><strong>Increased visibility</strong> to environments and other resources – All
+preconfigured virtual hardware instances are available for any
+project member to provision without needing to submit forms or
+attend countless meetings</li>
 </ul>
 
 
-<h3>Chef:</h3>
+<p><strong>Tools</strong>\
+Here are some of the tools we are using to deliver this solution. Some
+of the tools were chosen by our team exclusively and some by other
+stakeholders on the project.</p>
 
 <ul>
-<li>fc pre-commit: <a href="https://github.com/gregf/chef-git-hooks">https://github.com/gregf/chef-git-hooks</a></li>
+<li><a href="http://aws.amazon.com/ec2/" title="AWS EC2"><strong>AWS EC2</strong></a>&ndash; Cloud-based
+virtual hardware instances</li>
+<li><a href="http://aws.amazon.com/s3/" title="AWS S3"><strong>AWS S3</strong></a> – Cloud-based
+storage. We use S3 to store temporary software binaries and backups</li>
+<li><a href="http://aws.amazon.com/ebs/" title="AWS EBS"><strong>AWS EBS</strong></a> – Elastic Block
+Storage. We use EBS to attach PostgreSQL data volumes</li>
+<li><a href="http://ant.apache.org/" title="Ant"><strong>Ant</strong></a> – Build Automation</li>
+<li><a href="https://www.cloudkick.com/" title="CloudKick"><strong>CloudKick</strong></a> – Real-time
+Cloud instance monitoring</li>
+<li><a href="http://controltier.com/" title="ControlTier"><strong>ControlTier</strong></a> –
+Deployment Automation. Not implemented yet.</li>
+<li><strong>HP LoadRunner</strong> – Load Testing</li>
+<li><strong>HP Quality Center (QC)</strong> – Test Management and Orchestration</li>
+<li><strong>Ivy</strong> – Dependency Management</li>
+<li><strong>Jama Contor</strong>&ndash; Requirements Management</li>
+<li><a href="http://jenkins-ci.org/" title="Jenkins"><strong>Jenkins</strong></a> – Continuous
+Integration Server</li>
+<li><a href="http://www.atlassian.com/hosted/studio/" title="JIRA Studio"><strong>JIRA
+Studio</strong></a>&ndash;
+Issue Tracking, Code Review, Version-Control, Wiki</li>
+<li><strong>JUnit</strong> – Unit and Component Testing</li>
+<li><a href="http://www.liquibase.org/" title="Liquibase"><strong>Liquibase</strong></a> – Automated
+database change management</li>
+<li><strong>Nagios</strong> – or Zenoss. Not implemented yet</li>
+<li><strong>Nexus</strong> – Dependency Management Repository Manager (not
+implemented yet)</li>
+<li><strong>PostgreSQL</strong> – Database used by Development team. We’ve written
+script that automate database change management</li>
+<li><strong>Provisioner</strong> (Custom Web-based) – Target Environment Provisioning
+and Virtual Instance Monitoring</li>
+<li><a href="http://www.puppetlabs.com/" title="Puppet"><strong>Puppet</strong></a> – Systems
+Configuration Management</li>
+<li><strong>QTP</strong> – Test Automation</li>
+<li><strong>SoapUI</strong> – Web Services Test Automation</li>
+<li><a href="http://www.sonarsource.org/" title="Sonar"><strong>Sonar</strong></a> – code quality
+analysis (Includes CheckStyle, PMD, Cobertura, etc.)</li>
+<li><strong>Tomcat/JBoss</strong> – Web container used by Development. We’ve written
+script to automate the deployment and container configuration</li>
 </ul>
 
 
-<h3>CFEngine:</h3>
+<p><strong>Solutions we’re in the process of Implementing</strong>\
+We’re less than a year into the project and have much more work to do.
+Here are a few projects we’re in the process or will be starting to
+implement soon:</p>
 
 <ul>
-<li>Subversion: <a href="http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html">http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html</a></li>
-<li>Git: <a href="https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit">https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit</a></li>
+<li>System Configuration Management – We’ve started using Puppet, but we
+are expanding how it’s being used in the future</li>
+<li>Deployment Automation – The move to a more robust Deployment
+automation tool such as ControlTier</li>
+<li>Development Infrastructure Automation – Automating the provisioning
+and configuration of tools such as HP QC in a cloud environment.
+etc.</li>
 </ul>
 
 
-<h2>Style / Lint tools</h2>
-
-<h3>Puppet:</h3>
+<p><strong>What we would do Differently</strong>\
+Typically, if we were start a Java-based project and recommend tools
+around testing, we might choose the following tools for testing,
+requirements and test management based on the particular need:</p>
 
 <ul>
-<li>puppet-lint &ndash; <a href="http://puppet-lint.com/,">http://puppet-lint.com/,</a></li>
-<li>puppet-cleaner &ndash; <a href="https://github.com/santana/puppet-cleaner,">https://github.com/santana/puppet-cleaner,</a></li>
+<li>Selenium with
+<a href="http://saucelabs.com/" title="SauceLabs Selenium">SauceLabs</a></li>
+<li>JIRA Studio for Test Management</li>
+<li>JIRA Studio for Requirements Management</li>
+<li>JMeter – or other open source tool – for Load Testing</li>
 </ul>
 
 
-<h3>Chef:</h3>
+<p>However, like most projects there are many stakeholders who have their
+preferred approach and tools they are familiar in using, the same way
+our team does. Overall, we are pleased with how things are going so far
+and the customer is happy with the infrastructure and approach that is
+in place at this time. I could probably do another case study on dealing
+with multiple SaaS vendors, but I will leave that for another post.</p>
+
+<p><strong>Summary</strong>\
+There’s much more I could have written about what we’re doing, but I
+hope this gives you a decent perspective of how we’ve implemented a
+DevOps philosophy with Continuous Delivery and the Cloud and how this
+has led our customer to more a service-based, unencumbered and agile
+environment. </p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Tutotial : Continuous Delivery in the Cloud Part 6 of 6]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/"/>
+    <updated>2014-04-04T14:00:06-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6</id>
+    <content type="html"><![CDATA[<p>In<a href="http://www.stelligent.com/wp-admin/continuous-delivery-in-the-cloud-case-study-for-the-sea-to-shore-alliance-introduction-part-1-of-6">part 1 of this series</a>, I introduced the<a href="http://refcardz.dzone.com/refcardz/continuous-delivery-patterns">Continuous Delivery</a> (CD) pipeline for the<a href="http://manatees.mapntracker.com/wildtracks/">Manatee Tracking application</a>.
+In<a href="../continuous-delivery-in-the-cloud-cd-pipeline-part-2-of-6/index.html">part 2</a>,I went over how we use this CD pipeline to deliver software from checkin to production.
+In<a href="../continuous-delivery-in-the-cloud-cloudformation-part-3-of-6/index.html">part 3</a>,we focused on how CloudFormation is used to script the virtual AWS components that create the Manatee infrastructure.
+Then in<a href="../continuous-delivery-in-the-cloud-dynamic-configuration-part-4-of-6/index.html">part 4</a>, we focused on a “property file less” environment by dynamically setting and retrieving properties.
+<a href="../continuous-delivery-in-the-cloud-deployment-automation-part-5-of-6/index.html">Part 5</a> explained how we use Capistrano for scripting our deployment. A list of topics for each of the articles is summarized below:</p>
+
+<p><a href="../continuous-delivery-in-the-cloud-case-study-for-the-sea-to-shore-alliance-introduction-part-1-of-6/index.html">Part 1: Introduction</a>
+– Introduction to continuous delivery in the cloud and the rest of the articles;
+ <a href="../continuous-delivery-in-the-cloud-cd-pipeline-part-2-of-6/index.html">Part 2: CD Pipeline</a>
+– In-depth look at the CD Pipeline;
+ <a href="../continuous-delivery-in-the-cloud-cloudformation-part-3-of-6/index.html">Part 3: CloudFormation</a>
+– Scripted virtual resource provisioning;
+ <a href="../continuous-delivery-in-the-cloud-dynamic-configuration-part-4-of-6/index.html">Part 4: Dynamic Configuration</a>
+– “Property file less” infrastructure;
+ <a href="../continuous-delivery-in-the-cloud-deployment-automation-part-5-of-6/index.html">Part 5: Deployment Automation</a>
+– Scripted deployment orchestration;
+ Part 6: Infrastructure Automation – What you’re reading now;</p>
+
+<p>In this part of the series, I am going to show how we use <a href="http://puppetlabs.com/">Puppet</a> in combination with <a href="http://aws.amazon.com/cloudformation/">CloudFormation</a> to script our target environment infrastructure, preparing it for a Manatee application deployment.</p>
+
+<p><strong>What is Puppet?</strong></p>
+
+<p>Puppet is a Ruby based infrastructure automation tool. Puppet is primarily used for provisioning environments and managing configuration. Puppet is made to support multiple operating systems, making your infrastructure automation cross-platform.</p>
+
+<p><strong>How does Puppet work?</strong></p>
+
+<p>Puppet uses a library called <a href="http://www.puppetlabs.com/puppet/related-projects/facter/">Facter</a> which collects facts about your system. Facter returns details such as the operating system, architecture, IP address, etc. Puppet uses these facts to make decisions for provisioning your environment. Below is an example of the facts returned by Facter.
+```</p>
+
+<h1>Facter architecture => i386</h1>
+
+<p>&hellip;
+ipaddress => 172.16.182.129
+is_virtual => true
+kernel => Linux
+kernelmajversion => 2.6
+&hellip;
+operatingsystem => CentOS
+operatingsystemrelease => 5.5
+physicalprocessorcount => 0
+processor0 => Intel&reg; Core&trade;2 Duo CPU     P8800  @ 2.66GHz
+processorcount => 1 productname => VMware Virtual Platform
+```</p>
+
+<p>Puppet uses the operating system <em>fact</em> to decide the service name as show below:</p>
+
+<p><code>
+case $operatingsystem {
+   centos, redhat: {
+     $service_name = 'ntpd'
+     $conf_file    = 'ntp.conf.el'
+   }
+ }`
+</code></p>
+
+<p>With this case statement, if the operating environment is either <code>centos</code> or <code>redhat</code> the service name <code>ntpd</code> and the configuration file <code>ntp.conf.el</code> are used.</p>
+
+<p>Puppet is declarative by nature. Inside a Puppet <em>module</em> you define the end state the environment end state after the Puppet run. Puppet enforces this state during the run. If at any point the environment does not conform to the desired state, the Puppet run fails.</p>
+
+<p><strong>Anatomy of a Puppet Module</strong></p>
+
+<p>To script the infrastructure Puppet uses <em>modules</em> for organizing related code to perform a specific task. A Puppet <em>module</em> has multiple sub directories that contain resources for performing the intended task. Below are these resources:</p>
+
+<p><code>manifests/</code>: Contains the manifest class files for defining how to perform the intended task
+ <code>files/</code>: Contains static files that the node can download during the installation
+ <code>lib/</code>: Contains plugins
+ <code>templates/</code>: Contains templates which can be used by the <em>module</em>’s manifests
+ <code>tests/</code>: Contains tests for the <em>module</em></p>
+
+<p>Puppet also uses <em>manifests</em> to manage multiple <em>modules</em> together <code>site.pp</code>. Puppet also uses another manifest to define what to install on each node, <code>default.pp</code>.</p>
+
+<p><strong>How to run Puppet</strong></p>
+
+<p>Puppet can be run using either a master agent configuration or a solo installation (puppet apply).</p>
+
+<p><strong>Master Agent:</strong> With a master agent installation, you configure one main master puppet node which manages and configure all of your agent nodes (target environments). The master initiates the installation of the agent and manages it throughout its lifecycle. This model enables infrastructure changes to your agents in parallel by controlling the master node.</p>
+
+<p><strong>Solo:</strong> In a solo Puppet run, it’s up to the user to place the desired Puppet <em>module</em> on the target environment. Once the <em>module</em> is on the target environment, the user needs run
+<code>puppet apply --modulepath=/path/to/modules/ /path/to/site.pp</code>. Puppet will then provision the server with the provided <em>modules</em> and <code>site.pp</code> without relying on another node.</p>
+
+<p><strong>Why do we use Puppet?</strong></p>
+
+<p>We use Puppet to script and automate our infrastructure — making our environment provisioning repeatable, fully automated, and less error prone. Furthermore, scripting our environments gives us complete control over our infrastructure and the ability to terminate and recreate environments as often as they choose.</p>
+
+<p><strong>Puppet for Manatees</strong></p>
+
+<p>In the Manatee infrastructure, we use Puppet for provisioning our target environments. I am going to go through our manifests and <em>modules</em> while explaining their use and purpose. In our Manatee infrastructure, we create a new target environment as part of the CD pipeline – discussed in part 2 of the series,<a href="../continuous-delivery-in-the-cloud-cd-pipeline-part-2-of-6/index.html">CD Pipeline</a>.
+Below I provide a high-level summary of the environment provisioning process:</p>
+
+<p>​1. CloudFormation dynamically creates a params.pp manifest with AWS variables
+2. CloudFormation runs puppet apply as part of UserData
+3. Puppet runs the <em>modules</em> defined in hosts/default.pp.
+4. Cucumber acceptance tests are run to verify the infrastructure was provisioned correctly.</p>
+
+<p>Now that we know at a high-level what’s being done during the environment provisioning, let’s take a deeper look at the scripts in more detail. The actual scripts can be found here: <a href="http://code.google.com/p/sea2shore/source/browse/trunk/src/infrastructure/puppet/">Puppet</a></p>
+
+<p>First we will start off with the manifests.</p>
+
+<p>The <a href="http://code.google.com/p/sea2shore/source/browse/trunk/src/infrastructure/puppet/manifests/site.pp">site.pp</a> (shown below) serves two purposes. It loads the other manifests <code>default.pp</code>, <code>params.pp</code> and also sets stages <code>pre</code>, <code>main</code> and <code>post</code>.
+```
+import &ldquo;hosts/<em>&rdquo; import &ldquo;classes/</em>&rdquo;</p>
+
+<p>stage { [pre, post]: }
+ Stage[pre] &ndash;> Stage[main] &ndash;> Stage[post]
+```</p>
+
+<p>These stages are used to define the order in which Puppet <em>modules</em> should be run. If the Puppet <em>module</em> is defined as <code>pre</code>,it will run before Puppet <em>modules</em> defined as <code>main</code> or <code>post</code>. Moreover if stages aren’t defined,  Puppet will determine the order of execution. The <code>default.pp</code> (referenced below) shows how staging defined for executing puppet <em>modules</em>.
+<code>
+node default {
+   class { "params": stage =&gt; pre }
+   class { "java": stage =&gt; pre }
+   class { "system": stage =&gt; pre }
+   class { "tomcat6": stage =&gt; main }
+   class { "postgresql": stage =&gt; main }
+   class { "subversion": stage =&gt; main }
+   class { "httpd": stage =&gt; main }
+   class { "groovy": stage =&gt; main }
+ }
+</code></p>
+
+<p>The <a href="http://code.google.com/p/sea2shore/source/browse/trunk/src/infrastructure/puppet/manifests/hosts/default.pp">default.pp</a> manifest also defines which Puppet <em>modules</em> to use for provisioning the target environment.</p>
+
+<p><a href="http://code.google.com/p/sea2shore/source/browse/trunk/src/infrastructure/puppet/manifests/classes/params.pp">params.pp</a> (shown below), loaded from site.pp, is dynamically created using CloudFormation. <code>params.pp</code> is used for setting AWS property values that are used later in the Puppet <em>modules</em>.</p>
+
+<p><code>
+ class params {
+   $s3_bucket = ''   
+   $application_name = ''
+   $hosted_zone = ''
+   $access_key = ''
+   $secret_access_key = ''
+   $jenkins_internal_ip = ''
+ }
+</code></p>
+
+<p>Now that we have an overview of the manifests used, lets take a look at the Puppet <em>modules</em> themselves.</p>
+
+<p>In our <a href="http://code.google.com/p/sea2shore/source/browse/trunk/src/infrastructure/puppet/modules/java/manifests/init.pp">java</a> <em>module</em>, which is run in the <code>pre</code> stage, we are running a simple installation using packages. This is easily dealt with in Puppet by using the <code>package</code> resource. This relies on Puppet’s knowledge of the <em>operating system</em> and the <em>package manager</em>. Puppet simply installs the package that is declared.</p>
+
+<p><code>
+class java {
+   package {  "java-1.6.0-openjdk": ensure =&gt; "installed" }
+ }
+</code></p>
+
+<p>The next <em>module</em> we’ll discuss is <a href="http://code.google.com/p/sea2shore/source/browse/trunk/src/infrastructure/puppet/modules/system/manifests/init.pp">system</a>. System is also run during the <code>pre</code> stage and is used for the setup of all the extra operations that don’t necessarily need their own <em>module</em>. These actions include setting up general packages (gcc, make, etc.), installing ruby gems (AWS sdk, bundler, etc.), and downloading custom scripts used on the target environment.</p>
+
+<p>```
+ class system {</p>
+
+<p>  include params</p>
+
+<p>  $access_key = $params::access_key
+  $secret_access_key = $params::secret_access_key</p>
+
+<p>  Exec { path => ‘/usr/bin:/bin:/usr/sbin:/sbin’ }</p>
+
+<p>  package { “gcc”: ensure => “installed” }
+   package { “mod_proxy_html”: ensure => “installed” }
+   package { “perl”: ensure => “installed” }
+   package { “libxslt-devel”: ensure => “installed” }
+   package { “libxml2-devel”: ensure => “installed” }
+   package { “make”: ensure => “installed” }</p>
+
+<p>  package {“bundler”:
+     ensure => “1.1.4”,
+     provider => gem
+   }</p>
+
+<p>  package {“trollop”:
+     ensure => “2.0”,
+     provider => gem
+   }</p>
+
+<p>  package {“aws-sdk”:
+     ensure => “1.5.6”,
+     provider => gem,
+     require => [
+       Package[“gcc”],
+       Package[“make”]
+     ]
+   }</p>
+
+<p>  file { “/home/ec2-user/aws.config”:
+     content => template(“system/aws.config.erb”),
+     owner => ‘ec2-user’,
+     group => ‘ec2-user’,
+     mode => ‘500’,
+   }</p>
+
+<p>  define download_file($site=“”,$cwd=“”,$creates=“”){
+     exec { $name:
+       command => “wget ${site}/${name}”,
+       cwd => $cwd,
+       creates => “${cwd}/${name}”
+     }
+   }</p>
+
+<p>  download_file {“database_update.rb”:
+     site => “<a href="https://s3.amazonaws.com/sea2shore%E2%80%9D,">https://s3.amazonaws.com/sea2shore%E2%80%9D,</a>
+     cwd => “/home/ec2-user”,
+     creates => “/home/ec2-user/database_update.rb”,
+   }</p>
+
+<p>  download_file {“id_rsa.pub”:
+     site => “<a href="https://s3.amazonaws.com/sea2shore/private%E2%80%9D,">https://s3.amazonaws.com/sea2shore/private%E2%80%9D,</a>
+     cwd => “/tmp”,
+     creates => “/tmp/id_rsa.pub”
+   }</p>
+
+<p>  exec {“authorized_keys”:
+     command => “cat /tmp/id_rsa.pub >> /home/ec2-user/.ssh/authorized_keys”,
+     require => Download_file[“id_rsa.pub”]
+     }
+   }
+<code>``
+First I want to point out that at the top we are specifying to</code>include params<code>. This enables the system *module* to access the</code>params.pp<code>file. This way we can use the properties defined in</code>params.pp.`</p>
+
+<p>```
+ include params</p>
+
+<p> $access_key = $params::access_key
+ $secret_access_key = $params::secret_access_key
+```</p>
+
+<p>This enables us to define the parameters in one central location and then reference that location with other <em>module</em>.</p>
+
+<p>As we move through the script we are using the package resource similar to previous <em>modules</em>. For each rubygem we use the package resource and explicitly tell Puppet to use the <code>gem</code> provider. You can specify other providers like <code>rpm</code> and <code>yum</code>.</p>
+
+<p>We use the <code>file</code> resource to create files from templates.</p>
+
+<p><code>
+ AWS.config(
+   :access_key_id =&gt; "&lt;%= "#{access_key}" %&gt;",
+   :secret_access_key =&gt; "&lt;%= "#{secret_access_key}" %&gt;"
+ )
+</code></p>
+
+<p>In the <code>aws.config.erb</code> template (referenced above) we are using the properties defined in <code>params.pp</code> for dynamically creating an <code>aws.config</code> credential file. This file is then used by our <code>database_update.rb</code> script for connecting to <a href="http://aws.amazon.com/s3/">S3</a>.</p>
+
+<p>Speaking of the <code>database_update.rb</code> script, we need to get it on the target environment. To do this, we define a <code>download_file</code> resource.</p>
+
+<p><code>
+ define download_file($site="",$cwd="",$creates=""){
+   exec { $name:
+     command =&gt; "wget ${site}/${name}",
+     cwd =&gt; $cwd,
+     creates =&gt; "${cwd}/${name}"
+   }
+ }
+</code></p>
+
+<p>This creates a new resource for Puppet to use. Using this we are able to download both the <code>database_update.rb</code> and <code>id_rsa.pub</code> public SSH key.</p>
+
+<p>As a final step for setting up the system, we execute a bash line for copying the <code>id_rsa.pub</code> contents into the <code>authorized_keys</code> file for the <code>ec2-user</code>. This enables clients with the connected <code>id_rsa</code> key to ssh into the target environment as <code>ec2-user</code>.</p>
+
+<p>The Manatee infrastructure uses <a href="http://httpd.apache.org/">Apache</a> for the webserver, <a href="http://tomcat.apache.org/">Tomcat</a> for the app server, and <a href="http://www.postgresql.org/">PostgreSQL</a> for its database. Puppet these up as part of the <code>main</code> stage, meaning they run in order after the <code>pre</code> stage <em>modules</em> are run.</p>
+
+<p>In our <code>httpd</code> <em>module</em>, we are performing several steps discussed previously. The <code>httpd</code> package is installed and creating a new file from a template.</p>
+
+<p>```
+ class httpd {   include params</p>
+
+<p>  $application_name = $params::application_name
+   $hosted_zone = $params::hosted_zone</p>
+
+<p>  package { ‘httpd’:
+     ensure => installed,
+   }</p>
+
+<p>  file { “/etc/httpd/conf/httpd.conf”:
+     content => template(“httpd/httpd.conf.erb”),
+     require => Package[“httpd”],
+     owner => ‘ec2-user’,
+     group => ‘ec2-user’,
+     mode => ‘664’,
+   }</p>
+
+<p>  service { ‘httpd’:
+     ensure => running,
+     enable => true,
+     require => [
+       Package[“httpd”],
+       File[“/etc/httpd/conf/httpd.conf”]],
+       subscribe => Package[’httpd’],
+     }
+   }
+<code>``
+The new piece of functionality used in our</code>httpd<code>*module* is</code>service<code>.</code>service<code>allows us define the state the</code>httpd` service should be in at the end of our run. In this case, we are declaring that it should be running.</p>
+
+<p>The Tomcat <em>module</em> again uses package to define what to install and service to declare the end state of the tomcat service.</p>
+
+<p>```
+ class tomcat6 {</p>
+
+<p>  Exec { path => ‘/usr/bin:/bin:/usr/sbin:/sbin’ }</p>
+
+<p>  package { “tomcat6”:
+     ensure => “installed”
+   }</p>
+
+<p>  $backup_directories = [
+     “/usr/share/tomcat6/.sarvatix/”,
+     “/usr/share/tomcat6/.sarvatix/manatees/”,
+     “/usr/share/tomcat6/.sarvatix/manatees/wildtracks/”,</p>
+
+<p>    “/usr/share/tomcat6/.sarvatix/manatees/wildtracks/database_backups/”,</p>
+
+<p>    “/usr/share/tomcat6/.sarvatix/manatees/wildtracks/database_backups/backup_archive”,
+   ]</p>
+
+<p>  file { $backup_directories:
+     ensure => “directory”,
+     owner => “tomcat”,
+     group => “tomcat”,
+     mode => 777,
+     require => Package[“tomcat6”],
+   }</p>
+
+<p>  service { “tomcat6”:
+     enable => true,
+     require => [
+       File[$backup_directories],
+       Package[“tomcat6”]],
+     ensure => running,
+   }
+ }
+<code>``
+Tomcat uses the</code>file<code>resource differently then previous *modules*.</code>tomcat<code>uses</code>file<code>for creating directories. This is defined using</code>ensure => “directory”`.</p>
+
+<p>We are using the <code>package</code> resource for installing PostgreSQL, building files from templates using the <code>file</code> resource, performing bash executions with <code>exec</code>, and declaring the intended state of the PostgreSQL using the <code>service</code> resource.</p>
+
+<p>```
+ class postgresql {</p>
+
+<p>  include params</p>
+
+<p>  $jenkins_internal_ip = $params::jenkins_internal_ip</p>
+
+<p>  Exec { path => ‘/usr/bin:/bin:/usr/sbin:/sbin’ }</p>
+
+<p>  define download_file($site=“”,$cwd=“”,$creates=“”){
+     exec { $name:
+       command => “wget ${site}/${name}”,
+       cwd => $cwd,
+       creates => “${cwd}/${name}”
+     }
+   }</p>
+
+<p>  download_file {“wildtracks.sql”:
+     site => “<a href="https://s3.amazonaws.com/sea2shore%E2%80%9D,">https://s3.amazonaws.com/sea2shore%E2%80%9D,</a>
+     cwd => “/tmp”,
+     creates => “/tmp/wildtracks.sql”
+   }</p>
+
+<p>  download_file {“createDbAndOwner.sql”:
+     site => “<a href="https://s3.amazonaws.com/sea2shore%E2%80%9D,">https://s3.amazonaws.com/sea2shore%E2%80%9D,</a>
+     cwd => “/tmp”,
+     creates => “/tmp/createDbAndOwner.sql”
+   }</p>
+
+<p>  package { “postgresql8-server”:
+     ensure => installed,
+   }</p>
+
+<p>  exec { “initdb”:
+     command => “service postgresql initdb”,
+     require => Package[“postgresql8-server”]
+   }</p>
+
+<p>  file { “/var/lib/pgsql/data/pg_hba.conf”:
+     content => template(“postgresql/pg_hba.conf.erb”),
+     require => Exec[“initdb”],
+     owner => ‘postgres’,
+     group => ‘postgres’,
+     mode => ‘600’,
+   }</p>
+
+<p>  file { “/var/lib/pgsql/data/postgresql.conf”:
+     content => template(“postgresql/postgresql.conf.erb”),
+     require => Exec[“initdb”],
+     owner => ‘postgres’,
+     group => ‘postgres’,
+     mode => ‘600’,
+   }</p>
+
+<p>  service { “postgresql”:
+     enable => true,
+     require => [
+       Exec[“initdb”],
+       File[“/var/lib/pgsql/data/postgresql.conf”],
+       File[“/var/lib/pgsql/data/pg_hba.conf”]],
+     ensure => running,
+   }</p>
+
+<p>  exec { “create-user”:
+     command => “echo CREATE USER root | psql -U postgres”,
+     require => Service[“postgresql”]
+   }</p>
+
+<p>  exec { “create-db-owner”:
+     require => [
+       Download_file[“createDbAndOwner.sql”],
+       Exec[“create-user”],
+       Service[“postgresql”]],
+     command => “psql &lt; /tmp/createDbAndOwner.sql -U postgres”
+   }</p>
+
+<p>  exec { “load-database”:
+     require => [
+       Download_file[“wildtracks.sql”],
+       Exec[“create-user”],
+       Service[“postgresql”],
+       Exec[“create-db-owner”]],
+     command => “psql -U manatee_user -d manatees_wildtrack -f /tmp/wildtracks.sql”
+   }
+ }
+```
+In this module we are creating a new user on the PostgreSQL database:</p>
+
+<p><code>
+exec {  "create-user":
+   command =&gt; "echo CREATE USER root | psql -U postgres",
+   require =&gt; Service["postgresql"]
+ }
+</code></p>
+
+<p>In this next section we download the latest Manatee database SQL dump.</p>
+
+<p><code>
+download_file {"wildtracks.sql":
+   site =&gt; "https://s3.amazonaws.com/sea2shore",
+   cwd =&gt; "/tmp",   creates =&gt; "/tmp/wildtracks.sql"
+ }
+</code></p>
+
+<p>In the section below, we load the database with the SQL file. This builds our target environments with the production database content giving developers an exact replica sandbox to work in.</p>
+
+<p>```</p>
+
+<p>exec { “load-database”:
+   require => [
+     Download_file[“wildtracks.sql”],
+     Exec[“create-user”],
+     Service[“postgresql”],
+     Exec[“create-db-owner”]],
+   command => “psql -U manatee_user -d manatees_wildtrack -f /tmp/wildtracks.sql”
+   }
+ }
+```</p>
+
+<p>Lastly in our Puppet run, we install <code>subversion</code> and <code>groovy</code> on the target node. We could have just included these in our system module, but they seemed general purpose enough to create individual <em>modules</em>.</p>
+
+<p>Subversion manifest:</p>
+
+<p><code>
+ class subversion {
+   package { "subversion":
+     ensure =&gt; "installed"   
+  }
+ }
+</code></p>
+
+<p>Groovy manifest:
+```
+ class groovy {   Exec { path => &lsquo;/usr/bin:/bin:/usr/sbin:/sbin&rsquo; }</p>
+
+<p>  define download_file($site=“”,$cwd=“”,$creates=“”){
+     exec { $name:
+     command => “wget ${site}/${name}”,
+     cwd => $cwd,
+     creates => “${cwd}/${name}”
+     }
+   }</p>
+
+<p>  download_file {“groovy-1.8.2.tar.gz”:
+     site => “<a href="https://s3.amazonaws.com/sea2shore/resources/binaries%E2%80%9D,">https://s3.amazonaws.com/sea2shore/resources/binaries%E2%80%9D,</a>
+     cwd => “/tmp”,
+     creates => “/tmp/groovy-1.8.2.tar.gz”,
+   }</p>
+
+<p>  file { “/usr/bin/groovy-1.8.2/”:
+     ensure => “directory”,
+     owner => “root”,
+     group => “root”,
+     mode => 755,
+     require => Download_file[“groovy-1.8.2.tar.gz”],
+   }</p>
+
+<p>  exec { “extract-groovy”:
+     command => “tar -C /usr/bin/groovy-1.8.2/ -xvf /tmp/groovy-1.8.2.tar.gz”,
+     require => File[“/usr/bin/groovy-1.8.2/”],
+   }
+ }
+```
+The Subversion manifest is relatively straightforward as we are using the package resource. The Groovy manifest is slightly different, we are downloading the Groovy tar, placing it on the filesystem, and then extracting it.</p>
+
+<p>We’ve gone through how the target environment is provisioned. We do however have one more task, testing. It’s not enough to assume that if Puppet doesn’t error out, that everything got installed successfully. For this reason, we use <a href="http://cukes.info/">Cucumber</a> to do acceptance testing against our environment. Our tests check if services are running, configuration files are present and if the right packages have been installed.</p>
+
+<p>Puppet allows us to completely script and version our target environments. Consequently, this enables us to treat environments as disposable entities. As a practice, we create a new target environment every time our <a href="../continuous-delivery-in-the-cloud-cd-pipeline-part-2-of-6/index.html">CD pipeline</a> is run. This way we are always deploying against a known state.</p>
+
+<p>As our blog series is coming to a close, let’s recap what we’ve gone through. In the Manatee infrastructure we use a combination of <a href="../continuous-delivery-in-the-cloud-cloudformation-part-3-of-6/index.html">CloudFormation</a>
+for scripting AWS resources, Puppet for scripting target environments, <a href="../continuous-delivery-in-the-cloud-deployment-automation-part-5-of-6/index.html">Capistrano</a> for deployment automation, <a href="../continuous-delivery-in-the-cloud-dynamic-configuration-part-4-of-6/index.html">Simple DB</a> and CloudFormation for dynamic properties and</p>
+
+<p><a href="../continuous-delivery-in-the-cloud-cd-pipeline-part-2-of-6/index.html">Jenkins</a> for coordinating all the resources into one cohesive unit for moving a Manatee application change from check-in to production in just a single click.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Tutorial : Continuous Delivery in the Cloud Part 5 of 6]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/"/>
+    <updated>2014-04-04T13:59:59-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6</id>
+    <content type="html"><![CDATA[<p>In<a href="http://www.stelligent.com/wp-admin/continuous-delivery-in-the-cloud-case-study-for-the-sea-to-shore-alliance-introduction-part-1-of-6">part 1 of this series</a>, I introduced the<a href="http://refcardz.dzone.com/refcardz/continuous-delivery-patterns">Continuous Delivery</a> (CD) pipeline for the<a href="http://manatees.mapntracker.com/wildtracks/">Manatee Tracking application</a>. In<a href="../continuous-delivery-in-the-cloud-cd-pipeline-part-2-of-6/index.html">part 2</a> I went over how we use this CD pipeline to deliver software from checkin to production. In <a href="../continuous-delivery-in-the-cloud-cloudformation-part-3-of-6/index.html">part 3</a>, we focused on how CloudFormation is used to script the virtual AWS components that create the Manatee infrastructure. A list of topics for each of the articles is summarized below:</p>
+
+<p><a href="../continuous-delivery-in-the-cloud-case-study-for-the-sea-to-shore-alliance-introduction-part-1-of-6/index.html">Part 1: Introduction</a>
+– Introduction to continuous delivery in the cloud and the rest of the articles;
+ <a href="../continuous-delivery-in-the-cloud-cd-pipeline-part-2-of-6/index.html">Part 2: CD Pipeline</a>
+– In-depth look at the CD Pipeline;
+ <a href="../continuous-delivery-in-the-cloud-cloudformation-part-3-of-6/index.html">Part 3: CloudFormation</a>
+– Scripted virtual resource provisioning;
+ Part 4: Dynamic Configuration –  What you’re reading now;
+ <a href="../continuous-delivery-in-the-cloud-deployment-automation-part-5-of-6/index.html">Part 5: Deployment Automation</a>
+– Scripted deployment orchestration;
+ <a href="../continuous-delivery-in-the-cloud-infrastructure-automation-part-6-of-6/index.html">Part 6: Infrastructure Automation</a>
+– Scripted environment provisioning (Infrastructure Automation)</p>
+
+<p>In this part of the series, I am going to explain how we dynamically generate our configuration and avoid property files whenever possible. Instead of using property files, we store and retrieve configuration on the fly – as part of the CD pipeline – without predefining these values in a static file (i.e. a properties file) ahead of time. We do this using two methods: AWS <a href="http://aws.amazon.com/simpledb/">SimpleDB</a> and <a href="http://aws.amazon.com/cloudformation/">CloudFormation</a>.</p>
+
+<p>SimpleDB is a highly available non-relational data storage service that only stores strings in key value pairs. CloudFormation, as discussed in <a href="../continuous-delivery-in-the-cloud-cloudformation-part-3-of-6/index.html">Part 3</a>
+of the series, is a scripting language for allocating and configuring AWS virtual resources.</p>
+
+<p><strong>Using SimpleDB</strong></p>
+
+<p>Throughout the CD pipeline, we often need to manage state across multiple Jenkins jobs. To do this, we use SimpleDB. As the pipeline executes, values that will be needed by subsequent jobs get stored in SimpleDB as properties. When the properties are needed we use a simple Ruby script script to return the key/value pair from SimpleDB and then use it as part of the job. The values being stored and retrieved range from IP addresses and domain names to AMI (Machine Images) IDs.</p>
+
+<p>So what makes this dynamic? As Jenkins jobs or CloudFormation templates are run, we often end up with properties that need to be used elsewhere. Instead of hard coding all of the values to be used in a property file, we create, store and retrieve them as the pipeline executes.</p>
+
+<p>Below is the <strong>CreateTargetEnvironment</strong> Jenkins job script that creates a new target environment from a CloudFormation script <code>production.template</code></p>
+
+<p>```
+if [ $deployToProduction ] == true
+then
+SSH_KEY=production
+else SSH_KEY=development
+fi</p>
+
+<p><code>
+</code></p>
+
+<h1>Create Cloudformaton Stack</h1>
+
+<p> ruby /usr/share/tomcat6/scripts/aws/create_stack.rb ${STACK_NAME} ${WORKSPACE}/production.template ${HOST} ${JENKINSIP} ${SSH_KEY} ${SGID} ${SNS_TOPIC}</p>
+
+<h1>Load SimpleDB Domain with Key/Value Pairs</h1>
+
+<p> ruby /usr/share/tomcat6/scripts/aws/load_domain.rb ${STACK_NAME}</p>
+
+<h1>Pull and store variables from SimpleDB</h1>
+
+<p> host=<code>ruby /usr/share/tomcat6/scripts/aws/showback_domain.rb ${STACK_NAME} InstanceIPAddress</code></p>
+
+<h1>Run Acceptance Tests</h1>
+
+<p> cucumber features/production.feature host=${host} user=ec2-user key=/usr/share/tomcat6/.ssh/id_rsa
+```</p>
+
+<p>Referenced above in the <strong>CreateTargetEnvironment</strong> code snippet. This is the <strong>load_domain.rb</strong> script that iterates over a file and sends key/value pairs to SimpleDB.</p>
+
+<p>```
+ require &lsquo;rubygems&rsquo;
+ require &lsquo;aws-sdk&rsquo;
+ load File.expand_path(&lsquo;../../config/aws.config&rsquo;, <strong>FILE</strong>)</p>
+
+<p>stackname=ARGV[0]</p>
+
+<p>file = File.open(“/tmp/properties”, “r”)</p>
+
+<p>sdb = AWS::SimpleDB.new</p>
+
+<p>AWS::SimpleDB.consistent_reads do
+   domain = sdb.domains[“stacks”]
+   item = domain.items[“#{stackname}”]</p>
+
+<p>  file.each_line do|line|
+     key,value = line.split ‘=’
+     item.attributes.set(
+       “#{key}” => “#{value}”)
+   end
+ end
+```</p>
+
+<p>Referenced above in the <strong>CreateTargetEnvironment</strong> code snippet. This is the <strong>showback_domain.rb</strong> script which connects to SimpleDB and returns a key/value pair.
+```
+ load File.expand_path(&lsquo;../../config/aws.config&rsquo;, <strong>FILE</strong>)</p>
+
+<p>item_name=ARGV[0]
+ key=ARGV[1]</p>
+
+<p>sdb = AWS::SimpleDB.new</p>
+
+<p>AWS::SimpleDB.consistent_reads do
+   domain = sdb.domains[“stacks”]
+   item = domain.items[“#{item_name}”]</p>
+
+<p>  item.attributes.each_value do |name, value|
+     if name == “#{key}”
+       puts “#{value}”.chomp
+     end
+   end
+ end
+```</p>
+
+<p>In the above in the <strong>CreateTargetEnvironment</strong> code snippet, we store the outputs of the CloudFormation stack in a temporary file. We then iterate over the file with the <strong>load_domain.rb</strong> script and store the key/value pairs in SimpleDB.</p>
+
+<p>Following this, we make a call to SimpleDB with the <strong>showback_domain.rb</strong> script and return the instance IP address (created in the CloudFormation template) and store it in the <code>host</code> variable. <code>host</code> is then used by cucumber to ssh into the target instance and run the acceptance tests.</p>
+
+<p><strong>Using CloudFormation</strong></p>
+
+<p>In our CloudFormation templates we allocate multiple AWS resources. Every time we run the template, a different resource is being used. For example, in our <code>jenkins.template</code> we create a new <a href="http://aws.amazon.com/iam/">IAM</a> user. Every time we run the template a different IAM user with different credentials is created. We need a way to reference these resources. This is where CloudFormation comes in. You can reference resources within other resources throughout the script. You can define a reference to another resource using the <a href="http://www.stelligent.com/docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-ref.html">Ref</a>
+function in CloudFormation. Using Ref, you can dynamically refer to values of other resources such as an IP Address, domain name, etc.</p>
+
+<p>In the script we are creating an IAM user, referencing the IAM user to create <a href="https://portal.aws.amazon.com/gp/aws/securityCredentials">AWS Access keys</a> and then storing them in an environment variable.</p>
+
+<p><code>``
+ "CfnUser" : {
+   "Type" : "AWS::IAM::User",
+   "Properties" : {
+     "Path": "/",
+     "Policies": [{
+       "PolicyName": "root",
+       "PolicyDocument": {
+         "Statement":[{
+           "Effect":"Allow",
+           "Action":"*",
+           "Resource":"*"
+         }
+       ]}
+     }]
+   }
+ },</code></p>
+
+<p>“HostKeys” : {
+   “Type” : “AWS::IAM::AccessKey”,
+   “Properties” : {
+     “UserName” : { “Ref”: “CfnUser” }
+   }
+ },</p>
+
+<p>“# Add AWS Credentials to Tomcatn”,
+ “echo ”AWS_ACCESS_KEY=“, {”Ref" : “HostKeys” }, “” >> /etc/sysconfig/tomcat6n",
+ “echo ”AWS_SECRET_ACCESS_KEY=“, {”Fn::GetAtt“:
+[”HostKeys“,”SecretAccessKey“]},”" >> /etc/sysconfig/tomcat6n",
+```</p>
+
+<p>We can then use these access keys in other scripts by referencing the <code>$AWS_ACCESS_KEY</code> and <code>$AWS_SECRET_ACCESS_KEY</code> environment variables.</p>
+
+<p><strong>How is this different from typical configuration management?</strong></p>
+
+<p>Typically in many organizations, there’s a big property with hard coded key/value pairs that gets passed into the pipeline. The pipeline executes using the given parameters and cannot scale or change without a user modifying the property file. They are unable to scale or adapt because all of the properties are hard coded, if the property file hard codes the IP to an EC2 instance and it goes down for whatever reason, their pipeline doesn’t work until someone fixes the property file. There are more effective ways of doing this when using the cloud. The cloud is provides on-demand resources that will constantly be changing. These resources will have different IP addresses, domain names, etc associated with them every time.</p>
+
+<p>With dynamic configuration, there are no property files, every property is generated as part of the pipeline.</p>
+
+<p>With this dynamic approach, the pipeline values change with every run. As new cloud resources are allocated, the pipeline is able to adjust itself and automatically without the need for users to constantly modify property files. This leads to less time spent debugging those cumbersome property file management issues that plague most companies.</p>
+
+<p>In the next part of our series – which is all about Deployment Automation – we’ll go through scripting and testing your deployment using industry-standard tools. In this next article, you’ll see how to orchestrate deployment sequences and configuration using Capistrano.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Tutotial : Continuous Delivery in the Cloud Part 4 of 6]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/"/>
+    <updated>2014-04-04T13:59:52-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6</id>
+    <content type="html"><![CDATA[<p>In<a href="http://www.stelligent.com/wp-admin/continuous-delivery-in-the-cloud-case-study-for-the-sea-to-shore-alliance-introduction-part-1-of-6">part 1 of this series</a>, I introduced the<a href="http://refcardz.dzone.com/refcardz/continuous-delivery-patterns">Continuous Delivery</a> (CD) pipeline for the<a href="http://manatees.mapntracker.com/wildtracks/">Manatee Tracking application</a>. In<a href="../continuous-delivery-in-the-cloud-cd-pipeline-part-2-of-6/index.html">part 2</a> I went over how we use this CD pipeline to deliver software from checkin to production. In <a href="../continuous-delivery-in-the-cloud-cloudformation-part-3-of-6/index.html">part 3</a>, we focused on how CloudFormation is used to script the virtual AWS components that create the Manatee infrastructure. A list of topics for each of the articles is summarized below:</p>
+
+<p><a href="../continuous-delivery-in-the-cloud-case-study-for-the-sea-to-shore-alliance-introduction-part-1-of-6/index.html">Part 1:
+Introduction</a> – Introduction to continuous delivery in the cloud and the rest of the articles;
+ <a href="../continuous-delivery-in-the-cloud-cd-pipeline-part-2-of-6/index.html">Part 2: CD Pipeline</a>
+– In-depth look at the CD Pipeline;
+ <a href="../continuous-delivery-in-the-cloud-cloudformation-part-3-of-6/index.html">Part 3: CloudFormation</a>
+– Scripted virtual resource provisioning;
+ Part 4: Dynamic Configuration –  What you’re reading now;
+ <a href="../continuous-delivery-in-the-cloud-deployment-automation-part-5-of-6/index.html">Part 5: Deployment Automation</a>
+– Scripted deployment orchestration;
+ <a href="../continuous-delivery-in-the-cloud-infrastructure-automation-part-6-of-6/index.html">Part 6: Infrastructure Automation</a>
+– Scripted environment provisioning (Infrastructure Automation)</p>
+
+<p>In this part of the series, I am going to explain how we dynamically generate our configuration and avoid property files whenever possible. Instead of using property files, we store and retrieve configuration on the fly – as part of the CD pipeline – without predefining these values in a static file (i.e. a properties file) ahead of time. We do this using two methods: AWS <a href="http://aws.amazon.com/simpledb/">SimpleDB</a> and <a href="http://aws.amazon.com/cloudformation/">CloudFormation</a>.</p>
+
+<p>SimpleDB is a highly available non-relational data storage service that only stores strings in key value pairs. CloudFormation, as discussed in <a href="../continuous-delivery-in-the-cloud-cloudformation-part-3-of-6/index.html">Part 3</a>
+of the series, is a scripting language for allocating and configuring AWS virtual resources.</p>
+
+<p><strong>Using SimpleDB</strong></p>
+
+<p>Throughout the CD pipeline, we often need to manage state across multiple Jenkins jobs. To do this, we use SimpleDB. As the pipeline executes, values that will be needed by subsequent jobs get stored in SimpleDB as properties. When the properties are needed we use a simple Ruby script script to return the key/value pair from SimpleDB and then use it as part of the job. The values being stored and retrieved range from IP addresses and domain names to AMI (Machine Images) IDs.</p>
+
+<p>So what makes this dynamic? As Jenkins jobs or CloudFormation templates are run, we often end up with properties that need to be used elsewhere. Instead of hard coding all of the values to be used in a property file, we create, store and retrieve them as the pipeline executes.</p>
+
+<p>Below is the <strong>CreateTargetEnvironment</strong> Jenkins job script that creates a new target environment from a CloudFormation script <code>production.template</code></p>
+
+<p>```
+ if [ $deployToProduction ] == true
+ then
+ SSH_KEY=production
+ else
+ SSH_KEY=development
+ fi</p>
+
+<h1>Create Cloudformaton Stack</h1>
+
+<p> ruby /usr/share/tomcat6/scripts/aws/create_stack.rb ${STACK_NAME}
+${WORKSPACE}/production.template ${HOST} ${JENKINSIP} ${SSH_KEY}
+${SGID} ${SNS_TOPIC}</p>
+
+<h1>Load SimpleDB Domain with Key/Value Pairs</h1>
+
+<p> ruby /usr/share/tomcat6/scripts/aws/load_domain.rb ${STACK_NAME}</p>
+
+<h1>Pull and store variables from SimpleDB</h1>
+
+<p> host=<code>ruby /usr/share/tomcat6/scripts/aws/showback_domain.rb ${STACK_NAME} InstanceIPAddress</code></p>
+
+<h1>Run Acceptance Tests</h1>
+
+<p> cucumber features/production.feature host=${host} user=ec2-user key=/usr/share/tomcat6/.ssh/id_rsa
+```</p>
+
+<p>Referenced above in the <strong>CreateTargetEnvironment</strong> code snippet. This is the <strong>load_domain.rb</strong> script that iterates over a file and sends key/value pairs to SimpleDB.</p>
+
+<p>```
+ require &lsquo;rubygems&rsquo;
+ require &lsquo;aws-sdk&rsquo;
+ load File.expand_path(&lsquo;../../config/aws.config&rsquo;, <strong>FILE</strong>)</p>
+
+<p>stackname=ARGV[0]</p>
+
+<p>file = File.open(“/tmp/properties”, “r”)</p>
+
+<p>sdb = AWS::SimpleDB.new</p>
+
+<p>AWS::SimpleDB.consistent_reads do
+   domain = sdb.domains[“stacks”]
+   item = domain.items[“#{stackname}”]</p>
+
+<p>  file.each_line do|line|
+     key,value = line.split ‘=’
+     item.attributes.set(
+       “#{key}” => “#{value}”)
+   end
+ end
+```</p>
+
+<p>Referenced above in the <strong>CreateTargetEnvironment</strong> code snippet. This is the <strong>showback_domain.rb</strong> script which connects to SimpleDB and returns a key/value pair.
+```
+ load File.expand_path(&lsquo;../../config/aws.config&rsquo;, <strong>FILE</strong>)</p>
+
+<p>item_name=ARGV[0]
+ key=ARGV[1]</p>
+
+<p>sdb = AWS::SimpleDB.new</p>
+
+<p>AWS::SimpleDB.consistent_reads do
+   domain = sdb.domains[“stacks”]
+   item = domain.items[“#{item_name}”]</p>
+
+<p>  item.attributes.each_value do |name, value|
+     if name == “#{key}”
+       puts “#{value}”.chomp
+     end
+   end
+ end
+```</p>
+
+<p>In the above in the <strong>CreateTargetEnvironment</strong> code snippet, we store the outputs of the CloudFormation stack in a temporary file. We then iterate over the file with the <strong>load_domain.rb</strong> script and store the key/value pairs in SimpleDB.</p>
+
+<p>Following this, we make a call to SimpleDB with the <strong>showback_domain.rb</strong> script and return the instance IP address (created in the CloudFormation template) and store it in the <code>host</code> variable. <code>host</code> is then used by cucumber to ssh into the target instance and run the acceptance tests.</p>
+
+<p><strong>Using CloudFormation</strong></p>
+
+<p>In our CloudFormation templates we allocate multiple AWS resources. Every time we run the template, a different resource is being used. For example, in our <code>jenkins.template</code> we create a new <a href="http://aws.amazon.com/iam/">IAM</a> user. Every time we run the template a different IAM user with different credentials is created. We need a way to reference these resources. This is where CloudFormation comes in. You can reference resources within other resources throughout the script. You can define a reference to another resource using the <a href="http://www.stelligent.com/docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-ref.html">Ref</a> function in CloudFormation. Using Ref, you can dynamically refer to values of other resources such as an IP Address, domain name, etc.</p>
+
+<p>In the script we are creating an IAM user, referencing the IAM user to create <a href="https://portal.aws.amazon.com/gp/aws/securityCredentials">AWS Access keys</a> and then storing them in an environment variable.</p>
+
+<p>```
+ &ldquo;CfnUser&rdquo; : {
+   "Type" : &ldquo;AWS::IAM::User&rdquo;,
+   "Properties" : {
+     "Path": &ldquo;/&rdquo;,
+     "Policies": [{
+       "PolicyName": &ldquo;root&rdquo;,
+       "PolicyDocument": {
+         "Statement":[{
+           "Effect":&ldquo;Allow&rdquo;,
+           "Action":&ldquo;<em>&rdquo;,
+           "Resource":&ldquo;</em>&rdquo;
+         }
+       ]}
+     }]
+   }
+ },</p>
+
+<p>“HostKeys” : {
+   “Type” : “AWS::IAM::AccessKey”,
+   “Properties” : {
+     “UserName” : { “Ref”: “CfnUser” }
+   }
+ },</p>
+
+<p>“# Add AWS Credentials to Tomcatn”,
+ “echo ”AWS_ACCESS_KEY=“, {”Ref" : “HostKeys” }, “” >> /etc/sysconfig/tomcat6n",
+ “echo ”AWS_SECRET_ACCESS_KEY=“, {”Fn::GetAtt“: [”HostKeys“,”SecretAccessKey“]},”" >> /etc/sysconfig/tomcat6n",</p>
+
+<p>```</p>
+
+<p>We can then use these access keys in other scripts by referencing the <code>$AWS_ACCESS_KEY</code> and <code>$AWS_SECRET_ACCESS_KEY</code> environment variables.</p>
+
+<p><strong>How is this different from typical configuration management?</strong></p>
+
+<p>Typically in many organizations, there’s a big property with hard coded key/value pairs that gets passed into the pipeline. The pipeline executes using the given parameters and cannot scale or change without a user modifying the property file. They are unable to scale or adapt because all of the properties are hard coded, if the property file hard codes the IP to an EC2 instance and it goes down for whatever reason, their pipeline doesn’t work until someone fixes the property file. There are more effective ways of doing this when using the cloud. The cloud is provides on-demand resources that will constantly be changing. These resources will have different IP addresses, domain names, etc associated with them every time.</p>
+
+<p>With dynamic configuration, there are no property files, every property is generated as part of the pipeline.</p>
+
+<p>With this dynamic approach, the pipeline values change with every run. As new cloud resources are allocated, the pipeline is able to adjust itself and automatically without the need for users to constantly modify property files. This leads to less time spent debugging those cumbersome property file management issues that plague most companies.</p>
+
+<p>In the next part of our series – which is all about Deployment Automation – we’ll go through scripting and testing your deployment using industry-standard tools. In this next article, you’ll see how to orchestrate deployment sequences and configuration using Capistrano.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Tutorial : Continuous Delivery in the Cloud Part 3 of 6]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/"/>
+    <updated>2014-04-04T13:59:46-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6</id>
+    <content type="html"><![CDATA[<p>In <a href="http://www.stelligent.com/wp-admin/continuous-delivery-in-the-cloud-case-study-for-the-sea-to-shore-alliance-introduction-part-1-of-6">part 1 of this series</a>, I introduced the<a href="http://refcardz.dzone.com/refcardz/continuous-delivery-patterns">Continuous Delivery</a>
+(CD) pipeline for the<a href="http://manatees.mapntracker.com/wildtracks/">Manatee Tracking application</a>.
+In <a href="../continuous-delivery-in-the-cloud-cd-pipeline-part-2-of-6/index.html" title="Continuous Delivery pipeline">part 2</a> I went over how we use this CD pipeline to deliver software from checkin to production. A list of topics for each of the articles is summarized below.</p>
+
+<p><a href="../continuous-delivery-in-the-cloud-case-study-for-the-sea-to-shore-alliance-introduction-part-1-of-6/index.html">Part 1: Introduction</a>
+– introduction to continuous delivery in the cloud and the rest of the articles;
+ <a href="../continuous-delivery-in-the-cloud-cd-pipeline-part-2-of-6/index.html">Part 2: CD Pipeline</a>
+– In-depth look at the CD Pipeline
+ Part 3: CloudFormation – What you’re reading now<br/>
+ <a href="../continuous-delivery-in-the-cloud-dynamic-configuration-part-4-of-6/index.html">Part 4: Dynamic Configuration</a>
+– “Property file less” infrastructure;
+ <a href="../continuous-delivery-in-the-cloud-deployment-automation-part-5-of-6/index.html">Part 5: Deployment Automation</a>
+– Scripted deployment orchestration;
+ <a href="../continuous-delivery-in-the-cloud-infrastructure-automation-part-6-of-6/index.html">Part 6: Infrastructure Automation</a>
+– Scripted environment provisioning (Infrastructure Automation)</p>
+
+<p>In this part of the series, I am going to explain how we use CloudFormation to script our AWS infrastructure and provision our Jenkins environment.</p>
+
+<p><strong>What is CloudFormation?</strong>
+ <a href="http://aws.amazon.com/cloudformation/">CloudFormation</a> is an AWS offering for scripting AWS virtual resource allocation. A CloudFormation template is a JSON script which references various AWS resources that you want to use. When the template runs, it will allocate the AWS resources accordingly.</p>
+
+<p>A CloudFormation template is split up into four sections:</p>
+
+<ol>
+<li><strong>Parameters</strong>: <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/concept-parameters.html">Parameters</a>     are values that you define in the template. When creating the stack    through the AWS console, you will be prompted to enter in values for     the Parameters. If the value for the parameter generally stays the     same, you can set a default value. Default values can be overridden     when creating the stack. The parameter can be used throughout the     template by using the     “<a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-ref.html">Ref</a>”     function.</li>
+<li><strong>Mappings</strong>:     <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/concept-mappings.html">Mappings</a>     are for specifying conditional parameter values in your template.     For instance you might want to use a different AMI depending on the     region your instance is running on. Mappings will enable you to     switch AMIs depending on the region the instance is being created     in.</li>
+<li><strong>Resources</strong>:     <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/concept-resources.html">Resources</a>     are the most vital part of the CloudFormation template. Inside the     resource section, you define and configure your AWS components.</li>
+<li><strong>Outputs</strong>: After the stack resources are created successfully, you    may want to have it return values such as the IP address or the     domain of the created instance. You use Outputs for this.     <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/concept-outputs.html">Outputs</a>     will return the values to the AWS console or command line depending     on which medium you use for creating a stack.</li>
+</ol>
+
+
+<p>CloudFormation parameters, and resources can be <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/concept-property-references.html">referenced</a> throughout the template. You do this using intrinsic functions,
+<a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-ref.html">Ref</a>, <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-base64.html">Fn::Base64</a>,<a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-findinmap.html">Fn::FindInMap</a>, <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-getatt.html">Fn::GetAtt</a>,<a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-getavailabilityzones.html">Fn::GetAZs</a> and <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-join.html">Fn::Join</a>.</p>
+
+<p>These functions enable you to pass properties and resource outputs throughout your template – reducing the need for most hardcoded properties (something I will discuss in part 4 of this series, <em>Dynamic Configuration</em>).</p>
+
+<p><strong>How do you run a CloudFormation template?</strong>
+ You can create a CloudFormation stack using either the <a href="https://console.aws.amazon.com/cloudformation/home?" title="AWS Console">AWS Console</a>, <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/cfn-using-cli.html" title="CloudFormation CLI tools">CloudFormation CLI tools</a> or the <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/APIReference" title="CloudFormation API">CloudFormation API</a>.</p>
+
+<p><strong>Why do we use CloudFormation?</strong>
+ We use CloudFormation in order to have a fully scripted, versioned infrastructure. From the application to the virtual resources, everything is created from a script and is checked into version control. This gives us complete control over our AWS infrastructure which can be recreated whenever necessary.</p>
+
+<p><strong>CloudFormation for Manatees</strong>
+ In the Manatee Infrastructure, we use CloudFormation for setting up the Jenkins CD environment. I am going to go through each part of the jenkins template and explain its use and purpose. In template’s lifecycle, the user launches the stack using the jenkins.template and enters in the Parameters. The template then starts to work:</p>
+
+<p>​1. <a href="http://aws.amazon.com/iam/">IAM</a> User with <a href="https://portal.aws.amazon.com/gp/aws/securityCredentials">AWS Access keys</a> is created
+ 2. SNS Topic is created
+ 3. CloudWatch Alarm is created and SNS topic is used for sending alarm notifications
+ 4. Security Group is created
+ 5. Wait Condition created
+ 6. Jenkins EC2 Instance is created with the Security Group from step #4. This security group is used for port configuration. It also uses AWSInstanceType2Arch and AWSRegionArch2AMI to decide what AMI and OS type to use
+ 7. Jenkins EC2 Instance runs <code>UserData</code> script and executes <code>cfn_init</code>.
+ 8. Wait Condition waits for Jenkins EC2 instance to finish <code>UserData</code> script
+ 9. Elastic IP is allocated and associated with Jenkins EC2 instance
+ 10. Route53 domain name created and associated with Jenkins Elastic IP
+ 11. If everything creates successfully, the stack signals complete and outputs are displayed</p>
+
+<p>Now that we know at a high level what is being done, lets take a deeper look at what’s going on inside the <code>jenkins.template</code>.</p>
+
+<h2>Parameters</h2>
 
 <ul>
-<li>tailor,</li>
-<li>foodcritic</li>
+<li><strong>Email:</strong> Email address that SNS notifications will be sent. When     we create or deploy to target environments, we use SNS to notify us     of their status.</li>
+<li><strong>ApplicationName:</strong> Name of A Record created by Route53. Inside the     template, we dynamically create a domain with A record for easy     access to the instance after creation. Example:     jenkins.integratebutton.com, jenkins is the ApplicationName</li>
+<li><strong>HostedZone:</strong> Name of Domain used Route53. Inside the template, we     dynamically create a domain with A record for easy access to the     instance after creation. Example: jenkins.integratebutton.com,     integratebutton.com is the HostedZone.</li>
+<li><strong>KeyName</strong>: EC2 SSH Keypair to create the Instance with. This is     the key you use to ssh into the Jenkins instance after creation.</li>
+<li><strong>InstanceType:</strong> Size of the EC2 instance. Example: t1.micro,     c1.medium</li>
+<li><strong>S3Bucket:</strong> We use a S3 bucket for containing the resources for     the Jenkins template to use, this parameter specifies the name of     the bucket to use for this.</li>
 </ul>
 
 
-<h3>CFEngine:</h3>
+<p> </p>
+
+<h2>Mappings</h2>
+
+<p><code>
+ "Mappings" : {
+   "AWSInstanceType2Arch" : {
+     "t1.micro" : { "Arch" : "64" },
+     "m1.small" : { "Arch" : "32" },
+     "m1.large" : { "Arch" : "64" },
+     "m1.xlarge" : { "Arch" : "64" },
+     "m2.xlarge" : { "Arch" : "64" },
+     "m2.2xlarge" : { "Arch" : "64" },
+     "m2.4xlarge" : { "Arch" : "64" },
+     "c1.medium" : { "Arch" : "64" },
+     "c1.xlarge" : { "Arch" : "64" },
+     "cc1.4xlarge" : { "Arch" : "64" }
+   },
+     "AWSRegionArch2AMI" : {
+     "us-east-1" : { "32" : "ami-ed65ba84", "64" : "ami-e565ba8c" }   
+ }
+ },
+</code></p>
+
+<p>These Mappings are used to define what type of operating system architecture and AWS AMI (Amazon Machine Image) ID to use to use based upon the Instance size. The instance size is specified using the Parameter <strong>InstanceType</strong></p>
+
+<p>The conditional logic to interact with the Mappings is done inside the EC2 instance.</p>
+
+<p>```
+ &ldquo;ImageId&rdquo; : {
+  &ldquo;Fn::FindInMap&rdquo; : [
+   &ldquo;AWSRegionArch2AMI&rdquo;,</p>
+
+<pre><code>{"Ref" : "AWS::Region" },
+{ "Fn::FindInMap" : [ 
+ "AWSInstanceType2Arch", { 
+   "Ref" : "InstanceType" 
+   },
+    "Arch" 
+    ] }
+     ]
+},
+</code></pre>
+
+<p>```</p>
+
+<h2>Resources</h2>
+
+<p><strong><a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/aws-properties-iam-user.html">AWS::IAM::User</a></strong></p>
+
+<p>```
+ &ldquo;CfnUser&rdquo; : {
+   "Type" : &ldquo;AWS::IAM::User&rdquo;,
+   "Properties" : {
+     "Path": &ldquo;/&rdquo;,
+     "Policies": [{
+       "PolicyName": &ldquo;root&rdquo;,
+       "PolicyDocument": { &ldquo;Statement&rdquo;:[{
+         "Effect":&ldquo;Allow&rdquo;,
+         "Action":&ldquo;<em>&rdquo;,
+         "Resource":&ldquo;</em>&rdquo;
+         }
+       ]}
+     }]
+   }
+ },</p>
+
+<p>  &ldquo;Type&rdquo; : &ldquo;AWS::IAM::AccessKey&rdquo;,
+  &ldquo;Properties&rdquo; : {
+    "UserName" : { &ldquo;Ref&rdquo;: &ldquo;CfnUser&rdquo; }
+  }</p>
+
+<p>```
+ We create the AWS IAM user and then create the <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/aws-properties-iam-accesskey.html">AWS Access and Secret access keys</a> for the IAM user which are used throughout the rest of the template. Access and Secret access keys are authentication keys used to authenticate to the AWS account.</p>
+
+<p><strong><a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/aws-properties-sns-topic.html">AWS::SNS::Topic</a></strong></p>
+
+<p><code>
+ "MySNSTopic" : {
+   "Type" : "AWS::SNS::Topic",
+   "Properties" : {
+     "Subscription" : [ {
+       "Endpoint" : { "Ref": "Email" },
+       "Protocol" : "email"
+     } ]
+   } },
+</code></p>
+
+<p>SNS is a highly available solution for sending notifications. In the Manatee infrastructure it is used for sending notifications to the development team.</p>
+
+<p><strong><a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-recordsetgroup.html">AWS::Route53::RecordSetGroup</a></strong></p>
+
+<p><code>
+ "JenkinsDNS" : {
+   "Type" : "AWS::Route53::RecordSetGroup",
+   "Properties" : {
+     "HostedZoneName" : { "Fn::Join" : [ "", [ {"Ref" : "HostedZone"}, "." ]]},
+     "RecordSets" : [{       "Name" : { "Fn::Join" : ["", [ { "Ref" : "ApplicationName" }, ".", { "Ref" : "HostedZone" }, "." ]]},
+       "Type" : "A",
+       "TTL" : "900",
+       "ResourceRecords" : [ { "Ref" : "IPAddress" } ]
+     }]
+   }
+ },
+</code></p>
+
+<p>Route53 is a highly available DNS service. We use Route53 to create domains dynamically using the given HostedZone and ApplicationName parameters. If the parameters are not overriden, the domain jenkins.integratebutton.com will be created. We then reference the Elastic IP and associate it with the created domain. This way the jenkins.integratebutton.com domain will route to the created instance</p>
+
+<p><strong><a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance.html">AWS::EC2::Instance</a></strong></p>
+
+<p>EC2 gives access to on-demand compute resources. In this template, we allocate a new EC2 instance and configure it with a Keypair, Security Group, and Image ID (AMI). Then for provisioning the EC2 instance we use the <code>UserData</code> property. Inside <code>UserData</code> we run a set of bash commands along with <code>cfn_init</code>. The <code>UserData</code> script is run during instance creation.</p>
+
+<p>```
+ &ldquo;WebServer&rdquo;: {
+   "Type": &ldquo;AWS::EC2::Instance&rdquo;,
+   "Metadata" : {
+     "AWS::CloudFormation::Init" : {
+       "config" : {
+         "packages" : {
+           "yum" : {
+             "tomcat6" : [],
+             "subversion" : [],
+             "git" : [],
+             "gcc" : [],
+             "libxslt-devel" : [],
+             "ruby-devel" : [],
+             "httpd" : []
+           }
+         },</p>
+
+<p>        “sources” : {
+           “/opt/aws/apitools/cfn” : { “Fn::Join” : [“”,[“<a href="https://s3.amazonaws.com/%E2%80%9D,">https://s3.amazonaws.com/%E2%80%9D,</a> { “Ref” : “S3Bucket” }, “/resources/aws_tools/cfn-cli.tar.gz”]]},
+           “/opt/aws/apitools/sns” : { “Fn::Join” : [“”, [“<a href="https://s3.amazonaws.com/%E2%80%9D,">https://s3.amazonaws.com/%E2%80%9D,</a> { “Ref” : “S3Bucket” }, “/resources/aws_tools/sns-cli.tar.gz”]]}
+         },</p>
+
+<p>        “files” : {
+           “/usr/share/tomcat6/webapps/jenkins.war” : {
+             “source” : “<a href="http://mirrors.jenkins-ci.org/war/1.480/jenkins.war%E2%80%9D,">http://mirrors.jenkins-ci.org/war/1.480/jenkins.war%E2%80%9D,</a>
+             “mode” : “000700”,
+             “owner” : “tomcat”,
+             “group” : “tomcat”,
+             “authentication” : “S3AccessCreds”
+           },</p>
+
+<p>          “/usr/share/tomcat6/webapps/nexus.war” : {
+             “source” : “<a href="http://www.sonatype.org/downloads/nexus-2.0.3.war%E2%80%9D,">http://www.sonatype.org/downloads/nexus-2.0.3.war%E2%80%9D,</a>
+             “mode” : “000700”,
+             “owner” : “tomcat”,
+             “group” : “tomcat”,
+             “authentication” : “S3AccessCreds”
+           },</p>
+
+<p>          “/usr/share/tomcat6/.ssh/id_rsa” : {
+             “source” : { “Fn::Join” : [“”, [“<a href="https://s3.amazonaws.com/%E2%80%9D,">https://s3.amazonaws.com/%E2%80%9D,</a> { “Ref” : “S3Bucket” }, “/private/id_rsa”]]},
+             “mode” : “000600”,
+             “owner” : “tomcat”,
+             “group” : “tomcat”,
+             “authentication” : “S3AccessCreds”
+           },</p>
+
+<p>          “/home/ec2-user/common-step-definitions-1.0.0.gem” : {
+             “source” : { “Fn::Join” : [“”,[“<a href="https://s3.amazonaws.com/%E2%80%9D,">https://s3.amazonaws.com/%E2%80%9D,</a> { “Ref” : “S3Bucket” }, “/gems/common-step-definitions-1.0.0.gem”]]},
+             “mode” : “000700”,
+             “owner” : “root”,
+             “group” : “root”,
+             “authentication” : “S3AccessCreds”
+           },</p>
+
+<p>          “/etc/cron.hourly/jenkins_backup.sh” : {
+             “source” : { “Fn::Join” : [“”, [“<a href="https://s3.amazonaws.com/%E2%80%9D,">https://s3.amazonaws.com/%E2%80%9D,</a> { “Ref” : “S3Bucket” }, “/jenkins_backup.sh”]]},
+             “mode” : “000500”,
+             “owner” : “root”,
+             “group” : “root”,
+             “authentication” : “S3AccessCreds”
+           },</p>
+
+<p>          “/etc/tomcat6/server.xml” : {
+             “source” : { “Fn::Join” : [“”, [“<a href="https://s3.amazonaws.com/%E2%80%9D,">https://s3.amazonaws.com/%E2%80%9D,</a> { “Ref” : “S3Bucket” }, “/server.xml”]]},
+             “mode” : “000554”,
+             “owner” : “root”,
+             “group” : “root”,
+             “authentication” : “S3AccessCreds”
+           },</p>
+
+<p>          “/usr/share/tomcat6/aws_access” : {
+             “content” : { “Fn::Join” : [“”, [
+               “AWSAccessKeyId=”, { “Ref” : “HostKeys” }, “n”,
+               “AWSSecretKey=”, {“Fn::GetAtt”: [“HostKeys”, “SecretAccessKey”]}
+             ]]},
+             “mode” : “000400”,
+             “owner” : “tomcat”,
+             “group” : “tomcat”,
+             “authentication” : “S3AccessCreds”
+           },</p>
+
+<p>          “/opt/aws/aws.config” : {
+             “content” : { “Fn::Join” : [“”, [
+               “AWS.config(n”,
+               “:access_key_id => ”“, {”Ref" : “HostKeys” }, “”,n",
+               “:secret_access_key => ”“, {”Fn::GetAtt“: [”HostKeys“,”SecretAccessKey“]},”“)n”
+             ]]},
+             “mode” : “000500”,
+             “owner” : “tomcat”,
+             “group” : “tomcat”
+           },</p>
+
+<p>          “/etc/httpd/conf/httpd.conf2” : {
+             “content” : { “Fn::Join” : [“”, [
+               “NameVirtualHost *:80n”,
+               “n”,
+               “ProxyPass /jenkins <a href="http://%E2%80%9D,">http://%E2%80%9D,</a> { “Fn::Join” : [“”, [{ “Ref” : “ApplicationName” }, “.”, { “Ref” : “HostedZone” }]] }, “:8080/jenkinsn”,
+               “ProxyPassReverse /jenkins <a href="http://%E2%80%9D,">http://%E2%80%9D,</a> { “Fn::Join” : [“”,[{ “Ref” : “ApplicationName” }, “.”, { “Ref” : “HostedZone” }]] },“:8080/jenkinsn”,
+               “ProxyRequests Offn”,
+              “n”,
+               “Order deny,allown”,
+               “Allow from alln”,
+               “n”,
+               “RewriteEngine Onn”,
+               “RewriteRule ^/$ <a href="http://%E2%80%9D,">http://%E2%80%9D,</a> { “Fn::Join” : [“”, [{ “Ref” : “ApplicationName” }, “.”, { “Ref” : “HostedZone” }]] },“:8080/jenkins$1 [NC,P]n”, “”
+             ]]},
+             “mode” : “000544”,
+             “owner” : “root”,
+             “group” : “root”
+           },</p>
+
+<p>          “/root/.ssh/config” : {
+             “content” : { “Fn::Join” : [“”, [
+               “Host github.comn”,
+               “StrictHostKeyChecking non”
+             ]]},
+             “mode” : “000600”,
+             “owner” : “root”,
+             “group” : “root”
+           },</p>
+
+<p>          “/usr/share/tomcat6/.route53” : {
+             “content” : { “Fn::Join” : [“”, [
+               “access_key:”, { “Ref” : “HostKeys” }, “n”,
+               “secret_key:”, {“Fn::GetAtt”: [“HostKeys”,“SecretAccessKey”]}, “n”,
+               “api: ‘2012-02-29’n”,
+               “endpoint: <a href="https://route53.amazonaws.com/n%E2%80%9D,">https://route53.amazonaws.com/n%E2%80%9D,</a>
+               “default_ttl: ‘3600’”
+             ]]},
+             “mode” : “000700”,
+             “owner” : “tomcat”,
+             “group” : “tomcat”
+           }
+         }
+       }
+     },</p>
+
+<p>     “AWS::CloudFormation::Authentication” : {
+       “S3AccessCreds” : {
+         “type” : “S3”,
+         “accessKeyId” : { “Ref” : “HostKeys” },
+         “secretKey” : {“Fn::GetAtt”: [“HostKeys”, “SecretAccessKey”]},
+         “buckets” : [ { “Ref” : “S3Bucket”} ]
+       }
+     }
+   },</p>
+
+<p>   “Properties”: {
+     “ImageId” : { “Fn::FindInMap” : [ “AWSRegionArch2AMI”, { “Ref” : “AWS::Region” }, { “Fn::FindInMap” : [ “AWSInstanceType2Arch”, { “Ref” : “InstanceType” }, “Arch” ] } ] },
+     “InstanceType” : { “Ref” : “InstanceType” },
+     “SecurityGroups” : [ {“Ref” : “FrontendGroup”} ],
+     “KeyName” : { “Ref” : “KeyName” },
+     “Tags”: [ { “Key”: “Name”, “Value”: “Jenkins” } ],
+     “UserData” : { “Fn::Base64” : { “Fn::Join” : [“”, [
+       “#!/bin/bash -vn”,
+       “yum -y install java-1.6.0-openjdk*n”,
+       “yum update -y aws-cfn-bootstrapn”,</p>
+
+<p>      “# Install packagesn”,
+       “/opt/aws/bin/cfn-init -s”, { “Ref” : “AWS::StackName” }, &ldquo; -r WebServer &rdquo;,
+       " –access-key “, {”Ref" : “HostKeys” },
+       " –secret-key “, {”Fn::GetAtt“: [”HostKeys“,”SecretAccessKey"]},
+       " –region “, {”Ref" : “AWS::Region” }, &ldquo; || error_exit ‘Failed to run cfn-init’n&rdquo;,</p>
+
+<p>      “# Copy Github credentials to root ssh directoryn”,
+       “cp /usr/share/tomcat6/.ssh/* /root/.ssh/n”,</p>
+
+<p>      “# Installing Ruby 1.9.3 from RPMn”,
+       “wget -P /home/ec2-user/ <a href="https://s3.amazonaws.com/%E2%80%9D,">https://s3.amazonaws.com/%E2%80%9D,</a> { “Ref” : “S3Bucket” }, “/resources/rpm/ruby-1.9.3p0-2.amzn1.x86_64.rpmn”,
+       “rpm -Uvh /home/ec2-user/ruby-1.9.3p0-2.amzn1.x86_64.rpmn”,</p>
+
+<p>      “cat /etc/httpd/conf/httpd.conf2 >> /etc/httpd/conf/httpd.confn”,</p>
+
+<p>      “# Install S3 Gemsn”,
+       “gem install /home/ec2-user/common-step-definitions-1.0.0.gemn”,</p>
+
+<p>      “# Install Public Gemsn”,
+       “gem install bundler –version 1.1.4 –no-rdoc –no-rin”,
+       “gem install aws-sdk –version 1.5.6 –no-rdoc –no-rin”,
+       “gem install cucumber –version 1.2.1 –no-rdoc –no-rin”,
+       “gem install net-ssh –version 2.5.2 –no-rdoc –no-rin”,
+       “gem install capistrano –version 2.12.0 –no-rdoc –no-rin”,
+       “gem install route53 –version 0.2.1 –no-rdoc –no-rin”,
+       “gem install rspec –version 2.10.0 –no-rdoc –no-rin”,
+       “gem install trollop –version 2.0 –no-rdoc –no-rin”,</p>
+
+<p>      “# Update Jenkins with versioned configurationn”,
+       “rm -rf /usr/share/tomcat6/.jenkinsn”,
+       “git clone git@github.com:stelligent/continuous_delivery_open_platform_jenkins_configuration.git /usr/share/tomcat6/.jenkinsn”,</p>
+
+<p>      “# Get S3 bucket publisher from S3n”,
+       “wget -P /usr/share/tomcat6/.jenkins/ <a href="https://s3.amazonaws.com/%E2%80%9D,">https://s3.amazonaws.com/%E2%80%9D,</a> { “Ref” : “S3Bucket” }, “/hudson.plugins.s3.S3BucketPublisher.xmln”,</p>
+
+<p>      “wget -P /tmp/ <a href="https://raw.github.com/stelligent/continuous_delivery_open_platform/master/config/aws/cd_security_group.rbn%E2%80%9D,">https://raw.github.com/stelligent/continuous_delivery_open_platform/master/config/aws/cd_security_group.rbn%E2%80%9D,</a>
+       “ruby /tmp/cd_security_group –securityGroupName”, { “Ref” : “FrontendGroup” }, &ldquo; –port 5432n&rdquo;,</p>
+
+<p>      “# Update main Jenkins confign”,
+       “sed -i ’s@.<em>@”, { “Ref” : “HostKeys” }, “@’ /usr/share/tomcat6/.jenkins/hudson.plugins.s3.S3BucketPublisher.xmln”,
+       “sed -i ‘s@.</em>@“, {”Fn::GetAtt“: [”HostKeys“,”SecretAccessKey“]},”@’ /usr/share/tomcat6/.jenkins/hudson.plugins.s3.S3BucketPublisher.xmln”,</p>
+
+<p>      “# Add AWS Credentials to Tomcatn”,
+       “echo ”AWS_ACCESS_KEY=“, {”Ref" : “HostKeys” }, “” >> /etc/sysconfig/tomcat6n",
+       “echo ”AWS_SECRET_ACCESS_KEY=“, {”Fn::GetAtt“: [”HostKeys“,”SecretAccessKey“]},”" >> /etc/sysconfig/tomcat6n",</p>
+
+<p>      “# Add AWS CLI Toolsn”,
+       “echo ”export AWS_CLOUDFORMATION_HOME=/opt/aws/apitools/cfn" >> /etc/sysconfig/tomcat6n",
+       “echo ”export AWS_SNS_HOME=/opt/aws/apitools/sns" >> /etc/sysconfig/tomcat6n",
+       “echo ”export PATH=$PATH:/opt/aws/apitools/sns/bin:/opt/aws/apitools/cfn/bin" >> /etc/sysconfig/tomcat6n",</p>
+
+<p>      “# Add Jenkins Environment Variablen”,
+       “echo ”export SNS_TOPIC=“, {”Ref" : “MySNSTopic” }, “” >> /etc/sysconfig/tomcat6n",
+       “echo ”export JENKINS_DOMAIN=“, {”Fn::Join" : [“”, [“<a href="http://%E2%80%9D,">http://%E2%80%9D,</a>{ “Ref” : “ApplicationName” }, “.”, { “Ref” : “HostedZone” }]] }, “”>> /etc/sysconfig/tomcat6n",
+       “echo ”export JENKINS_ENVIRONMENT=“, {”Ref" : “ApplicationName” }, “” >> /etc/sysconfig/tomcat6n",</p>
+
+<p>      “wget -P /tmp/ <a href="https://raw.github.com/stelligent/continuous_delivery_open_platform/master/config/aws/showback_domain.rbn%E2%80%9D,">https://raw.github.com/stelligent/continuous_delivery_open_platform/master/config/aws/showback_domain.rbn%E2%80%9D,</a>
+       “echo ”export SGID=<code>ruby /tmp/showback_domain.rb –item properties –key SGID</code>&ldquo; >> /etc/sysconfig/tomcat6n&rdquo;,</p>
+
+<p>      “chown -R tomcat:tomcat /usr/share/tomcat6/n”,
+       “chmod +x /usr/share/tomcat6/scripts/aws/<em>n”,
+       “chmod +x /opt/aws/apitools/cfn/bin/</em>n”,</p>
+
+<p>      “service tomcat6 restartn”,
+       “service httpd restartn”,</p>
+
+<p>      “/opt/aws/bin/cfn-signal”, &ldquo; -e 0“,” ’“, {”Ref&rdquo; : “WaitHandle” },“’”
+     ]]}}
+   }
+ },
+```</p>
+
+<p> Calling <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/cfn-init.html">cfn init</a> from <code>UserData</code></p>
+
+<p><code>
+ "# Install packagesn",
+  "/opt/aws/bin/cfn-init -s ", { "Ref" : "AWS::StackName" }, " -r WebServer ",
+  " --access-key ", { "Ref" : "HostKeys" },
+  " --secret-key ", {"Fn::GetAtt": ["HostKeys", "SecretAccessKey"]},
+  " --region ", { "Ref" : "AWS::Region" }, " || error_exit 'Failed to run cfn-init'n",
+  },
+</code></p>
+
+<p><code>cfn_init</code> is used to retrieve and interpret the resource metadata, installing packages, creating files and starting services. In the Manatee template we use <code>cfn_init</code> for easy access to other AWS resources, such as S3.</p>
+
+<p>```
+ &ldquo;/etc/tomcat6/server.xml&rdquo; : {
+   "source" : { &ldquo;Fn::Join&rdquo; : [&ldquo;&rdquo;, [&ldquo;<a href="https://s3.amazonaws.com/">https://s3.amazonaws.com/</a>&rdquo;, { &ldquo;Ref&rdquo; : &ldquo;S3Bucket&rdquo; }, &ldquo;/server.xml&rdquo;]]},
+   "mode" : &ldquo;000554&rdquo;,
+   "owner" : &ldquo;root&rdquo;,
+   "group" : &ldquo;root&rdquo;,
+   "authentication" : &ldquo;S3AccessCreds&rdquo; },</p>
+
+<p>   &ldquo;AWS::CloudFormation::Authentication&rdquo; : {
+     "S3AccessCreds" : {
+       "type" : &ldquo;S3&rdquo;,
+       "accessKeyId" : { &ldquo;Ref&rdquo; : &ldquo;HostKeys&rdquo; },
+       "secretKey" : {&ldquo;Fn::GetAtt&rdquo;: [&ldquo;HostKeys&rdquo;, &ldquo;SecretAccessKey&rdquo;]},
+       "buckets" : [ { &ldquo;Ref&rdquo; : &ldquo;S3Bucket&rdquo;} ]
+     }
+   }
+```</p>
+
+<p>When possible, we try to use <code>cfn_init</code> rather than <code>UserData</code> bash commands because it stores a detailed log of Cfn events on the instance.</p>
+
+<p><strong><a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group.html">AWS::EC2::SecurityGroup</a></strong></p>
+
+<p>When creating a <a href="http://jenkins-ci.org/">Jenkins</a> instance, we only want certain ports to be open and only open to certain users. For this we use Security Groups. Security groups are firewall rules defined at the AWS level. You can use them to set which ports, or range of ports to be opened. In addition to defining which ports are to be open, you can define who they should be open to using CIDR.</p>
+
+<p><code>
+ "FrontendGroup" : {
+   "Type" : "AWS::EC2::SecurityGroup",   
+   "Properties" : {
+     "GroupDescription" : "Enable SSH and access to Apache and Tomcat",
+     "SecurityGroupIngress" : [
+       {"IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : "0.0.0.0/0"},
+       {"IpProtocol" : "tcp", "FromPort" : "8080", "ToPort" : "8080", "CidrIp" : "0.0.0.0/0"},
+       {"IpProtocol" : "tcp", "FromPort" : "80", "ToPort" : "80", "CidrIp" : "0.0.0.0/0"}
+     ]
+   }
+ },
+</code></p>
+
+<p>In this security group we are opening ports 22, 80 and 8080. Since we are opening 8080, we are able to access Jenkins at the completion of the template. By default, ports on an instance are closed, meaning these are necessary to be specified in order to have access to Jenkins.</p>
+
+<p><strong><a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-eip.html">AWS::EC2::EIP</a></strong></p>
+
+<p>When an instance is created, it is given a public DNS name similar to: ec2-107-20-139-148.compute-1.amazonaws.com. By using Elastic IPs, you can associate your instance an IP rather than a DNS.</p>
+
+<p>```
+ &ldquo;IPAddress&rdquo; : {   "Type" : &ldquo;AWS::EC2::EIP&rdquo;
+ },</p>
+
+<p>“IPAssoc” : {
+   “Type” : “AWS::EC2::EIPAssociation”,
+   “Properties” : {
+     “InstanceId” : { “Ref” : “WebServer” },
+     “EIP” : { “Ref” : “IPAddress” }
+   }
+ },
+```</p>
+
+<p> In the snippets above, we create a new Elastic IP and then associate it with the EC2 instance created above. We do this so we can reference the Elastic IP when creating the <a href="http://aws.amazon.com/route53/">Route53</a> Domain name.</p>
+
+<p><strong><a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/aws-properties-cw-alarm.html">AWS::CloudWatch::Alarm</a></strong></p>
+
+<p><code>
+ "CPUAlarmLow": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+     "AlarmDescription": "Scale-down if CPU &lt; 70% for 10 minutes",
+     "MetricName": "CPUUtilization",     "Namespace": "AWS/EC2",
+     "Statistic": "Average",     "Period": "300",
+     "EvaluationPeriods": "2",
+     "Threshold": "70",
+     "AlarmActions": [ { "Ref": "SNSTopic" } ],
+     "Dimensions": [{
+       "Name": "WebServerName",
+       "Value": { "Ref": "WebServer" }
+     }],
+     "ComparisonOperator": "LessThanThreshold"
+   }
+ },
+</code></p>
+
+<p>There are many reasons an instance can become unavailable. <a href="http://aws.amazon.com/cloudwatch/">CloudWatch</a> is used to monitor instance usage and performance. CloudWatch can be set to notify specified individuals if the instance experiences higher than normal CPU utilization, disk usage, network usage, etc. In the Manatee infrastructure we use CloudWatch to monitor disk utilization and notify team members if it reaches 90 percent.</p>
+
+<p>If the Jenkins instance goes down, our CD pipeline becomes temporarily unavailable. This presents a problem as the development team is temporarily blocked from testing their code. CloudWatch helps notify us if this is an impending problem..</p>
+
+<p><strong><a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/aws-properties-waitconditionhandle.html">AWS::CloudFormation::WaitConditionHandle</a>,
+<a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/aws-properties-waitcondition.html">AWS::CloudFormation::WaitCondition</a></strong></p>
+
+<p>Wait Conditions are used to wait for all of the resources in a template to be completed before signally template success.</p>
+
+<p>```
+ &ldquo;WaitHandle&rdquo; : {
+   "Type" : &ldquo;AWS::CloudFormation::WaitConditionHandle&rdquo;
+ },</p>
+
+<p>“WaitCondition” : {
+   “Type” : “AWS::CloudFormation::WaitCondition”,
+   “DependsOn” : “WebServer”,
+   “Properties” : {
+     “Handle” : { “Ref” : “WaitHandle” },
+     “Timeout” : “990”
+   }
+ }
+```</p>
+
+<p>When creating the instance, if a wait condition is not used, CloudFormation won’t wait for the completion of the <code>UserData</code> script. It will signal success if the EC2 instance is allocated successfully rather than waiting for the <code>UserData</code> script to run and signal success.</p>
+
+<h2>Outputs</h2>
+
+<p>Outputs are used to return information from what was created during the CloudFormaiton stack creation to the user. In order to return values, you define the Output name and then the resource you want to reference:</p>
+
+<p><code>
+ "Outputs" : {
+   "Domain" : {
+     "Value" : { "Fn::Join" : ["", ["http://", { "Ref" : "ApplicationName" }, ".", { "Ref" : "HostedZone" }]]
+ },
+     "Description" : "URL for newly created Jenkins app"   
+ },
+   "NexusURL" : {
+     "Value" : { "Fn::Join" : ["", ["http://", { "Ref" : "IPAddress" }, ":8080/nexus"]] },
+     "Description" : "URL for newly created Nexus repository"
+   },
+   "InstanceIPAddress" : {
+     "Value" : { "Ref" : "IPAddress"  }
+  }
+}
+</code></p>
+
+<p>For instance with the InstanceIPAddress, we are refernceing the IPAddress resource which happens to be the Elastic IP. This will return the Elastic IP address to the CloudFormation console.</p>
+
+<p>CloudFormation allows us to completely script and version our infrastructure. This enables our infrastructure to be recreated the same way every time by just running the CloudFormation template. Because of this, your environments can be run in a Continuous integration cycle, rebuilding with every change in the script.</p>
+
+<p>In the next part of our series – which is all about Dynamic Configuration – we’ll go through building your infrastructure to only require a minimal amount of hard coded properties if any. In this next article, you’ll see how you can use CloudFormation to build “property file less” infrastructure.</p>
+
+<p>Resources:</p>
 
 <ul>
-<li>cf-promises (with GCC-style warnings)</li>
-</ul>
-
-
-<h2>Testing manifests / recipes</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>rspec-puppet,</li>
-<li>?cucumber-puppet (discontiued)?</li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>chefspec,</li>
-<li>minitest-handler,</li>
-<li>rspec-chef,</li>
-<li>cucumber-chef,</li>
-<li>test-kitchen</li>
-</ul>
-
-
-<h2>Marshalling / Assembling Code &amp; Dependencies</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>librarian-puppet &ndash; <a href="https://github.com/rodjek/librarian-puppet">https://github.com/rodjek/librarian-puppet</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>berkshelf,</li>
-<li>librarian</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>cf-sketch &ndash; <a href="https://github.com/cfengine/design-center/wiki/Design-Center-Tools">https://github.com/cfengine/design-center/wiki/Design-Center-Tools</a></li>
-</ul>
-
-
-<h2>Continuous Integration</h2>
-
-<ul>
-<li>Jenkins CI</li>
-<li>Travis CI</li>
-<li>Atlassian Bamboo?</li>
-<li>TeamCity?</li>
-</ul>
-
-
-<h2>Orchestration</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>MCollective</li>
-</ul>
-
-
-<h3>Chef :</h3>
-
-<ul>
-<li>has “knife ssh” and Pushy support coming for push jobs</li>
-</ul>
-
-
-<h2>Canary testing &amp; Prod vs QA vs test environments (not prod vs QA app code)</h2>
-
-<h3>Puppet</h3>
-
-<ul>
-<li>serverspec <a href="http://serverspec.org/">http://serverspec.org/</a></li>
-<li>rspec-system <a href="https://github.com/puppetlabs/rspec-system">https://github.com/puppetlabs/rspec-system</a></li>
-<li>nagios checks/ plugins</li>
-</ul>
-
-
-<h3>Chef</h3>
-
-<ul>
-<li>has knife-flip from Etsy, flips nodes into a test environment</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>Remote context class matching using remoteclassesmatching (Enterprise)</li>
-</ul>
-
-
-<h2>Provisioning VM&rsquo;s in the cloud?</h2>
-
-<h3>Chef:</h3>
-
-<ul>
-<li>knife ec2 server create&hellip;</li>
-<li>spiceweasel somefile.yml</li>
-<li>knife openstack&hellip;</li>
-<li>knife server create&hellip;</li>
-</ul>
-
-
-<p>Clouds include Azure, Openstack, Rackspace, etc. EC2 OpsWorks (although some limitations since it’s an older version)</p>
-
-<h2>Puppet:</h2>
-
-<ul>
-<li>puppet node_aws create / puppet node_vmware create</li>
-<li>Puppet RAL for AWS, OpenStack, CloudStack:
-  ec2_instance { “instance_name”: type => t1.large, az => ‘USWest’, ensure => present, …. }</li>
-<li>Razor (bare metal)</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li><a href="https://github.com/cfengine/design-center/tree/master/sketches/cloud">https://github.com/cfengine/design-center/tree/master/sketches/cloud</a></li>
-</ul>
-
-
-<h3>Chef</h3>
-
-<ul>
-<li>Crowbar has Chef server integrated, although I don’t know that much about it.</li>
-<li>Joyent also has a Chef “dataset” that they support.</li>
-</ul>
-
-
-<h2>Team Workflow</h2>
-
-<h3>Puppet: &ndash;?</h3>
-
-<h3>Chef:</h3>
-
-<ul>
-<li>knife-spork (has handlers to notify people)</li>
+<li><a href="http://aws.amazon.com/cloudformation/">http://aws.amazon.com/cloudformation/</a></li>
+<li><a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html">http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html</a></li>
 </ul>
 
 ]]></content>

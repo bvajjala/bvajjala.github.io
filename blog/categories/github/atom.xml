@@ -4,7 +4,7 @@
   <title><![CDATA[Category: GitHub | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/github/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T15:32:24-04:00</updated>
+  <updated>2014-04-14T15:50:34-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -61,6 +61,168 @@ Not too long ago, however, this system wasn&rsquo;t very smart. A branch could a
 <h1>How do we do it?</h1>
 
 <p>Most of the magic is handled by an internal deployment service called Heaven. At its core, Heaven is a catalog of Capistrano recipes wrapped up in a Sinatra application with a JSON API. Many of our applications are deployed using generic recipes, but more complicated apps can define their own to specify additional deployment steps. Wiring it up to Janky, along with clever use of post-receive hooks and the GitHub API, lets us hack on the niceties over time. Hubot is the central interface to both Janky and Heaven, giving everyone in Campfire great visibility into what’s happening all of the time. As of this writing, 75 individual applications are deployed by Heaven.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[OpenStack : Git Gerrit and Jenkins Workflow]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/"/>
+    <updated>2014-02-03T14:54:23-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow</id>
+    <content type="html"><![CDATA[<h1>Gerrit Workflow</h1>
+
+<p><img src="/downloads/code/GerritGitJenkinsWorkflow.png" title="Git Gerrit Jenkins Workflow" alt="Alt text in case picture load fails" /></p>
+
+<h2>Git Account Setup</h2>
+
+<p>You&rsquo;ll need a <a href="https://login.launchpad.net">Launchpad account</a>, since this is how the Web interface for the Gerrit Code Review system will identify you. This is also useful for automatically crediting bug fixes to you when you address them with your code commits.</p>
+
+<p>If you haven&rsquo;t already, <a href="https://www.openstack.org/join/">join The OpenStack Foundation</a> (it&rsquo;s free and required for all code contributors). Among other privileges, this also allows you to vote in elections and run for elected positions within The OpenStack Project. When signing up for Foundation Membership, make sure to give the same E-mail address you&rsquo;ll use for code contributions, since this will need to match your preferred E-mail address in Gerrit.</p>
+
+<p>Visit <a href="https://review.openstack.org/">https://review.openstack.org/</a> and click the Sign In link at the top-right corner of the page. Log in with your Launchpad ID.</p>
+
+<p>Because Gerrit uses Launchpad OpenID single sign-on, you won&rsquo;t need a separate password for Gerrit, and once you log in to one of Launchpad, Gerrit, or Jenkins, you won&rsquo;t have to enter your password for the others.</p>
+
+<p>You&rsquo;ll also want to upload an SSH key while you&rsquo;re at it, so that you&rsquo;ll be able to commit changes for review later.</p>
+
+<p>Ensure that you have run these steps to let git know about your email address:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Git Config </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git config &mdash;global user.name &ldquo;Firstname Lastname&rdquo;
+</span><span class='line'>git config &mdash;global user.email &ldquo;&lt;a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#x79;&#x6f;&#x75;&#x72;&#95;&#x65;&#x6d;&#x61;&#x69;&#x6c;&#x40;&#121;&#111;&#x75;&#x72;&#101;&#109;&#x61;&#x69;&#x6c;&#46;&#99;&#111;&#x6d;">&#x79;&#111;&#x75;&#x72;&#x5f;&#101;&#x6d;&#97;&#x69;&#108;&#x40;&#x79;&#x6f;&#117;&#114;&#101;&#x6d;&#97;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#109;&lt;/a>&rdquo;</span></code></pre></td></tr></table></div></figure></notextile></div>
+To check your git configuration:
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Git Config </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git config &mdash;list</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Git Review Installation</h2>
+
+<p>We recommend using the &ldquo;git-review&rdquo; tool which is a git subcommand that handles all the details of working with Gerrit, the code review system used in OpenStack development. Before you start work, make sure you have git-review installed on your system.</p>
+
+<p>On Ubuntu, MacOSx, or most other Unix-like systems, it is as simple as:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pip install git-review</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>On Ubuntu Precise (12.04) and later, git-review is included in the distribution, so install it as any other package:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get install git-review</span></code></pre></td></tr></table></div></figure></notextile></div>
+On Fedora 16 and later, git-review is included into the distribution, so install it as any other package:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install git-review</span></code></pre></td></tr></table></div></figure></notextile></div>
+On Fedora 15 and earlier you have to install pip (its package name is <code>python-pip</code>), then install git-review using pip in a conventional way.</p>
+
+<p>On Red Hat Enterprise Linux, you must first enable the EPEL repository, then install it as any other package:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install git-review</span></code></pre></td></tr></table></div></figure></notextile></div>
+On openSUSE 12.2 and later, git-review is included in the distribution under the name python-git-review, so install it as any other package:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zypper in python-git-review</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>All of git-review&rsquo;s interactions with gerrit are sequences of normal git commands. If you want to know more about what it&rsquo;s doing, just add -v to the options and it will print out all of the commands it&rsquo;s running.</p>
+
+<h2>Project Setup</h2>
+
+<p>Clone a project in the usual way, for example:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://git.openstack.org/openstack/nova.git</span></code></pre></td></tr></table></div></figure></notextile></div>
+You may want to ask git-review to configure your project to know about Gerrit at this point. If you don&rsquo;t, it will do so the first time you submit a change for review, but you probably want to do this ahead of time so the Gerrit Change-Id commit hook gets installed. To do so (again, using Nova as an example):
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd nova
+</span><span class='line'>git review -s</span></code></pre></td></tr></table></div></figure></notextile></div>
+Git-review checks that you can log in to gerrit with your ssh key. It assumes that your gerrit/launchpad user name is the same as the current running user. If that doesn&rsquo;t work, it asks for your gerrit/launchpad user name. If you don&rsquo;t remember the user name go to the settings page on gerrit to check it out (it&rsquo;s not your email address).</p>
+
+<p>Note that you can verify the SSH host keys for review.openstack.org here: <a href="https://review.openstack.org/#/settings/ssh-keys">https://review.openstack.org/#/settings/ssh-keys</a></p>
+
+<p>If you get the error &ldquo;We don&rsquo;t know where your gerrit is.&rdquo;, you will need to add a new git remote. The url should be in the error message. Copy that and create the new remote.
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git remote add gerrit ssh://&lt;username>@review.openstack.org:29418/openstack/nova.git</span></code></pre></td></tr></table></div></figure></notextile></div>
+In the project directory, you have a <code>.git</code> hidden directory and a <code>.gitreview</code> hidden file. You can see them with:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ls -la</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>1.4 Normal Workflow</h2>
+
+<p>Once your local repository is set up as above, you must use the following workflow.</p>
+
+<p>Make sure you have the latest upstream changes:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git remote update
+</span><span class='line'>git checkout master
+</span><span class='line'>git pull &mdash;ff-only origin master</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Create a topic branch to hold your work and switch to it. If you are working on a blueprint, name your topic branch bp/BLUEPRINT where BLUEPRINT is the name of a blueprint in launchpad (for example, &ldquo;bp/authentication&rdquo;). The general convention when working on bugs is to name the branch bug/BUG-NUMBER (for example, &ldquo;bug/1234567&rdquo;). Otherwise, give it a meaningful name because it will show up as the topic for your change in Gerrit.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git checkout -b TOPIC-BRANCH</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>To generate documentation artifacts, navigate to the directory where the pom.xml file is located for the project and run the following command:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mvn clean generate-sources</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>1.4.1 Committing Changes</h3>
+
+<p>Git commit messages should start with a short 50 character or less summary in a single paragraph. The following paragraph(s) should explain the change in more detail.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>If your changes addresses a blueprint or a bug, be sure to mention them in the commit message using the following syntax:&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>Implements: blueprint BLUEPRINT
+</span><span class='line'>Closes-Bug: ####### (Partial-Bug or Related-Bug are options)</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>For example:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Adds keystone support&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&hellip;Long multiline description of the change&hellip;&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>Implements: blueprint authentication
+</span><span class='line'>Closes-Bug: #123456
+</span><span class='line'>Change-Id: I4946a16d27f712ae2adf8441ce78e6c0bb0bb657</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Note that in most cases the Change-Id line should be automatically added by a Gerrit commit hook that you will want to install. See Project Setup for details on configuring your project for Gerrit. If you already made the commit and the Change-Id was not added, do the Gerrit setup step and run:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git commit &mdash;amend</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The commit hook will automatically add the Change-Id when you finish amending the commit message, even if you don&rsquo;t actually make any changes.</p>
+
+<p>Make your changes, commit them, and submit them for review:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git commit -a
+</span><span class='line'>git review</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><em>Caution: Do not check in changes on your master branch. Doing so will cause merge commits when you pull new upstream changes, and merge commits will not be accepted by Gerrit.</em></p>
+
+<p>Prior to checking in make sure that you run &ldquo;<a href="http://testrun.org/tox/latest/">tox</a>&rdquo;.</p>
+
+<h3>1.4.2 Review</h3>
+
+<h3>1.4.3 Work in Progress</h3>
+
+<h3>1.4.4 Long-lived Topic Branches</h3>
+
+<h3>1.4.5 Updating a Change</h3>
+
+<h3>1.4.6 Add dependency</h3>
 ]]></content>
   </entry>
   

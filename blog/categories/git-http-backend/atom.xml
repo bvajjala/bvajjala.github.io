@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: git-http-backend | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/git-http-backend/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Setup Git, Gitweb with git-http-backend / smart http on ubuntu 12.04]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/05/05/Setup-git-on-ubutnu-12-04/"/>
+    <updated>2013-05-05T21:00:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/05/05/Setup-git-on-ubutnu-12-04</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/Git_Apache.png" title="&lsquo;Git Logo&rsquo;" >Setting up git over http (Smart HTTP in perticular) has it&#39;s caveats I will try to emphesize them as I go along.</p>
+
+<p>Final Goal is to run git over http using git-http-backend (a.k.a smart http) in apposed to using webdav which is also called the dumb-method, webdav was never designed to work with git for the reason that it cannot compress object whilst transporting data between the client and the server hosting git [ there is no real git client &ndash; git server so i am not referring to it a such].</p>
+
+<p><strong><u>Versions used in this setup</u>:</strong></p>
+
+<ul>
+<li>Ubutnu version <em>12.04-LTS</em></li>
+<li>Git version <em>1.7.9.5</em></li>
+<li>Apache2 version <em>2.2.22</em></li>
+</ul>
+
+
+<p><strong><u>1. Install prequirests</u>:</strong></p>
+
+<!-- more -->
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> sudo apt-get install git apache2 gitweb
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong><u>2. Enable apache2 modules and reload apache</u>:</strong></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> a2enmod env <span class="nb">alias </span>fcgid auth_digest
+</span><span class='line'> service apache2 restart
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><u><strong>3. Create a &ldquo;site&rdquo; for git:</strong></u></p>
+
+<p>let&#39;s start with a basic virtual host configuration pointing to gitweb:</p>
+
+<p><em>vim /etc/apache2/sites-available/git</em></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;virtualhost *:80&gt;
+</span><span class='line'> ServerName git.example.com
+</span><span class='line'> DocumentRoot /usr/share/gitweb
+</span><span class='line'> ErrorLog <span class="k">${</span><span class="nv">APACHE_LOG_DIR</span><span class="k">}</span>/git_error.log
+</span><span class='line'> CustomLog <span class="k">${</span><span class="nv">APACHE_LOG_DIR</span><span class="k">}</span>/git_access.log combined
+</span><span class='line'>&lt;/virtualhost&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><em>Enable CGI on the gitweb directory</em></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;Directory /usr/share/gitweb&gt;
+</span><span class='line'>Options FollowSymLinks +ExecCGI
+</span><span class='line'>AddHandler cgi-script .cgi
+</span><span class='line'>DirectoryIndex gitweb.cgi
+</span><span class='line'>&lt;/Directory&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><em>Enable git clone/push/fetch etc over http</em>:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> ScriptAliasMatch <span class="se">\</span>
+</span><span class='line'> &amp;ldquo;<span class="o">(</span>?x<span class="o">)</span>^/<span class="o">(</span>.*/<span class="o">(</span>HEAD | <span class="se">\</span>
+</span><span class='line'>  info/refs | <span class="se">\</span>
+</span><span class='line'>   objects/<span class="o">(</span>info/<span class="o">[</span>^/<span class="o">]</span>+ | <span class="se">\</span>
+</span><span class='line'>   <span class="o">[</span>0-9a-f<span class="o">]{</span>2<span class="o">}</span>/<span class="o">[</span>0-9a-f<span class="o">]{</span>38<span class="o">}</span> | <span class="se">\</span>
+</span><span class='line'>   pack/pack-<span class="o">[</span>0-9a-f<span class="o">]{</span>40<span class="o">}</span>.<span class="o">(</span>pack|idx<span class="o">))</span> | <span class="se">\</span>
+</span><span class='line'>   git-<span class="o">(</span>upload|receive<span class="o">)</span>-pack<span class="o">))</span><span class="nv">$&amp;</span>rdquo; <span class="se">\</span>
+</span><span class='line'>   /usr/lib/git-core/git-http-backend/<span class="nv">$1</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  SetEnv GIT_PROJECT_ROOT /var/git
+</span><span class='line'>  SetEnv GIT_HTTP_EXPORT_ALL
+</span><span class='line'>  SetEnv <span class="nv">REMOTE_USER</span><span class="o">=</span><span class="nv">$REDIRECT_REMOTE_USER</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><em>The env fcgid modules are exactly for this pupose.</em></p>
+
+<p>&nbsp;</p>
+
+<p><em><strong>Let&#39;s spice it up with good old ACL&#39;s</strong></em> [for as you know git doesen&#39;t deal with that stuff on it&#39;s own &hellip;] &ndash; you can use BASIC/DIGEST</p>
+
+<p>(I chose digest for it uses an&nbsp;<span style="color: rgb(0, 0, 0);">MD5 digest hash and not clear text like BASIC auth)</span></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;Location /&gt;
+</span><span class='line'>  AuthType Digest
+</span><span class='line'>  AuthName &amp;ldquo;Shared Git Repo&amp;rdquo;
+</span><span class='line'>  AuthUserFile /var/git/.htpasswd
+</span><span class='line'>  Require valid-user
+</span><span class='line'>&lt;/Location&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Create /var/git/.htpasswd for my users:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> htdigest -c /var/git/.htpasswd &amp;ldquo;Shared Git Repo&amp;rdquo; hagzag
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><em>&nbsp; Change &ldquo;hagzag&rdquo; with your username &hellip;</em></p>
+
+<p>&nbsp;</p>
+
+<p><u><strong>4. Create a &ldquo;shared&rdquo;, bare repository + set directory permissions to the apache2 user &amp; group</strong></u></p>
+
+<p><u>Side note</u>&nbsp;about shared &amp; bare:</p>
+
+<pre><code>**Shared**: Instead of using default umask git repo will be created with 775 perms
+
+**Bare**: instead of creating GIT_DIR in .git (defult git init behaviour), it will be created in the repository direcotry]
+</code></pre>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> <span class="nb">cd</span> /var/git &amp;amp;&amp;amp; git init &amp;mdash;bare &amp;mdash;shared myproj.git
+</span><span class='line'> chown -R www-data.www-data /var/git
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong><u>5. Configure Git Web, /etc/gitweb.conf</u></strong></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> cp /etc/gitweb.conf /etc/gitweb.conf.orig
+</span><span class='line'> <span class="nb">echo</span> -e &amp;#39;<span class="nv">$projectroot</span> <span class="o">=</span> &amp;ldquo;/var/git&amp;rdquo;;&amp;#39; &gt; /etc/gitweb.conf
+</span><span class='line'> <span class="nb">echo</span> &amp;#39;<span class="nv">$git_temp</span> <span class="o">=</span> &amp;ldquo;/tmp&amp;rdquo;;&amp;#39; &gt;&gt; /tmp/gitweb.conf
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><u><strong>6. Enable site (apache2):</strong></u></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> a2ensite git
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Which yields:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Enabling site git.
+</span><span class='line'>To activate the new configuration, you need to run:
+</span><span class='line'>  service apache2 reload
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><u><strong>7. Test your new git repository</strong></u></p>
+
+<p>Clone the repo via <a href="http:">http:</a></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> git clone &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://git.example.com/myproj.git&quot;</span>&gt;http://git.example.com/myproj.git&lt;/a&gt;
+</span><span class='line'> Cloning into &amp;#39;myproj&amp;#39;&amp;hellip;
+</span><span class='line'> Username <span class="k">for</span> &amp;#39;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://git.example.com&amp;amp;#39;:&quot;</span>&gt;http://git.example.com&amp;amp;#39;:&lt;/a&gt; hagzag
+</span><span class='line'> Password <span class="k">for</span> &amp;#39;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://hagzag@git.example.com&amp;amp;#39;:&quot;</span>&gt;http://hagzag@git.example.com&amp;amp;#39;:&lt;/a&gt;
+</span><span class='line'> warning: You appear to have cloned an empty repository.
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>&hellip; and yes I know it&#39;s empty (i created it :)).</p>
+
+<pre><code>_**Create &amp;amp; Add a file**_:
+</code></pre>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> <span class="nb">cd </span>myproj/
+</span><span class='line'> <span class="nb">echo</span> &amp;ldquo;some text&amp;rdquo; &gt; somefile.txt
+</span><span class='line'> git add .&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><em><strong>Commit a file:</strong></em></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git commit -m &amp;ldquo;initial commit&amp;rdquo;
+</span><span class='line'> <span class="o">[</span>master <span class="o">(</span>root-commit<span class="o">)</span> 3a0e708<span class="o">]</span> initial commit
+</span><span class='line'> 1 file changed, 0 insertions<span class="o">(</span>+<span class="o">)</span>, 0 deletions<span class="o">(</span>&amp;ndash;<span class="o">)</span>
+</span><span class='line'> create mode 100644 somefile.txt&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><em><strong>Push it</strong></em>:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git push origin master
+</span><span class='line'> Username <span class="k">for</span> &amp;#39;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://git.example.com&amp;amp;#39;:&quot;</span>&gt;http://git.example.com&amp;amp;#39;:&lt;/a&gt; &lt;em&gt;&lt;strong&gt;hagzag&lt;/strong&gt;&lt;/em&gt;
+</span><span class='line'> Password <span class="k">for</span> &amp;#39;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://hagzag@git.example.com&amp;amp;#39;:&quot;</span>&gt;http://hagzag@git.example.com&amp;amp;#39;:&lt;/a&gt; &lt;em&gt;*********&lt;/em&gt;
+</span><span class='line'> Counting objects: 3, <span class="k">done</span>.
+</span><span class='line'> Writing objects: 100% <span class="o">(</span>3/3<span class="o">)</span>, 225 bytes, <span class="k">done</span>.
+</span><span class='line'> Total 3 <span class="o">(</span>delta 0<span class="o">)</span>, reused 0 <span class="o">(</span>delta 0<span class="o">)</span>
+</span><span class='line'> To &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://git.example.com/proj2.git&quot;</span>&gt;http://git.example.com/proj2.git&lt;/a&gt;
+</span><span class='line'> * <span class="o">[</span>new branch<span class="o">]</span>      master &amp;ndash;&gt; master&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>See it on gitweb:
+<img class="left" src="/assets/images/gitwb-ss1.png" title="&lsquo;Git Logo&rsquo;" ></p>
+
+<p><u><strong>Pitfalls / Caveats:</strong></u></p>
+
+<ol>
+<li><p><em><strong>Git directory ownership</strong></em> should be the same user running the httpd / apache2 daemon &ndash; if not you will get an error like so:G</p>
+
+<pre><code>    <div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;error: unpack failed: unpack-objects abnormal <span class="nb">exit</span>
+</span><span class='line'>To &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://git.example.com/proj2.git&quot;</span>&gt;http://git.example.com/proj2.git&lt;/a&gt;
+</span><span class='line'>! <span class="o">[</span>remote rejected<span class="o">]</span> master &amp;ndash;&gt; master <span class="o">(</span>n/a <span class="o">(</span>unpacker error<span class="o">))</span>
+</span><span class='line'>error: failed to push some refs to &amp;#39;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://git.example.com/proj2.git&amp;amp;#39;&quot;</span>&gt;http://git.example.com/proj2.git&amp;amp;#39;&lt;/a&gt;
+</span><span class='line'>At this point I went back to the server and ran:
+</span></code></pre></td></tr></table></div></figure></notextile></div></p></li>
+<li><em><strong>fcgid module in apache</strong></em> &ndash; if it&#39;s missing all the above will not work [same goes for <em><strong>env</strong></em> too but it&#39;s enabled by default !]</li>
+</ol>
+
+
+<p><strong>References:</strong></p>
+
+<ul>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html">Git http backend <em>man page</em></a>,</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-init.html">git init man page</a> [bare/shared],</li>
+<li><a href="http://httpd.apache.org/docs/2.2/programs/htdigest.html">htdigest</a>,</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/gitweb.html">gitweb man page</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

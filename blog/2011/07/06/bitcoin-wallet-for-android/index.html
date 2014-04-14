@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Bitcoin Wallet for Android - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Tonight a buddy of mine (who works at Google) and I released an open source application. It&rsquo;s an Android app for Bitcoin that allows you to &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2011/07/06/bitcoin-wallet-for-android">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Bitcoin Wallet for Android</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-06T07:26:16-04:00" pubdate data-updated="true">Jul 6<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Tonight a buddy of mine (who works at Google) and I released an open source application.</p>
+
+<p>It&rsquo;s an <a href="https://market.android.com/details?id=com.bitcoinandroid">Android app for Bitcoin</a> that allows you to have a digital &ldquo;wallet&rdquo; on your phone.  Here are a few screenshots:</p>
+
+<p><img src="http://i.imgur.com/aqF3p.png" alt="" /></p>
+
+<p><img src="http://i.imgur.com/ilvNp.png" alt="" /></p>
+
+<p><img src="http://i.imgur.com/ObBth.png" alt="" /></p>
+
+<p><img src="http://i.imgur.com/TsZc7.png" alt="" /></p>
+
+<p>Simply put, the app allows you to send and receive bitcoins from your Android phone.</p>
+
+<p>If you&rsquo;ve never heard of bitcoin then you aren&rsquo;t alone.  It is a very new technology.  After reading about bitcoin I still wasn&rsquo;t sure what might become of it, but I wanted to learn more and figured the best way would be to dive in and build something with it!</p>
+
+<p>If I had to sum up bitcoin in one sentence I&rsquo;d say it is a &ldquo;distributed peer-to-peer currency&rdquo;.  But what does this mean and why is it important?</p>
+
+<p>I think it&rsquo;s most important features are that it&hellip;</p>
+
+<ul>
+<li><p>allows you to send money without transactions fees</p></li>
+<li><p>allows you to send money instantly, anywhere in the world</p></li>
+<li><p>and (it appears) it can do this securely</p></li>
+</ul>
+
+
+<p>If you contrast this with how most payments work today, most merchants pay 2-3% as a transaction fee to Visa or Mastercard (and this fee is partially passed on to you as a consumer). In addition, whenever you want to move money between accounts it can take up to 3 business days. With bitcoin, there are no transaction fees and money can be moved instantly, anywhere in the world. This is a potentially very disruptive technology, even if it <a href="http://cdixon.org/2010/01/03/the-next-big-thing-will-start-out-looking-like-a-toy/">looks like a toy</a> today.</p>
+
+<p>Bitcoin accomplishes this using cryptography across a large number of servers on the internet, and doesn&rsquo;t rely on one trusted third party (a bank) to control the money.</p>
+
+<p><strong>It&rsquo;s also important to realize that bitcoin is not a new product or service, it is a new platform.</strong>  Much like email or the internet itself, it has no centralized servers and many products and companies can be built on top of it (our app is just one).  It&rsquo;s also an open source project itself so anyone can see how it works and it isn&rsquo;t owned by anyone. In fact, thousands of computer scientists around the world have looked at it at this point.  This gives it a lot of potential to survive and adapt over the years.</p>
+
+<p>Whether it ever becomes mainstream or not is still very much an open question (I have mixed thoughts on this).  However, at present there is already about $100M in real money tied up in the bitcoin economy, so it has certainly shown some early promise. There are already a few <a href="http://starburst.hackerfriendly.com/?p=1530">stores starting to pop up</a> who accept bitcoin.</p>
+
+<p><strong>I think a day will come very soon where we no longer need to carry a physical wallet, and our smart-phones will take over that job.</strong>  I also think it would be great for the economy to not pay a tax of 2-3% on each transaction to Visa or Mastercard (both for businesses and consumers).</p>
+
+<p>For a glimpse of how this might work, checkout this little demo video we put together.  It shows us instantly transferring money between two phones using just the internet and a distributed network of computers around the world.</p>
+
+<p>The <a href="http://en.wikipedia.org/wiki/QR_code">QR codes</a> you see used there could be on a point of sale device in a store, a mobile device like a phone, or a sticker on the wall.</p>
+
+<p>It&rsquo;s important to realize that those two phones could have been anywhere in the world.  If you&rsquo;d like to send money to another country today, Western Union takes a hefty fee and will take days.  Even Paypal charges 2-3% and will take 3 business days to move money in and out of an account.  Bitcoin is instant, and has zero transaction fees. You can do it from any computer, including a smart phone like the one shown here.</p>
+
+<p>Anyway, I&rsquo;ll see if I can post more about this in the future.  But let me know what you think in the comments below.  And if you have an Android Device, <a href="https://market.android.com/details?id=com.bitcoinandroid">you can download it from the Android Market here</a>. It is 100% free and open source.</p>
+
+<p><a href="https://market.android.com/details?id=com.bitcoinandroid"><img src="http://s3.amazonaws.com/oldbloguploads/2011/07/Screen-shot-2011-07-05-at-11.25.05-PM-500x367.png" alt="" /></a></p>
+
+<p>Finally, if you are a developer, here is a link to the <a href="https://github.com/barmstrong/bitcoin-android">github project page</a>.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-06T07:26:16-04:00" pubdate data-updated="true">Jul 6<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/business-ideas/'>Business Ideas</a>, <a class='category' href='/blog/categories/technology/'>Technology</a>, <a class='category' href='/blog/categories/the-future/'>The Future</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2011/07/06/bitcoin-wallet-for-android/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2011/07/06/bitcoin-wallet-for-android/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/06/20/learning-programming/" title="Previous Post: Learning Programming">&laquo; Learning Programming</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/07/19/Subversion-hot-backup-change-in/" title="Next Post: Subversion hot-backup change in 1.6.11">Subversion hot-backup change in 1.6.11 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

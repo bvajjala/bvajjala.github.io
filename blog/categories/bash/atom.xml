@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: bash | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/bash/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Git Productivity enhancements]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/02/24/Git-Productivity-enhancements/"/>
+    <updated>2013-02-24T13:11:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/02/24/Git-Productivity-enhancements</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/git_logo.jpg" title="&lsquo;Git Logo&rsquo;" >If I haven&rsquo;t told you yet, Git is awesome and yes I do most og the work from the command-line, so in order to make my life easier I did two things:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>apt-get install bash-completion
+</span><span class='line'>wget &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://raw.github.com/git/git/master/contrib/completion/git-completion.bash&quot;</span>&gt;https://raw.github.com/git/git/master/contrib/completion/git-completion.bash&lt;/a&gt; -O /etc/bash_completion.d/git
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+Upon next login (or execute <em>source /etc/bash_completion.d/git</em>) right away and you have all the bash completion you need for git at your finger tips.</p>
+
+<p>Another awesome script to make your life easier with git is <a href="https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh">git-prompt.sh</a> which you can also include in your bash profile like so:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>wget &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh&quot;</span>&gt;https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh&lt;/a&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+then add a line to ~/.profile sourcing it upon login shell, see header of git-prompt.sh for more details.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SVN bash_completion - Subversion productivity boost]]></title>
+    <link href="http://bvajjala.github.io/blog/2011/02/06/svn-bash-completion/"/>
+    <updated>2011-02-06T16:01:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2011/02/06/svn-bash-completion</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/subversion.jpg" title="&lsquo;Subversion Logo&rsquo;" >Remembering all the svn switches / CLI options, not necessary, well unless you are using some nifty GUI tool you will definitely need this one.</p>
+
+<p>Just google &ldquo;Subversoin bash completion&rdquo; and you will find yourself <a href="http://worksintheory.org/files/misc/bash_completion_svn">here</a></p>
+
+<p>so grab is, source it and use it:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>apt-get install bash-completion
+</span><span class='line'>wget &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://worksintheory.org/files/misc/bash_completion_svn&quot;</span>&gt;http://worksintheory.org/files/misc/bash_completion_svn&lt;/a&gt; -O /etc/bash_completion.d/subversion
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>You are good to go.</p>
+
+<p><strong>Please note:</strong>
+Installing the bash_completion deb package adds a bunch of bash completion helpers see full list by running:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>dpkg -L bash-completion
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>All the magic however is in this short file:
+/etc/profile.d/bash_completion.sh and anything you place under <em>/etc/bash_completion.d/</em> will automatically be sourced upon login &hellip;</p>
+]]></content>
+  </entry>
+  
+</feed>

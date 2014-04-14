@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Why We Dropped Swagger And I/O Docs As we started investing in our new strategy at my previous company, we looked around for solutions to document &hellip;">
+  <meta name="description" content="Autoscaling for LAMP on AWS | Load Test the Environment: Part 3 In part 3 of the Autoscaling for LAMP on AWS series, After setting up your &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -56,9 +56,10 @@
 </form>
   
 <ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
-  <li><a href="/about">About</a></li>
+  <li><a href="/about/resume">About</a></li>
 </ul>
 
 </nav>
@@ -73,7 +74,7 @@
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2014/02/03/why-we-dropped-swagger-and-i-slash-o-docs/">Why We Dropped Swagger and I/O Docs</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a></h1>
       
       
     
@@ -90,35 +91,88 @@
   
 
 
-<time datetime="2014-02-03T13:49:24-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+<time datetime="2014-03-25T11:23:14-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h2><a href="/blog/2013/02/07/why-we-dropped-iodocs-and-swagger.html">Why We Dropped Swagger And I/O Docs</a></h2>
+  <div class="entry-content"><h3>Autoscaling for LAMP on AWS | Load Test the Environment: Part 3</h3>
 
-<p>As we started investing in <a href="/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">our new strategy</a> at <a href="http://wiredcraft.com">my previous company</a>, we looked around for solutions to document APIs. It may not be the sexiest part of the project, but documentation is the first step to designing a good API. And I mean <strong>first</strong> as in &ldquo;before you even start writing tests&rdquo; (yes, you should be writing tests first too).</p>
+<p>In part 3 of the Autoscaling for LAMP on AWS series,</p>
 
-<p>We originally went with a simple Wiki page on Github, which served us just fine in the past. But it quickly became clear that it wasn&rsquo;t going to cut it. We started thinking about what good documentations is. We&rsquo;re fans of the single page approach that the <a href="http://backbonejs.com">Backbone.js documentation</a> illustrates well and clearly remembered <a href="http://developer.github.com/">Github</a> and <a href="https://stripe.com/docs">Stripe</a> as easy and well organized resources. Some Googling later, we were contemplating Wordnik&rsquo;s <a href="http://developers.helloreverb.com/swagger/">Swagger</a> and Mashery&rsquo;s <a href="http://www.mashery.com/product/io-docs">I/O Docs</a>. We later settled for I/O Docs as it is built with node.js and was more straightforward to set up (for us at least).</p>
+<p>After setting up your application autoscaling, it’s important to load
+run the application in order to understand the minimum and maximum
+number of instances required for each application.</p>
 
-<p>Once again, we hit a wall with this approach:</p>
+<p><a href="../autoscaling-for-lamp-on-aws-setting-up-austoscaling-groups-part-2/index.html" title="Autoscaling for LAMP on AWS | Setting Up Austoscaling Groups : Part 2">Read Part 2 to learn more about setting up autoscaling
+groups.</a></p>
 
-<ol>
-<li><p> <strong>No proper support for JSON body</strong>: we don&rsquo;t do much with parameters and mostly send JSON objects in the body of our requests, <a href="http://blog.apigee.com/detail/restful_api_design_nouns_are_good_verbs_are_bad">using HTTP verbs for the different types of operations</a> we perform on our collections and models in the backend. Swagger and I/O Docs fall short of support for it, letting you simply dump your JSON in a field: not ideal.</p></li>
-<li><p> <strong>You&rsquo;re querying the actual API</strong>: to be fair, this is an intentional feature. Now some of you may find it interesting that your documentation allows users to easily run calls against your API. That&rsquo;s what <a href="http://www.flickr.com/services/api/explore/flickr.activity.userComments">Flickr does with their API explorer</a>, and we used to think it was pretty neat. But once we started using it, we saw the risks of exposing so casually API calls that can impact your platform (especially with <a href="http://devo.ps">devo.ps</a> which deals with your actual infrastructure). I guess you could set up a testing API for that very purpose, but that&rsquo;s quite a bit of added complexity (and <a href="http://blogoscoped.com/archive/2005-08-24-n14.html">we&rsquo;re lazy</a>).</p></li>
-</ol>
+<p>First, fire the load run. For this article we’ve used HP LoadRunner
+because it provides more detailed results than others, but there are
+also other load runner tools to choose from. Be sure to run the load
+from multiple IP addresses or else the ELB may not distribute it equally
+across all instances. HP LoadRunner helps you use multiple nodes in
+order to generate the load.</p>
 
+<p>Update the Auto Scaling Group’s minimum and maximum instance counts.\</p>
 
-<p>And that&rsquo;s how we ended up putting together <a href="https://github.com/devo-%20ps/carte">Carte</a>, a very lightweight Jekyll-based solution: drop a new post for each API call, following some loose format and specifying a few bits of meta data in the YAML header (type of the method, path…) and you&rsquo;re good to go.</p>
+<p><img src="https://lh5.googleusercontent.com/nXhTs4kEqjzxfAy8aGdgqLvC_yKninSiyM3pClGWhemLXPWFjr_6Y5NU8xnf2j7twuJgVx2TO4tvs8fjm2K1c8y6C23NN8lacgef-JEH4621AXZITbYAAKRF4w" alt="" /></p>
 
-<p><a href="http://devo-ps.github.com/carte"><img src="/images/posts/carte-screenshot.png" alt="Screenshot of Carte" /></a></p>
+<p>For the this article, we’ve set the minimum and maximum instance counts
+at 2 and 8 respectively.</p>
 
-<p>We&rsquo;re real suckers for Jekyll. We&rsquo;ve actually used it to build quite a few static clients for our APIs. One of the advantages of this approach is that we can bundle our documentation with our codebase by simply pushing it on the
-<code>gh-pages</code> branch, and it pops up as a Github page. That&rsquo;s tremendously important for us as it make it very easy for developers to keep the documentation and the code in synch.</p>
+<p>Now change your Auto Scaling Policies. A scaling policy specifies
+whether to scale the auto scaling group up or down, and by how much.
+Here we’ve chosen 2 instances for Scale Up and Scale Down policies.
+These policies automatically increase or decrease the instances
+according to your defined conditions in order to maintain performance
+and minimize cost.</p>
 
-<p>Carte is intentionally crude: <a href="https://github.com/devo-ps/carte">have a look at the README and hack at will</a>. Drop us a shout at <a href="https://twitter.com/devo_ps">@devo_ps</a> if you need help or want to suggest a feature.</p>
+<p><img src="https://lh3.googleusercontent.com/3G9JdQa1GNjF_2fWOrZ10y-cpc3m8_6gtTH2Y046OK3LoiaMYGx0Nm_N4LsBcBhhRhA3cxr7D1sMlCv90ewW9rZ8QCr8amOHqivVcZZmML7Bx-XMIeM7wdN1Nw" alt="" /></p>
+
+<p>Next, <strong>increase the load</strong> gradually with LoadRunner. Once the CPU
+reaches 75% of the instances, Autoscaling will trigger the scale up
+policy to launch 2 more instances.</p>
+
+<p>Now <strong>decrease the load</strong> gradually and the CPU instances load should
+come down to less than 45%. Autoscaling will then trigger the scale down
+policy and delete the additional instances that were launched.</p>
+
+<p>Consider a scenario in which a 2,000-concurrent-request count is reached
+during peak hours and 500 users are reached during non-peak hours. For
+best load run results, try the following.</p>
+
+<p>Capture load test results and CloudWatch metrics for each of the
+following scenarios:</p>
+
+<p>​1. Start the load test with 500 users. Set the minimum instance count
+to 2 if you choose large or medium types, and set the maximum instance
+count to 4.</p>
+
+<p>​2. Increase the load to 1,000 users. Set the minimum and maximum
+instance counts to 2 and 6 respectively.</p>
+
+<p>​3. Increase the load to 2,000 users. Set the minimum and maximum
+instance counts to 4 and 10 respectively.</p>
+
+<p>​4. Increase the load to 3,000 users. Set the minimum and maximum
+instance counts to 6 and 12 respectively.</p>
+
+<p>Analyze the results for each scenario and note which gives better
+throughput and response times. Also check the DB metrics.</p>
+
+<p>Now it will be easy to choose the best instance type and max/min
+instance counts..</p>
+
+<p><strong>Shutdown Autoscaling</strong></p>
+
+<p>Update the autoscale group to resize the instance count to 0. This will
+terminate all instances launched within the lamp-asg autoscale group.</p>
+
+<p><em>Watch out for the final part of this series tomorrow on how to choose
+an instance type. </em></p>
 </div>
   
   
@@ -132,7 +186,7 @@
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2014/02/03/best-practices-its-always-or-never/">Best Practices: It&#8217;s Always or Never</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a></h1>
       
       
     
@@ -149,51 +203,203 @@
   
 
 
-<time datetime="2014-02-03T13:45:48-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+<time datetime="2014-03-25T11:23:10-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h2><a href="/blog/2013/02/11/best-practices-it-s-always-or-never.html">Best Practices: It&rsquo;s Always Or Never ( And Preferably Always)</a></h2>
+  <div class="entry-content"><h3>Autoscaling for LAMP on AWS | Setting Up Austoscaling Groups : Part 2</h3>
 
-<p><img src="http://farm3.staticflickr.com/2584/4103140420_b98ee1ac62_z.jpg" alt="Messy cables" /></p>
+<p>In part 2 of the Autoscaling LAMP in AWS series, let’s discuss how to
+create autoscaling launch configuration, autoscaling groups and how to
+verify the setup autoscaling.</p>
 
-<p>It&rsquo;s Monday morning. The development team needs a box and you&rsquo;re already contemplating the gazillion other urgent tasks that need to be done on the existing infrastructure. _Just that one time_TM, you&rsquo;re going to forget about your own rules. You&rsquo;re just gonna spawn an instance, set up the few services needed and be done with it. You&rsquo;ll drop some of the usual time suckers: backup strategy, access rules, init scripts, documentation… You can&rsquo;t just do the whole of it AND handle the rest of your day-to-day responsibilities. After all, it&rsquo;s just a development server and you&rsquo;ll probably fold it in a couple weeks, or you&rsquo;ll clean it up once your plate is a tad less full.</p>
+<h2><strong>Autoscale Implementation</strong> </h2>
 
-<p>A few weeks later, the box is still there and your backlog is far from looking less crowded. The development team just rolled out their production application on the same box. <strong>And things start crashing… badly.</strong></p>
+<p>Autoscale configuration is now available in console. AWS command lines
+are no longer needed for implementation.</p>
 
-<p>After a couple of not so courteous emails from the dev team mentioning repetitive crashes, you log in the box and the fun starts. You can&rsquo;t figure out what services have been deployed, or how exactly they were installed. You can&rsquo;t restore the database because you don&rsquo;t know where the bloody backups are. You waste time to find out that CouchDB wasn&rsquo;t started at boot. All of this while receiving emails of &ldquo;encouragement&rdquo; from your colleagues.</p>
-
-<p>Just because of that &ldquo;one time&rdquo;. Except that it&rsquo;s never just that one time.</p>
-
-<h3>Best practices are not freaking optional</h3>
-
-<p>I hear you: coming up with these best practices and sticking to it <strong>systematically</strong> is hard. It&rsquo;s high investment. But based on our common experience, it&rsquo;s one you can&rsquo;t afford not making. The &ldquo;quick and dirty that
-one time&rdquo; approach will ultimately fail you.</p>
-
-<p>A few things you should never consider skipping:</p>
+<p>Complete the following steps as detailed in <a href="../autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/index.html" title="Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 1">Part
+1</a>of
+this series in order to set up autoscaling :</p>
 
 <ul>
-<li><p><strong>Document the hell out of everything as you go</strong>. You probably won&rsquo;t have time to get it done once you shipped it, and you probably won&rsquo;t remember what you did or why you did it in a few weeks from now. Your colleagues will probably appreciate too.</p></li>
-<li><p><strong>Off-site backups for everything</strong>. Don&rsquo;t even think of keeping your backups on the same physical box. Disks fail (a lot) and storage like S3/Glacier is dirt cheap. Find out a way to backup your code and data and stick to it.</p></li>
-<li><p><strong>Full setup and reliable sources</strong>. Avoid random AWS AMIs or RPM repositories. And when settings things up, go through the whole shebang: init script, dedicated running user, environment variables and such are not optional. Some of us also think that you shouldn&rsquo;t use rc.local for your Web services ever again.</p></li>
+<li><p>Configure AMI to launch the Instances.</p></li>
+<li><p>Configure Instance type to launch the instances. (Example:
+m1.small,m1.large).</p></li>
+<li><p>Configure KeyPair Name to access the machines.</p></li>
+<li><p>Configure Security Group to allow the Instances to communicate with
+other components.</p></li>
+<li><p>Keep the ELB name readily available.</p></li>
+<li><p>Keep your availability zones ready. (Example: us-east-1a,
+us-east-1b).</p></li>
+<li><p>Set the minimum number of instances for Maximum and Desired
+Capacity. (Start with zero).</p></li>
+<li><p>Set Health Check Type. (ELB).</p></li>
+<li><p>Set Region.</p></li>
+<li><p>Change Capacity Cooldown time.</p></li>
+<li><p>Adjust for scale up and scale down.</p></li>
 </ul>
 
 
-<h3>Infrastructure As Code And Automation</h3>
+<h2><strong>1. Create the Autoscaling Launch Config</strong> </h2>
 
-<p>Obviously, given what we&rsquo;re working on at <a href="http://devo.ps">devo.ps</a>, we&rsquo;re pretty strong adopters of infrastructure as code and automation. What tools to use is a much larger discussion. Go have a look at the comments on <a href="http://news.ycombinator.com/item?id=5197389">the
-announcement of the new version of Chef</a> to get an idea of what&rsquo;s
-out there.</p>
+<p>Log in to the AWS console and navigate to Services-> EC2-> Launch
+Configuration.</p>
 
-<p>Ultimately these are just opinions, but behind them are concepts worth investing in. Capturing the work you do on your infrastructure in repeatable and testable code, and automating as much as you can helps removing yourself
-from the equation. Doing so is helping you to reduce the human factor and free yourself of the repetitive boilerplate while you focus on the challenging tasks that only a creative brain can tackle.</p>
+<p><img src="https://lh5.googleusercontent.com/-E7LhgP_GnMeKXQHtHPieeiqZBbrD3TauY5FHvA90y2hvnWMoncO5gEJASGmYd_v1HjDIzIr949-gjX7N2DlCtzCyO5iwZnUd481qEyiHKVkxhH40xDL3xiTzQ" alt="" /></p>
 
-<p>Not building upon best practices is simply not an option. By doing so, you fail at investing in the foundation for a more robust infrastructure, and more importantly it is depriving you from scaling yourself.</p>
+<p>Click on “Create Autoscaling Group”.\</p>
 
-<p><em><a href="http://www.flickr.com/photos/comedynose/4103140420/">Picture from comedy_nose</a></em></p>
+<p><img src="https://lh6.googleusercontent.com/8MJM4YJXpOnamUnIZdfPkHZDJJ_iyVXg1qj373NTmPKZbihu4C2nqYcm2zvCacxycBN1OjzxbpANVSI7W4t7a8LYo15FbooKxx0UlXXkpJwuWxSNX7ZfSYm-PA" alt="" /></p>
+
+<p>On the next screen, click on “Create Launch Configuration”.\</p>
+
+<p><img src="https://lh6.googleusercontent.com/8h6Tn5ncvwmpG6qqI5vqulA_qoG6ijs4wtOOWA6nDwuCUCF1_OpD1VSWhlJDimgNNyhp_dmEsVx4DNJkls043s_CbBJ3HK0VUsSUphYjNeM3Qnlx1clgXZ5jAA" alt="" /></p>
+
+<p>Create a new launch configuration. The name of the launch configuration
+must be unique within the scope of the client’s AWS account.</p>
+
+<p><strong>Choose AMI:</strong> Go to My AMIs and select the LAMP AMI created.\</p>
+
+<p><img src="https://lh4.googleusercontent.com/SJXQcn4aWSm83eKHuKKZHJomaUvLwJShg8w5M1Q6wEXXNiUv61JNoiaKMYlaacP4TYT8kTvJju2vDKK23RReWFLgLxRGb68xaSuMbHzjQ0H74evkNtINH_T_xQ" alt="" /></p>
+
+<p><strong>Choose Instance Type:</strong> We’ve selected a micro instance for our
+example.\</p>
+
+<p><img src="https://lh3.googleusercontent.com/e7lh5P4VR8i9qJ5QgxUK1PBN6in9HQNpU0cjznY6Giemq8RZrF2wBEfmlL_cCS_cDUBKKUHkmU__YC6YPiNncXXhbXMq9BRE3tLSbDewJR8MZ8upoWi0OwIp2w" alt="" /></p>
+
+<p><strong>Configure Details:</strong> Give a name for the Launch Configuration\</p>
+
+<p><img src="https://lh4.googleusercontent.com/kP646CGpnJLDO-44macZIU6A4FMSeLpu8kSq6hpFIstb_heGHWMCRwtn5EpOw8YZdvCANbd-5Pur5SNw_OaWg7432_WdQ1Rbi9QUsR6FMUIo71Y6REwKA5wJ2w" alt="" /></p>
+
+<p><strong>Add Storage:</strong> Keep the values on default.</p>
+
+<p><strong>Configure the Security Group:</strong>Select the Security group to launch the
+autoscaling instances. Review the details and create the Launch
+Configuration.\</p>
+
+<p><img src="https://lh5.googleusercontent.com/rd0tjYvJyMzG0irkmsj9LZSXrxigf93tfOhOLUtcrQ-c1Pk2XXsOF7ksRbu4BY_6PvPfMWqC9bF4NZcy1aNLBOfUd91vjV9shjfA9IRAA5MNSJXb6sPuVa8gHA" alt="" /></p>
+
+<p>In the next window, select “KeyPair” to access the instances.</p>
+
+<h2><strong>2. Create the Auto Scaling Group</strong> </h2>
+
+<p>Create a new Auto Scaling group with a specified name and other
+attributes. When you make the creation request, the Auto Scaling group
+is ready for use in other calls.</p>
+
+<p>Navigate to EC2-> Auto Scaling Groups-> Create Autoscaling Group.</p>
+
+<p>Select the existing Launch Configuration (lamp-launch-1) and go to “Next
+Step”.\</p>
+
+<p><img src="https://lh4.googleusercontent.com/N9-2P0wrXtd1IKWO58H1i7s6MRx0w_toDG5wjmtvsw0v5wUamXz6oIC88g-YYqnP5H9OTobjDc_X9Hf1shLrn_5tTO4HLuHHUomu8qE8OYv3oLEDp02urv0U4g" alt="" /></p>
+
+<p><strong>Configure Autoscaling Group Details:</strong></p>
+
+<p>Give a name to the Auto Scaling Group.</p>
+
+<p>Group Size: Start with zero instances in order to avoid the immediate
+creation of instances. The exact number of required instances can be set
+after these steps are completed, but just set cost optimization values
+to 0 for now.</p>
+
+<p><strong>Availability Zones:</strong></p>
+
+<p>Choose 2 availability zones in order to maintain high availability.</p>
+
+<p>In “Advanced Details” choose the values as shown below.\</p>
+
+<p><img src="https://lh3.googleusercontent.com/YL14QA7srKzFlnQLXuXtIxo0wrB51aDQuOj8fR5YXDYErg2usKCEaKJ57fKN6UahjFP0KFOTkr_y8odlPVWqDh2z3OMwy_iUCRJ5ubiQ4EsOTTNSLKbz8IU2UQ" alt="" /></p>
+
+<p><strong>Configure Scaling Policies:</strong> Keep minimum and maximum instances count
+to zero.</p>
+
+<p><strong>Increase Group Size:</strong> Keep the name at default.</p>
+
+<p><strong>Execute Policy:</strong> Click on “Add new alarm”.\</p>
+
+<p><img src="https://lh3.googleusercontent.com/ysaxf1OR2wazrUt1lvdkYI-YRoVdijKoJD4m6DDlGOHld-LO_mtz24-kOmvyTHybJPIEK_VOKV_UC5ybIwwt9jKtJhZ_3N3J1B_4e5P1iAyIsynEpODx6S4gKQ" alt="" /></p>
+
+<p>A popup window will appear for creating a “Cloud Watch Alarm”.\</p>
+
+<p><img src="https://lh3.googleusercontent.com/eqvhUKlpyNKv7vWQiAI95g5oUQxp9KpqQJ0WCEJjFNfCfn-PIBtaYEPf7k8T2BrlCxN8EoF6utdR5c67tMMk-K0CW-upVZIKR1jOTumOoiwic5fEvZndn8_aEA" alt="" /></p>
+
+<p>For this example, we chose CPU Load average as the autoscaling trigger.
+Whenever the average CPU load of app servers goes beyond 75% for 5
+minutes, autoscaling will trigger the auto-scale-up-policy to launch the
+1 instance and attach to load balancer. The application here is CPU
+intensive and requires more computing power, so we chose the CPU Load
+Average as the autoscale triggering event.</p>
+
+<p>You can choose any Cloudwatch metric to trigger the autoscaling policy.
+For example, Disk read/writes, Network In/Out, ELB request count, ELB
+latency, etc.</p>
+
+<p><strong>Decrease Group size:</strong>\</p>
+
+<p><img src="https://lh3.googleusercontent.com/wxwMuiWm-72K4zGTx-oT56LdXvjhQXNQZPLg_HXPMb89ey5CEtmOV76euYKqLwbYKm88kOAlmSrW6xfRImjIefcQ7LVFOcUIRoyZ5t3xF_JffVy7R96Ypk8lMg" alt="" /></p>
+
+<p><strong>Configure Notifications:</strong> If you’ve already created notifications,
+select one to receive the notifications of Autoscaling events, else skip
+this step for now.</p>
+
+<p>Review the details and click on “Create Autoscaling Group”.</p>
+
+<p>Auto Scaling evaluates the health of each Amazon EC2 instance in the
+Auto Scaling Group and automatically replaces unhealthy instances in
+order to keep the Auto Scaling Group size fixed. That ensures that the
+application is getting the expected compute capacity.</p>
+
+<p>In this example, we’ve chosen to scale down the environment when the
+average CPU load lowers to 40% for 5 minutes.</p>
+
+<h2><strong>Verify Autoscaling</strong> </h2>
+
+<p>After completing the previous steps, it’s time to test autoscaling.</p>
+
+<p>​1. Update the Autoscaling group minimum and maximum instances count to
+2 and 4. You can change these later to fit your specific requirements.</p>
+
+<p>Navigate to EC2-> Auto Scaling Group- > lamp-asg-1.</p>
+
+<p>Right click on “lamp-asg-1” and select “Edit”.</p>
+
+<p>In the “Details” tab, update Desired Min and Max values to 1, and then
+save.\</p>
+
+<p><img src="https://lh5.googleusercontent.com/hxxgnuVeJGgoMHPJvsr5oTeghIkuhJv4_hX0U1YtdjpO57N84IN4KmuSk4cO9cYeTH7JiSD9EMVAXCwS8z5v0-lZ3Gf4jW67oGNflBhgr10tiUVHbn9lpjE8oQ" alt="" /></p>
+
+<p>Now, navigate to Services->EC2->Instances.</p>
+
+<p>You can see that a new instance has been launched and attached to ELB.\</p>
+
+<p><img src="https://lh3.googleusercontent.com/GPJHyEzUrO4LtbxCSzT6rHiz_RLPIIkmeIS--__XDuzFiW2dLSZwZhSwkvHG2KvW5CJ6Kx8DpvjEXo8Xgbw7Q8HBa6cfNUu2Mf6XAM6jpx-8LVKxEUMNeXCVHA" alt="" /></p>
+
+<p>\</p>
+
+<p><img src="https://lh3.googleusercontent.com/9_cNWARusMs6T9rypbPZWakid_pmJpMwBWLXuPhwaRlpiXLU5XFjQDGzBAYbPTtjSiupY8tELI5s8ROwgZtKCvfKhxVsagLXYoKCl_MnWqvnqrOGAoqj-wHGOg" alt="" /></p>
+
+<p>If your health check is configured properly, the instance status will
+turn into “In Service” rather quickly. Always have a minimum of 2
+instances running in order to maintain high availability.</p>
+
+<p>​2. How to Update Launch Configuration: It’s not possible to update the
+existing Launch configuration, so you’ll have to create a new Launch
+configuration and edit the Autoscaling Group to use that new
+configuration.</p>
+
+<p><img src="https://lh5.googleusercontent.com/_bDZv08DtcohHQkG5s0e2_0rd3VnkzImL-87T5wfku5cmvL69tgMhMwKc71Vo-zgVbVImT-HaD0f_fo7dcv5F0JmkbXZGpllnhldKILcPVdgYR7nKZ0qaRniwQ" alt="" /></p>
+
+<p>Now, start the application load run and find out the minimum and maximum
+instances required for your application to handle the load. Then update
+the AutoScaling Group to meet your needs.</p>
+
+<p>Watch out for  Part 3 of this series to understand <a href="../autoscaling-for-lamp-on-aws-load-test-the-environment-part-3/index.html" title="Autoscaling for LAMP on AWS | Load Test the Environment: Part 3">how to load run an
+application</a>.</p>
 </div>
   
   
@@ -207,7 +413,7 @@ from the equation. Doing so is helping you to reduce the human factor and free y
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2014/02/03/troubleshooting-5minutes-on-a-yet-unknown-box/">Troubleshooting 5minutes on a Yet Unknown Box</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/">Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1</a></h1>
       
       
     
@@ -224,917 +430,121 @@ from the equation. Doing so is helping you to reduce the human factor and free y
   
 
 
-<time datetime="2014-02-03T13:34:05-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+<time datetime="2014-03-25T11:23:04-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h2><a href="/blog/2013/03/06/troubleshooting-5minutes-on-a-yet-unknown-box.html">First 5 Minutes Troubleshooting A Server</a></h2>
+  <div class="entry-content"><h3>Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 1</h3>
 
-<p>Back when our team was dealing with operations, optimization and scalability at <a href="http://wiredcraft.com">our previous company</a>, we had our fair share of troubleshooting poorly performing applications and infrastructures of various sizes, often large (think CNN or the World Bank). Tight deadlines, &ldquo;exotic&rdquo; technical stacks and lack of information usually made for memorable experiences.</p>
+<p>This is part 1 of the Autoscaling for LAMP in AWS series. The
+step-by-step guide would walk you through</p>
 
-<p>The cause of the issues was rarely obvious: here are a few things we usually got started with.</p>
+<p><a href="index.html" title="Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 1">Part 1: Creating a LAMP Stack
+AMI</a></p>
 
-<h3>Get some context</h3>
+<p><a href="../autoscaling-for-lamp-on-aws-setting-up-austoscaling-groups-part-2/index.html" title="Autoscaling for LAMP on AWS | Setting Up Austoscaling Groups : Part 2">Part 2: Setting up Autoscaling
+Groups. </a></p>
 
-<p>Don&rsquo;t rush on the servers just yet, you need to figure out how much is already known about the server and the specifics of the issues. You don&rsquo;t want to waste your time (trouble) shooting in the dark.</p>
+<p><a href="../autoscaling-for-lamp-on-aws-load-test-the-environment-part-3/index.html" title="Autoscaling for LAMP on AWS | Load Test the Environment: Part 3">Part 3: Load Test the
+environment</a></p>
 
-<p>A few &ldquo;must have&rdquo;:</p>
+<p><a href="../autoscaling-for-lamp-on-aws-choosing-an-instance-type-part-4/index.html" title="Autoscaling for LAMP on AWS | Choosing an instance type: Part 4">Part 4: Choose instance
+type</a></p>
 
-<ul>
-<li>What exactly are the symptoms of the issue? Unresponsiveness? Errors?</li>
-<li>When did the problem start being noticed?</li>
-<li>Is it reproducible?</li>
-<li>Any pattern (e.g. happens every hour)?</li>
-<li>What were the latest changes on the platform (code, servers, stack)?</li>
-<li>Does it affect a specific user segment (logged in, logged out, geographically located…)?</li>
-<li>Is there any documentation for the architecture (physical and logical)?</li>
-<li><strong>Is there a monitoring platform?</strong> Munin, Zabbix, Nagios, <a href="http://newrelic.com/">New Relic</a>… Anything will do.</li>
-<li><strong>Any (centralized) logs?</strong>. Loggly, Airbrake, Graylog…</li>
-</ul>
+<p>First, let’s discuss how to prepare the AMI, create an ELB and RDS,
+verify the application and terminate the instance.</p>
 
+<h2><strong>Prepare AMI</strong> </h2>
 
-<p>The last two ones are the most convenient sources of information, but don&rsquo;t expect too much: they&rsquo;re also the ones usually painfully absent. Tough luck, make a note to get this corrected and move on.</p>
+<p>In Autoscaling, create an AMI with all required packages installed. This
+AMI will be used as a template to launch instances in autoscaling. For
+LAMP Stack, you should install and fine tune the latest versions of
+Apache and PHP.</p>
 
-<h3>Who&rsquo;s there?</h3>
+<p>​1. Log in to AWS console.</p>
 
-<pre><code>$ w
-$ last
-</code></pre>
+<p>​2. Navigate to EC2 services. Make sure to switch to the desired region
+before launching instances.</p>
 
-<p>Not critical, but you&rsquo;d rather not be troubleshooting a platform others are playing with. One cook in the kitchen is enough.</p>
+<p>​3. Click on “Launch instance”.</p>
 
-<h3>What was previously done?</h3>
+<p><img src="https://lh4.googleusercontent.com/hRoQeC1-aimLHiAt0ptacAxdMqlX8w0N19bEmMo8vm31e0n3-PRzWJLd6gg5TUn2FgokMj6n9y72S6gE_XKS0jNx9tHGv5kqD9TKz5qM0vYhu9TIF5FBAG6C-Q" alt="" /></p>
 
-<pre><code>$ history
-</code></pre>
+<p>​4. Select your favorite <strong>Linux AMI</strong> in Classic Wizard.</p>
 
-<p>Always a good thing to look at; combined with the knowledge of who was on the box earlier on. Be responsible by all means, being admin shouldn&rsquo;t allow you to break ones privacy.</p>
+<p><img src="https://lh6.googleusercontent.com/aWfL4g9PfAqaFTg3uI0Ntv52hSxUyPCNKN5Sf8Y4R5zYyjGOmHeA2zi6pGk59F9NiNJa16n27rSk111xlUJUt24oCLPdQfBZMr0k5yhCZpQ6B_ibxzU9hQRKeA" alt="" /></p>
 
-<p>A quick mental note for later, you may want to update the environment variable <code>HISTTIMEFORMAT</code> to keep track of the time those commands were ran. Nothing is more frustrating than investigating an outdated list of commands…</p>
+<p>For this article we used CentOS 6.3 from the community AMIs, but
+OpenSuse and Ubuntu are also good choices.</p>
 
-<h3>What is running?</h3>
+<p>​5. Launch a <strong>micro</strong> instance from the selected AMI with the desired
+<strong>Security group</strong> and <strong>Key pair</strong>. Remember, this instance is only for
+creating an AMI and will be terminated once <strong>LAMP Stack</strong> is installed
+on it.</p>
 
-<pre><code>$ pstree -a
-$ ps aux
-</code></pre>
+<p><img src="https://lh3.googleusercontent.com/_U5YNCpt3CelshRRvlBG8CLKp8tYd64u1lwFWqqZcN48v3UjL9GBOfHoxL3EXJ9pXOk3tNz0Ig049xbwJa4gIsNvr4Z869PFqwkSfBDkJ8GK1PU9olC7ktBn7w" alt="" /></p>
 
-<p>While <code>ps aux</code> tends to be pretty verbose, <code>pstree -a</code> gives you a nice condensed view of what is running and who called what.</p>
+<p>​6. Now log in to the instance and perform the <strong>PHP</strong> and Apache
+installation steps. For this article, we used <strong>Cygwin</strong> to connect the
+<strong>Linux</strong> servers. Make sure you open port 22 to allow <strong>SSH</strong> access
+using security groups.</p>
 
-<h3>Listening services</h3>
+<p><img src="https://lh4.googleusercontent.com/Al62wHOtPAxqNRUh_kr47FmQqMSycjLKMJ9zSz47OfIWUVDENcSi6ypdoBaiABQ9Rlr33kid0Be8a-1KuyLDYhFbea4Fw4rdJKxGSoDfbQZP6iClUbDTnUmFGA" alt="" /></p>
 
-<pre><code>$ netstat -ntlp
-$ netstat -nulp
-$ netstat -nxlp
-</code></pre>
-
-<p>I tend to prefer running them separately, mainly because I don&rsquo;t like looking at all the services at the same time. <code>netstat -nalp</code> will do to though. Even then, I&rsquo;d ommit the <code>numeric</code> option (IPs are more readable IMHO).</p>
-
-<p>Identify the running services and whether they&rsquo;re expected to be running or not. Look for the various listening ports. You can always match the PID of the process with the output of <code>ps aux</code>; this can be quite useful especially when you end up with 2 or 3 Java or Erlang processes running concurrently.</p>
-
-<p>We usual prefer to have more or less specialized boxes, with a low number of services running on each one of them. If you see 3 dozens of listening ports you probably should make a mental note of investigating this further and see
-what can be cleaned up or reorganized.</p>
-
-<h3>CPU and RAM</h3>
-
-<pre><code>$ free -m
-$ uptime
-$ top
-$ htop
-</code></pre>
-
-<p>This should answer a few questions:</p>
-
-<ul>
-<li>Any free RAM? Is it swapping?</li>
-<li>Is there still some CPU left? How many CPU cores are available on the server? Is one of them overloaded?</li>
-<li>What is causing the most load on the box? What is the load average?</li>
-</ul>
-
-
-<h3>Hardware</h3>
-
-<pre><code>$ lspci
-$ dmidecode
-$ ethtool
-</code></pre>
-
-<p>There are still a lot of bare-metal servers out there, this should help with;</p>
-
-<ul>
-<li>Identifying the RAID card (with BBU?), the CPU, the available memory slots. This may give you some hints on potential issues and/or performance improvements.</li>
-<li>Is your NIC properly set? Are you running in half-duplex? In 10MBps? Any TX/RX errors?</li>
-</ul>
-
-
-<h3>IO Performances</h3>
-
-<pre><code>$ iostat -kx 2
-$ vmstat 2 10
-$ mpstat 2 10
-$ dstat --top-io --top-bio
-</code></pre>
-
-<p>Very useful commands to analyze the overall performances of your backend;</p>
-
-<ul>
-<li>Checking the disk usage: has the box a filesystem/disk with 100% disk usage?</li>
-<li>Is the swap currently in use (si/so)?</li>
-<li>What is using the CPU: system? User? Stolen (VM)?</li>
-<li><code>dstat</code> is my all-time favorite. What is using the IO? Is MySQL sucking up the resources? Is it your PHP processes?</li>
-</ul>
-
-
-<h3>Mount points and filesystems</h3>
-
-<pre><code>$ mount
-$ cat /etc/fstab
-$ vgs
-$ pvs
-$ lvs
-$ df -h
-$ lsof +D / /* beware not to kill your box */
-</code></pre>
-
-<ul>
-<li>How many filesystems are mounted?</li>
-<li>Is there a dedicated filesystem for some of the services? (MySQL by any chance..?)</li>
-<li>What are the filesystem mount options: noatime? default? Have some filesystem been re-mounted as read-only?</li>
-<li>Do you have any disk space left?</li>
-<li>Is there any big (deleted) files that haven&rsquo;t been flushed yet?</li>
-<li>Do you have room to extend a partition if disk space is an issue?</li>
-</ul>
-
-
-<h3>Kernel, interrupts and network usage</h3>
-
-<pre><code>$ sysctl -a | grep ...
-$ cat /proc/interrupts
-$ cat /proc/net/ip_conntrack /* may take some time on busy servers */
-$ netstat
-$ ss -s
-</code></pre>
-
-<ul>
-<li>Are your IRQ properly balanced across the CPU? Or is one of the core overloaded because of network interrupts, raid card, …?</li>
-<li>How much is swappinness set to? 60 is good enough for workstations, but when it come to servers this is generally a bad idea: you do not want your server to swap… ever. Otherwise your swapping process will be locked while data is read/written to the disk.</li>
-<li>Is <code>conntrack_max</code> set to a high enough number to handle your traffic?</li>
-<li>How long do you maintain TCP connections in the various states (<code>TIME_WAIT</code>, …)?</li>
-<li><code>netstat</code> can be a bit slow to display all the existing connections, you may want to use <code>ss</code> instead to get a summary.</li>
-</ul>
-
-
-<p>Have a look at <a href="http://www.lognormal.com/blog/2012/09/27/linux-tcpip-tuning/">Linux TCP tuning</a> for some more pointer as to how to tune your network stack.</p>
-
-<h3>System logs and kernel messages</h3>
-
-<pre><code>$ dmesg
-$ less /var/log/messages
-$ less /var/log/secure
-$ less /var/log/auth
-</code></pre>
-
-<ul>
-<li>Look for any error or warning messages; is it spitting issues about the number of connections in your conntrack being too high?</li>
-<li>Do you see any hardware error, or filesystem error?</li>
-<li>Can you correlate the time from those events with the information provided beforehand?</li>
-</ul>
-
-
-<h3>Cronjobs</h3>
-
-<pre><code>$ ls /etc/cron* + cat
-$ for user in $(cat /etc/passwd | cut -f1 -d:); do crontab -l -u $user; done
-</code></pre>
-
-<ul>
-<li>Is there any cron job that is running too often?</li>
-<li>Is there some user&rsquo;s cron that is &ldquo;hidden&rdquo; to the common eyes?</li>
-<li>Was there a backup of some sort running at the time of the issue?</li>
-</ul>
-
-
-<h3>Application logs</h3>
-
-<p>There is a lot to analyze here, but it&rsquo;s unlikely you&rsquo;ll have time to be exhaustive at first. Focus on the obvious ones, for example in the case of a LAMP stack:</p>
-
-<ul>
-<li><strong>Apache &amp; Nginx</strong>; chase down access and error logs, look for <code>5xx</code> errors, look for possible <code>limit_zone</code> errors.</li>
-<li><strong>MySQL</strong>; look for errors in the <code>mysql.log</code>, trace of corrupted tables, innodb repair process in progress. Looks for slow logs and define if there is disk/index/query issues.</li>
-<li><strong>PHP-FPM</strong>; if you have php-slow logs on, dig in and try to find errors (php, mysql, memcache, …). If not, set it on.</li>
-<li><strong>Varnish</strong>; in <code>varnishlog</code> and <code>varnishstat</code>, check your hit/miss ratio. Are you missing some rules in your config that let end-users hit your backend instead?</li>
-<li><strong>HA-Proxy</strong>; what is your backend status? Are your health-checks successful? Do you hit your max queue size on the frontend or your backends?</li>
-</ul>
-
-
-<h3>Conclusion</h3>
-
-<p>After these first 5 minutes (give or take 10 minutes) you should have a better
-understanding of:</p>
-
-<ul>
-<li>What is running.</li>
-<li>Whether the issue seems to be related to IO/hardware/networking or configuration (bad code, kernel tuning, …).</li>
-<li>Whether there&rsquo;s a pattern you recognize: for example a bad use of the DB indexes, or too many apache workers.</li>
-</ul>
-
-
-<p>You may even have found the actual root cause. If not, you should be in a good place to start digging further, with the knowledge that you&rsquo;ve covered the obvious.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/03/zookeeper-vs-doozer-vs-etcd/">ZooKeeper vs. Doozer vs. Etcd</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-03T13:18:39-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2013/09/11/zookeeper-vs-doozer-vs-etcd.html">ZooKeeper vs. Doozer vs. Etcd</a></h2>
-
-<p>While <a href="http://devo.ps">devo.ps</a> is fast approaching a public release, the team has been dealing with an increasingly complex infrastructure. We more recently faced an interesting issue; how do you share configuration across a cluster of servers? More importantly, how do you do so in a resilient, secure, easily deployable and speedy fashion?</p>
-
-<p>That&rsquo;s what got us to evaluate some of the options available out there;
-ZooKeeper, Doozer and etcd. These tools all solve similar sets of problems but their approach differ quite significantly. Since we spent some time evaluating them, we thought we&rsquo;d share our findings.</p>
-
-<h3>ZooKeeper, the old dog</h3>
-
-<p><a href="http://zookeeper.apache.org/">ZooKeeper</a> is the most well known (and oldest) project we&rsquo;ve looked into. It&rsquo;s used by a few big players (Rackspace, Yahoo, eBay, <a href="https://news.ycombinator.com/item?id=6367979">Youtube</a>) and is pretty mature.</p>
-
-<p>It was created by Yahoo to deal with distributed systems applications. I strongly recommend you <a href="http://developer.yahoo.com/blogs/hadoop/apache-zookeeper-making-417.html">read the &ldquo;making of&rdquo;</a> if you&rsquo;re interested in understanding where Yahoo came from when they wrote it.</p>
-
-<p>It stores variables in a structure similar to a file system, an approach that both Doozer and etcd still follow. With ZooKeeper, you maintain a cluster of servers communicating with each other that share the state of the distributed configuration data. Each cluster elects one &ldquo;leader&rdquo; and clients can connect to any of the servers within the cluster to retrieve the data. Zookeeper uses its own algorithm to handle distributed storage.</p>
-
-<ul>
-<li><p><strong>Pros</strong>:</p>
-
-<ul>
-<li><strong>Mature technology</strong>; it is used by some big players (eBay, Yahoo et al).</li>
-<li><strong>Feature-rich</strong>; lots of client bindings, tools, API…</li>
-</ul>
-</li>
-<li><p><strong>Cons</strong>:</p>
-
-<ul>
-<li><strong>Complex</strong>; ZooKeeper is not for the faint of heart. It is pretty heavy and will require you to maintain a fairly large stack.</li>
-<li><strong>It&#8217;s… Java</strong>; not that we especially hate Java, but it is on the heavy side and introduce a lot of dependencies. We wanted to keep our machines as lean as possible and usually shy away from dependency heavy technologies.</li>
-<li><strong>Apache…</strong>; we have mixed feelings about the Apache Foundation. <a href="http://www.infoworld.com/d/open-source-software/has-apache-lost-its-way-225267">&ldquo;Has Apache Lost Its Way?&rdquo;</a> summarizes it pretty well.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Doozer, kinda dead</h3>
-
-<p><a href="https://github.com/ha/doozerd">Doozer</a> was developed by Heroku a few years
-ago. It&rsquo;s written in Go (yay!), which means it compiles into a single binary
-that runs without dependencies. On a side-note, if you&rsquo;re writing code to
-manage infrastructure, you should spend some time <a href="http://golang.org/">learning
-Go</a>.</p>
-
-<p>Doozer got some initial excitement from the developer community but seems to
-have stalled more recently, with many forks being sporadically maintained and
-no active core development.</p>
-
-<p>It is composed of <a href="https://github.com/ha/doozerd">a daemon</a> and <a href="https://github.com/ha/doozer">a
-client</a>. Once you have at least one Doozer
-server up, you can add any number of servers and have clients get and set data
-by talking to any of the servers within that cluster.</p>
-
-<p>It was one of the first practical implementations (as far as I know) of the
-<a href="http://en.wikipedia.org/wiki/Paxos_(computer_science">Paxos algorithm</a>). This
-means operations can be slow when compared to dealing with a straight database
-since cluster-wide consensus needs to be reached before committing any
-operation.</p>
-
-<p>Doozer was a step in the right direction. It is simple to use and setup.
-However, after using it for a while we started noticing that a lot of its
-parts felt unfinished. Moreover, it wasn&rsquo;t answering some of our needs very
-well (encryption and ACL).</p>
-
-<ul>
-<li><p><strong>Pros</strong>:</p>
-
-<ul>
-<li><strong>Easy to deploy, setup and use</strong> (Go, yay!)</li>
-<li><strong>It works</strong>; lots of people have actually used it in production.</li>
-</ul>
-</li>
-<li><p><strong>Cons</strong>:</p>
-
-<ul>
-<li><strong>Pretty much dead</strong>: the core project hasn&rsquo;t been active in a while (1 commit since May) and is pretty fragmented (150 forks…).</li>
-<li><strong>Security</strong>; no encryption and a fairly simple secure-word based authentication.</li>
-<li><strong>No ACL</strong>; and we badly needed this.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>etcd</h3>
-
-<p>After experiencing the shortcomings of Doozer, we stumbled upon a new
-distributed configuration storage called
-<a href="https://github.com/coreos/etcd">etcd</a>. It was first released by the
-<a href="http://coreos.com">CoreOS</a> team a month ago.</p>
-
-<p>Etcd and Doozer look pretty similar, at least on the surface. The most obvious
-technical difference is that ectd uses the <a href="http://en.wikipedia.org/wiki/Raft_%28computer_science%29">Raft
-algorithm</a> instead
-of Paxos. Raft is designed to be <a href="https://ramcloud.stanford.edu/wiki/%0Adownload/attachments/11370504/raft.pdf">simpler</a> and
-<a href="http://kellabyte.com/2013/05/09/an-alternative-to-paxos-the-raft-%0Aconsensus-algorithm/">easier</a> to implement than Paxos.</p>
-
-<p>Etcd&rsquo;s architecture is similar to Doozer&rsquo;s. It does, however, store data
-persistently (writes log and snapshots), which was of value to us for some
-edge cases. It also has a better take on security, with CA&rsquo;s, certs and
-private keys. While setting it up is not straightforward, it adds conveniency
-and safety of mind.</p>
-
-<p>Beyond the fact that it answered some of our more advanced needs, we were
-seduced (and impressed) by the development pace of the project.</p>
-
-<ul>
-<li><p><strong>Pros</strong>:</p>
-
-<ul>
-<li><strong>Easy to deploy, setup and use</strong> (yay Go and yay HTTP interfaces!).</li>
-<li><strong>Data persistence</strong>.</li>
-<li><strong>Secure</strong>: encryption and authentication by private keys.</li>
-<li><strong>Good documentation</strong> (if a little bit obscure at times).</li>
-<li>Planned ACL implementation.</li>
-</ul>
-</li>
-<li><p><strong>Cons</strong>:</p>
-
-<ul>
-<li>(Very) <strong>young project</strong>; interfaces are still moving pretty quickly.</li>
-<li>Still not a perfect match, especially in the way that data is spread.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>The DIY approach (yeah, right..?)</h3>
-
-<p>It is only fair that technical teams may rely on their understanding of their
-infrastructure and coding skills to get <em>something that just works™</em> in place.
-We haven&rsquo;t seriously considered this approach as we felt that getting security
-and distributed state sharing right was going to be a bigger endeavor than we
-could afford (the backlog is full enough for now).</p>
-
-<h3>Conclusion</h3>
-
-<p>In the end, we decided to give etcd a try. So far it seems to work well for
-our needs and the very active development pace seems to validate our choice.
-It has proven resilient and will likely hold well until we have the resources
-to either customize its data propagation approach, or build our own solution
-that will answer some needs it is not likely to answer (we&rsquo;ve already looked
-into doing so with ZeroMQ and Go).</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/01/devops-tools-and-utilities/">DevOps Tools and Utilities</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-01T13:13:05-05:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>DevOps Tool chain</h1>
-
-<p>A list of utilities to support configuration management tools. This was produced by the panelists of the Configuration Mgmt Workflow panel at LOPSA-EAST in 2013. One of the attendees also took notes: <a href="http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel">http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel</a></p>
-
-<h2>Individual level: IDE / syntax highlighting etc</h2>
-
-<h2>Puppet:</h2>
-
-<ul>
-<li>vim &ndash; <a href="https://github.com/rodjek/vim-puppet">https://github.com/rodjek/vim-puppet</a></li>
-<li>TextMate &amp; sublime text 2 &ndash; <a href="https://github.com/masterzen/puppet-textmate-bundle">https://github.com/masterzen/puppet-textmate-bundle</a></li>
-<li>gepetto (<a href="http://cloudsmith.github.io/geppetto/">http://cloudsmith.github.io/geppetto/</a>),</li>
-<li>emacs</li>
-</ul>
-
-
-<h2>Chef:</h2>
-
-<ul>
-<li>vim,</li>
-<li>TextMate,</li>
-<li>Sublime Text: <a href="http://www.youtube.com/watch?v=4VtDj_ar1Xg">http://www.youtube.com/watch?v=4VtDj_ar1Xg</a> (video), <a href="https://github.com/cabeca/SublimeChef">https://github.com/cabeca/SublimeChef</a> (GitHub)</li>
-<li>Emacs: chef-mode <a href="https://github.com/mpasternacki/chef-mode">https://github.com/mpasternacki/chef-mode</a></li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>vim &ndash; <a href="https://github.com/neilhwatson/vim_cf3">https://github.com/neilhwatson/vim_cf3</a></li>
-<li>emacs &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/cfengine.el">https://github.com/cfengine/core/blob/master/contrib/cfengine.el</a></li>
-<li>kate &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml">https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml</a></li>
-<li>eclipse &ndash; <a href="https://cfengine.com/eclipse-cfengine-editor">https://cfengine.com/eclipse-cfengine-editor</a></li>
-<li>Sublime Text &ndash; <a href="https://github.com/kebori/sublime-cfengine3">https://github.com/kebori/sublime-cfengine3</a></li>
-</ul>
-
-
-<h2>Local Testing</h2>
-
-<ul>
-<li>Vagrant &ndash;</li>
-<li>VMware</li>
-<li>OpenStack</li>
-<li>Cloud?</li>
-<li>All of the above?</li>
-</ul>
-
-
-<h2>Revision Control : Which tool? Which workflow?</h2>
-
-<ul>
-<li>Github Flow &ndash; <a href="http://scottchacon.com/2011/08/31/github-flow.html">http://scottchacon.com/2011/08/31/github-flow.html</a></li>
-<li>git-flow &ndash; <a href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a></li>
-<li>Git Dynamic Environments &ndash;</li>
-<li><ul>
-<li><a href="https://puppetlabs.com/blog/git-workflow-and-puppet-environments/">https://puppetlabs.com/blog/git-workflow-and-puppet-environments/</a> ,</li>
-</ul>
-</li>
-<li><ul>
-<li><a href="https://github.com/adrienthebo/puppet-git-hooks">https://github.com/adrienthebo/puppet-git-hooks</a></li>
-</ul>
-</li>
-</ul>
-
-
-<h2>Commit hooks</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>erb,</li>
-<li>pp parser,</li>
-<li>yaml, <a href="https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit">https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>fc pre-commit: <a href="https://github.com/gregf/chef-git-hooks">https://github.com/gregf/chef-git-hooks</a></li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>Subversion: <a href="http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html">http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html</a></li>
-<li>Git: <a href="https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit">https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit</a></li>
-</ul>
-
-
-<h2>Style / Lint tools</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>puppet-lint &ndash; <a href="http://puppet-lint.com/,">http://puppet-lint.com/,</a></li>
-<li>puppet-cleaner &ndash; <a href="https://github.com/santana/puppet-cleaner,">https://github.com/santana/puppet-cleaner,</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>tailor,</li>
-<li>foodcritic</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>cf-promises (with GCC-style warnings)</li>
-</ul>
-
-
-<h2>Testing manifests / recipes</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>rspec-puppet,</li>
-<li>?cucumber-puppet (discontiued)?</li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>chefspec,</li>
-<li>minitest-handler,</li>
-<li>rspec-chef,</li>
-<li>cucumber-chef,</li>
-<li>test-kitchen</li>
-</ul>
-
-
-<h2>Marshalling / Assembling Code &amp; Dependencies</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>librarian-puppet &ndash; <a href="https://github.com/rodjek/librarian-puppet">https://github.com/rodjek/librarian-puppet</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>berkshelf,</li>
-<li>librarian</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>cf-sketch &ndash; <a href="https://github.com/cfengine/design-center/wiki/Design-Center-Tools">https://github.com/cfengine/design-center/wiki/Design-Center-Tools</a></li>
-</ul>
-
-
-<h2>Continuous Integration</h2>
-
-<ul>
-<li>Jenkins CI</li>
-<li>Travis CI</li>
-<li>Atlassian Bamboo?</li>
-<li>TeamCity?</li>
-</ul>
-
-
-<h2>Orchestration</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>MCollective</li>
-</ul>
-
-
-<h3>Chef :</h3>
-
-<ul>
-<li>has “knife ssh” and Pushy support coming for push jobs</li>
-</ul>
-
-
-<h2>Canary testing &amp; Prod vs QA vs test environments (not prod vs QA app code)</h2>
-
-<h3>Puppet</h3>
-
-<ul>
-<li>serverspec <a href="http://serverspec.org/">http://serverspec.org/</a></li>
-<li>rspec-system <a href="https://github.com/puppetlabs/rspec-system">https://github.com/puppetlabs/rspec-system</a></li>
-<li>nagios checks/ plugins</li>
-</ul>
-
-
-<h3>Chef</h3>
-
-<ul>
-<li>has knife-flip from Etsy, flips nodes into a test environment</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>Remote context class matching using remoteclassesmatching (Enterprise)</li>
-</ul>
-
-
-<h2>Provisioning VM&rsquo;s in the cloud?</h2>
-
-<h3>Chef:</h3>
-
-<ul>
-<li>knife ec2 server create&hellip;</li>
-<li>spiceweasel somefile.yml</li>
-<li>knife openstack&hellip;</li>
-<li>knife server create&hellip;</li>
-</ul>
-
-
-<p>Clouds include Azure, Openstack, Rackspace, etc. EC2 OpsWorks (although some limitations since it’s an older version)</p>
-
-<h2>Puppet:</h2>
-
-<ul>
-<li>puppet node_aws create / puppet node_vmware create</li>
-<li>Puppet RAL for AWS, OpenStack, CloudStack:
-  ec2_instance { “instance_name”: type => t1.large, az => ‘USWest’, ensure => present, …. }</li>
-<li>Razor (bare metal)</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li><a href="https://github.com/cfengine/design-center/tree/master/sketches/cloud">https://github.com/cfengine/design-center/tree/master/sketches/cloud</a></li>
-</ul>
-
-
-<h3>Chef</h3>
-
-<ul>
-<li>Crowbar has Chef server integrated, although I don’t know that much about it.</li>
-<li>Joyent also has a Chef “dataset” that they support.</li>
-</ul>
-
-
-<h2>Team Workflow</h2>
-
-<h3>Puppet: &ndash;?</h3>
-
-<h3>Chef:</h3>
-
-<ul>
-<li>knife-spork (has handlers to notify people)</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/11/23/efl-toronto-2013/">Erlang Factory Lite 2013</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-23T07:00:00-05:00" pubdate data-updated="true">Nov 23<span>rd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>For the last four months I&rsquo;ve been actively involved in organizing EFL in Toronto.
-Now when the conference is over I want to take a few minutes to express my appreciation to all the people who made it happen.</p>
-
-<p><img class="center" src="/images/posts/tefl-2013.jpg"></p>
-
-<p>My big &ldquo;thank you&rdquo; goes to (in alphabetical order)</p>
-
-<ul>
-<li>Carlo Barrettara, Wioletta Dec, Michael DiBernardo, Monika Jarzyna, Michael Russo, Dann Toliver</li>
-<li>All speakers: Louis-Philippe Gauthier, Fred Hebert, Christopher Meiklejohn, Igor Ostaptchenko, Yurii Rashkovskii, Tom Santero, Garrett Smith</li>
-<li>All attendees</li>
-<li>My family</li>
-</ul>
-
-
-<p>Thank you all! Without you this conference wouldn&rsquo;t be possible.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick/">Managing Docker Services With This One Easy Trick</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-20T15:46:00-04:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have been having a lot of internal debate about the idea of running more than one service in a docker container.   A Docker container is built to run a single process in the foreground and to live for only as long as that process is running.  This is great in a utopian world where servers are immutable and sysadmins drink tiki drinks on the beach,  however it doesn&rsquo;t always translate well to the real world.</p>
-
-<p>Examples where you might want to be able to run multiple servers span from the simple use case of running <code>sshd</code> as well as your application to running a web app such as <code>wordpress</code> where you might want both <code>apache</code> and <code>mysql</code> running in the same container.</p>
-
-<p>Wrapping your applications in a supervisor daemon such as <code>runit</code> seems like a perfect fit for this.  All you need to do is install <code>runit</code> as part of your <code>dockerfile</code> and then create appropriate service directories for the apps you want to run in the container.    I was doing some testing of this when I realized a quirk of <code>runit</code> which I could exploit for evil.</p>
-
-<p>To start or stop a service with <code>runit</code> is simply a matter of creating or deleting a symlink in a service directory,   so in theory if you could expose that directory to the server hosting the container you could exploit that to start and stop services from outside of the container.  <code>Docker</code> volume mapping allows exactly this!</p>
-
-<p>Below you will find examples of running three services (logstash,elasticsearch,kibana) that make up the <code>logstash</code> suite.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/25/vagrant-docker-and-ansible-wtf/">Vagrant, Docker and Ansible, WTF?</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-25T08:00:00-04:00" pubdate data-updated="true">Sep 25<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2013/09/25/vagrant-docker-and-ansible-wtf.html">Vagrant, Docker and Ansible. WTF?</a></h2>
-
-<p>Given that we&rsquo;re building a SaaS that helps our client managing their infrastructure, our team is pretty familiar with leveraging VMs and configuration management tools. We&rsquo;ve actually been heavy users of Vagrant and <a href="http://devo.ps/blog/2013/07/03/ansible-simply-kicks-ass.html">Ansible</a> for
-the past year, and it&rsquo;s helped us tremendously normalize our development process.</p>
-
-<p>As our platform grew in complexity, some additional needs emerged:</p>
-
-<ul>
-<li><strong>Containerization</strong>; we needed to be able to safely execute custom, and potentially harmful, code.</li>
-<li><strong>Weight</strong>; as we added more sub-systems to devo.ps, having full blown VMs proved to be hard to juggle with when testing and developing.</li>
-</ul>
-
-
-<p>And that&rsquo;s why we ended up adding Docker to our development workflow. We were already familiar with it (as it powers some parts of the devo.ps infrastructure) and knew there would be obvious wins. In practice, we are shipping Docker containers in a main Vagrant image and drive some of the customization and upgrade with Ansible.</p>
-
-<p>We&rsquo;ll probably write something about this approach in the coming weeks, but given the amount of confusion there is around what these technologies are, and how they&rsquo;re used, we thought we&rsquo;d give you a quick tour on how to use them together.</p>
-
-<p>Let&rsquo;s get started.</p>
-
-<h2>Vagrant</h2>
-
-<p>You&rsquo;ve probably heard about <a href="http://www.vagrantup.com/">Vagrant</a>; a healthy number of people have been writing about it in the past 6 months. For those of you who haven&rsquo;t, think of it as a VM without the GUI. At its core, Vagrant is a simple wrapper around Virtualbox/VMware.</p>
-
-<p>A few interesting features:</p>
-
-<ul>
-<li><strong>Boatloads of existing images</strong>, just check <a href="http://www.vagrantbox.es/">Vagrantbox.es</a> for example.</li>
-<li><strong>Snapshot and package your current machine</strong> to a Vagrant box file (and, consequently, share it back).</li>
-<li><strong>Ability to fine tune settings of the VM</strong>, including things like RAM, CPU, APIC…</li>
-<li><strong>Vagrantfiles</strong>. This allows you to setup your box on init: installing packages, modifying configuration, moving code around…</li>
-<li><strong>Integration with CM tools</strong> like Puppet, Chef and Ansible.</li>
-</ul>
-
-
-<p>Let&rsquo;s get it running on your machine:</p>
+<p>We modified the “default” security group to open the SSH port. We
+recommend that you not completely open port 22 for SSH, but rather allow
+incoming requests to SSH from your specific IP address. In our case the
+IP address was 49.206.166.12.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>1. First, [download Vagrant](http://downloads.vagrantup.com/) 
-</span><span class='line'>     and [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
-</span><span class='line'>  2. Second, let's download an image, spin it up and SSH in:
-</span><span class='line'>   $ vagrant init precise64 http://files.vagrantup.com/precise64.box
-</span><span class='line'>   $ vagrant up
-</span><span class='line'>   $ vagrant ssh
-</span><span class='line'>  3. There's no 3.
-</span><span class='line'>  4. There's a 4 if you want to access your (soon to be) deployed app; 
-</span><span class='line'>  5. you will need to dig around the Vagrant documentation to 
-</span><span class='line'>     [perform port forwarding](http://docs.vagrantup.com/v2/networking/forwarded_ports.html), 
-</span><span class='line'>     [proper networking](http://docs.vagrantup.com/v2/networking/private_network.html) 
-</span><span class='line'>     and update manually your `Vagrantfile`.</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ ssh –I LAMP_AMI.pem root@ec2-54-254-37-17.ap-southeast-1.compute.amazonaws.commailto:root@ec2-54-254-37-17.ap-southeast-1.compute.amazonaws.com
+</span><span class='line'>mailto:root@ec2-54-254-37-17.ap-southeast-1.compute.amazonaws.com
+</span><span class='line'>$ yum install httpd.x86_64 httpd-devel.x86_64 mod_ssl.x86_64 php.x86_64 php-common.x86_64 php-devel.x86_64 php-gd.x86_64 php-mbstring.x86_64 php-mysql.x86_64 php-pdo.x86_64 php-soap.x86_64 php-xml.x86_64 php-xmlrpc.x86_64 php-pecl-apc-devel.x86_64 php-pecl-memcache.x86_64 -y</span></code></pre></td></tr></table></div></figure>
 
 
-<h2>Docker</h2>
+<p>Once you’ve successfully executed these commands, Apache and PHP will
+install. Note that the commands we’ve used are specific to CentOS 6.3.
+Choosing a different OS or a different CentOS may cause these commands
+to fail to execute. T<strong>he php modules listed above are required for
+WordPress setup and they may vary depending upon your requirements.</strong></p>
 
-<p><a href="http://docker.io">Docker</a> is a Linux container, written in <a href="http://golang.org">Go</a> (yay!) and based on <a href="http://en.wikipedia.org/wiki/LXC">lxc</a> (self-described as &ldquo;chroot on steroids&rdquo;) and <a href="http://en.wikipedia.org/wiki/Aufs">AUFS</a>. Instead of providing a full VM, like you get with Vagrant, Docker provides you lightweight containers, that share the same kernel and allow to safely execute independent
-processes.</p>
+<p>Now update the PHP and Apache configurations for your Instance types and
+for the expected load on application. We used t1.Micro for this article.
+Keep in mind that a production system’s instance types need to be chosen
+very carefully, and that the software must be tuned to those particular
+types.</p>
 
-<p>Docker is attractive for many reasons:</p>
+<p><strong><em>Read more on selecting instance types in <a href="../autoscaling-for-lamp-on-aws-choosing-an-instance-type-part-4/index.html" title="Autoscaling for LAMP on AWS | Choosing an instance type: Part 4">Part 4 of this
+series.</a></em></strong></p>
 
-<ul>
-<li><strong>Lightweight</strong>; images are much lighter than full VMs, and spinning off a new instance is lightning fast (in the range of seconds instead of minutes).</li>
-<li><strong>Version control of the images</strong>, which makes it much more convenient to handle builds.</li>
-<li><strong>Lots of images</strong> (again), just have a look at <a href="https://index.docker.io">the docker public index of images</a>.</li>
-</ul>
+<p>Install Postfix to send email notification for the script used in the
+next step.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ yum install postfix  
+</span><span class='line'>$ chkconfig –level 2345 postfix on
+</span><span class='line'>$ chkconfig –level 2345 httpd off</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Let&rsquo;s set up a Docker container on your Vagrant machine:</p>
+<p>​7. Now all of the required packages are installed and fine-tuned.</p>
+
+<p>So, how does one deploy the code into AMI?</p>
+
+<p>The method described here automates the deployment. One cron job will be
+included in AMI, and it will download and deploy the latest available S3
+code. That means that code updates will deploy to S3 every time, but not
+to instances. Every time a new instance is up, the instance will
+automatically download updates from the S3 bucket and deploy them.</p>
+
+<p>What follows is a script scheduled for machine boot-up. It requires
+updating based on specific user configurations and file paths.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1165,276 +575,169 @@ processes.</p>
 <span class='line-number'>27</span>
 <span class='line-number'>28</span>
 <span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>1. SSH in Vagrant if you're not in already:
-</span><span class='line'>    
-</span><span class='line'>     $ vagrant ssh
-</span><span class='line'>
-</span><span class='line'>  2. Install Docker, 
-</span><span class='line'>  [as explained on the official website](http://http://docs.docker.io/en/latest/installation/ubuntulinux/#ubuntu-precise-12-04-lts-64-bit):
-</span><span class='line'>    
-</span><span class='line'>     $ sudo apt-get update
-</span><span class='line'>     $ sudo apt-get install linux-image-generic-lts-raring linux-headers-generic-lts-raring
-</span><span class='line'>     $ sudo reboot
-</span><span class='line'>     $ sudo sh -c "curl https://get.docker.io/gpg | apt-key add -"
-</span><span class='line'>     $ sudo sh -c "echo deb http://get.docker.io/ubuntu docker main &gt; /etc/apt/sources.list.d/docker.list"
-</span><span class='line'>     $ sudo apt-get update
-</span><span class='line'>     $ sudo apt-get install lxc-docker
-</span><span class='line'>
-</span><span class='line'>  3. Verify it worked by trying to build your first container:
-</span><span class='line'>    
-</span><span class='line'>     $ sudo docker run -i -t ubuntu /bin/bash
-</span><span class='line'>
-</span><span class='line'>  4. Great, but we'll need more than a vanilla Linux. To add our dependencies, for example to run a Node.js + MongoDB app, we're gonna start by creating a `Dockerfile`:
-</span><span class='line'>    
-</span><span class='line'>     FROM ubuntu
-</span><span class='line'>     MAINTAINER My Self me@example.com
-</span><span class='line'>     
-</span><span class='line'>     # Fetch Nodejs from the official repo (binary .. no hassle to build, etc.)
-</span><span class='line'>     ADD http://nodejs.org/dist/v0.10.19/node-v0.10.19-linux-x64.tar.gz /opt/
-</span><span class='line'>     
-</span><span class='line'>     # Untar and add to the PATH
-</span><span class='line'>     RUN cd /opt &amp;&amp; tar xzf node-v0.10.19-linux-x64.tar.gz
-</span><span class='line'>     RUN ln -s /opt/node-v0.10.19-linux-x64 /opt/node
-</span><span class='line'>     RUN echo "export PATH=/opt/node/bin:$PATH" &gt;&gt; /etc/profile
-</span><span class='line'>     
-</span><span class='line'>     # A little cheat for upstart ;)
-</span><span class='line'>     RUN dpkg-divert --local --rename --add /sbin/initctl
-</span><span class='line'>     RUN ln -s /bin/true /sbin/initctl
-</span><span class='line'>     
-</span><span class='line'>     # Update apt sources list to fetch mongodb and a few key packages
-</span><span class='line'>     RUN echo "deb http://archive.ubuntu.com/ubuntu precise universe" &gt;&gt; /etc/apt/sources.list
-</span><span class='line'>     RUN apt-get update
-</span><span class='line'>     RUN apt-get install -y python git
-</span><span class='line'>     RUN apt-get install -y mongodb
-</span><span class='line'>     
-</span><span class='line'>     # Finally - we wanna be able to SSH in
-</span><span class='line'>     RUN apt-get install -y openssh-server
-</span><span class='line'>     RUN mkdir /var/run/sshd
-</span><span class='line'>     
-</span><span class='line'>     # And we want our SSH key to be added
-</span><span class='line'>     RUN mkdir /root/.ssh &amp;&amp; chmod 700 /root/.ssh
-</span><span class='line'>     ADD id_rsa.pub /root/.ssh/authorized_keys
-</span><span class='line'>     RUN chmod 400 /root/.ssh/authorized_keys &amp;&amp; chown root. /root/.ssh/authorized_keys
-</span><span class='line'>     
-</span><span class='line'>     # Expose a bunch of ports .. 22 for SSH and 3000 for our node app
-</span><span class='line'>     EXPOSE 22 3000
-</span><span class='line'>     
-</span><span class='line'>     ENTRYPOINT ["/usr/sbin/sshd", "-D"]
-</span><span class='line'>
-</span><span class='line'>  5. Let's build our image now:
-</span><span class='line'>    
-</span><span class='line'>     $ sudo docker build .
-</span><span class='line'>     
-</span><span class='line'>     # Missing file id_rsa.pub ... hahaha ! You need an ssh key for your vagrant user
-</span><span class='line'>     $ ssh-keygen
-</span><span class='line'>     $ cp -a /home/vagrant/.ssh/id_rsa.pub .
-</span><span class='line'>     
-</span><span class='line'>     # Try again
-</span><span class='line'>     $ sudo docker build .
-</span><span class='line'>     
-</span><span class='line'>     # Great Success! High Five!
-</span><span class='line'>
-</span><span class='line'>  6. Now, let's spin off a container with that setup and log into it (`$MY_NEW_IMAGE_ID` is the last id the build process returned to you):
-</span><span class='line'>    
-</span><span class='line'>     $ sudo docker run -p 40022:22 -p 80:3000 -d $MY_NEW_IMAGE_ID
-</span><span class='line'>     $ ssh root@localhost -p 40022</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/bash
+</span><span class='line'>S3_URL= “http://s3-ap-southeast-1.amazonaws.com/lamp-deploy/wordpress.zip” #Change the following paths as per your requirement.
+</span><span class='line'>DOCUMENT_ROOT=&lt;/var/www/html&gt;
+</span><span class='line'>TEMP_LOC=&lt;/tmp&gt;
+</span><span class='line'>APACHE_RESTART=`/etc/init.d/httpd restart`
+</span><span class='line'>#Get the instance ID from AWS metadata.
+</span><span class='line'>INSTANCE_ID=` curl http://169.254.169.254/latest/meta-data/instance-id`
+</span><span class='line'>###download the latest code from s3 and deploy###
+</span><span class='line'>cd /tmp
+</span><span class='line'>wget $S3_URL
+</span><span class='line'>if [ $? –ne 0 ]
+</span><span class='line'>then
+</span><span class='line'>pkill -9 httpd
+</span><span class='line'>mail –s “Code Download Failed from S3##$INSTANCE_ID”  test@test.com #Provide valid email ID here”
+</span><span class='line'>exit 1
+</span><span class='line'>fi
+</span><span class='line'>unzip wordpress.zip
+</span><span class='line'>rm –rf  &lt;/var/www/html/*&gt;
+</span><span class='line'>cp –r wordpress/* $DOCUMENT_ROOT
+</span><span class='line'>chmod 775 –R $DOCUMENT_ROOT
+</span><span class='line'>chown –R apache.root $DOCUMENT_ROOT
+</span><span class='line'>$APACHE_RESTART
+</span><span class='line'>if [ $? –ne 0 ]
+</span><span class='line'>then
+</span><span class='line'>pkill -9 httpd
+</span><span class='line'>mail –s “Apache startup Failed- $INSTANCE_ID”  test@test.com #Provide valid email ID here”
+</span><span class='line'>exit 1
+</span><span class='line'>fi
+</span><span class='line'>##script ends here####</span></code></pre></td></tr></table></div></figure>
 
 
-<p>You now have a Docker container, inside a Vagrant box (<em>Inception</em> style),
-ready to run a Node.js app.</p>
-
-<h2>Ansible</h2>
-
-<p><a href="http://ansible.cc">Ansible</a> is an orchestration and configuration management tool written in Python. If you want to learn more about Ansible (and you should…), <a href="/blog/2013/07/03/ansible-simply-kicks-ass.html">we wrote about it a few weeks ago</a>.</p>
-
-<p>Let&rsquo;s get to work. We&rsquo;re now gonna deploy an app in our container:</p>
+<p>Put this bash script into a file in /opt/ directory:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>1. [Install Ansible](/blog/2013/07/03/ansible-simply-kicks-ass.html), as we showed you in our previous post.
-</span><span class='line'>
-</span><span class='line'>  2. Prepare your inventory file (`host`):
-</span><span class='line'>    
-</span><span class='line'>     app ansible_ssh_host=127.0.0.1 ansible_ssh_port=40022
-</span><span class='line'>
-</span><span class='line'>  3. Create a simple playbook to deploy our app (`deploy.yml`):
-</span><span class='line'>    
-</span><span class='line'>     ---
-</span><span class='line'>     - hosts: app
-</span><span class='line'>       user: root
-</span><span class='line'>       tasks:
-</span><span class='line'>         # Fetch the code from github
-</span><span class='line'>         - name: Ensure we got the App code
-</span><span class='line'>           git:
-</span><span class='line'>             repo=git://github.com/madhums/node-express-mongoose-demo.git
-</span><span class='line'>             dest=/opt/node-express-mongoose-demo
-</span><span class='line'>         
-</span><span class='line'>         # NPM may or may not succeed, if you give it time, care, etc. it eventually works
-</span><span class='line'>         - name: Ensure the npm dependencies are installed
-</span><span class='line'>           command:
-</span><span class='line'>             chdir=/opt/node-express-mongoose-demo
-</span><span class='line'>             /opt/node/bin/npm install
-</span><span class='line'>           ignore_errors: yes
-</span><span class='line'>           
-</span><span class='line'>         # We will assume no changes in the default sample - or we should consider templates instead
-</span><span class='line'>         - name: Ensure the config files of the app
-</span><span class='line'>           command:
-</span><span class='line'>             creates=/opt/node-express-mongoose-demo/config/$item.js
-</span><span class='line'>             cp /opt/node-express-mongoose-demo/config/$item.example.js /opt/node-express-mongoose-demo/config/$item.js
-</span><span class='line'>           with_items:
-</span><span class='line'>             - config
-</span><span class='line'>             - imager
-</span><span class='line'>             
-</span><span class='line'>         # `initctl` is now linking to `true` and we have no access to services
-</span><span class='line'>         # Need to fake the start
-</span><span class='line'>         - name: Ensure mongodb data folders
-</span><span class='line'>           file:
-</span><span class='line'>             state=directory
-</span><span class='line'>             dest=$item
-</span><span class='line'>             owner=mongodb
-</span><span class='line'>             group=mongodb
-</span><span class='line'>           with_items:
-</span><span class='line'>             - /var/lib/mongodb
-</span><span class='line'>             - /var/log/mongodb
-</span><span class='line'>             
-</span><span class='line'>         # Super cheat combo !
-</span><span class='line'>         - name: Ensure mongodb is running
-</span><span class='line'>           shell:
-</span><span class='line'>             LC_ALL='C' /sbin/start-stop-daemon --background --start --quiet --chuid mongodb --exec  /usr/bin/mongod -- --config /etc/mongodb.conf
-</span><span class='line'>         
-</span><span class='line'>         # Cheating some more !
-</span><span class='line'>         - name: Ensure the App is running
-</span><span class='line'>           shell:
-</span><span class='line'>             chdir=/opt/node-express-mongoose-demo
-</span><span class='line'>             /opt/node/bin/npm start &amp;
-</span><span class='line'>
-</span><span class='line'>  4. Run that baby:
-</span><span class='line'>    
-</span><span class='line'>     $ ansible-playbook -i host deploy.yml
-</span><span class='line'>
-</span><span class='line'>  5. We're done, point your browser at `http://localhost:80` - assuming you have performed the redirection mentioned in the initial setup of your vagrant box.</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$vim /opt/auto-deploy.sh
+</span><span class='line'>$chmod +x /opt/auto-deploy.sh</span></code></pre></td></tr></table></div></figure>
 
 
-<p>That&rsquo;s it. You&rsquo;ve just deployed your app on Docker (in Vagrant).</p>
+<p>Open the Crontab and add this script to start at machine boot up:</p>
 
-<h2>Let&rsquo;s wrap it up</h2>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ crontab –e</span></code></pre></td></tr></table></div></figure>
 
-<p>So we just saw (roughly) how these tools can be used, and how they can be
-complementary:</p>
+
+<p>Add the following script:</p>
+
+<p><img src="https://lh4.googleusercontent.com/ZiqV0hI1ocrhmDqqLubt01OQdBcmJZqWhNciW6sbPfEz2Iwr99cxoNK4U5actZ6Vqdqat8asF-IwxjJQrVKiutlBZq6A74t9sp1wA0ezqCDbSR09YOjTQrJblX_8VShJfMA" alt="" /></p>
+
+<p>Save your changes and deploy the code by running the script to test
+whether or not the application is working as expected. This step is
+mandatory before creating an AMI. If you find any issues with the code
+or PHP/Apache settings, be sure to fix them before creating an AMI.</p>
+
+<p>Bundle and Upload the Code to S3</p>
 
 <ol>
-<li> Vagrant will provide you with a full VM, including the OS. It&rsquo;s great at providing you a Linux environment for example when you&rsquo;re on MacOS.</li>
-<li> Docker is a lightweight VM of some sort. It will allow you to build contained architectures faster and cheaper than with Vagrant.</li>
-<li> Ansible is what you&rsquo;ll use to orchestrate and fine-tune things. That&rsquo;s what you want to structure your deployment and orchestration strategy.</li>
+<li><p>Update the code with RDS DB configuration parameters.</p></li>
+<li><p>Now zip the working copy of the code and upload it to the S3
+location. The S3 location should match the location in the script,
+and also match the zip file name.</p></li>
+<li><p>Upload the zip file to the S3 bucket that matches the script. You
+can upload the zip file by using the console or any third party tool
+like Cloudberry.</p></li>
+<li><p>Grant read permissions to download the code from S3 to app servers.</p></li>
 </ol>
 
 
-<p>It takes a bit of reading to get more familiar with these tools, and we&rsquo;ll likely follow up on this post in the next few weeks. However, especially as a small team, this kind of technology allows you to automate and commoditize huge parts of your development and ops workflows. We strongly encourage you to make that investment. It has helped us tremendously increase the pace and
-quality of our throughput.</p>
+<h2><strong>Create the ELB</strong> </h2>
+
+<p>Go to Services-> EC2 &ndash;> Load Balancers and select “<strong>Create Load
+Balancer</strong>”.</p>
+
+<p><img src="https://lh5.googleusercontent.com/w-ZRahemXgWVTJcIwpwJYfdXgp7kcmUs23IYzjgdEpwUuYiCkoLJg2dnLs0-5fe8U0UFG1_3qyaNggPesGGHGUq1PwQH5MMo-QowBXfuhGSNthk65DDg5Oc1OA" alt="" /></p>
+
+<p><img src="https://lh5.googleusercontent.com/JU0AmjRaIgFbWa8mdGz2qTlbYTU7wKWiOa93uUVuu-RDO5PPfEVhV1ggUBZ95rr5_z637SffLdwYgHb5srqZlj9GfcL-or3aG3xWsqb9Sd4kJ24LKZ8_84d_YA" alt="" /></p>
+
+<p>Keep Healthy/Unhealthy threshold limits to 4 because that’s proven to be
+an ideal value. Also make sure index.html is available in the Document
+root. ELB looks for the index.html as a health check and removes the
+instance from the load balancer if it doesn’t get the 200 response.
+Create the required security groups and key pair for the autoscaling
+instances.</p>
+
+<h2><strong>Create RDS</strong> </h2>
+
+<p>​1. Go to Services &ndash;> RDS and select the <strong>MySQL</strong> engine.</p>
+
+<p><img src="https://lh5.googleusercontent.com/dgMcoX4gkePTWwEYT8soz9RdvW3iMPmmlVlnkgczHmwIDpfmh39BhRUmWRBEdbR0f6FMJi3LtaSW6z_sRhBmk_WYLfls0bv8VQ8r9PFPl52WOX0B12-vCLKBEQ" alt="" /></p>
+
+<p>​2. Select instance types, provide the details for all required fields
+and launch the instance. The RDS configuration details chosen for this
+article can be seen below.</p>
+
+<p>How should you select the DB instance type? There are many monitoring
+tools available for monitoring MySQL performance. If AWS RDS is used for
+MySQL, then it’s important to consider CloudWatch metrics. Since it’s
+not possible to install agents in RDS, you can rely upon CloudWatch
+metrics.</p>
+
+<p>By default, CloudWatch contains all required RDS monitoring metrics. Be
+sure to monitor the memory, CPU, DB connections and network I/O before
+you scale up the server.</p>
+
+<p>Ideally, m1.small RDS can handle up to 75 concurrent connections easily.
+but that depends upon the DB queries and the code.</p>
+
+<p>​3. After launching RDS, open the 3306 port to the app servers group.</p>
+
+<p>​4. Import the DB and try connecting to the application. Then use
+standard MySQL commands to import the dump.</p>
+
+<p><strong>Example:</strong> mysql –h rds-endpoint –u user –ppasswwd databasename &lt;
+dump.sql</p>
+
+<h2><strong>Verify the Application</strong> </h2>
+
+<p>At this point, it’s mandatory that you thoroughly verify the
+application. Make sure to check Login/logout, upload/download and any
+other relevant verifications. Create an AMI only after making sure that
+the application is working as expected. Fix any issues before proceeding
+to the next step.</p>
+
+<h3><strong>Create an AMI</strong></h3>
+
+<p>​1. Delete the command history:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ history -c</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Delete the deployed code and logs files and make things as clean as
+possible.</p>
+
+<p>​2. Create an AMI using the micro instance that you’ve configured.</p>
+
+<p>Go to AWS Console->Services->EC2, right click on the instance, and
+select “Create Image” (EBS AMI).</p>
+
+<p><img src="https://lh4.googleusercontent.com/pR5iFmQYgO6FygwUB1SNh52dtHhrTr4TDk_G9fd6wlh1ds3V5gnbvhqYdn4yPOPRuQ7JZXwO54xuguOEoczq9yhVx1gsuHuZbVmCRgVFbida6ciJxv0EhNhwdQ" alt="" /></p>
+
+<p>Name the AMI using a date as the naming convention. <strong>Do not</strong> select
+“<strong>No reboot</strong>”. Instead, allow it to reboot while creating the AMI. The
+reboot will give you a consistent snapshot of EBS.</p>
+
+<p><img src="https://lh5.googleusercontent.com/5vWSfAF_enz-JCR8PlW-hDts2pvtUSI8yRFYkx8H27K0UdRCntJjTgcHGODGJpiGkXfFpe-XGva-EZUFF5gEDRcPcw5o8xc_8n1ueqYQaK8hpY9WolFLUdrHRw" alt="" /></p>
+
+<p>In a few minutes an AMI will be created and made available.</p>
+
+<p>Keep the root partition as minimal as possible because that helps to
+prevent bugs. You don’t need large space for root partition in autoscale
+because these instances keep rotating.</p>
+
+<h2><strong>Terminate the Instance</strong> </h2>
+
+<p>Finally, terminate the instance by right clicking on the instance and
+selecting “Terminate”. Keep the ELB and RDS running.</p>
+
+<p><strong><em>Watch out for Part 2, same time tomorrow, on how to setup autoscaling
+groups!</em></strong></p>
+
+<p><strong>Update</strong>: Check part 2 on how to setup autoscaling groups
+<a href="../autoscaling-for-lamp-on-aws-setting-up-austoscaling-groups-part-2/index.html" title="Autoscaling for LAMP on AWS | Setting Up Austoscaling Groups : Part 2">here</a>.</p>
 </div>
   
   
@@ -1448,7 +751,7 @@ quality of our throughput.</p>
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/">Creating Immutable Servers With Chef and docker.io</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/">A Deep Dive Into AWS Reserved Instances</a></h1>
       
       
     
@@ -1465,23 +768,104 @@ quality of our throughput.</p>
   
 
 
-<time datetime="2013-09-07T18:18:00-04:00" pubdate data-updated="true">Sep 7<span>th</span>, 2013</time>
+<time datetime="2014-03-25T09:35:27-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>Building applications in a <a href="http://docker.io">docker.io</a> Dockerfile is relatively simple,  but sometimes you want to just install the application exactly as you would normally via already built chef cookbooks.   Turns out this is actually pretty simple.</p>
+  <div class="entry-content"><h3>A Deep Dive into AWS Reserved Instances</h3>
 
-<p>The first thing you&rsquo;ll need to do is build a container with chef-client and berkshelf installed.   You can grab the one I&rsquo;ve built by running <code>docker pull paulczar/chef-solo</code> or build one youself from a <code>Dockerfile</code> that looks a little something like the following&hellip;</p>
+<p>One of our primary goals at Flux7 Labs is to help our clients reduce
+their AWS costs. In fact, our product VyScale is based entirely on cost
+optimization using Spot instances. We inform our clients when it makes
+economic sense for them to buy instance reservations because
+reservations for periods of unexpected minimum usage can be beneficial.
+Reserved instances function exactly like on-demand instances, except
+that you pay an upfront fee to gain cheaper hourly rates.</p>
 
+<h3>Reserved Instance Pricing</h3>
+
+<p>There are several levels of reservations. Higher ones allow you to pay
+more up front in order to achieve a lower hourly cost. The table below
+shows the rates for various types of reserved and on-demand instances
+for m1.large instances.</p>
+
+<hr />
+
+<pre><code>           Upfront   Hourly in cents
+</code></pre>
+
+<p>  On-demand    0         24
+  Light Util   243       13.6
+  Med Util     554       8.4
+  Heavy Util   676       5.6</p>
+
+<hr />
+
+<p>At some levels of utilization it makes sense to purchase reservations,
+rather than to rely solely upon on-demand instances. By factoring in
+upfront costs, we can determine which levels warrant purchasing
+reservations. What’s surprising is that those levels are fairly low,
+especially in the case of light reservations. Even at 30% utilization,
+light-reservation costs start to break even with those of on-demand
+instances. The following graph shows equivalent hourly costs for
+reservations at various utilization levels</p>
+
+<p><a href="../../../wp-content/uploads/AWS-reserved-instances-1.png"><img src="../../../wp-content/uploads/AWS-reserved-instances-1.png" alt="Hourl rates of reserved
+instances" /></a></p>
+
+<p>To better understand these numbers in terms of total cost, as opposed to
+incremental cost, the figure below shows total annual expenditures at
+various levels. For a 100% utilization of an instance, one can reduce
+costs to almost half of Amazon’s standard pricing for reserved
+instances, and that’s without any of the bulk discounts made available
+to high-volume AWS customers. At lower levels, reservations cost almost
+twice as much as those at higher levels. However, keep in mind that, as
+a fraction of overall cost, the amount is still not very high. So, in
+cases where growth is expected, it can make sense to purchase
+reservations early.</p>
+
+<p><a href="../../../wp-content/uploads/AWS-reserved-instances-2.png"><img src="../../../wp-content/uploads/AWS-reserved-instances-2.png" alt="Annual rates of reserved
+instances" /></a></p>
+
+<h3>Do You Have A Reservation?</h3>
+
+<p>Another thing to know about Amazon’s policy is that you receive a
+guaranteed instance when you buy a reservation, whereas there is no such
+guarantee for on-demand instances. When trying to acquire an on-demand
+instance, AWS may return an error message stating that capacity is not
+available for that instance type. On the other hand, once you purchase a
+reservation Amazon guarantees that the instance will be made available
+to you at the moment you request it. If you’re using an autoscaling
+solution it can make sense to make light utilization reservations to
+handle your excess capacity, even if it costs more to guarantee uptime
+to your customers. With Amazon’s guarantee it’s no wonder that Netflix
+runs almost exclusively on reservations. As a matter of policy,
+Netflix’s use of on-demand instances indicates that more reservations
+need to be purchased.</p>
+
+<p>One thing to note is that Amazon always uses reservations first, so you
+can’t keep unused light reservations as backups while using on-demand
+instances for capacity.</p>
+
+<h3>How Amazon Handles Unused Reservations</h3>
+
+<p>Spot instances are one of the best uses of unutilized reserved capacity
+with AWS. They come with no guarantee of availability, and can be taken
+away from you at Amazon’s discretion at any time in order to fulfill
+other customers’ needs. Spot prices hover around 15% of the on-demand
+price, which allows Amazon to make a decent return on unused
+reservations and while offering reservations at a relatively low price.</p>
+
+<h3>Conclusion</h3>
+
+<p>The most common reason to use reservations is price, but there are also
+other considerations. The final decision should be based on capacity
+analysis from a business perspective.</p>
 </div>
   
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/">Read on &rarr;</a>
-    </footer>
   
 
 
@@ -1493,7 +877,7 @@ quality of our throughput.</p>
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2013/07/28/java-12pm-bug/">12PM Bug in Java</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/">6 Reasons Why Large Enterprises Should Move to Amazon Web Services</a></h1>
       
       
     
@@ -1510,109 +894,645 @@ quality of our throughput.</p>
   
 
 
-<time datetime="2013-07-28T08:00:00-04:00" pubdate data-updated="true">Jul 28<span>th</span>, 2013</time>
+<time datetime="2014-03-25T09:13:48-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>I&rsquo;ve recently hit on a nasty bug in Java. It sits in <code>Date</code> class and shows up only at noon!
-I&rsquo;m going to demonstrate it using Groovy shell, but you can reproduce it in plain Java environment too.</p>
+  <div class="entry-content"><h2>6 reasons why large enterprises should move to Amazon Web Services</h2>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">format</span> <span class="o">=</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="na">text</span><span class="o">.</span><span class="na">SimpleDateFormat</span><span class="o">(</span><span class="s1">&#39;EEE MMM d hh:mm:ss z yyyy&#39;</span><span class="o">)</span>
-</span><span class='line'><span class="c1">//= java.text.SimpleDateFormat@fbb27a1c</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">originalDate</span> <span class="o">=</span> <span class="s1">&#39;Sun Jul 28 13:14:15 EDT 2013&#39;</span>
-</span><span class='line'><span class="c1">//= Sun Jul 28 13:14:15 EDT 2013</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">date</span> <span class="o">=</span> <span class="n">format</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">originalDate</span><span class="o">)</span>
-</span><span class='line'><span class="c1">//= Sun Jul 28 13:14:15 EDT 2013</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">parsedDate</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="na">toString</span><span class="o">()</span>
-</span><span class='line'><span class="c1">//= Sun Jul 28 13:14:15 EDT 2013</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">assert</span> <span class="n">originalDate</span> <span class="o">==</span> <span class="n">parsedDate</span>
-</span><span class='line'><span class="c1">//= null</span>
-</span></code></pre></td></tr></table></div></figure>
+<h3>6 reasons why large enterprises should move to Amazon Web Services</h3>
+
+<p>Amazon has changed the face of the world of startups with its cloud services. Now it’s possible for two men in a garage to set up large
+computer clusters for zero capital cost.</p>
+
+<p><a href="https://twitter.com/share?text=Amazon+has+its+sights+set+on+enterprise,+which+they+will+conquer+slowly+but+surely.+&amp;via=OurLabs&amp;related=Flux7Labs&amp;url=http://wp.me/p4sEOD-o6">Amazon has its sights set on enterprise, which they will conquer slowly
+but
+surely.</a></p>
+
+<p>At Our Labs, one of our specialties is cloud migration for enterprise
+clients, and we’ve received considerable feedback about both their
+concerns and delights. In this post I’ll explain why I strongly believe
+large enterprises should consider moving to the cloud.</p>
+
+<h2><strong>Agility and Responsiveness</strong> </h2>
+
+<p>Let’s face it, if a startup is a speedboat, then a large enterprise is
+the Titanic. While startups can pivot any time there’s danger and large
+enterprises turn more slowly, there are icebergs that can sink either.
+Disasters happen to everyone, but a large enterprise has significantly
+more skin in the game, and the old model of waiting a month before
+buying a new rack just doesn’t cut it anymore. By shifting to the cloud,
+large enterprises can bring up new servers in minutes, which means
+shorter downtimes, rapid experimentation, more innovation, increased
+global reach, improved demand-surge handling and more successful
+short-lived-but-resource-intensive projects.</p>
+
+<h2><strong>Innovation</strong> </h2>
+
+<p>Business is a cutthroat world in which we must always strive to
+out-innovate our competitors. This article is about the cloud in
+general, but I want to explain why it’s also Amazon focused. Amazon has
+been blazing the cloud-computing trail longer than anyone, which is
+reflected by its 80% market share, and is clearly ahead of its
+competitors. For example, check out Gartner’s analysis of different
+cloud providers in the chart below and you’ll see Amazon in a corner of
+their own. In fact, Amazon so dominated the competition that Gartner had
+to artificially lower the scale. Amazon is innovating at such a rapid
+pace in providing new services and broadening its customer base that
+competitors are struggling to keep pace.</p>
+
+<p>The effect of this innovation is obvious to developers. Do you want to
+provide Active Directory integration with Amazon? You can do that. Do
+you want to save on data costs by using the Bittorrent protocol for
+content distribution? You can do that. Do you want to put heavy compute
+behind your mobile games? You can do that. Do you want to ramp up your
+clients quickly with remote workstations? You can do that, too. With
+Amazon Web Services you can do all of that and more. I’m a
+certified<a href="file:///C:/Users/Vishnu/Documents/Our/SMM/Blog/WhyEnterprisemustAmazon_(REVISED_CLEAN">[1]</a>.docx#_msocom_1) 
+AWS instructor, yet I learn something new about AWS every day as Amazon
+constantly releases new features. The advantage of moving your business
+to the cloud is that you can let your developers focus on your company’s
+area of expertise while leaving the boilerplate to Amazon.</p>
+
+<p>\</p>
+
+<p> <img src="https://lh3.googleusercontent.com/GmdBmLBmcGW9TIBqUCVkf403uIIf9arZ6-brIjBOt8tus6n_7YaKdOW3kcQqSIUbKnQd9vthqX1nyHHGouT8xbmDF3-xkpXUbJV0UJLpguSzg7EKB6QuaqR92uw_og" alt="" /></p>
+
+<h2><strong>A Data Center That Hosts A Top Website</strong> </h2>
+
+<p>One thing we mustn’t forget is what the AWS cloud really is—a product of
+years of innovation by one of the largest e-commerce websites in the
+world. Its data centers are distributed globally in numerous parts of
+the world, with multiple, independently-operating data centers in each
+region that provide different failure domains while being close enough
+together to provide cheap communication. And that’s just the compute
+side of the equation. Amazon also shares its global content distribution
+network, its DNS servers. it compiles traffic data from across the globe
+to find the best route for your network traffic. There are only a
+handful of companies today with that kind of global reach, and they,
+too, are developing cloud capabilities. But unless you’re in that elite
+club, you won’t be able to create a data center that can compete with
+AWS. So by using a cloud solution, rather than an in-house solution,
+you’ll clearly benefit in terms of better performance, better fault
+tolerance, and better disaster recovery.</p>
+
+<h2><strong>Security</strong> </h2>
+
+<p>Security is the biggest concern about cloud computing for most
+enterprises, but Amazon holds many of the most important certifications,
+including PCI, HIPAA, Sarbanes-Oxley, and ISO. Since it has so much at
+stake, it maintains separation of logical and physical access to data in
+order to limit the impact of disgruntled employees. While I certainly
+understand someone hesitating to entrust one’s most valuable information
+with a third party, it’s certainly debatable whether on-premise storage
+is more secure than cloud storage.</p>
+
+<h2><strong>In-house Expertise Not Required</strong> </h2>
+
+<p>Anyone that’s had to hire people knows that good employees are worth
+their weight in platinum. Moving to the cloud allows you to offload much
+of your data-center maintenance onto Amazon. Let it do what it’s best at
+while you focus on what you’re best at.</p>
+
+<p>As we know, you often have to pay dearly to hire someone outside of your
+area of expertise. For example, say you’re a director of IT at a company
+like Schlumberger. Your company is great at what it does and has strong
+brand value in its area of expertise. Do you think you can possibly
+poach someone like <a href="http://mvdirona.com/jrh/work/">James Hamilton</a> for
+your company? No, you can’t. With core expertise in data centers, Amazon
+will likely offer a more intriguing challenge and a deeper sense of
+mission to the kind of people you’ll want to hire for your team. And we
+all know that employee engagement is not about the money, but rather
+about being involved in a greater mission.</p>
+
+<h2><strong>Lower Costs</strong> </h2>
+
+<p>While I’m convinced that moving to the cloud will lower your costs, I
+acknowledge that getting there requires a lot of expertise and hard
+work. Additionally you may very easily find yourself comparing apples
+and oranges. Yet cloud solutions are cheaper than on-premise solutions
+when played right. First, when you pay for a machine on AWS you’re also
+paying for Amazon’s years of expertise in setting up resilient data
+centers, something that’s not true for in-house departments lacking core
+IT expertise. Second, there’s great potential for saving money by
+scaling to your variable demand needs instead of designing for max
+capacity. That’s why Netflix, even though it comprises one-third of the
+Internet in terms of data volume, has gone “all in” on AWS, or they’d
+have to provision enough machines to handle 9PM Friday traffic.
+Alternatively you can have an expected area of needing high demand, as
+say for a chip company close to tapeout, a movie studio needing to
+render for a year
+(<a href="http://gigaom.com/2014/03/02/the-oscars-how-american-hustles-fx-team-made-2013-boston-look-like-1980s-new-york/">http://gigaom.com/2014/03/02/the-oscars-how-american-hustles-fx-team-made-2013-boston-look-like-1980s-new-york/</a>),
+or a game company handling launch day demand
+(<a href="http://www.respawn.com/news/lets-talk-about-the-xbox-live-cloud/">http://www.respawn.com/news/lets-talk-about-the-xbox-live-cloud/</a>).</p>
+
+<h2><strong>Conclusion</strong> </h2>
+
+<p>If you’re a large enterprise and on the fence about whether or not to
+move to the cloud, we highly recommend trying it out. Try it on a
+contained project, rather than one that’s on a critical path, something
+that fits well within the cloud’s capabilities. After implementation, do
+a post-mortem and analyze the results in terms of cost and
+time-to-market. What is the expectation as you build in-house
+expertise<strong>.</strong> The results may well surprise you.</p>
+
+<h2><strong>Let’s Talk</strong> </h2>
+
+<p>Our Research Labs has helped Fortune 100 and Fortune 500 companies move
+successfully to AWS. We’d love to hear any questions, comments or
+concerns you may have, so feel free to contact us anytime during weekly
+<a href="http://ohours.org/aatersuleman">office hours</a> to discuss your specific
+needs or situation. We offer this service free of charge with no
+obligation or strings attached.</p>
+</div>
+  
+  
 
 
-<p>So far so good.</p>
-
-<p>I chose a specific formatter on line 1 to make the bug even more evident. With this formatter lines 5, 8, and 11 must be identical on my machine, and they are in this example. The assertion on line 13 also proves the equality.</p>
-
-<p>Now let&rsquo;s change the example date to one hour earlier</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">originalDate</span> <span class="o">=</span> <span class="s1">&#39;Sun Jul 28 12:14:15 EDT 2013&#39;</span>
-</span><span class='line'><span class="c1">//= Sun Jul 28 12:14:15 EDT 2013</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">date</span> <span class="o">=</span> <span class="n">format</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">originalDate</span><span class="o">)</span>
-</span><span class='line'><span class="c1">//= Sun Jul 28 00:14:15 EDT 2013</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">parsedDate</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="na">toString</span><span class="o">()</span>
-</span><span class='line'><span class="c1">//= Sun Jul 28 00:14:15 EDT 2013</span>
-</span></code></pre></td></tr></table></div></figure>
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/23/creating-a-secure-deployment-pipeline-in-amazon-web-services/">Creating a Secure Deployment Pipeline in Amazon Web Services</a></h1>
+      
+      
+    
+      <p class="meta">
+        
 
 
-<p>Lines 2, 5, and 8 are not identical any more. The String representation of the date is 12 hours off.</p>
-
-<p>To make sure the problem is in <code>toString</code> and not in <code>parse</code>, let&rsquo;s format the date using formatter</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">format</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">date</span><span class="o">)</span>
-</span><span class='line'><span class="c1">//= Sun Jul 28 12:14:15 EDT 2013</span>
-</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Looks good. The problem is in <code>toString</code> indeed. Or is it?</p>
-
-<p>Let&rsquo;s parse 13 o&#8217;clock date and 12 o&#8217;clock date. The difference between them should be 1 hour. In reality</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">date13</span> <span class="o">=</span> <span class="s1">&#39;Sun Jul 28 13:14:15 EDT 2013&#39;</span>
-</span><span class='line'><span class="c1">//= Sun Jul 28 13:14:15 EDT 2013</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">date12</span> <span class="o">=</span> <span class="s1">&#39;Sun Jul 28 12:14:15 EDT 2013&#39;</span>
-</span><span class='line'><span class="c1">//= Sun Jul 28 12:14:15 EDT 2013</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">(</span><span class="n">format</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">date13</span><span class="o">).</span><span class="na">time</span> <span class="o">-</span> <span class="n">format</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">date12</span><span class="o">).</span><span class="na">time</span><span class="o">)</span> <span class="s">/ (1000 * 60 * 60)</span>
-</span><span class='line'><span class="s">/</span><span class="o">/=</span> <span class="mi">13</span>
-</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Wow, the problem is actually in <code>parse</code>. Then how come the <code>format</code> returned the correct value? That&rsquo;s still a mystery to me.</p>
 
-<p>I&rsquo;m actually quite surprised that this bug survived through JDK 1.7.0_09, and neither Sun nor Oracle hasn&rsquo;t fixed it yet.</p>
+
+  
+
+
+<time datetime="2014-03-23T11:24:27-04:00" pubdate data-updated="true">Mar 23<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Many organizations require a secure infrastructure. I’ve yet to meet a customer that says that security isn’t a concern. But, the decision on “how secure?” should be closely associated with a risk analysis for your organization.</p>
+
+<p>Since Amazon Web Services (AWS) is often referred to as a “public cloud”, people sometimes infer that “public” must mean it’s “out in the public” for all to see. I’ve always seen “public/private clouds” as an
+unfortunate use of terms. In this context, public means more like
+“Public Utility”. People often interpret “private clouds” to be
+inherently more secure. Assuming that “public cloud” = less secure and
+“private cloud” = more secure couldn’t be further from the truth. Like
+most things, it’s all about how you architect your infrastructure. While
+you can define your infrastructure to have open access, AWS provides
+many tools to create a truly secure infrastructure while eliminating
+access to all but only authorized users.</p>
+
+<p>I’ve created an initial list of many of the practices we use. We don’t
+employ all these practices in all situations, as it often depends on our
+customers’ particular security requirements. But, if someone asked me
+“How do I create a secure AWS infrastructure using a Deployment
+Pipeline?”, I’d offer some of these practices in the solution. I’ll be
+expanding these over the next few weeks, but I want to start with some
+of our practices.</p>
+
+<p><strong>AWS Security</strong></p>
+
+<p>* After initial AWS account creation and login, configure
+<a href="https://aws.amazon.com/iam/" title="AWS IAM">IAM</a> so that there’s no need to
+use the AWS root account\
+ * Apply least privilege to all IAM accounts. Be very careful about who
+gets Administrator access.\
+ * Enable all IAM password rules\
+ * Enable MFA for all users\
+ * Secure all data at rest\
+ * Secure all data in transit\
+ * Put all AWS resources in a <a href="https://aws.amazon.com/vpc/" title="Virtual Private Cloud">Virtual Private
+Cloud</a> (VPC).\
+ * No EC2 Key Pairs should be shared with others. Same goes for Access
+Keys.\
+ * Only open required ports to the Internet. For example, with the
+exception of, say, port 80, no security groups should have a CIDR Source
+of 0.0.0.0/0). The bastion host might have access to port 22 (SSH), but
+you should enable
+<a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing" title="CIDR">CIDR</a>
+to limit access to specific subnets. Using a VPC is a part of a solution
+to eliminate Internet access. No canonical environments should have
+SSH/RDP access.\
+ * Use IAM to limit access to specific AWS resources and/or
+remove/limit AWS console access\
+ * Apply a bastion host configuration to reduce your attack profile\
+ * Use <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html" title="IAM Roles">IAM
+Roles</a>
+so that there’s no need to configure Access Keys on the instances\
+ * Use resource-level permissions in EC2 and RDS\
+ * Use SSE to secure objects in S3 buckets\
+ * Share initial IAM credentials with others through a secure mechanism
+(e.g. <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard" title="AES">AES-256
+encryption</a>)\
+ * Use and monitor AWS
+<a href="https://aws.amazon.com/cloudtrail/" title="AWS CloudTrail">CloudTrail</a> logs</p>
+
+<p><strong>Deployment Pipeline</strong></p>
+
+<p>A deployment pipeline is a staged process in which the complete software
+system is built and tested with every change. Team members receive
+feedback as it completes each stage. With most customers, we usually
+construct between 4-7 deployment pipeline stages and the pipeline only
+goes to the next stage if the previous stages were successful. If a
+stage fails, the whole pipeline instance fails. The first stage (often
+referred to as the “Commit Stage”) will usually take no more than 10
+minutes to complete. Other stages may take longer than this. Most stages
+require no human intervention as the software system goes through more
+extensive testing on its way to production. With a deployment pipeline,
+software systems can be released at any time the business chooses to do
+so. Here are some of the security-based practices we employ in
+constructing a deployment pipeline.</p>
+
+<p>* Automate everything: Networking (VPC, Route 53) Compute (EC2),
+Storage, etc. All <em>AWS</em> automation should be defined in
+<a href="https://aws.amazon.com/cloudformation/" title="CloudFormation">CloudFormation</a>.
+All environment configuration should be defined using infrastructure
+automation scripts – such as Chef, Puppet, etc.\
+ * Version Everything: Application Code, Configuration, Infrastructure
+and Data\
+ * Manage your binary dependencies. Be specific about binary version
+numbers. Ensure you have control over these binaries.\
+ * Lockdown pipeline environments. Do not allow SSH/RDP access to any
+environment in the deployment pipeline\
+ * For project that require it, use permissions on the CI server or
+Deployment application to limit who can run deployments in certain
+environments – such as QA, Pre-Production and Production. When you have
+a policy in which all changes are applied through automation and
+environments are locked down, this usually becomes less of a concern.
+But, it can still be a requirements on some teams.\
+ * Use the Disposable Environments pattern – instances are terminated
+once every few days. This approach reduces the attack profile\
+ * Log everything outside of the EC2 instances (so that they can be
+access later). Ensure these log files are encrypted e.g. securely
+through S3)\
+ * All canonical changes are only applied through automation that are
+part of the deployment pipeline. This includes application,
+configuration, infrastructure and data change. Infrastructure patch
+management would be a part of the pipeline just like any outer software
+system change.\
+ * No one has access to nor can make direct changes to pipeline
+environments\
+ * Create high-availability systems Multi-AZ, <a href="https://aws.amazon.com/autoscaling/" title="Auto Scaling">Auto
+Scaling</a>, <a href="https://aws.amazon.com/elasticloadbalancing/" title="ELB">Elastic
+Load Balancing</a> and
+Route 53\
+ * For non-Admin AWS users, only provide access to AWS through a secure
+<a href="https://en.wikipedia.org/wiki/Continuous_integration" title="Continuous Integration">Continuous
+Integration</a>
+(CI) server or a self-service application\
+ * Use Self-Service Deployments and give developers full SSH/RDP access
+to their self-service deployment. Only their particular EC2 Key Pair can
+access the instance(s) associated with the deployment. Self-Service
+Deployments can be defined in the CI server or a lightweight
+self-service application.\
+ * Provide capability for any authorized user to perform a self-service
+deployment with full SSH/RDP access to the environment they created
+(while eliminating outside access)\
+ * Run two active environments – We’ve yet to do this for customers,
+but if you want to eliminate all access to the canonical production
+environment, you might choose to run two active environments at once so
+that engineers can access the non-production environment to troubleshoot
+a problem in which the environment has the exact same configuration and
+data so you’re troubleshooting accurately.\
+ * Run automated infrastructure tests to test for security
+vulnerabilities (e.g. cross-site scripting, SQL injections, etc.) with
+every change committed to the version-control repository as part of the
+deployment pipeline.</p>
+
+<p><strong>FAQ</strong></p>
+
+<p>* <strong>What is a canonical environment?</strong> It’s your system of record. You
+want your canonical environment to be solely defined in source code and
+versioned. If someone makes a change to the canonical system and it
+affects everyone it should only be done through automation. While you
+can use a self-service deployment to get a copy of the canonical system,
+any direct change you make to the environment is isolated and never made
+part of the canonical system unless code is committed to the
+version-control repository.\
+ * <strong>How can I troubleshoot if I cannot directly access canonical
+environments?</strong> Using a self-service deployment, you can usually
+determine the cause of the problem. If it’s a data-specific problem, you
+might import a copy of the production database. If this isn’t possible
+for time or security reasons, you might run multiple versions of the
+application at once.\
+ * <strong>Why should we dispose of environments regularly?</strong> Two primary
+reasons. The first is to reduce your attack profile (i.e. if
+environments always go up and down, it’s more difficult to hone in on
+specific resources. The second reason is that it ensures that all team
+members are used to applying all canonical changes through automation
+and not relying on environments to always be up and running somewhere.\
+ * <strong>Why should we lockdown environments?</strong> To prevent people from
+making disruptive environment changes that don’t go through the
+version-control repository.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/">CI and Test Automation Utilizing OpenStack</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-14T09:54:08-04:00" pubdate data-updated="true">Mar 14<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/11/continuous-delivery-tools-list/">Continuous Delivery Tools List</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-11T12:27:44-04:00" pubdate data-updated="true">Mar 11<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/11/tools-in-aws-for-implementing-continuous-deployment-pipeline/">Tools in AWS for Implementing Continuous Deployment Pipeline</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-11T10:13:38-04:00" pubdate data-updated="true">Mar 11<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/11/creating-a-secure-deployment-pipeline-in-aws/">Creating a Secure Deployment Pipeline in AWS</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-11T10:11:47-04:00" pubdate data-updated="true">Mar 11<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/downloads/code/opsworks_automation_stack.jpg" alt="" />
+<a href="https://aws.amazon.com/opsworks/">Amazon Web Services (AWS) OpsWorks</a> was released one year ago this month. In the past year, we’ve used OpsWorks on several Cloud Delivery projects at <a href="http://stelligent.com/">Stelligent</a> and at some of our customers. This article describes what’s worked for us and our customers. One of our core aims with any customer is to create a fully repeatable process for delivering software. To us, this translates into several more specific objectives. For each process we automate, the process must be fully documented, tested, scripted, versioned and continuous. This article describes how we achieved each of these five objectives in delivering OpsWorks solutions to our customers. In creating any solution, we version any and every asset required to create the software system. With the exception of certain binary packages, the entire software system gets described in code. This includes the application code, configuration, infrastructure and data.</p>
+
+<p>As a note, we’ve developed other AWS solutions without OpsWorks using CloudFormation, Chef, Puppet and some of the other tools mentioned here, but the purpose of this is to describe our approach when using OpsWorks.</p>
+
+<h2>AWS Tools</h2>
+
+<p>AWS has over 30 services and we use a majority of these services when creating deployment pipelines for continuous delivery and automating infrastructure. However, we typically use only a few services directly when building these infrastructure. For instance, when creating infrastructure with OpsWorks, we’ll use the AWS Ruby SDK to provision the OpsWorks resources and CloudFormation for the resources we cannot provision through OpsWorks. We use these three services to access services such as EC2, Route 53, VPC, S3, Elastic Load Balancing, Auto Scaling, etc. These three services are described below.</p>
+
+<h2>AWS OpsWorks</h2>
+
+<p>– OpsWorks is an infrastructure orchestration and event modeling service for provisioning infrastructure resources. It also enables you to call out to Chef cookbooks (more on Chef later). The OpsWorks model logically defines infrastructure in terms of stacks, layers and apps. Within stacks, you can define layers; within layers you can define applications and within applications, you can run deployments. An event model automatically triggers events against these stacks (e.g. Setup, Configure, Deploy, Undeploy, Shutdown). As mentioned, we use the AWS API (through the Ruby SDK) to script the provisioning of all OpsWorks behavior. We never manually make changes to OpsWorks through the console (we make these changes to the versioned AWS API scripts).</p>
+
+<h2>CloudFormation</h2>
+
+<p>– We use CloudFormation to automatically provision resources that we cannot provision directly through OpsWorks. For example, while OpsWorks connects with Virtual Private Clouds (VPC)s and Elastic Load Balancer (ELB)s, you cannot provision VPC or ELB directly through OpsWorks. Since we choose to script all infrastructure provisioning and workflow, we wrote CloudFormation templates for defining VPCs, ELBs, Relational Database Service (RDS) and Elasticache. We orchestrate the workflow in Jenkins so that these resources are automatically provisioned prior to provisioning the OpsWorks stacks. This way, the OpsWorks stacks can consume these resources that were provisioned in the CloudFormation templates. As with any other program, these templates are version-controlled.</p>
+
+<h2>AWS API</h2>
+
+<p>(using Ruby SDK) – We use the AWS Ruby SDK to script the provisioning of OpsWorks stacks. While we avoid using the SDK directly for most other AWS services (because we can use CloudFormation), we chose to use the SDK for scripting OpsWorks because CloudFormation does not currently support OpsWorks. Everything that you might do using the OpsWorks dashboard – creating stacks, JSON configuration, calling out to Chef, deployments – are all written in Ruby programs that utilize the OpsWorks portion of the AWS API.</p>
+
+<h2>Infrastructure Automation</h2>
+
+<p>There are other non-AWS specific tools that we use in automating infrastructure. One of them is the infrastructure automation tool, Chef. Chef Solo is called from OpsWorks. We use infrastructure automation tools to script and as a way to document the process of provisioning infrastructure.</p>
+
+<h2>Chef</h2>
+
+<p>– OpsWorks is designed to run Chef cookbooks (i.e. scripts/programs). Ultimately, Chef is where a bulk of the behavior for provisioning environments is defined – particularly once the EC2 instance is up and running. In Chef, we write recipes (logically stored in cookbooks) to install and configure web servers such as Apache and Nginx or application servers such as Rails and Tomcat. All of these Chef recipes are version-controlled and called from OpsWorks or CloudFormation.</p>
+
+<h2>Ubuntu</h2>
+
+<p> – When using OpsWorks and there’s no specific operating system flavor requirement from our customer, we choose to use Ubuntu 12.04 LTS. We do this for two reasons. The first is that at the time of this writing, OpsWorks supports two Linux flavors: Amazon Linux and Ubuntu 12.04 LTS. The reason we choose Ubuntu is because it allows us to use Vagrant (more on Vagrant later). Vagrant provides us a way to test our Chef infrastructure automation scripts locally – increasing our infrastructure development speed.</p>
+
+<h2>Supporting Tools</h2>
+
+<p>Other supporting tools such as Jenkins, Vagrant and Cucumber help with Continuous Integration, local infrastructure development and testing. Each are described below.</p>
+
+<h2>Jenkins</h2>
+
+<p> – Jenkins is a Continuous Integration server, but we also use it to orchestrate the coarse-grained workflow for the Cloud Delivery system and infrastructure for our customers. We use Jenkins fairly regularly in creating Cloud Delivery solutions for our customers. We configure Jenkins to run Cucumber features, build scripts, automated tests, static analysis, AWS Ruby SDK programs, CloudFormation templates and many more activities. Since Jenkins is an infrastructure component as well, we’ve automated the creation in OpsWorks and Chef and it also runs Cucumber features that we’ve written. These scripts and configuration are stored in Git as well and we can simply type a single command to get the Jenkins environment up and running. Any canonical changes to the Jenkins server are made by modifying the programs or configuration stored in Git.</p>
+
+<h2>Vagrant##</h2>
+
+<p>– Vagrant runs a virtualized environment on your desktop and comes with support for certain OS flavors and environments. As mentioned, we use Vagrant to run and test our infrastructure automation scripts locally to increase the speed of development. In many cases, what might take 30-40 minutes to run the same Chef cookbooks can take 4-5 minutes to run locally in Vagrant – significantly increase our infrastructure development productivity.</p>
+
+<h2>Cucumber</h2>
+
+<p> – We use Cucumber to write infrastructure specifications in code called features. This provides executable documented specifications that get run with each Jenkins build. Before we write any Chef, OpsWorks or CloudFormation code, we write Cucumber features. When completed, these features are run automatically after the Chef, OpsWorks and/or CloudFormation scripts provision the infrastructure to ensure the infrastructure is meeting the specifications described in the features. At first, these features are written without step definitions (i.e. they don’t actually verify behavior against the infrastructure), but then we iterate through a process of writing programs to automate the infrastructure provisioning while adding step definitions and refining the Cucumber features. Once all of this is hooked up to the Jenkins Continuous Integration server, it provisions the infrastructure and then runs the infrastructure tests/features written in Cucumber. Just like writing XUnit tests for the application code, this approach ensures our infrastructure behaves as designed and provides a set of regression tests that are run with every change to any part of the software system. So, Cucumber helps us document the feature as well as automate infrastructure tests. We also write usage and architecture documentation in READMEs, wikis, etc.</p>
+
+<p>A list of the AWS tools we utilized are enumerated below.</p>
+
+<p>We applied the on-demand usability of the cloud with a proven continuous delivery approach to build an automated one click method for building and deploying software into scripted production environments.</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Tool </th>
+<th> What is it? </th>
+<th> Our Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>  AWS EC2      </td>
+<td> Cloud-based virtual hardware instances       </td>
+<td> We use EC2 for all of our virtual hardware needs. All instances, from development to production are run on EC2</td>
+</tr>
+<tr>
+<td></td>
+<td> AWS S3 </td>
+<td> Cloud-based storage </td>
+<td> We use S3 as both a binary repository and a place to store successful build artifacts.</td>
+</tr>
+<tr>
+<td></td>
+<td> AWS IAM </td>
+<td> User-based access to AWS resources </td>
+<td> We create users dynamically and use their AWS access and secret access keys so we don’t have to store credentials as properties.</td>
+</tr>
+<tr>
+<td></td>
+<td> AWS CloudWatch </td>
+<td>System monitoring</td>
+<td> Monitors all instances in production. If an instance takes an abnormal amount of strain or shuts down unexpectedly, SNS sends an email to designated parties.</td>
+</tr>
+<tr>
+<td></td>
+<td> AWS SNS </td>
+<td> Email notifications </td>
+<td> When an environment is created or a deployment is run, SNS is used to send notifications to affected parties.</td>
+</tr>
+<tr>
+<td></td>
+<td>Cucumber </td>
+<td> Acceptance testing </td>
+<td> Cucumber is used for testing at almost every step of the way. We use Cucumber to test infrastructure, deployments and application code to ensure correct functionality. Cucumber’s unique english-ess  verbiage allows both technical personnel and customers to communicate using an executable test.</td>
+</tr>
+<tr>
+<td></td>
+<td> Liquibase </td>
+<td> Automated database change management </td>
+<td> Liquibase is used for all database changesets. When a change is necessary within the database, it is made to a liquibase changelog.xml.</td>
+</tr>
+<tr>
+<td></td>
+<td>AWS CloudFormation </td>
+<td> Templating language for orchestrating all AWS resources </td>
+<td> CloudFormation is used for creating a fully working Jenkins environment and Target environment. For instance for the Jenkins environment it creates the EC2 instance with CloudWatch monitoring alarms, associated IAM user, SNS notification topic, everything required for Jenkins to build. This along with Jenkins are the major pieces of the infrastructure.</td>
+</tr>
+<tr>
+<td></td>
+<td>AWS SimpleDB </td>
+<td> Cloud-based NoSQL database </td>
+<td> SimpleDB is used for storing dynamic property configuration and passing properties through the CD Pipeline. As part of the environment creation process, we store multiple values such as IP addresses that we need when deploying the application to the created environment.</td>
+</tr>
+<tr>
+<td></td>
+<td>Jenkins </td>
+<td> We’re using Jenkins to implement a CD pipeline using the Build Pipeline plugin.</td>
+<td> Jenkins runs the CD pipeline which does the building, testing, environment creation and deploying. Since the CD pipeline is also code (i.e. configuration code), we version our Jenkins configuration.</td>
+</tr>
+<tr>
+<td></td>
+<td> Capistrano </td>
+<td> Deployment automation </td>
+<td> Capistrano orchestrates and automates deployments. Capistrano is a Ruby-based deployment DSL that can be used to deploy to multiple platforms including Java, Ruby and PHP. It is called as part of the CD pipeline and deploys to the target environment.</td>
+</tr>
+<tr>
+<td></td>
+<td>Puppet </td>
+<td> Infrastructure automation </td>
+<td> Puppet takes care of the environment provisioning. CloudFormation requests the environment and then calls Puppet to do the dynamic configuration. We configured Puppet to install, configure, and manage the packages, files and services.</td>
+</tr>
+<tr>
+<td></td>
+<td> Git </td>
+<td> Version control system </td>
+<td> Git is the version control repository where every piece of the Manatee infrastructure is stored. This includes the environment scripts such as the Puppet modules, the CloudFormation templates, Capistrano deployment scripts, etc.</td>
+</tr>
+</tbody>
+</table>
+
 </div>
   
   
@@ -1641,23 +1561,23 @@ I&rsquo;m going to demonstrate it using Groovy shell, but you can reproduce it i
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow from GitHub</a>
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/">OpenStack : Git Gerrit and Jenkins Workflow</a>
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing A RESTful API That Doesn&#8217;t Suck</a>
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye node-forever</a>
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
       </li>
     
   </ul>

@@ -1,0 +1,1030 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="I just watched the “To Package or Not to Package” video from DevOps days Mountain View. The discussion was great, and there were some moments of &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/page/10">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/07/27/configuration-management-strategies/">Configuration Management Strategies</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-27T12:32:00-04:00" pubdate data-updated="true">Jul 27<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I just watched the “To Package or Not to Package” video from DevOps days Mountain View. The discussion was great, and there were some moments of hilarity. If you haven’t watched it yet, check it out <a href=http://goo.gl/KdDyf> here </a></p>
+
+<p>Stephen Nelson Smith, I salute you, sir.</p>
+
+<p>I’m quite firmly in the “Let your CM tool handle your config files” camp. To explain why, I think it’s worth briefly examining the evolution of configuration management strategies.</p>
+
+<p>In order to keep this post as vague and heady as possible, no distinction between “system” and “application” configurations shall be made.</p>
+
+<h2> What is a configuration file? </h2>
+
+
+<p>Configuration files are text files that control the behavior of programs on a machine. That’s it. They are usually read once, when a program is started from a prompt or init script. A process restart or HUP is typically required for changes to take effect.</p>
+
+<h2> What is configuration management, really? </h2>
+
+
+<p>When thinking about configuration management, especially across multiple machines, it is easy to equate the task to file management. Configs do live in files, after all. Packages are remarkably good at file management, so it’s natural to want to use them.</p>
+
+<p>However, the task goes well beyond that.</p>
+
+<p>An important attribute of an effective management strategy, config or otherwise, is that it reduces the amount of complexity (aka work) that humans need to deal with. But what is the work that we’re trying to avoid?</p>
+
+<h2> Dependency Analysis and Runtime Configuration </h2>
+
+
+<p><img class="right" src="http://farm8.staticflickr.com/7239/7389252518_7c27eb1472_n.jpg">
+Two tasks that systems administrators concern themselves with doing are dependency analysis and runtime configuration.</p>
+
+<p>Within the context of a single machine, dependency analysis usually concerns software installation. Binaries depend on libraries and scripts depend on binaries. When building things from source, headers and compilers are needed. Keeping the details of all this straight is no small task. Packages capture these relationships in their metadata, the construction of which is painstaking and manual. Modern linux distributions can be described as collections of packages and the metadata that binds them. Go out and hug a package maintainer today.</p>
+
+<p>Within the context of infrastructure architecture, dependency analysis involves stringing together layers of services and making individual software components act in concert. A typical web application might depend on database, caching, and email relay services being available on a network. A VPN or WiFi service might rely on PKI, Radius, LDAP and Kerberos services.</p>
+
+<p>Runtime configuration is the process of taking all the details gathered from dependency analysis and encoding them into the system. Appropriate software needs to be installed, configuration files need to be populated, and kernels need to be tuned. Processes need to be started, and of course, it should all still work after a reboot.</p>
+
+<h2> Manual Configuration </h2>
+
+
+<p><img class="left" src="http://farm5.staticflickr.com/4139/4805330106_926dfc074f_m.jpg"></p>
+
+<p>Once upon a time, all systems were configured manually. This strategy is the easiest to understand, but the hardest one to execute. It typically happens in development and small production environments where configuration details are small enough to fit into a wiki or spreadsheet. As a network’s size and scope increases, management efforts became massive, time consuming, and prone to human error. Details end up in the heads of a few key people and reproducibility is abysmal. This is obviously unsustainable.</p>
+
+<h2> Scripting </h2>
+
+
+<p><img class="right" src="http://farm4.staticflickr.com/3101/2428706650_d1fc862fdc_m.jpg">
+The natural progression away from manual configuration was custom scripting. Scripting reduced management complexity by automating things using languages like Bash and Perl. Tutorials and documentation instruction like “add the following line to your /etc/sshd_config” were turned into automated scripts that grepped, sed’ed, appended, and clobbered. These scripts were typically very brittle and would only produce desired outcome after their first run.</p>
+
+<h2> File Distribution </h2>
+
+
+<p><img class="left" src="http://farm5.staticflickr.com/4068/4317655660_61a60f6576_m.jpg">
+File distribution was the next logical tactic. In this scheme, master copies of important configuration files are kept in a centralized location and distributed to machines. Distribution is handled in various ways. RDIST, NFS mounts, scp-on-a-for-loop, and rsync pulls are all popular methods.</p>
+
+<p>This is nice for a lot of reasons. Centralization enables version control and reduces the time it takes to make changes across large groups of hosts. Like scripting, file distribution lowers the chance of human error by automating repetitive tasks.</p>
+
+<p>However, these methods have their drawbacks. NFS mounts introduce single points of failure and brittleness. Push based methods miss hosts that happen to be down for maintenance. Pulling via rsync on a cron is better, but lacks the ability to notify services when files change.</p>
+
+<p>Managing configs with packages falls into this category, and is attractive for a number of reasons. Packages can be written to take actions in their post-install sections, creating a way to restart services. It’s also pretty handy to be able to query package managers to see installed versions. However, you still need a way to manage config content, as well as initiate their installation in the first place.</p>
+
+<h2> Declarative Syntax </h2>
+
+
+<p><img class="right" src="http://farm4.staticflickr.com/3144/2591838509_1fdbc46db7_m.jpg">
+In this scheme, autonomous agents run on hosts under management. The word autonomous is important, because it stresses that the <strong>machines manage themselves</strong> by interpreting policy remotely set by administrators. The policy could state any number of things about installed software and configuration files.</p>
+
+<p>Policy written as code is run through an agent, letting the manipulation of packages, configuration files, and services all be handled by the same process. Brittle scripts behaving badly are eliminated by exploiting the idempotent nature of a declarative interface.</p>
+
+<p>When first encountered, this is often perceived as overly complex and confusing by some administrators. I believe this is because they have equated the task of configuration management to file management for such a long time. After the initial learning curve and picking up some tools, management is dramatically simplified by allowing administrators to spend time focusing on policy definition rather than implementation.</p>
+
+<h2> Configuration File Content Management </h2>
+
+
+<p>This is where things get interesting. We have programs under our command running on every node in an infrastructure, so what should we make them to do concerning configuration files?</p>
+
+<p>“Copy this file from its distribution point” is very common, since it allows for versioning of configuration files. Packaging configs also accomplishes this, and lets you make declarations about dependency. But how are the contents of the files determined?</p>
+
+<p>It’s actually possible to do this by hand. Information can be gathered from wikis, spreadsheets, grey matter, and stick-it notes. Configuration files can then be assembled by engineers, distributed, and manually modified as an infrastructure changes.</p>
+
+<p>File generation is a much better idea. Information about the nodes in an infrastructure can be encoded into a database, then fed into templates by small utility programs that handle various aspects of dependency analysis. When a change is made, such as adding or removing a node from a cluster, configurations concerning themselves with that cluster can be updated with ease.</p>
+
+<h2> Local Configuration Generation </h2>
+
+
+<p><img class="left" src="http://farm5.staticflickr.com/4140/4753170413_f3488f6586_m.jpg">
+The logic that generates configuration files has to be executed somewhere. This is often done on the machine responsible for hosting the file distribution. A better place is directly on the nodes that need the configurations. This eliminates the need for distribution entirely.</p>
+
+<p>Modifications to the node database now end up in all the correct places during the next agent run. Packaging the configs is completely unnecessary, since they don’t need to be moved from anywhere. Management complexity is reduced by eliminating the task entirely. Instead of worrying about file versioning, all that needs to be ensured is code correctness and the accuracy of the database.</p>
+
+<p>Don’t edit config files. Instead, edit the truth.</p>
+
+<p>-s</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/07/25/some-random-udpates/">Some Random Udpates&#8230;</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-25T06:13:25-04:00" pubdate data-updated="true">Jul 25<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The launch of our <strong><a href="http://brianarmstrong.org/posts/bitcoin-wallet-for-android/">Bitcoin Wallet</a></strong> app for Android went fairly well.  It got about 800 installs in the first week and <a href="http://www.wired.com/gadgetlab/2011/07/bitcoin-android-app/">Wired</a> ran a small piece on it which was pretty cool.  We&rsquo;ve also gotten a handful of open source contributions, and the app was translated into Russian, Chinese, and German within the first week!</p>
+
+<p>I&rsquo;ve been experimenting with <strong><a href="http://MyBestPic.org">MyBestPic.org</a></strong> a bit here and there with some excellent advice from Gabriel Weinberg and Naseem Hakim.  This was my experiment in inherent virality.  It hasn&rsquo;t gone viral yet but I&rsquo;ve been measuring the <a href="http://mybestpic.org/kfactor">k-factor</a> in various tests and learning a lot in the process.  Hopefully some more updates on this soon.</p>
+
+<p>Joyce Hu&rsquo;s <strong><a href="http://thebookr.com/">thebookr.com</a></strong> has been growing nicely and getting some real bookings, so this is huge for her.  I&rsquo;ve fixed a few things on the site here and there but for the most part it&rsquo;s off and running nicely now, and I think her business is going to do really well.  Investors, get in early on this one.  She is going to be oversubscribed soon :)</p>
+
+<p><strong><a href="http://www.airbnb.com">Airbnb</a></strong> has been an incredible ride, and I&rsquo;ve learned so much from the brilliant people there, making tons of friends already.  I&rsquo;ve been heading up their fraud prevention effort and I&rsquo;m about to launch a big machine learning solution (built entirely in the cloud using the Google Prediction API).  Oh and they just announced their B-round of <a href="http://blogs.wsj.com/venturecapital/2011/07/25/airbnb-from-y-combinator-to-112m-funding-in-three-years/?mod=google_news_blog">funding</a> ($112M).  With press and celebrities in the office weekly (along with our personal chef), this is the definition of what it feels like to work at a hot startup.  Revenue and bookings are growing 30% month over month.</p>
+
+<p>And I finally got a chance to catch up with a few <strong><a href="http://carwoo.com">CarWoo!</a></strong> guys (Tommy and Erik) this weekend in San Francisco for a good old fashioned night on the town.  CarWoo! is doing quite well itself and they&rsquo;ve got some big deals in the works.  Always good to keep in touch with these folks, and converse with talented entrepreneurs.  Apparently Erik is driving <a href="http://gallery.viperclub.org/data/500/medium/4794Viper_GTS_ACR_Orange_by_Dan_Berndt_1001a.jpg">this</a> to work now.</p>
+
+<p>Have been doing yoga every week, and rock climbing on Tuesdays.  Can&rsquo;t wait to get back in the office tomorrow&hellip;</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/07/19/Subversion-hot-backup-change-in/">Subversion Hot-backup Change in 1.6.11</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-19T09:11:00-04:00" pubdate data-updated="true">Jul 19<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/subversion.jpg" title="'Subversion Logo'" >An important notice to users of the hot-backup.py utility which ships with subversion.</p>
+
+<p>I found our nightly backup of subversion was failing with the following error:</p>
+
+<pre><code>svnadmin: Can't open file '/pathtorepo/db/fsfs.conf': No such file or directory
+</code></pre>
+
+<p>What was troubling me was:</p>
+
+<ol>
+<li>How come a file is missing in my svn repository &ndash; nothing has changes (As far as I know &hellip; :)</li>
+<li>hot-backup.py script hasen&rsquo;t changed much, how come my version has changed ?</li>
+</ol>
+
+
+<p>So I looked up the subversion&rsquo;s change log: <a href="http://svn.apache.org/repos/asf/subversion/tags/1.6.12/CHANGES">http://svn.apache.org/repos/asf/subversion/tags/1.6.12/CHANGES</a> which is the latest release (1.6.12) and took a look on my svn machine to find which version was installed and I found 1.6.12 was indeed in talled and in 1.6.11 release notes you will find:</p>
+
+<pre><code>* make 'svnadmin hotcopy' copy the fsfs config file (r905303)
+</code></pre>
+
+<p>In addition I took a look at hot-bakup.py change log under: <a href="http://svn.apache.org/viewvc/subversion/trunk/tools/backup/hot-backup.py.in?view=log,">http://svn.apache.org/viewvc/subversion/trunk/tools/backup/hot-backup.py.in?view=log,</a> and found that indeed the fsfs file has be included in the hotbackup script since the 1.6.11 version of the file (see link speified above).</p>
+
+<p>Googeling on the fsfs.conf subject led me to: <a href="http://comments.gmane.org/gmane.comp.version-control.subversion.user/97647">http://comments.gmane.org/gmane.comp.version-control.subversion.user/97647</a> which noted the same exact issue.</p>
+
+<p><strong>How do we solve this issue</strong><strong>?</strong></p>
+
+<ol>
+<li>Create a test repository &ndash; svnadmin create /tmp/svntest which will create the fsfs.conf under /tmp/svntest/db/fsfs.conf</li>
+<li>Copy the fsfs.conf to your svnroot/db directory and walla you have the fsfs.conf (what this file does is a different topic)</li>
+</ol>
+
+
+<p>Please note:</p>
+
+<p>1. The svnadmin upgrade &ndash;<strong>Doesn&rsquo;t add this file so unless you are using an old veriosn of the hot-backup.py script your backups will fail!!!</strong> (beleive me I tried).</p>
+
+<p>2. If you update subverison &ndash; don&rsquo;t forget to run <em>svnadmin upgrade /pathto yourrepo/</em> or you miss all the point of upgrading</p>
+
+<p>So I&rsquo;ve learened that subversion was upgraded (again which doesn&rsquo;t say your repository was upgraded!!!) &ndash; but when? &ndash; considering the fact I am running CentOS &ndash; and I didn&rsquo;t have to compile SVN from source and start checking the subversion binaries Creation / Update time I used RPM to tell me when subverions was installed and there is was:</p>
+
+<pre><code>[root@dev ~]# rpm -qi subversion
+Name        : subversion                   Relocations: (not relocatable)
+Version     : 1.6.12                       Vendor: Dag Apt Repository
+Release     : 0.1.el5.rf                   Build Date: Tue 22 Jun 2010 12:55:11 PM IDT
+Install Date: Mon 19 Jul 2010 12:36:54 AM IDT      Build Host: lisse.hasselt.wieers.com
+Group       : Development/Tools             Source RPM: subversion-1.6.12-0.1.el5.rf.src.rpm
+Size        : 21247326                         License: BSD
+Signature   : DSA/SHA1, Tue 22 Jun 2010 04:46:18 PM IDT, Key ID a20e52146b8d79e6
+Packager    : Dag Wieers 
+</code></pre>
+
+<p>I think the <a href="http://search.twitter.com/search?q=%231">#1</a> lesson learned here is before you upgrade read the release notes, see if it impacts you environment in any way &ndash; then you can upgrade.</p>
+
+<p>Hope you find this useful.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/07/06/bitcoin-wallet-for-android/">Bitcoin Wallet for Android</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-06T07:26:16-04:00" pubdate data-updated="true">Jul 6<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Tonight a buddy of mine (who works at Google) and I released an open source application.</p>
+
+<p>It&rsquo;s an <a href="https://market.android.com/details?id=com.bitcoinandroid">Android app for Bitcoin</a> that allows you to have a digital &ldquo;wallet&rdquo; on your phone.  Here are a few screenshots:</p>
+
+<p><img src="http://i.imgur.com/aqF3p.png" alt="" /></p>
+
+<p><img src="http://i.imgur.com/ilvNp.png" alt="" /></p>
+
+<p><img src="http://i.imgur.com/ObBth.png" alt="" /></p>
+
+<p><img src="http://i.imgur.com/TsZc7.png" alt="" /></p>
+
+<p>Simply put, the app allows you to send and receive bitcoins from your Android phone.</p>
+
+<p>If you&rsquo;ve never heard of bitcoin then you aren&rsquo;t alone.  It is a very new technology.  After reading about bitcoin I still wasn&rsquo;t sure what might become of it, but I wanted to learn more and figured the best way would be to dive in and build something with it!</p>
+
+<p>If I had to sum up bitcoin in one sentence I&rsquo;d say it is a &ldquo;distributed peer-to-peer currency&rdquo;.  But what does this mean and why is it important?</p>
+
+<p>I think it&rsquo;s most important features are that it&hellip;</p>
+
+<ul>
+<li><p>allows you to send money without transactions fees</p></li>
+<li><p>allows you to send money instantly, anywhere in the world</p></li>
+<li><p>and (it appears) it can do this securely</p></li>
+</ul>
+
+
+<p>If you contrast this with how most payments work today, most merchants pay 2-3% as a transaction fee to Visa or Mastercard (and this fee is partially passed on to you as a consumer). In addition, whenever you want to move money between accounts it can take up to 3 business days. With bitcoin, there are no transaction fees and money can be moved instantly, anywhere in the world. This is a potentially very disruptive technology, even if it <a href="http://cdixon.org/2010/01/03/the-next-big-thing-will-start-out-looking-like-a-toy/">looks like a toy</a> today.</p>
+
+<p>Bitcoin accomplishes this using cryptography across a large number of servers on the internet, and doesn&rsquo;t rely on one trusted third party (a bank) to control the money.</p>
+
+<p><strong>It&rsquo;s also important to realize that bitcoin is not a new product or service, it is a new platform.</strong>  Much like email or the internet itself, it has no centralized servers and many products and companies can be built on top of it (our app is just one).  It&rsquo;s also an open source project itself so anyone can see how it works and it isn&rsquo;t owned by anyone. In fact, thousands of computer scientists around the world have looked at it at this point.  This gives it a lot of potential to survive and adapt over the years.</p>
+
+<p>Whether it ever becomes mainstream or not is still very much an open question (I have mixed thoughts on this).  However, at present there is already about $100M in real money tied up in the bitcoin economy, so it has certainly shown some early promise. There are already a few <a href="http://starburst.hackerfriendly.com/?p=1530">stores starting to pop up</a> who accept bitcoin.</p>
+
+<p><strong>I think a day will come very soon where we no longer need to carry a physical wallet, and our smart-phones will take over that job.</strong>  I also think it would be great for the economy to not pay a tax of 2-3% on each transaction to Visa or Mastercard (both for businesses and consumers).</p>
+
+<p>For a glimpse of how this might work, checkout this little demo video we put together.  It shows us instantly transferring money between two phones using just the internet and a distributed network of computers around the world.</p>
+
+<p>The <a href="http://en.wikipedia.org/wiki/QR_code">QR codes</a> you see used there could be on a point of sale device in a store, a mobile device like a phone, or a sticker on the wall.</p>
+
+<p>It&rsquo;s important to realize that those two phones could have been anywhere in the world.  If you&rsquo;d like to send money to another country today, Western Union takes a hefty fee and will take days.  Even Paypal charges 2-3% and will take 3 business days to move money in and out of an account.  Bitcoin is instant, and has zero transaction fees. You can do it from any computer, including a smart phone like the one shown here.</p>
+
+<p>Anyway, I&rsquo;ll see if I can post more about this in the future.  But let me know what you think in the comments below.  And if you have an Android Device, <a href="https://market.android.com/details?id=com.bitcoinandroid">you can download it from the Android Market here</a>. It is 100% free and open source.</p>
+
+<p><a href="https://market.android.com/details?id=com.bitcoinandroid"><img src="http://s3.amazonaws.com/oldbloguploads/2011/07/Screen-shot-2011-07-05-at-11.25.05-PM-500x367.png" alt="" /></a></p>
+
+<p>Finally, if you are a developer, here is a link to the <a href="https://github.com/barmstrong/bitcoin-android">github project page</a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/20/learning-programming/">Learning Programming</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-20T13:46:54-04:00" pubdate data-updated="true">Jun 20<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I was tutoring someone in web app development recently, and the monumental task in front of him really hit me. <strong>He was trying to learn and use nine new languages at the same time</strong>.</p>
+
+<p>In our case it was:</p>
+
+<ul>
+<li><p>Ruby</p></li>
+<li><p>Rails</p></li>
+<li><p>MySQL</p></li>
+<li><p>Bash (command line usage)</p></li>
+<li><p>HTML</p></li>
+<li><p>CSS</p></li>
+<li><p>Javascript</p></li>
+<li><p>JQuery</p></li>
+<li><p>Git</p></li>
+<li><p>(Capistrano, Yaml, nginx, ??)</p></li>
+</ul>
+
+
+<p>Even though some of these aren&rsquo;t true languages in the traditional sense, they appear this way to newcomers since they are each a new syntax to learn.</p>
+
+<p>If you slowly built up these skills over 15 years, they are clearly separate concepts in your mind. But for a newcomer trying to use them, it&rsquo;s not even clear which one is which.</p>
+
+<p>Is that a Ruby method or a Rails method?</p>
+
+<p>Is &ldquo;script/server&rdquo; a shell command or is &ldquo;ls&rdquo; part of rails?</p>
+
+<p>Is this file html, js, or css? (actually a mix of all three)</p>
+
+<p>He made a comment along the lines of &ldquo;wouldn&rsquo;t it be great if you could build an entire web app in one language&rdquo;, and I started thinking about it.</p>
+
+<p>GWT (Google Website Toolkit), ActiveRecord, CoffeeScript, and Heroku are all steps in this direction. You could classify them generally as trying to &ldquo;eliminate a language in the stack&rdquo; or allowing you to do a piece of the stack in a language you already know.</p>
+
+<p>Obviously there is a trade off here between power and simplicity, but I&rsquo;m wondering &ndash; would it be possible or desirable to get an entire web app down to just one language? If not that how few could you use?</p>
+
+<p>Btw, I think there are benefits to seasoned developers here as well. I remember Lars Rasmussen (creator of Google Maps and Wave) mentioned something to this effect at Google IO in 2009, that GWT allowed him to spend his mental CPU cycles at a higher level and be more creative (not having to worry about cross browser css or js). So the benefits of higher abstraction may not only be for newcomers.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/16/full-stack-chef-installers-for-el5-and-el6/">Full Stack Chef Installers for EL5 and EL6</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-16T12:24:00-04:00" pubdate data-updated="true">Jun 16<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I started at Opscode this week, just in time for the Velocity Conference in Santa Clara. The amount of brain power in the building right now is absolutely astounding, and I’m having a total blast. Manning the Opscode booth in the exhibition hall, a number attendees have stopped by inquiring about when we’re going to improve Centos and Redhat support. So far, this has largely been a community effort, and the experience tends to lag behind that of Ubuntu users.</p>
+
+<p>One thing coming down the pipe are full stack installers for various distributions. A full stack installer provides everything you need to run Chef, above libc. Telling people about this has generated a lot of excitement and interest, so I went ahead and built them for you, live from the floor of Velocity.</p>
+
+<p>Below are instructions for manual installation on EL5 and EL6, clones and derivatives. I’ll leave the creation of a custom knife bootstrap script as an exercise for the reader.</p>
+
+<p>Enjoy!</p>
+
+<p>-s</p>
+
+<h2> For EL5 users: </h2>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>curl http://rpm.aegisco.com/aegisco/el5/aegisco.repo &gt; /etc/yum.repos.d/aegisco.repo
+</span><span class='line'>
+</span><span class='line'>yum clean all ; yum install gecode
+</span><span class='line'>
+</span><span class='line'>wget http://yum.afistfulofservers.net/affs/fatty/el5/chef-full-0.10.0-1-centos-5.4-x86_64.sh
+</span><span class='line'>
+</span><span class='line'>chmod +x ./chef-full-0.10.0-1-centos-5.4-x86_64.sh
+</span><span class='line'>
+</span><span class='line'>sudo ./chef-full-0.10.0-1-centos-5.4-x86_64.sh
+</span><span class='line'>
+</span><span class='line'>sudo /opt/opscode/setup.s
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h2> For EL6 users: </h2>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rpm -Uvh http://mirror.pnl.gov/epel/6/x86_64/epel-release-6-5.noarch.rpm
+</span><span class='line'>
+</span><span class='line'>rpm -Uvh http://yum.afistfulofservers.net/affs/centos/6/noarch/affs-release-el6-6-1.noarch.rpm
+</span><span class='line'>
+</span><span class='line'>yum clean all ; yum -y install gecode
+</span><span class='line'>
+</span><span class='line'>wget http://yum.afistfulofservers.net/affs/fatty/el6/chef-full-0.10.0-1-scientific-6.0-x86_64.sh
+</span><span class='line'>
+</span><span class='line'>chmod +x ./chef-full-0.10.0-1-scientific-6.0-x86_64.sh
+</span><span class='line'>
+</span><span class='line'>sudo ./chef-full-0.10.0-1-scientific-6.0-x86_64.sh
+</span><span class='line'>
+</span><span class='line'>sudo /opt/opscode/setup.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>-s</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/08/functional-groovy-switch-statement/">Functional Groovy Switch Statement</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-08T08:00:00-04:00" pubdate data-updated="true">Jun 8<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In the previous <a href="/2011/06/01/reversing-groovy-switch-statement">post</a> I showed how to replace chained if-else statements in Groovy with one concise switch. It was done for the special case of if-stement where every branch was evaluated using the same condition function. Today I want to make a generalization of that technique by allowing to use different conditionals.</p>
+
+<p>Suppose your code looks like this:</p>
+
+<pre><code>if (param % 2 == 0) {
+    'even'
+} else if (param % 3 == 0) {
+    'threeven'
+} else if (0 &lt; param) {
+    'positive'
+} else {
+    'negative'
+}
+</code></pre>
+
+<p>As long as every condition operates on the same parameter, you can replace the entire chain with a switch. In this scenario <code>param</code> becomes a switch parameter and conditions become <code>case</code> parameters of Closure type. The only thing we need to do is to override <code>Closure.isCase()</code> method as I described in the previous post. The safest way to do it is to create a category class:</p>
+
+<pre><code>class CaseCategory {
+    static boolean isCase(Closure casePredicate, Object switchParameter) {
+        casePredicate.call switchParameter
+    }
+}
+</code></pre>
+
+<p>Now we can replace if-statement with the following switch:</p>
+
+<pre><code>use (CaseCategory) {
+    switch (param) {
+        case { it % 2 == 0 } : return 'even'
+        case { it % 3 == 0 } : return 'threeven'
+        case { 0 &lt; it }      : return 'positive'
+        default              : return 'negative'
+    }
+}
+</code></pre>
+
+<p>We can actually go further and extract in-line closures:</p>
+
+<pre><code>def even = {
+    it % 2 == 0
+}
+def threeven = {
+    it % 3 == 0
+}
+def positive = {
+    0 &lt; it
+}
+</code></pre>
+
+<p>After which the code becomes even more readable:</p>
+
+<pre><code>use (CaseCategory) {
+    switch (param) {
+        case even     : return 'even'
+        case threeven : return 'threeven'
+        case positive : return 'positive'
+        default       : return 'negative'
+    }
+}
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/07/nothing-new-under-sun/">Nothing New Under the Sun</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-07T08:00:00-04:00" pubdate data-updated="true">Jun 7<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Every generation of software developers needs its own fad. For my generation it was Agile, for generation before it was OOP, and before that it was another big thing. Gerald Weinberg, one of the most influential people in our industry, blogged yesterday about this issue. With over 50 years of experience in software development he knows what he is talking about. Read his <a href="http://secretsofconsulting.blogspot.com/2011/06/beyond-agile-programming.html">blog post</a> — he has a very good point.</p>
+
+<p>P.S. I&rsquo;m wondering what will be the next big thing. Will it be Cloud or <a href="/2013/01/15/embrace-big-data/">Big Data</a>?</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/05/multimethods-in-groovy/">Multimethods in Groovy</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-05T08:00:00-04:00" pubdate data-updated="true">Jun 5<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Every time I switch from Groovy to Java I have to remind myself that some things that seem so natural and work as expected in Groovy, don&rsquo;t work in Java. One of such differences is method dispatching. Groovy supports <a href="http://en.wikipedia.org/wiki/Multiple_dispatch">multiple dispatch</a>, while Java does not. Therefore the following <a href="http://www.gigamonkeys.com/book/object-reorientation-generic-functions.html#multimethods">code</a> works differently in Groovy and Java:</p>
+
+<pre><code>public class A {
+    public void foo(A a) { System.out.println("A/A"); }
+    public void foo(B b) { System.out.println("A/B"); }
+}
+public class B extends A {
+    public void foo(A a) { System.out.println("B/A"); }
+    public void foo(B b) { System.out.println("B/B"); }
+}
+public class Main {
+    public static void main(String[] args) {
+        A a = new A();
+        A b = new B();
+        a.foo(a);
+        b.foo(b);
+    }
+}
+
+$ java Main
+A/A
+B/A
+
+$ groovy Main.groovy
+A/A
+B/B
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/01/reversing-groovy-switch-statement/">Reversing Groovy Switch Statement</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-01T08:00:00-04:00" pubdate data-updated="true">Jun 1<span>st</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Recently I&rsquo;ve been working on a Groovy code that had many methods with long multibranch conditionals like this:</p>
+
+<pre><code>def parse(message, options) {
+    if (options.contains('A')) {
+        parseARule message
+    } else if (options.contains(2)) {
+        parseSmallDigitRule message
+    ...
+    } else if (options.contains(something)) {
+        parseSomeRule message
+    } else {
+        parseSomeOtherRule message
+    }
+}
+</code></pre>
+
+<p>Although this code is working, it is hard to see which branch is called under which condition. It would be much better if we could replace this code with something like Lisp <code>cond</code> macro. The best candidate for such a task in Groovy would be a <code>switch</code> statement. If we could only refactor the code above to something like following, it would significantly improve readability:</p>
+
+<pre><code>def parse(message, options) {
+    switch (options) {
+        case 'A' : return parseARule(message)
+        case 2   : return parseSmallDigitRule(message)
+        ...
+        case ... : return parseSomeRule(message)
+        default  : return parseSomeOtherRule(message)
+    }
+}
+</code></pre>
+
+<p>Unfortunately, this code doesn&rsquo;t work out of the box in Groovy, but it works if we do some metaprogramming.</p>
+
+<p>The way <code>switch</code> statement works in Groovy is a bit <a href="http://docs.codehaus.org/display/GROOVY/Logical+Branching#LogicalBranching-switchstatement">different</a> than in Java. Instead of equals() it uses isCase() method to match case-value and switch-value. The default implementation of isCase() method falls back to equals() method, but some classes, including <a href="http://groovy.codehaus.org/groovy-jdk/java/util/Collection.html#isCase(java.lang.Object)">Collection</a>, override this behaviour. That&rsquo;s why in Groovy you can do things like this:</p>
+
+<pre><code>switch (value) {
+    case ['A','E','I','O','U'] : return 'vowel'
+    case 0..9                  : return 'digit'
+    case Date                  : return 'date'
+    default                    : return 'something else'
+}
+</code></pre>
+
+<p>For our purposes we need some sort of reverse <code>switch</code>, where collection is used as a switch-value, and String and Integer are used as a case-value. To do this we need to override default implementation of isCase() method on String and Integer classes. It&rsquo;s not possible in Java, but is very easy in Groovy. You can change method implementation globally by replacing it in corresponding meta class, or locally with the help of categories. Let&rsquo;s create a category that swaps object and subject of isCase() method:</p>
+
+<pre><code>class CaseCategory {
+    static boolean isCase(String string, Collection col) {
+        reverseCase(string, col)
+    }
+    static boolean isCase(Integer integer, Collection col) {
+        reverseCase(integer, col)
+    }
+    // Add more overloaded methods here if needed
+
+    private static boolean reverseCase(left, right) {
+        right.isCase(left)
+    }
+}
+</code></pre>
+
+<p>Now we can use this category to achieve the goal we stated at the beginning of this post:</p>
+
+<pre><code>def parse(message, options) {
+    use (CaseCategory) {
+        switch (options) {
+            case 'A' : return parseARule(message)
+            case 2   : return parseSmallDigitRule(message)
+            ...
+            case ... : return parseSomeRule(message)
+            default  : return parseSomeOtherRule(message)
+        }
+    }
+}
+</code></pre>
+
+<p>If you are comfortable with global method replacement, you can amend String and Integer meta classes. In this case you don&rsquo;t need to wrap <code>switch</code> statement with <code>use</code> keyword.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/11/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/9/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,538 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Setup Git, Gitweb with git-http-backend / smart http on ubuntu 12.04 - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Setting up git over http (Smart HTTP in perticular) has it&#39;s caveats I will try to emphesize them as I go along. Final Goal is to run git over &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2013/05/05/Setup-git-on-ubutnu-12-04">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Setup Git, Gitweb With Git-http-backend / Smart Http on Ubuntu 12.04</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-05T21:00:00-04:00" pubdate data-updated="true">May 5<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img class="left" src="/assets/images/Git_Apache.png" title="'Git Logo'" >Setting up git over http (Smart HTTP in perticular) has it&#39;s caveats I will try to emphesize them as I go along.</p>
+
+<p>Final Goal is to run git over http using git-http-backend (a.k.a smart http) in apposed to using webdav which is also called the dumb-method, webdav was never designed to work with git for the reason that it cannot compress object whilst transporting data between the client and the server hosting git [ there is no real git client &ndash; git server so i am not referring to it a such].</p>
+
+<p><strong><u>Versions used in this setup</u>:</strong></p>
+
+<ul>
+<li>Ubutnu version <em>12.04-LTS</em></li>
+<li>Git version <em>1.7.9.5</em></li>
+<li>Apache2 version <em>2.2.22</em></li>
+</ul>
+
+
+<p><strong><u>1. Install prequirests</u>:</strong></p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> sudo apt-get install git apache2 gitweb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong><u>2. Enable apache2 modules and reload apache</u>:</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> a2enmod env <span class="nb">alias </span>fcgid auth_digest
+</span><span class='line'> service apache2 restart
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><u><strong>3. Create a &ldquo;site&rdquo; for git:</strong></u></p>
+
+<p>let&#39;s start with a basic virtual host configuration pointing to gitweb:</p>
+
+<p><em>vim /etc/apache2/sites-available/git</em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;virtualhost *:80&gt;
+</span><span class='line'> ServerName git.example.com
+</span><span class='line'> DocumentRoot /usr/share/gitweb
+</span><span class='line'> ErrorLog <span class="k">${</span><span class="nv">APACHE_LOG_DIR</span><span class="k">}</span>/git_error.log
+</span><span class='line'> CustomLog <span class="k">${</span><span class="nv">APACHE_LOG_DIR</span><span class="k">}</span>/git_access.log combined
+</span><span class='line'>&lt;/virtualhost&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Enable CGI on the gitweb directory</em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;Directory /usr/share/gitweb&gt;
+</span><span class='line'>Options FollowSymLinks +ExecCGI
+</span><span class='line'>AddHandler cgi-script .cgi
+</span><span class='line'>DirectoryIndex gitweb.cgi
+</span><span class='line'>&lt;/Directory&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Enable git clone/push/fetch etc over http</em>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> ScriptAliasMatch <span class="se">\</span>
+</span><span class='line'> <span class="s2">&quot;(?x)^/(.*/(HEAD | \</span>
+</span><span class='line'><span class="s2">  info/refs | \</span>
+</span><span class='line'><span class="s2">   objects/(info/[^/]+ | \</span>
+</span><span class='line'><span class="s2">   [0-9a-f]{2}/[0-9a-f]{38} | \</span>
+</span><span class='line'><span class="s2">   pack/pack-[0-9a-f]{40}\.(pack|idx)) | \</span>
+</span><span class='line'><span class="s2">   git-(upload|receive)-pack))$&quot;</span> <span class="se">\</span>
+</span><span class='line'>   /usr/lib/git-core/git-http-backend/<span class="nv">$1</span>
+</span><span class='line'>
+</span><span class='line'>  SetEnv GIT_PROJECT_ROOT /var/git
+</span><span class='line'>  SetEnv GIT_HTTP_EXPORT_ALL
+</span><span class='line'>  SetEnv <span class="nv">REMOTE_USER</span><span class="o">=</span><span class="nv">$REDIRECT_REMOTE_USER</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>The env fcgid modules are exactly for this pupose.</em></p>
+
+<p>&nbsp;</p>
+
+<p><em><strong>Let&#39;s spice it up with good old ACL&#39;s</strong></em> [for as you know git doesen&#39;t deal with that stuff on it&#39;s own &hellip;] &ndash; you can use BASIC/DIGEST</p>
+
+<p>(I chose digest for it uses an&nbsp;<span style="color: rgb(0, 0, 0);">MD5 digest hash and not clear text like BASIC auth)</span></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;Location /&gt;
+</span><span class='line'>  AuthType Digest
+</span><span class='line'>  AuthName <span class="s2">&quot;Shared Git Repo&quot;</span>
+</span><span class='line'>  AuthUserFile /var/git/.htpasswd
+</span><span class='line'>  Require valid-user
+</span><span class='line'>&lt;/Location&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create /var/git/.htpasswd for my users:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> htdigest -c /var/git/.htpasswd <span class="s2">&quot;Shared Git Repo&quot;</span> hagzag
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>&nbsp; Change &ldquo;hagzag&rdquo; with your username &hellip;</em></p>
+
+<p>&nbsp;</p>
+
+<p><u><strong>4. Create a &ldquo;shared&rdquo;, bare repository + set directory permissions to the apache2 user &amp; group</strong></u></p>
+
+<p><u>Side note</u>&nbsp;about shared &amp; bare:</p>
+
+<pre><code>**Shared**: Instead of using default umask git repo will be created with 775 perms
+
+**Bare**: instead of creating GIT_DIR in .git (defult git init behaviour), it will be created in the repository direcotry]
+</code></pre>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> <span class="nb">cd</span> /var/git &amp;amp;&amp;amp; git init --bare --shared myproj.git
+</span><span class='line'> chown -R www-data.www-data /var/git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong><u>5. Configure Git Web, /etc/gitweb.conf</u></strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> cp /etc/gitweb.conf /etc/gitweb.conf.orig
+</span><span class='line'> <span class="nb">echo</span> -e &amp;#39;<span class="nv">$projectroot</span> <span class="o">=</span> <span class="s2">&quot;/var/git&quot;</span>;&amp;#39; &gt; /etc/gitweb.conf
+</span><span class='line'> <span class="nb">echo</span> &amp;#39;<span class="nv">$git_temp</span> <span class="o">=</span> <span class="s2">&quot;/tmp&quot;</span>;&amp;#39; &gt;&gt; /tmp/gitweb.conf
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><u><strong>6. Enable site (apache2):</strong></u></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> a2ensite git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Which yields:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Enabling site git.
+</span><span class='line'>To activate the new configuration, you need to run:
+</span><span class='line'>  service apache2 reload
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><u><strong>7. Test your new git repository</strong></u></p>
+
+<p>Clone the repo via <a href="http:">http:</a></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> git clone http://git.example.com/myproj.git
+</span><span class='line'> Cloning into &amp;#39;myproj&amp;#39;...
+</span><span class='line'> Username <span class="k">for</span> &amp;#39;http://git.example.com&amp;#39;: hagzag
+</span><span class='line'> Password <span class="k">for</span> &amp;#39;http://hagzag@git.example.com&amp;#39;:
+</span><span class='line'> warning: You appear to have cloned an empty repository.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&hellip; and yes I know it&#39;s empty (i created it :)).</p>
+
+<pre><code>_**Create &amp;amp; Add a file**_:
+</code></pre>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> <span class="nb">cd </span>myproj/
+</span><span class='line'> <span class="nb">echo</span> <span class="s2">&quot;some text&quot;</span> &gt; somefile.txt
+</span><span class='line'> git add .
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em><strong>Commit a file:</strong></em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git commit -m <span class="s2">&quot;initial commit&quot;</span>
+</span><span class='line'> <span class="o">[</span>master <span class="o">(</span>root-commit<span class="o">)</span> 3a0e708<span class="o">]</span> initial commit
+</span><span class='line'> 1 file changed, 0 insertions<span class="o">(</span>+<span class="o">)</span>, 0 deletions<span class="o">(</span>-<span class="o">)</span>
+</span><span class='line'> create mode 100644 somefile.txt
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em><strong>Push it</strong></em>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git push origin master
+</span><span class='line'> Username <span class="k">for</span> &amp;#39;http://git.example.com&amp;#39;: _**hagzag**_
+</span><span class='line'> Password <span class="k">for</span> &amp;#39;http://hagzag@git.example.com&amp;#39;: _*********_
+</span><span class='line'> Counting objects: 3, <span class="k">done</span>.
+</span><span class='line'> Writing objects: 100% <span class="o">(</span>3/3<span class="o">)</span>, 225 bytes, <span class="k">done</span>.
+</span><span class='line'> Total 3 <span class="o">(</span>delta 0<span class="o">)</span>, reused 0 <span class="o">(</span>delta 0<span class="o">)</span>
+</span><span class='line'> To http://git.example.com/proj2.git
+</span><span class='line'> * <span class="o">[</span>new branch<span class="o">]</span>      master -&gt; master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>See it on gitweb:
+<img class="left" src="/assets/images/gitwb-ss1.png" title="'Git Logo'" ></p>
+
+<p><u><strong>Pitfalls / Caveats:</strong></u></p>
+
+<ol>
+<li><em><strong>Git directory ownership</strong></em> should be the same user running the httpd / apache2 daemon &ndash; if not you will get an error like so:G</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>error: unpack failed: unpack-objects abnormal <span class="nb">exit</span>
+</span><span class='line'>To http://git.example.com/proj2.git
+</span><span class='line'> ! <span class="o">[</span>remote rejected<span class="o">]</span> master -&gt; master <span class="o">(</span>n/a <span class="o">(</span>unpacker error<span class="o">))</span>
+</span><span class='line'>error: failed to push some refs to &amp;#39;http://git.example.com/proj2.git&amp;#39;
+</span><span class='line'>  At this point I went back to the server and ran:
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li><em><strong>fcgid module in apache</strong></em> &ndash; if it&#39;s missing all the above will not work [same goes for <em><strong>env</strong></em> too but it&#39;s enabled by default !]</li>
+</ol>
+
+
+<p><strong>References:</strong></p>
+
+<ul>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html">Git http backend <em>man page</em></a>,</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-init.html">git init man page</a> [bare/shared],</li>
+<li><a href="http://httpd.apache.org/docs/2.2/programs/htdigest.html">htdigest</a>,</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/gitweb.html">gitweb man page</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-05T21:00:00-04:00" pubdate data-updated="true">May 5<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/apache/'>Apache</a>, <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/ubuntu/'>Ubuntu</a>, <a class='category' href='/blog/categories/ubuntu-12-dot-04-lts/'>Ubuntu 12.04 LTS</a>, <a class='category' href='/blog/categories/git-http-backend/'>git-http-backend</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2013/05/05/Setup-git-on-ubutnu-12-04/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2013/05/05/Setup-git-on-ubutnu-12-04/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/04/16/performing-backup-with-git/" title="Previous Post: Performing backup with Git">&laquo; Performing backup with Git</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/05/05/Git-Internals/" title="Next Post: Git Internals">Git Internals &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

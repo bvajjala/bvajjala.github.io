@@ -1,0 +1,654 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Using Docker To Run Ruby Rspec CI In Jenkins - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="In this post, I am going to give a step-by-step introduction into how you can do continuous integration testing with Docker. I will be running the &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2014/02/17/using-docker-to-run-ruby-rspec-ci-in-jenkins">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Using Docker to Run Ruby Rspec CI in Jenkins</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-17T17:01:40-05:00" pubdate data-updated="true">Feb 17<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In this post, I am going to give a step-by-step introduction into how you can do continuous integration testing with Docker. I will be running the rspec test suite of the CloudFoundry project&rsquo;s Cloud Controller component, although the same process can be applied to any Ruby project. I will show how to build Docker images to easily run repeatable tests and how to set-up Jenkins to do it for you in an automated manner.</p>
+
+<h1>Continuous Integration Using Docker</h1>
+
+<p>The goal of this post is to show Jenkins running a project’s test-suite using Docker. This will occur following every code check-in or every N minutes or whenever it is needed.</p>
+
+<p>Why use Docker to do this? Having a clean environment to run tests is one of the ten commandments of running tests. With Docker&rsquo;s Dockerfile, you can specify a series of steps to create the full stack of the test environment you need. Docker can follow the steps to pre-build the test environment, then stash that environment for disposable re-use. Since a running Docker image, or [LXC] &ldquo;container&rdquo;, is ephemeral, you can blow it away and re-create it very quickly. Perfect for continuous integration!</p>
+
+<!--more-->
+
+
+<p>My Docker usage will be two-step. First, I will create the Docker image. This will have all the basics required by any test run from this project. I am basing my assumptions on system requirements from the current state of the project.</p>
+
+<p>It will not have everything installed, because I cannot predict what a developer will do during a day of hacking on code. They may change code dependencies (gem dependencies in this case) and so I cannot install those dependencies until the time I run that version of the code.</p>
+
+<p>The second step will be to take my built Docker image and run it every time a new version of the project’s code is created. I do not have access to create a GitHub code commit hook, which would tell Jenkins to run the tests on each code check-in, so instead I will run it periodically.</p>
+
+<p>Since I can re-use the Docker image for all my subsequent test runs, I will be creating my Docker-based test environment (step 1) far less frequently than running my tests (step 2).</p>
+
+<p>I can use Jenkins to perform both these tasks. In one Jenkins job, run maybe once a day, it can recreate the base Docker image and push it to a local Docker repository. In a second Jenkins job, which is run each time a developer commits code, I can run the Docker image, which will pull it from the local Docker repository.</p>
+
+<h2>Guinea Pig</h2>
+
+<p>I am going run the test suite of Cloud Foundry&rsquo;s Cloud Controller. This is a core component of the Cloud Foundry project and one of the most complex pieces. The test suite is very large, so it takes more time to run than a developer would have patience for, which for me is about 2 hours. This makes it ideal for continuous testing in the background to confirm that nobody has checked in code that breaks the test suite.</p>
+
+<h2>CI Docker Image</h2>
+
+<p>My continuous-integration Docker image has 3 parts&hellip;</p>
+
+<p>1) Specify a base image</p>
+
+<p>I am going to use the &ldquo;ubuntu&rdquo; image from <a href="http://index.docker.io.">http://index.docker.io.</a>
+2) Install dependencies</p>
+
+<p>Dependencies will be installed via apt-get, wget, rbenv, rubygems and Ruby&rsquo;s bundler.
+3) Specify the command that &ldquo;docker run&rdquo; executes when this Docker image is used</p>
+
+<p>I want to ensure I have the latest code (via &ldquo;git pull&rdquo;) and that we install any code-level dependencies (via &ldquo;bundle install&rdquo;). Finally, it should run the test suite.</p>
+
+<p>The exit code of the test suite will be returned by &ldquo;docker run&rdquo; and Jenkins will use this to determine if the tests passed or failed. If the test run fails Jenkins will inform relevant people via email, if we configure it to do so.</p>
+
+<p>Dockerfile</p>
+
+<p>A Dockerfile is a cross between assembler and a bash script. There are certain action keywords that each non-whitespace non-comment line starts with. I like to uppercase these, so they stand out, but uppercasing these is not mandatory. The remainder of each line is the content used by that action keyword.</p>
+
+<p>For instance, &ldquo;FROM&rdquo; is used to specify the base image, so &ldquo;FROM ubuntu&rdquo; specifies that I am using the &ldquo;ubuntu&rdquo; base image.</p>
+
+<p>&ldquo;RUN&rdquo; is used to run a shell command and is commonly used to install dependencies.</p>
+
+<p>&ldquo;ENV&rdquo; can set environment variables, which can be used in subsequent actions, but also persists to the &ldquo;CMD&rdquo; action.</p>
+
+<p>&ldquo;CMD&rdquo; is called when &ldquo;docker run&rdquo; is run against your created image. &ldquo;CMD&rdquo; is ignored during the image building.</p>
+
+<p>Here is my Dockerfile (gist here)&hellip;</p>
+
+<h1>docker image for running CC test suite</h1>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>FROM ubuntu
+</span><span class='line'>
+</span><span class='line'>RUN apt-get -y install wget
+</span><span class='line'>RUN apt-get -y install git
+</span><span class='line'>
+</span><span class='line'># install Ruby 1.9.3-p484
+</span><span class='line'>RUN apt-get -y install build-essential zlib1g-dev libreadline-dev libssl-dev libcurl4-openssl-dev
+</span><span class='line'>RUN git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+</span><span class='line'>RUN git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+</span><span class='line'>RUN echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+</span><span class='line'>RUN echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+</span><span class='line'>ENV PATH /.rbenv/bin:/.rbenv/shims:$PATH
+</span><span class='line'>RUN echo PATH=$PATH
+</span><span class='line'>RUN rbenv init -
+</span><span class='line'>RUN rbenv install 1.9.3-p484 && rbenv global 1.9.3-p484
+</span><span class='line'>
+</span><span class='line'># never install a ruby gem docs
+</span><span class='line'>RUN echo "gem: --no-rdoc --no-ri" >> ~/.gemrc
+</span><span class='line'>
+</span><span class='line'># Install bundler and the "bundle" shim
+</span><span class='line'>RUN gem install bundler && rbenv rehash
+</span><span class='line'>
+</span><span class='line'># Checkout the cloud_controller_ng code
+</span><span class='line'>RUN git clone -b master git://github.com/cloudfoundry/cloud_controller_ng.git /cloud_controller_ng
+</span><span class='line'>
+</span><span class='line'># mysql gem requires these
+</span><span class='line'>RUN apt-get -y install libmysqld-dev libmysqlclient-dev mysql-client
+</span><span class='line'># pg gem requires this
+</span><span class='line'>RUN apt-get -y install libpq-dev
+</span><span class='line'># sqlite gem requires this
+</span><span class='line'>RUN apt-get -y install libsqlite3-dev
+</span><span class='line'>
+</span><span class='line'># Optimization: Pre-run bundle install.
+</span><span class='line'># It may be that some gems are installed that never get cleaned up,
+</span><span class='line'># but this will make the subsequent CMD runs faster
+</span><span class='line'>RUN cd /cloud_controller_ng && bundle install
+</span><span class='line'>
+</span><span class='line'># Command to run at "docker run ..."
+</span><span class='line'>CMD if [ -z $BRANCH ]; then BRANCH=master; fi; \
+</span><span class='line'>cd /cloud_controller_ng \
+</span><span class='line'>&& git checkout $BRANCH \
+</span><span class='line'>&& git pull \
+</span><span class='line'>&& git submodule init && git submodule update \
+</span><span class='line'>&& bundle install \
+</span><span class='line'>&& bundle exec rspec spec</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The above installs Ruby 1.9.3 at a specific patch-level and any known system-level dependencies that may be needed by gems. If a developer added gems that required additional system dependencies, then those would need to be added to the Dockerfile and the Docker image would need to be rebuilt. This happens rarely, but for this reason it would be desirable to have developers own this Dockerfile and put it alongside the code and check it in with the code. This would then be updated in-step and could trigger a re-build, via Jenkins, of the Docker image.</p>
+
+<h2>Installed Gems Optimization</h2>
+
+<p>Earlier I said that I cannot install code dependencies (gem dependencies), since they may change from one version of the code to the next, but you may have noticed that I have pre-installed them anyway, via &ldquo;bundle install&rdquo;.</p>
+
+<p>As an optimization, I assume that most of the gems will rarely change. I will still install them just prior to running the tests, via another &ldquo;bundle install&rdquo;, so some will become redundant over time. But since most, if not all, will already be there, the &ldquo;bundle install&rdquo; at test run time will be fast.</p>
+
+<p>Luckily, I am using Jenkins to build the Docker image, probably once a night, so any installed gems that become redundant will not be around for long.</p>
+
+<p>You may think this adds an extra variable in the test run, so this can be skipped for purity at the cost of longer time for each test run.</p>
+
+<h2>Docker With Jenkins</h2>
+
+<p>Very little was needed to getting Docker working with Jenkins. I just needed to ensure that the unix user &ldquo;jenkins&rdquo; belonged to the &ldquo;docker&rdquo; group.</p>
+
+<p>Docker runs as the &ldquo;root&rdquo; user and the &ldquo;docker&rdquo; group. When the docker daemon starts up it creates a unix socket owned by the &ldquo;root&rdquo; user and the &ldquo;docker&rdquo; group. Therefore, the docker command-line client needs to be run via &ldquo;root&rdquo; user or someone in the &ldquo;docker&rdquo; group.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ ls -l /var/run/docker.sock
+</span><span class='line'>srw-rw---- 1 root docker 0 Dec 27 09:45 /var/run/docker.sock</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Simply add the jenkins user to the docker group to be able to create and run Docker images without sudo.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo usermod -a -G docker jenkins</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Please consider any security concerns with doing this. I am doing this in a trusted environment.</p>
+
+<h2>Local Docker Registry</h2>
+
+<p>Docker images can get quite large, so it is useful to have a local version of the Docker registry on the same network, or same machine, as you are running Docker. I am going to be running it on the same machine that I am running Jenkins on.</p>
+
+<p>I do not have to worry about the volatility of where I put the repository, as the built Docker images are disposable. As long as I put my Dockerfile somewhere safe (GitHub?), then I can recreate the Docker image anywhere at any time.</p>
+
+<p>Luckily the Docker registry is very simple to setup. It is just a Docker image itself, found on the <a href="http://index.docker.io">http://index.docker.io</a> Docker registry. Yes, things start getting very &ldquo;Inception&rdquo; quickly.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ docker run -p 5000:5000 samalba/docker-registry</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note, if you do not belong to the &ldquo;docker&rdquo; group, you will have to run this as sudo. I added myself to the “docker” group as follows&hellip;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo usermod -a -G docker phil</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The &ldquo;-p 5000:5000&rdquo; specifies that the docker-registry process should listen on the port 5000 internally in the Docker container and Docker should map that to port 5000 on the host machine.</p>
+
+<p>We can check it is running by using the &ldquo;docker ps&rdquo; command&hellip;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ docker ps
+</span><span class='line'>CONTAINER ID   IMAGE                            COMMAND                CREATED             STATUS              PORTS                    NAMES
+</span><span class='line'>81bbfc81f7f9   samalba/docker-registry:latest   /bin/sh -c cd /docke   48 seconds ago      Up</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Jenkins Job: Build The Docker Image</h2>
+
+<p>Creating a Docker image is quite simple. It requires 3 commands: &ldquo;build&rdquo;, &ldquo;tag&rdquo; and &ldquo;push&rdquo;.</p>
+
+<p>&ldquo;docker build&rdquo;, if successful, will output &ldquo;Successfully built &rdquo;, where &ldquo;&rdquo; is a hex string. You can then use this build-id to &ldquo;docker tag&rdquo; the image with a human-readable name. You then use this image name to &ldquo;docker push&rdquo; it to a Docker registry.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker build &lt;directory containing Dockerfile>
+</span><span class='line'>docker tag &lt;built-id> &lt;image-name>
+</span><span class='line'>docker push &lt;registry-address>:&lt;image-name></span></code></pre></td></tr></table></div></figure>
+
+
+<p>Automating this involves extracting the &ldquo;&rdquo; from the &ldquo;docker build&rdquo; output, so I created a small bash script called build_and_push.sh to help with this and manage the whole process of building the Docker image and getting it into the local repository.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#/bin/env bash
+</span><span class='line'>
+</span><span class='line'># Builds the docker image and pushs to
+</span><span class='line'># repository (local by default)
+</span><span class='line'>
+</span><span class='line'># Usage:
+</span><span class='line'>#   build_and_push &lt;directory of Dockerfile> &lt;resultant docker image name>
+</span><span class='line'>
+</span><span class='line'>DOCKERFILE_DIRECTORY=$1
+</span><span class='line'>DOCKER_IMAGE_NAME=$2
+</span><span class='line'>
+</span><span class='line'>if [ "$DOCKER_REPO_SERVER" = "" ]; then
+</span><span class='line'>  DOCKER_REPO_SERVER=localhost:5000
+</span><span class='line'>fi
+</span><span class='line'>DOCKER_REPO_NAME=$DOCKER_REPO_SERVER/$DOCKER_IMAGE_NAME
+</span><span class='line'>
+</span><span class='line'># Build docker image
+</span><span class='line'>rm -f docker-built-id
+</span><span class='line'>docker build $DOCKERFILE_DIRECTORY \
+</span><span class='line'>  | perl -pe '/Successfully built (\S+)/ && `echo -n $1 > docker-built-id`'
+</span><span class='line'>if [ ! -f docker-built-id ]; then
+</span><span class='line'>  echo "No docker-built-id file found"
+</span><span class='line'>  exit 1
+</span><span class='line'>fi
+</span><span class='line'>DOCKER_BUILD_ID=`cat docker-built-id`
+</span><span class='line'>rm -f docker-built-id
+</span><span class='line'>
+</span><span class='line'># Publish built docker image to repo
+</span><span class='line'>docker tag $DOCKER_BUILD_ID $DOCKER_REPO_NAME
+</span><span class='line'>docker push $DOCKER_REPO_NAME</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Using this script and my Dockerfile, I now have everything I need to create my first of two Jenkins jobs.</p>
+
+<p>Note, that for simplicity, I have put the Dockerfile and build_and_push.sh script in 2 public gists, which are downloaded at the time of running the Jenkins job.</p>
+
+<p>Name:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cloud_controller_ng rspec docker build</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Build / Execute shell:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>DOCKERFILE_DIRECTORY=docker
+</span><span class='line'>
+</span><span class='line'># Fetch Dockerfile
+</span><span class='line'>mkdir -p $DOCKERFILE_DIRECTORY
+</span><span class='line'>wget https://gist.github.com/philwhln/8195797/raw/Dockerfile --directory-prefix=$DOCKERFILE_DIRECTORY
+</span><span class='line'>
+</span><span class='line'># Fetch build_and_push script
+</span><span class='line'>wget https://gist.github.com/philwhln/8196116/raw/build_and_push.sh
+</span><span class='line'>chmod +x build_and_push.sh
+</span><span class='line'>
+</span><span class='line'># Build the Docker image
+</span><span class='line'>DOCKER_REPO_SERVER=localhost:5000 ./build_and_push.sh $DOCKERFILE_DIRECTORY cloud_controller_ng_rspec</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Build Triggers / Build periodically / Schedule :</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>15 3 * * *</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will be run every day at 3:15am, so the next day tests will be run with a fresh docker image.</p>
+
+<h2>Jenkins Job: Run The Docker Image</h2>
+
+<p>Now that we have a Docker image primed and ready to run our Jenkins job, we just need to run it.</p>
+
+<p>Name:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cloud_controller_ng rspec docker run</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Build / Execute shell:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker run localhost:5000/cloud_controller_ng_rspec</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The command is quite simple. &ldquo;docker run&rdquo; will checkout the latest &ldquo;cloudcontrollerng_rspec&rdquo; Docker image from our local Docker repository and run it. At this point the &ldquo;CMD&rdquo;, found in the Dockerfile, will be run.</p>
+
+<p>To recap, that line looks like this&hellip;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Command to run at "docker run ..."
+</span><span class='line'>CMD if [ -z $BRANCH ]; then BRANCH=master; fi; \
+</span><span class='line'>    cd /cloud_controller_ng \
+</span><span class='line'>    && git checkout $BRANCH \
+</span><span class='line'>    && git pull \
+</span><span class='line'>    && git submodule init && git submodule update \
+</span><span class='line'>    && bundle install \
+</span><span class='line'>    && bundle exec rspec spec</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We checkout the appropriate $BRANCH of cloudcontrollerng.git, if specified (left to the reader to add in Jenkins). It then does a &ldquo;git pull&rdquo; to ensure it has the latest code, then initializes the git submodules, which our project does have.</p>
+
+<p>Then we see the Ruby specific commands, &ldquo;bundle install&rdquo; and finally &ldquo;bundle exec rspec spec&rdquo; to run our test suite.</p>
+
+<p>If you are interested, here is roughly what you will see in the console output of the Jenkins job.</p>
+
+<p>And finally we see&hellip;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Finished in 121 minutes 1 second
+</span><span class='line'>7638 examples, 62 failures, 3 pending</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&ldquo;docker run&rdquo; returns exit code of 1 (failure), since several tests failed. This causes Jenkins to report to use that the tests are failing.</p>
+
+<p>We can see that this took just over 2 hours to run. Not something that most developers would have much patience for.</p>
+
+<h2>Conclusion</h2>
+
+<p>Since I am using a Dockerfile to specify my test environment, I can be sure that if you follow these steps you will be running the same test suite in an identical environment. It also means that if I hit a problem, I (or anyone else) can replicate it, because I have specified the full stack of my environment. In minutes you can be running it too.</p>
+
+<p>This is a big win for DevOps. Developers can create an initial environment in a Dockerfile, check it into git and the Operations team can then collaborate on it. The Operations team may even send a pull request to the Developers that says, &ldquo;Hey, our production environment does not look like that. Try this instead&hellip;&rdquo;. The updated Dockerfile is then checked out by Jenkins, which builds the new test environment and subsequent test runs are run on a more production-like environment.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-17T17:01:40-05:00" pubdate data-updated="true">Feb 17<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/continuous-delivery/'>Continuous Delivery</a>, <a class='category' href='/blog/categories/docker/'>Docker</a>, <a class='category' href='/blog/categories/jenkins/'>Jenkins</a>, <a class='category' href='/blog/categories/ruby/'>Ruby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2014/02/17/using-docker-to-run-ruby-rspec-ci-in-jenkins/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2014/02/17/using-docker-to-run-ruby-rspec-ci-in-jenkins/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/" title="Previous Post: Nodejs Deployment: Building and Configuring on Amazon Linux AMI">&laquo; Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-i/" title="Next Post: Continuous Delivery with Docker and Jenkins - part I">Continuous Delivery with Docker and Jenkins - part I &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

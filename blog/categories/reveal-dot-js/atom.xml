@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: reveal.js | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/reveal-dot-js/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Deploy reveal.js slideshow on github-pages]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/11/05/deploy-reveal-dot-js-slideshow-on-github-pages/"/>
+    <updated>2013-11-05T21:03:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/11/05/deploy-reveal-dot-js-slideshow-on-github-pages</id>
+    <content type="html"><![CDATA[<p>Originally posted on <a href="http://www.tikalk.com">Tikal Knolwedge&rsquo;s webiste</a> @ this <a href="http://www.tikalk.com/alm/deploy-revealjs-slideshow-github-pages">link</a><br></p>
+
+<p><img class="left" src="/assets/images/gh-pages.png" title="&lsquo;gh-pages&rsquo;" >Deploy <a href="https://github.com/hakimel/reveal.js/">reveal.js slideshow</a> on github-pages was ridiculously easy.</p>
+
+<p>Cloned reveal.js master branch to my local machine:</p>
+
+<pre><code>git clone git@github.com:hakimel/reveal.js.git
+</code></pre>
+
+<p>Remove the history &ndash; of you want to preserve history ( <strong>git remote rm origin</strong> and add your new remote)</p>
+
+<pre><code>rm -Rf .git 
+</code></pre>
+
+<p>Add your new remote (you need to create a repository first)</p>
+
+<pre><code>git remote add origin git@github.com:tikalk-cookbooks/chef_workshop_presentation.git
+</code></pre>
+
+<p>You know the rest &hellip;</p>
+
+<pre><code>git add .
+git commit -m "Initial commit"
+git push origin master
+</code></pre>
+
+<p>In order to push master to github pages you should create a branch names <em><strong>gh-pages</strong></em> and it&nbsp;<strong>must</strong> be named that, the commit &amp; push to this branch and about 2 minuets later you can browse to your presentation on gh-pages.</p>
+
+<p><em><strong>Create a branch</strong></em>:</p>
+
+<pre><code>git branch hg-pages
+git push origin gh-pages&lt;/pre&gt;
+</code></pre>
+
+<p>updating this &quot;site&quot; can be done by editing the stuff you want on the &quot;master&quot; branch, then merge     those changes in the gh-pages branch and finally push those changes to the remote gh-pages which will automatically deploy youe reveal.js presentaion.</p>
+
+<p>the merge sould look somthing like:</p>
+
+<pre><code>hagzag-Lap-hagzag:chef_workshop_presentaion(master) $ git checkout gh-pages&amp;nbsp;
+
+hagzag-Lap-hagzag:chef_workshop_presentaion(gh-pages) $ git merge master&amp;nbsp;
+Updating 0f4f1e1..fb0d73d
+
+Fast-forward
+
+css/custom.css | &amp;nbsp; 4 ++++
+
+index.html &amp;nbsp; &amp;nbsp; | 104 +++++++++++++++++++++++++++++++++++++++++++++++++-----------    --------------------------------------------
+
+2 files changed, 53 insertions(+), 55 deletions(-)
+
+create mode 100644 css/custom.css
+
+git push origin gh-pages
+</code></pre>
+
+<p>the url is built from the followng pattern:</p>
+
+<pre><code>[github_username].github.io/[repo_name]
+</code></pre>
+
+<p>in this case:</p>
+
+<p><a href="http://tikalk-cookbooks.github.io/chef_workshop_presentation/#/">http://tikalk-cookbooks.github.io/chef_workshop_presentation/</a></p>
+
+<p>Hope you find this useful !</p>
+
+<p>HP</p>
+]]></content>
+  </entry>
+  
+</feed>

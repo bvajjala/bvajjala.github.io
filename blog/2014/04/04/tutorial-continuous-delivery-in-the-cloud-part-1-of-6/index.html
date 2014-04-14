@@ -1,0 +1,498 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Tutorial : Continuous Delivery in the Cloud Part 1 of 6 - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="We help companies deliver software reliably and repeatedly using Continuous Delivery in the Cloud. With Continuous Delivery (CD), teams can deliver &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-1-of-6">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Tutorial : Continuous Delivery in the Cloud Part 1 of 6</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-04T13:59:32-04:00" pubdate data-updated="true">Apr 4<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>We help companies deliver software reliably and repeatedly using Continuous Delivery in the Cloud. With <a href="http://refcardz.dzone.com/refcardz/continuous-delivery-patterns" title="Continuous Delivery">Continuous Delivery</a> (CD), teams can deliver new versions of software to production by <a href="http://www.ibm.com/developerworks/agile/library/a-devops1/index.html" title="flattening of the software release process">flattening the software delivery process</a> and decreasing the cycle time between an idea and usable software through the automation of the entire delivery system: build, deployment, test, and release. CD is enabled through a delivery pipeline. With CD,our customers can choose when and how often to release to production. On top of this, we utilize the cloud so that customers can scale their infrastructure up and down and deliver software to users on demand.</p>
+
+<p>We offer a solutions called <a href="../solutions/elastic-operations/index.html" title="Elastic Operations">Elastic Operations</a> which provides a Continuous Delivery platform along with expert engineering support and monitoring of a delivery pipeline that builds, tests, provisions and deploys software to target environments – as often as our customers choose. We’re in the process of open sourcing the platform utilized by <a href="../solutions/elastic-operations/index.html" title="Elastic Operations">Elastic Operations</a>.
+In this six-part blog series, I am going to go over how we built out a Continuous Delivery solution for one of our customers <a href="http://public.sea2shore.org/" title="Sea to Shore Alliance">Sea to Shore Alliance</a>:</p>
+
+<p><strong>Part 1: Introduction</strong> – What you’re reading now;
+<strong><a href="../continuous-delivery-in-the-cloud-cd-pipeline-part-2-of-6/index.html" title="Continuous Delivery in the Cloud: Part 2 of 6">Part 2: CD Pipeline</a></strong>
+– Automated pipeline to build, test, deploy, and release software continuously;
+<strong><a href="../continuous-delivery-in-the-cloud-cloudformation-part-3-of-6/index.html">Part 3: CloudFormation</a></strong>
+– Scripted virtual resource provisioning;
+<strong><a href="../continuous-delivery-in-the-cloud-dynamic-configuration-part-4-of-6/index.html">Part 4: Dynamic Configuration</a></strong>
+– “Property file less” infrastructure;
+ <strong><a href="../continuous-delivery-in-the-cloud-deployment-automation-part-5-of-6/index.html">Part 5: Deployment Automation</a></strong>
+– Scripted deployment orchestration;
+ <strong><a href="../continuous-delivery-in-the-cloud-infrastructure-automation-part-6-of-6/index.html">Part 6: Infrastructure Automation</a></strong>
+– Scripted environment provisioning (<a href="http://www.ibm.com/developerworks/agile/library/a-devops2/index.html" title="Infrastructure Automation">Infrastructure Automation</a>)</p>
+
+<p>This year, we delivered this Continuous Delivery in the Cloud solution to the Sea to Shore Alliance. The Sea to Shore Alliance is a non-profit organization whose mission is to protect and conserve the world’s fragile coastal ecosystems and its endangered species such as manatees, sea turtles, and right whales. One of their first software systems tracks and monitors manatees. Prior to <a href="http://stelligent.com" title="Stelligent's">Stelligent</a>‘s involvement, the application was running on a single instance that was manually provisioned and deployed. As a result of the manual processes, there were no automated tests for the infrastructure or deployment. This made it impossible to reproduce environments or deployments the same way every time. Moreover, the knowledge to recreate these environments, builds and deployments were locked in the heads of a few key individuals. The <a href="http://manatees.mapntracker.com/wildtracks/" title="Tracking Manatees">production application</a> for tracking these Manatees, developed by <a href="http://www.sarvatix.com/">Sarvatix</a>, is located <a href="http://manatees.mapntracker.com/wildtracks/" title="Manatee Tracker">here</a>.</p>
+
+<p>In this case study, I describe how we went from an untested manual process in which the development team was manually building software artifacts, creating environments and deploying, to a completely automated delivery pipeline that is triggered with every change.</p>
+
+<p><strong>Figure 1</strong> illustrates the AWS architecture of the infrastructure that we designed for this Continuous Delivery solution.</p>
+
+<p><img src="https://lh4.googleusercontent.com/jf8LnXDc6kUDE2gMHSLmkGln-G4VhSzJ2-fDXrv9NCj4ZuL_8feNpe-2EO0RqWTTDfr6aIrUlwfs9xTyETrjcm33hVxV-Ks058XLB2U69B5srpyNnxY" alt="" />
+ There are two <a href="http://aws.amazon.com/cloudformation/" title="AWS CloudFormation">CloudFormation</a>
+stacks being used, the <a href="http://jenkins-ci.org/" title="Jenkins Continuous Integration">Jenkins</a> stack – or Jenkins environment – as shown on the left and the Manatee stack – or Target environment – as shown on the right.</p>
+
+<p><strong>The Jenkins Stack</strong></p>
+
+<ol>
+<li><ul>
+<li>Creates the jenkins.example.com  <a href="http://aws.amazon.com/route53/" title="Route53">Route53</a> Hosted Zone</li>
+</ul>
+</li>
+<li><ul>
+<li>Creates an EC2 instance with Tomcat and Jenkins installed and configured on it.</li>
+</ul>
+</li>
+<li><ul>
+<li>Runs the CD Pipeline</li>
+</ul>
+</li>
+</ol>
+
+
+<p>The Manatee stack is slightly different, it utilizes the configuration provided by <a href="http://aws.amazon.com/simpledb/" title="SimpleDB NoSQL">SimpleDB</a> to create itself. This stack defines the target environment for which the application software is deployed.</p>
+
+<p><strong>The Manatee Stack</strong></p>
+
+<ol>
+<li><ul>
+<li>Creates the manatee.example.com Route53 Hosted Zone</li>
+</ul>
+</li>
+<li><ul>
+<li>Creates an EC2 instance with Tomcat, Apache, PostgreSQL installed on it.</li>
+</ul>
+</li>
+<li><ul>
+<li>Runs the Manatee application.</li>
+</ul>
+</li>
+</ol>
+
+
+<p>The Manatee stack is configured with CPU alarms that send an email notification to the developers/administrators when it becomes over-utilized. We’re in the process of scaling to additional instances when these types of alarms are triggered.</p>
+
+<p>Both instances are encapsulated behind a security group so that they can talk between each other using the internal AWS network.</p>
+
+<p><strong>Fast Facts</strong>
+ <strong>Industry</strong>: Non-Profit
+ <strong>Profile</strong>: Customer tracks and monitors endangered species such as manatees.
+ <strong>Key Business Issues</strong>: The customer’s development team needed to have unencumbered access to resources along with automated environment creation and deployment.
+ <strong>Stakeholders</strong>: Development team and scientists and others from the Sea to Shore Alliance
+ <strong>Solution</strong>: Continuous Delivery in the Cloud (<a href="../solutions/elastic-operations/index.html" title="Elastic Operations">Elastic Operations</a>)
+ <strong>Key Tools/Technologies</strong>: <a href="http://aws.amazon.com/" title="Amazon Web Services">AWS – Amazon Web Services</a> (CloudFormation, EC2, S3, SimpleDB, <a href="http://aws.amazon.com/iam/" title="AWS Identity and Access Management">IAM</a>, <a href="http://aws.amazon.com/cloudwatch/" title="CloudWatch">CloudWatch</a>, SNS), Jenkins, Capistrano, <a href="http://puppetlabs.com/" title="Puppet">Puppet</a>, Subversion, <a href="http://cukes.info/" title="Cucumber Acceptance-Test Driven Development">Cucumber</a>, <a href="http://www.liquibase.org/" title="Liquibase">Liquibase</a></p>
+
+<p><strong>The Business Problem</strong>
+ The customer needed an operations team that could be scaled up or down depending on the application need. The customer’s main requirements were to have unencumbered access to resources such as virtual hardware. Specifically, they wanted to have the ability to create a target environment and run an automated deployment to it without going to a separate team and submitting tickets, emails, etc. In addition to being able to create environments, the customer wanted to have more control over the resources being used; they wanted to have the ability to terminate resources if they were unused. To address these requirements we introduced an entirely automated solution which utilizes the AWS cloud for providing resources on-demand, along with other solutions for providing testing, environment provisioning and deployment.</p>
+
+<p>On the Manatee project, we have five key objectives for the delivery infrastructure. The development team should be able to:</p>
+
+<ol>
+<li><ul>
+<li>Deliver new software or updates to users on demand</li>
+</ul>
+</li>
+<li><ul>
+<li>Reprovision target environment configuration on demand</li>
+</ul>
+</li>
+<li><ul>
+<li>Provision environments on demand</li>
+</ul>
+</li>
+<li><ul>
+<li>Remove configuration bottlenecks</li>
+</ul>
+</li>
+<li><ul>
+<li>Ability for users to terminate instances</li>
+</ul>
+</li>
+</ol>
+
+
+<p><strong>Our Team</strong>
+ <a href="http://stelligent.com" title="Stelligent's">Stelligent</a>’s team consisted of an account manager and one polyskilled <a href="http://www.informit.com/store/product.aspx?isbn=0321793269" title="DevOps">DevOps</a> Engineer that built, managed, and supported the Continuous Delivery pipeline.</p>
+
+<p><strong>Our Solution</strong>
+ Our solution, a single delivery pipeline that gives our customer (developers, testers, etc.) unencumbered access to resources and a single click automated deployment to production. To enable this, the pipeline needed to include:</p>
+
+<ol>
+<li><ul>
+<li>The ability for any authorized team member to create a new target  environment using a single click</li>
+</ul>
+</li>
+<li><ul>
+<li>Automated deployment to the target environment</li>
+</ul>
+</li>
+<li><ul>
+<li>End-to-end testing</li>
+</ul>
+</li>
+<li><ul>
+<li>The ability to terminate unnecessary environments</li>
+</ul>
+</li>
+<li><ul>
+<li>Automated deployment into production with a single click</li>
+</ul>
+</li>
+</ol>
+
+
+<p>The delivery pipeline improves efficiency and reduces costs by not limiting the development team. The solution includes:</p>
+
+<p><strong>On-Demand Provisioning</strong> – All hardware is provided via EC2’s virtual instances in the cloud, on demand. As part of the CD pipeline, any authorized team member can use the Jenkins CreateTargetEnvironment job to order target environments for development work.</p>
+
+<p><strong>Continuous Delivery Solution so that the team can deliver software to users on demand</strong>:</p>
+
+<ul>
+<li>Dependency Management using <a href="http://ant.apache.org/ivy/" title="Ivy">Ivy</a> (through <a href="http://grails.org/" title="Grails">Grails</a>).</li>
+<li>Database Integration/Change using  <a href="http://www.liquibase.org" title="Liquibase">Liquibase</a></li>
+<li>Testing using <a href="http://cukes.info/" title="Cucumber">Cucumber</a></li>
+<li>Custom <a href="http://capistranorb.com/" title="Capistrano">Capistrano</a> scripts     for remote deployment.</li>
+<li><a href="http://amzn.to/cibook" title="Continuous Integration">Continuous     Integration</a> server     using <a href="http://jenkins-ci.org/" title="Jenkins">Jenkins</a></li>
+<li>Continuous Delivery pipeline system – we customized Jenkins to build     a delivery pipeline</li>
+</ul>
+
+
+<p><strong>Development Infrastructure</strong> – Consists of:</p>
+
+<ul>
+<li><a href="http://tomcat.apache.org/" title="Tomcat">Tomcat</a>: used for hosting the     Manatee Application</li>
+<li><a href="http://httpd.apache.org/" title="Apache">Apache</a>: Hosted the front-end     website and used virtual hosts for proxying and redirection.</li>
+<li><a href="http://www.postgresql.org/" title="PostgreSQL">PostgreSQL</a>: Database for     the Manatee application</li>
+<li><a href="http://groovy.codehaus.org/" title="Groovy">Groovy</a>: the application is     written in Grails which uses Groovy.</li>
+</ul>
+
+
+<p><strong>Instance Management</strong> – Any authorized team member is able to monitor virtual instance usage by viewing Jenkins. There is a policy that test instances are automatically terminated every two days. This promotes ephemeral environments and test automation.</p>
+
+<p><strong>Deployment to Production</strong> – There’s a boolean value (i.e. a checkbox the user selects) in the delivery pipeline used for deciding whether to deploy to production.</p>
+
+<p><strong>System Monitoring and Disaster Recovery</strong> – Using the AWS CloudWatch service, AWS provides us with detailed monitoring to notify us of instance errors or anomalies through statistics such as CPU utilization, Network IO, Disk utilization, etc. Using these solutions we’ve implemented an automated disaster recovery solution.</p>
+
+<p>A list of the AWS tools we utilized are enumerated below.</p>
+
+<p><strong>Tool</strong>: <a href="http://aws.amazon.com/ec2/" title="AWS EC2">AWS EC2</a>
+ <strong>What is it?</strong> Cloud-based virtual hardware instances
+ <strong>Our Use</strong>: We use EC2 for all of our virtual hardware needs. All instances, from development to production are run on EC2</p>
+
+<p><strong><strong> </strong>Tool</strong>: <a href="http://aws.amazon.com/s3/" title="AWS S3">AWS S3</a>
+ <strong>What is it?</strong> Cloud-based storage
+ <strong>Our Use</strong>: We use S3 as both a binary repository and a place to store successful build artifacts.</p>
+
+<p><strong>Tool</strong>:  <a href="http://aws.amazon.com/iam/" title="AWS IAM">AWS IAM</a>
+ <strong>What is it?</strong> User-based access to AWS resources
+ <strong>Our Use</strong>: We create users dynamically and use their AWS access and secret access keys so we don’t have to store credentials as properties</p>
+
+<p><strong>Tool</strong>: <a href="http://aws.amazon.com/cloudwatch/" title="AWS CloudWatch">AWS
+CloudWatch</a>
+ <strong>What is it?</strong> System monitoring
+ <strong>Our Use</strong>: Monitors all instances in production. If an instance takes an abnormal amount of strain or shuts down unexpectedly, SNS sends an email to designated parties</p>
+
+<p><strong>Tool</strong>: <a href="http://aws.amazon.com/sns/" title="AWS SNS">AWS SNS</a>
+ <strong>What is it?</strong> Email notifications
+ <strong>Our Use</strong>: When an environment is created or a deployment is run, SNS is used to send notifications to affected parties.</p>
+
+<p><strong>Tool</strong>: <a href="http://cukes.info/" title="Cucumber">Cucumber</a>
+ <strong>What is it?</strong> Acceptance testing
+ <strong>Our Use</strong>: Cucumber is used for testing at almost every step of the way. We use Cucumber to test infrastructure, deployments and application code to ensure correct functionality. Cucumber’s unique english-ess  verbiage allows both technical personnel and customers to communicate using an executable test.</p>
+
+<p><strong>Tool</strong>: <a href="http://www.liquibase.org" title="Liquibase">Liquibase</a>
+ <strong>What is it?</strong> Automated database change management
+ <strong>Our Use</strong>: Liquibase is used for all database changesets. When a change is necessary within the database, it is made to a liquibase changelog.xml</p>
+
+<p><strong>Tool</strong>: <a href="http://aws.amazon.com/cloudformation/" title="AWS CloudFormation">AWS
+CloudFormation</a>
+ <strong>What is it?</strong> Templating language for orchestrating all AWS resources
+ <strong>Our Use</strong>: CloudFormation is used for creating a fully working Jenkins environment and Target environment. For instance for the Jenkins environment it creates the EC2 instance with CloudWatch monitoring alarms, associated IAM user, SNS notification topic, everything required for Jenkins to build. This along with Jenkins are the major pieces of the infrastructure.</p>
+
+<p><strong>Tool</strong>: <a href="http://aws.amazon.com/simpledb/" title="AWS Simple DB">AWS
+SimpleDB</a>
+ <strong>What is it?</strong> Cloud-based NoSQL database
+ <strong>Our Use</strong>: SimpleDB is used for storing dynamic property configuration and passing properties through the CD Pipeline. As part of the environment creation process, we store multiple values such as IP addresses that we need when deploying the application to the created environment.</p>
+
+<p><strong>Tool</strong>: <a href="http://jenkins-ci.org/" title="Jenkins">Jenkins</a>
+ <strong>What is it?</strong> We’re using Jenkins to implement a CD pipeline using the Build Pipeline plugin.
+ <strong>Our Use</strong>: Jenkins runs the CD pipeline which does the building, testing, environment creation and deploying. Since the CD pipeline is also code (i.e. configuration code), we version our Jenkins configuration.</p>
+
+<p><strong>Tool</strong>: <a href="http://capistranorb.com/" title="Capistrano">Capistrano</a>
+ <strong>What is it?</strong> Deployment automation
+ <strong>Our Use</strong>: Capistrano orchestrates and automates deployments.
+Capistrano is a Ruby-based deployment DSL that can be used to deploy to multiple platforms including Java, Ruby and PHP. It is called as part of the CD pipeline and deploys to the target environment.</p>
+
+<p><strong>Tool</strong>: <a href="http://puppetlabs.com/" title="Puppet">Puppet</a>
+ <strong>What is it?</strong> Infrastructure automation
+ <strong>Our Use</strong>: Puppet takes care of the environment provisioning.
+CloudFormation requests the environment and then calls Puppet to do the dynamic configuration. We configured Puppet to install, configure, and manage the packages, files and services.</p>
+
+<p><strong>Tool</strong>: <a href="http://subversion.tigris.org/" title="Subversion">Subversion</a>
+ <strong>What is it?</strong> Version control system
+ <strong>Our Use</strong>: Subversion is the version control repository where every piece of the Manatee infrastructure is stored. This includes the environment scripts such as the Puppet modules, the CloudFormation templates, Capistrano deployment scripts, etc.</p>
+
+<p>We applied the on-demand usability of the cloud with a proven continuous delivery approach to build an automated one click method for building and deploying software into scripted production environments.</p>
+
+<p>In the blog series, I will describe the technical implementation of how we went about building this infrastructure into a complete solution for continuously delivering software. This series will consist of the following:</p>
+
+<p><strong>Part 2 of 6 – CD Pipeline</strong>: I will go through the technical implementation of the CD pipeline using Jenkins. I will also cover Jenkins versioning, pulling and pushing artifacts from S3, and Continuous Integration.</p>
+
+<p><strong>Part 3 of 6 – CloudFormation</strong>: I will go through a CloudFormation template we’re using to orchestrate the creation of AWS resources and to build the Jenkins and target infrastructure.</p>
+
+<p><strong>Part 4 of 6 – Dynamic Configuration</strong>: Will cover dynamic property configuration using SimpleDB</p>
+
+<p><strong>Part 5 of 6 – Deployment Automation</strong>: I will explain Capistrano in detail along how we used Capistrano to deploy build artifacts and run Liquibase database changesets against target environments</p>
+
+<p><strong>Part 6 of 6 – Infrastructure Automation</strong>: I will describe the features of Puppet in detail along with how we’re using Puppet to build and configure target environments – for which the software is deployed.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-04T13:59:32-04:00" pubdate data-updated="true">Apr 4<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/aws/'>AWS</a>, <a class='category' href='/blog/categories/cd/'>CD</a>, <a class='category' href='/blog/categories/ci/'>CI</a>, <a class='category' href='/blog/categories/tutorial/'>Tutorial</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-1-of-6/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-1-of-6/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/" title="Previous Post: Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline">&laquo; Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-2-of-6/" title="Next Post: Tutorial : Continuous Delivery in the Cloud Part 2 of 6">Tutorial : Continuous Delivery in the Cloud Part 2 of 6 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: octopress | Balaji Vajjala's Blog]]></title>
+  <title><![CDATA[Category: Octopress | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T15:32:24-04:00</updated>
+  <updated>2014-04-14T15:50:34-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,121 +14,85 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Creating a Github Pages Blog With Octopress]]></title>
-    <link href="http://bvajjala.github.io/blog/2012/12/15/creating-a-github-pages-blog-with-octopress/"/>
-    <updated>2012-12-15T11:10:00-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2012/12/15/creating-a-github-pages-blog-with-octopress</id>
-    <content type="html"><![CDATA[<p>A lot of tech bloggers will write their blog posts in <a href="http://daringfireball.net/projects/markdown/">Markdown</a>, convert it to HTML and paste that HTML into their blog of choice and then in the blog&rsquo;s editor clean it up to suit their blog.   This is an excellent way to create easy to read portable documents that can easily be published in multiple formats.</p>
+    <title type="html"><![CDATA[Why Octopress ?]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/02/24/why-octopress/"/>
+    <updated>2013-02-24T09:11:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/02/24/why-octopress</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/octopress.png" title="&lsquo;Octopress Logo&rsquo;" >
+Yes I am a Hacker wannabe [Octopress slogen is &ldquo;A blogging framewrok for hackers&rdquo; &hellip; ].</p>
 
-<p>However what if there was a way to skip the second part of that and just create a markdown page, submit it into your source control ( you <em>do</em> use source control right? ) and your blog would automagically update.</p>
+<p>Now seriously, i&rsquo;ve been down the road with many blog / CMS engines, <a href="http://ww.drupal.org">Drupal</a>, <a href="http://wordpress.org/">Wordpress</a> and all I really wanted was
+a note-pad with no fancy WYSIWYG editor with a bazillion plug-ins which will enable me to embed images / videos or a simple syntax highlighter.</p>
 
-<p>In comes <a href="http://octopress.org/">Octopress</a>,  it&rsquo;s a framework that wraps around <a href="https://help.github.com/articles/using-jekyll-with-pages">Jekyll</a> which is <a href="https://github.com/">Github&rsquo;s</a> blogging engine that powers <a href="http://pages.github.com/">Github Pages</a>.   Essentially you edit Markdown files and <a href="http://octopress.org/">Octopress</a> will compile it into a static-html <a href="https://help.github.com/articles/using-jekyll-with-pages">Jekyll</a> blog.     This means that your blog will be lightning fast ( no need to run an interpreted language in your web server ) and ultra portable.</p>
+<p>So I found <a href="http://octopress.org/">Octopress</a> which is just frekin' simple to use + it&rsquo;s cheap [hosting on Github Pages]</p>
 
-<p>Another side benefit is that you can host it for free on <a href="https://github.com/">Github</a> ( as long as you&rsquo;re okay with sharing your source &hellip; and you should be! ) or for free on <a href="http://www.heroku.com/">Heroku</a> ( don&rsquo;t have to share your source ) or host it on any simple no frills Apache, LightHTTP, nginx, node.js, etc server.</p>
+<blockquote><p>Octopress is a framework designed by Brandon Mathis for Jekyll, the blog aware static site generator powering Github Pages. To start blogging with Jekyll, you have to write your own HTML templates, CSS, Javascripts and set up your configuration. But with Octopress All of that is already taken care of. Simply clone or fork Octopress, install dependencies and the theme, and you’re set.</p></blockquote>
 
-<p>Here is how I&rsquo;m porting my blogger site to Octopress hosted on Github Pages.   I&rsquo;m not using any of the fancy <a href="https://github.com/mojombo/jekyll/wiki/blog-migrations">Jekyll migration tools</a> as I only have a few posts and it will help me get used to the extended syntax that Octopress uses in Markdown.</p>
+<ul>
+<li>Social links preloaded, Facebook, Twitter, disqus &amp; other are built-in</li>
+<li>Syntax high-lighting built-in</li>
+<li>there are more good reasons <a href="http://octopress.org/docs/">here</a> <a href="https://github.com/imathis/octopress/wiki/3rd-party-plugins">and here</a></li>
+</ul>
+
+
+<p>The only problem was / is migrating all the stuff I have on-line so that is still a work in progress &hellip;
+&ndash;>So I guess I&rsquo;ll have to see if this ones sticks!&lt;&ndash;</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Bypassing the Google Feed API Cache]]></title>
+    <link href="http://bvajjala.github.io/blog/2012/03/29/bypassing-the-google-feed-api-cache/"/>
+    <updated>2012-03-29T23:22:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2012/03/29/bypassing-the-google-feed-api-cache</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/posts/google_feed_api_meme.png"></p>
+
+<p>I noticed recently that the download count of the packages in my <a href="https://github.com/kmees/Octopress-NuGet-Aside">NuGet Aside</a> didn&rsquo;t update properly. As I <a href="/blog/2012/02/29/nuget-aside-for-octopress/">mentioned earlier</a>, I use the <a href="https://developers.google.com/feed/">Google Feed API</a> to get the data from the NuGet Gallery feed of an author. This indicrection is needed because the NuGet Gallery API doesn&rsquo;t support the <strong>jsonp</strong> response type (yet). Anyway, the problem is that Google caches the feeds heavily and only adds new entries but doesn&rsquo;t update existing ones. This means that the packages keep their download count of the first request.</p>
 
 <!--more-->
 
 
-<p>As usual the first step is to install any dependencies.   These instructions are for <a href="http://www.ubuntu.com/">Ubuntu 12.10</a> &hellip; modify to suit your OS of choice.</p>
-
-<p>Most of these steps are taken directly from the <a href="http://octopress.org/docs/">Octopress Documentation</a>,   I&rsquo;m just condensing them into a single document to suit the exact scenario being described in this post.</p>
-
-<h2>Before You Begin</h2>
-
-<ol>
-<li>Install Git</li>
-<li>Install Ruby 1.9.3 via your OS package management or <a href="http://octopress.org/docs/setup/rbenv/">rbenv</a> or <a href="http://octopress.org/docs/setup/rvm/">RVM</a>.  <br/>
-<em>If using package management may need to install ruby-dev</em></li>
-</ol>
-
-
-<p>Check your Ruby version is at least 1.9.3 and install bundler:</p>
-
-<p><code>
-ruby --version
-sudo gem install bundler
-</code></p>
-
-<h2>Initial Setup</h2>
-
-<p>Clone the octopress repository and set it up</p>
-
-<p>```
-git clone git://github.com/imathis/octopress.git octopress
-cd octopress
-bundle install</p>
-
-<p>rake install
-```</p>
-
-<p>We&rsquo;re going to use Github pages.   Octopress has some rake tasks to make this easier for you.    Your blog will be hosted at <code>http://username.github.com</code> and you need to create a <a href="https://github.com/repositories/new">new Github repository</a> called <code>username.github.com</code> that github pages will use the master branch as the html source for your blog.</p>
-
-<p><code>
-rake setup_github_pages
-</code></p>
-
-<p>This rake points our clone to the new repistory we just set up, configures your blog&rsquo;s URL and sets up a master branch in the <code>_deploy</code> directory for deployment.</p>
-
-<p>edit <code>_config.yml</code> and fill in your blog name and other details.   There&rsquo;s also some configs for twitter/G+/etc plugins that are worth configuring.</p>
-
-<h2>Write some blog content</h2>
-
-<p><em>Great time to read <a href="http://octopress.org/docs/blogging">Blogging Basics</a></em></p>
-
-<p>Create an <code>About</code> page and a <code>First Post!</code> blog post:</p>
-
-<p><code>
-rake new_page["About"]
-rake new_post["First Post!"]
-</code></p>
-
-<p>Edit the Markdown pages that it creates for you with your preferred <a href="http://sourceforge.net/p/retext/home/ReText/">Markdown editor</a>.   The output of the rake commands should provide appropriate hints as to the location of the created files.</p>
-
-<p>Generate and preview the blog:</p>
-
-<p><code>
-rake generate
-rake preview
-</code></p>
-
-<p>This will generate the contents of your blog and allow you to preview it at [<a href="http://localhost:4000">http://localhost:4000</a>].</p>
-
-<p>Once you&rsquo;re happy with the contents we can deploy your blog for the first time.</p>
-
-<p><code>
-rake deploy
+<p>After some experiments, I concluded that the caching behavior is solely based on the feed URL and modifying the URL in a way that it &lsquo;looks&rsquo; different but still returns the same data circumvents the cache. I created a salt function that returns a large number based on the current time which I just append to the URL as an additional query parameter (that gets ignored by the API).
+<code>javascript
+function salt() {
+  var now = new Date();
+  var saltDate = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  return saltDate.getTime();
+}
 </code>
-This will copy the generated files into <code>_deploy/</code>, add them to git, commit and push them up to the master branch. In a few seconds you should get an email from Github telling you that your commit has been received and will be published on your site.   Being your first commit it could take 10 minutes for the blog to be available at [<a href="http://username.github.com">http://username.github.com</a>]</p>
+As you may notice, the function returns the same number throughout the whole day. This way, the feed can still be cached but the data gets updated every day which is a good compromise !</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[NuGet Aside for Octopress]]></title>
+    <link href="http://bvajjala.github.io/blog/2012/02/29/nuget-aside-for-octopress/"/>
+    <updated>2012-02-29T15:37:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2012/02/29/nuget-aside-for-octopress</id>
+    <content type="html"><![CDATA[<p>I just finished as aside for <a href="http://www.octopress.org">Octopress</a> that list the
+Top N downloaded packages where you are an author. It also adds a link to your
+NuGet gallery profile if you have one. The style is basically the same as the style of the github aside.</p>
 
-<p>Don&rsquo;t forget to commit your changes to the source branch:</p>
+<p>Since there is no official way to publish 3rd party add-ons for Octopress yet, I
+created a <a href="https://github.com/kmees/Octopress-NuGet-Aside">github repository</a> with the required files and setup instructions in the <a href="https://github.com/kmees/Octopress-NuGet-Aside/blob/master/README.md">ReadMe</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Job configuration change in Hudson 1.372]]></title>
+    <link href="http://bvajjala.github.io/blog/2010/08/17/Job-configuration-change-in-Hudson-1.372/"/>
+    <updated>2010-08-17T09:11:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2010/08/17/Job-configuration-change-in-Hudson-1.372</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/hudson_logo.png" title="&lsquo;Hudson Logo&rsquo;" >Yesterday I upgraded hudson to the greatest an latest which was a seamless upgrade.</p>
 
-<p><code>
-git add .
-git commit -m 'Added About page and first post!'
-git push origin source
-</code></p>
+<p>A very obvious change in the Job configuration form was added instead of &ldquo;<strong>Tie Build to a node</strong>&rdquo;:
+<img src="/assets/images/old-slave-daialog_0.png" title="&lsquo;old_slave_selection_dialog&rsquo;" ></p>
 
-<h2>Want to edit your blog from another machine,  or edit an existing octopress blog?</h2>
+<p>There is now <strong>&ldquo;Restrict where this project can be run&rdquo;</strong>:</p>
 
-<p>This is pretty simple ( assuming you have the prerequisites already install ).</p>
+<p><img src="/assets/images/new-slave-daialog_0.png" title="&lsquo;new__slave_selection_dialog&rsquo;" ></p>
 
-<p><em>If you run Dropbox you can do this inside of your dropbox folders to make this instantly avaiable on any system you use.</em></p>
-
-<p><code>
-git clone git@github.com:username/username.github.com.git
-cd username.github.com
-git checkout source
-mkdir _deploy
-cd _deploy
-git init
-git remote add origin git@github.com:username/username.github.com.git
-git pull origin master
-cd ..
-</code></p>
-
-<p>once this is done you can run <code>rake new_post["title"]</code> and all the other rake commands needed to edit/preview/publish your blog.</p>
+<p>The disadvantage in this feature is if you want to a build to a node you need to know its name / node group name prior to the actual configuration. The Advantage of this feature is you can be more specific in where you want you build to run and with a large number of slaves this is quite important, <strong>Please note</strong>: &ldquo;old&rdquo; jobs aren&rsquo;t affected of this change.</p>
 ]]></content>
   </entry>
   

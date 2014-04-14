@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Git | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T15:32:24-04:00</updated>
+  <updated>2014-04-14T15:50:34-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,121 +14,89 @@
 
   
   <entry>
-    <title type="html"><![CDATA[OpenStack : Git Gerrit and Jenkins Workflow]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/"/>
-    <updated>2014-02-03T14:54:23-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow</id>
-    <content type="html"><![CDATA[<h1>Gerrit Workflow</h1>
+    <title type="html"><![CDATA[Git Internals]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/05/05/Git-Internals/"/>
+    <updated>2013-05-05T22:00:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/05/05/Git-Internals</id>
+    <content type="html"><![CDATA[<p>I found this information very supporting during my personal jorney into learning git, the internals IMO shows the mind shift one has to do when using Git after using any other SCM tool.</p>
 
-<p><img src="/downloads/code/GerritGitJenkinsWorkflow.png" title="Git Gerrit Jenkins Workflow" alt="Alt text in case picture load fails" /></p>
+<p><script async class="speakerdeck-embed" data-id="9c9899c096f1013054d24e4027241f59" data-ratio="1.33333333333333" src="http://bvajjala.github.io//speakerdeck.com/assets/embed.js"></script></p>
 
-<h2>Git Account Setup</h2>
 
-<p>You&rsquo;ll need a <a href="https://login.launchpad.net">Launchpad account</a>, since this is how the Web interface for the Gerrit Code Review system will identify you. This is also useful for automatically crediting bug fixes to you when you address them with your code commits.</p>
 
-<p>If you haven&rsquo;t already, <a href="https://www.openstack.org/join/">join The OpenStack Foundation</a> (it&rsquo;s free and required for all code contributors). Among other privileges, this also allows you to vote in elections and run for elected positions within The OpenStack Project. When signing up for Foundation Membership, make sure to give the same E-mail address you&rsquo;ll use for code contributions, since this will need to match your preferred E-mail address in Gerrit.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Setup Git, Gitweb with git-http-backend / smart http on ubuntu 12.04]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/05/05/Setup-git-on-ubutnu-12-04/"/>
+    <updated>2013-05-05T21:00:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/05/05/Setup-git-on-ubutnu-12-04</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/Git_Apache.png" title="&lsquo;Git Logo&rsquo;" >Setting up git over http (Smart HTTP in perticular) has it&#39;s caveats I will try to emphesize them as I go along.</p>
 
-<p>Visit <a href="https://review.openstack.org/">https://review.openstack.org/</a> and click the Sign In link at the top-right corner of the page. Log in with your Launchpad ID.</p>
+<p>Final Goal is to run git over http using git-http-backend (a.k.a smart http) in apposed to using webdav which is also called the dumb-method, webdav was never designed to work with git for the reason that it cannot compress object whilst transporting data between the client and the server hosting git [ there is no real git client &ndash; git server so i am not referring to it a such].</p>
 
-<p>Because Gerrit uses Launchpad OpenID single sign-on, you won&rsquo;t need a separate password for Gerrit, and once you log in to one of Launchpad, Gerrit, or Jenkins, you won&rsquo;t have to enter your password for the others.</p>
+<p><strong><u>Versions used in this setup</u>:</strong></p>
 
-<p>You&rsquo;ll also want to upload an SSH key while you&rsquo;re at it, so that you&rsquo;ll be able to commit changes for review later.</p>
+<ul>
+<li>Ubutnu version <em>12.04-LTS</em></li>
+<li>Git version <em>1.7.9.5</em></li>
+<li>Apache2 version <em>2.2.22</em></li>
+</ul>
 
-<p>Ensure that you have run these steps to let git know about your email address:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Git Config </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git config &mdash;global user.name &ldquo;Firstname Lastname&rdquo;
-</span><span class='line'>git config &mdash;global user.email &ldquo;&lt;a href="&#x6d;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#121;&#x6f;&#x75;&#x72;&#95;&#x65;&#109;&#97;&#105;&#108;&#64;&#121;&#x6f;&#117;&#x72;&#x65;&#109;&#x61;&#x69;&#x6c;&#46;&#99;&#111;&#109;">&#x79;&#111;&#117;&#x72;&#95;&#x65;&#109;&#x61;&#105;&#x6c;&#64;&#121;&#111;&#117;&#x72;&#x65;&#109;&#x61;&#x69;&#x6c;&#x2e;&#99;&#111;&#109;&lt;/a>&rdquo;</span></code></pre></td></tr></table></div></figure></notextile></div>
-To check your git configuration:
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Git Config </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git config &mdash;list</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p><strong><u>1. Install prequirests</u>:</strong></p>
 
-<h2>Git Review Installation</h2>
+<!-- more -->
 
-<p>We recommend using the &ldquo;git-review&rdquo; tool which is a git subcommand that handles all the details of working with Gerrit, the code review system used in OpenStack development. Before you start work, make sure you have git-review installed on your system.</p>
 
-<p>On Ubuntu, MacOSx, or most other Unix-like systems, it is as simple as:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>pip install git-review</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> sudo apt-get install git apache2 gitweb
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>On Ubuntu Precise (12.04) and later, git-review is included in the distribution, so install it as any other package:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get install git-review</span></code></pre></td></tr></table></div></figure></notextile></div>
-On Fedora 16 and later, git-review is included into the distribution, so install it as any other package:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install git-review</span></code></pre></td></tr></table></div></figure></notextile></div>
-On Fedora 15 and earlier you have to install pip (its package name is <code>python-pip</code>), then install git-review using pip in a conventional way.</p>
-
-<p>On Red Hat Enterprise Linux, you must first enable the EPEL repository, then install it as any other package:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install git-review</span></code></pre></td></tr></table></div></figure></notextile></div>
-On openSUSE 12.2 and later, git-review is included in the distribution under the name python-git-review, so install it as any other package:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>zypper in python-git-review</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>All of git-review&rsquo;s interactions with gerrit are sequences of normal git commands. If you want to know more about what it&rsquo;s doing, just add -v to the options and it will print out all of the commands it&rsquo;s running.</p>
-
-<h2>Project Setup</h2>
-
-<p>Clone a project in the usual way, for example:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://git.openstack.org/openstack/nova.git</span></code></pre></td></tr></table></div></figure></notextile></div>
-You may want to ask git-review to configure your project to know about Gerrit at this point. If you don&rsquo;t, it will do so the first time you submit a change for review, but you probably want to do this ahead of time so the Gerrit Change-Id commit hook gets installed. To do so (again, using Nova as an example):
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd nova
-</span><span class='line'>git review -s</span></code></pre></td></tr></table></div></figure></notextile></div>
-Git-review checks that you can log in to gerrit with your ssh key. It assumes that your gerrit/launchpad user name is the same as the current running user. If that doesn&rsquo;t work, it asks for your gerrit/launchpad user name. If you don&rsquo;t remember the user name go to the settings page on gerrit to check it out (it&rsquo;s not your email address).</p>
-
-<p>Note that you can verify the SSH host keys for review.openstack.org here: <a href="https://review.openstack.org/#/settings/ssh-keys">https://review.openstack.org/#/settings/ssh-keys</a></p>
-
-<p>If you get the error &ldquo;We don&rsquo;t know where your gerrit is.&rdquo;, you will need to add a new git remote. The url should be in the error message. Copy that and create the new remote.
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git remote add gerrit ssh://&lt;username>@review.openstack.org:29418/openstack/nova.git</span></code></pre></td></tr></table></div></figure></notextile></div>
-In the project directory, you have a <code>.git</code> hidden directory and a <code>.gitreview</code> hidden file. You can see them with:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ls -la</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h2>1.4 Normal Workflow</h2>
-
-<p>Once your local repository is set up as above, you must use the following workflow.</p>
-
-<p>Make sure you have the latest upstream changes:</p>
+<p><strong><u>2. Enable apache2 modules and reload apache</u>:</strong></p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git remote update
-</span><span class='line'>git checkout master
-</span><span class='line'>git pull &mdash;ff-only origin master</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> a2enmod env <span class="nb">alias </span>fcgid auth_digest
+</span><span class='line'> service apache2 restart
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>Create a topic branch to hold your work and switch to it. If you are working on a blueprint, name your topic branch bp/BLUEPRINT where BLUEPRINT is the name of a blueprint in launchpad (for example, &ldquo;bp/authentication&rdquo;). The general convention when working on bugs is to name the branch bug/BUG-NUMBER (for example, &ldquo;bug/1234567&rdquo;). Otherwise, give it a meaningful name because it will show up as the topic for your change in Gerrit.</p>
+<p><u><strong>3. Create a &ldquo;site&rdquo; for git:</strong></u></p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git checkout -b TOPIC-BRANCH</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>let&#39;s start with a basic virtual host configuration pointing to gitweb:</p>
 
-<p>To generate documentation artifacts, navigate to the directory where the pom.xml file is located for the project and run the following command:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mvn clean generate-sources</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h3>1.4.1 Committing Changes</h3>
-
-<p>Git commit messages should start with a short 50 character or less summary in a single paragraph. The following paragraph(s) should explain the change in more detail.</p>
+<p><em>vim /etc/apache2/sites-available/git</em></p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>If your changes addresses a blueprint or a bug, be sure to mention them in the commit message using the following syntax:&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>Implements: blueprint BLUEPRINT
-</span><span class='line'>Closes-Bug: ####### (Partial-Bug or Related-Bug are options)</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;virtualhost *:80&gt;
+</span><span class='line'> ServerName git.example.com
+</span><span class='line'> DocumentRoot /usr/share/gitweb
+</span><span class='line'> ErrorLog <span class="k">${</span><span class="nv">APACHE_LOG_DIR</span><span class="k">}</span>/git_error.log
+</span><span class='line'> CustomLog <span class="k">${</span><span class="nv">APACHE_LOG_DIR</span><span class="k">}</span>/git_access.log combined
+</span><span class='line'>&lt;/virtualhost&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>For example:</p>
+<p><em>Enable CGI on the gitweb directory</em></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;Directory /usr/share/gitweb&gt;
+</span><span class='line'>Options FollowSymLinks +ExecCGI
+</span><span class='line'>AddHandler cgi-script .cgi
+</span><span class='line'>DirectoryIndex gitweb.cgi
+</span><span class='line'>&lt;/Directory&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><em>Enable git clone/push/fetch etc over http</em>:</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -137,310 +105,256 @@ In the project directory, you have a <code>.git</code> hidden directory and a <c
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Adds keystone support&lt;/p>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> ScriptAliasMatch <span class="se">\</span>
+</span><span class='line'> &amp;ldquo;<span class="o">(</span>?x<span class="o">)</span>^/<span class="o">(</span>.*/<span class="o">(</span>HEAD | <span class="se">\</span>
+</span><span class='line'>  info/refs | <span class="se">\</span>
+</span><span class='line'>   objects/<span class="o">(</span>info/<span class="o">[</span>^/<span class="o">]</span>+ | <span class="se">\</span>
+</span><span class='line'>   <span class="o">[</span>0-9a-f<span class="o">]{</span>2<span class="o">}</span>/<span class="o">[</span>0-9a-f<span class="o">]{</span>38<span class="o">}</span> | <span class="se">\</span>
+</span><span class='line'>   pack/pack-<span class="o">[</span>0-9a-f<span class="o">]{</span>40<span class="o">}</span>.<span class="o">(</span>pack|idx<span class="o">))</span> | <span class="se">\</span>
+</span><span class='line'>   git-<span class="o">(</span>upload|receive<span class="o">)</span>-pack<span class="o">))</span><span class="nv">$&amp;</span>rdquo; <span class="se">\</span>
+</span><span class='line'>   /usr/lib/git-core/git-http-backend/<span class="nv">$1</span>&lt;/p&gt;
 </span><span class='line'>
-</span><span class='line'>&lt;p>&hellip;Long multiline description of the change&hellip;&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>Implements: blueprint authentication
-</span><span class='line'>Closes-Bug: #123456
-</span><span class='line'>Change-Id: I4946a16d27f712ae2adf8441ce78e6c0bb0bb657</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span><span class='line'>&lt;p&gt;  SetEnv GIT_PROJECT_ROOT /var/git
+</span><span class='line'>  SetEnv GIT_HTTP_EXPORT_ALL
+</span><span class='line'>  SetEnv <span class="nv">REMOTE_USER</span><span class="o">=</span><span class="nv">$REDIRECT_REMOTE_USER</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>Note that in most cases the Change-Id line should be automatically added by a Gerrit commit hook that you will want to install. See Project Setup for details on configuring your project for Gerrit. If you already made the commit and the Change-Id was not added, do the Gerrit setup step and run:</p>
+<p><em>The env fcgid modules are exactly for this pupose.</em></p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git commit &mdash;amend</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>&nbsp;</p>
 
-<p>The commit hook will automatically add the Change-Id when you finish amending the commit message, even if you don&rsquo;t actually make any changes.</p>
+<p><em><strong>Let&#39;s spice it up with good old ACL&#39;s</strong></em> [for as you know git doesen&#39;t deal with that stuff on it&#39;s own &hellip;] &ndash; you can use BASIC/DIGEST</p>
 
-<p>Make your changes, commit them, and submit them for review:</p>
+<p>(I chose digest for it uses an&nbsp;<span style="color: rgb(0, 0, 0);">MD5 digest hash and not clear text like BASIC auth)</span></p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git commit -a
-</span><span class='line'>git review</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;Location /&gt;
+</span><span class='line'>  AuthType Digest
+</span><span class='line'>  AuthName &amp;ldquo;Shared Git Repo&amp;rdquo;
+</span><span class='line'>  AuthUserFile /var/git/.htpasswd
+</span><span class='line'>  Require valid-user
+</span><span class='line'>&lt;/Location&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p><em>Caution: Do not check in changes on your master branch. Doing so will cause merge commits when you pull new upstream changes, and merge commits will not be accepted by Gerrit.</em></p>
+<p>Create /var/git/.htpasswd for my users:</p>
 
-<p>Prior to checking in make sure that you run &ldquo;<a href="http://testrun.org/tox/latest/">tox</a>&rdquo;.</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> htdigest -c /var/git/.htpasswd &amp;ldquo;Shared Git Repo&amp;rdquo; hagzag
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<h3>1.4.2 Review</h3>
+<p><em>&nbsp; Change &ldquo;hagzag&rdquo; with your username &hellip;</em></p>
 
-<h3>1.4.3 Work in Progress</h3>
+<p>&nbsp;</p>
 
-<h3>1.4.4 Long-lived Topic Branches</h3>
+<p><u><strong>4. Create a &ldquo;shared&rdquo;, bare repository + set directory permissions to the apache2 user &amp; group</strong></u></p>
 
-<h3>1.4.5 Updating a Change</h3>
+<p><u>Side note</u>&nbsp;about shared &amp; bare:</p>
 
-<h3>1.4.6 Add dependency</h3>
+<pre><code>**Shared**: Instead of using default umask git repo will be created with 775 perms
+
+**Bare**: instead of creating GIT_DIR in .git (defult git init behaviour), it will be created in the repository direcotry]
+</code></pre>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> <span class="nb">cd</span> /var/git &amp;amp;&amp;amp; git init &amp;mdash;bare &amp;mdash;shared myproj.git
+</span><span class='line'> chown -R www-data.www-data /var/git
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong><u>5. Configure Git Web, /etc/gitweb.conf</u></strong></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> cp /etc/gitweb.conf /etc/gitweb.conf.orig
+</span><span class='line'> <span class="nb">echo</span> -e &amp;#39;<span class="nv">$projectroot</span> <span class="o">=</span> &amp;ldquo;/var/git&amp;rdquo;;&amp;#39; &gt; /etc/gitweb.conf
+</span><span class='line'> <span class="nb">echo</span> &amp;#39;<span class="nv">$git_temp</span> <span class="o">=</span> &amp;ldquo;/tmp&amp;rdquo;;&amp;#39; &gt;&gt; /tmp/gitweb.conf
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><u><strong>6. Enable site (apache2):</strong></u></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> a2ensite git
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Which yields:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Enabling site git.
+</span><span class='line'>To activate the new configuration, you need to run:
+</span><span class='line'>  service apache2 reload
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><u><strong>7. Test your new git repository</strong></u></p>
+
+<p>Clone the repo via <a href="http:">http:</a></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> git clone &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://git.example.com/myproj.git&quot;</span>&gt;http://git.example.com/myproj.git&lt;/a&gt;
+</span><span class='line'> Cloning into &amp;#39;myproj&amp;#39;&amp;hellip;
+</span><span class='line'> Username <span class="k">for</span> &amp;#39;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://git.example.com&amp;amp;#39;:&quot;</span>&gt;http://git.example.com&amp;amp;#39;:&lt;/a&gt; hagzag
+</span><span class='line'> Password <span class="k">for</span> &amp;#39;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://hagzag@git.example.com&amp;amp;#39;:&quot;</span>&gt;http://hagzag@git.example.com&amp;amp;#39;:&lt;/a&gt;
+</span><span class='line'> warning: You appear to have cloned an empty repository.
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>&hellip; and yes I know it&#39;s empty (i created it :)).</p>
+
+<pre><code>_**Create &amp;amp; Add a file**_:
+</code></pre>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> <span class="nb">cd </span>myproj/
+</span><span class='line'> <span class="nb">echo</span> &amp;ldquo;some text&amp;rdquo; &gt; somefile.txt
+</span><span class='line'> git add .&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><em><strong>Commit a file:</strong></em></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git commit -m &amp;ldquo;initial commit&amp;rdquo;
+</span><span class='line'> <span class="o">[</span>master <span class="o">(</span>root-commit<span class="o">)</span> 3a0e708<span class="o">]</span> initial commit
+</span><span class='line'> 1 file changed, 0 insertions<span class="o">(</span>+<span class="o">)</span>, 0 deletions<span class="o">(</span>&amp;ndash;<span class="o">)</span>
+</span><span class='line'> create mode 100644 somefile.txt&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><em><strong>Push it</strong></em>:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git push origin master
+</span><span class='line'> Username <span class="k">for</span> &amp;#39;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://git.example.com&amp;amp;#39;:&quot;</span>&gt;http://git.example.com&amp;amp;#39;:&lt;/a&gt; &lt;em&gt;&lt;strong&gt;hagzag&lt;/strong&gt;&lt;/em&gt;
+</span><span class='line'> Password <span class="k">for</span> &amp;#39;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://hagzag@git.example.com&amp;amp;#39;:&quot;</span>&gt;http://hagzag@git.example.com&amp;amp;#39;:&lt;/a&gt; &lt;em&gt;*********&lt;/em&gt;
+</span><span class='line'> Counting objects: 3, <span class="k">done</span>.
+</span><span class='line'> Writing objects: 100% <span class="o">(</span>3/3<span class="o">)</span>, 225 bytes, <span class="k">done</span>.
+</span><span class='line'> Total 3 <span class="o">(</span>delta 0<span class="o">)</span>, reused 0 <span class="o">(</span>delta 0<span class="o">)</span>
+</span><span class='line'> To &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://git.example.com/proj2.git&quot;</span>&gt;http://git.example.com/proj2.git&lt;/a&gt;
+</span><span class='line'> * <span class="o">[</span>new branch<span class="o">]</span>      master &amp;ndash;&gt; master&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>See it on gitweb:
+<img class="left" src="/assets/images/gitwb-ss1.png" title="&lsquo;Git Logo&rsquo;" ></p>
+
+<p><u><strong>Pitfalls / Caveats:</strong></u></p>
+
+<ol>
+<li><p><em><strong>Git directory ownership</strong></em> should be the same user running the httpd / apache2 daemon &ndash; if not you will get an error like so:G</p>
+
+<pre><code>    <div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;error: unpack failed: unpack-objects abnormal <span class="nb">exit</span>
+</span><span class='line'>To &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://git.example.com/proj2.git&quot;</span>&gt;http://git.example.com/proj2.git&lt;/a&gt;
+</span><span class='line'>! <span class="o">[</span>remote rejected<span class="o">]</span> master &amp;ndash;&gt; master <span class="o">(</span>n/a <span class="o">(</span>unpacker error<span class="o">))</span>
+</span><span class='line'>error: failed to push some refs to &amp;#39;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://git.example.com/proj2.git&amp;amp;#39;&quot;</span>&gt;http://git.example.com/proj2.git&amp;amp;#39;&lt;/a&gt;
+</span><span class='line'>At this point I went back to the server and ran:
+</span></code></pre></td></tr></table></div></figure></notextile></div></p></li>
+<li><em><strong>fcgid module in apache</strong></em> &ndash; if it&#39;s missing all the above will not work [same goes for <em><strong>env</strong></em> too but it&#39;s enabled by default !]</li>
+</ol>
+
+
+<p><strong>References:</strong></p>
+
+<ul>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html">Git http backend <em>man page</em></a>,</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-init.html">git init man page</a> [bare/shared],</li>
+<li><a href="http://httpd.apache.org/docs/2.2/programs/htdigest.html">htdigest</a>,</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/gitweb.html">gitweb man page</a></li>
+</ul>
+
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[DevOps Tools and Utilities]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/02/01/devops-tools-and-utilities/"/>
-    <updated>2014-02-01T13:13:05-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/02/01/devops-tools-and-utilities</id>
-    <content type="html"><![CDATA[<h1>DevOps Tool chain</h1>
+    <title type="html"><![CDATA[Performing backup with Git]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/04/16/performing-backup-with-git/"/>
+    <updated>2013-04-16T16:30:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/04/16/performing-backup-with-git</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/git_logo.jpg" title="&lsquo;Git Logo&rsquo;" >~4 years ago I wrote a script which will sync my drupal files directory between two servers [ I used rsync for that ], the problem with rsync was that it fetches a checsum of every file and direcroty over SSH which was very slow, and the critical issue was I have no history of the data &ndash; and if I am maintaining multipule syncs whats the point in rsync.</p>
 
-<p>A list of utilities to support configuration management tools. This was produced by the panelists of the Configuration Mgmt Workflow panel at LOPSA-EAST in 2013. One of the attendees also took notes: <a href="http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel">http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel</a></p>
+<p>I looked @ svn at the time which was extreemly slow with binaries [ zip, tars etc ], Git and the git protocol in specific did the full sync [ ~1GB ] in under 45 minuets &ndash; over the Internet which was quite good IMO.</p>
 
-<h2>Individual level: IDE / syntax highlighting etc</h2>
+<p>I was talking with a collegue on such a solution the other day and I thought why not share this. So for purely educational puposes I put thist scripup as a Gist @:&nbsp;<a href="https://gist.github.com/hagzag/5396510">https://gist.github.com/hagzag/5396510</a>&nbsp;[ or part of the repository @:&nbsp;<a href="https://github.com/hagzag/files_repo/blob/master/syncFiles.sh">https://github.com/hagzag/files_repo/blob/master/syncFiles.sh</a>, but i am not sure it will survive there]&nbsp;&nbsp;and an acompenying repository called &quot;<a href="https://github.com/hagzag/files_repo">files_repo</a>&quot;.</p>
 
-<h2>Puppet:</h2>
-
-<ul>
-<li>vim &ndash; <a href="https://github.com/rodjek/vim-puppet">https://github.com/rodjek/vim-puppet</a></li>
-<li>TextMate &amp; sublime text 2 &ndash; <a href="https://github.com/masterzen/puppet-textmate-bundle">https://github.com/masterzen/puppet-textmate-bundle</a></li>
-<li>gepetto (<a href="http://cloudsmith.github.io/geppetto/">http://cloudsmith.github.io/geppetto/</a>),</li>
-<li>emacs</li>
-</ul>
-
-
-<h2>Chef:</h2>
+<p>As you will see in the readme I am not sure it will do much for you but if you are consdering on using it read the following:</p>
 
 <ul>
-<li>vim,</li>
-<li>TextMate,</li>
-<li>Sublime Text: <a href="http://www.youtube.com/watch?v=4VtDj_ar1Xg">http://www.youtube.com/watch?v=4VtDj_ar1Xg</a> (video), <a href="https://github.com/cabeca/SublimeChef">https://github.com/cabeca/SublimeChef</a> (GitHub)</li>
-<li>Emacs: chef-mode <a href="https://github.com/mpasternacki/chef-mode">https://github.com/mpasternacki/chef-mode</a></li>
+<li>create a repository [ e.g. on GitHub ]</li>
+<li>set the FILES_DIR parameter [ or default to /opt/data ]</li>
+<li>set the MY_GIT_REPO parameter [ or default to /opt/git-repo ]</li>
+<li>set my GIT_REMOTE parameter with the full git url of you repository [I didn&#39;t check this via https &hellip; ]</li>
 </ul>
 
 
-<h3>CFEngine:</h3>
-
-<ul>
-<li>vim &ndash; <a href="https://github.com/neilhwatson/vim_cf3">https://github.com/neilhwatson/vim_cf3</a></li>
-<li>emacs &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/cfengine.el">https://github.com/cfengine/core/blob/master/contrib/cfengine.el</a></li>
-<li>kate &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml">https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml</a></li>
-<li>eclipse &ndash; <a href="https://cfengine.com/eclipse-cfengine-editor">https://cfengine.com/eclipse-cfengine-editor</a></li>
-<li>Sublime Text &ndash; <a href="https://github.com/kebori/sublime-cfengine3">https://github.com/kebori/sublime-cfengine3</a></li>
-</ul>
-
-
-<h2>Local Testing</h2>
-
-<ul>
-<li>Vagrant &ndash;</li>
-<li>VMware</li>
-<li>OpenStack</li>
-<li>Cloud?</li>
-<li>All of the above?</li>
-</ul>
-
-
-<h2>Revision Control : Which tool? Which workflow?</h2>
-
-<ul>
-<li>Github Flow &ndash; <a href="http://scottchacon.com/2011/08/31/github-flow.html">http://scottchacon.com/2011/08/31/github-flow.html</a></li>
-<li>git-flow &ndash; <a href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a></li>
-<li>Git Dynamic Environments &ndash;</li>
-<li><ul>
-<li><a href="https://puppetlabs.com/blog/git-workflow-and-puppet-environments/">https://puppetlabs.com/blog/git-workflow-and-puppet-environments/</a> ,</li>
-</ul>
-</li>
-<li><ul>
-<li><a href="https://github.com/adrienthebo/puppet-git-hooks">https://github.com/adrienthebo/puppet-git-hooks</a></li>
-</ul>
-</li>
-</ul>
-
-
-<h2>Commit hooks</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>erb,</li>
-<li>pp parser,</li>
-<li>yaml, <a href="https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit">https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>fc pre-commit: <a href="https://github.com/gregf/chef-git-hooks">https://github.com/gregf/chef-git-hooks</a></li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>Subversion: <a href="http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html">http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html</a></li>
-<li>Git: <a href="https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit">https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit</a></li>
-</ul>
-
-
-<h2>Style / Lint tools</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>puppet-lint &ndash; <a href="http://puppet-lint.com/,">http://puppet-lint.com/,</a></li>
-<li>puppet-cleaner &ndash; <a href="https://github.com/santana/puppet-cleaner,">https://github.com/santana/puppet-cleaner,</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>tailor,</li>
-<li>foodcritic</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>cf-promises (with GCC-style warnings)</li>
-</ul>
-
-
-<h2>Testing manifests / recipes</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>rspec-puppet,</li>
-<li>?cucumber-puppet (discontiued)?</li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>chefspec,</li>
-<li>minitest-handler,</li>
-<li>rspec-chef,</li>
-<li>cucumber-chef,</li>
-<li>test-kitchen</li>
-</ul>
-
-
-<h2>Marshalling / Assembling Code &amp; Dependencies</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>librarian-puppet &ndash; <a href="https://github.com/rodjek/librarian-puppet">https://github.com/rodjek/librarian-puppet</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>berkshelf,</li>
-<li>librarian</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>cf-sketch &ndash; <a href="https://github.com/cfengine/design-center/wiki/Design-Center-Tools">https://github.com/cfengine/design-center/wiki/Design-Center-Tools</a></li>
-</ul>
-
-
-<h2>Continuous Integration</h2>
-
-<ul>
-<li>Jenkins CI</li>
-<li>Travis CI</li>
-<li>Atlassian Bamboo?</li>
-<li>TeamCity?</li>
-</ul>
-
-
-<h2>Orchestration</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>MCollective</li>
-</ul>
-
-
-<h3>Chef :</h3>
-
-<ul>
-<li>has “knife ssh” and Pushy support coming for push jobs</li>
-</ul>
-
-
-<h2>Canary testing &amp; Prod vs QA vs test environments (not prod vs QA app code)</h2>
-
-<h3>Puppet</h3>
-
-<ul>
-<li>serverspec <a href="http://serverspec.org/">http://serverspec.org/</a></li>
-<li>rspec-system <a href="https://github.com/puppetlabs/rspec-system">https://github.com/puppetlabs/rspec-system</a></li>
-<li>nagios checks/ plugins</li>
-</ul>
-
-
-<h3>Chef</h3>
-
-<ul>
-<li>has knife-flip from Etsy, flips nodes into a test environment</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>Remote context class matching using remoteclassesmatching (Enterprise)</li>
-</ul>
-
-
-<h2>Provisioning VM&rsquo;s in the cloud?</h2>
-
-<h3>Chef:</h3>
-
-<ul>
-<li>knife ec2 server create&hellip;</li>
-<li>spiceweasel somefile.yml</li>
-<li>knife openstack&hellip;</li>
-<li>knife server create&hellip;</li>
-</ul>
-
-
-<p>Clouds include Azure, Openstack, Rackspace, etc. EC2 OpsWorks (although some limitations since it’s an older version)</p>
-
-<h2>Puppet:</h2>
-
-<ul>
-<li>puppet node_aws create / puppet node_vmware create</li>
-<li>Puppet RAL for AWS, OpenStack, CloudStack:
-  ec2_instance { “instance_name”: type => t1.large, az => ‘USWest’, ensure => present, …. }</li>
-<li>Razor (bare metal)</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li><a href="https://github.com/cfengine/design-center/tree/master/sketches/cloud">https://github.com/cfengine/design-center/tree/master/sketches/cloud</a></li>
-</ul>
-
-
-<h3>Chef</h3>
-
-<ul>
-<li>Crowbar has Chef server integrated, although I don’t know that much about it.</li>
-<li>Joyent also has a Chef “dataset” that they support.</li>
-</ul>
-
-
-<h2>Team Workflow</h2>
-
-<h3>Puppet: &ndash;?</h3>
-
-<h3>Chef:</h3>
-
-<ul>
-<li>knife-spork (has handlers to notify people)</li>
-</ul>
-
+<p>Run the script, this is really custom to my use case, but shows another awsome aspect of git.</p>
+
+<p>Originally posted @: <a href="http://www.tikalk.com/alm/performing-backup-git">my Blog on tikalk.com</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Git Productivity enhancements]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/02/24/Git-Productivity-enhancements/"/>
+    <updated>2013-02-24T13:11:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/02/24/Git-Productivity-enhancements</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/git_logo.jpg" title="&lsquo;Git Logo&rsquo;" >If I haven&rsquo;t told you yet, Git is awesome and yes I do most og the work from the command-line, so in order to make my life easier I did two things:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>apt-get install bash-completion
+</span><span class='line'>wget &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://raw.github.com/git/git/master/contrib/completion/git-completion.bash&quot;</span>&gt;https://raw.github.com/git/git/master/contrib/completion/git-completion.bash&lt;/a&gt; -O /etc/bash_completion.d/git
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+Upon next login (or execute <em>source /etc/bash_completion.d/git</em>) right away and you have all the bash completion you need for git at your finger tips.</p>
+
+<p>Another awesome script to make your life easier with git is <a href="https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh">git-prompt.sh</a> which you can also include in your bash profile like so:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>wget &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh&quot;</span>&gt;https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh&lt;/a&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+then add a line to ~/.profile sourcing it upon login shell, see header of git-prompt.sh for more details.</p>
 ]]></content>
   </entry>
   
@@ -464,66 +378,6 @@ In the project directory, you have a <code>.git</code> hidden directory and a <c
 360  src/rabbit_msg_store.erl
 356  src/rabbit_exchange.erl
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Maven and Git]]></title>
-    <link href="http://bvajjala.github.io/blog/2011/01/24/git-maven/"/>
-    <updated>2011-01-24T07:00:00-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2011/01/24/git-maven</id>
-    <content type="html"><![CDATA[<p>More and more Maven projects are switching from Subversion to Git, and the majority of those projects make the same mistake: They configure <em>scm</em> section of POM to point to remote repository, the same way they did it in Subversion</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;scm&gt;&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>url<span class="ni">&amp;gt;</span>http://github.com/SpringSource/spring-batch<span class="ni">&amp;lt;</span>/url<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="ni">&amp;lt;</span>connection<span class="ni">&amp;gt;</span>scm:git:git://github.com/SpringSource/spring-batch.git<span class="ni">&amp;lt;</span>/connection<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="ni">&amp;lt;</span>developerConnection<span class="ni">&amp;gt;</span>scm:git:ssh://git@github.com/SpringSource/spring-batch.git<span class="ni">&amp;lt;</span>/developerConnection<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;/scm&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>By doing this they lose the main benefit of Git. They become dependent on the remote machine. And when their release depends on the remote machine, that&rsquo;s what happens: They need to release the project but the remote machine is down</p>
-
-<p><img class="center" src="/images/posts/github-down.jpg"></p>
-
-<p>The right way of configuring Git in Maven is following</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;scm&gt;&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>url<span class="ni">&amp;gt;</span>scm:git:file://.<span class="ni">&amp;lt;</span>/url<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="ni">&amp;lt;</span>connection<span class="ni">&amp;gt;</span>scm:git:file://.<span class="ni">&amp;lt;</span>/connection<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="ni">&amp;lt;</span>developerConnection<span class="ni">&amp;gt;</span>scm:git:file://.<span class="ni">&amp;lt;</span>/developerConnection<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;/scm&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>This configuration is universal, and it separates two orthogonal concerns: releases and remote copies.</p>
-
-<h3>Resources</h3>
-
-<ul>
-<li><a href="http://ascii.io/a/3459">Screencast</a> that shows how to work with Git in Maven projects.</li>
-</ul>
-
 ]]></content>
   </entry>
   

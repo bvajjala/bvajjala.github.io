@@ -1,0 +1,404 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>CFEngine Puppet and Chef Part 1 - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Introduction Over the past few years, the topic of Infrastructure Automation has received a huge amount of attention. The three most commonly used &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2011/12/30/cfengine-puppet-and-chef-part-1">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">CFEngine Puppet and Chef Part 1</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-30T20:09:00-05:00" pubdate data-updated="true">Dec 30<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2> Introduction </h2>
+
+
+<p>Over the past few years, the topic of Infrastructure Automation has received a huge amount of attention. The three most commonly used tools for doing this (in order of appearance) are CFEngine, Puppet, and Chef. This article explores each of them by using one to set up another. If you have a chef-server or Hosted Chef account, you can follow along by following the instructions in the setup section. (Full disclosure: I work for Opscode, creators of Chef.)</p>
+
+<h2> Infrastructure </h2>
+
+
+<p><a href=http://www.infrastructures.org target="_blank">“Infrastructure”</a> turns out to be the hardest thing to explain when discussing automation, yet is the most critical to understand. In this context, Infrastructure isn’t anything physical (or virtualized) like servers or networks. Instead, what we’re talking about is all the “stuff” that is configured across machines to enable an application or service.</p>
+
+<p>In practice, “stuff” translates to operating system baselines, kernel settings, disk mounts, OS user accounts, directories, symlinks, software installations, configuration files, running processes, etc. People of the ITIL persuasion may think of these as Configuration Items. Units of management are composed into larger constructs, and complexity arises as these arrangements become more intricate.</p>
+
+<p>Services running in an Infrastructure need to communicate with each other, and do so via networks. Even when running on a single node, things still communicate over a loopback address or a Unix domain socket. This means that Infrastructure has a topology, which is in itself yet another thing to manage.</p>
+
+<h2> Automation </h2>
+
+
+<p><img class="left" src="http://upload.wikimedia.org/wikipedia/commons/7/75/Duck_of_Vaucanson.jpg"></p>
+
+<p>Here is a picture of a duck.</p>
+
+<p>This duck happens to be an <a href=http://en.wikipedia.org/wiki/Automaton target="_blank">automaton</a>. An automaton is a self-operating machine. This one pretends to digest grain. It interacts with its environment by taking input and producing output. To continue operating, the duck requires maintenance. It needs to be wound, cleaned, and repaired. Automated services running on a computer are no different.</p>
+
+<p>Once turned on, an automated service takes input, does something useful, then leaves logs and other data in its wake. Its machinery is the arrangement of software installation, configuration, and the running state of a process. Maintenance is performed in a <a href=http://en.wikipedia.org/wiki/Autonomic_Computing target="_blank">control loop</a>, where an agent comes around at regular intervals inspecting its parts and fixing anything that’s broken.</p>
+
+<p>In automated configuration management, the name of the game is hosting policy. The agents that build and maintain systems pull down blueprints and set to work building our automatons. When systems come back up from maintenance or new ones spring into existence, they configure themselves by downloading policy from the server.</p>
+
+<h2> Setup </h2>
+
+
+<p>If you&rsquo;d like to follow along by configuring your own machines with knife, follow the setup instructions <a href=/cfchefipuppetengine-setup target="_blank">here</a>. The setup will get your Chef workstation configured, code checked out from my blog git repo, and uploaded to chef-server for use. Otherwise, you can just browse the source <a href=https://github.com/someara/affs-blog target="_blank">here</a></p>
+
+<h2> CFEngine </h2>
+
+
+<p><img class="right" src="http://farm1.staticflickr.com/120/293693669_59574a7640_m.jpg" title="A picture of what a cloud may look like" ></p>
+
+<p>CFEngine is a system based on <a href=http://research.iu.hio.no/papers/rosegarden.pdf target="_blank">promise</a> <a href=http://project.iu.hio.no/papers/origin2.pdf target="_blank">theory</a>. Promises are the basic atoms of the CFEngine universe. They have names, types, and intentions (among other things), and each acts as a convergent operator to move its subject toward an intended state. Like the parts in our duck, promises are assembled to create a larger whole.</p>
+
+<p>Promises of various types are capable of different things. Promises of type &ldquo;package&rdquo; can interact with a package manager to make sure somthing is installed or removed, while a promise of type &ldquo;file&rdquo;, can copy, edit, and set permissions. Processes can be started or stopped, and commands can be ran if needed. Read all about them in the CFEngine <a href=http://cfengine.com/manuals/cf3-reference.html target="_blank">reference manual</a>.</p>
+
+<p>Promises provide a <a href=http://c2.com/cgi/wiki?DeclarativeDefinition target="_blank">declarative</a> interface to resources under management, which has the remarkably handy attribute of being <a href=http://en.wikipedia.org/wiki/Idempotence target="_blank">idempotent</a>. An idempotent function gives the same result when applied multiple times. This allows our duck repairing maintence loop (in the form of cf-agent on a cron) to come around and safely execute instructions without having to worry about side effects. Consider &ldquo;the line &lsquo;foo&rsquo; should exist in the file&rdquo; vs &ldquo;append &lsquo;foo&rsquo; to the end of the file&rdquo;; the non-declarative &lsquo;append&rsquo; would not be safe to repeat.</p>
+
+<p><a href=http://en.wikipedia.org/wiki/Convergence_(mathematics) target="_blank">Convergent</a> maintenance refers to the continuous repair of a system towards a desired state. At the individual promise level, convergence happens in a single run of the maintenance loop. If a package is supposed to be installed but isn&rsquo;t, action will be taken to fix it. If a process is not running but should be, action will be taken again. Convergence in a larger system of promises can take multiple runs if things are processed in a non-optimal order. Consider the following:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Start the NTP service.
+</span><span class='line'>Make sure the NTP configuration file is correct, restart the NTP service if repaired.
+</span><span class='line'>Install the NTP package.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Assuming a system with a base install, the first promise would fail to be kept. The NTP binary is not available, since we haven&rsquo;t installed its package yet. The second promise would write the configuration file, but fail to restart the service. The third promise would succeed, assuming an appropriate package repo was available and functioning properly. After the first run is complete, the system has converged closer to where we want it to be, but isn&rsquo;t quite there yet. Applying the functions again gets us closer to our goal.</p>
+
+<p>The second run of the loop would succeed in starting the service, but would be using the wrong configuration file. The package install from the previous loop clobbered the one written previously. Promise number two would fix the config and restart the service, and the third would do nothing because the package is already installed. Finally, we&rsquo;ve converged to our desired system state. A third loop would take no actions at all.</p>
+
+<h2> Kicking things off </h2>
+
+
+<p>To set up a CFEngine server, invoke the following Chef command:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife bootstrap centos6-1 -r <span class="s1">&#39;role[cfengine]&#39;</span> -N <span class="s2">&quot;cfengine-1.example.com&quot;</span> -E development -d affs-omnibus-pre -x root
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When Chef is done doing its thing, you&rsquo;ll end up with a functioning CFEngine policy host, happily promising to serve policy. Log into the freshly configured machine and check it out. Three things have happened. First, the cfengine package itself has been installed. Second, two directories have been created and populated: <code>/var/cfengine/inputs</code>, and <code>/var/cfengine/masterfiles</code>.</p>
+
+<p>The <code>inputs</code> directory contains configuration for the CFEngine itself, which includes a promise to make the contents of <code>masterfiles</code> available for distribution. When a CFEngine client comes up, it will copy the contents of <code>/var/cfengine/masterfiles</code> from the server into its own <code>inputs</code> directory.</p>
+
+<h2> Examining policy </h2>
+
+
+<p>CFEngine&rsquo;s main configuration file is <code>promises.cf</code>, from which everything else flows.  Here&rsquo;s a short snippet:</p>
+
+<figure class='code'><figcaption><span>promises.cf snippet </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">body</span> <span class="n">common</span> <span class="n">control</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">bundlesequence</span>  <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;update&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;garbage_collection&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;cfengine&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;puppet_server&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">inputs</span>  <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;update.cf&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;cfengine_stdlib.cf&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;cfengine.cf&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;garbage_collection.cf&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;puppet.cf&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The bundlesequence section tells cf-agent what promise bundles to execute, and in what order. The one we&rsquo;re examining today is named puppet_server, found in <code>puppet.cf</code></p>
+
+<p>File /Users/balajivajjala/Development/opress-src/bvajjala.github.io/source/downloads/code/cookbooks/cfengine/templates/default/inputs/puppet.cf.erb could not be found</p>
+
+<p>A promise bundle is CFEngine&rsquo;s basic unit of intent. It&rsquo;s a place to logically group related promises. Within a bundle, CFEngine processes things with <a href=http://cfengine.com/manuals/cf3-reference.html#Normal-ordering target="_blank">normal ordering</a>. That is, variables are converged first, then classes, then files, then packages, and so on. I wrote the bundle sections in normal order to make it easier to read, but they could be rearranged and still have the same effect. Without going into too much detail about the language, I&rsquo;ll give a couple hints to help with groking the example.</p>
+
+<p>First, in CFEngine, the word &lsquo;class&rsquo; does not mean what it normally does in other programming languages. Instead, classes are boolean flags that describe context. Classes can be &lsquo;hard classes&rsquo;, which are discovered attributes about the environment (hostname, operating system, time, etc), or &lsquo;soft classes&rsquo;, which are defined by the programmer. In the above example, puppetmaster_enabled and iptables_enabled are soft classes set based on the return status of a command. In the place of <code>if</code> or <code>case</code> statements, boolean checks on classes are used.</p>
+
+<p>Second, there are no control statements like <code>for</code> or <code>while</code>. Instead, when lists are encountered they are automatically iterated. Check out the packages section for examples of both class decisions and list iteration. Given those two things, you should be able to work your way through the example. However, there&rsquo;s really no getting around reading the reference manual if you want to learn CFEngine.</p>
+
+<h2> On to Puppet </h2>
+
+
+<p>Finally, let&rsquo;s go ahead and use Chef to bring up a CFEngine client, which will be turned into a Puppet server.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife bootstrap centos6-2 -r <span class="s1">&#39;role[puppet]&#39;</span> -N <span class="s2">&quot;puppet-1.example.com&quot;</span> -E development -d affs-omnibus-pre -x root
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The first run will fail, since the host&rsquo;s IP isn&rsquo;t yet in the cfengine server&rsquo;s allowed hosts lists. Complete the convergence by running these commands:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife ssh <span class="s2">&quot;role:cfengine&quot;</span> -a ipaddress chef-client
+</span><span class='line'>knife ssh <span class="s2">&quot;role:puppet&quot;</span> -a ipaddress chef-client
+</span><span class='line'>knife ssh <span class="s2">&quot;role:puppet&quot;</span> -a ipaddress chef-client
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And viola! A working Puppet server, serving policy.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-30T20:09:00-05:00" pubdate data-updated="true">Dec 30<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cfengine/'>CFEngine</a>, <a class='category' href='/blog/categories/chef/'>Chef</a>, <a class='category' href='/blog/categories/puppet/'>Puppet</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2011/12/30/cfengine-puppet-and-chef-part-1/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2011/12/30/cfengine-puppet-and-chef-part-1/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/11/29/migration-to-octopress/" title="Previous Post: Migration to Octopress">&laquo; Migration to Octopress</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/12/30/cfengine-puppet-and-chef-part-2/" title="Next Post: CFEngine Puppet and Chef Part 2">CFEngine Puppet and Chef Part 2 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

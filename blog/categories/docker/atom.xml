@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: DOcker | Balaji Vajjala's Blog]]></title>
+  <title><![CDATA[Category: Docker | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/docker/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-14T15:32:24-04:00</updated>
+  <updated>2014-04-14T15:50:34-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,46 +14,301 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Vagrant, Docker and Ansible, WTF?]]></title>
-    <link href="http://bvajjala.github.io/blog/2013/09/25/vagrant-docker-and-ansible-wtf/"/>
-    <updated>2013-09-25T08:00:00-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2013/09/25/vagrant-docker-and-ansible-wtf</id>
-    <content type="html"><![CDATA[<h2><a href="/blog/2013/09/25/vagrant-docker-and-ansible-wtf.html">Vagrant, Docker and Ansible. WTF?</a></h2>
+    <title type="html"><![CDATA[6 reasons why large enterprises should move to Amazon Web Services]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/"/>
+    <updated>2014-03-25T09:13:48-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services</id>
+    <content type="html"><![CDATA[<h2>6 reasons why large enterprises should move to Amazon Web Services</h2>
 
-<p>Given that we&rsquo;re building a SaaS that helps our client managing their infrastructure, our team is pretty familiar with leveraging VMs and configuration management tools. We&rsquo;ve actually been heavy users of Vagrant and <a href="http://devo.ps/blog/2013/07/03/ansible-simply-kicks-ass.html">Ansible</a> for
-the past year, and it&rsquo;s helped us tremendously normalize our development process.</p>
+<h3>6 reasons why large enterprises should move to Amazon Web Services</h3>
 
-<p>As our platform grew in complexity, some additional needs emerged:</p>
+<p>Amazon has changed the face of the world of startups with its cloud services. Now it’s possible for two men in a garage to set up large
+computer clusters for zero capital cost.</p>
+
+<p><a href="https://twitter.com/share?text=Amazon+has+its+sights+set+on+enterprise,+which+they+will+conquer+slowly+but+surely.+&amp;via=OurLabs&amp;related=Flux7Labs&amp;url=http://wp.me/p4sEOD-o6">Amazon has its sights set on enterprise, which they will conquer slowly
+but
+surely.</a></p>
+
+<p>At Our Labs, one of our specialties is cloud migration for enterprise
+clients, and we’ve received considerable feedback about both their
+concerns and delights. In this post I’ll explain why I strongly believe
+large enterprises should consider moving to the cloud.</p>
+
+<h2><strong>Agility and Responsiveness</strong> </h2>
+
+<p>Let’s face it, if a startup is a speedboat, then a large enterprise is
+the Titanic. While startups can pivot any time there’s danger and large
+enterprises turn more slowly, there are icebergs that can sink either.
+Disasters happen to everyone, but a large enterprise has significantly
+more skin in the game, and the old model of waiting a month before
+buying a new rack just doesn’t cut it anymore. By shifting to the cloud,
+large enterprises can bring up new servers in minutes, which means
+shorter downtimes, rapid experimentation, more innovation, increased
+global reach, improved demand-surge handling and more successful
+short-lived-but-resource-intensive projects.</p>
+
+<h2><strong>Innovation</strong> </h2>
+
+<p>Business is a cutthroat world in which we must always strive to
+out-innovate our competitors. This article is about the cloud in
+general, but I want to explain why it’s also Amazon focused. Amazon has
+been blazing the cloud-computing trail longer than anyone, which is
+reflected by its 80% market share, and is clearly ahead of its
+competitors. For example, check out Gartner’s analysis of different
+cloud providers in the chart below and you’ll see Amazon in a corner of
+their own. In fact, Amazon so dominated the competition that Gartner had
+to artificially lower the scale. Amazon is innovating at such a rapid
+pace in providing new services and broadening its customer base that
+competitors are struggling to keep pace.</p>
+
+<p>The effect of this innovation is obvious to developers. Do you want to
+provide Active Directory integration with Amazon? You can do that. Do
+you want to save on data costs by using the Bittorrent protocol for
+content distribution? You can do that. Do you want to put heavy compute
+behind your mobile games? You can do that. Do you want to ramp up your
+clients quickly with remote workstations? You can do that, too. With
+Amazon Web Services you can do all of that and more. I’m a
+certified<a href="file:///C:/Users/Vishnu/Documents/Our/SMM/Blog/WhyEnterprisemustAmazon_(REVISED_CLEAN">[1]</a>.docx#_msocom_1) 
+AWS instructor, yet I learn something new about AWS every day as Amazon
+constantly releases new features. The advantage of moving your business
+to the cloud is that you can let your developers focus on your company’s
+area of expertise while leaving the boilerplate to Amazon.</p>
+
+<p>\</p>
+
+<p> <img src="https://lh3.googleusercontent.com/GmdBmLBmcGW9TIBqUCVkf403uIIf9arZ6-brIjBOt8tus6n_7YaKdOW3kcQqSIUbKnQd9vthqX1nyHHGouT8xbmDF3-xkpXUbJV0UJLpguSzg7EKB6QuaqR92uw_og" alt="" /></p>
+
+<h2><strong>A Data Center That Hosts A Top Website</strong> </h2>
+
+<p>One thing we mustn’t forget is what the AWS cloud really is—a product of
+years of innovation by one of the largest e-commerce websites in the
+world. Its data centers are distributed globally in numerous parts of
+the world, with multiple, independently-operating data centers in each
+region that provide different failure domains while being close enough
+together to provide cheap communication. And that’s just the compute
+side of the equation. Amazon also shares its global content distribution
+network, its DNS servers. it compiles traffic data from across the globe
+to find the best route for your network traffic. There are only a
+handful of companies today with that kind of global reach, and they,
+too, are developing cloud capabilities. But unless you’re in that elite
+club, you won’t be able to create a data center that can compete with
+AWS. So by using a cloud solution, rather than an in-house solution,
+you’ll clearly benefit in terms of better performance, better fault
+tolerance, and better disaster recovery.</p>
+
+<h2><strong>Security</strong> </h2>
+
+<p>Security is the biggest concern about cloud computing for most
+enterprises, but Amazon holds many of the most important certifications,
+including PCI, HIPAA, Sarbanes-Oxley, and ISO. Since it has so much at
+stake, it maintains separation of logical and physical access to data in
+order to limit the impact of disgruntled employees. While I certainly
+understand someone hesitating to entrust one’s most valuable information
+with a third party, it’s certainly debatable whether on-premise storage
+is more secure than cloud storage.</p>
+
+<h2><strong>In-house Expertise Not Required</strong> </h2>
+
+<p>Anyone that’s had to hire people knows that good employees are worth
+their weight in platinum. Moving to the cloud allows you to offload much
+of your data-center maintenance onto Amazon. Let it do what it’s best at
+while you focus on what you’re best at.</p>
+
+<p>As we know, you often have to pay dearly to hire someone outside of your
+area of expertise. For example, say you’re a director of IT at a company
+like Schlumberger. Your company is great at what it does and has strong
+brand value in its area of expertise. Do you think you can possibly
+poach someone like <a href="http://mvdirona.com/jrh/work/">James Hamilton</a> for
+your company? No, you can’t. With core expertise in data centers, Amazon
+will likely offer a more intriguing challenge and a deeper sense of
+mission to the kind of people you’ll want to hire for your team. And we
+all know that employee engagement is not about the money, but rather
+about being involved in a greater mission.</p>
+
+<h2><strong>Lower Costs</strong> </h2>
+
+<p>While I’m convinced that moving to the cloud will lower your costs, I
+acknowledge that getting there requires a lot of expertise and hard
+work. Additionally you may very easily find yourself comparing apples
+and oranges. Yet cloud solutions are cheaper than on-premise solutions
+when played right. First, when you pay for a machine on AWS you’re also
+paying for Amazon’s years of expertise in setting up resilient data
+centers, something that’s not true for in-house departments lacking core
+IT expertise. Second, there’s great potential for saving money by
+scaling to your variable demand needs instead of designing for max
+capacity. That’s why Netflix, even though it comprises one-third of the
+Internet in terms of data volume, has gone “all in” on AWS, or they’d
+have to provision enough machines to handle 9PM Friday traffic.
+Alternatively you can have an expected area of needing high demand, as
+say for a chip company close to tapeout, a movie studio needing to
+render for a year
+(<a href="http://gigaom.com/2014/03/02/the-oscars-how-american-hustles-fx-team-made-2013-boston-look-like-1980s-new-york/">http://gigaom.com/2014/03/02/the-oscars-how-american-hustles-fx-team-made-2013-boston-look-like-1980s-new-york/</a>),
+or a game company handling launch day demand
+(<a href="http://www.respawn.com/news/lets-talk-about-the-xbox-live-cloud/">http://www.respawn.com/news/lets-talk-about-the-xbox-live-cloud/</a>).</p>
+
+<h2><strong>Conclusion</strong> </h2>
+
+<p>If you’re a large enterprise and on the fence about whether or not to
+move to the cloud, we highly recommend trying it out. Try it on a
+contained project, rather than one that’s on a critical path, something
+that fits well within the cloud’s capabilities. After implementation, do
+a post-mortem and analyze the results in terms of cost and
+time-to-market. What is the expectation as you build in-house
+expertise<strong>.</strong> The results may well surprise you.</p>
+
+<h2><strong>Let’s Talk</strong> </h2>
+
+<p>Our Research Labs has helped Fortune 100 and Fortune 500 companies move
+successfully to AWS. We’d love to hear any questions, comments or
+concerns you may have, so feel free to contact us anytime during weekly
+<a href="http://ohours.org/aatersuleman">office hours</a> to discuss your specific
+needs or situation. We offer this service free of charge with no
+obligation or strings attached.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Continuous Delivery with Docker and Jenkins - part II]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-ii/"/>
+    <updated>2014-02-21T14:41:15-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-ii</id>
+    <content type="html"><![CDATA[<p>A few weeks ago I started talking about how we use <a href="2014-02-21-continuous-delivery-with-docker-and-jenkins-part-i">Docker and Jenkins for Continuous Delivery</a> in our staging environment. Today, we are open-sourcing a simple bash utility for managing inter-container dependencies, <a href="https://github.com/bv2012/dockerize">Dockerize</a>.</p>
+
+<p>Before I go into specifics, I want to describe our workflow with Jenkins and Docker from a high-level perspective.</p>
 
 <ul>
-<li><strong>Containerization</strong>; we needed to be able to safely execute custom, and potentially harmful, code.</li>
-<li><strong>Weight</strong>; as we added more sub-systems to devo.ps, having full blown VMs proved to be hard to juggle with when testing and developing.</li>
+<li><p>let’s take the <a href="https://github.com/bv2012/hi_sinatra-docker">hi_sinatra</a> Ruby example app. It has its own GitHub repository and we have a simple, non-git Jenkins job for it.</p></li>
+<li><p>every commit pushed to GitHub, regardless of the branch, triggers a Jenkins build (via Amazon SQS). All Jenkins builds will result in a Docker image. A successful build will produce a running Docker container. A failed build will produce a stopped container which can be investigated by either looking at the logs or starting it with a tty attached.</p></li>
+<li><p>if Docker doesn’t have a <strong>hi_sinatra:master</strong> pre-built image, a new one will be created from the master branch. This master image gets re-built every time there’s a commit against the master branch. Having a master image speeds up image builds considerably (eg. installing Ruby gems, installing node modules, C extensions etc). The resulting image won’t use any caching and all intermediary images will be removed. Just to clarify, this image will not be shipped into production.</p></li>
+<li><p>if a Docker image with that app’s name, branch name and git commit sha doesn’t exist, we want Docker to build it for us. At this point, we’re interested to have the eg. <strong>hi_sinatra:second-blog-post.a8e8e83 </strong>Docker image available.</p></li>
+<li><p>before a new container can be started from the image that we’ve just built, all services that the app requires must be running in their own independent containers. Our <strong>hi_sinatra</strong> example app requires a running Redis server.</p></li>
+<li><p>when all dependent services are running in their own containers, we start a container from the newly built app image (in our example, <strong>hi_sinatra:second-blog-post.a8e8e83</strong>). All dependent containers will have their IPs exposed via env options, eg. docker run -e REDIS_HOST=172.17.0.8 -d &hellip;</p></li>
+<li><p>before our <strong>hi_sinatra app</strong> starts in its new Docker container, all tests must pass both unit, integration and acceptance. Full stack tests (also known as acceptance tests) use sandbox services, but they are setup via the same Docker containers that will be made available in production. Code portability is Docker’s strongest point, we’re making full use of it.</p></li>
+<li><p>if everything worked as expected, including interactions with all external services, this Docker image will be tagged as production. The service responsible for bringing up new Docker containers from the latest production images will take it from here.</p></li>
 </ul>
 
 
-<p>And that&rsquo;s why we ended up adding Docker to our development workflow. We were already familiar with it (as it powers some parts of the devo.ps infrastructure) and knew there would be obvious wins. In practice, we are shipping Docker containers in a main Vagrant image and drive some of the customization and upgrade with Ansible.</p>
+<p>Docker containers running on the CI are available only on our office network, anyone inside it can connect to them. All that it takes to get an instance for a specific app (and all its dependencies) is to push a new branch to GitHub.</p>
 
-<p>We&rsquo;ll probably write something about this approach in the coming weeks, but given the amount of confusion there is around what these technologies are, and how they&rsquo;re used, we thought we&rsquo;d give you a quick tour on how to use them together.</p>
+<h2>Dockerize</h2>
 
-<p>Let&rsquo;s get started.</p>
+<p>Dockerize acts as a Docker proxy, meaning that all commands which it does not understand get forwarded to the docker binary. Dockerize has just 2 dependencies: bash &amp; git.</p>
 
-<h2>Vagrant</h2>
+<p>The previously described workflow as a single shell command:</p>
 
-<p>You&rsquo;ve probably heard about <a href="http://www.vagrantup.com/">Vagrant</a>; a healthy number of people have been writing about it in the past 6 months. For those of you who haven&rsquo;t, think of it as a VM without the GUI. At its core, Vagrant is a simple wrapper around Virtualbox/VMware.</p>
+<pre><code>dockerize boot cambridge-healthcare/hi_sinatra-docker hi_sinatra
+</code></pre>
 
-<p>A few interesting features:</p>
+<p>The hi_sinatra app comes with 2 files that Dockerize picks up on:</p>
 
 <ul>
-<li><strong>Boatloads of existing images</strong>, just check <a href="http://www.vagrantbox.es/">Vagrantbox.es</a> for example.</li>
-<li><strong>Snapshot and package your current machine</strong> to a Vagrant box file (and, consequently, share it back).</li>
-<li><strong>Ability to fine tune settings of the VM</strong>, including things like RAM, CPU, APIC…</li>
-<li><strong>Vagrantfiles</strong>. This allows you to setup your box on init: installing packages, modifying configuration, moving code around…</li>
-<li><strong>Integration with CM tools</strong> like Puppet, Chef and Ansible.</li>
+<li><p>dockerize.containers which defines dependencies on other containers (another service such as Redis server or another app)</p></li>
+<li><p>dockerize.envs which will forward specific environment variables from the Docker host into the container</p></li>
 </ul>
 
 
-<p>Let&rsquo;s get it running on your machine:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p>The Vagrantfile that comes with hi_sinatra will get you up and running with Docker, Jenkins and now Dockerize. The quickest way to try the whole setup (<a href="2014-02-21-continuous-delivery-with-docker-and-jenkins-part-i">provided you have Vagrant installed</a>):</p>
+
+<pre><code>git clone https://github.com/cambridge-healthcare/hi_sinatra-docker.git
+cd hi_sinatra-docker
+vagrant up
+</code></pre>
+
+<p>By the time the VM gets provisioned, there will be a running version of <strong>hi_sinatra</strong> inside a Docker container using a Redis server running in a separate container for tracking requests. Use the IP address and port displayed at the end of the Vagrant run to access the hi_sinatra app in your browser.</p>
+
+<h2>Jenkins + Dockerize</h2>
+
+<p>Dockerize makes Jenkins integration with Docker incredibly simple. In the Jenkins instance running on the Vagrant VM that we have just built, add the following job through the Jenkins web interface:</p>
+
+<p>| Job name | hi_sinatra  |
+| Job type | Build a free-style software project |
+| Build| Execute shell   |</p>
+
+<p>This is the shell command which you will need to use for the build execution:</p>
+
+<pre><code>/bin/bash -c "source $HOME/.profile &amp;&amp; dockerize boot cambridge-healthcare/hi_sinatra-docker hi_sinatra"
+</code></pre>
+
+<p>Every successful Jenkins build will now result in a running Docker container.</p>
+
+<p>CI setups are always opinionated. We have a few more additions such as Campfire notifications, Amazon SQS integration with GitHub and a few others which are specific to our infrastructure. The above Jenkins integration example with Docker is meant to be a most conservative starting point for your own setup.</p>
+
+<p>Until next time!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Continuous Delivery with Docker and Jenkins - part I]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-i/"/>
+    <updated>2014-02-21T14:40:59-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-i</id>
+    <content type="html"><![CDATA[<p>We have been using Docker in our staging environment for nealrt several months now and are right now planning to make it part of our production setup once the first stable version gets released. We’ll be discussing the staging environment setup today with the promise of following up on the production environment at a later date.</p>
+
+<!--more-->
+
+
+<p>Docker is a utility for creating virtualized Linux containers for shipping self-contained applications. As opposed to a traditional VM which runs a full-blown operating system on top of the host, Docker leverages LinuX Containers (LXC) which run on the same operating system. This results in a more efficient usage of system resource by trading some of the isolation specific to hypervisors. What makes Docker appealing is that applications can be packaged as self-contained containers, shipped around as small data blobs and brought up as fully independent hosts in a matter of seconds. If an Amazon Machine Image (AMI) takes a few minutes to boot, the equivalent Docker images take a few seconds at most (normally ~1s). To find out more about Docker internals, see Docker, The Whole Story.</p>
+
+<p>We have converted our entire staging environment from a handful of AMIs to a single bare metal host running Docker. We have made it more efficient and faster to bring up versions of services which undergo rigorous testing before they get shipped into production.</p>
+
+<p>Whenever a new github branch gets started, Jenkins, our Continuous Integration server, automatically attempts to build a new Docker container from it. If all tests pass, this container becomes available on our office network and we receive a Campfire notification. If tests fail, we leave a Docker image for our engineers to examine. For Service Oriented Architectures (SOA), this approach saves a lot of time when working on features that span multiple services and cannot be isolated to a particular component. The extra confidence that we get from integrating features at a platform level means that we are more effective and don’t need to wait on one another.</p>
+
+<p>We couldn’t find any clear guide on integrating Docker with Jenkins so we’ve decided to contribute one. We have included a Vagrantfile which automates the entire setup except creating Jenkins jobs. We provide an example Sinatra app which includes all the required configuration to get everything working end-to-end, feel free to use it as the starting point for your own setup.</p>
+
+<h2>1. Install VirtualBox, Vagrant &amp; git</h2>
+
+<p>Either install using your package manager or use the official downloads:</p>
+
+<ul>
+<li><a href="https://www.virtualbox.org/">install virtualbox</a></li>
+<li><a href="http://www.vagrantup.com/">install vagrant</a></li>
+<li><a href="http://git-scm.com/downloads">install git</a></li>
+</ul>
+
+
+<h2>2. Create Vagrant VM</h2>
+
+<p>This <a href="https://github.com/bv2012/hi_sinatra-docker/blob/master/Vagrantfile">Vagrantfile</a> will get everything setup for you. Cloning the repository and running vagrant up inside it will create a VM with the latest stable Docker and Jenkins services running side-by-side. Jenkins belongs to the docker group and can run Docker commands directly.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>git clone &lt;a href="https://github.com/bv2012/hi_sinatra-docker.git">https://github.com/bv2012/hi_sinatra-docker.git&lt;/a>
+</span><span class='line'>cd hi_sinatra-docker
+</span><span class='line'>vagrant up&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>3. Setup Jenkins job</h2>
+
+<p>Find the Jenkins Server running at <a href="http://localhost:8080/,">http://localhost:8080/,</a> install the <a href="https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin">Git plugin</a>.</p>
+
+<p>Once this is successfully installed and Jenkins is restarted, add the following job:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>| Job name               | hi_sinatra                                                    |
+</span><span class='line'>| Job type               | Build a free-style software project                           |
+</span><span class='line'>| Source Code Management | Git                                                           |
+</span><span class='line'>| Repository URL         | &lt;a href="https://github.com/bv2012/hi_sinatra-docker.git">https://github.com/bv2012/hi_sinatra-docker.git&lt;/a> |
+</span><span class='line'>| Build                  | Execute shell&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>This is the shell command which you will need to use for the build execution:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -67,43 +322,28 @@ the past year, and it&rsquo;s helped us tremendously normalize our development p
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>1. First, &lt;a href="http://downloads.vagrantup.com/">download Vagrant&lt;/a>&lt;/p>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code> and [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
-</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>&lt;p>service=$JOB_NAME
+</span><span class='line'>service_port=8000
+</span><span class='line'>branch=$(echo $GIT_BRANCH | cut -d/ -f 2)&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;ol>
-</span><span class='line'>&lt;li> Second, let&rsquo;s download an image, spin it up and SSH in:
-</span><span class='line'> $ vagrant init precise64 &lt;a href="http://files.vagrantup.com/precise64.box">http://files.vagrantup.com/precise64.box&lt;/a>
-</span><span class='line'> $ vagrant up
-</span><span class='line'> $ vagrant ssh&lt;/li>
-</span><span class='line'>&lt;li> There&rsquo;s no 3.&lt;/li>
-</span><span class='line'>&lt;li> There&rsquo;s a 4 if you want to access your (soon to be) deployed app;&lt;/li>
-</span><span class='line'>&lt;li> you will need to dig around the Vagrant documentation to
-</span><span class='line'> &lt;a href="http://docs.vagrantup.com/v2/networking/forwarded_ports.html">perform port forwarding&lt;/a>,
-</span><span class='line'> &lt;a href="http://docs.vagrantup.com/v2/networking/private_network.html">proper networking&lt;/a>
-</span><span class='line'> and update manually your &lt;code>Vagrantfile&lt;/code>.</span></code></pre></td></tr></table></div></figure></notextile></div></li>
-</ol>
+</span><span class='line'>&lt;p>docker build -t $service:$branch $WORKSPACE&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>container_id=$(docker run -d -p $service_port $service:$branch)
+</span><span class='line'>container_port=$(docker inspect $container_id | awk &lsquo;BEGIN { FS = &ldquo;\&rdquo;&ldquo; } ; /&rdquo;&rsquo;$service_port'&ldquo;:/ { print $4 }&lsquo;)&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>echo &ldquo;App running on &lt;a href="http://localhost:$container_port">http://localhost:$container_port&lt;/a>&rdquo;&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
+<p>The above app includes a Dockerfile which builds a Docker image. The first Docker build will take longer (depending on your internet connection), but as Docker caches build steps (pro tip: apart from ADD), subsequent builds will be significantly quicker.</p>
 
-<h2>Docker</h2>
+<h2>4. Successful build results in a running Docker container</h2>
 
-<p><a href="http://docker.io">Docker</a> is a Linux container, written in <a href="http://golang.org">Go</a> (yay!) and based on <a href="http://en.wikipedia.org/wiki/LXC">lxc</a> (self-described as &ldquo;chroot on steroids&rdquo;) and <a href="http://en.wikipedia.org/wiki/Aufs">AUFS</a>. Instead of providing a full VM, like you get with Vagrant, Docker provides you lightweight containers, that share the same kernel and allow to safely execute independent
-processes.</p>
+<p>Building the project for the first time (truncated output):</p>
 
-<p>Docker is attractive for many reasons:</p>
-
-<ul>
-<li><strong>Lightweight</strong>; images are much lighter than full VMs, and spinning off a new instance is lightning fast (in the range of seconds instead of minutes).</li>
-<li><strong>Version control of the images</strong>, which makes it much more convenient to handle builds.</li>
-<li><strong>Lots of images</strong> (again), just have a look at <a href="https://index.docker.io">the docker public index of images</a>.</li>
-</ul>
-
-
-<p>Let&rsquo;s set up a Docker container on your Vagrant machine:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -130,156 +370,110 @@ processes.</p>
 <span class='line-number'>25</span>
 <span class='line-number'>26</span>
 <span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Building in workspace /home/jenkins/.jenkins/jobs/hi_sinatra/workspace
+</span><span class='line'>Cloning repository &lt;a href="https://github.com/bv2012/hi_sinatra-docker.git">https://github.com/bv2012/hi_sinatra-docker.git&lt;/a>
+</span><span class='line'>Commencing build of Revision bbb5383939cf719745c232c67f0dffe99b639d91 (origin/master, origin/HEAD)
+</span><span class='line'>.
+</span><span class='line'>.
+</span><span class='line'>.
+</span><span class='line'>Step 1 : FROM howareyou/ruby_2.0.0-p247
+</span><span class='line'>Pulling repository howareyou/ruby_2.0.0-p247
+</span><span class='line'>.
+</span><span class='line'>.
+</span><span class='line'>.
+</span><span class='line'>Step 9 : RUN cd /var/apps/$SERVICE &amp;&amp; bin/test
+</span><span class='line'> &mdash;&ndash;> Running in bbaaf476e848
+</span><span class='line'>Run options: include {:focus=>true}&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;ol>
-</span><span class='line'>&lt;li>&lt;p> SSH in Vagrant if you&rsquo;re not in already:&lt;/p>
+</span><span class='line'>&lt;p>All examples were filtered out; ignoring {:focus=>true}
+</span><span class='line'>.&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;p> $ vagrant ssh&lt;/p>&lt;/li>
-</span><span class='line'>&lt;li>&lt;p> Install Docker,
-</span><span class='line'>&lt;a href="http://http://docs.docker.io/en/latest/installation/ubuntulinux/#ubuntu-precise-12-04-lts-64-bit">as explained on the official website&lt;/a>:&lt;/p>
+</span><span class='line'>&lt;p>Finished in 0.02125 seconds
+</span><span class='line'>1 example, 0 failures
+</span><span class='line'>.
+</span><span class='line'>.
+</span><span class='line'>App running on &lt;a href="http://localhost:49153">http://localhost:49153&lt;/a>&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;p>   $ sudo apt-get update
-</span><span class='line'>   $ sudo apt-get install linux-image-generic-lts-raring linux-headers-generic-lts-raring
-</span><span class='line'>   $ sudo reboot
-</span><span class='line'>   $ sudo sh -c &ldquo;curl &lt;a href="https://get.docker.io/gpg">https://get.docker.io/gpg&lt;/a> | apt-key add &ndash;&rdquo;
-</span><span class='line'>   $ sudo sh -c &ldquo;echo deb &lt;a href="http://get.docker.io/ubuntu">http://get.docker.io/ubuntu&lt;/a> docker main &gt; /etc/apt/sources.list.d/docker.list&rdquo;
-</span><span class='line'>   $ sudo apt-get update
-</span><span class='line'>   $ sudo apt-get install lxc-docker&lt;/p>
+</span><span class='line'>&lt;p>Finished: SUCCESS&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;ol>
-</span><span class='line'>&lt;li>&lt;p>Verify it worked by trying to build your first container:&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>$ sudo docker run -i -t ubuntu /bin/bash&lt;/p>&lt;/li>
-</span><span class='line'>&lt;li>&lt;p>Great, but we&rsquo;ll need more than a vanilla Linux. To add our dependencies, for example to run a Node.js + MongoDB app, we&rsquo;re gonna start by creating a &lt;code>Dockerfile&lt;/code>:&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>FROM ubuntu
-</span><span class='line'>MAINTAINER My Self &lt;a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#x6d;&#101;&#64;&#x65;&#120;&#97;&#x6d;&#112;&#108;&#x65;&#x2e;&#99;&#x6f;&#x6d;">&#x6d;&#101;&#x40;&#101;&#x78;&#x61;&#x6d;&#112;&#x6c;&#x65;&#46;&#99;&#111;&#109;&lt;/a>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Fetch Nodejs from the official repo (binary .. no hassle to build, etc.)&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>ADD &lt;a href="http://nodejs.org/dist/v0.10.19/node-v0.10.19-linux-x64.tar.gz">http://nodejs.org/dist/v0.10.19/node-v0.10.19-linux-x64.tar.gz&lt;/a> /opt/&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Untar and add to the PATH&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>RUN cd /opt &amp;&amp; tar xzf node-v0.10.19-linux-x64.tar.gz
-</span><span class='line'>RUN ln -s /opt/node-v0.10.19-linux-x64 /opt/node
-</span><span class='line'>RUN echo &ldquo;export PATH=/opt/node/bin:$PATH&rdquo; &gt;&gt; /etc/profile&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>A little cheat for upstart ;)&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>RUN dpkg-divert &mdash;local &mdash;rename &mdash;add /sbin/initctl
-</span><span class='line'>RUN ln -s /bin/true /sbin/initctl&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Update apt sources list to fetch mongodb and a few key packages&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>RUN echo &ldquo;deb &lt;a href="http://archive.ubuntu.com/ubuntu">http://archive.ubuntu.com/ubuntu&lt;/a> precise universe&rdquo; &gt;&gt; /etc/apt/sources.list
-</span><span class='line'>RUN apt-get update
-</span><span class='line'>RUN apt-get install -y python git
-</span><span class='line'>RUN apt-get install -y mongodb&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Finally &ndash; we wanna be able to SSH in&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>RUN apt-get install -y openssh-server
-</span><span class='line'>RUN mkdir /var/run/sshd&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>And we want our SSH key to be added&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>RUN mkdir /root/.ssh &amp;&amp; chmod 700 /root/.ssh
-</span><span class='line'>ADD id_rsa.pub /root/.ssh/authorized_keys
-</span><span class='line'>RUN chmod 400 /root/.ssh/authorized_keys &amp;&amp; chown root. /root/.ssh/authorized_keys&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Expose a bunch of ports .. 22 for SSH and 3000 for our node app&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>EXPOSE 22 3000&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>ENTRYPOINT [&ldquo;/usr/sbin/sshd&rdquo;, &ldquo;-D&rdquo;]&lt;/p>&lt;/li>
-</span><span class='line'>&lt;li>&lt;p>Let&rsquo;s build our image now:&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>$ sudo docker build .&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Missing file id_rsa.pub &hellip; hahaha ! You need an ssh key for your vagrant user&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>$ ssh-keygen
-</span><span class='line'>$ cp -a /home/vagrant/.ssh/id_rsa.pub .&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Try again&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>$ sudo docker build .&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Great Success! High Five!&lt;/h1>&lt;/li>
-</span><span class='line'>&lt;li>&lt;p>Now, let&rsquo;s spin off a container with that setup and log into it (&lt;code>$MY_NEW_IMAGE_ID&lt;/code> is the last id the build process returned to you):&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>$ sudo docker run -p 40022:22 -p 80:3000 -d $MY_NEW_IMAGE_ID
-</span><span class='line'>$ ssh root@localhost -p 40022</span></code></pre></td></tr></table></div></figure></notextile></div></p></li>
-</ol>
-</li>
-</ol>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>While the first build takes 2 mins and 26 secs, the second one takes a mere 5 secs. That is 5 seconds to install all the ruby gems, run all the tests, build a Docker image and start a new Docker container that makes that app version available for further testing (eg. integration tests, stress tests). The resulting app image is a mere 12.29kB. That’s the only new content which needs deploying into production.</p>
+
+<h3>github service hooks</h3>
+
+<p>For integrating github with a Jenkins server not accessible from the outside world, we have found Amazon SQS to be an elegant solution. There is a <a href="https://wiki.jenkins-ci.org/display/JENKINS/GitHub+SQS+Plugin">Github SQS plugin</a> that is installable from within Jenkins, setup is straightforward.</p>
+
+<p>The only gotcha is that the SQS must be setup in the us-east-1 region. We had set it up initially in eu-west-1 and were puzzled as to why it wasn’t working.</p>
+
+<p>&ldquo;How are you?&rdquo; base Docker images
+During our use of Docker, we have used the public Docker images on the <a href="https://index.docker.io/u/howareyou/">public Docker index</a>. The app which we have given as an example makes use of howareyou/ruby_2.0.0-p247 and all its dependencies.</p>
+
+<p>If you have found this tutorial useful, please help us to improve it by adding your contributions to hi_sinatra-docker.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using Docker To Run Ruby Rspec CI In Jenkins]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/02/17/using-docker-to-run-ruby-rspec-ci-in-jenkins/"/>
+    <updated>2014-02-17T17:01:40-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/02/17/using-docker-to-run-ruby-rspec-ci-in-jenkins</id>
+    <content type="html"><![CDATA[<p>In this post, I am going to give a step-by-step introduction into how you can do continuous integration testing with Docker. I will be running the rspec test suite of the CloudFoundry project&rsquo;s Cloud Controller component, although the same process can be applied to any Ruby project. I will show how to build Docker images to easily run repeatable tests and how to set-up Jenkins to do it for you in an automated manner.</p>
+
+<h1>Continuous Integration Using Docker</h1>
+
+<p>The goal of this post is to show Jenkins running a project’s test-suite using Docker. This will occur following every code check-in or every N minutes or whenever it is needed.</p>
+
+<p>Why use Docker to do this? Having a clean environment to run tests is one of the ten commandments of running tests. With Docker&rsquo;s Dockerfile, you can specify a series of steps to create the full stack of the test environment you need. Docker can follow the steps to pre-build the test environment, then stash that environment for disposable re-use. Since a running Docker image, or [LXC] &ldquo;container&rdquo;, is ephemeral, you can blow it away and re-create it very quickly. Perfect for continuous integration!</p>
+
+<!--more-->
 
 
-<p>You now have a Docker container, inside a Vagrant box (<em>Inception</em> style),
-ready to run a Node.js app.</p>
+<p>My Docker usage will be two-step. First, I will create the Docker image. This will have all the basics required by any test run from this project. I am basing my assumptions on system requirements from the current state of the project.</p>
 
-<h2>Ansible</h2>
+<p>It will not have everything installed, because I cannot predict what a developer will do during a day of hacking on code. They may change code dependencies (gem dependencies in this case) and so I cannot install those dependencies until the time I run that version of the code.</p>
 
-<p><a href="http://ansible.cc">Ansible</a> is an orchestration and configuration management tool written in Python. If you want to learn more about Ansible (and you should…), <a href="/blog/2013/07/03/ansible-simply-kicks-ass.html">we wrote about it a few weeks ago</a>.</p>
+<p>The second step will be to take my built Docker image and run it every time a new version of the project’s code is created. I do not have access to create a GitHub code commit hook, which would tell Jenkins to run the tests on each code check-in, so instead I will run it periodically.</p>
 
-<p>Let&rsquo;s get to work. We&rsquo;re now gonna deploy an app in our container:</p>
+<p>Since I can re-use the Docker image for all my subsequent test runs, I will be creating my Docker-based test environment (step 1) far less frequently than running my tests (step 2).</p>
+
+<p>I can use Jenkins to perform both these tasks. In one Jenkins job, run maybe once a day, it can recreate the base Docker image and push it to a local Docker repository. In a second Jenkins job, which is run each time a developer commits code, I can run the Docker image, which will pull it from the local Docker repository.</p>
+
+<h2>Guinea Pig</h2>
+
+<p>I am going run the test suite of Cloud Foundry&rsquo;s Cloud Controller. This is a core component of the Cloud Foundry project and one of the most complex pieces. The test suite is very large, so it takes more time to run than a developer would have patience for, which for me is about 2 hours. This makes it ideal for continuous testing in the background to confirm that nobody has checked in code that breaks the test suite.</p>
+
+<h2>CI Docker Image</h2>
+
+<p>My continuous-integration Docker image has 3 parts&hellip;</p>
+
+<p>1) Specify a base image</p>
+
+<p>I am going to use the &ldquo;ubuntu&rdquo; image from <a href="http://index.docker.io.">http://index.docker.io.</a>
+2) Install dependencies</p>
+
+<p>Dependencies will be installed via apt-get, wget, rbenv, rubygems and Ruby&rsquo;s bundler.
+3) Specify the command that &ldquo;docker run&rdquo; executes when this Docker image is used</p>
+
+<p>I want to ensure I have the latest code (via &ldquo;git pull&rdquo;) and that we install any code-level dependencies (via &ldquo;bundle install&rdquo;). Finally, it should run the test suite.</p>
+
+<p>The exit code of the test suite will be returned by &ldquo;docker run&rdquo; and Jenkins will use this to determine if the tests passed or failed. If the test run fails Jenkins will inform relevant people via email, if we configure it to do so.</p>
+
+<p>Dockerfile</p>
+
+<p>A Dockerfile is a cross between assembler and a bash script. There are certain action keywords that each non-whitespace non-comment line starts with. I like to uppercase these, so they stand out, but uppercasing these is not mandatory. The remainder of each line is the content used by that action keyword.</p>
+
+<p>For instance, &ldquo;FROM&rdquo; is used to specify the base image, so &ldquo;FROM ubuntu&rdquo; specifies that I am using the &ldquo;ubuntu&rdquo; base image.</p>
+
+<p>&ldquo;RUN&rdquo; is used to run a shell command and is commonly used to install dependencies.</p>
+
+<p>&ldquo;ENV&rdquo; can set environment variables, which can be used in subsequent actions, but also persists to the &ldquo;CMD&rdquo; action.</p>
+
+<p>&ldquo;CMD&rdquo; is called when &ldquo;docker run&rdquo; is run against your created image. &ldquo;CMD&rdquo; is ignored during the image building.</p>
+
+<p>Here is my Dockerfile (gist here)&hellip;</p>
+
+<h1>docker image for running CC test suite</h1>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -341,165 +535,523 @@ ready to run a Node.js app.</p>
 <span class='line-number'>58</span>
 <span class='line-number'>59</span>
 <span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-<span class='line-number'>100</span>
-<span class='line-number'>101</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;ol>
-</span><span class='line'>&lt;li>&lt;p> &lt;a href="/blog/2013/07/03/ansible-simply-kicks-ass.html">Install Ansible&lt;/a>, as we showed you in our previous post.&lt;/p>&lt;/li>
-</span><span class='line'>&lt;li>&lt;p> Prepare your inventory file (&lt;code>host&lt;/code>):&lt;/p>
+</span><span class='line'>&lt;p>FROM ubuntu&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;p> app ansible_ssh_host=127.0.0.1 ansible_ssh_port=40022&lt;/p>&lt;/li>
-</span><span class='line'>&lt;li>&lt;p> Create a simple playbook to deploy our app (&lt;code>deploy.yml&lt;/code>):&lt;/p>
+</span><span class='line'>&lt;p>RUN apt-get -y install wget
+</span><span class='line'>RUN apt-get -y install git&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;hr />
+</span><span class='line'>&lt;h1>install Ruby 1.9.3-p484&lt;/h1>
 </span><span class='line'>
-</span><span class='line'>&lt;ul>
-</span><span class='line'>&lt;li>hosts: app
-</span><span class='line'>user: root
-</span><span class='line'>tasks:
-</span><span class='line'>  # Fetch the code from github
+</span><span class='line'>&lt;p>RUN apt-get -y install build-essential zlib1g-dev libreadline-dev libssl-dev libcurl4-openssl-dev
+</span><span class='line'>RUN git clone &lt;a href="https://github.com/sstephenson/rbenv.git">https://github.com/sstephenson/rbenv.git&lt;/a> ~/.rbenv
+</span><span class='line'>RUN git clone &lt;a href="https://github.com/sstephenson/ruby-build.git">https://github.com/sstephenson/ruby-build.git&lt;/a> ~/.rbenv/plugins/ruby-build
+</span><span class='line'>RUN echo &lsquo;export PATH=&ldquo;$HOME/.rbenv/bin:$PATH&rdquo;&rsquo; >> ~/.bash_profile
+</span><span class='line'>RUN echo &lsquo;eval &ldquo;$(rbenv init &ndash;)&rdquo;&rsquo; >> ~/.bash_profile
+</span><span class='line'>ENV PATH /.rbenv/bin:/.rbenv/shims:$PATH
+</span><span class='line'>RUN echo PATH=$PATH
+</span><span class='line'>RUN rbenv init &ndash;
+</span><span class='line'>RUN rbenv install 1.9.3-p484 &amp;&amp; rbenv global 1.9.3-p484&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;ul>
-</span><span class='line'>&lt;li>name: Ensure we got the App code
-</span><span class='line'>git:
-</span><span class='line'>  repo=git://github.com/madhums/node-express-mongoose-demo.git
-</span><span class='line'>  dest=/opt/node-express-mongoose-demo&lt;/li>
-</span><span class='line'>&lt;/ul>
+</span><span class='line'>&lt;h1>never install a ruby gem docs&lt;/h1>
 </span><span class='line'>
+</span><span class='line'>&lt;p>RUN echo &ldquo;gem: &mdash;no-rdoc &mdash;no-ri&rdquo; >> ~/.gemrc&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;p>  # NPM may or may not succeed, if you give it time, care, etc. it eventually works&lt;/p>
+</span><span class='line'>&lt;h1>Install bundler and the &ldquo;bundle&rdquo; shim&lt;/h1>
 </span><span class='line'>
-</span><span class='line'>&lt;ul>
-</span><span class='line'>&lt;li>name: Ensure the npm dependencies are installed
-</span><span class='line'>command:
-</span><span class='line'>  chdir=/opt/node-express-mongoose-demo
-</span><span class='line'>  /opt/node/bin/npm install
-</span><span class='line'>ignore_errors: yes&lt;/li>
-</span><span class='line'>&lt;/ul>
+</span><span class='line'>&lt;p>RUN gem install bundler &amp;&amp; rbenv rehash&lt;/p>
 </span><span class='line'>
+</span><span class='line'>&lt;h1>Checkout the cloud_controller_ng code&lt;/h1>
 </span><span class='line'>
-</span><span class='line'>&lt;p>  # We will assume no changes in the default sample &ndash; or we should consider templates instead&lt;/p>
+</span><span class='line'>&lt;p>RUN git clone -b master git://github.com/cloudfoundry/cloud_controller_ng.git /cloud_controller_ng&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;ul>
-</span><span class='line'>&lt;li>name: Ensure the config files of the app
-</span><span class='line'>command:
-</span><span class='line'>  creates=/opt/node-express-mongoose-demo/config/$item.js
-</span><span class='line'>  cp /opt/node-express-mongoose-demo/config/$item.example.js /opt/node-express-mongoose-demo/config/$item.js
-</span><span class='line'>with_items:
+</span><span class='line'>&lt;h1>mysql gem requires these&lt;/h1>
 </span><span class='line'>
-</span><span class='line'>&lt;ul>
-</span><span class='line'>&lt;li>config&lt;/li>
-</span><span class='line'>&lt;li>imager&lt;/li>
-</span><span class='line'>&lt;/ul>
-</span><span class='line'>&lt;/li>
-</span><span class='line'>&lt;/ul>
+</span><span class='line'>&lt;p>RUN apt-get -y install libmysqld-dev libmysqlclient-dev mysql-client&lt;/p>
 </span><span class='line'>
+</span><span class='line'>&lt;h1>pg gem requires this&lt;/h1>
 </span><span class='line'>
-</span><span class='line'>&lt;p>  # &lt;code>initctl&lt;/code> is now linking to &lt;code>true&lt;/code> and we have no access to services
-</span><span class='line'>  # Need to fake the start&lt;/p>
+</span><span class='line'>&lt;p>RUN apt-get -y install libpq-dev&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;ul>
-</span><span class='line'>&lt;li>name: Ensure mongodb data folders
-</span><span class='line'>file:
-</span><span class='line'>  state=directory
-</span><span class='line'>  dest=$item
-</span><span class='line'>  owner=mongodb
-</span><span class='line'>  group=mongodb
-</span><span class='line'>with_items:
+</span><span class='line'>&lt;h1>sqlite gem requires this&lt;/h1>
 </span><span class='line'>
-</span><span class='line'>&lt;ul>
-</span><span class='line'>&lt;li>/var/lib/mongodb&lt;/li>
-</span><span class='line'>&lt;li>/var/log/mongodb&lt;/li>
-</span><span class='line'>&lt;/ul>
-</span><span class='line'>&lt;/li>
-</span><span class='line'>&lt;/ul>
+</span><span class='line'>&lt;p>RUN apt-get -y install libsqlite3-dev&lt;/p>
 </span><span class='line'>
+</span><span class='line'>&lt;h1>Optimization: Pre-run bundle install.&lt;/h1>
 </span><span class='line'>
-</span><span class='line'>&lt;p>  # Super cheat combo !&lt;/p>
+</span><span class='line'>&lt;h1>It may be that some gems are installed that never get cleaned up,&lt;/h1>
 </span><span class='line'>
-</span><span class='line'>&lt;ul>
-</span><span class='line'>&lt;li>name: Ensure mongodb is running
-</span><span class='line'>shell:
-</span><span class='line'>  LC_ALL=&lsquo;C&rsquo; /sbin/start-stop-daemon &mdash;background &mdash;start &mdash;quiet &mdash;chuid mongodb &mdash;exec  /usr/bin/mongod &mdash; &mdash;config /etc/mongodb.conf&lt;/li>
-</span><span class='line'>&lt;/ul>
+</span><span class='line'>&lt;h1>but this will make the subsequent CMD runs faster&lt;/h1>
 </span><span class='line'>
+</span><span class='line'>&lt;p>RUN cd /cloud_controller_ng &amp;&amp; bundle install&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;p>  # Cheating some more !&lt;/p>
+</span><span class='line'>&lt;h1>Command to run at &ldquo;docker run &hellip;&rdquo;&lt;/h1>
 </span><span class='line'>
-</span><span class='line'>&lt;ul>
-</span><span class='line'>&lt;li>name: Ensure the App is running
-</span><span class='line'>shell:
-</span><span class='line'>  chdir=/opt/node-express-mongoose-demo
-</span><span class='line'>  /opt/node/bin/npm start &amp;&lt;/li>
-</span><span class='line'>&lt;/ul>
-</span><span class='line'>&lt;/li>
-</span><span class='line'>&lt;/ul>
-</span><span class='line'>&lt;/li>
-</span><span class='line'>&lt;li>&lt;p> Run that baby:&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p> $ ansible-playbook -i host deploy.yml&lt;/p>&lt;/li>
-</span><span class='line'>&lt;li>&lt;p> We&rsquo;re done, point your browser at &lt;code>http://localhost:80&lt;/code> &ndash; assuming you have performed the redirection mentioned in the initial setup of your vagrant box.&lt;/p>&lt;/li>
-</span><span class='line'>&lt;/ol>
-</span><span class='line'>
+</span><span class='line'>&lt;p>CMD if [ -z $BRANCH ]; then BRANCH=master; fi; \
+</span><span class='line'>cd /cloud_controller_ng \
+</span><span class='line'>&amp;&amp; git checkout $BRANCH \
+</span><span class='line'>&amp;&amp; git pull \
+</span><span class='line'>&amp;&amp; git submodule init &amp;&amp; git submodule update \
+</span><span class='line'>&amp;&amp; bundle install \
+</span><span class='line'>&amp;&amp; bundle exec rspec spec</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The above installs Ruby 1.9.3 at a specific patch-level and any known system-level dependencies that may be needed by gems. If a developer added gems that required additional system dependencies, then those would need to be added to the Dockerfile and the Docker image would need to be rebuilt. This happens rarely, but for this reason it would be desirable to have developers own this Dockerfile and put it alongside the code and check it in with the code. This would then be updated in-step and could trigger a re-build, via Jenkins, of the Docker image.</p>
+
+<h2>Installed Gems Optimization</h2>
+
+<p>Earlier I said that I cannot install code dependencies (gem dependencies), since they may change from one version of the code to the next, but you may have noticed that I have pre-installed them anyway, via &ldquo;bundle install&rdquo;.</p>
+
+<p>As an optimization, I assume that most of the gems will rarely change. I will still install them just prior to running the tests, via another &ldquo;bundle install&rdquo;, so some will become redundant over time. But since most, if not all, will already be there, the &ldquo;bundle install&rdquo; at test run time will be fast.</p>
+
+<p>Luckily, I am using Jenkins to build the Docker image, probably once a night, so any installed gems that become redundant will not be around for long.</p>
+
+<p>You may think this adds an extra variable in the test run, so this can be skipped for purity at the cost of longer time for each test run.</p>
+
+<h2>Docker With Jenkins</h2>
+
+<p>Very little was needed to getting Docker working with Jenkins. I just needed to ensure that the unix user &ldquo;jenkins&rdquo; belonged to the &ldquo;docker&rdquo; group.</p>
+
+<p>Docker runs as the &ldquo;root&rdquo; user and the &ldquo;docker&rdquo; group. When the docker daemon starts up it creates a unix socket owned by the &ldquo;root&rdquo; user and the &ldquo;docker&rdquo; group. Therefore, the docker command-line client needs to be run via &ldquo;root&rdquo; user or someone in the &ldquo;docker&rdquo; group.
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ ls -l /var/run/docker.sock
+</span><span class='line'>srw-rw&mdash;&mdash; 1 root docker 0 Dec 27 09:45 /var/run/docker.sock&lt;/p>
 </span><span class='line'>
 </span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>That&rsquo;s it. You&rsquo;ve just deployed your app on Docker (in Vagrant).</p>
+<p>Simply add the jenkins user to the docker group to be able to create and run Docker images without sudo.</p>
 
-<h2>Let&rsquo;s wrap it up</h2>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>$ sudo usermod -a -G docker jenkins&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>So we just saw (roughly) how these tools can be used, and how they can be
-complementary:</p>
+<p>Please consider any security concerns with doing this. I am doing this in a trusted environment.</p>
 
-<ol>
-<li> Vagrant will provide you with a full VM, including the OS. It&rsquo;s great at providing you a Linux environment for example when you&rsquo;re on MacOS.</li>
-<li> Docker is a lightweight VM of some sort. It will allow you to build contained architectures faster and cheaper than with Vagrant.</li>
-<li> Ansible is what you&rsquo;ll use to orchestrate and fine-tune things. That&rsquo;s what you want to structure your deployment and orchestration strategy.</li>
-</ol>
+<h2>Local Docker Registry</h2>
+
+<p>Docker images can get quite large, so it is useful to have a local version of the Docker registry on the same network, or same machine, as you are running Docker. I am going to be running it on the same machine that I am running Jenkins on.</p>
+
+<p>I do not have to worry about the volatility of where I put the repository, as the built Docker images are disposable. As long as I put my Dockerfile somewhere safe (GitHub?), then I can recreate the Docker image anywhere at any time.</p>
+
+<p>Luckily the Docker registry is very simple to setup. It is just a Docker image itself, found on the <a href="http://index.docker.io">http://index.docker.io</a> Docker registry. Yes, things start getting very &ldquo;Inception&rdquo; quickly.
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>$ docker run -p 5000:5000 samalba/docker-registry&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Note, if you do not belong to the &ldquo;docker&rdquo; group, you will have to run this as sudo. I added myself to the “docker” group as follows&hellip;
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>$ sudo usermod -a -G docker phil&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The &ldquo;-p 5000:5000&rdquo; specifies that the docker-registry process should listen on the port 5000 internally in the Docker container and Docker should map that to port 5000 on the host machine.</p>
+
+<p>We can check it is running by using the &ldquo;docker ps&rdquo; command&hellip;</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ docker ps
+</span><span class='line'>CONTAINER ID   IMAGE                            COMMAND                CREATED             STATUS              PORTS                    NAMES
+</span><span class='line'>81bbfc81f7f9   samalba/docker-registry:latest   /bin/sh -c cd /docke   48 seconds ago      Up&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Jenkins Job: Build The Docker Image</h2>
+
+<p>Creating a Docker image is quite simple. It requires 3 commands: &ldquo;build&rdquo;, &ldquo;tag&rdquo; and &ldquo;push&rdquo;.</p>
+
+<p>&ldquo;docker build&rdquo;, if successful, will output &ldquo;Successfully built &rdquo;, where &ldquo;&rdquo; is a hex string. You can then use this build-id to &ldquo;docker tag&rdquo; the image with a human-readable name. You then use this image name to &ldquo;docker push&rdquo; it to a Docker registry.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>docker build &lt;directory containing Dockerfile>
+</span><span class='line'>docker tag &lt;built-id> &lt;image-name>
+</span><span class='line'>docker push &lt;registry-address>:&lt;image-name>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Automating this involves extracting the &ldquo;&rdquo; from the &ldquo;docker build&rdquo; output, so I created a small bash script called build_and_push.sh to help with this and manage the whole process of building the Docker image and getting it into the local repository.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>/bin/env bash&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Builds the docker image and pushs to&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>repository (local by default)&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Usage:&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>build_and_push &lt;directory of Dockerfile> &lt;resultant docker image name>&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>DOCKERFILE_DIRECTORY=$1
+</span><span class='line'>DOCKER_IMAGE_NAME=$2&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>if [ &ldquo;$DOCKER_REPO_SERVER&rdquo; = &ldquo;&rdquo; ]; then
+</span><span class='line'>  DOCKER_REPO_SERVER=localhost:5000
+</span><span class='line'>fi
+</span><span class='line'>DOCKER_REPO_NAME=$DOCKER_REPO_SERVER/$DOCKER_IMAGE_NAME&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Build docker image&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>rm -f docker-built-id
+</span><span class='line'>docker build $DOCKERFILE_DIRECTORY \
+</span><span class='line'>  | perl -pe &lsquo;/Successfully built (\S+)/ &amp;&amp; &lt;code>echo -n $1 &gt; docker-built-id&lt;/code>&rsquo;
+</span><span class='line'>if [ ! -f docker-built-id ]; then
+</span><span class='line'>  echo &ldquo;No docker-built-id file found&rdquo;
+</span><span class='line'>  exit 1
+</span><span class='line'>fi
+</span><span class='line'>DOCKER_BUILD_ID=&lt;code>cat docker-built-id&lt;/code>
+</span><span class='line'>rm -f docker-built-id&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Publish built docker image to repo&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>docker tag $DOCKER_BUILD_ID $DOCKER_REPO_NAME
+</span><span class='line'>docker push $DOCKER_REPO_NAME&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Using this script and my Dockerfile, I now have everything I need to create my first of two Jenkins jobs.</p>
+
+<p>Note, that for simplicity, I have put the Dockerfile and build_and_push.sh script in 2 public gists, which are downloaded at the time of running the Jenkins job.</p>
+
+<p>Name:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cloud_controller_ng rspec docker build&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Build / Execute shell:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>DOCKERFILE_DIRECTORY=docker&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Fetch Dockerfile&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>mkdir -p $DOCKERFILE_DIRECTORY
+</span><span class='line'>wget &lt;a href="https://gist.github.com/philwhln/8195797/raw/Dockerfile">https://gist.github.com/philwhln/8195797/raw/Dockerfile&lt;/a> &mdash;directory-prefix=$DOCKERFILE_DIRECTORY&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Fetch build_and_push script&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>wget &lt;a href="https://gist.github.com/philwhln/8196116/raw/build_and_push.sh">https://gist.github.com/philwhln/8196116/raw/build_and_push.sh&lt;/a>
+</span><span class='line'>chmod +x build_and_push.sh&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Build the Docker image&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>DOCKER_REPO_SERVER=localhost:5000 ./build_and_push.sh $DOCKERFILE_DIRECTORY cloud_controller_ng_rspec</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Build Triggers / Build periodically / Schedule :
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>15 3 * * *</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>This will be run every day at 3:15am, so the next day tests will be run with a fresh docker image.</p>
+
+<h2>Jenkins Job: Run The Docker Image</h2>
+
+<p>Now that we have a Docker image primed and ready to run our Jenkins job, we just need to run it.</p>
+
+<p>Name:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cloud_controller_ng rspec docker run&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Build / Execute shell:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker run localhost:5000/cloud_controller_ng_rspec&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div>
+The command is quite simple. &ldquo;docker run&rdquo; will checkout the latest &ldquo;cloudcontrollerng_rspec&rdquo; Docker image from our local Docker repository and run it. At this point the &ldquo;CMD&rdquo;, found in the Dockerfile, will be run.</p>
+
+<p>To recap, that line looks like this&hellip;
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Command to run at &ldquo;docker run &hellip;&rdquo;&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>CMD if [ -z $BRANCH ]; then BRANCH=master; fi; \&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>cd /cloud_controller_ng \
+</span><span class='line'>&amp;&amp; git checkout $BRANCH \
+</span><span class='line'>&amp;&amp; git pull \
+</span><span class='line'>&amp;&amp; git submodule init &amp;&amp; git submodule update \
+</span><span class='line'>&amp;&amp; bundle install \
+</span><span class='line'>&amp;&amp; bundle exec rspec spec
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div>
+We checkout the appropriate $BRANCH of cloudcontrollerng.git, if specified (left to the reader to add in Jenkins). It then does a &ldquo;git pull&rdquo; to ensure it has the latest code, then initializes the git submodules, which our project does have.</p>
+
+<p>Then we see the Ruby specific commands, &ldquo;bundle install&rdquo; and finally &ldquo;bundle exec rspec spec&rdquo; to run our test suite.</p>
+
+<p>If you are interested, here is roughly what you will see in the console output of the Jenkins job.</p>
+
+<p>And finally we see&hellip;
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Finished in 121 minutes 1 second
+</span><span class='line'>7638 examples, 62 failures, 3 pending&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div>
+&ldquo;docker run&rdquo; returns exit code of 1 (failure), since several tests failed. This causes Jenkins to report to use that the tests are failing.</p>
+
+<p>We can see that this took just over 2 hours to run. Not something that most developers would have much patience for.</p>
+
+<h2>Conclusion</h2>
+
+<p>Since I am using a Dockerfile to specify my test environment, I can be sure that if you follow these steps you will be running the same test suite in an identical environment. It also means that if I hit a problem, I (or anyone else) can replicate it, because I have specified the full stack of my environment. In minutes you can be running it too.</p>
+
+<p>This is a big win for DevOps. Developers can create an initial environment in a Dockerfile, check it into git and the Operations team can then collaborate on it. The Operations team may even send a pull request to the Developers that says, &ldquo;Hey, our production environment does not look like that. Try this instead&hellip;&rdquo;. The updated Dockerfile is then checked out by Jenkins, which builds the new test environment and subsequent test runs are run on a more production-like environment.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Managing docker services with this one easy trick]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick/"/>
+    <updated>2013-10-20T15:46:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick</id>
+    <content type="html"><![CDATA[<p>I have been having a lot of internal debate about the idea of running more than one service in a docker container.   A Docker container is built to run a single process in the foreground and to live for only as long as that process is running.  This is great in a utopian world where servers are immutable and sysadmins drink tiki drinks on the beach,  however it doesn&rsquo;t always translate well to the real world.</p>
+
+<p>Examples where you might want to be able to run multiple servers span from the simple use case of running <code>sshd</code> as well as your application to running a web app such as <code>wordpress</code> where you might want both <code>apache</code> and <code>mysql</code> running in the same container.</p>
+
+<p>Wrapping your applications in a supervisor daemon such as <code>runit</code> seems like a perfect fit for this.  All you need to do is install <code>runit</code> as part of your <code>dockerfile</code> and then create appropriate service directories for the apps you want to run in the container.    I was doing some testing of this when I realized a quirk of <code>runit</code> which I could exploit for evil.</p>
+
+<p>To start or stop a service with <code>runit</code> is simply a matter of creating or deleting a symlink in a service directory,   so in theory if you could expose that directory to the server hosting the container you could exploit that to start and stop services from outside of the container.  <code>Docker</code> volume mapping allows exactly this!</p>
+
+<p>Below you will find examples of running three services (logstash,elasticsearch,kibana) that make up the <code>logstash</code> suite.</p>
+
+<!--more-->
 
 
-<p>It takes a bit of reading to get more familiar with these tools, and we&rsquo;ll likely follow up on this post in the next few weeks. However, especially as a small team, this kind of technology allows you to automate and commoditize huge parts of your development and ops workflows. We strongly encourage you to make that investment. It has helped us tremendously increase the pace and
-quality of our throughput.</p>
+<h2>Start by cloning the demo git repository and run demo.sh</h2>
+
+<p><code>
+$ git clone https://github.com/paulczar/docker-runit-demo.git
+$ cd docker-runit-demo
+$ ./demo.sh
+</code></p>
+
+<h3>demo.sh script</h3>
+
+<h4>Step 1:  Build the container</h4>
+
+<p>The script uses the below <code>Dockerfile</code> to build the base container that we&rsquo;ll be running.</p>
+
+<p>```</p>
+
+<h1>Installs runit for service management</h1>
+
+<p>#</p>
+
+<h1>Author: Paul Czarkowski</h1>
+
+<h1>Date: 10/20/2013</h1>
+
+<p>FROM paulczar/jre7
+MAINTAINER Paul Czarkowski &ldquo;<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#58;&#112;&#x61;&#117;&#x6c;&#64;&#x70;&#97;&#117;&#x6c;&#x63;&#122;&#x2e;&#x6e;&#x65;&#116;">&#112;&#97;&#117;&#108;&#x40;&#112;&#x61;&#x75;&#108;&#99;&#122;&#46;&#x6e;&#101;&#116;</a>&rdquo;</p>
+
+<p>RUN apt-get update</p>
+
+<p>RUN apt-get -y install curl wget git nginx
+RUN apt-get -y install runit || echo</p>
+
+<p>CMD [&ldquo;/usr/sbin/runsvdir-start&rdquo;]</p>
+
+<p>```</p>
+
+<h4>Step 2: Install the applications</h4>
+
+<p>This will take a few minutes the first time as it needs to download <code>logstash</code>, <code>kibana</code>, and <code>elasticsearch</code> and stage them in a local <code>./opt</code>directory.</p>
+
+<h4>Step 3: Start the Docker container</h4>
+
+<p>Starts the <code>Docker</code> container with the following command:</p>
+
+<p><code>
+docker run -d -p 8080:80 -p 5014:514 -p 9200:9200 \
+  -v $BASE/opt:/opt \
+  -v $BASE/sv:/etc/sv \
+  -v $BASE/init:/etc/init \
+  -v $BASE/service:/etc/service \
+  demo/runit
+</code></p>
+
+<p>The container should be up and running</p>
+
+<p><code>
+$ docker ps
+ID                  IMAGE               COMMAND                CREATED             STATUS              PORTS
+eb495ad92ba0        demo/runit:latest   /usr/sbin/runsvdir-s   4 seconds ago       Up 3 seconds        5014-&gt;514, 8080-&gt;80, 9200-&gt;9200   
+</code></p>
+
+<p>However there aren&rsquo;t any services running!</p>
+
+<p><code>
+$ curl localhost:8080
+curl: (56) Recv failure: Connection reset by peer
+$ curl localhost:9200
+curl: (56) Recv failure: Connection reset by peer
+</code></p>
+
+<p>We can start the services with the following commands</p>
+
+<p><code>
+$ cd service
+$ ln -s ../sv/elasticsearch
+$ ln -s ../sv/logstash
+$ ln -s ../sv/kibana
+cd ..
+</code></p>
+
+<p>We can now see the services are running, test the ports and send some data to logstash.</p>
+
+<p><code>
+$ curl localhost:8080      
+&lt;!DOCTYPE html&gt;&lt;!--[if IE 8]&gt;&lt;html class="no-js lt-ie9" lang="en"&gt;&lt;![endif]--&gt;&lt;!--[if gt IE 8]&gt;&lt;!--&gt;&lt;html class="no-js" lang="en"&gt;
+...
+curl localhost:9200
+{
+  "ok" : true,
+  "status" : 200,
+...
+$tail -100 /var/log/syslog | nc localhost 5014
+</code></p>
+
+<p>Stop a service ?</p>
+
+<p><code>
+$ rm service/elasticsearch
+$ rm service/logstash
+$ rm service/kibana
+</code></p>
+
+<h2>Bonus Round: Logs!</h2>
+
+<p>The beautify of doing this is that we&rsquo;re actually logging the application output to a mounted volume.   This means we now have access to their logs from the host machine.</p>
+
+<p><code>
+$ tail opt/logstash/logs/current
+$ tail opt/elasticsearch-0.90.5/logs/current
+$ tail opt/kibana/logs/access.log
+</code></p>
+
+<h2>Cleanup</h2>
+
+<p>Unfortunately any files created inside the docker instance are owned by root ( an artifact of docker daemon running as root ).   If you&rsquo;re in The following script will clean out any such files after you&rsquo;ve stopped the docker container.</p>
+
+<p>It will delete any files/dirs inside your current directory that are owned by root.  Obviously it can be very dangerous to run &hellip; so be careful where you run it from!</p>
+
+<p><code>
+$ sudo find . -uid 0   -exec rm -rfv {} \;
+</code></p>
 ]]></content>
   </entry>
   

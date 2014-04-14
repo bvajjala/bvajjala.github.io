@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Some notes on Puppet - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="I&rsquo;ve been playing with Puppet recently in order to finally teach myself a bit about server management. I decided for Puppet because&hellip; &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2012/11/12/some-notes-on-puppet">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Some Notes on Puppet</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-12T16:40:00-05:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I&rsquo;ve been playing with <a href="http://puppetlabs.com/">Puppet</a> recently in order to finally teach myself a bit about server management. I decided for Puppet because&hellip; well&hellip; I didn&rsquo;t have time to play with <a href="http://www.opscode.com/chef/">Chef</a> yet.</p>
+
+<p>I can&rsquo;t show any of my code because it contains some stuff I&rsquo;d rather not open up, but here are some of my global notes on Puppet that I wanted to share.</p>
+
+<h2>The good</h2>
+
+<ul>
+<li><strong>It did the job.</strong> I now have a few scripts that I can use to quickly setup a server for Rails, including NGINX, PostgreSQL, Unicorn, Monit, and much more.</li>
+<li><strong>Quick deployment.</strong> I can now deploy a new Rails app to a server within minutes!</li>
+<li><strong><a href="http://docs.puppetlabs.com/learning/">The Learning Puppet series</a></strong> is a good starting point and explains most of the basics</li>
+<li><strong>Low tech.</strong> Running a puppet script really doesn&rsquo;t involve much more than running: <code>puppet apply path/to/puppet/file.pp</code></li>
+</ul>
+
+
+<h2>The bad</h2>
+
+<ul>
+<li><strong>No single server deployment solution.</strong> There doesn&rsquo;t seem to be a best practice on how to use puppet with just one server. I know that the serious people will have to manage many many servers, but I think that they could make Puppet more accessible to newcomers by having a good solid solution for their own server. Many of us learn new things by trying them out for our own hobby projects before using them in big-business contexts. I have resorted to using Capistrano for deployment, but it just feels wrong somehow.</li>
+<li><strong>Not many great modules.</strong> Puppet has a modules system which allows anyone to package their solutions and share them with the community. Sadly most of the modules are old, unmaintained, and often broken. Additionally the modules often don&rsquo;t solve the problems in a way that I&rsquo;d like them to, forcing me to write my own.</li>
+<li><strong>Convoluted language.</strong> Puppet requires Ruby to run, but the DSL is not Ruby, nor is it Javascript, or JSON,or YAML, or anything else that so many developers already know. The architecture for defining classes, types, and modules is convoluted, backwards, and feels very awkward. I think one of the reasons why there aren&rsquo;t many well written modules is very much related to this.</li>
+<li><strong>Compiling from source.</strong> One of the biggest missing features seems to be some good architecture for installing anything that isn&rsquo;t packaged up. I often want to run a different Ruby, Nginx, Apache, PHP version than is in the package repositories. I know this is a hard problem, but again I wish there was some kind of best practice.</li>
+<li><strong>Ordering from hell.</strong> Puppet does not run your actions in order as specified in your <code>.pp</code> file. Instead you can tell it if something has a requirement. In my experience almost everything has a requirement and specifying the orders is becoming a nightmare and a real frustration.</li>
+<li><strong>Missing features.</strong> There are a few features that are still missing. One of the most important ones (in my eyes) is the ability to generate a folder recursively (e.g. <code>mkdir -p path/with/multiple/folders</code>). Instead you are now forced to create every layer as a new statement.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Puppet will do for now, but I wish it was a bit more opinionated in how it thought it should be used. The language is not pretty and very verbose, and its lack of best practices for single server deployment is a real omission.</p>
+
+<p>Does anyone know how Chef performs in these regards?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-12T16:40:00-05:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/puppet/'>puppet</a>, <a class='category' href='/blog/categories/servers/'>servers</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2012/11/12/some-notes-on-puppet/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2012/11/12/some-notes-on-puppet/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/09/21/ravendb-nuget-review/" title="Previous Post: RavenDB NuGet Review">&laquo; RavenDB NuGet Review</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/12/30/installing-chef-server-on-cnetos-5-dot-8/" title="Next Post: Installing Chef Server - On CnetOs 5.8">Installing Chef Server - On CnetOs 5.8 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

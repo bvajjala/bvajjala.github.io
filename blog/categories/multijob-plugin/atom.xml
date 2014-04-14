@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: MultiJob-Plugin | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/multijob-plugin/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[DevOps 4 Developers @ Jenkins conference hertzliya]]></title>
+    <link href="http://bvajjala.github.io/blog/2012/07/24/devops-4-developers-at-jenkins-conference-hertzliya/"/>
+    <updated>2012-07-24T17:46:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2012/07/24/devops-4-developers-at-jenkins-conference-hertzliya</id>
+    <content type="html"><![CDATA[<p>A talk I gave @ <a href="http://blog.cloudbees.com/2012/07/jenkins-user-conference-in-herzliya.html">Jenkins Conferencee</a> in Hertzliya.
+See presentation on prezi:</p>
+
+<div markdown="1" align="center">
+    <iframe src="http://prezi.com/embed/u4zb3h6s5vql/?bgcolor=ffffff&amp;lock_to_path=0&amp;autoplay=no&amp;autohide_ctrls=0&amp;features=undefined&amp;disabled_features=undefined" width="650" height="500" frameBorder="0"></iframe>
+</div>
+
+
+<p>See other great content &amp; presentations @ <a href="http://www.cloudbees.com/jenkins-user-conference-2012-israel-abstracts.cb">this link</a></p>
+]]></content>
+  </entry>
+  
+</feed>

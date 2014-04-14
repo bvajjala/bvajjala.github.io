@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: cm | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/cm/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Manage Data Bags in Solo mode]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/10/27/manage-data-bags-in-solo-mode/"/>
+    <updated>2013-10-27T15:08:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/10/27/manage-data-bags-in-solo-mode</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/Opscode_chef_logo.png" title="&lsquo;Chef Logo&rsquo;" > For the past ~6 monthes or so I have been working solely with <a href="http://docs.opscode.com/chef_solo.html">chef-solo</a>.
+There are quite a few helpers for solo out there such as:</p>
+
+<ol>
+<li>soloist &ndash; <a href="https://github.com/mkocher/soloist">https://github.com/mkocher/soloist</a></li>
+<li>knife-solo &ndash; <a href="https://github.com/matschaffer/knife-solo">https://github.com/matschaffer/knife-solo</a>
+&amp; a few more.</li>
+</ol>
+
+
+<p>What kept annoying me for some time is I couldn&rsquo;t manage databas with knife whilst working in solo mode &hellip; ARRRRRRGH!!!</p>
+
+<p>It looked somthing like:</p>
+
+<pre><code>[oper@sandbox chef_repo]$ knife data bag create admins
+ERROR: The object you are looking for could not be found
+Response: &lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL /data was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.2.15 (CentOS) Server at : Port 80&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;
+</code></pre>
+
+<p>Then came <a href="https://github.com/thbishop/knife-solo_data_bag">knife-solo_data_bag</a> I am quite embaressed to say ;) I haven&rsquo;t found this sooner.
+Now with a totally bogus knife.rb file I can generate / edit / manager databags with knife-solo &amp; knife-solo_data_bag.</p>
+
+<p>Again, hope you find this useful, I know I do ;)</p>
+
+<p>HP</p>
+]]></content>
+  </entry>
+  
+</feed>

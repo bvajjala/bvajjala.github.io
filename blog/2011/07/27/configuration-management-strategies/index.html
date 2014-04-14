@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Configuration Management Strategies - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="I just watched the “To Package or Not to Package” video from DevOps days Mountain View. The discussion was great, and there were some moments of &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2011/07/27/configuration-management-strategies">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Configuration Management Strategies</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-27T12:32:00-04:00" pubdate data-updated="true">Jul 27<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I just watched the “To Package or Not to Package” video from DevOps days Mountain View. The discussion was great, and there were some moments of hilarity. If you haven’t watched it yet, check it out <a href=http://goo.gl/KdDyf> here </a></p>
+
+<p>Stephen Nelson Smith, I salute you, sir.</p>
+
+<p>I’m quite firmly in the “Let your CM tool handle your config files” camp. To explain why, I think it’s worth briefly examining the evolution of configuration management strategies.</p>
+
+<p>In order to keep this post as vague and heady as possible, no distinction between “system” and “application” configurations shall be made.</p>
+
+<h2> What is a configuration file? </h2>
+
+
+<p>Configuration files are text files that control the behavior of programs on a machine. That’s it. They are usually read once, when a program is started from a prompt or init script. A process restart or HUP is typically required for changes to take effect.</p>
+
+<h2> What is configuration management, really? </h2>
+
+
+<p>When thinking about configuration management, especially across multiple machines, it is easy to equate the task to file management. Configs do live in files, after all. Packages are remarkably good at file management, so it’s natural to want to use them.</p>
+
+<p>However, the task goes well beyond that.</p>
+
+<p>An important attribute of an effective management strategy, config or otherwise, is that it reduces the amount of complexity (aka work) that humans need to deal with. But what is the work that we’re trying to avoid?</p>
+
+<h2> Dependency Analysis and Runtime Configuration </h2>
+
+
+<p><img class="right" src="http://farm8.staticflickr.com/7239/7389252518_7c27eb1472_n.jpg">
+Two tasks that systems administrators concern themselves with doing are dependency analysis and runtime configuration.</p>
+
+<p>Within the context of a single machine, dependency analysis usually concerns software installation. Binaries depend on libraries and scripts depend on binaries. When building things from source, headers and compilers are needed. Keeping the details of all this straight is no small task. Packages capture these relationships in their metadata, the construction of which is painstaking and manual. Modern linux distributions can be described as collections of packages and the metadata that binds them. Go out and hug a package maintainer today.</p>
+
+<p>Within the context of infrastructure architecture, dependency analysis involves stringing together layers of services and making individual software components act in concert. A typical web application might depend on database, caching, and email relay services being available on a network. A VPN or WiFi service might rely on PKI, Radius, LDAP and Kerberos services.</p>
+
+<p>Runtime configuration is the process of taking all the details gathered from dependency analysis and encoding them into the system. Appropriate software needs to be installed, configuration files need to be populated, and kernels need to be tuned. Processes need to be started, and of course, it should all still work after a reboot.</p>
+
+<h2> Manual Configuration </h2>
+
+
+<p><img class="left" src="http://farm5.staticflickr.com/4139/4805330106_926dfc074f_m.jpg"></p>
+
+<p>Once upon a time, all systems were configured manually. This strategy is the easiest to understand, but the hardest one to execute. It typically happens in development and small production environments where configuration details are small enough to fit into a wiki or spreadsheet. As a network’s size and scope increases, management efforts became massive, time consuming, and prone to human error. Details end up in the heads of a few key people and reproducibility is abysmal. This is obviously unsustainable.</p>
+
+<h2> Scripting </h2>
+
+
+<p><img class="right" src="http://farm4.staticflickr.com/3101/2428706650_d1fc862fdc_m.jpg">
+The natural progression away from manual configuration was custom scripting. Scripting reduced management complexity by automating things using languages like Bash and Perl. Tutorials and documentation instruction like “add the following line to your /etc/sshd_config” were turned into automated scripts that grepped, sed’ed, appended, and clobbered. These scripts were typically very brittle and would only produce desired outcome after their first run.</p>
+
+<h2> File Distribution </h2>
+
+
+<p><img class="left" src="http://farm5.staticflickr.com/4068/4317655660_61a60f6576_m.jpg">
+File distribution was the next logical tactic. In this scheme, master copies of important configuration files are kept in a centralized location and distributed to machines. Distribution is handled in various ways. RDIST, NFS mounts, scp-on-a-for-loop, and rsync pulls are all popular methods.</p>
+
+<p>This is nice for a lot of reasons. Centralization enables version control and reduces the time it takes to make changes across large groups of hosts. Like scripting, file distribution lowers the chance of human error by automating repetitive tasks.</p>
+
+<p>However, these methods have their drawbacks. NFS mounts introduce single points of failure and brittleness. Push based methods miss hosts that happen to be down for maintenance. Pulling via rsync on a cron is better, but lacks the ability to notify services when files change.</p>
+
+<p>Managing configs with packages falls into this category, and is attractive for a number of reasons. Packages can be written to take actions in their post-install sections, creating a way to restart services. It’s also pretty handy to be able to query package managers to see installed versions. However, you still need a way to manage config content, as well as initiate their installation in the first place.</p>
+
+<h2> Declarative Syntax </h2>
+
+
+<p><img class="right" src="http://farm4.staticflickr.com/3144/2591838509_1fdbc46db7_m.jpg">
+In this scheme, autonomous agents run on hosts under management. The word autonomous is important, because it stresses that the <strong>machines manage themselves</strong> by interpreting policy remotely set by administrators. The policy could state any number of things about installed software and configuration files.</p>
+
+<p>Policy written as code is run through an agent, letting the manipulation of packages, configuration files, and services all be handled by the same process. Brittle scripts behaving badly are eliminated by exploiting the idempotent nature of a declarative interface.</p>
+
+<p>When first encountered, this is often perceived as overly complex and confusing by some administrators. I believe this is because they have equated the task of configuration management to file management for such a long time. After the initial learning curve and picking up some tools, management is dramatically simplified by allowing administrators to spend time focusing on policy definition rather than implementation.</p>
+
+<h2> Configuration File Content Management </h2>
+
+
+<p>This is where things get interesting. We have programs under our command running on every node in an infrastructure, so what should we make them to do concerning configuration files?</p>
+
+<p>“Copy this file from its distribution point” is very common, since it allows for versioning of configuration files. Packaging configs also accomplishes this, and lets you make declarations about dependency. But how are the contents of the files determined?</p>
+
+<p>It’s actually possible to do this by hand. Information can be gathered from wikis, spreadsheets, grey matter, and stick-it notes. Configuration files can then be assembled by engineers, distributed, and manually modified as an infrastructure changes.</p>
+
+<p>File generation is a much better idea. Information about the nodes in an infrastructure can be encoded into a database, then fed into templates by small utility programs that handle various aspects of dependency analysis. When a change is made, such as adding or removing a node from a cluster, configurations concerning themselves with that cluster can be updated with ease.</p>
+
+<h2> Local Configuration Generation </h2>
+
+
+<p><img class="left" src="http://farm5.staticflickr.com/4140/4753170413_f3488f6586_m.jpg">
+The logic that generates configuration files has to be executed somewhere. This is often done on the machine responsible for hosting the file distribution. A better place is directly on the nodes that need the configurations. This eliminates the need for distribution entirely.</p>
+
+<p>Modifications to the node database now end up in all the correct places during the next agent run. Packaging the configs is completely unnecessary, since they don’t need to be moved from anywhere. Management complexity is reduced by eliminating the task entirely. Instead of worrying about file versioning, all that needs to be ensured is code correctness and the accuracy of the database.</p>
+
+<p>Don’t edit config files. Instead, edit the truth.</p>
+
+<p>-s</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-27T12:32:00-04:00" pubdate data-updated="true">Jul 27<span>th</span>, 2011</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2011/07/27/configuration-management-strategies/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2011/07/27/configuration-management-strategies/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/07/25/some-random-udpates/" title="Previous Post: Some random udpates...">&laquo; Some random udpates...</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/11/27/announcing-ribbot-com-build-your-own-reddithacker-news-style-discussion-forum/" title="Next Post: Announcing Ribbot.com - build your own Reddit/Hacker News style discussion forum">Announcing Ribbot.com - build your own Reddit/Hacker News style discussion forum &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>How Angie's List Uses NuGet (Part 2) - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Last time
+I talked about how my development team progressed from having all
+of our .net code in a single repository with a single solution to using a &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2012/08/20/how-Angies-List-uses-nuget-part-2">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">How Angie's List Uses NuGet (Part 2)</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-20T13:56:00-04:00" pubdate data-updated="true">Aug 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><a href="/blog/2012/08/07/how-the-motley-fool-uses-nuget/">Last time</a>
+I talked about how my development team progressed from having all
+of our .net code in a single repository with a single solution to using a more
+modular architecture complete with encapsulated domains.</p>
+
+<p>When we started using this appraoch, we were still limited in a few ways:</p>
+
+<ul>
+<li>Everyone needs to integrate with the newest code</li>
+<li>Difficult to patch an old version of a dependency</li>
+<li>Cascading failures on the build server</li>
+</ul>
+
+
+<p>Even though we broke the ProjectReference rats nest, we still had an
+implicit dependency on various shared code. It all had to be checked out
+and built in the right order.</p>
+
+<h2>Binary Package Management</h2>
+
+<p>The next logical step was to further decouple our shared code by
+packaging it up and publishing those packages. If we could do that,
+we could decide when to upgrade dependencies on a product by product
+basis.</p>
+
+<p>There are two package managers in the .net ecosystem: OpenWrap and NuGet.</p>
+
+<p>When we started shopping around, OpenWrap had been around longer and seemed
+to be a better choice. There&rsquo;s a <a href="http://stackoverflow.com/questions/4256994/openwrap-vs-nuget">comparison of the products</a>
+on stackoverflow.</p>
+
+<p>We worked with OpenWrap for over 6 months and during that time started
+to find some problems around integration with Visual Studio and ReSharper.
+OpenWrap wants to manage dependencies per solution, and we have many cases
+where we want to control dependencies at a per project level. We also
+started to notice that NuGet was getting new versions released on a fairly
+regular schedule, while OpenWrap 2.0 was in unstable beta limbo for over
+a year.</p>
+
+<p>Around the same time we started playing with <a href="http://octopusdeploy.com/">Octopus Deploy</a>
+for deploying our code. Since Octopus uses NuGet packages for deployment, we
+figured it would make sense to standardize on one package management system
+for both deployments and dependency management. It&rsquo;s true that those are
+separate problem spaces, but having less build scripts is always a good thing.</p>
+
+<h2>Thoughts on NuGet</h2>
+
+<h3>Conventions</h3>
+
+<p>NuGet has several conventions that make it easy to create simple packages
+that others can reference. You can share assemblies and content easily,
+and when you want to customize anything there are some powershell extension
+points you can hook into.</p>
+
+<p>One problem we run into is that when building packages, sometimes there&rsquo;s
+a NuGet convention we want to customize or suppress, and often we can&rsquo;t.</p>
+
+<p>For example, if you create a <code>nuspec</code> and place it adjacent to a <code>csproj</code>
+file, NuGet will look at the project and automatically inject metadata
+and content into the package. For some things, you can override this
+behavior with explicit specifications in the nuspec, but the behavior
+can be surprising and confusing.</p>
+
+<h3>Dependency Scoping</h3>
+
+<p>NuGet supports the concept of transitive dependencies&hellip; sort of. If you
+install package A, and A depends on package B, NuGet will go find a version
+of B and install it while installing A. However, NuGet doesn&rsquo;t do any record
+keeping to remember that B is a transitive dependency. To your project, A and
+B appear simply as direct dependencies.</p>
+
+<p>There may be cases where A depends on B at runtime, but consumers of A
+shouldn&rsquo;t need to code against B at design time.</p>
+
+<p>There may be other cases where B is an optional dependency for A, and
+A can be used without it.</p>
+
+<p>Since NuGet doesn&rsquo;t have a concept of scope, it only has one simplistic
+approach to dealing with transitive dependencies: treat them just like
+direct dependencies.</p>
+
+<h3>Upgrade Behavior</h3>
+
+<p>When you ask NuGet to update a specific package, it will first look for
+updates to transitive dependencies that the package depends on. This may
+seem obvious or desirable to some, but personally I find it confusing.
+You can control this behavior with the <code>-IgnoreDependencies</code> flag in
+the Package Management Console, but oddly you don&rsquo;t get that option
+in the command line <code>nuget.exe</code> or from the Visual Studio GUI Package
+Manager.</p>
+
+<h3>Package Feed Performance</h3>
+
+<p>We use continuous integration, and every successful build produces
+&ldquo;release candidate&rdquo; versions of packages. We generate 50 to 100 packages
+a day.</p>
+
+<p>Using the simple NuGet UNC share quickly failed to scale, so next we tried
+NuGet.Server and found that it doesn&rsquo;t perform well either.</p>
+
+<p>NuGet Gallery seemed like overkill with its SQL Server requirement, so
+I started optimizing NuGet.Server. This project ended up taking quite
+a while, but the good news is that the fruits of the labor are now
+open source on GitHub at <a href="https://github.com/themotleyfool/NuGet">https://github.com/themotleyfool/NuGet</a>.</p>
+
+<p>For more information about that project, see my <a href="/blog/2012/07/03/Speeding-Up-NuGet-Server/">previous post</a>.</p>
+
+<h3>Refactoring Applications and Shared Code</h3>
+
+<p>We try to use <a href="http://semver.org/">Semantic Versioning</a> to communicate
+breaking changes in the packages we publish, so sometimes when
+we want to use a refactoring tool like Change Method Signature
+or Use Base Class it would be nice to have application and shared
+code loaded into a single instance of Visual Studio.</p>
+
+<p>We created a tool called <a href="https://github.com/TheMotleyFool/SlimJim">SlimJim</a>
+that generates these Solution files on the fly.</p>
+
+<p>If you create a Solution with application code and shared library code,
+ReSharper will be smart enough to apply refactoring tools across the projects
+even though ProjectReference style references are not being used.</p>
+
+<p>However, Visual Studio won&rsquo;t know the correct order to build projects in,
+and won&rsquo;t automatically copy outputs from shared libraries over to applications.</p>
+
+<p>We extended SlimJim to convert assembly references to project references and back
+to address this limitation.</p>
+
+<h2>Conclusion</h2>
+
+<p>In terms of capability and maturity, we&rsquo;re in a much better place than
+we were a few years ago. However, we still have a ways to go in terms of
+productivity and workflow.</p>
+
+<p>NuGet has helped us move in the right direction and we hope to see
+further enhancements and even contribute some more of our own as we
+develop them.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-20T13:56:00-04:00" pubdate data-updated="true">Aug 20<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2012/08/20/how-Angies-List-uses-nuget-part-2/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2012/08/20/how-Angies-List-uses-nuget-part-2/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/08/07/how-Angies-List-uses-nuget/" title="Previous Post: How Angie's List uses NuGet (part 1)">&laquo; How Angie's List uses NuGet (part 1)</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/09/06/how-Angies-Lists-uses-octopus-deploy/" title="Next Post: How Angie's List Uses Octopus Deploy">How Angie's List Uses Octopus Deploy &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

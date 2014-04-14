@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Warning: In this post I&rsquo;m going to compare RabbitMQ, ZeroMQ, ActiveMQ, and HornetQ. The basis of the comparison is not the performance, or the &hellip;">
+  <meta name="description" content="Goodbye node-forever, hello PM2 It&rsquo;s no secret that the devo.ps team has a crush on Javascript; node.js in the backend, AngularJS for our &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -56,9 +56,10 @@
 </form>
   
 <ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
-  <li><a href="/about">About</a></li>
+  <li><a href="/about/resume">About</a></li>
 </ul>
 
 </nav>
@@ -73,7 +74,7 @@
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2012/12/15/rabbitmq-activemq-zeromq-hornetq/">RabbitMQ, ActiveMQ, ZeroMQ, HornetQ</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye Node-forever</a></h1>
       
       
     
@@ -90,258 +91,502 @@
   
 
 
-<time datetime="2012-12-15T07:00:00-05:00" pubdate data-updated="true">Dec 15<span>th</span>, 2012</time>
+<time datetime="2014-02-03T14:15:10-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p><em>Warning</em>: In this post I&rsquo;m going to compare <a href="http://www.rabbitmq.com/">RabbitMQ</a>, <a href="http://www.zeromq.org/">ZeroMQ</a>, <a href="http://activemq.apache.org/">ActiveMQ</a>, and <a href="http://www.jboss.org/hornetq">HornetQ</a>. The basis of the comparison is not the performance, or the scalability, or any other serious feature. The comparison is done <em>purely</em> based on the popularity of those systems. Therefore, if you came here to see some performance metrics, you will be disappointed — there is none in this post.</p>
+  <div class="entry-content"><h2><a href="/blog/2013/06/26/goodbye-node-forever-hello-pm2.html">Goodbye node-forever, hello PM2</a></h2>
 
-<p><em>Note</em>: To calculate popularity, I&rsquo;m going to use MongoDB and Python, so if you don&rsquo;t care about message brokers, but you want to see some examples of MongoDB scripts, this post might be interesting to you.</p>
+<p><img src="http://apps.hemca.com/pm2/pres/pm22.png" alt="pm2 logo" /></p>
 
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/15/rabbitmq-activemq-zeromq-hornetq/">Read on &rarr;</a>
-    </footer>
-  
+<p>It&rsquo;s no secret that the devo.ps team has a crush on Javascript; node.js in the backend, AngularJS for our clients, there isn&rsquo;t much of our stack that isn&rsquo;t at least in part built with it. Our approach of building <a href="http://devo.ps/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">static clients and RESTful JSON APIs</a> means that we run a lot of node.js and I must admit that, despite all of it awesomeness, node.js still is a bit of a
+headache when it comes to running in production. Tooling and best practices (think monitoring, logging, error traces…) are still lacking when compared to some of the more established languages.</p>
 
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/13/running-kvm-and-openvswitch-on-ubuntu-12-dot-10/">Running KVM and Openvswitch on Ubuntu 12.10</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-13T22:40:00-05:00" pubdate data-updated="true">Dec 13<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&rsquo;ve got an aging VMWare ESXi 4.0 server that needs to be replaced with something a little more modern and flexing.   Obviously at home I don&rsquo;t need all the cool features that licensed VMWare comes with,  but I do want more than just the basic free version.</p>
-
-<p>After a few weeks of installing and testing alternatives  ( I&rsquo;d really love to run openstack,  but it&rsquo;s just not worth it at home for a single box ) I&rsquo;ve settled on Ubuntu 12.10 server running KVM and Openvswitch.</p>
-
-<p>After installing Ubuntu 12.10 I did the following to get KVM up and running&hellip;   I cribbed this mostly from <a href="http://blog.allanglesit.com/2012/10/linux-kvm-ubuntu-12-10-with-openvswitch/">blog.allanglesit.com</a>.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/13/running-kvm-and-openvswitch-on-ubuntu-12-dot-10/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/09/moving-vms-from-vmware-to-kvm/">Moving VMs From VMWare to KVM</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-09T13:17:00-05:00" pubdate data-updated="true">Dec 9<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&rsquo;m migrating from my old VMWare ESXi box to a new machine running Ubuntu 12.10 and KVM.    Not wanting to rebuild all of my VMs I set about trying to work out the best way to migrate the VMs.</p>
-
-<p><strong>Steps to make Windows migrate without Bluescreen</strong></p>
-
-<p>If you migrate a windows box it&rsquo;ll bluescreen due to the shock of so much hardware changing.   The following .reg hack will prevent this from happening by opening up access to a bunch of random system drivers.   Copy and run the .reg file in your VM before doing any further steps.</p>
-
-<p><a href="https://gist.github.com/4247499">c:\temp\vmdriverhack.reg</a></p>
-
-<p><strong>Move your VM to shared storage</strong></p>
-
-<p>I mounted an nfs partition to vmware from my freenas box and migrated the data across using the vmware datastore tools.   If you don&rsquo;t have a NAS you could export a directory from your KVM server to achieve the same goal.</p>
-
-<p>To move VMs in ESXi we click on the ESXi server, pick the Configuration tab,  click on &lsquo;Storage&rsquo; and then right-click on the datastore and select &lsquo;Browse Datastore&rsquo;.   Select the VM folder you wish to move and click the move icon.</p>
-
-<p><img src="https://lh6.googleusercontent.com/-R5x6JyT5x14/UMUkr4qNr4I/AAAAAAAAAHY/CYhOlizOLb8/s640/VMWare-move-1.png"></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/09/moving-vms-from-vmware-to-kvm/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/09/code-retreat-2012/">Code Retreat 2012</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-09T07:00:00-05:00" pubdate data-updated="true">Dec 9<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Yesterday was the Global Day of Code Retreat. Software engineers around the globe met together to learn from each other.</p>
-
-<p><img class="center" src="https://pbs.twimg.com/media/A9mptOCCAAE0d7z.jpg" title="CR2012 1" ></p>
-
-<p>There were several sessions where people were pair-programming <a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">Conway&rsquo;s Game of Life</a>.</p>
-
-<p><img class="center" src="https://pbs.twimg.com/media/A9nZYcTCQAEVtkP.jpg" title="CR2012 2" ></p>
-
-<p>Each session you had to choose a new partner, so that both of you can learn something new.</p>
-
-<p><img class="center" src="https://pbs.twimg.com/media/A9n_aHzCcAARnkJ.jpg" title="CR2012 3" ></p>
-
-<p>During the first session my partner and I decided to implement the Game in Java, mainly because it was the language she was most comfortable with. We implemented the procedural solution using two-dimensional array and nested loops. At that moment that was the only solution I could think of. The main challenge was to cover all edge cases and fix all <code>ArrayIndexOutOfBoundsException</code>s. Java is fairly verbose language, and with nested loops and if-else statements the final solution was pretty hard to read. You can see <a href="http://rosettacode.org/wiki/Conway's_Game_of_Life#Java">here</a> how it might look like.</p>
-
-<p>First session was a warmup, during which most people realized that programming arrays is a tedious work. For the second session my new partner suggested an object-oriented approach, where you would operate on Cell objects that would encapsulate coordinates on the grid. In this case you move the game logic from the grid to the cell, making it easier to calculate a new state. This was my first acquaintance with C#. Interesting language — basically, Java with lambdas. Here is an <a href="http://rosettacode.org/wiki/Conway's_Game_of_Life#C.23">example</a> of C# implementation. Our solution was very similar.</p>
-
-<p>While the first session&rsquo;s data structure was array of booleans, on the second session it was replaced by a list of objects. The next step would be to relax the data structure even further. We decided to experiment with un-ordered set of coordinate pairs. For language we chose Clojure. Although we didn&rsquo;t finish the implementation, by the end of the session we had a clear picture how to solve the problem in functional style.</p>
-
-<p>On the fourth session the facilitators put an interesting constraint: the coding must be done in absolute silence. That was the most amazing experience of the day. Before we started I thought we couldn&rsquo;t accomplish much without talking. As it turned out, we could. The key of effective silent coding is to use the tools which both partners are familiar with. In our case we both were advanced users of Vim, and we knew Lisp languages. Our Clojure implementation was based on map/filter/reduce approach and spanned 20 lines of code. After the session <a href="http://langnostic.blogspot.com">Leo</a> showed me Christophe Grand&rsquo;s <a href="http://clj-me.cgrand.net/2011/08/19/conways-game-of-life/">7-line solution</a> based on list comprehensions. It is so wonderful that I want to post it here</p>
-
-<figure class='code'><figcaption><span>life.clj </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">neighbours</span> <span class="p">[[</span><span class="nv">x</span> <span class="nv">y</span><span class="p">]]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">dx</span> <span class="p">[</span><span class="mi">-1</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">]</span> <span class="nv">dy</span> <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">dx</span><span class="p">)</span> <span class="p">[</span><span class="mi">-1</span> <span class="mi">1</span><span class="p">]</span> <span class="p">[</span><span class="mi">-1</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">])]</span>
-</span><span class='line'>    <span class="p">[(</span><span class="nb">+ </span><span class="nv">dx</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">dy</span> <span class="nv">y</span><span class="p">)]))</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">step</span> <span class="p">[</span><span class="nv">cells</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">for </span><span class="p">[[</span><span class="nv">loc</span> <span class="nv">n</span><span class="p">]</span> <span class="p">(</span><span class="nf">frequencies</span> <span class="p">(</span><span class="nb">mapcat </span><span class="nv">neighbours</span> <span class="nv">cells</span><span class="p">))</span>
-</span><span class='line'>             <span class="ss">:when</span> <span class="p">(</span><span class="nb">or </span><span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nb">and </span><span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="nf">cells</span> <span class="nv">loc</span><span class="p">)))]</span>
-</span><span class='line'>         <span class="nv">loc</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>For the last session we chose Erlang. Because we already knew how to implement the functional solution, that was just an exercise of translating Clojure code into Erlang. Unfortunately we didn&rsquo;t find an equivalent of <code>frequencies</code> function in the standard library, so we implemented it ourselves. Other than that, the Erlang code is almost identical to Clojure.</p>
-
-<figure class='code'><figcaption><span>life.erl </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="p">-</span><span class="ni">import</span><span class="p">(</span><span class="n">sets</span><span class="p">,</span> <span class="p">[</span><span class="n">from_list</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> <span class="n">to_list</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> <span class="n">is_element</span><span class="o">/</span><span class="mi">2</span><span class="p">]).</span>
-</span><span class='line'>
-</span><span class='line'><span class="nf">neighbours</span><span class="p">({</span><span class="nv">X</span><span class="p">,</span> <span class="nv">Y</span><span class="p">})</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="p">[{</span><span class="nv">X</span> <span class="o">+</span> <span class="nv">DX</span><span class="p">,</span> <span class="nv">Y</span> <span class="o">+</span> <span class="nv">DY</span><span class="p">}</span> <span class="p">||</span> <span class="nv">DX</span> <span class="o">&lt;-</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="nv">DY</span> <span class="o">&lt;-</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">{</span><span class="nv">DX</span><span class="p">,</span> <span class="nv">DY</span><span class="p">}</span> <span class="o">=/=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">}].</span>
-</span><span class='line'>
-</span><span class='line'><span class="nf">step</span><span class="p">(</span><span class="nv">Cells</span><span class="p">)</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nv">Nbs</span> <span class="o">=</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">flatmap</span><span class="p">(</span><span class="k">fun</span> <span class="n">neighbours</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> <span class="n">to_list</span><span class="p">(</span><span class="nv">Cells</span><span class="p">)),</span>
-</span><span class='line'>    <span class="nv">NewCells</span> <span class="o">=</span> <span class="p">[</span><span class="nv">C</span> <span class="p">||</span> <span class="p">{</span><span class="nv">C</span><span class="p">,</span> <span class="nv">N</span><span class="p">}</span> <span class="o">&lt;-</span> <span class="n">frequencies</span><span class="p">(</span><span class="nv">Nbs</span><span class="p">),</span>
-</span><span class='line'>                     <span class="p">(</span><span class="nv">N</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">orelse</span> <span class="p">((</span><span class="nv">N</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">andalso</span> <span class="n">is_element</span><span class="p">(</span><span class="nv">C</span><span class="p">,</span> <span class="nv">Cells</span><span class="p">))],</span>
-</span><span class='line'>    <span class="n">from_list</span><span class="p">(</span><span class="nv">NewCells</span><span class="p">).</span>
-</span><span class='line'>
-</span><span class='line'><span class="nf">frequencies</span><span class="p">(</span><span class="nv">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">frequencies</span><span class="p">(</span><span class="nv">List</span><span class="p">,</span> <span class="p">[]).</span>
-</span><span class='line'><span class="nf">frequencies</span><span class="p">([],</span> <span class="nv">Acc</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">Acc</span><span class="p">;</span>
-</span><span class='line'><span class="nf">frequencies</span><span class="p">([</span><span class="nv">X</span><span class="p">|</span><span class="nv">Xs</span><span class="p">],</span> <span class="nv">Acc</span><span class="p">)</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="k">case</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">keyfind</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">Acc</span><span class="p">)</span> <span class="k">of</span>
-</span><span class='line'>        <span class="p">{</span><span class="nv">X</span><span class="p">,</span> <span class="nv">F</span><span class="p">}</span> <span class="o">-&gt;</span> <span class="n">frequencies</span><span class="p">(</span><span class="nv">Xs</span><span class="p">,</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">keyreplace</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">Acc</span><span class="p">,</span> <span class="p">{</span><span class="nv">X</span><span class="p">,</span> <span class="nv">F</span><span class="o">+</span><span class="mi">1</span><span class="p">}));</span>
-</span><span class='line'>        <span class="n">false</span>  <span class="o">-&gt;</span> <span class="n">frequencies</span><span class="p">(</span><span class="nv">Xs</span><span class="p">,</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">keystore</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">Acc</span><span class="p">,</span> <span class="p">{</span><span class="nv">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">}))</span>
-</span><span class='line'>    <span class="k">end</span><span class="p">.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Summary</h2>
-
-<p>During this day I learnt a lot: new language, new abstractions, new techniques, new ways of communication, new ideas. I met bunch of smart people. I was so overwhelmed with all this cool stuff that I had to write this blog post to offload it from my head.</p>
-
-<p>If you are a programmer and you&rsquo;ve never been to Code Retreat, I strongly encourage you to do it next year. It&rsquo;s an exciting experience.</p>
-
-<p>I want to thank all the people who organized and participated in this event.</p>
-
-<h3>Photo Credits</h3>
+<p>So far, we had been relying on the pretty nifty <a href="https://github.com/nodejitsu/forever">node-forever</a>. Great tool, but a few things were missing:</p>
 
 <ul>
-<li>Michael DiBernardo <a href="https://twitter.com/mdibernardo/status/277439446381625345/photo/1">[1]</a></li>
-<li>Kunal Gupta <a href="https://twitter.com/kunalfrompolar/status/277491865991921664/photo/1">[2]</a></li>
-<li>Carlo Barrettara <a href="https://twitter.com/barrettara/status/277533676273823746/photo/1">[3]</a></li>
+<li>Limited monitoring and logging abilities,</li>
+<li>Poor support for process management configuration,</li>
+<li>No support for clusterization,</li>
+<li>Aging codebase (which meant frequent failures when upgrading Node).</li>
+</ul>
+
+
+<p>This is what led us to write <a href="https://github.com/Unitech/pm2">PM2</a> in the past couple months. We thought we&rsquo;d give you a quick look at it while we&rsquo;re nearing a production ready release.</p>
+
+<h3>So what&rsquo;s in the box?</h3>
+
+<p>First things first, you can install it with <code>npm</code>:</p>
+
+<pre><code>npm install -g pm2
+</code></pre>
+
+<p>Let&rsquo;s open things up with the usual comparison table:</p>
+
+<p>FeatureForeverPM2</p>
+
+<p>Keep Alive</p>
+
+<p>✔</p>
+
+<p>✔</p>
+
+<p>Coffeescript</p>
+
+<p>✔</p>
+
+<p>Log aggregation</p>
+
+<p>✔</p>
+
+<p>API</p>
+
+<p>✔</p>
+
+<p>Terminal monitoring</p>
+
+<p>✔</p>
+
+<p>Clustering</p>
+
+<p>✔</p>
+
+<p>JSON configuration</p>
+
+<p>✔</p>
+
+<p>And now let me geek a tad more about the main features…</p>
+
+<h3>Native clusterization</h3>
+
+<p>Node v0.6 introduced the cluster feature, allowing you to share a socket across multiple networked Node applications. Problem is, it doesn&rsquo;t work out of the box and requires some tweaking to handle master and children processes.</p>
+
+<p>PM2 handles this natively, without any extra code: PM2 itself will act as the master process and wrap your code into a special clustered process, as Nodejs does, to add some global variables to your files.</p>
+
+<p>To start a clustered app using all the CPUs you just need to type something like that:</p>
+
+<pre><code>$ pm2 start app.js -i max
+</code></pre>
+
+<p>Then;</p>
+
+<pre><code>$ pm2 list
+</code></pre>
+
+<p>Which should display something like (ASCII UI FTW);</p>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-list.png" alt="pm2 list" /></p>
+
+<p>As you can see, your app is now forked into multiple processes depending on the number of CPUs available.</p>
+
+<h3>Monitoring <em>a la</em> termcaps-HTOP</h3>
+
+<p>It&rsquo;s nice enough to have an overview of the running processes and their status with the <code>pm2 list</code> command. But what about tracking their resources consumption? Fear not:</p>
+
+<pre><code>$ pm2 monit
+</code></pre>
+
+<p>You should get the CPU usage and memory consumption by process (and cluster).</p>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-monit.png" alt="pm2 monit" /></p>
+
+<p><strong>Disclaimer</strong>: <a href="https://github.com/arunoda/node-usage">node-usage</a> doesn&rsquo;t support MacOS for now (feel free to PR). It works just fine on Linux though.</p>
+
+<p>Now, what about checking on our clusters and GC cleaning of the memory stack?
+Let&rsquo;s consider you already have an HTTP benchmark tool (if not, you should definitely check <a href="https://github.com/wg/wrk">WRK</a>):</p>
+
+<pre><code>$ express bufallo     // Create an express app
+$ cd bufallo
+$ npm install
+$ pm2 start app.js -i max
+$ wrk -c 100 -d 100 http://localhost:3000/
+</code></pre>
+
+<p>In another terminal, launch the monitoring option:</p>
+
+<pre><code>$ pm2 monit
+</code></pre>
+
+<p>W00t!</p>
+
+<h3>Realtime log aggregation</h3>
+
+<p>Now you have to manage multiple clustered processes: one who&rsquo;s crawling data, another who is processing stuff, and so on so forth. That means logs, lots of it. You can still handle it the old fashioned way:</p>
+
+<pre><code>$ tail -f /path/to/log1 /path/to/log2 ...
+</code></pre>
+
+<p>But we&rsquo;re nice, so we wrote the <code>logs</code> feature:</p>
+
+<pre><code>$ pm2 logs
+</code></pre>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-logs.png" alt="pm2 monit" /></p>
+
+<h3>Resurrection</h3>
+
+<p>So things are nice and dandy, your processes are humming and you need to do a hard restart. What now? Well, first, dump things:</p>
+
+<pre><code>$ pm2 dump
+</code></pre>
+
+<p>From there, you should be able to resurrect things from file:</p>
+
+<pre><code>$ pm2 kill     // let's simulate a pm2 stop
+$ pm2 resurect // All my processes are now up and running 
+</code></pre>
+
+<h3>API Health point</h3>
+
+<p>Let&rsquo;s say you want to monitor all the processes managed by PM2, as well as the status of the machine they run on (and maybe even build a nice Angular app to consume this API…):</p>
+
+<pre><code>$ pm2 web
+</code></pre>
+
+<p>Point your browser at <code>http://localhost:9615</code>, aaaaand… done!</p>
+
+<h3>And there&rsquo;s more…</h3>
+
+<ul>
+<li>Full tests,</li>
+<li>Generation of <code>update-rc.d</code> (<code>pm2 startup</code>), though still very alpha,</li>
+<li>Development mode with auto restart on file change (<code>pm2 dev</code>), still very drafty too,</li>
+<li>Log flushing,</li>
+<li>Management of your applications fleet via JSON file,</li>
+<li>Log uncaught exceptions in error logs,</li>
+<li>Log of restart count and time,</li>
+<li>Automated killing of processes exiting too fast.</li>
+</ul>
+
+
+<h3>What&rsquo;s next?</h3>
+
+<p>Well first, you could show your love on Github (we love stars):
+<a href="https://github.com/Unitech/pm2">https://github.com/Unitech/pm2</a>.</p>
+
+<p>We developed PM2 to offer an advanced and complete solution for Node process management. We&rsquo;re looking forward to getting more people helping us getting there: pull requests are more than welcome. A few things already on the
+roadmap that we&rsquo;ll get right at once we have a stable core:</p>
+
+<ul>
+<li>Remote administration/status checking,</li>
+<li>Built-in inter-processes communication channel (message bus),</li>
+<li>V8 GC memory leak detection,</li>
+<li>Web interface,</li>
+<li>Persistent storage for monitoring data,</li>
+<li>Email notifications.</li>
+</ul>
+
+
+<p>Special thanks to <a href="https://github.com/makara">Makara Wang</a> for concepts/tools and <a href="https://github.com/rlidwka">Alex Kocharin</a> for advices and pull requests.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/ansible-simply-kicks-ass/">Ansible Simply Kicks Ass</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:12:31-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/07/03/ansible-simply-kicks-ass.html">Ansible Simply Kicks Ass</a></h2>
+
+<p>The devo.ps team has been putting quite a few tools to the test over the years when it comes to managing infrastructures. We&rsquo;ve developed some ourselves and have adopted others. While the choice to use one over another is not always as clear-cut as we&rsquo;d like (I&rsquo;d love to rant about monitoring but will leave that for a later post), we&rsquo;ve definitely developed kind of a crush for <a href="https://github.com/ansible/ansible">Ansible</a> in the past 6 months. We went through years of using Puppet, then Chef and more recently Salt Stack, before Ansible gained unanimous adoption among our team.</p>
+
+<p>What makes it awesome? Well, on top of my head:</p>
+
+<ul>
+<li>It&rsquo;s <strong>agent-less</strong> and works by default in <strong>push mode</strong> (that last point is subjective, I know).</li>
+<li>It&rsquo;s <strong>easy to pick up</strong> (honestly, try and explain Chef or Puppet to a developer and see how long that takes you compared to Ansible).</li>
+<li>It&rsquo;s <strong>just Python</strong>. It makes it easier for people like me to contribute (Ruby is not necessarily that mainstream among ops) and also means minimal dependency on install (Python is shipped by default with Linux).</li>
+<li>It&rsquo;s <strong>picking up steam</strong> at an impressive pace (I believe we&rsquo;re at 10 to 15 pull requests a day).</li>
+<li>And it has all of the good stuff: idempotence, roles, playbooks, tasks, handlers, lookups, callback plugins…</li>
+</ul>
+
+
+<p>Now, Ansible is still very much in its infancy and some technologies may not yet be supported. But there are a great deal of teams pushing hard on contributions, including us. In the past few weeks, for example, we&rsquo;ve
+contributed both Digital Ocean and Linode modules. And we have a lot more coming, including some experimentations with Vagrant.</p>
+
+<p>Now, an interesting aspect of Ansible, and one that makes it so simple, is that it comes by default with a tool-belt. Understand that it is shipped with a range of modules that add support for well known technologies: <a href="http://www.ansibleworks.com/docs/modules.html">EC2,
+Rackspace, MySQL, PostgreSQL, rpm, apt,…</a>. This now includes our
+Linode contribution. That means that with the latest version of Ansible you can spin off a new Linode box as easily as:</p>
+
+<pre><code>ansible all -m linode -a "name='my-linode-box' plan=1 datacenter=2 distribution=99 password='p@ssword' "
+</code></pre>
+
+<p>Doing this with Chef would probably mean chasing down a knife plugin for adding Linode support, and would simply require a full Chef stack (say hello to RabbitMQ, Solr, CouchDB and a gazillion smaller dependencies). Getting
+Ansible up and running is as easy as:</p>
+
+<pre><code>pip install ansible
+</code></pre>
+
+<p>Et voila! You gotta appreciate the simple things in life. Especially the life of a sysadmin.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/code-reuse-with-node-dot-js/">Code Reuse With Node.js</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:09:35-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/07/11/code-reuse-with-nodejs.html">Code Reuse With Node.js</a></h2>
+
+<p><img src="http://devo.ps/images/posts/recycle.png" alt="Code recycling" /></p>
+
+<p>Any project that grows to a decent size will need to re-use parts of its code extensively. That often means, through the development cycle, a fair amount of rewrites and refactoring exercises. Elegant code re-use is hard to pull off.</p>
+
+<p>With node.js, which we use quite a bit at <a href="http://devo.ps">devo.ps</a>, the most common ways to do this often rely on prototype or class inheritance. The problem is, as the inheritance chain grows, managing attributes and functions
+can become quite complex.</p>
+
+<p>The truth is, people usually just need the objects. This led us to adopt a certain form of object-based prototyping. We believe it to be leaner and more straightforward in most cases. But before we get there, let&rsquo;s have a look at how people usually approach this issue.</p>
+
+<h2>The &ldquo;Function copy&rdquo;</h2>
+
+<p>Usually in the form of <code>this[key] = that[key]</code>. A quick example:</p>
+
+<pre><code>var objectA = {
+    lorem: 'lorem ipsum'
+};
+var objectB = {};
+
+// Direct copy of a string, but you get the idea
+objectB.lorem = objectA.lorem;
+console.log(objectB); // Will output: { lorem: 'lorem ipsum' }
+</code></pre>
+
+<p>Crude, but it works. Next…</p>
+
+<h2>Object.defineProperties()</h2>
+
+<p>The previous method may work with simple structures, but it won&rsquo;t hold when
+your use cases become more complex. That&rsquo;s when I usually call my buddy
+<code>Object.defineProperties()</code>:</p>
+
+<pre><code>var descriptor = Object.getOwnPropertyDescriptor;
+var defineProp = Object.defineProperty;
+
+var objectA = {};
+var objectB = {};
+var objectC = {};
+
+objectA.__defineGetter__('lorem', function() {
+    return 'lorem ipsum';
+});
+console.log(objectA); // Will output: { lorem: [Getter] }
+
+// Direct copy, which copies the result of the getter.
+objectB.lorem = objectA.lorem;
+console.log(objectB); // Will output: { lorem: 'lorem ipsum' }
+
+// Copying with Object.defineProperty(), and it copies the getter itself.
+defineProp(objectC, 'lorem', descriptor(objectA, 'lorem'));
+console.log(objectC); // Will output: { lorem: [Getter] }
+</code></pre>
+
+<p>I often use a library for that. A couple examples (more or less the same stuff
+with different coding styles):</p>
+
+<ol>
+<li><p> <strong><a href="https://github.com/medikoo/es5-ext">es5-ext</a></strong></p>
+
+<p> var extend = require(&lsquo;es5-ext/lib/Object/extend-properties&rsquo;);</p>
+
+<p> var objectA = {};
+ var objectC = {};</p>
+
+<p> objectA.<strong>defineGetter</strong>(&lsquo;lorem&rsquo;, function() {
+     return &lsquo;lorem ipsum&rsquo;;
+ });</p>
+
+<p> extend(objectC, objectA);
+ console.log(objectC); // Will output: { lorem: [Getter] }</p></li>
+<li><p> <strong><a href="https://github.com/devo-ps/carcass">Carcass</a></strong></p>
+
+<p> var carcass = require(&lsquo;carcass&rsquo;);</p>
+
+<p> var objectA = {};
+ var objectC = {};</p>
+
+<p> objectA.<strong>defineGetter</strong>(&lsquo;lorem&rsquo;, function() {
+     return &lsquo;lorem ipsum&rsquo;;
+ });</p>
+
+<p> carcass.mixable(objectC);
+ objectC.mixin(objectA);
+ console.log(objectC); // Will output: { mixin: [Function: mixin], lorem: [Getter] }</p></li>
+</ol>
+
+
+<p>Slightly better, but not optimal. Now, let&rsquo;s see what we end up doing more and
+more often:</p>
+
+<h2>Prototyping through objects</h2>
+
+<p>The basic idea is that we prepare some functions, wrap them into an object which then becomes a &ldquo;feature&rdquo;. That feature can then be re-used by simply merging it with the targeted structure (object or prototype).</p>
+
+<p>Let&rsquo;s take the example of the <a href="https://github.com/devo-ps/carcass/blob/master/lib/proto/loaderSync.js">loaderSync</a> script in <a href="https://github.com/devo-ps/carcass">Carcass</a>:</p>
+
+<pre><code>module.exports = {
+    source: source,
+    parser: parser,
+    reload: reload,
+    get: get
+};
+
+function get() {
+
+(...)
+</code></pre>
+
+<p>Once you copy the functions to an object, this object becomes a &ldquo;loader&rdquo; that can load a &ldquo;source&rdquo; synchronously with a &ldquo;parser&rdquo;. A &ldquo;source&rdquo; can be a file path and the &ldquo;parser&rdquo; can be simply Node.js&#8217; <code>require</code> function.</p>
+
+<p>Let&rsquo;s now see how to use this with a couple object builders. Once again, I&rsquo;ll borrow an example from Carcass; the <a href="https://github.com/devo-ps/carcass/blob/master/benchmark/proto.loaderSync.js">loaderSync benchmark script</a>. The first builder generates a function and copies the methods from what we&rsquo;ve prepared. The second one copies the methods to the prototype of a builder class:</p>
+
+<pre><code>(...)
+
+function LoaderA(_source) {
+    function loader() {
+        return loader.get();
+    }
+    loader.mixin = mixin;
+    loader.mixin(loaderSync);
+    loader.source(_source);
+    return loader;
+}
+
+(...)
+
+function LoaderC(_source) {
+    if (!(this instanceof LoaderC)) return new LoaderC(_source);
+    this.source(_source);
+}
+LoaderC.prototype.mixin = mixin;
+LoaderC.prototype.mixin(loaderSync);
+
+(...)
+</code></pre>
+
+<p>Here we can see the two approaches. Let&rsquo;s compare them quickly:</p>
+
+<p>FeatureLoader ALoader C</p>
+
+<p><strong>Instantiating</strong>
+<code>var a = LoaderA(...)</code></p>
+
+<p><code>var c = LoaderC(...)</code> or <code>var c = new LoaderC(...)</code></p>
+
+<p><strong>Appearance</strong>
+Generates a function</p>
+
+<p>Builds a typical instance which is an object.</p>
+
+<p><strong>Invoking directly</strong>
+<code>a()</code> or <code>a.get()</code></p>
+
+<p><code>c.get()</code></p>
+
+<p><strong>Invoking as a callback</strong>
+<code>ipsum(a)</code></p>
+
+<p><code>ipsum(c.get.bind(c))</code></p>
+
+<h2><strong>Performance † of instantiating</strong></h2>
+
+<p>100x faster</p>
+
+<p><strong>Performance of invoking</strong>
+<em>idem</em></p>
+
+<p><em>idem</em></p>
+
+<p><strong>†</strong>: (check it yourself by <a href="https://github.com/devo-ps/carcass/blob/master/Makefile">benchmarking Carcass with <code>make bm</code></a>)</p>
+
+<h3>&ldquo;Protos&rdquo; and beyond</h3>
+
+<p>That last approach is gaining traction among our team; we prepare functions for our object builders (which, by the way, we call &ldquo;protos&rdquo;). While we still choose to use prototypes in some occurrences, it is mainly because it is
+faster to get done. For the sake of convenience, we also sometimes rely on functions rather than objects to invoke our &ldquo;protos&rdquo;, however keep in mind that this is a performance trade-off.</p>
+
+<p>I&rsquo;ll wrap this up mentioning one more method we use, admittedly less often: &ldquo;Object alter&rdquo;. The idea is to rely on an &ldquo;alter&rdquo; function designed to change objects passed to it. This is sometimes also called a &ldquo;mixin&rdquo;. An example from <a href="https://github.com/visionmedia/configurable.js">vsionmedia&rsquo;s trove of awesomeness on Github</a>:</p>
+
+<pre><code>(...)
+
+module.exports = function(obj){
+
+    obj.settings = {};
+
+    obj.set = function(name, val){
+        (...)
+    };
+
+    (...)
+
+    return obj;
+};
+</code></pre>
+
+<h3>Resources</h3>
+
+<ul>
+<li><a href="http://killdream.github.io/2011/10/09/understanding-javascript-oop.html">A case for prototypes</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">MDN Object reference</a></li>
 </ul>
 
 </div>
@@ -357,7 +602,7 @@
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2012/11/22/flexible-language/">Flexible Language</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/02/03/automation-and-friction/">Automation and Friction</a></h1>
       
       
     
@@ -374,127 +619,58 @@
   
 
 
-<time datetime="2012-11-22T07:00:00-05:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2012</time>
+<time datetime="2014-02-03T14:06:45-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>I&rsquo;ve been learning Lisp for few years now, and every Lisp book I read keeps saying that Lisp is a flexible language that you can extend to the degree when it fits naturally to your domain. It&rsquo;s easy to say, but what exactly does this phrase mean? After all, when you program in your non-Lisp language, don&rsquo;t you modify it for your domain problem? I&rsquo;ve been thinking about it for a long time, and only recently I started to understand what flexibility really means. There is a difference between <em>using</em> the language and <em>changing</em> the language to solve a problem. In this post I will try to show the difference based on a simple example.</p>
+  <div class="entry-content"><h2><a href="/blog/2013/06/20/automation-and-friction.html">Automation And Friction</a></h2>
 
-<h2>Problem</h2>
+<p>I&rsquo;ll admit that the devo.ps team is a lazy bunch; we like to forget about things, especially the hard stuff. Dealing with a complex process invariably leads one of us to vent about how &ldquo;we should automate that stuff&rdquo;. That&rsquo;s what our team does day and night:</p>
 
-<p><img class="right" src="/images/posts/handlers.png"></p>
-
-<p>Suppose you have a process that listens to a message queue. The messages are just ordinary maps. If the map contains certain keys, one or more handlers must be invoked. Here is a matrix that shows which handler is invoked for which key.</p>
-
-<p>For example, if the map has key <strong><em>a</em></strong>, then DocHandler and AlertHandler need to be called. If it has key <strong><em>b</em></strong>, then NoteHandler and AlertHandler are called. In reality there might be more keys and more handlers, but for simplicity we limit our example to three keys and three handlers.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/11/22/flexible-language/">Read on &rarr;</a>
-    </footer>
-  
+<ol>
+<li> Dumb things down, lower barriers of entry, and then…</li>
+<li> <strong>Automate all the things!</strong></li>
+</ol>
 
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2012/11/12/pycon-canada-2012/">PyCon Canada 2012</a></h1>
-      
-      
-    
-      <p class="meta">
-        
+<p>This has transpired through every layer of our company, from engineering to operations. Recently we&rsquo;ve started pushing on a third point, but first let me rant a bit…</p>
+
+<h3>The ever increasing surface of friction</h3>
+
+<p>The past few years have seen a healthy push on UI and UX. Even developer tools and enterprise software, historically less user-friendly, have started adopting that trend. We now have things like Github. Great.</p>
+
+<p>This trend grew in parallel with the adoption of SaaS. SaaS are the results of teams focused on specific problems, with the user experience often being a key component (not to undervalue good engineering). It&rsquo;s pretty standard for these services to offer an API for integration&rsquo;s sake. <a href="https://getbase.com">Our CRM</a> plays nicely with Dropbox, GMail and a gazillion other services. Again, great.</p>
+
+<p><strong>However, the success of SaaS means the surface of interfaces we&rsquo;re dealing with is constantly stretching. This is far more difficult to overcome than poor UI or UX.</strong> Many of us have witnessed teams struggling to get adoption on a great tool that happen to be one too many. There&rsquo;s not much you can do about it.</p>
+
+<h3>A bot to rule them all…</h3>
+
+<p><img src="http://devo.ps/images/posts/borat.png" alt="Borat is omnipotent" /></p>
+
+<p>Our team has tried a lot of different approaches over the years. We kicked the tires on a lot of products and ended up doing as usual:</p>
+
+<ol>
+<li><p> <strong>Simplify</strong>. For example, we use Github to manage most tasks and discussions, including operations (HR, admin, …), and marketing. We used <a href="http://trello.com/">Trello</a> alongside Github for a while and we loved it. But it silo-ed the discussions. Everything from our employee handbook to tasks for buying snacks for the office are now on Github. It also had an interesting side effect on transparency, but I&rsquo;ll talk about this another time.</p></li>
+<li><p> <strong>Automate</strong>. We automate pretty much everything we can. When you apply to one of our job by email for example, we push the attachments in Dropbox (likely your resume) and create a ticket with the relevant information on Github. <a href="http://zapier.com">Zapier</a> is great for this kind of stuff by the way.</p></li>
+<li><p> <strong>Make it accessible</strong>. That&rsquo;s the most important point for us at this stage. Borat, our <a href="http://hubot.github.com">Hubot</a> chat bot, is hooked up with most of our infrastructure and is able to pass on requests to the services we use as well as some of our automation. If one of us is awake, chances are you can find us on the chat, making it the most ubiquitous interface for our team:</p>
+
+<ul>
+<li>Need to deploy some code on production or modify some configuration on a server? Ask Borat, he&rsquo;ll relay your demands to the <a href="http://devo.ps">devo.ps</a> API.</li>
+<li>Your latest commit broke the build? A new mail came from support? Expect to hear about it from Borat.</li>
+<li>Need to use our time tracker? Just drop a message to the bot when you&rsquo;re starting your task and let him know when you&rsquo;re done.</li>
+<li>Need to call for a SCRUM? Just mention the Github team you want to chat with and Borat will create a separate channel and invite the right people to join.</li>
+<li>Somebody is at the door? Ask the bot to open it for you (you gotta love hacking on Raspberry PI).</li>
+</ul>
+</li>
+</ol>
 
 
+<p>Anybody with access to our bot&rsquo;s repository can add a script to hook him up to a new service. Git push, kill the bot and wait for him to come back to life with new skills. The tedious stuff ends up sooner or later scripted and one sentence away.</p>
 
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-12T15:40:01-05:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>This weekend I attended <a href="http://pycon.ca/">PyCon Canada</a>, the first conference in Canada dedicated to Python ecosystem. As you might find from my blog, I&rsquo;m not a Python guy. I&rsquo;ve been using Python mostly as a scripting language. I went to this conference for fresh ideas, or, as Michael Feathers said, for cross-polination from Python community. This blog post is not a detailed review of the conference — I just want to share my impression in general.</p>
-
-<h2>Organization</h2>
-
-<p>Considering how little time the organizers had for preparing this conference, 5 months I believe, they did amazing job. They invited great speakers. They kept people well informed using mailing list and Twitter. The official web site was clear and easy to navigate. The location was good. The food was decent. The only complaint I had is about the temperature in the rooms on the first day. It was so freezing cold inside that I had to wear my jacket all the time. But on the second day the problem was fixed.</p>
-
-<h2>Keynotes</h2>
-
-<p>Keynotes were absolutely fantastic. There were three of them. Jessica McKellar was talking about Python community. How they foster it, how they attract new people to programming in general and to Python in particular. She shared her experience from organizing Boston Python user group, the biggest Python user group in the world. The takeaway from her talk: Python community is big, welcoming, and well supported by Python Foundation.</p>
-
-<p>Second keynote was Michael Feathers&#8217; <em>Why You Should(n&rsquo;t) be Using a Functional Programming Language Instead</em>. The main idea of his talk is: Don&rsquo;t lock yourself inside one language. Go outside of your community to see what other languages exist out there, how they solved the problems. Study those languages, learn their idioms and techniques, and then go back to your language and start using the ideas you&rsquo;ve learnt. I completely agree with that, and that&rsquo;s why I went to this conference in the first place. He gave bunch of examples of functional programming in Haskell. Then he showed his Ruby code written in functional style, where you could see the influence of Haskell. I liked his presentation because he verbalized the ideas I myself have been thinking about for a while. When I started programming in Groovy my Groovy code was basically a Java code without semicolons. Now my Java code looks more like Groovy.</p>
-
-<p>The closing keynote was by Fernando Pérez, the scientist from University of California, Berkeley, and the creator of IPython. The talk, titled <a href="https://speakerdeck.com/fperez/science-and-python-a-interactively-biased-retrospective-of-a-mostly-successful-decade"><em>Science and Python</em></a>,  was really mind blowing. When I was a student I did all my computations using mainly Fortran and some proprietary software I don&rsquo;t even remember the name of. Later, I played with Mathematica and Octave a little bit. But I didn&rsquo;t know that you can do very sophisticated scientific calculations using Python. Fernando gave some examples from neuroscience, astrophysics and biology, and it&rsquo;s really impressive. The discovery of Supernova PTF11kyl is especially astonishing. From now on, if I need to do some math, I&rsquo;ll be using Python libraries; no more proprietary expensive software. Another theme of the presentation was IPython. Initially I thought it&rsquo;s just a shell on top of the standard Python, but it&rsquo;s actually the whole ecosystem. I cannot explain in a few words how amazing it is. Just google for &ldquo;ipython notebook&rdquo; or read Fernando&rsquo;s <a href="http://blog.fperez.org/2012/09/blogging-with-ipython-notebook.html">blog</a>.</p>
-
-<h2>Talks</h2>
-
-<p>As it happens on every conference, there were some great talks and some lousy talks, interesting talks and boring talks, geeky talks and academic talks. It&rsquo;s all normal and fine. The good thing about this conference though is that signal-noise ratio was pretty high; congratulations to the organizers for choosing talks. Another thing I like is the diversity of formats. There were 45-min presentation, 20-min talks, 5-min lightning talks, 90-min tutorials, and 3-hour workshop (there are also two full day coding sessions but I&rsquo;m not attending them). This is a really good approach. Switching between different formats during the day helps your brain functioning more productive, in my opinion.</p>
-
-<h2>Pleasant discoveries</h2>
-
-<p>I found many projects presented at the conference are using RabbitMQ, and that&rsquo;s great. I wish in Java world people would use AMQP more frequently instead of blindly choosing JMS for every new project.</p>
-
-<p>Many people are using MongoDB properly. Nowadays NoSQL is a very popular buzzword, and many projects are using various NoSQL databases just because it&rsquo;s cool, even if it makes no sense for the project at all. It was nice to see that there are developers out there who do their homework and adopt NoSQL because it fits their domain.</p>
-
-<h2>Unpleasant discoveries</h2>
-
-<p>There seems to be a trend in Python community to despise Java. I actually see this trend in many communities outside of Java, so it&rsquo;s not Python specific, but at this conference I&rsquo;ve heard too many jokes about Java so it&rsquo;s not funny anymore, especially hearing them from the people who don&rsquo;t write a line of code in Java.</p>
-
-<p>Another thing surprised me is the fanatic admiration of Mercurial and hate of Git from some Python programmers. I know lots of people who hate Git, mainly because they are confused and scared by Git. But dislike it for the reason not being written in Python is something new to me.</p>
-
-<h2>Problems in Python</h2>
-
-<p>Package and distribution management in Python is in pretty bad shape. Every person I talked to admitted that it&rsquo;s complete mess at the moment. I myself feel that pain every time I need to install a new library. Which tool should I use: pip, easy_install, pysetup? Some libraries installed using those tools don&rsquo;t work, or work partially. Many programmers use rpm or deb packages instead of Python tools, because OS packages usually work. I came to the same conclusion on my Mac OS. The only flawlessly working Python environment I have is that installed via mac ports. In Java we don&rsquo;t have those problems. Maven solved it once and for all long time ago. Now every JVM language benefits from it. Python community should clean up this mess and standardize their tools. I was told that with introducing PyPi and PEPs the situation is getting better, well, let&rsquo;s see if it resolves all the issues.</p>
-
-<h2>What I&rsquo;ve learnt</h2>
-
-<p>Here is the list of things I found pretty interesting, in no particular order.</p>
-
-<h3>Python libraries to use</h3>
-
-<p>numpy, matplotlib, pandas, scipy, sympy, quantities, collections. Thanks to the people who told me about these libraries.</p>
-
-<h3>Cool Python stuff</h3>
-
-<p>RunSnakeRun &#8212; GUI for Python profiler. Check out the screenshots on their <a href="http://www.vrplumber.com/programming/runsnakerun/">web site</a>. I wish Java profilers could draw such nice graphs.</p>
-
-<p><a href="http://bpython-interpreter.org/screenshots/">bpython</a> &#8212; Python REPL for geeks written in <a href="http://excess.org/urwid/examples.html">Urwid</a>. Thanks to Ian Ward for the really nice <a href="http://pyvideo.org/video/1568/console-applications-with-urwid">presentation</a>.</p>
-
-<h3>Interesting ideas</h3>
-
-<p>Print log statements in JSON format so that you can analyze them using powerful tools. You can also save logs in MongoDB, either offline or asynchronously, and do statistic analysis using aggregation framework.</p>
-
-<p>Write stored procedures in PostgreSQL in Python (and some other languages). They look much better in Python than plSQL.</p>
-
-<h2>Things to learn<a name="learn">&nbsp;</a></h2>
-
-<p>Here are some technology and tools that have a great potential, in my opinion, and worthy of learning: ZeroMQ, IPython, OpenStack. Those were mentioned multiple times during the conference, and I need to check them out in more details.</p>
-
-<h2>Summary</h2>
-
-<p>The conference was great. I&rsquo;m glad I attended it. The organizers did a great job. The conference was beneficial not only to Python community but to Toronto programming community in general. Thanks to all who made it happen.</p>
-
-<p>P.S. Videos from the conference are available <a href="http://pyvideo.org/category/25/pycon-ca-2012">here</a>.</p>
+<p>Really, try it. It&rsquo;s worth the investment.</p>
 </div>
   
   
@@ -508,7 +684,7 @@
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2012/11/08/simple-web-application-in-clojure/">Simple Web Application in Clojure</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/02/03/101-on-devops-and-how-we-plan-on-helping/">101 on DevOps and How We Plan on Helping</a></h1>
       
       
     
@@ -525,21 +701,36 @@
   
 
 
-<time datetime="2012-11-08T07:00:00-05:00" pubdate data-updated="true">Nov 8<span>th</span>, 2012</time>
+<time datetime="2014-02-03T13:54:32-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>This blog entry is a micro-tutorial on how to build a simple web application in Clojure. The reason I call it micro will be clear when I introduce the framework we are going to use. This tutorial will be interesting to programmers relatively new to Clojure, but who have some experience with web frameworks in other languages, for instance Spring MVC. The goal of this tutorial is to help you get started with web development in Clojure. Also I want to share my approach to web development in general and in Clojure in particular. This approach is by no means the best way to develop web applications, but because I like to watch how other people write the software, I thought somebody might be interested to see how I do it.</p>
+  <div class="entry-content"><h2><a href="/blog/2012/10/23/101-on-development-and-operations.html">101 On DevOps And How We Plan On Helping</a></h2>
+
+<p>Here&rsquo;s what usually happens: on one side the development team wants to push new features as fast as possible to production, while on the other side, operations are trying to keep things stable. Both teams are evaluated on
+criteria that are often directly conflicting. The stronger team win one argument… Until the next crisis. And we&rsquo;re not even talking about other teams, they too have conflicting agendas to throw in the mix.</p>
+
+<p>There&rsquo;s no silver bullet for getting evryone to play nicely. That being said, having Dev and Ops on the path of cooperation is not impossible. <a href="http://en.wikipedia.org/wiki/Devops">DevOps</a> is exactly this; fostering a culture of best practices and collaboration between these teams.</p>
+
+<p>In a very similar fashion to what happened with the agile movement, a lot of tools and approaches emerged that can help: methodologies (SCRUMs, kanban…), tools for configuration management (Chef, Puppet), orchestration, automation, logging… But at the core lies the need for nurturing a specific culture.</p>
+
+<p>Operations teams have been slower to adopt these methodologies compared to development teams. The average system administrator spend more time working in FIFO, putting up fires, rather than making long term investments in automation or setting up best practices. Moreover, operations teams are usually faced with a logic of budget cuts and cost &ldquo;optimizations&rdquo;, compared to the larger R&amp;D budget development teams seem to enjoy.</p>
+
+<p>Even when conditions (and resources) are favorable to the growth of a proper culture, recruiting the right profiles can prove very challenging. We&rsquo;re here talking about people with a wide range of skills, on-hands experience and
+strong collaboration and organizational skills. All of this take time. Best practices are forged through years of experience.</p>
+
+<p>That is why we&rsquo;re building <a href="http://devo.ps">devo.ps</a>. We&rsquo;re trying to lower the barriers of entry to this field and help professionals scale themselves in their role. We&rsquo;re a motivated team of engineers who have worked on both sides of the fence, with small to very large code bases and infrastructures. We hope to untangle the mess that often is infrastructure and application management, letting technical teams focus on the higher value tasks of the job.</p>
+
+<ul>
+<li><a href="http://devo.ps/about.html">About</a></li>
+<li><a href="http://devo.ps/blog.html">Blog</a></li>
+</ul>
 
 </div>
   
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/11/08/simple-web-application-in-clojure/">Read on &rarr;</a>
-    </footer>
   
 
 
@@ -551,7 +742,7 @@
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2012/10/21/moving-from-a-self-hosted-wordpress-blog-to-blogger/">Moving From a Self Hosted Wordpress Blog to Blogger</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/02/03/farewell-to-regular-web-development-approaches/">Farewell to Regular Web Development Approaches</a></h1>
       
       
     
@@ -568,23 +759,45 @@
   
 
 
-<time datetime="2012-10-21T15:15:00-04:00" pubdate data-updated="true">Oct 21<span>st</span>, 2012</time>
+<time datetime="2014-02-03T13:52:12-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>I have a self hosted <a href="http://xesla.ro">wordpress food blog</a> hosted on an old silly domain that I&rsquo;ve wanted to move away from for a while.   I also want to stop paying hosting fees some time soon.   Since I&rsquo;m already looking at moving a lot of my day-to-day activities to the &lsquo;cloud&rsquo;  it made sense to pick a blogging platform that ties into a major cloud hub.   Google&rsquo;s Blogger was the obvious choice as I&rsquo;m already using the Google Apps platform for my new domain <code>paulcz.net</code>.</p>
+  <div class="entry-content"><h2><a href="/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">Farewell to Regular Web Development Approaches</a></h2>
 
-<p>Creating a blog on blogger is dead simple.   I went ahead and created two: <a href="http://food.paulcz.net">food.paulcz.net</a> for the new food blog and <a href="http://tech.paulcz.net">tech.paulcz.net</a> to start journalling random tech things.     Transfering the blog content itself  is quite simple,  however, doing it in a way as to preserve links between posts, from other sites, and teaching the search engines how to find your new site requires a little more trickery.</p>
+<p>At my <a href="http://wiredcraft.com">previous company</a>, we built Web applications for medium to large organizations, often in the humanitarian and non-profit space, facing original problems revolving around data. Things like building the
+<a href="http://wiredcraft.com/work/southern-sudan-referendum/index.html">voting infrastructure for the Southern Sudan Referendum</a> helped us diversify our technical chops. But until a year ago, we were still mostly building regular Web applications; the user requests a page that we build and serve back.</p>
 
+<p><strong>Until we started falling in love with APIs and static clients.</strong></p>
+
+<p>It&rsquo;s not that we fundamentally disliked the previous approach. We just reached a point where we felt our goals weren&rsquo;t best served by this model. With lots of dynamic data, complex visualizations and a set of &ldquo;static&rdquo; interfaces, the traditional way was hindering our development speed and our ability to experiment. And so we got busy, experimenting at first with smaller parts of our projects (blog, help section, download pages…). We realized our use of complex pieces of softwares like content management systems had seriously biased our approach to problem solving. <strong>The CMS had become a boilerplate, an unchallenged dependency.</strong></p>
+
+<p>We&rsquo;ve gradually adopted a pattern of building front-ends as static clients (may they be Web, mobile or 3rd party integrations) combined with, usually, one RESTful JSON API in the backend. And it works marvelously, thanks in part
+to some awesome tech much smarter people figured out for us:</p>
+
+<ul>
+<li><a href="http://marionettejs.com">Marionette</a> and <a href="http://backbonejs.org">Backbone.js</a>, <a href="http://github.com/component/component">Component</a> (a personal favorite) and <a href="http://github.com/mojombo/jekyll">Jekyll</a> allow us to build static HTML5 + JS + CSS clients for Web and mobile,</li>
+<li><a href="http://nodejs.org">node.js</a> and <a href="http://github.com/devo-ps/carcass">carcass</a> (alpha quality at this stage) in the backend for our APIs.</li>
+</ul>
+
+
+<p>Most of what we build at devo.ps is stemming from this accelerated recovery and follow usually that order:</p>
+
+<ol>
+<li> We start by defining our API interface through user stories and methods,</li>
+<li> Both backend and front-end teams are getting cranking on implementing and solving the challenges specific to their part,</li>
+</ol>
+
+
+<p>A lot of things happen in parallel and changes on one side rarely impact the other: we can make drastic changes in the UI without any change on the backend. And there were a lot of unexpected gains too, in security, speed and
+overall maintainability. More importantly, we&rsquo;ve freed a lot of our resources to focus on building compelling user experiences instead of fighting a large piece of software to do what we want it to do.</p>
+
+<p>If you haven&rsquo;t tried building things that way yet, give it a try honestly (when relevant); it may be a larger initial investment in some cases but you&rsquo;ll come out on top at almost every level.</p>
 </div>
   
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/10/21/moving-from-a-self-hosted-wordpress-blog-to-blogger/">Read on &rarr;</a>
-    </footer>
   
 
 
@@ -596,7 +809,7 @@
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2012/10/01/exporting-solr-documents/">Exporting Solr Documents</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/02/03/why-we-dropped-swagger-and-i-slash-o-docs/">Why We Dropped Swagger and I/O Docs</a></h1>
       
       
     
@@ -613,57 +826,358 @@
   
 
 
-<time datetime="2012-10-01T08:00:00-04:00" pubdate data-updated="true">Oct 1<span>st</span>, 2012</time>
+<time datetime="2014-02-03T13:49:24-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>Recently I had to copy some documents from one <a href="http://lucene.apache.org/solr/">Solr</a> server to another. I expected Solr already had an interface that allowed me to extract documents in the same format they were inserted. In that case I would pipe an output of one curl command to another, and consider the job done. As it turned out, the format of Solr input document is different than the output format. Here is how input document looks like:</p>
+  <div class="entry-content"><h2><a href="/blog/2013/02/07/why-we-dropped-iodocs-and-swagger.html">Why We Dropped Swagger And I/O Docs</a></h2>
 
-<pre><code>&lt;add&gt;
-    &lt;doc&gt;
-        &lt;field name="id"&gt;12345&lt;/field&gt;
-        &lt;field name="articlestate"&gt;published&lt;/field&gt;
-        &lt;field name="articletype"&gt;news&lt;/field&gt;
-        &lt;field name="body"&gt;Lorem ipsum dolor...&lt;/field&gt;
-        &lt;field name="referenceid"&gt;175820&lt;/field&gt;
-        &lt;field name="referenceid"&gt;163786&lt;/field&gt;
-        &lt;field name="created"&gt;2011-02-15T14:57:54.766Z&lt;/field&gt;
-    &lt;/doc&gt;
-&lt;/add&gt;
+<p>As we started investing in <a href="/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">our new strategy</a> at <a href="http://wiredcraft.com">my previous company</a>, we looked around for solutions to document APIs. It may not be the sexiest part of the project, but documentation is the first step to designing a good API. And I mean <strong>first</strong> as in &ldquo;before you even start writing tests&rdquo; (yes, you should be writing tests first too).</p>
+
+<p>We originally went with a simple Wiki page on Github, which served us just fine in the past. But it quickly became clear that it wasn&rsquo;t going to cut it. We started thinking about what good documentations is. We&rsquo;re fans of the single page approach that the <a href="http://backbonejs.com">Backbone.js documentation</a> illustrates well and clearly remembered <a href="http://developer.github.com/">Github</a> and <a href="https://stripe.com/docs">Stripe</a> as easy and well organized resources. Some Googling later, we were contemplating Wordnik&rsquo;s <a href="http://developers.helloreverb.com/swagger/">Swagger</a> and Mashery&rsquo;s <a href="http://www.mashery.com/product/io-docs">I/O Docs</a>. We later settled for I/O Docs as it is built with node.js and was more straightforward to set up (for us at least).</p>
+
+<p>Once again, we hit a wall with this approach:</p>
+
+<ol>
+<li><p> <strong>No proper support for JSON body</strong>: we don&rsquo;t do much with parameters and mostly send JSON objects in the body of our requests, <a href="http://blog.apigee.com/detail/restful_api_design_nouns_are_good_verbs_are_bad">using HTTP verbs for the different types of operations</a> we perform on our collections and models in the backend. Swagger and I/O Docs fall short of support for it, letting you simply dump your JSON in a field: not ideal.</p></li>
+<li><p> <strong>You&rsquo;re querying the actual API</strong>: to be fair, this is an intentional feature. Now some of you may find it interesting that your documentation allows users to easily run calls against your API. That&rsquo;s what <a href="http://www.flickr.com/services/api/explore/flickr.activity.userComments">Flickr does with their API explorer</a>, and we used to think it was pretty neat. But once we started using it, we saw the risks of exposing so casually API calls that can impact your platform (especially with <a href="http://devo.ps">devo.ps</a> which deals with your actual infrastructure). I guess you could set up a testing API for that very purpose, but that&rsquo;s quite a bit of added complexity (and <a href="http://blogoscoped.com/archive/2005-08-24-n14.html">we&rsquo;re lazy</a>).</p></li>
+</ol>
+
+
+<p>And that&rsquo;s how we ended up putting together <a href="https://github.com/devo-%20ps/carte">Carte</a>, a very lightweight Jekyll-based solution: drop a new post for each API call, following some loose format and specifying a few bits of meta data in the YAML header (type of the method, path…) and you&rsquo;re good to go.</p>
+
+<p><a href="http://devo-ps.github.com/carte"><img src="/images/posts/carte-screenshot.png" alt="Screenshot of Carte" /></a></p>
+
+<p>We&rsquo;re real suckers for Jekyll. We&rsquo;ve actually used it to build quite a few static clients for our APIs. One of the advantages of this approach is that we can bundle our documentation with our codebase by simply pushing it on the
+<code>gh-pages</code> branch, and it pops up as a Github page. That&rsquo;s tremendously important for us as it make it very easy for developers to keep the documentation and the code in synch.</p>
+
+<p>Carte is intentionally crude: <a href="https://github.com/devo-ps/carte">have a look at the README and hack at will</a>. Drop us a shout at <a href="https://twitter.com/devo_ps">@devo_ps</a> if you need help or want to suggest a feature.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/best-practices-its-always-or-never/">Best Practices: It&#8217;s Always or Never</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T13:45:48-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/02/11/best-practices-it-s-always-or-never.html">Best Practices: It&rsquo;s Always Or Never ( And Preferably Always)</a></h2>
+
+<p><img src="http://farm3.staticflickr.com/2584/4103140420_b98ee1ac62_z.jpg" alt="Messy cables" /></p>
+
+<p>It&rsquo;s Monday morning. The development team needs a box and you&rsquo;re already contemplating the gazillion other urgent tasks that need to be done on the existing infrastructure. _Just that one time_TM, you&rsquo;re going to forget about your own rules. You&rsquo;re just gonna spawn an instance, set up the few services needed and be done with it. You&rsquo;ll drop some of the usual time suckers: backup strategy, access rules, init scripts, documentation… You can&rsquo;t just do the whole of it AND handle the rest of your day-to-day responsibilities. After all, it&rsquo;s just a development server and you&rsquo;ll probably fold it in a couple weeks, or you&rsquo;ll clean it up once your plate is a tad less full.</p>
+
+<p>A few weeks later, the box is still there and your backlog is far from looking less crowded. The development team just rolled out their production application on the same box. <strong>And things start crashing… badly.</strong></p>
+
+<p>After a couple of not so courteous emails from the dev team mentioning repetitive crashes, you log in the box and the fun starts. You can&rsquo;t figure out what services have been deployed, or how exactly they were installed. You can&rsquo;t restore the database because you don&rsquo;t know where the bloody backups are. You waste time to find out that CouchDB wasn&rsquo;t started at boot. All of this while receiving emails of &ldquo;encouragement&rdquo; from your colleagues.</p>
+
+<p>Just because of that &ldquo;one time&rdquo;. Except that it&rsquo;s never just that one time.</p>
+
+<h3>Best practices are not freaking optional</h3>
+
+<p>I hear you: coming up with these best practices and sticking to it <strong>systematically</strong> is hard. It&rsquo;s high investment. But based on our common experience, it&rsquo;s one you can&rsquo;t afford not making. The &ldquo;quick and dirty that
+one time&rdquo; approach will ultimately fail you.</p>
+
+<p>A few things you should never consider skipping:</p>
+
+<ul>
+<li><p><strong>Document the hell out of everything as you go</strong>. You probably won&rsquo;t have time to get it done once you shipped it, and you probably won&rsquo;t remember what you did or why you did it in a few weeks from now. Your colleagues will probably appreciate too.</p></li>
+<li><p><strong>Off-site backups for everything</strong>. Don&rsquo;t even think of keeping your backups on the same physical box. Disks fail (a lot) and storage like S3/Glacier is dirt cheap. Find out a way to backup your code and data and stick to it.</p></li>
+<li><p><strong>Full setup and reliable sources</strong>. Avoid random AWS AMIs or RPM repositories. And when settings things up, go through the whole shebang: init script, dedicated running user, environment variables and such are not optional. Some of us also think that you shouldn&rsquo;t use rc.local for your Web services ever again.</p></li>
+</ul>
+
+
+<h3>Infrastructure As Code And Automation</h3>
+
+<p>Obviously, given what we&rsquo;re working on at <a href="http://devo.ps">devo.ps</a>, we&rsquo;re pretty strong adopters of infrastructure as code and automation. What tools to use is a much larger discussion. Go have a look at the comments on <a href="http://news.ycombinator.com/item?id=5197389">the
+announcement of the new version of Chef</a> to get an idea of what&rsquo;s
+out there.</p>
+
+<p>Ultimately these are just opinions, but behind them are concepts worth investing in. Capturing the work you do on your infrastructure in repeatable and testable code, and automating as much as you can helps removing yourself
+from the equation. Doing so is helping you to reduce the human factor and free yourself of the repetitive boilerplate while you focus on the challenging tasks that only a creative brain can tackle.</p>
+
+<p>Not building upon best practices is simply not an option. By doing so, you fail at investing in the foundation for a more robust infrastructure, and more importantly it is depriving you from scaling yourself.</p>
+
+<p><em><a href="http://www.flickr.com/photos/comedynose/4103140420/">Picture from comedy_nose</a></em></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/troubleshooting-5minutes-on-a-yet-unknown-box/">Troubleshooting 5minutes on a Yet Unknown Box</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T13:34:05-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/03/06/troubleshooting-5minutes-on-a-yet-unknown-box.html">First 5 Minutes Troubleshooting A Server</a></h2>
+
+<p>Back when our team was dealing with operations, optimization and scalability at <a href="http://wiredcraft.com">our previous company</a>, we had our fair share of troubleshooting poorly performing applications and infrastructures of various sizes, often large (think CNN or the World Bank). Tight deadlines, &ldquo;exotic&rdquo; technical stacks and lack of information usually made for memorable experiences.</p>
+
+<p>The cause of the issues was rarely obvious: here are a few things we usually got started with.</p>
+
+<h3>Get some context</h3>
+
+<p>Don&rsquo;t rush on the servers just yet, you need to figure out how much is already known about the server and the specifics of the issues. You don&rsquo;t want to waste your time (trouble) shooting in the dark.</p>
+
+<p>A few &ldquo;must have&rdquo;:</p>
+
+<ul>
+<li>What exactly are the symptoms of the issue? Unresponsiveness? Errors?</li>
+<li>When did the problem start being noticed?</li>
+<li>Is it reproducible?</li>
+<li>Any pattern (e.g. happens every hour)?</li>
+<li>What were the latest changes on the platform (code, servers, stack)?</li>
+<li>Does it affect a specific user segment (logged in, logged out, geographically located…)?</li>
+<li>Is there any documentation for the architecture (physical and logical)?</li>
+<li><strong>Is there a monitoring platform?</strong> Munin, Zabbix, Nagios, <a href="http://newrelic.com/">New Relic</a>… Anything will do.</li>
+<li><strong>Any (centralized) logs?</strong>. Loggly, Airbrake, Graylog…</li>
+</ul>
+
+
+<p>The last two ones are the most convenient sources of information, but don&rsquo;t expect too much: they&rsquo;re also the ones usually painfully absent. Tough luck, make a note to get this corrected and move on.</p>
+
+<h3>Who&rsquo;s there?</h3>
+
+<pre><code>$ w
+$ last
 </code></pre>
 
-<p>Notice the flat structure of this document: all element names are the same regardless of the filed type, and arrays (referenceid) are not grouped. Now compare it to the output format. Here is what you get when you execute a query against a Solr server:</p>
+<p>Not critical, but you&rsquo;d rather not be troubleshooting a platform others are playing with. One cook in the kitchen is enough.</p>
 
-<pre><code>&lt;response&gt;
-    &lt;lst name="responseHeader"&gt;
-        &lt;int name="status"&gt;0&lt;/int&gt;
-        &lt;int name="QTime"&gt;1&lt;/int&gt;
-        &lt;lst name="params"&gt;
-            &lt;str name="q"&gt;id:12345&lt;/str&gt;
-        &lt;/lst&gt;
-    &lt;/lst&gt;
-    &lt;result name="response" numFound="1" start="0"&gt;
-        &lt;doc&gt;
-            &lt;str name="id"&gt;12345&lt;/str&gt;
-            &lt;str name="articlestate"&gt;published&lt;/str&gt;
-            &lt;str name="articletype"&gt;news&lt;/str&gt;
-            &lt;str name="body"&gt;Lorem ipsum dolor...&lt;/str&gt;
-            &lt;arr name="referenceid"&gt;
-                &lt;str&gt;175820&lt;/str&gt;
-                &lt;str&gt;163786&lt;/str&gt;
-            &lt;/arr&gt;
-            &lt;date name="created"&gt;2011-02-15T14:57:54.766Z&lt;/date&gt;
-        &lt;/doc&gt;
-    &lt;/result&gt;
-&lt;/response&gt;
+<h3>What was previously done?</h3>
+
+<pre><code>$ history
 </code></pre>
 
-<p>Even if we ignore the response header, the structure of the response/result/doc is not the same as of input document: the element names reflect the types, the arrays are grouped. If you try to add this document to a Solr server, you will get an error &ldquo;unexpected XML tag&rdquo;, obviously. I googled for couple hours on how to convert an output document to an input, and, to my surprise, didn&rsquo;t find any solution. Therefore I implemented my own converter in Groovy, which solved the problem. I post it <a href="http://gist.github.com/3813775">here</a> in case somebody needs it.</p>
+<p>Always a good thing to look at; combined with the knowledge of who was on the box earlier on. Be responsible by all means, being admin shouldn&rsquo;t allow you to break ones privacy.</p>
 
-<p>Note: You can also use this script to re-index Solr.</p>
+<p>A quick mental note for later, you may want to update the environment variable <code>HISTTIMEFORMAT</code> to keep track of the time those commands were ran. Nothing is more frustrating than investigating an outdated list of commands…</p>
+
+<h3>What is running?</h3>
+
+<pre><code>$ pstree -a
+$ ps aux
+</code></pre>
+
+<p>While <code>ps aux</code> tends to be pretty verbose, <code>pstree -a</code> gives you a nice condensed view of what is running and who called what.</p>
+
+<h3>Listening services</h3>
+
+<pre><code>$ netstat -ntlp
+$ netstat -nulp
+$ netstat -nxlp
+</code></pre>
+
+<p>I tend to prefer running them separately, mainly because I don&rsquo;t like looking at all the services at the same time. <code>netstat -nalp</code> will do to though. Even then, I&rsquo;d ommit the <code>numeric</code> option (IPs are more readable IMHO).</p>
+
+<p>Identify the running services and whether they&rsquo;re expected to be running or not. Look for the various listening ports. You can always match the PID of the process with the output of <code>ps aux</code>; this can be quite useful especially when you end up with 2 or 3 Java or Erlang processes running concurrently.</p>
+
+<p>We usual prefer to have more or less specialized boxes, with a low number of services running on each one of them. If you see 3 dozens of listening ports you probably should make a mental note of investigating this further and see
+what can be cleaned up or reorganized.</p>
+
+<h3>CPU and RAM</h3>
+
+<pre><code>$ free -m
+$ uptime
+$ top
+$ htop
+</code></pre>
+
+<p>This should answer a few questions:</p>
+
+<ul>
+<li>Any free RAM? Is it swapping?</li>
+<li>Is there still some CPU left? How many CPU cores are available on the server? Is one of them overloaded?</li>
+<li>What is causing the most load on the box? What is the load average?</li>
+</ul>
+
+
+<h3>Hardware</h3>
+
+<pre><code>$ lspci
+$ dmidecode
+$ ethtool
+</code></pre>
+
+<p>There are still a lot of bare-metal servers out there, this should help with;</p>
+
+<ul>
+<li>Identifying the RAID card (with BBU?), the CPU, the available memory slots. This may give you some hints on potential issues and/or performance improvements.</li>
+<li>Is your NIC properly set? Are you running in half-duplex? In 10MBps? Any TX/RX errors?</li>
+</ul>
+
+
+<h3>IO Performances</h3>
+
+<pre><code>$ iostat -kx 2
+$ vmstat 2 10
+$ mpstat 2 10
+$ dstat --top-io --top-bio
+</code></pre>
+
+<p>Very useful commands to analyze the overall performances of your backend;</p>
+
+<ul>
+<li>Checking the disk usage: has the box a filesystem/disk with 100% disk usage?</li>
+<li>Is the swap currently in use (si/so)?</li>
+<li>What is using the CPU: system? User? Stolen (VM)?</li>
+<li><code>dstat</code> is my all-time favorite. What is using the IO? Is MySQL sucking up the resources? Is it your PHP processes?</li>
+</ul>
+
+
+<h3>Mount points and filesystems</h3>
+
+<pre><code>$ mount
+$ cat /etc/fstab
+$ vgs
+$ pvs
+$ lvs
+$ df -h
+$ lsof +D / /* beware not to kill your box */
+</code></pre>
+
+<ul>
+<li>How many filesystems are mounted?</li>
+<li>Is there a dedicated filesystem for some of the services? (MySQL by any chance..?)</li>
+<li>What are the filesystem mount options: noatime? default? Have some filesystem been re-mounted as read-only?</li>
+<li>Do you have any disk space left?</li>
+<li>Is there any big (deleted) files that haven&rsquo;t been flushed yet?</li>
+<li>Do you have room to extend a partition if disk space is an issue?</li>
+</ul>
+
+
+<h3>Kernel, interrupts and network usage</h3>
+
+<pre><code>$ sysctl -a | grep ...
+$ cat /proc/interrupts
+$ cat /proc/net/ip_conntrack /* may take some time on busy servers */
+$ netstat
+$ ss -s
+</code></pre>
+
+<ul>
+<li>Are your IRQ properly balanced across the CPU? Or is one of the core overloaded because of network interrupts, raid card, …?</li>
+<li>How much is swappinness set to? 60 is good enough for workstations, but when it come to servers this is generally a bad idea: you do not want your server to swap… ever. Otherwise your swapping process will be locked while data is read/written to the disk.</li>
+<li>Is <code>conntrack_max</code> set to a high enough number to handle your traffic?</li>
+<li>How long do you maintain TCP connections in the various states (<code>TIME_WAIT</code>, …)?</li>
+<li><code>netstat</code> can be a bit slow to display all the existing connections, you may want to use <code>ss</code> instead to get a summary.</li>
+</ul>
+
+
+<p>Have a look at <a href="http://www.lognormal.com/blog/2012/09/27/linux-tcpip-tuning/">Linux TCP tuning</a> for some more pointer as to how to tune your network stack.</p>
+
+<h3>System logs and kernel messages</h3>
+
+<pre><code>$ dmesg
+$ less /var/log/messages
+$ less /var/log/secure
+$ less /var/log/auth
+</code></pre>
+
+<ul>
+<li>Look for any error or warning messages; is it spitting issues about the number of connections in your conntrack being too high?</li>
+<li>Do you see any hardware error, or filesystem error?</li>
+<li>Can you correlate the time from those events with the information provided beforehand?</li>
+</ul>
+
+
+<h3>Cronjobs</h3>
+
+<pre><code>$ ls /etc/cron* + cat
+$ for user in $(cat /etc/passwd | cut -f1 -d:); do crontab -l -u $user; done
+</code></pre>
+
+<ul>
+<li>Is there any cron job that is running too often?</li>
+<li>Is there some user&rsquo;s cron that is &ldquo;hidden&rdquo; to the common eyes?</li>
+<li>Was there a backup of some sort running at the time of the issue?</li>
+</ul>
+
+
+<h3>Application logs</h3>
+
+<p>There is a lot to analyze here, but it&rsquo;s unlikely you&rsquo;ll have time to be exhaustive at first. Focus on the obvious ones, for example in the case of a LAMP stack:</p>
+
+<ul>
+<li><strong>Apache &amp; Nginx</strong>; chase down access and error logs, look for <code>5xx</code> errors, look for possible <code>limit_zone</code> errors.</li>
+<li><strong>MySQL</strong>; look for errors in the <code>mysql.log</code>, trace of corrupted tables, innodb repair process in progress. Looks for slow logs and define if there is disk/index/query issues.</li>
+<li><strong>PHP-FPM</strong>; if you have php-slow logs on, dig in and try to find errors (php, mysql, memcache, …). If not, set it on.</li>
+<li><strong>Varnish</strong>; in <code>varnishlog</code> and <code>varnishstat</code>, check your hit/miss ratio. Are you missing some rules in your config that let end-users hit your backend instead?</li>
+<li><strong>HA-Proxy</strong>; what is your backend status? Are your health-checks successful? Do you hit your max queue size on the frontend or your backends?</li>
+</ul>
+
+
+<h3>Conclusion</h3>
+
+<p>After these first 5 minutes (give or take 10 minutes) you should have a better
+understanding of:</p>
+
+<ul>
+<li>What is running.</li>
+<li>Whether the issue seems to be related to IO/hardware/networking or configuration (bad code, kernel tuning, …).</li>
+<li>Whether there&rsquo;s a pattern you recognize: for example a bad use of the DB indexes, or too many apache workers.</li>
+</ul>
+
+
+<p>You may even have found the actual root cause. If not, you should be in a good place to start digging further, with the knowledge that you&rsquo;ve covered the obvious.</p>
 </div>
   
   
@@ -677,7 +1191,7 @@
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2011/11/05/ford-marbles/">Ford Marbles</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/02/03/zookeeper-vs-doozer-vs-etcd/">ZooKeeper vs. Doozer vs. Etcd</a></h1>
       
       
     
@@ -694,23 +1208,155 @@
   
 
 
-<time datetime="2011-11-05T08:00:00-04:00" pubdate data-updated="true">Nov 5<span>th</span>, 2011</time>
+<time datetime="2014-02-03T13:18:39-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>I found these marvelous renderings of Ford circles on <a href="http://www.flickr.com/photos/fdecomite/2564742912/in/photostream">flickr</a>. I can&rsquo;t help but share them here.</p>
+  <div class="entry-content"><h2><a href="/blog/2013/09/11/zookeeper-vs-doozer-vs-etcd.html">ZooKeeper vs. Doozer vs. Etcd</a></h2>
 
-<p><img class="center" src="http://farm4.static.flickr.com/3189/2564742912_d0faf59e38_z.jpg"></p>
+<p>While <a href="http://devo.ps">devo.ps</a> is fast approaching a public release, the team has been dealing with an increasingly complex infrastructure. We more recently faced an interesting issue; how do you share configuration across a cluster of servers? More importantly, how do you do so in a resilient, secure, easily deployable and speedy fashion?</p>
 
+<p>That&rsquo;s what got us to evaluate some of the options available out there;
+ZooKeeper, Doozer and etcd. These tools all solve similar sets of problems but their approach differ quite significantly. Since we spent some time evaluating them, we thought we&rsquo;d share our findings.</p>
+
+<h3>ZooKeeper, the old dog</h3>
+
+<p><a href="http://zookeeper.apache.org/">ZooKeeper</a> is the most well known (and oldest) project we&rsquo;ve looked into. It&rsquo;s used by a few big players (Rackspace, Yahoo, eBay, <a href="https://news.ycombinator.com/item?id=6367979">Youtube</a>) and is pretty mature.</p>
+
+<p>It was created by Yahoo to deal with distributed systems applications. I strongly recommend you <a href="http://developer.yahoo.com/blogs/hadoop/apache-zookeeper-making-417.html">read the &ldquo;making of&rdquo;</a> if you&rsquo;re interested in understanding where Yahoo came from when they wrote it.</p>
+
+<p>It stores variables in a structure similar to a file system, an approach that both Doozer and etcd still follow. With ZooKeeper, you maintain a cluster of servers communicating with each other that share the state of the distributed configuration data. Each cluster elects one &ldquo;leader&rdquo; and clients can connect to any of the servers within the cluster to retrieve the data. Zookeeper uses its own algorithm to handle distributed storage.</p>
+
+<ul>
+<li><p><strong>Pros</strong>:</p>
+
+<ul>
+<li><strong>Mature technology</strong>; it is used by some big players (eBay, Yahoo et al).</li>
+<li><strong>Feature-rich</strong>; lots of client bindings, tools, API…</li>
+</ul>
+</li>
+<li><p><strong>Cons</strong>:</p>
+
+<ul>
+<li><strong>Complex</strong>; ZooKeeper is not for the faint of heart. It is pretty heavy and will require you to maintain a fairly large stack.</li>
+<li><strong>It&#8217;s… Java</strong>; not that we especially hate Java, but it is on the heavy side and introduce a lot of dependencies. We wanted to keep our machines as lean as possible and usually shy away from dependency heavy technologies.</li>
+<li><strong>Apache…</strong>; we have mixed feelings about the Apache Foundation. <a href="http://www.infoworld.com/d/open-source-software/has-apache-lost-its-way-225267">&ldquo;Has Apache Lost Its Way?&rdquo;</a> summarizes it pretty well.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Doozer, kinda dead</h3>
+
+<p><a href="https://github.com/ha/doozerd">Doozer</a> was developed by Heroku a few years
+ago. It&rsquo;s written in Go (yay!), which means it compiles into a single binary
+that runs without dependencies. On a side-note, if you&rsquo;re writing code to
+manage infrastructure, you should spend some time <a href="http://golang.org/">learning
+Go</a>.</p>
+
+<p>Doozer got some initial excitement from the developer community but seems to
+have stalled more recently, with many forks being sporadically maintained and
+no active core development.</p>
+
+<p>It is composed of <a href="https://github.com/ha/doozerd">a daemon</a> and <a href="https://github.com/ha/doozer">a
+client</a>. Once you have at least one Doozer
+server up, you can add any number of servers and have clients get and set data
+by talking to any of the servers within that cluster.</p>
+
+<p>It was one of the first practical implementations (as far as I know) of the
+<a href="http://en.wikipedia.org/wiki/Paxos_(computer_science">Paxos algorithm</a>). This
+means operations can be slow when compared to dealing with a straight database
+since cluster-wide consensus needs to be reached before committing any
+operation.</p>
+
+<p>Doozer was a step in the right direction. It is simple to use and setup.
+However, after using it for a while we started noticing that a lot of its
+parts felt unfinished. Moreover, it wasn&rsquo;t answering some of our needs very
+well (encryption and ACL).</p>
+
+<ul>
+<li><p><strong>Pros</strong>:</p>
+
+<ul>
+<li><strong>Easy to deploy, setup and use</strong> (Go, yay!)</li>
+<li><strong>It works</strong>; lots of people have actually used it in production.</li>
+</ul>
+</li>
+<li><p><strong>Cons</strong>:</p>
+
+<ul>
+<li><strong>Pretty much dead</strong>: the core project hasn&rsquo;t been active in a while (1 commit since May) and is pretty fragmented (150 forks…).</li>
+<li><strong>Security</strong>; no encryption and a fairly simple secure-word based authentication.</li>
+<li><strong>No ACL</strong>; and we badly needed this.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>etcd</h3>
+
+<p>After experiencing the shortcomings of Doozer, we stumbled upon a new
+distributed configuration storage called
+<a href="https://github.com/coreos/etcd">etcd</a>. It was first released by the
+<a href="http://coreos.com">CoreOS</a> team a month ago.</p>
+
+<p>Etcd and Doozer look pretty similar, at least on the surface. The most obvious
+technical difference is that ectd uses the <a href="http://en.wikipedia.org/wiki/Raft_%28computer_science%29">Raft
+algorithm</a> instead
+of Paxos. Raft is designed to be <a href="https://ramcloud.stanford.edu/wiki/%0Adownload/attachments/11370504/raft.pdf">simpler</a> and
+<a href="http://kellabyte.com/2013/05/09/an-alternative-to-paxos-the-raft-%0Aconsensus-algorithm/">easier</a> to implement than Paxos.</p>
+
+<p>Etcd&rsquo;s architecture is similar to Doozer&rsquo;s. It does, however, store data
+persistently (writes log and snapshots), which was of value to us for some
+edge cases. It also has a better take on security, with CA&rsquo;s, certs and
+private keys. While setting it up is not straightforward, it adds conveniency
+and safety of mind.</p>
+
+<p>Beyond the fact that it answered some of our more advanced needs, we were
+seduced (and impressed) by the development pace of the project.</p>
+
+<ul>
+<li><p><strong>Pros</strong>:</p>
+
+<ul>
+<li><strong>Easy to deploy, setup and use</strong> (yay Go and yay HTTP interfaces!).</li>
+<li><strong>Data persistence</strong>.</li>
+<li><strong>Secure</strong>: encryption and authentication by private keys.</li>
+<li><strong>Good documentation</strong> (if a little bit obscure at times).</li>
+<li>Planned ACL implementation.</li>
+</ul>
+</li>
+<li><p><strong>Cons</strong>:</p>
+
+<ul>
+<li>(Very) <strong>young project</strong>; interfaces are still moving pretty quickly.</li>
+<li>Still not a perfect match, especially in the way that data is spread.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>The DIY approach (yeah, right..?)</h3>
+
+<p>It is only fair that technical teams may rely on their understanding of their
+infrastructure and coding skills to get <em>something that just works™</em> in place.
+We haven&rsquo;t seriously considered this approach as we felt that getting security
+and distributed state sharing right was going to be a bigger endeavor than we
+could afford (the backlog is full enough for now).</p>
+
+<h3>Conclusion</h3>
+
+<p>In the end, we decided to give etcd a try. So far it seems to work well for
+our needs and the very active development pace seems to validate our choice.
+It has proven resilient and will likely hold well until we have the resources
+to either customize its data propagation approach, or build our own solution
+that will answer some needs it is not likely to answer (we&rsquo;ve already looked
+into doing so with ZeroMQ and Go).</p>
 </div>
   
-  
-    <footer>
-      <a rel="full-article" href="/blog/2011/11/05/ford-marbles/">Read on &rarr;</a>
-    </footer>
   
 
 
@@ -737,23 +1383,23 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow from GitHub</a>
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/">OpenStack : Git Gerrit and Jenkins Workflow</a>
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing A RESTful API That Doesn&#8217;t Suck</a>
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye node-forever</a>
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
       </li>
     
   </ul>

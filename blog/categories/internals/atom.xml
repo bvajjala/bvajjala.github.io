@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Internals | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/internals/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Git Internals]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/05/05/Git-Internals/"/>
+    <updated>2013-05-05T22:00:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/05/05/Git-Internals</id>
+    <content type="html"><![CDATA[<p>I found this information very supporting during my personal jorney into learning git, the internals IMO shows the mind shift one has to do when using Git after using any other SCM tool.</p>
+
+<p><script async class="speakerdeck-embed" data-id="9c9899c096f1013054d24e4027241f59" data-ratio="1.33333333333333" src="http://bvajjala.github.io//speakerdeck.com/assets/embed.js"></script></p>
+
+
+
+]]></content>
+  </entry>
+  
+</feed>

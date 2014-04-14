@@ -1,0 +1,383 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>A Can of Condensed Chef Documentation - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Overview Chef’s documentation is vast and broken up into many pages on the Opscode wiki. The goal here is to index this information and give a brief &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2011/03/15/a-can-of-condensed-chef-documentation">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/resume">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">A Can of Condensed Chef Documentation</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-15T14:34:00-04:00" pubdate data-updated="true">Mar 15<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>
+Overview
+</h2>
+
+
+<p>Chef’s documentation is vast and broken up into many pages on the Opscode wiki. The goal here is to index this information and give a brief explanation of each topic without going into too much depth.</p>
+
+<h2>
+Architecture
+</h2>
+
+
+<p><a href= http://wiki.opscode.com/display/chef/Architecture> <a href="http://wiki.opscode.com/display/chef/Architecture">http://wiki.opscode.com/display/chef/Architecture</a> </a></p>
+
+<p>Chef is a configuration management platform in the same class of tools as Cfengine, Bcfg2, and Puppet. The idea is to define policy at a centralized, version controlled place, and then have the machines under management pull down their policy and converge onto that state at regular intervals. This gives you a single point of administration allowing for easier change management and disaster recovery. Combined with a compute resource provisioning layer (such as knife’s ability to manipulate EC2 or Rackspace servers), entire complex infrastructures can pop into existence in minutes.</p>
+
+<h2>
+Chef Server
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Chef+Server> <a href="http://wiki.opscode.com/display/chef/Chef+Server">http://wiki.opscode.com/display/chef/Chef+Server</a> </a></p>
+
+<p>Chef server has various components under the hood. Assorted information (cookbooks, databags, client certificates, and node objects), are stored in CouchDB as JSON blobs. CouchDB is indexed by chef-solr-indexer. RabbitMQ sits between the data store and A RESTful API service that exposes all this to the network as chef-server. If you don’t want to run chef-server yourself, Opscode will do it for you for with their Platform service for a meager $5/node/month. The management console is really handy during development, since it provides a nice way to examine JSON data. However, it should be noted that real chefs value knife techniques.</p>
+
+<h2>
+Clients
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/API+Clients> <a href="http://wiki.opscode.com/display/chef/Api+Clients">http://wiki.opscode.com/display/chef/Api+Clients</a> </a></p>
+
+<p>In Chef, the term “client” refers to an SSL certificate for an API user of chef-server. This is often a point of confusion, and should not be confused with chef-client. Most of the time, one machine has one client certificate, which corresponds to one node object.</p>
+
+<h2>
+Nodes
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Nodes> <a href="http://wiki.opscode.com/display/chef/Nodes">http://wiki.opscode.com/display/chef/Nodes</a> </a></p>
+
+<p>Nodes are JSON representations of machines under Chef management. They live in chef-server. They contain two important things: The node’s run list, and a collection of attributes. The run list is a collection of recipes names that will be ran on the machine when chef-client is invoked. Attributes are various facts about the node, which can be manipulated either by hand, or from recipes.</p>
+
+<h2>
+Attributes
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Attributes> <a href="http://wiki.opscode.com/display/chef/Attributes">http://wiki.opscode.com/display/chef/Attributes</a> </a></p>
+
+<p>Attributes are arbitrary values set in a node object. Ohai provides a lot of informational attributes about the node, and arbitrary attributes can be set by the line cooks. They can be set from recipes or roles, and have a precedence system that allow you to override them. Examples of arbitrary attributes are listen ports for network services, or the names of a package on a particular linux distribution (httpd vs apache2).</p>
+
+<h2>
+Ohai
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Ohai> <a href="http://wiki.opscode.com/display/chef/Ohai">http://wiki.opscode.com/display/chef/Ohai</a> </a></p>
+
+<p>Ohai is the Chef equivilent of Cfengine’s cf-know and Puppet’s facter. When invoked, it collects a bunch of information about the machine its running on, including Chef related stuff, hostname, FQDN, networking, memory, cpu, platform, and kernel data. This information is then output as JSON and used to update the node object on chef-server. It is possible to write custom Ohai plugins, if your’re interested in something not dug up by default.</p>
+
+<h2>
+Chef Client
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Chef+Client> <a href="http://wiki.opscode.com/display/chef/Chef+Client">http://wiki.opscode.com/display/chef/Chef+Client</a> </a></p>
+
+<p>Managed nodes run an agent called chef-client at regular intervals. This agent can be ran as a daemon or invoked from cron. The agent pulls down policy from chef-server and converges the system to the described state. This lets you introduce changes to machines in your infrastructure by manipulating data in chef-server. The pull (vs push) technique ensures machines that are down for maintenance end up the proper state when turned back on.</p>
+
+<h2>
+Resources
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Resources > <a href="http://wiki.opscode.com/display/chef/Resources">http://wiki.opscode.com/display/chef/Resources</a> </a></p>
+
+<p>Resources are the basic configuration items that are manipulated by Chef recipes. Resources make up the Chef DSL by providing a declarative interface to objects on the machine. Examples of core resources include files, directories, users and groups, links, packages, and services.</p>
+
+<h2>
+Recipes
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Recipes > <a href="http://wiki.opscode.com/display/chef/Recipes">http://wiki.opscode.com/display/chef/Recipes</a> </a></p>
+
+<p>Recipes contain the actual code that gets ran on machines by chef-client. Recipes can be made up entirely of declarative resources statements, but rarely are. The real power of Chef stems from a recipes’s ability to search chef-server for information. Recipes can say “give me a list of all the hostnames of my web servers”, and then generate the configuration file for your load balancer. Another recipe might say “give me a list of all my database servers”, so it can configure Nagios to monitor them.</p>
+
+<h2>
+Cookbooks
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Cookbooks> <a href="http://wiki.opscode.com/display/chef/Cookbooks">http://wiki.opscode.com/display/chef/Cookbooks</a> </a></p>
+
+<p>Cookbooks allow you to logically group recipes. Cookbooks come with all the stuff the recipes need to make themselves work, such as files, templates, and custom resources (LWRPs).</p>
+
+<h2>
+Roles
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Roles> <a href="http://wiki.opscode.com/display/chef/Roles">http://wiki.opscode.com/display/chef/Roles</a> </a></p>
+
+<p>Roles allow you to assemble trees of recipe names, which are expanded into run lists. Roles can contain other roles, which serve as vertices, and recipe names, which are the leaves. The tree is walked depth first, which makes ordering intuitive when assembling run lists. It is possible to apply many of these trees to a single node, but you don’t have to. Roles can also contain lists of attributes to apply to nodes, potentially changing recipe behavior.</p>
+
+<h2>
+Databags
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Data+Bags > <a href="http://wiki.opscode.com/display/chef/Data+Bags">http://wiki.opscode.com/display/chef/Data+Bags</a> </a></p>
+
+<p>Databags are arbitrary JSON structures that can be searched for by Chef recipes. They typically contain things like database passwords and other information that needs to be shared between resources on nodes. You can think of them as read only global variables that live on chef-server. They also have a great name that can be used to make various jokes in Campfire.</p>
+
+<h2>
+Knife
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Knife> <a href="http://wiki.opscode.com/display/chef/Knife">http://wiki.opscode.com/display/chef/Knife</a> </a></p>
+
+<p>knife is the CLI interface to the chef-server API. It can manipulate databags, node objects, cookbooks, etc.  It can also be used to provision cloud resources and bootstrap systems.</p>
+
+<p>-s</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-15T14:34:00-04:00" pubdate data-updated="true">Mar 15<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/chef/'>Chef</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2011/03/15/a-can-of-condensed-chef-documentation/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2011/03/15/a-can-of-condensed-chef-documentation/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/03/07/maven-deployment-linker-plug-in/" title="Previous Post: Maven Deployment Linker - plug-in">&laquo; Maven Deployment Linker - plug-in</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/03/16/a-brief-chef-tutorial-from-concentrate/" title="Next Post: A Brief Chef Tutorial (from concentrate)">A Brief Chef Tutorial (from concentrate) &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="A quote from Erlang and OTP in Action book Make it work, then make it beautiful, then if you really, really have to, make it fast. 90 percent of the &hellip;">
+  <meta name="description" content="Well just got a mac from my new project FB Status&hellip; &ndash; couldn&rsquo;t resist it :) One of the tasks was to setup an environment, and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -56,9 +56,10 @@
 </form>
   
 <ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
-  <li><a href="/about">About</a></li>
+  <li><a href="/about/resume">About</a></li>
 </ul>
 
 </nav>
@@ -73,7 +74,7 @@
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2010/11/18/joe-armstrong-on-optimization/">Joe Armstrong on Optimization</a></h1>
+      <h1 class="entry-title"><a href="/blog/2013/07/13/install-xcode-cli-tools-via-script/">Install Xcode CLI Tools via Script</a></h1>
       
       
     
@@ -90,824 +91,30 @@
   
 
 
-<time datetime="2010-11-18T07:00:00-05:00" pubdate data-updated="true">Nov 18<span>th</span>, 2010</time>
+<time datetime="2013-07-13T22:24:00-04:00" pubdate data-updated="true">Jul 13<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>A quote from <em>Erlang and OTP in Action</em> <a href="http://www.manning.com/logan/">book</a></p>
+  <div class="entry-content"><p><img class="left" src="/assets/images/xcode_cli.png" title="'Xcode CLI Tools'" >
+Well just got a mac from my new project <a href="http://www.facebook.com/photo.php?fbid=10151661183017850&amp;l=69918509f3">FB Status</a>&hellip; &ndash; couldn&rsquo;t resist it :)</p>
 
-<blockquote><p>Make it work, then make it beautiful, then if you really, really have to, make it fast. 90 percent of the time, if you make it beautiful, it will already be fast. So really, just make it beautiful!</p></blockquote>
+<p>One of the tasks was to setup an environment, and learn what a mac is :), a few days later I&rsquo;m in love but still I need a way to destroy an recover
+my environment.
+I have a few plans like bash_it / oh_my_zsh &amp; others, but until then I put togter a few scripts [ more to come ], the first of them is this one installing Xcode CLI Tools on Mac OSX Mountain Lion.</p>
 
-<p>A quote from InfoQ <a href="http://www.infoq.com/interviews/functional-langs">interview</a></p>
-
-<blockquote><p>I think that people first of all write a problem, they solve the problem and then they sort of optimize this code, work on it and the code becomes very efficient but unreadable. What I think they should doing is specifying it with a domain specific language or some higher thing and then writing a compiler and then changing the compiler because it’s not efficient. Because then they would have the benefits of a clear specification and a fast implementation. What they do is they don’t keep these things separated and the language doesn’t support them separating it like that.</p></blockquote>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2010/11/10/erlang-selective-receive/">Erlang Explained: Selective Receive</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-11-10T07:00:00-05:00" pubdate data-updated="true">Nov 10<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>If you worked with Erlang you&rsquo;ve probably heard about selective receive. In this article I want to demonstrate what selective receive is and how it works. Let me start with an excerpt from Joe Armstrong&rsquo;s book <a href="http://www.pragprog.com/titles/jaerlang/programming-erlang">Programming Erlang</a> (<a href="http://media.pragprog.com/titles/jaerlang/Concurrent.pdf">Section 8.6</a>, p.155):</p>
+<p>Install or (un-install) with the following simple command:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="k">receive</span>
-</span><span class='line'>    <span class="nv">Pattern1</span> <span class="p">[</span><span class="k">when</span> <span class="nv">Guard1</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="nv">Expressions1</span><span class="p">;</span>
-</span><span class='line'>    <span class="nv">Pattern2</span> <span class="p">[</span><span class="k">when</span> <span class="nv">Guard2</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="nv">Expressions2</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">...</span>
-</span><span class='line'><span class="k">after</span>
-</span><span class='line'>    <span class="nv">Time</span> <span class="o">-&gt;</span> <span class="nv">ExpressionTimeout</span>
-</span><span class='line'><span class="k">end</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> sudo bash &lt; &lt;<span class="o">(</span>curl -L https://raw.github.com/hagzag/xcode-cli-install/master/install.sh<span class="o">)</span>
+</span><span class='line'>  sudo bash &lt; &lt;<span class="o">(</span>curl -L https://raw.github.com/hagzag/xcode-cli-install/master/uninstall.sh<span class="o">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<ol>
-<li>When we enter a <strong>receive</strong> statement, we start a timer (but only if an <strong>after</strong> section is present in the expression).</li>
-<li>Take the first message in the mailbox and try to match it against <code>Pattern1</code>, <code>Pattern2</code>, and so on. If the match succeeds, the message is removed from the mailbox, and the expressions following the pattern are evaluated.</li>
-<li>If none of the patterns in the <strong>receive</strong> statement matches the first message in the mailbox, then the first message is removed from the mailbox and put into a &ldquo;save queue.&rdquo; The second message in the mailbox is then tried. This procedure is repeated until a matching message is found or until all the messages in the mailbox have been examined.</li>
-<li>If none of the messages in the mailbox matches, then the process is suspended and will be rescheduled for execution the next time a new message is put in the mailbox. Note that when a new message arrives, the messages in the save queue are not rematched; only the new message is matched.</li>
-<li>As soon as a message has been matched, then all messages that have been put into the save queue are reentered into the mailbox in the order in which they arrived at the process. If a timer was set, it is cleared.</li>
-<li>If the timer elapses when we are waiting for a message, then evaluate the expressions <code>ExpressionsTimeout</code> and put any saved messages back into the mailbox in the order in which they arrived at the process.</li>
-</ol>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2010/11/10/erlang-selective-receive/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2010/11/06/erlang-and-otp-in-action/">Book Review: Erlang and OTP in Action</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-11-06T08:00:00-04:00" pubdate data-updated="true">Nov 6<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/images/posts//otp-action-book-cover.png"></p>
-
-<p>Title: Erlang and OTP in Action<br />
-Author: Martin Logan, Eric Merritt, and Richard Carlsson<br />
-Paperback: 432 pages<br />
-Publisher: <a href="http://www.manning.com/logan/">Manning Publications</a>; November 2010<br />
-Language: English<br />
-ISBN-10: 1933988789<br />
-ISBN-13: 978-1933988788<br />
-$38.99 (<a href="http://www.amazon.com/Erlang-OTP-Action-Martin-Logan/dp/1933988789">amazon.com</a>)</p>
-
-<h3>Overview</h3>
-
-<p>Even though this book has Erlang in its title, it&rsquo;s only about 15% of the content dedicated to Erlang language itself — the biggest portion of the book is about OTP. Nowadays, when more and more developers get familiar with Erlang, they need a new book that can boost them to the next level of proficiency, where they can produce industry standard code leveraging all the power of Erlang platform. This book is supposed to fill this gap!</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2010/11/06/erlang-and-otp-in-action/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2010/10/31/springone2gx-2010/">SpringOne2GX 2010</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-31T08:00:00-04:00" pubdate data-updated="true">Oct 31<span>st</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Last week I attended SpringOne2GX conference in Chicago, the main event in Spring/Groovy/Grails community. Here I want to post my brief review of this conference.</p>
-
-<h3>First impressions</h3>
-
-<p>The hotel (Westin Lombard) was nice and clean. Internet: there were 2 wireless networks and one cable — everything was free and worked pretty well, signal was good in almost all rooms. The conference reception was well organized — every participant received bunch of souvenirs and special edition of NFJS magazine. I saw hundreds of smiling and happy people of different ages and different outfits. Most of them with Macs. Most of them know each other. The food was fantastic, especially dinner with wine and beer.</p>
-
-<h2>Day 1</h2>
-
-<p>The first day was mostly introduction and orientation. There was only one talk on the schedule.</p>
-
-<h3>Rod Johnson — Keynote (<a href="http://www.infoq.com/presentations/SpringOne-2GX-2010-Keynote">video</a>)</h3>
-
-<p>I thought Spring was initially created 7 years ago but the oldest class in the source tree is dated by January 17, 2001, so Spring is actually almost 10 years old. Because of the anniversary the main theme of the presentation was: <em>Where Spring goes in the next decade</em>.</p>
-
-<p>Since the core framework is well crafted already, the focus will be on the integration and making Spring portfolio as a platform for applications. There are three key values in Spring — <em>portability</em>, <em>productivity</em>, and <em>innovation</em> — and the platform will be built along those dimensions.</p>
-
-<h4>Portability</h4>
-
-<p>In the past SpringSource made a good job by providing a framework that makes Java applications easily portable across different application servers. The goal for the next decade is to expand the same portability to the cloud — Google AppEngine, vFabric, vmforce, etc.</p>
-
-<h4>Productivity</h4>
-
-<p>As we all know the ultimate reason of the Spring existence is to make the life of application developer easier, our work is more productive. The framework hides the low-level boilerplate, and provides well defined abstractions. In the next year there will be several features added to the Spring portfolio. Rod mentioned some of them:</p>
-
-<ul>
-<li>Seamless GWT integration</li>
-<li>Database reverse engineering with roundtripping support in Spring Roo 1.1. You will be able to generate the domain object tree based on your database schema, and it will be updated every time you change the database.</li>
-<li>Spring Payment Services project with Visa integration.</li>
-</ul>
-
-
-<p>Another aspect of productivity is a tool suite, where Spring provides STS. Rod invited Christian Dupuis on the stage, where he demoed how to developed Grails applications in STS. If you are a Grails developer you should definitely take a look at the latest version of STS — it will increase your productivity significantly.</p>
-
-<h4>Innovation</h4>
-
-<p>There will be several new projects released in the Spring portfolio soon:</p>
-
-<ul>
-<li>Spring Social — application abstraction for social networks.</li>
-<li>Spring Mobile — platform for multi-device applications.</li>
-<li>Spring-AMQP — API for integration with RabbitMQ.</li>
-<li>Spring Data — API to work with NoSQL databases, in particular Neo4J support in Spring Roo.</li>
-</ul>
-
-
-<p>Keith Donald demoed <a href="http://greenhouse.springsource.org">GreenHouse</a> project and corresponding <a href="http://itunes.apple.com/us/app/greenhouse/id395862873">iPhone app</a>. This is a reference implementation of Spring Mobile and Spring Social, and this app was really really useful during the conference when I needed to check the schedule and find the room.</p>
-
-<p>At the end of the presentation Rod introduced, and Mik Kersten demoed, the next big thing — <em>Code2Cloud</em>. It&rsquo;s basically a tool that allows you to keep and manage your entire development environment in the cloud: the running app, the source code, the issue tracker, and the build server. Everything is in the cloud and configured by mouse click. It looks cool, and it definitely will be a buzz word in the next year, but I&rsquo;m not sure if many people will use it. We&rsquo;ll see.</p>
-
-<h2>Day 2</h2>
-
-<p>I&rsquo;m going to write only about technical sessions I attended.</p>
-
-<h3>J&uuml;rgen H&ouml;ller — What&rsquo;s new in Spring Framework 3.1? (<a href="http://www.infoq.com/presentations/Spring-3.0-3.1-3.2">video</a>)</h3>
-
-<p>That was one of the best talks of this conference: technical, right to the point, with well-wrtten slides, and personal charm of the presenter. Despite the number 3.1 in the title, J&uuml;rgen actually covered three versions of Spring framework: 3.0, 3.1, and 3.2. I&rsquo;m going to briefly mention the interesting features, and if you want more details you can check the excellent on-line documentation.</p>
-
-<h4>Spring 3.0</h4>
-
-<ul>
-<li><p>Custom annotations. You can create your own annotation by combining multiple existing annotations in one group. Spring automatically detects your annotation during the application context startup, and no special configuration is required. This is a very handy feature, especially when you copy-paste the same annotation group over and over again.</p></li>
-<li><p>Configuration classes and annotated factory methods. If you annotate a method with @Bean annotation Spring framework will make the output of the method a Spring bean. There are some other annotations supported, e.g. @Lazy.</p></li>
-<li><p>Standardized annotations. Spring now supports JSR-330 @Inject, JSR-250 @ManagedBean, and EJB 3.x @TransactionAnnotation.</p></li>
-<li><p>EL++. Expression language can be used now in bean definitions inside appcontext XML, and also in component annotations. Very powerful feature.</p></li>
-<li><p>REST support. Spring provides RestTemplate for client code, @PathVariable annotation, and special view resolvers on the server side. It&rsquo;s very interesting topic — check the documentation for details.</p></li>
-<li><p>Declarative model validation. You can specify data constraints right in your code by using annotations — very similar to what you have in GORM.</p></li>
-<li><p>Improved scheduling. New namespace, and @Scheduled and @Async annotations makes your appcontext smaller and more readable.</p></li>
-</ul>
-
-
-<p>If you follow Spring releases, you probably use some or most of these features already. Now let&rsquo;s see what Spring 3.1 brings to us.</p>
-
-<h4>Spring 3.1</h4>
-
-<ul>
-<li><p>Environment profiles for beans. Similar to Maven profiles but works in runtime. The idea here is to create a single deployment unit for all environments and enable certain Spring beans for specific environment. I can&rsquo;t wait to try this feature in our enterprise project.</p></li>
-<li><p>Cache abstraction. After 5 years of hibernation this feature is finally implemented. Spring provides an API to work with distributed cache, in particular in cloud environments. There will be adapters for most popular cache implementations, such as EhCache, GemFire, Coherence.</p></li>
-<li><p>Conversation management, or how J&uuml;rgen calls it HttpSession++. It&rsquo;s basically an extension of HttpSession shared across multiple browsers and window tabs. Looks very interesting.</p></li>
-<li><p>Enhanced Groovy support.</p></li>
-<li><p><code>c:</code> namespace, which is a shortcut for <code>&lt;constructor-arg&gt;</code>, analogous to <code>p:</code> namespace for properties. Small feature that makes your appcontext consistent and more readable.</p></li>
-</ul>
-
-
-<h4>Spring 3.2</h4>
-
-<p>Java SE 7 support, JDBC 4.1, support for fork-join framework, general focus on concurrent programming.</p>
-
-<h3>Jeff Brown — GORM inside and out</h3>
-
-<p>This talk was also good. I worked a bit with GORM before, and had an idea how it&rsquo;s implemented, but it was useful to hear more details from one of its developers.</p>
-
-<p>Jeff started with the background of GORM, the complexity of Hibernate and JPA, and how GORM solves this problem following convention-over-configuration and sensible defaults strategies. He showed how to model the domain objects, what happens behind the scene when you link objects together, how to specify uni- and bi-directional relationships, and how to change default collection implementation in case of one-to-many relationship.</p>
-
-<p>During the presentation he was switching back and forth between sides and terminal, so it was easy to follow and understand the evolution of the sample application. He explained how to introduce various constraints into the model and how Grails would validate them. One of the interesting features I didn&rsquo;t know about was how to test internationalized error messages. You don&rsquo;t need to change your locale for that, simply add <code>lang=your_language</code> parameter to the URL, and Grails will switch to that language for all subsequent requests. Pretty handy.</p>
-
-<p>He concluded the talk by showing how dynamic finders are implemented in GORM using Groovy metaprogramming feature. Interesting part here is that you can implement similar things in your Groovy code using the same technique, basically having custom mini-GORM in your Groovy project!</p>
-
-<h3>Venkat Subramaniam — Improving your Groovy code quality</h3>
-
-<p>The title of this presentation was little bit misleading for me. I expected Venkat to show some Groovy specific mistakes and how to avoid them. Instead, he was talking about the errors that in most cases are equally applied to any programming language. He mentioned various code smells and explained how to fix them. If you are interested, you can download the slides from Venkat&rsquo;s <a href="http://www.agiledeveloper.com/presentations/improving_your_groovy_code_quality.zip">web site</a>.</p>
-
-<p>He also gave an advise how to maintain the high code quality:</p>
-
-<ul>
-<li>Have a respectable colleague review your code.</li>
-<li>Use code analysis tools like CodeNarc and Sonar Groovy plugin.</li>
-</ul>
-
-
-<p>One of the topics he covered was the usage of the <code>return</code> keyword in Groovy. That was interesting. Compare the following two functions, guess what they return, and check your answer in the console</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="nf">func1</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">try</span> <span class="o">{</span>
-</span><span class='line'>        <span class="mi">5</span>
-</span><span class='line'>    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="mi">22</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="nf">func2</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">try</span> <span class="o">{</span>
-</span><span class='line'>        <span class="mi">5</span>
-</span><span class='line'>    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-</span><span class='line'>        <span class="mi">22</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Paul King, Guillaume Laforge — Groovy.DSLs (from: beginner, to: expert) (<a href="http://www.infoq.com/presentations/Groovy-DSLs">video</a>)</h3>
-
-<p>This would be very nice presentation if the speakers didn&rsquo;t try to cover too much. This talk could be easily split into two: one is an overview of Groovy language and another one is DSL. Unfortunately they spent lot of time on theoretical DSL part and Groovy overview, so the practical DSL part was too short from my perspective. The good thing though is that I have slides now, so I can dig deeper into this subject at my spare time.</p>
-
-<p>In the second part of the talk Paul and Guillaume explained which features of Groovy language make it so simple to create DSLs. Here are some of them:</p>
-
-<ul>
-<li>Static imports and import aliases.</li>
-<li>Simplified collection syntax.</li>
-<li>Small or no language noise.</li>
-<li>Aggregating multiple method calls using &lsquo;with&rsquo; construct.</li>
-<li>Closures.</li>
-<li>Operator overloading.</li>
-<li>Metaprogramming.</li>
-</ul>
-
-
-<p>In the last part speakers talked about different patterns and techniques of DSL implementations. They provided a comprehensive list of books you might want to read if you are interested in building DSLs.</p>
-
-<h3>Adrian Colyer — Technical keynote (<a href="http://www.infoq.com/presentations/Spring-2010-Technology">video</a>)</h3>
-
-<p>Adrian&rsquo;s talk was mostly a reiteration of Rod&rsquo;s keynote from the previous day with some technical details. He mentioned Spring Payment and Spring Data projects, bean profiles and cache support in the Spring core. He showed Spring portability in action by providing links to Spring applications deployed on <a href="http://springtravelsql.appspot.com/login">Google AppEngine</a> and <a href="http://booking-mvc.internal.vmforce.com/spring/intro">vmForce</a>.</p>
-
-<p>Another interesting part was 20 minutes dedicated to RabbitMQ and Spring-AMQP. He even mentioned <em>Spring-Erlang</em> project which is supposed to be a convenient abstraction on top of standard Jinterface library.</p>
-
-<p>As a continuation of innovation theme Graeme Rocher demoed GORM support for NoSQL databases. That was cool. He simply uninstalled Hibernate plugin and installed Redis plugin, without touching data model. Everything worked perfect. Right now Spring works with Redis and GemFire, but soon they are going to add support for CouchDB, Cassandra, Riak, Neo4j, and MongoDB. Another interesting thing Graeme showed was <em>grails-console</em>. It&rsquo;s a pretty nice tool, you should check it out. It allows you to interact with the Grails data storage using GORM features. Very handy.</p>
-
-<p>Another co-presenter was Keith Donald who demoed Spring Social and Spring Mobile. He explained how OAuth works, and how interoperability with social networks was implemented in GreenHouse.</p>
-
-<p>The keynote was concluded by Jon Travis who demoed <em>SpringInsight</em>.</p>
-
-<h2>Day 3</h2>
-
-<h3>Venkat Subramaniam — Functional programming in Groovy</h3>
-
-<p>That was an excellent talk and nice start of the new conference day. Venkat explained main concepts and values of functional programming, and illustrated the theory with comprehensible examples.</p>
-
-<p>He compared imperative and functional style of programming by showing how to implement for-loop using <code>inject</code> function in Groovy. I think it was one of the best explanations of functional folding I&rsquo;ve ever heard. He also demonstrated map and filter operations using <code>collect</code> and <code>findAll</code> methods.</p>
-
-<p>He clarified the difference between function value and closure, and between iterative procedure and iterative process. He gave an example on how to pass closure as a parameter to simulate function object in Groovy. He also showed how to replace tail-recursion, which Groovy doesn&rsquo;t support, with <code>inject</code> method call.</p>
-
-<p>The presentation was concluded with an example of how to use functional techniques to build DSLs in Groovy.</p>
-
-<h3>Matthias Radestock, Mark Pollack, Mark Fisher — RabbitMQ and Spring-AMQP (<a href="http://www.infoq.com/presentations/Spring-AMQP">video</a>)</h3>
-
-<p>If you read my blog, you know that RabbitMQ is one of my latest interests. I decided to go to this talk just to see how the creators would present their projects. It turned out to be a nice introduction to both RabbitMQ and <a href="http://www.springsource.org/spring-amqp">Spring-AMQP</a>. They explained main concepts of AMQP and how it is different from JMS. Here I want to give you some ideas which were not obvious for me when I started working with RabbitMQ.</p>
-
-<ul>
-<li>Messaging is all about decoupling, and AMQP is much more flexible than JMS in terms of publisher-consumer decomposition.</li>
-<li>All resources are dynamically created and destroyed by clients — the static pre-configuration is optional.</li>
-<li>Exchanges are stateless, they don&rsquo;t keep messages, they only copy and dispatch them. Queues hold the messages and deliver one message to a single client. They neither do routing nor message copying.</li>
-<li>Queue never receives the same message twice.</li>
-<li>If the message doesn&rsquo;t match routing key it&rsquo;s dropped.</li>
-<li>Because of the open protocol, you can use all available TCP tools to monitor your message traffic.</li>
-</ul>
-
-
-<p>Besides AMQP implementation RabbitMQ also provides some other useful features like custom exchanges, exchange-to-exchange routing, different protocol adaptors, etc. Spring, as usual, gives you a consistent API on top of the RabbitMQ client which hides all low-level boilerplate and makes your application code more readable.</p>
-
-<h3>Craig Walls — Developing social-ready web applications (<a href="http://www.infoq.com/presentations/Developing-Social-Ready-Web-Apps">video</a>)</h3>
-
-<p>This presentation was about integrating your Java code with different social networks. There are three types of such integration: widgets, embedded code, REST API. Craig briefly explained first two, and then dived into REST.</p>
-
-<p>All popular social networks provide REST API which allows you to communicate with them. For simple operations, like search, you can just use standard Spring RestTemplate class to retrieve the data. Try for example the following URLs:</p>
-
-<ul>
-<li><a href="http://api.twitter.com/1/friends/ids.xml?screen_name=ndpar">http://api.twitter.com/1/friends/ids.xml?screen_name=ndpar</a></li>
-<li><a href="http://search.twitter.com/search.json?q=s2gx">http://search.twitter.com/search.json?q=s2gx</a></li>
-<li><a href="https://graph.facebook.com/ndpar">https://graph.facebook.com/ndpar</a></li>
-</ul>
-
-
-<p>This basic approach fails though if you try to post a new message, because you have to be authorized for update operations. That&rsquo;s where OAuth comes in. The idea behind OAuth is pretty simple: instead of sharing your user-password with different clients, it uses generated tokens. This model is more flexible because if you want to revoke the permission from particular client you don&rsquo;t need to change your password and notify rest of the clients — you just remove that client&rsquo;s token from the list of authorized clients and that&rsquo;s it. The only problem with OAuth and social networks is that they support different versions of OAuth. This problem is solved by Spring Social project.</p>
-
-<p>Spring Social offers consistent template-based API across different social providers. It basically gives you an OAuth aware RestTemplate, so you can do something like this:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">TwitterTemplate</span> <span class="n">twitter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TwitterTemplate</span><span class="o">(</span><span class="n">API_KEY</span><span class="o">,</span> <span class="n">API_SECRET</span><span class="o">,</span> <span class="n">ACCESS_TOKEN</span><span class="o">,</span> <span class="n">ACCESS_TOKEN_SECRET</span><span class="o">);</span>
-</span><span class='line'><span class="n">twitter</span><span class="o">.</span><span class="na">updateStatus</span><span class="o">(</span><span class="s">&quot;Hello #s2gx !&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">twitter</span><span class="o">.</span><span class="na">retweet</span><span class="o">(</span><span class="mi">26887414177L</span><span class="o">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you are in a social network business, definitely take a look at <a href="http://www.springsource.org/spring-social">Spring Social</a>.</p>
-
-<h3>Mark Pollack, Chris Richardson — Using Spring with non-relational databases (<a href="http://www.infoq.com/presentations/Using-Spring-with-NoSQL-Databases">video</a>)</h3>
-
-<p>Relational databases are great, right? They&rsquo;ve been with us for ages. Everybody knows how to work with them, how to build SQL statements. Every language provides ODBC library. There are bunch of frameworks that make developer&rsquo;s life easier. So why is so much buzz around NoSQL?</p>
-
-<p>Mark and Chris started their talk highlighting some problems that exist in relational database world:</p>
-
-<ul>
-<li>Object-relational impedance mismatch. Complicated mapping of rich domain model to relational schema. Relational schema rigidity.</li>
-<li>Extremely difficult/impossible to scale write operations.</li>
-<li>Suboptimal performance in some cases.</li>
-</ul>
-
-
-<p>All these issues are addressed in NoSQL databases. Although keep in mind that it&rsquo;s not coming for free — you have to trade off ACID semantics, transactions and some other features of RDBMS. But if scalability is more important for you than consistency then NoSQL is your way to go.</p>
-
-<p>There are tons of NoSQL databases available for you, but they all can be split into 4 categories based on their data model:</p>
-
-<ul>
-<li>Key-Value: Amazon Dynamo, Redis, Riak, Voldemort.</li>
-<li>Column: Google Bigtable, HBase, Cassandra.</li>
-<li>Document: CouchDB, MongoDB.</li>
-<li>Graph: Neo4j, Sones, InfiniteGraph.</li>
-</ul>
-
-
-<p>Mark and Chris talked about each type, what their typical use cases are, and how their APIs look like. They showed examples for Redis, Cassandra, MongoDB, CouchDB and Neo4j. Then they introduced <a href="http://www.springsource.org/spring-data">Spring Data</a> project which, as everything from SpringSource, simplifies the application development and hides low-level code. Right now they support most of the popular NoSQL databases, and they plan to add more in the future.</p>
-
-<p>The project is in active development phase, and the new contributors are welcome. So if it sounds interesting for you, go and check it out.</p>
-
-<h2>Day 4</h2>
-
-<h3>Hans Dockter — Gradle — a better way to build</h3>
-
-<p>I never played with Gradle, so I was very curious to see how it looks like. According to Hans, who is the creator of this tool, Gradle is a general purpose build system with Groovy DSL interface. It&rsquo;s written in Java and provides build-in support for Java, Groovy, Scala, web and OSGi projects. It&rsquo;s a build language, so you can extend it for your own purposes if needed.</p>
-
-<p>If you compare it with Ant, Gradle is definitely much better because it&rsquo;s more compact and flexible. It offers dependency resolution with integration with Maven and Ivy repositories. It also has some advanced features like incremental builds for custom tasks and parallel testing.</p>
-
-<p>The only problem I had with this presentation was that Hans kept comparing Gradle with Maven. In my opinion they are not comparable. They have different philosophy if you want. All Maven &ldquo;constraints&rdquo; are imposed by design, so it makes no sense to blame Maven for them. I think Ant-Gradle comparison is more appropriate and that&rsquo;s what Hans should have emphasized.</p>
-
-<p>Other than that the session was pretty informative, and I have a better picture of Gradle now.</p>
-
-<h3>Brian Sletten — Groovy + The Semantic Web</h3>
-
-<p>I had no idea what Semantic Web was. I saw this term first time on the conference schedule, so I decided to go to this talk just to educate myself. I cannot even briefly describe all the discoveries I made during this presentation because I still feel little bit overwhelmed. I just want to provide some links from Brian&rsquo;s slides that can guide you if you want to learn this concept.</p>
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Semantic_Web">Semantic Web</a> — article from wikipedia.</li>
-<li>Formal W3C specs: <a href="http://www.w3.org/RDF/">RDF</a>, <a href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a>, <a href="http://www.w3.org/2004/02/skos/">SKOS</a>, <a href="http://www.w3.org/TR/rdf-sparql-query/">SPARQL</a>, <a href="http://www.w3.org/TR/owl2-overview/">OWL</a>.</li>
-<li>SPARQL <a href="http://librdf.org/query">demo</a>.</li>
-<li><a href="http://www.w3.org/2007/08/pyRdfa">RDFa distiller and parser</a>. Try to feed Brian&rsquo;s test page URL (<a href="http://bosatsu.net/nfjs/test.html">http://bosatsu.net/nfjs/test.html</a>) to the distiller and see what it returns.</li>
-<li><a href="http://opengraphprotocol.org">OG</a> — open graph protocol.</li>
-<li><a href="http://jena.sourceforge.net">Jena</a> — Java API to work with Semantic Web.</li>
-<li><a href="http://github.com/shellac/java-rdfa">Java-RDFa</a> parser.</li>
-<li><a href="http://clarkparsia.com/pellet/">Pellet</a> — Java API for OWL.</li>
-</ul>
-
-
-<h3>Conclusion</h3>
-
-<p>Whew! This happened to be longer review than I planned initially. If you are still with me, congratulations!</p>
-
-<p>There were much more presentations at this conference but because of the tight schedule I had to sacrifice 80% of them. My overall impression from this conference is very positive. If you are a Spring/Groovy/Grails developer I encourage you to go to this event next year. The biggest benefit of it: <em>You start seeing the Spring as a universe</em>, not as a bunch of separate projects. You cannot get this feeling from the documentation, even if it&rsquo;s perfect as the Spring one.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2010/03/31/integrating-rabbitmq-with-ejabberd/">Integrating RabbitMQ With Ejabberd</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-03-31T08:00:00-04:00" pubdate data-updated="true">Mar 31<span>st</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>ejabberd is integrated with RabbitMQ by means of <a href="http://tonyg.github.io/rabbitmq-xmpp/">mod_rabbitmq</a> gateway. If you followed my ejabberd installation <a href="/2010/02/23/get-started-with-ejabberd/">instructions</a>, you should already have mod_rabbitmq installed.</p>
-
-<h2>Configure mod_rabbitmq</h2>
-
-<p>Open <em>/opt/ejabberd/ejabberd/etc/ejabberd/ejabberd.cfg</em> file, find <em>modules</em> section, and add mod_rabbitmq stanza to the list</p>
-
-<figure class='code'><figcaption><span>/opt/ejabberd/ejabberd/etc/ejabberd/ejabberd.cfg </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="p">{</span><span class="n">modules</span><span class="p">,</span>
-</span><span class='line'> <span class="p">[</span>
-</span><span class='line'>  <span class="p">...</span>
-</span><span class='line'>  <span class="p">{</span><span class="n">mod_rabbitmq</span><span class="p">,</span>  <span class="p">[{</span><span class="n">rabbitmq_node</span><span class="p">,</span> <span class="nv">RABBIT_NODE</span><span class="p">}]},</span>
-</span><span class='line'>  <span class="p">...</span>
-</span><span class='line'> <span class="p">]}.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You need to replace <em>RABBIT_NODE</em> with the real value, which you can find from the RabbitMQ process information</p>
-
-<pre><code>$ ps -ef | grep beam
-rabbitmq  8525  8142  0 16:37 pts/0    ... -sname rabbit@ubuntu ...
-</code></pre>
-
-<p>You can see my RabbitMQ node name is <em>rabbit@ubuntu</em>.</p>
-
-<h2>Set up cookie</h2>
-
-<p>To make RabbitMQ and ejabberd work together, they have to run in the same Erlang cluster. That means they have to use the same cookie file. If you <a href="/2010/03/14/get-started-with-rabbitmq/">installed</a> RabbitMQ from binary distribution, it uses the user&rsquo;s cookie <em>~/.erlang.cookie</em>. ejabberd, on the other hand, uses its own cookie. Let&rsquo;s replace it with the user&rsquo;s</p>
-
-<pre><code>$ cd /opt/ejabberd/ejabberd/var/lib/ejabberd
-$ rm -f .erlang.cookie
-$ ln -s ~/.erlang.cookie
-</code></pre>
-
-<p>Restart ejabberd server</p>
-
-<pre><code>$ /opt/ejabberd/ejabberd/sbin/ejabberdctl restart
-</code></pre>
-
-<h2>Add rabbit buddy to roster</h2>
-
-<p>The rabbit&rsquo;s JID consists of two parts: exchange name and routing domain. The routing domain is a string <code>rabbitmq.EJABBERD_HOST</code> where <em>EJABBERD_HOST</em> is the host you registered in <em>ejabberd.cfg</em>. In my case the routing domain is <code>rabbitmq.jabber.ndpar.com</code>.</p>
-
-<p>For the name you can use any exchange name available in the RabbitMQ server. I use <code>amq.fanout</code> exchange which exists in every RabbitMQ server. So I go to my IM client (Adium) and add this user to the buddies list <code>amq.fanout@rabbitmq.jabber.ndpar.com</code>.</p>
-
-<h2>Rabbit&rsquo;s greetings</h2>
-
-<p>To publish a message to RabbitMQ I use the same Groovy script as in the previous <a href="/2010/03/14/get-started-with-rabbitmq/">post</a></p>
-
-<pre><code>$ ./publisher.groovy
-</code></pre>
-
-<p><img class="center" src="/images/posts/mod_rabbitmq.png"></p>
-
-<h3>Resources</h3>
-
-<ul>
-<li>Tony Garnock-Jones&#8217; <a href="http://www.erlang-factory.com/upload/presentations/229/ErlangFactorySFBay2010-TonyGarnock-Jones.pdf">presentation slides</a> about RabbitMQ and its extensions.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2010/03/14/get-started-with-rabbitmq/">Get Started With RabbitMQ</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-03-14T08:00:00-04:00" pubdate data-updated="true">Mar 14<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://www.rabbitmq.com">RabbitMQ</a> is an open-source implementation of <a href="http://en.wikipedia.org/wiki/AMQP">AMQP</a>. If you don&rsquo;t know what AMQP is, I encourage you to read about it on the official web site or the reference <a href="http://www.rabbitmq.com/how.html">page</a>. What <em>I</em> personally like in RabbitMQ/AMQP is</p>
-
-<ul>
-<li>AMQP is a free alternative to expensive TIBCO Randezvous.</li>
-<li>Functionality-wise AMQP is a superset of JMS.</li>
-<li>RabbitMQ is written in Erlang, which means fault-tolerance and reliability.</li>
-</ul>
-
-
-<p>In this short blog entry I show how to install RabbitMQ on a *nix box, and verify that it&rsquo;s working with a simple Groovy client.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2010/03/14/get-started-with-rabbitmq/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2010/02/23/get-started-with-ejabberd/">Get Started With Ejabberd</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-02-23T07:00:00-05:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Installation</h2>
-
-<p>Before installing ejabberd make sure you have Erlang environment set up. Run the following command and verify the output</p>
-
-<pre><code>$ erl -version
-Erlang (ASYNC_THREADS,HIPE) (BEAM) emulator version 5.10.1
-</code></pre>
-
-<p>I used to install ejabberd with apt-get command, which is convenient but always several versions behind. That&rsquo;s why I switched to building from sources. All scripts below are assumed to be run under <em>ejabberd</em> user.</p>
-
-<p>First, create a directory where all ejabberd versions will be installed, if it does not exist yet</p>
-
-<pre><code>$ sudo mkdir /opt/ejabberd
-$ sudo chown -R ejabberd /opt/ejabberd
-</code></pre>
-
-<p>Download the sources</p>
-
-<pre><code>$ cd
-$ git clone git@github.com:processone/ejabberd.git
-$ cd ejabberd
-</code></pre>
-
-<p>Select version you want to install by executing <code>git branch -a</code> and <code>git tag --list</code> commands. Let assume we want to install version 2.1.12 from branch 2.1.x</p>
-
-<pre><code>$ git checkout 2.1.x
-$ cd src
-</code></pre>
-
-<p>The next step is optional. If you are going to integrate ejabberd with RabbitMQ, you need to download the source of rabbitmq-xmpp module</p>
-
-<pre><code>$ wget https://raw.github.com/ndpar/rabbitmq-xmpp/rabbitmq3/src/mod_rabbitmq.erl
-$ wget https://raw.github.com/ndpar/rabbitmq-xmpp/rabbitmq3/src/rabbit.hrl
-</code></pre>
-
-<p>Now we are ready to install ejabberd. To see all available configuration options, run <code>./configure --help</code>.</p>
-
-<pre><code>$ ./configure --prefix=/opt/ejabberd/ejabberd-2.1.12 --enable-user=ejabberd
-$ make
-$ make install
-$ cd /opt/ejabberd
-$ ln -s ejabberd-2.1.12 ejabberd
-</code></pre>
-
-<h2>Configuration</h2>
-
-<p>Ejabberd comes with reasonable default configuration. Only two lines need to be changed to make it work in your environment.</p>
-
-<p>Open <em>/opt/ejabberd/ejabberd/etc/ejabberd/ejabberd.cfg</em> file and find <em>SERVED HOSTNAMES</em> section. By default Ejabberd is configured for localhost only. Change it to your machine&rsquo;s DNS name. Here is what I have in my config</p>
-
-<figure class='code'><figcaption><span>/opt/ejabberd/ejabberd/etc/ejabberd/ejabberd.cfg </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="c">%%%&#39;   SERVED HOSTNAMES</span>
-</span><span class='line'><span class="p">{</span><span class="n">hosts</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;jabber.ndpar.com&quot;</span><span class="p">]}.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The second thing we need to do is to configure admin user. Here is mine, registered for the host I just defined</p>
-
-<figure class='code'><figcaption><span>/opt/ejabberd/ejabberd/etc/ejabberd/ejabberd.cfg </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="c">%%%&#39;   ACCESS CONTROL LISTS</span>
-</span><span class='line'><span class="p">{</span><span class="n">acl</span><span class="p">,</span> <span class="n">admin</span><span class="p">,</span> <span class="p">{</span><span class="n">user</span><span class="p">,</span> <span class="s">&quot;andrey&quot;</span><span class="p">,</span> <span class="s">&quot;jabber.ndpar.com&quot;</span><span class="p">}}.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Save the config file and start the server</p>
-
-<pre><code>$ /opt/ejabberd/ejabberd/sbin/ejabberdctl start
-</code></pre>
-
-<p>You can quickly check the log file to see if the server has been started successfully</p>
-
-<pre><code>$ less /opt/ejabberd/ejabberd/var/log/ejabberd/ejabberd.log
-</code></pre>
-
-<p>If it wasn&rsquo;t, you might want to enable debug logs</p>
-
-<figure class='code'><figcaption><span>/opt/ejabberd/ejabberd/etc/ejabberd/ejabberd.cfg </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="c">%%%&#39;   DEBUGGING</span>
-</span><span class='line'><span class="p">{</span><span class="n">loglevel</span><span class="p">,</span> <span class="mi">5</span><span class="p">}.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>and restart the server to see more details</p>
-
-<pre><code>$ /opt/ejabberd/ejabberd/sbin/ejabberdctl restart
-</code></pre>
-
-<h2>Registering users</h2>
-
-<p>The first (admin) user has to be registered in command line</p>
-
-<pre><code>$ cd /opt/ejabberd/ejabberd/sbin
-$ ./ejabberdctl register andrey jabber.ndpar.com ******
-</code></pre>
-
-<p>This user is the same as admin you configured in the previous section. If you go to <a href="http://localhost:5280/admin">localhost:5280/admin</a> in the browser, you should be able to login with the same password you registered the user</p>
-
-<p><img class="center" src="/images/posts/ejabberd-web.png"></p>
-
-<p>Now you are ready to add newly created account to your Jabber client. In Adium, for example, go to <em>File</em> &ndash;> <em>Add Acount</em> &ndash;> <em>Jabber</em> and provide server hostname/IP, JID and password.</p>
-
-<p><img class="center" src="/images/posts/ejabberd-adium-1.png"></p>
-
-<p><img class="center" src="/images/posts/ejabberd-adium-2.png"></p>
-
-<p>To really enjoy IM you need more users on your server. The best part here is that you can create new users just from your Jabber client. Simply go to <em>File</em> &ndash;> <em>your ejabberd account</em> &ndash;> <em>Add User</em></p>
-
-<p><img class="center" src="/images/posts/ejabberd-admin-client.png"></p>
-
-<p>For other available options please consult <a href="http://www.ejabberd.im">official documentation</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2009/11/12/state-machine-in-erlang/">State Machine in Erlang</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-11-12T10:43:00-05:00" pubdate data-updated="true">Nov 12<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>There is some sort of confusion in the object-oriented community about functional languages. How is it possible to implement stateful application if the language has no concept of state? It turns out that it&rsquo;s actually quite possible, although the solution is completely deferent from what we see in the OO realm. In Erlang, for example, state can be implemented by using <em>process message passing</em> and <em>tail recursion</em>. This approach is so elegant that after you&rsquo;ve learned it, the OO way of doing this looks unnatural. The code below is the Erlang implementation of Uncle Bob&rsquo;s <a href="http://www.objectmentor.com/resources/articles/umlfsm.pdf">FSM example</a>. Look at it. Isn&rsquo;t that code clean and expressive? It looks almost like DSL but it&rsquo;s actually regular Erlang syntax.</p>
+<p>The essence &hellip; see the rest on <a href="https://github.com/hagzag/xcode-cli-install">Github</a></p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -947,60 +154,53 @@ $ ./ejabberdctl register andrey jabber.ndpar.com ******
 <span class='line-number'>36</span>
 <span class='line-number'>37</span>
 <span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">turnstile</span><span class="p">).</span>
-</span><span class='line'><span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">start</span><span class="o">/</span><span class="mi">0</span><span class="p">]).</span>
-</span><span class='line'><span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">coin</span><span class="o">/</span><span class="mi">0</span><span class="p">,</span> <span class="n">pass</span><span class="o">/</span><span class="mi">0</span><span class="p">]).</span>
-</span><span class='line'><span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">init</span><span class="o">/</span><span class="mi">0</span><span class="p">]).</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>detect_osx_version<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="nv">result</span><span class="o">=</span><span class="sb">`</span>sw_vers -productVersion<span class="sb">`</span>
+</span><span class='line'>  ...
+</span><span class='line'>  <span class="nv">osxversion</span><span class="o">=</span><span class="s2">&quot;10.8&quot;</span>
+</span><span class='line'>  <span class="nv">osxvername</span><span class="o">=</span><span class="s2">&quot;Mountain Lion&quot;</span>
+</span><span class='line'>  <span class="nv">cltools</span><span class="o">=</span>xcode462_cltools_10_86938259a.dmg
+</span><span class='line'>  <span class="nv">mountpath</span><span class="o">=</span><span class="s2">&quot;/Volumes/Command Line Tools (Mountain Lion)&quot;</span>
+</span><span class='line'>  <span class="nv">mpkg</span><span class="o">=</span><span class="s2">&quot;Command Line Tools (Mountain Lion).mpkg&quot;</span>
+</span><span class='line'>  <span class="nv">pkg_url</span><span class="o">=</span><span class="s2">&quot;https://www.dropbox.com/s/hw45wvjxrkrl59x/xcode462_cltools_10_86938259a.dmg&quot;</span>
+</span><span class='line'>  <span class="nv">pkgmd5</span><span class="o">=</span><span class="s2">&quot;90c5db99a589c269efa542ff0272fc28&quot;</span>
+</span><span class='line'>  ...
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>download_tools <span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> -f /tmp/<span class="nv">$cltools</span> <span class="o">]</span>; <span class="k">then</span>
+</span><span class='line'><span class="k">    if</span> <span class="o">[</span> <span class="sb">`</span>md5 -q /tmp/<span class="nv">$cltools</span><span class="sb">`</span> <span class="o">=</span> <span class="s2">&quot;${pkgmd5}&quot;</span> <span class="o">]</span>; <span class="k">then</span>
+</span><span class='line'><span class="k">      </span><span class="nb">echo</span> -e <span class="s2">&quot;$info $cltools already downloaded to /tmp/$cltools.&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'><span class="k">       </span>rm -f /tmp/<span class="nv">$cltools</span>
+</span><span class='line'>    <span class="k">fi</span>
+</span><span class='line'><span class="k">  else</span>
+</span><span class='line'><span class="k">    </span><span class="nb">cd</span> /tmp <span class="o">&amp;&amp;</span> wget <span class="nv">$pkg_url</span> -O ./<span class="nv">$cltools</span>
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'><span class="o">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="nf">start</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">register</span><span class="p">(</span><span class="n">turnstile</span><span class="p">,</span> <span class="nb">spawn</span><span class="p">(</span><span class="o">?</span><span class="nv">MODULE</span><span class="p">,</span> <span class="n">init</span><span class="p">,</span> <span class="p">[])).</span>
+</span><span class='line'>install_tools<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="c"># Mount the Command Line Tools dmg</span>
+</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Mounting Command Line Tools...&quot;</span>
+</span><span class='line'>  hdiutil mount -nobrowse /tmp/<span class="nv">$cltools</span>
+</span><span class='line'>  <span class="c"># Run the Command Line Tools Installer</span>
+</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Installing Command Line Tools...&quot;</span>
+</span><span class='line'>  installer -pkg <span class="s2">&quot;$mountpath/$mpkg&quot;</span> -target <span class="s2">&quot;/Volumes/Macintosh HD&quot;</span>
+</span><span class='line'>  <span class="c"># Unmount the Command Line Tools dmg</span>
+</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Unmounting Command Line Tools...&quot;</span>
+</span><span class='line'>  hdiutil unmount <span class="s2">&quot;$mountpath&quot;</span>
 </span><span class='line'>
-</span><span class='line'><span class="c">% Initial state</span>
-</span><span class='line'>
-</span><span class='line'><span class="nf">init</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">locked</span><span class="p">().</span>
-</span><span class='line'>
-</span><span class='line'><span class="c">% Events</span>
-</span><span class='line'>
-</span><span class='line'><span class="nf">coin</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">turnstile</span> <span class="o">!</span> <span class="n">coin</span><span class="p">.</span>
-</span><span class='line'><span class="nf">pass</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">turnstile</span> <span class="o">!</span> <span class="n">pass</span><span class="p">.</span>
-</span><span class='line'>
-</span><span class='line'><span class="c">% States and transitions</span>
-</span><span class='line'>
-</span><span class='line'><span class="nf">locked</span><span class="p">()</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="k">receive</span>
-</span><span class='line'>        <span class="n">pass</span> <span class="o">-&gt;</span>
-</span><span class='line'>            <span class="n">alarm</span><span class="p">(),</span>
-</span><span class='line'>            <span class="n">locked</span><span class="p">();</span>
-</span><span class='line'>        <span class="n">coin</span> <span class="o">-&gt;</span>
-</span><span class='line'>            <span class="n">unlock</span><span class="p">(),</span>
-</span><span class='line'>            <span class="n">unlocked</span><span class="p">()</span>
-</span><span class='line'>    <span class="k">end</span><span class="p">.</span>
-</span><span class='line'>
-</span><span class='line'><span class="nf">unlocked</span><span class="p">()</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="k">receive</span>
-</span><span class='line'>        <span class="n">pass</span> <span class="o">-&gt;</span>
-</span><span class='line'>            <span class="n">lock</span><span class="p">(),</span>
-</span><span class='line'>            <span class="n">locked</span><span class="p">();</span>
-</span><span class='line'>        <span class="n">coin</span> <span class="o">-&gt;</span>
-</span><span class='line'>            <span class="n">thankyou</span><span class="p">(),</span>
-</span><span class='line'>            <span class="n">unlocked</span><span class="p">()</span>
-</span><span class='line'>    <span class="k">end</span><span class="p">.</span>
-</span><span class='line'>
-</span><span class='line'><span class="c">% Actions</span>
-</span><span class='line'>
-</span><span class='line'><span class="nf">alarm</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">&quot;You shall not pass!</span><span class="si">~n</span><span class="s">&quot;</span><span class="p">).</span>
-</span><span class='line'><span class="nf">unlock</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">&quot;Unlocking...</span><span class="si">~n</span><span class="s">&quot;</span><span class="p">).</span>
-</span><span class='line'><span class="nf">lock</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">&quot;Locking...</span><span class="si">~n</span><span class="s">&quot;</span><span class="p">).</span>
-</span><span class='line'><span class="nf">thankyou</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">&quot;Thank you for donation</span><span class="si">~n</span><span class="s">&quot;</span><span class="p">).</span>
+</span><span class='line'>  <span class="nv">gcc_bin</span><span class="o">=</span><span class="sb">`</span>which gcc<span class="sb">`</span>
+</span><span class='line'>  gcc --version &amp;&gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> -e <span class="s2">&quot;$info gcc found in $gcc_bin&quot;</span>
+</span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The idea behind this code is simple. Every state is implemented as a function that does two things: it listens for messages sent by other processes; when message is received the appropriate action is taken and one of the <em>state-functions called recursively</em>. Simple.</p>
+<p><img class="right" src="/assets/images/DropBox_logo.png" title="'DropBox logo'" ></p>
+
+<p>I took the liberty (not sure it&rsquo;s mine to take &hellip; but still), locating Xcode CLI tools for both mountain lion (10.8) and Lion (10.7) on <a href="http://www.dropbox.com">DropBox</a>, ecause Apple (like Oracle and other Giants) won&rsquo;t let you download without a userid / pass which is quite irretating &hellip;</p>
+
+<p>As Always hope you guy&rsquo;s enjoy this.
+HP</p>
 </div>
   
   
@@ -1014,7 +214,7 @@ $ ./ejabberdctl register andrey jabber.ndpar.com ******
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2009/10/22/parsing-files-using-groovy-regex/">Parsing Files Using Groovy Regex</a></h1>
+      <h1 class="entry-title"><a href="/blog/2013/07/08/juc-video-net-ci-slash-cd-with-jenkins/">JUC Video - .Net CI/CD With Jenkins</a></h1>
       
       
     
@@ -1031,176 +231,20 @@ $ ./ejabberdctl register andrey jabber.ndpar.com ******
   
 
 
-<time datetime="2009-10-22T08:00:00-04:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2009</time>
+<time datetime="2013-07-08T22:37:00-04:00" pubdate data-updated="true">Jul 8<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>In my previous <a href="/2009/09/25/groovy-regular-expressions/">post</a> I mentioned several ways of defining regular expressions in Groovy. Here I want to show how we can use Groovy regex to find the data in the files.</p>
+  <div class="entry-content"><p>The guy&rsquo;s from <a href="http://www.jfrog.com/">Jfrog</a> were kind enough to put this session on youtube &ndash; here it is enjoy</p>
 
-<h2>Parsing properties file (simplified)<sup>1</sup></h2>
-
-<p><em>Data:</em> each line in the file has the same structure; the entire line can be matched by single regex.</p>
-
-<p><em>Task:</em> transform each line to the object.</p>
-
-<p><em>Solution:</em> construct regex with capturing parentheses, apply it to each line, extract captured data.</p>
-
-<p><em>Demonstrates:</em> <code>File.eachLine</code> method, matrix syntax of <em>Matcher</em> object.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">properties</span> <span class="o">=</span> <span class="o">[:]</span>
-</span><span class='line'><span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="s1">&#39;path/to/some.properties&#39;</span><span class="o">).</span><span class="na">eachLine</span> <span class="o">{</span> <span class="n">line</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="k">if</span> <span class="o">((</span><span class="n">matcher</span> <span class="o">=</span> <span class="n">line</span> <span class="o">=~</span> <span class="s">/^([^#=].*?)=(.+)$/</span><span class="o">))</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">properties</span><span class="o">[</span><span class="n">matcher</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">1</span><span class="o">]]</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">2</span><span class="o">]</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'><span class="n">println</span> <span class="n">properties</span>
-</span></code></pre></td></tr></table></div></figure>
+<iframe width="640" height="360" src="//www.youtube.com/embed/C5-98Fln1jg" frameborder="0" allowfullscreen></iframe>
 
 
-<h2>Parsing CSV files (simplified)<sup>2</sup></h2>
-
-<p><em>Data:</em> each line in the file has the same structure; the line consists of the blocks separated by some character sequence.</p>
-
-<p><em>Task:</em> transform each line to the list of objects.</p>
-
-<p><em>Solution:</em> construct regex with capturing parentheses, parse each line with the regex in a loop extracting captured data.</p>
-
-<p><em>Demonstrates:</em> <code>~//</code> <em>Pattern</em> defenition, <code>Matcher.group</code> method, <code>\G</code> regex meta-sequence.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">regex</span> <span class="o">=</span> <span class="o">~</span><span class="s">/\G(?:^|,)(?:&quot;([^&quot;]*+)&quot;|([^&quot;,]*+))/</span>
-</span><span class='line'><span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="s1">&#39;path/to/file.csv&#39;</span><span class="o">).</span><span class="na">eachLine</span> <span class="o">{</span> <span class="n">line</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="kt">def</span> <span class="n">fields</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'>    <span class="kt">def</span> <span class="n">matcher</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">line</span><span class="o">)</span>
-</span><span class='line'>    <span class="k">while</span> <span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">find</span><span class="o">())</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">fields</span> <span class="o">&lt;&lt;</span> <span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span> <span class="o">?:</span> <span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="mi">2</span><span class="o">))</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>    <span class="n">println</span> <span class="n">fields</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Finding snapshot dependencies in the POM (simplified)<sup>3</sup></h2>
-
-<p><em>Data:</em> file contains blocks with known boundaries (possibly spanning multiple lines).</p>
-
-<p><em>Task:</em> extract the blocks satisfying some criteria.</p>
-
-<p><em>Solution:</em> read the entire file into the string, construct regex with capturing parentheses, apply the regex to the string in a loop.</p>
-
-<p><em>Demonstrates:</em> <code>File.text</code> property, list syntaxt of <em>Matcher</em> object, named capture, global <code>\x</code> regex modifier, local <code>\s</code> regex modifier.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">pom</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s1">&#39;path/to/pom.xml&#39;</span><span class="o">).</span><span class="na">text</span>
-</span><span class='line'><span class="kt">def</span> <span class="n">matcher</span> <span class="o">=</span> <span class="n">pom</span> <span class="o">=~</span> <span class="s">$/(?x)</span>
-</span><span class='line'><span class="s">    &lt;dependency&gt;                          \s*</span>
-</span><span class='line'><span class="s">      &lt;groupId&gt;([^&lt;]+)&lt;/groupId&gt;          \s*</span>
-</span><span class='line'><span class="s">      &lt;artifactId&gt;([^&lt;]+)&lt;/artifactId&gt;    \s*</span>
-</span><span class='line'><span class="s">      &lt;version&gt;(.+?-SNAPSHOT)&lt;/version&gt;   (?s:.*?)</span>
-</span><span class='line'><span class="s">    &lt;/dependency&gt;</span>
-</span><span class='line'><span class="s">/$</span>
-</span><span class='line'><span class="n">matcher</span><span class="o">.</span><span class="na">each</span> <span class="o">{</span> <span class="n">matched</span><span class="o">,</span> <span class="n">groupId</span><span class="o">,</span> <span class="n">artifactId</span><span class="o">,</span> <span class="n">version</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="n">println</span> <span class="s2">&quot;$groupId:$artifactId:$version&quot;</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Finding stacktraces in the log</h2>
-
-<p><em>Data:</em> file contains entries each of which starts with the same pattern and can span multiple lines. Typical example is log4j log files:</p>
-
-<pre><code>2009-10-16 15:32:12,157 DEBUG [com.ndpar.web.RequestProcessor] Loading user
-2009-10-16 15:32:13,258 ERROR [com.ndpar.web.UserController] id to load is required for loading
-java.lang.IllegalArgumentException: id to load is required for loading
-     at org.hibernate.event.LoadEvent.(LoadEvent.java:74)
-     at org.hibernate.event.LoadEvent.(LoadEvent.java:56)
-     at org.hibernate.impl.SessionImpl.get(SessionImpl.java:839)
-     at org.hibernate.impl.SessionImpl.get(SessionImpl.java:835)
-     at org.springframework.orm.hibernate3.HibernateTemplate$1.doInHibernate(HibernateTemplate.java:531)
-     at org.springframework.orm.hibernate3.HibernateTemplate.doExecute(HibernateTemplate.java:419)
-     at org.springframework.orm.hibernate3.HibernateTemplate.executeWithNativeSession(HibernateTemplate.java:374)
-     at org.springframework.orm.hibernate3.HibernateTemplate.get(HibernateTemplate.java:525)
-     at org.springframework.orm.hibernate3.HibernateTemplate.get(HibernateTemplate.java:519)
-     at com.ndpar.dao.UserManager.getUser(UserManager.java:90)
-     ... 62 more
-2009-10-16 15:32:14,659 DEBUG [com.ndpar.jms.MessageListener] Received message:
-     ... multi-line message ...
-2009-10-16 15:32:15,169 INFO  [com.ndpar.dao.UserManager] User: ...
-</code></pre>
-
-<p><em>Task:</em> find entries satisfying some criteria.</p>
-
-<p><em>Solution:</em> read the entire file into the string<sup>4</sup>, construct regex with capturing parentheses and lookahead, split the string into entries, loop through the result and apply criteria to each entry.</p>
-
-<p><em>Demonstrates:</em> regex interpolation, combined global regex modifiers <code>\s</code> and <code>\m</code>.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">log</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s1">&#39;path/to/your.log&#39;</span><span class="o">).</span><span class="na">text</span>
-</span><span class='line'><span class="kt">def</span> <span class="n">logLineStart</span> <span class="o">=</span> <span class="s">/^\d{4}-\d{2}-\d{2}/</span>
-</span><span class='line'><span class="kt">def</span> <span class="n">splitter</span> <span class="o">=</span> <span class="n">log</span> <span class="o">=~</span> <span class="s">$/(?xms)</span>
-</span><span class='line'><span class="s">    (    ${logLineStart}   .*?)</span>
-</span><span class='line'><span class="s">    (?=  ${logLineStart} | \Z)</span>
-</span><span class='line'><span class="s">/$</span>
-</span><span class='line'><span class="n">splitter</span><span class="o">.</span><span class="na">each</span> <span class="o">{</span> <span class="n">matched</span><span class="o">,</span> <span class="n">entry</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">entry</span> <span class="o">=~</span> <span class="s">/(?m)^(?:\t| {8})at/</span><span class="o">)</span> <span class="n">println</span> <span class="n">entry</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Resources</h3>
-
-<ul>
-<li>Groovy <a href="http://groovy.codehaus.org/Regular+Expressions">regexes</a></li>
-<li>Groovy <a href="http://groovy.codehaus.org/Groovy+CLI">one-liners</a></li>
-<li>Using <a href="http://mrhaki.blogspot.com/2009/10/groovy-goodness-using-replaceall.html">String.replaceAll</a> method</li>
-</ul>
-
-
-<h3>Footnotes</h3>
-
-<ol>
-<li>This example is for demonstration purposes only. In real program you would just use <code>Properties.load</code> method.</li>
-<li>The regex is simplified. If you want the real one, take a look at Jeffrey Friedl&rsquo;s <a href="http://regex.info/listing.cgi?ed=3&amp;p=401">example</a>.</li>
-<li>Again, in reality you would find snapshots using <code>mvn dependency:resolve | grep SNAPSHOT</code> command.</li>
-<li>This approach won&rsquo;t work for big files. Take a look at this <a href="http://github.com/ndpar/utilities/blob/master/stacktraces.groovy">script</a> for practical solution.</li>
-</ol>
-
+<p>comments are welcome !
+HP</p>
 </div>
   
   
@@ -1214,7 +258,7 @@ java.lang.IllegalArgumentException: id to load is required for loading
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2009/09/25/groovy-regular-expressions/">Groovy Regular Expressions</a></h1>
+      <h1 class="entry-title"><a href="/blog/2013/06/16/using-jenkins-cli-as-job-gen/">Using Jenkins-cli as Job Gen</a></h1>
       
       
     
@@ -1231,14 +275,21 @@ java.lang.IllegalArgumentException: id to load is required for loading
   
 
 
-<time datetime="2009-09-25T08:00:00-04:00" pubdate data-updated="true">Sep 25<span>th</span>, 2009</time>
+<time datetime="2013-06-16T01:06:00-04:00" pubdate data-updated="true">Jun 16<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>Because of the compact syntax regular expressions in Groovy are more readable than in Java. Here is how Jeffrey Friedl&rsquo;s <a href="http://regex.info/listing.cgi?ed=3&amp;p=208">example</a> looks in Groovy:</p>
+  <div class="entry-content"><p><img class="left" src="/assets/images/jenkins140x140.jpg" title="'Jenkins logo small'" >
+Well a common use case for doing stuff with Jenkins jobs / configuration [ for example: enabling jobs, disabling jobs, executing jobs etc] is to use Jenkins-cli.jar which is included in your jenkins distribution.</p>
+
+<p>In a large company where branches are branched on a daily basis and you need a build for each branch, job creation could become a bottleneck [ so could branch creation &ndash; but that a different topic :) ].</p>
+
+<p>So my use case was to create a Job Generator which would take an existing job from branch 1.0 and create a job ( &amp; the ranch but as I said different topic ) for branch 2.0 with the corresponding name, so as I mentioned thank god for Jenkins in general, Jenkins-cli and in addition to that a shell script, <a href="http://www.gnu.org/software/sed/">sed</a>, <a href="http://xmlstar.sourceforge.net/">xmlstarlet</a> and again jenkins job parameters.</p>
+
+<p>I needed a script which would export the job configuration to an xml file, search and replace for the SCM url, create the job so lets see how its done:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1266,78 +317,452 @@ java.lang.IllegalArgumentException: id to load is required for loading
 <span class='line-number'>24</span>
 <span class='line-number'>25</span>
 <span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">subDomain</span>  <span class="o">=</span> <span class="s1">&#39;(?i:[a-z0-9]|[a-z0-9][-a-z0-9]*[a-z0-9])&#39;</span> <span class="c1">// simple regex in single quotes</span>
-</span><span class='line'><span class="kt">def</span> <span class="n">topDomains</span> <span class="o">=</span> <span class="s">$/</span>
-</span><span class='line'><span class="s">    (?x-i : com         \b     # you can put whitespaces and comments</span>
-</span><span class='line'><span class="s">          | edu         \b     # inside regex in eXtended mode</span>
-</span><span class='line'><span class="s">          | biz         \b</span>
-</span><span class='line'><span class="s">          | in(?:t|fo)  \b     # backslash is not escaped</span>
-</span><span class='line'><span class="s">          | mil         \b     # in dollar-slash strings</span>
-</span><span class='line'><span class="s">          | net         \b</span>
-</span><span class='line'><span class="s">          | org         \b</span>
-</span><span class='line'><span class="s">          | [a-z][a-z]  \b</span>
-</span><span class='line'><span class="s">    )/$</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>execJenkinsCli<span class="o">(){</span> <span class="c"># excute jenkins-cli jar </span>
+</span><span class='line'>        <span class="nv">jenkins_clinet_jar</span><span class="o">=</span>./jenkins-cli.jar
+</span><span class='line'>        <span class="c"># download only if it&amp;#39;s newwer than the local version [ curl -z ], the cli jar should be ofthe smae jenkins version ...</span>
+</span><span class='line'>        curl -s -z ./jenkins-cli.jar <span class="k">${</span><span class="nv">JENKINS_URL</span><span class="k">}</span>/jnlpJars/jenkins-cli.jar -o <span class="k">${</span><span class="nv">jenkins_clinet_jar</span><span class="k">}</span> <span class="o">||</span> <span class="o">{</span> <span class="nb">echo</span> &amp;quot;Echo  cannot obtain jenkins-cli.jar exiting&amp;quot;; <span class="nb">exit </span>2;<span class="o">}</span>
+</span><span class='line'>        <span class="nv">cli_cmd</span><span class="o">=</span><span class="nv">$1</span>
+</span><span class='line'>        <span class="nv">cmd_params</span><span class="o">=</span><span class="nv">$2</span>
+</span><span class='line'>        <span class="nv">cmd_prefix</span><span class="o">=</span>&amp;quot;<span class="k">${</span><span class="nv">JAVA_CMD</span><span class="k">}</span> -jar <span class="k">${</span><span class="nv">jenkins_clinet_jar</span><span class="k">}</span> -s <span class="k">${</span><span class="nv">JENKINS_URL</span><span class="k">}</span>&amp;quot;
 </span><span class='line'>
-</span><span class='line'><span class="kt">def</span> <span class="n">hostname</span> <span class="o">=</span> <span class="s">/(?:${subDomain}\.)+${topDomains}/</span>  <span class="c1">// variable substitution in slashy string</span>
+</span><span class='line'>        <span class="k">${</span><span class="nv">cmd_prefix</span><span class="k">}</span> who-am-i | grep &amp;#39;Authenticated as: anonymous&amp;#39; &amp;amp;&amp;gt;/dev/null &amp;amp;&amp;amp; <span class="nv">anon</span><span class="o">=</span>0
+</span><span class='line'>        <span class="c">#anon=$?</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">[</span> &amp;quot;<span class="nv">$anon</span>&amp;quot; !<span class="o">=</span> &amp;quot;0&amp;quot; <span class="o">]</span>; <span class="k">then</span>
+</span><span class='line'>                <span class="c">#printf &amp;quot;[ $FUNCNAME ] using jenkins-cli with private key auth&amp;quot;</span>
+</span><span class='line'>                <span class="nb">exec</span> <span class="k">${</span><span class="nv">cmd_prefix</span><span class="k">}</span> <span class="k">${</span><span class="nv">cli_cmd</span><span class="k">}</span> <span class="k">${</span><span class="nv">cmd_params</span><span class="k">}</span>
+</span><span class='line'>        <span class="k">elif</span> <span class="o">[</span> &amp;quot;x&amp;quot; <span class="o">=</span> &amp;quot;x<span class="k">${</span><span class="nv">JENKINS_USER</span><span class="k">}</span>&amp;quot; <span class="o">]</span> <span class="o">||</span> <span class="o">[</span> &amp;quot;x&amp;quot;  <span class="o">=</span> &amp;quot;x<span class="k">${</span><span class="nv">JENKINS_PASS</span><span class="k">}</span>&amp;quot; <span class="o">]</span>; <span class="k">then</span>
+</span><span class='line'><span class="k">                </span><span class="nb">printf</span> &amp;quot;<span class="o">[</span> <span class="nv">$FUNCNAME</span> <span class="o">]</span> cannot determin jenkins credentials<span class="se">\n</span>&amp;quot;;
+</span><span class='line'>                <span class="nb">exit </span>3;
+</span><span class='line'>        <span class="k">else</span>
+</span><span class='line'><span class="k">                </span><span class="nb">exec</span> <span class="k">${</span><span class="nv">cmd_prefix</span><span class="k">}</span> <span class="k">${</span><span class="nv">cli_cmd</span><span class="k">}</span> <span class="k">${</span><span class="nv">cmd_params</span><span class="k">}</span> --username <span class="k">${</span><span class="nv">JENKINS_USER</span><span class="k">}</span> --password <span class="k">${</span><span class="nv">JENKINS_PASS</span><span class="k">}</span>
+</span><span class='line'>        <span class="k">fi</span>
+</span><span class='line'><span class="o">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="kt">def</span> <span class="n">NOT_IN</span>   <span class="o">=</span> <span class="s">/;\&quot;&#39;&lt;&gt;()\[\]{}\s\x7F-\xFF/</span>     <span class="c1">// backslash is not escaped in slashy strings</span>
-</span><span class='line'><span class="kt">def</span> <span class="n">NOT_END</span>  <span class="o">=</span> <span class="s">/!.,?/</span>
-</span><span class='line'><span class="kt">def</span> <span class="n">ANYWHERE</span> <span class="o">=</span> <span class="s">/[^${NOT_IN}${NOT_END}]/</span>
-</span><span class='line'><span class="kt">def</span> <span class="n">EMBEDDED</span> <span class="o">=</span> <span class="s">/[$NOT_END]/</span>                        <span class="c1">// you can ommit {} around var name</span>
+</span><span class='line'>execJenkinsCli get-job <span class="k">${</span><span class="nv">tmpl_job_name</span><span class="k">}</span>  | <span class="se">\</span>
+</span><span class='line'>  <span class="k">${</span><span class="nv">XML</span><span class="k">}</span> ed -O -S -P -u &amp;#39;//project/scm/locations/hudson.scm.SubversionSCM_-ModuleLocation/remote&amp;#39; -v <span class="k">${</span><span class="nv">scm_url</span><span class="k">}</span> | <span class="se">\</span>
+</span><span class='line'>  execJenkinsCli create-job <span class="k">${</span><span class="nv">new_job_name</span><span class="k">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="kt">def</span> <span class="n">urlPath</span>  <span class="o">=</span> <span class="s2">&quot;/$ANYWHERE*($EMBEDDED+$ANYWHERE+)*&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">def</span> <span class="n">url</span> <span class="o">=</span>
-</span><span class='line'>    <span class="s2">&quot;&quot;&quot;(?x:</span>
-</span><span class='line'><span class="s2">             # you have to escape backslash in multi-line double quotes</span>
-</span><span class='line'><span class="s2">             \\b</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">             # match the hostname part</span>
-</span><span class='line'><span class="s2">             (</span>
-</span><span class='line'><span class="s2">               (?: ftp | http s? ): // [-\\w]+(\\.\\w[-\\w]*)+</span>
-</span><span class='line'><span class="s2">             |</span>
-</span><span class='line'><span class="s2">               $hostname</span>
-</span><span class='line'><span class="s2">             )</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">             # allow optional port</span>
-</span><span class='line'><span class="s2">             (?: :\\d+ )?</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">             # rest of url is optional, and begins with /</span>
-</span><span class='line'><span class="s2">             (?: $urlPath )?</span>
-</span><span class='line'><span class="s2">       )&quot;&quot;&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">assert</span> <span class="s1">&#39;http://www.google.com/search?rls=en&amp;q=regex&amp;ie=UTF-8&amp;oe=UTF-8&#39;</span> <span class="o">==~</span> <span class="n">url</span>
-</span><span class='line'><span class="k">assert</span> <span class="s1">&#39;pages.github.io&#39;</span> <span class="o">==~</span> <span class="n">url</span>
+</span><span class='line'>  execJenkinsCli <span class="nb">enable</span>-job <span class="k">${</span><span class="nv">new_job_name</span><span class="k">}</span> <span class="c"># our template is usually disabled, thus the cloned one is too ...</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>As you can see, there are several notations, and for every subexpression you can choose the one that is most expressive.</p>
+<p>The full jobGen wrapper script can be <a href="https://gist.github.com/hagzag/9b0d9d74d1920e248959">found here</a></p>
 
-<h3>Resources</h3>
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/06/16/using-jenkins-cli-as-job-gen/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/05/06/logstash-plus-opscode-omnibus/">Logstash + Opscode Omnibus</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-06T19:03:00-04:00" pubdate data-updated="true">May 6<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>At <a href="http://devopsdays.org/events/2013-austin/">DevOps Days Austin</a> <a href="http://twitter.com/mattray">@mattray</a> did an Openspace session on <a href="https://github.com/opscode/omnibus-ruby">Omnibus</a> which is a toolset based around the concept of installing an app and all of it&rsquo;s prerequisites from source into a directory and then building a package ( either .deb or .rpm ) of that using <a href="https://github.com/jordansissel/fpm">fpm</a>.</p>
+
+<p>Having battled many times with OS Packages trying to get newer versions of Ruby, or Redis or other software installed and having to hunt down some random package repo or manually build from source this seems like an excellent idea.</p>
+
+<p>To learn the basics I decided to build an <a href="https://github.com/paulczar/omnibus-fpm">omnibus package for fpm</a> which helped me work out the kinks and learn the basics.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/05/06/logstash-plus-opscode-omnibus/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/05/05/Git-Internals/">Git Internals</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-05T22:00:00-04:00" pubdate data-updated="true">May 5<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I found this information very supporting during my personal jorney into learning git, the internals IMO shows the mind shift one has to do when using Git after using any other SCM tool.</p>
+
+<p><script async class="speakerdeck-embed" data-id="9c9899c096f1013054d24e4027241f59" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script></p>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/05/05/Setup-git-on-ubutnu-12-04/">Setup Git, Gitweb With Git-http-backend / Smart Http on Ubuntu 12.04</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-05T21:00:00-04:00" pubdate data-updated="true">May 5<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/Git_Apache.png" title="'Git Logo'" >Setting up git over http (Smart HTTP in perticular) has it&#39;s caveats I will try to emphesize them as I go along.</p>
+
+<p>Final Goal is to run git over http using git-http-backend (a.k.a smart http) in apposed to using webdav which is also called the dumb-method, webdav was never designed to work with git for the reason that it cannot compress object whilst transporting data between the client and the server hosting git [ there is no real git client &ndash; git server so i am not referring to it a such].</p>
+
+<p><strong><u>Versions used in this setup</u>:</strong></p>
 
 <ul>
-<li>Martin Fowler on <a href="http://martinfowler.com/bliki/ComposedRegex.html">composed regexes</a></li>
-<li><a href="http://jira.codehaus.org/browse/GROOVY-2701">Introducing dollar-slash</a> notation into Groovy</li>
-<li><a href="http://regex.info/">Mastering Regular Expressions</a> — the best regex book</li>
-<li>Groovy <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-using-regular.html">Pattern</a> and <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-matchers-for-regular.html">Matcher</a> classes</li>
+<li>Ubutnu version <em>12.04-LTS</em></li>
+<li>Git version <em>1.7.9.5</em></li>
+<li>Apache2 version <em>2.2.22</em></li>
 </ul>
 
+
+<p><strong><u>1. Install prequirests</u>:</strong></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/05/05/Setup-git-on-ubutnu-12-04/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/16/performing-backup-with-git/">Performing Backup With Git</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-16T16:30:00-04:00" pubdate data-updated="true">Apr 16<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/git_logo.jpg" title="'Git Logo'" >~4 years ago I wrote a script which will sync my drupal files directory between two servers [ I used rsync for that ], the problem with rsync was that it fetches a checsum of every file and direcroty over SSH which was very slow, and the critical issue was I have no history of the data &ndash; and if I am maintaining multipule syncs whats the point in rsync.</p>
+
+<p>I looked @ svn at the time which was extreemly slow with binaries [ zip, tars etc ], Git and the git protocol in specific did the full sync [ ~1GB ] in under 45 minuets &ndash; over the Internet which was quite good IMO.</p>
+
+<p>I was talking with a collegue on such a solution the other day and I thought why not share this. So for purely educational puposes I put thist scripup as a Gist @:&nbsp;<a href="https://gist.github.com/hagzag/5396510">https://gist.github.com/hagzag/5396510</a>&nbsp;[ or part of the repository @:&nbsp;<a href="https://github.com/hagzag/files_repo/blob/master/syncFiles.sh">https://github.com/hagzag/files_repo/blob/master/syncFiles.sh</a>, but i am not sure it will survive there]&nbsp;&nbsp;and an acompenying repository called &quot;<a href="https://github.com/hagzag/files_repo">files_repo</a>&quot;.</p>
+
+<p>As you will see in the readme I am not sure it will do much for you but if you are consdering on using it read the following:</p>
+
+<ul>
+<li>create a repository [ e.g. on GitHub ]</li>
+<li>set the FILES_DIR parameter [ or default to /opt/data ]</li>
+<li>set the MY_GIT_REPO parameter [ or default to /opt/git-repo ]</li>
+<li>set my GIT_REMOTE parameter with the full git url of you repository [I didn&#39;t check this via https &hellip; ]</li>
+</ul>
+
+
+<p>Run the script, this is really custom to my use case, but shows another awsome aspect of git.</p>
+
+<p>Originally posted @: <a href="http://www.tikalk.com/alm/performing-backup-git">my Blog on tikalk.com</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/">Vagrant+Puppet+FPM=Amazeballs</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-07T18:23:00-04:00" pubdate data-updated="true">Apr 7<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Lately I&rsquo;ve been doing a lot of prototyping with <a href="http://www.vagrantup.com/">Vagrant</a>, specifically for a couple of distinct activities:&ndash;</p>
+
+<ul>
+<li>building puppet modules using <a href="https://github.com/elasticdog/puppet-sandbox">the excellent puppet sandbox</a> project</li>
+<li>and building RPM packages with <a href="https://github.com/jordansissel/fpm">FPM</a>.</li>
+</ul>
+
+
+<p>I realized I was spending a bunch of time flipping back and forth between Vagrant environments and I had no quick way to utilize RPMs built with FPM inside my puppet modules.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/11/install-mysql2-gem-file-solved/">Install Mysql2 Gem File :: Solved</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-11T22:26:00-04:00" pubdate data-updated="true">Mar 11<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/ruby_logo2.jpg" title="'Ruby Logo'" ></p>
+
+<h2><strong>Problem</strong> </h2>
+
+<p>can&rsquo;t install mysql2 gem :(
+See the full error below &hellip; (or in &ldquo;Read on&rdquo; link) what solved the issue was:
+installing the two missing dependencies <em>&ldquo;mysql-client libmysqlclient-dev&rdquo;</em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install mysql-client libmysqlclient-dev
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/03/11/install-mysql2-gem-file-solved/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/09/simple-zookeeper-cluster/">Simple Zookeeper Cluster</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-09T07:00:00-05:00" pubdate data-updated="true">Mar 9<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Sometimes I need to run <a href="http://zookeeper.apache.org">ZooKeeper</a> ensemble on my development box to test my application on the production-like environment. I found that recreating the whole ensemble from scratch is much faster than cleaning it up using ZooKeeper CLI tool. To automate this process I created a bash script which I want to share in this blog post. I hard-coded all the paths in the script using my regular conventions. You might need to change them to yours — it should be fairly straightforward.</p>
+
+<p>Before you can use the script, you need to install ZooKeeper on your box. That&rsquo;s what I did on my machine</p>
+
+<pre><code>$ cd /opt
+$ sudo mkdir zookeeper
+$ sudo chown -R andrey:admin zookeeper
+$ cd zookeeper
+$ wget http://apache.mirror.rafal.ca/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz
+$ tar xf zookeeper-3.4.5.tar.gz
+$ rm zookeeper-3.4.5.tar.gz
+$ ln -s zookeeper-3.4.5 zookeeper
+</code></pre>
+
+<p>In the end you should have a ZooKeeper installed in <em>/opt/zookeeper/zookeeper</em> directory.</p>
+
+<p>Now download, chmod, and run the <a href="https://gist.github.com/ndpar/5105486">script</a>. It will create the following files</p>
+
+<pre><code>/opt/zookeeper/zookeeper/cluster
+├── server1
+│   ├── conf
+│   │   ├── log4j.properties
+│   │   └── zoo.cfg
+│   ├── data
+│   │   └── myid
+│   └── logs
+├── server2
+│   ├── conf
+│   │   ├── log4j.properties
+│   │   └── zoo.cfg
+│   ├── data
+│   │   └── myid
+│   └── logs
+├── server3
+│   ├── conf
+│   │   ├── log4j.properties
+│   │   └── zoo.cfg
+│   ├── data
+│   │   └── myid
+│   └── logs
+├── start.sh
+└── stop.sh
+</code></pre>
+
+<p>This is the minimum configuration for 3-node ensemble (cluster), which is recommended for production. To start the cluster, run the following command</p>
+
+<pre><code>$ cd /opt/zookeeper/zookeeper
+$ cluster/start.sh
+</code></pre>
+
+<p>Check the log files to see if the cluster is successfully started</p>
+
+<pre><code>$ tail -f cluster/server{1,2,3}/logs/zookeeper.out
+</code></pre>
+
+<p>When the cluster is up and running, you can test your application. After you are done, shutdown the cluster using the following command</p>
+
+<pre><code>$ cluster/stop.sh
+$ ps -ef | grep java
+</code></pre>
+
+<p>To recreate a clean cluster, just run the script again</p>
+
+<pre><code>$ ./zookeeper-init-ensemble.sh
+</code></pre>
 </div>
   
   
@@ -1346,6 +771,8 @@ java.lang.IllegalArgumentException: id to load is required for loading
     </article>
   
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/7/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -1364,23 +791,23 @@ java.lang.IllegalArgumentException: id to load is required for loading
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow from GitHub</a>
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/">OpenStack : Git Gerrit and Jenkins Workflow</a>
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing A RESTful API That Doesn&#8217;t Suck</a>
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye node-forever</a>
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
       </li>
     
   </ul>

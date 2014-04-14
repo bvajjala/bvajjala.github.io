@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: servers | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/servers/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T15:50:34-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Some notes on Puppet]]></title>
+    <link href="http://bvajjala.github.io/blog/2012/11/12/some-notes-on-puppet/"/>
+    <updated>2012-11-12T16:40:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2012/11/12/some-notes-on-puppet</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve been playing with <a href="http://puppetlabs.com/">Puppet</a> recently in order to finally teach myself a bit about server management. I decided for Puppet because&hellip; well&hellip; I didn&rsquo;t have time to play with <a href="http://www.opscode.com/chef/">Chef</a> yet.</p>
+
+<p>I can&rsquo;t show any of my code because it contains some stuff I&rsquo;d rather not open up, but here are some of my global notes on Puppet that I wanted to share.</p>
+
+<h2>The good</h2>
+
+<ul>
+<li><strong>It did the job.</strong> I now have a few scripts that I can use to quickly setup a server for Rails, including NGINX, PostgreSQL, Unicorn, Monit, and much more.</li>
+<li><strong>Quick deployment.</strong> I can now deploy a new Rails app to a server within minutes!</li>
+<li><strong><a href="http://docs.puppetlabs.com/learning/">The Learning Puppet series</a></strong> is a good starting point and explains most of the basics</li>
+<li><strong>Low tech.</strong> Running a puppet script really doesn&rsquo;t involve much more than running: <code>puppet apply path/to/puppet/file.pp</code></li>
+</ul>
+
+
+<h2>The bad</h2>
+
+<ul>
+<li><strong>No single server deployment solution.</strong> There doesn&rsquo;t seem to be a best practice on how to use puppet with just one server. I know that the serious people will have to manage many many servers, but I think that they could make Puppet more accessible to newcomers by having a good solid solution for their own server. Many of us learn new things by trying them out for our own hobby projects before using them in big-business contexts. I have resorted to using Capistrano for deployment, but it just feels wrong somehow.</li>
+<li><strong>Not many great modules.</strong> Puppet has a modules system which allows anyone to package their solutions and share them with the community. Sadly most of the modules are old, unmaintained, and often broken. Additionally the modules often don&rsquo;t solve the problems in a way that I&rsquo;d like them to, forcing me to write my own.</li>
+<li><strong>Convoluted language.</strong> Puppet requires Ruby to run, but the DSL is not Ruby, nor is it Javascript, or JSON,or YAML, or anything else that so many developers already know. The architecture for defining classes, types, and modules is convoluted, backwards, and feels very awkward. I think one of the reasons why there aren&rsquo;t many well written modules is very much related to this.</li>
+<li><strong>Compiling from source.</strong> One of the biggest missing features seems to be some good architecture for installing anything that isn&rsquo;t packaged up. I often want to run a different Ruby, Nginx, Apache, PHP version than is in the package repositories. I know this is a hard problem, but again I wish there was some kind of best practice.</li>
+<li><strong>Ordering from hell.</strong> Puppet does not run your actions in order as specified in your <code>.pp</code> file. Instead you can tell it if something has a requirement. In my experience almost everything has a requirement and specifying the orders is becoming a nightmare and a real frustration.</li>
+<li><strong>Missing features.</strong> There are a few features that are still missing. One of the most important ones (in my eyes) is the ability to generate a folder recursively (e.g. <code>mkdir -p path/with/multiple/folders</code>). Instead you are now forced to create every layer as a new statement.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Puppet will do for now, but I wish it was a bit more opinionated in how it thought it should be used. The language is not pretty and very verbose, and its lack of best practices for single server deployment is a real omission.</p>
+
+<p>Does anyone know how Chef performs in these regards?</p>
+]]></content>
+  </entry>
+  
+</feed>
