@@ -1,0 +1,435 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Goodbye Node-forever - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Goodbye node-forever, hello PM2 It&rsquo;s no secret that the devo.ps team has a crush on Javascript; node.js in the backend, AngularJS for our &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2014/02/03/goodbye-node-forever">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/about">about</a></li>
+  <li><a href="/devops-piepline">DevOps Piepline</a></li>
+  <li><a href="/ci">Continuous Integration</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+ </ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Goodbye Node-forever</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:15:10-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2><a href="/blog/2013/06/26/goodbye-node-forever-hello-pm2.html">Goodbye node-forever, hello PM2</a></h2>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm22.png" alt="pm2 logo" /></p>
+
+<p>It&rsquo;s no secret that the devo.ps team has a crush on Javascript; node.js in the backend, AngularJS for our clients, there isn&rsquo;t much of our stack that isn&rsquo;t at least in part built with it. Our approach of building <a href="http://devo.ps/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">static clients and RESTful JSON APIs</a> means that we run a lot of node.js and I must admit that, despite all of it awesomeness, node.js still is a bit of a
+headache when it comes to running in production. Tooling and best practices (think monitoring, logging, error traces…) are still lacking when compared to some of the more established languages.</p>
+
+<p>So far, we had been relying on the pretty nifty <a href="https://github.com/nodejitsu/forever">node-forever</a>. Great tool, but a few things were missing:</p>
+
+<ul>
+<li>Limited monitoring and logging abilities,</li>
+<li>Poor support for process management configuration,</li>
+<li>No support for clusterization,</li>
+<li>Aging codebase (which meant frequent failures when upgrading Node).</li>
+</ul>
+
+
+<p>This is what led us to write <a href="https://github.com/Unitech/pm2">PM2</a> in the past couple months. We thought we&rsquo;d give you a quick look at it while we&rsquo;re nearing a production ready release.</p>
+
+<h3>So what&rsquo;s in the box?</h3>
+
+<p>First things first, you can install it with <code>npm</code>:</p>
+
+<pre><code>npm install -g pm2
+</code></pre>
+
+<p>Let&rsquo;s open things up with the usual comparison table:</p>
+
+<p>FeatureForeverPM2</p>
+
+<p>Keep Alive</p>
+
+<p>✔</p>
+
+<p>✔</p>
+
+<p>Coffeescript</p>
+
+<p>✔</p>
+
+<p>Log aggregation</p>
+
+<p>✔</p>
+
+<p>API</p>
+
+<p>✔</p>
+
+<p>Terminal monitoring</p>
+
+<p>✔</p>
+
+<p>Clustering</p>
+
+<p>✔</p>
+
+<p>JSON configuration</p>
+
+<p>✔</p>
+
+<p>And now let me geek a tad more about the main features…</p>
+
+<h3>Native clusterization</h3>
+
+<p>Node v0.6 introduced the cluster feature, allowing you to share a socket across multiple networked Node applications. Problem is, it doesn&rsquo;t work out of the box and requires some tweaking to handle master and children processes.</p>
+
+<p>PM2 handles this natively, without any extra code: PM2 itself will act as the master process and wrap your code into a special clustered process, as Nodejs does, to add some global variables to your files.</p>
+
+<p>To start a clustered app using all the CPUs you just need to type something like that:</p>
+
+<pre><code>$ pm2 start app.js -i max
+</code></pre>
+
+<p>Then;</p>
+
+<pre><code>$ pm2 list
+</code></pre>
+
+<p>Which should display something like (ASCII UI FTW);</p>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-list.png" alt="pm2 list" /></p>
+
+<p>As you can see, your app is now forked into multiple processes depending on the number of CPUs available.</p>
+
+<h3>Monitoring <em>a la</em> termcaps-HTOP</h3>
+
+<p>It&rsquo;s nice enough to have an overview of the running processes and their status with the <code>pm2 list</code> command. But what about tracking their resources consumption? Fear not:</p>
+
+<pre><code>$ pm2 monit
+</code></pre>
+
+<p>You should get the CPU usage and memory consumption by process (and cluster).</p>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-monit.png" alt="pm2 monit" /></p>
+
+<p><strong>Disclaimer</strong>: <a href="https://github.com/arunoda/node-usage">node-usage</a> doesn&rsquo;t support MacOS for now (feel free to PR). It works just fine on Linux though.</p>
+
+<p>Now, what about checking on our clusters and GC cleaning of the memory stack?
+Let&rsquo;s consider you already have an HTTP benchmark tool (if not, you should definitely check <a href="https://github.com/wg/wrk">WRK</a>):</p>
+
+<pre><code>$ express bufallo     // Create an express app
+$ cd bufallo
+$ npm install
+$ pm2 start app.js -i max
+$ wrk -c 100 -d 100 http://localhost:3000/
+</code></pre>
+
+<p>In another terminal, launch the monitoring option:</p>
+
+<pre><code>$ pm2 monit
+</code></pre>
+
+<p>W00t!</p>
+
+<h3>Realtime log aggregation</h3>
+
+<p>Now you have to manage multiple clustered processes: one who&rsquo;s crawling data, another who is processing stuff, and so on so forth. That means logs, lots of it. You can still handle it the old fashioned way:</p>
+
+<pre><code>$ tail -f /path/to/log1 /path/to/log2 ...
+</code></pre>
+
+<p>But we&rsquo;re nice, so we wrote the <code>logs</code> feature:</p>
+
+<pre><code>$ pm2 logs
+</code></pre>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-logs.png" alt="pm2 monit" /></p>
+
+<h3>Resurrection</h3>
+
+<p>So things are nice and dandy, your processes are humming and you need to do a hard restart. What now? Well, first, dump things:</p>
+
+<pre><code>$ pm2 dump
+</code></pre>
+
+<p>From there, you should be able to resurrect things from file:</p>
+
+<pre><code>$ pm2 kill     // let's simulate a pm2 stop
+$ pm2 resurect // All my processes are now up and running 
+</code></pre>
+
+<h3>API Health point</h3>
+
+<p>Let&rsquo;s say you want to monitor all the processes managed by PM2, as well as the status of the machine they run on (and maybe even build a nice Angular app to consume this API…):</p>
+
+<pre><code>$ pm2 web
+</code></pre>
+
+<p>Point your browser at <code>http://localhost:9615</code>, aaaaand… done!</p>
+
+<h3>And there&rsquo;s more…</h3>
+
+<ul>
+<li>Full tests,</li>
+<li>Generation of <code>update-rc.d</code> (<code>pm2 startup</code>), though still very alpha,</li>
+<li>Development mode with auto restart on file change (<code>pm2 dev</code>), still very drafty too,</li>
+<li>Log flushing,</li>
+<li>Management of your applications fleet via JSON file,</li>
+<li>Log uncaught exceptions in error logs,</li>
+<li>Log of restart count and time,</li>
+<li>Automated killing of processes exiting too fast.</li>
+</ul>
+
+
+<h3>What&rsquo;s next?</h3>
+
+<p>Well first, you could show your love on Github (we love stars):
+<a href="https://github.com/Unitech/pm2">https://github.com/Unitech/pm2</a>.</p>
+
+<p>We developed PM2 to offer an advanced and complete solution for Node process management. We&rsquo;re looking forward to getting more people helping us getting there: pull requests are more than welcome. A few things already on the
+roadmap that we&rsquo;ll get right at once we have a stable core:</p>
+
+<ul>
+<li>Remote administration/status checking,</li>
+<li>Built-in inter-processes communication channel (message bus),</li>
+<li>V8 GC memory leak detection,</li>
+<li>Web interface,</li>
+<li>Persistent storage for monitoring data,</li>
+<li>Email notifications.</li>
+</ul>
+
+
+<p>Special thanks to <a href="https://github.com/makara">Makara Wang</a> for concepts/tools and <a href="https://github.com/rlidwka">Alex Kocharin</a> for advices and pull requests.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:15:10-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2014/02/03/goodbye-node-forever/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2014/02/03/goodbye-node-forever/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/02/03/ansible-simply-kicks-ass/" title="Previous Post: Ansible Simply Kicks Ass">&laquo; Ansible Simply Kicks Ass</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/02/03/i-can-haz-init-script/" title="Next Post: I Can Haz Init Script">I Can Haz Init Script &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  A little something about me. Hi I’m Balaji Vajjala, DevOps Evangelist based in Indianapolis. Full stack development is my passion. Feel free to contact me on gmail as `bvajjala`. I’m also on [LinkedIn](http://http://www.linkedin.com/in/bvajjala "LinkedIn") and my [Resume](/about/balaji-vajjala-resume/)
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow From GitHub</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/">OpenStack : Git Gerrit and Jenkins Workflow</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing a RESTful API That Doesn't Suck</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye Node-forever</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

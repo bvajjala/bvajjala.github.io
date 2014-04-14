@@ -1,0 +1,472 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Running KVM and Openvswitch on Ubuntu 12.10 - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="I&rsquo;ve got an aging VMWare ESXi 4.0 server that needs to be replaced with something a little more modern and flexing. Obviously at home I don& &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2012/12/13/running-kvm-and-openvswitch-on-ubuntu-12-dot-10">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/about">about</a></li>
+  <li><a href="/devops-piepline">DevOps Piepline</a></li>
+  <li><a href="/ci">Continuous Integration</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+ </ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Running KVM and Openvswitch on Ubuntu 12.10</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-13T22:40:00-05:00" pubdate data-updated="true">Dec 13<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I&rsquo;ve got an aging VMWare ESXi 4.0 server that needs to be replaced with something a little more modern and flexing.   Obviously at home I don&rsquo;t need all the cool features that licensed VMWare comes with,  but I do want more than just the basic free version.</p>
+
+<p>After a few weeks of installing and testing alternatives  ( I&rsquo;d really love to run openstack,  but it&rsquo;s just not worth it at home for a single box ) I&rsquo;ve settled on Ubuntu 12.10 server running KVM and Openvswitch.</p>
+
+<p>After installing Ubuntu 12.10 I did the following to get KVM up and running&hellip;   I cribbed this mostly from <a href="http://blog.allanglesit.com/2012/10/linux-kvm-ubuntu-12-10-with-openvswitch/">blog.allanglesit.com</a>.</p>
+
+<!--more-->
+
+
+<p><strong>Install updates and Pre-requisites</strong></p>
+
+<p>First of all, make sure Ubuntu is fully up to date:
+<em>sudo to root as pretty much every command here needs to be run as root</em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo bash
+</span><span class='line'>apt-get update
+</span><span class='line'>apt-get upgrade
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we can go ahead and install the necessary packages:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>apt-get -y install aptitude apt-show-versions ntp ntpdate vim kvm <span class="se">\</span>
+</span><span class='line'> libvirt-bin vlan virtinst virt-manager virt-viewer openssh-server <span class="se">\</span>
+</span><span class='line'> iperf pv openvswitch-controller openvswitch-brcompat <span class="se">\</span>
+</span><span class='line'> openvswitch-switch nfs-common
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Kill off the default libvirt bridge and nuke ebtables</strong></p>
+
+<p>We want to delete the default libvirt interface and we don&rsquo;t need ebtables so we&rsquo;ll get rid of that.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>virsh net-destroy default
+</span><span class='line'>virsh net-autostart --disable default
+</span><span class='line'>service libvirt-bin stop
+</span><span class='line'>service qemu-kvm stop
+</span><span class='line'>aptitude purge -y ebtables
+</span><span class='line'>service openvswitch-switch restart
+</span><span class='line'>service openvswitch-controller restart
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Configure network interfaces</strong></p>
+
+<p>We&rsquo;ll be using just a single interface which will be used for both the bridge and the host itself.    We will also be bridging that network into the the vswitch and then configuring an interface for the host OS.    The network configuration will look something like this:</p>
+
+<figure class='code'><figcaption><span>/etc/network/interfaces </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># The loopback network interface
+</span><span class='line'>auto lo
+</span><span class='line'>iface lo inet loopback
+</span><span class='line'>
+</span><span class='line'># The primary network interface - bridge!
+</span><span class='line'>auto eth0
+</span><span class='line'>iface eth0 inet manual
+</span><span class='line'>up ifconfig $IFACE 0.0.0.0 up
+</span><span class='line'>down ifconfig $IFACE down
+</span><span class='line'>    
+</span><span class='line'># The host OS network interface
+</span><span class='line'># DNS settings here,  12.10 resets resolv.conf on reboot.
+</span><span class='line'>auto ovsbr0p1
+</span><span class='line'>iface ovsbr0p1 inet static
+</span><span class='line'>address 192.168.50.10
+</span><span class='line'>netmask 255.255.255.0
+</span><span class='line'>gateway 192.168.50.1
+</span><span class='line'>dns-nameservers 192.168.50.1
+</span><span class='line'>dns-search example.com</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Configure the openvswitch network</strong></p>
+
+<p>Now we need to configure the network on the openvswitch.     We need to define the bridge, connect it to the uplink interface and create a port for the host OS.</p>
+
+<p><em>note: if you&rsquo;re doing this via SSH it will probably break your session</em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>ovs-vsctl add-br ovsbr0
+</span><span class='line'>ovs-vsctl add-port ovsbr0 eth0
+</span><span class='line'>ovs-vsctl add-port ovsbr0 ovsbr0p1 -- <span class="nb">set </span>interface ovsbr0p1 <span class="nb">type</span><span class="o">=</span>internal
+</span><span class='line'>reboot
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Modify network service sleep times</strong></p>
+
+<p>That took forever to boot.    We can fix that by modifying sleeps in /etc/init/failsafe.conf and reboot again to make sure it helped.</p>
+
+<p>Change :</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$PLYMOUTH message --text="Waiting for network configuration..." || :
+</span><span class='line'>sleep 40
+</span><span class='line'>$PLYMOUTH message --text="Waiting up to 60 more seconds for network configuration..." || :
+</span><span class='line'>sleep 59
+</span><span class='line'>$PLYMOUTH message --text="Booting system without full network configuration..." || :</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To :</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$PLYMOUTH message --text="Waiting for network configuration..." || :
+</span><span class='line'>sleep 1
+</span><span class='line'>$PLYMOUTH message --text="Waiting up to 60 more seconds for network configuration..." || :
+</span><span class='line'>sleep 1
+</span><span class='line'>$PLYMOUTH message --text="Booting system without full network configuration..." || :</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>LVM configure</strong></p>
+
+<p>We&rsquo;re going to also use LVM to for the KVM virtual machines to use as storage.    I have a pair of 500g disks in a software raid1 which I&rsquo;ll use for this.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>pvcreate /dev/md0
+</span><span class='line'>vgcreate data-disk /dev/md0
+</span><span class='line'>lvcreate -L 10G -n ISO data-disk
+</span><span class='line'>mkfs.ext4 /dev/data-disk/ISO
+</span><span class='line'>mkdir -p /data-disk/ISO
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;/dev/data-disk/ISO /data-disk/ISO defaults    ext4    0 0&quot;</span> &gt;&gt; /etc/fstab
+</span><span class='line'>mount -a
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Create VM</strong></p>
+
+<p>Now we can go ahead and create our first VM.   I&rsquo;ve already downloaded the Ubuntu ISO to /data-disk/ISO</p>
+
+<p><em>note: virt-install does not support setting a virtualport type of openvswitch yet .. so we have to trick it</em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>lvcreate -L 8G -n VM-UbuntuTest data-disk
+</span><span class='line'>virt-install --name UbuntuTest --hvm --noautoconsole --ram 1024 <span class="se">\</span>
+</span><span class='line'>--disk <span class="nv">path</span><span class="o">=</span>/dev/data-disk/VM-UbuntuTest --nonetworks --vnc <span class="se">\</span>
+</span><span class='line'>--os-type<span class="o">=</span>linux --os-variant<span class="o">=</span>ubuntuquantal <span class="se">\</span>
+</span><span class='line'>--cdrom /data-disk/ISO/ubuntu-12.10-server-amd64.iso
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>set up the networking by editing the VM&rsquo;s XML and adding a network interface stanza just before the &lt;/devices>.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>virsh edit UbuntuTest
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;interface</span> <span class="na">type=</span><span class="s">&#39;bridge&#39;</span><span class="nt">&gt;</span>
+</span><span class='line'> <span class="nt">&lt;source</span> <span class="na">bridge=</span><span class="s">&#39;ovsbr0&#39;</span><span class="nt">/&gt;</span>
+</span><span class='line'> <span class="nt">&lt;virtualport</span> <span class="na">type=</span><span class="s">&#39;openvswitch&#39;</span> <span class="nt">/&gt;</span>
+</span><span class='line'> <span class="nt">&lt;model</span> <span class="na">type=</span><span class="s">&#39;virtio&#39;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;/interface&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The VM will need to be reset to pick up the network change,  however that will cause it to drop the ISO mount.  We can either continue through with the OS install without networking or reset the VM and then re-attach the ISO as a CD.    I connected to it from my desktop using the VirtualMachineManager GUI to do that but you could use virsh commands if you want to stick to CLI.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-13T22:40:00-05:00" pubdate data-updated="true">Dec 13<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/kvm/'>kvm</a>, <a class='category' href='/blog/categories/openvswitch/'>openvswitch</a>, <a class='category' href='/blog/categories/ubuntu/'>ubuntu</a>, <a class='category' href='/blog/categories/virtualization/'>virtualization</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2012/12/13/running-kvm-and-openvswitch-on-ubuntu-12-dot-10/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2012/12/13/running-kvm-and-openvswitch-on-ubuntu-12-dot-10/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/12/09/moving-vms-from-vmware-to-kvm/" title="Previous Post: Moving VMs from VMWare to KVM">&laquo; Moving VMs from VMWare to KVM</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/12/15/rabbitmq-activemq-zeromq-hornetq/" title="Next Post: RabbitMQ, ActiveMQ, ZeroMQ, HornetQ">RabbitMQ, ActiveMQ, ZeroMQ, HornetQ &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  A little something about me. Hi I’m Balaji Vajjala, DevOps Evangelist based in Indianapolis. Full stack development is my passion. Feel free to contact me on gmail as `bvajjala`. I’m also on [LinkedIn](http://http://www.linkedin.com/in/bvajjala "LinkedIn") and my [Resume](/about/balaji-vajjala-resume/)
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow From GitHub</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/">OpenStack : Git Gerrit and Jenkins Workflow</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing a RESTful API That Doesn't Suck</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye Node-forever</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

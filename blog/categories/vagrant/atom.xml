@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Vagrant | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/vagrant/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T14:12:32-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Vagrant, Docker and Ansible, WTF?]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/09/25/vagrant-docker-and-ansible-wtf/"/>
+    <updated>2013-09-25T08:00:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/09/25/vagrant-docker-and-ansible-wtf</id>
+    <content type="html"><![CDATA[<h2><a href="/blog/2013/09/25/vagrant-docker-and-ansible-wtf.html">Vagrant, Docker and Ansible. WTF?</a></h2>
+
+<p>Given that we&rsquo;re building a SaaS that helps our client managing their infrastructure, our team is pretty familiar with leveraging VMs and configuration management tools. We&rsquo;ve actually been heavy users of Vagrant and <a href="http://devo.ps/blog/2013/07/03/ansible-simply-kicks-ass.html">Ansible</a> for
+the past year, and it&rsquo;s helped us tremendously normalize our development process.</p>
+
+<p>As our platform grew in complexity, some additional needs emerged:</p>
+
+<ul>
+<li><strong>Containerization</strong>; we needed to be able to safely execute custom, and potentially harmful, code.</li>
+<li><strong>Weight</strong>; as we added more sub-systems to devo.ps, having full blown VMs proved to be hard to juggle with when testing and developing.</li>
+</ul>
+
+
+<p>And that&rsquo;s why we ended up adding Docker to our development workflow. We were already familiar with it (as it powers some parts of the devo.ps infrastructure) and knew there would be obvious wins. In practice, we are shipping Docker containers in a main Vagrant image and drive some of the customization and upgrade with Ansible.</p>
+
+<p>We&rsquo;ll probably write something about this approach in the coming weeks, but given the amount of confusion there is around what these technologies are, and how they&rsquo;re used, we thought we&rsquo;d give you a quick tour on how to use them together.</p>
+
+<p>Let&rsquo;s get started.</p>
+
+<h2>Vagrant</h2>
+
+<p>You&rsquo;ve probably heard about <a href="http://www.vagrantup.com/">Vagrant</a>; a healthy number of people have been writing about it in the past 6 months. For those of you who haven&rsquo;t, think of it as a VM without the GUI. At its core, Vagrant is a simple wrapper around Virtualbox/VMware.</p>
+
+<p>A few interesting features:</p>
+
+<ul>
+<li><strong>Boatloads of existing images</strong>, just check <a href="http://www.vagrantbox.es/">Vagrantbox.es</a> for example.</li>
+<li><strong>Snapshot and package your current machine</strong> to a Vagrant box file (and, consequently, share it back).</li>
+<li><strong>Ability to fine tune settings of the VM</strong>, including things like RAM, CPU, APIC…</li>
+<li><strong>Vagrantfiles</strong>. This allows you to setup your box on init: installing packages, modifying configuration, moving code around…</li>
+<li><strong>Integration with CM tools</strong> like Puppet, Chef and Ansible.</li>
+</ul>
+
+
+<p>Let&rsquo;s get it running on your machine:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>1. First, &lt;a href="http://downloads.vagrantup.com/">download Vagrant&lt;/a>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code> and [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;ol>
+</span><span class='line'>&lt;li> Second, let&rsquo;s download an image, spin it up and SSH in:
+</span><span class='line'> $ vagrant init precise64 &lt;a href="http://files.vagrantup.com/precise64.box">http://files.vagrantup.com/precise64.box&lt;/a>
+</span><span class='line'> $ vagrant up
+</span><span class='line'> $ vagrant ssh&lt;/li>
+</span><span class='line'>&lt;li> There&rsquo;s no 3.&lt;/li>
+</span><span class='line'>&lt;li> There&rsquo;s a 4 if you want to access your (soon to be) deployed app;&lt;/li>
+</span><span class='line'>&lt;li> you will need to dig around the Vagrant documentation to
+</span><span class='line'> &lt;a href="http://docs.vagrantup.com/v2/networking/forwarded_ports.html">perform port forwarding&lt;/a>,
+</span><span class='line'> &lt;a href="http://docs.vagrantup.com/v2/networking/private_network.html">proper networking&lt;/a>
+</span><span class='line'> and update manually your &lt;code>Vagrantfile&lt;/code>.</span></code></pre></td></tr></table></div></figure></notextile></div></li>
+</ol>
+
+
+<h2>Docker</h2>
+
+<p><a href="http://docker.io">Docker</a> is a Linux container, written in <a href="http://golang.org">Go</a> (yay!) and based on <a href="http://en.wikipedia.org/wiki/LXC">lxc</a> (self-described as &ldquo;chroot on steroids&rdquo;) and <a href="http://en.wikipedia.org/wiki/Aufs">AUFS</a>. Instead of providing a full VM, like you get with Vagrant, Docker provides you lightweight containers, that share the same kernel and allow to safely execute independent
+processes.</p>
+
+<p>Docker is attractive for many reasons:</p>
+
+<ul>
+<li><strong>Lightweight</strong>; images are much lighter than full VMs, and spinning off a new instance is lightning fast (in the range of seconds instead of minutes).</li>
+<li><strong>Version control of the images</strong>, which makes it much more convenient to handle builds.</li>
+<li><strong>Lots of images</strong> (again), just have a look at <a href="https://index.docker.io">the docker public index of images</a>.</li>
+</ul>
+
+
+<p>Let&rsquo;s set up a Docker container on your Vagrant machine:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;ol>
+</span><span class='line'>&lt;li>&lt;p> SSH in Vagrant if you&rsquo;re not in already:&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p> $ vagrant ssh&lt;/p>&lt;/li>
+</span><span class='line'>&lt;li>&lt;p> Install Docker,
+</span><span class='line'>&lt;a href="http://http://docs.docker.io/en/latest/installation/ubuntulinux/#ubuntu-precise-12-04-lts-64-bit">as explained on the official website&lt;/a>:&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>   $ sudo apt-get update
+</span><span class='line'>   $ sudo apt-get install linux-image-generic-lts-raring linux-headers-generic-lts-raring
+</span><span class='line'>   $ sudo reboot
+</span><span class='line'>   $ sudo sh -c &ldquo;curl &lt;a href="https://get.docker.io/gpg">https://get.docker.io/gpg&lt;/a> | apt-key add &ndash;&rdquo;
+</span><span class='line'>   $ sudo sh -c &ldquo;echo deb &lt;a href="http://get.docker.io/ubuntu">http://get.docker.io/ubuntu&lt;/a> docker main &gt; /etc/apt/sources.list.d/docker.list&rdquo;
+</span><span class='line'>   $ sudo apt-get update
+</span><span class='line'>   $ sudo apt-get install lxc-docker&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;ol>
+</span><span class='line'>&lt;li>&lt;p>Verify it worked by trying to build your first container:&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>$ sudo docker run -i -t ubuntu /bin/bash&lt;/p>&lt;/li>
+</span><span class='line'>&lt;li>&lt;p>Great, but we&rsquo;ll need more than a vanilla Linux. To add our dependencies, for example to run a Node.js + MongoDB app, we&rsquo;re gonna start by creating a &lt;code>Dockerfile&lt;/code>:&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>FROM ubuntu
+</span><span class='line'>MAINTAINER My Self &lt;a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#109;&#101;&#64;&#x65;&#120;&#x61;&#109;&#x70;&#108;&#101;&#46;&#99;&#111;&#109;">&#109;&#x65;&#x40;&#101;&#x78;&#97;&#x6d;&#x70;&#108;&#x65;&#46;&#x63;&#x6f;&#109;&lt;/a>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Fetch Nodejs from the official repo (binary .. no hassle to build, etc.)&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>ADD &lt;a href="http://nodejs.org/dist/v0.10.19/node-v0.10.19-linux-x64.tar.gz">http://nodejs.org/dist/v0.10.19/node-v0.10.19-linux-x64.tar.gz&lt;/a> /opt/&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Untar and add to the PATH&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>RUN cd /opt &amp;&amp; tar xzf node-v0.10.19-linux-x64.tar.gz
+</span><span class='line'>RUN ln -s /opt/node-v0.10.19-linux-x64 /opt/node
+</span><span class='line'>RUN echo &ldquo;export PATH=/opt/node/bin:$PATH&rdquo; &gt;&gt; /etc/profile&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>A little cheat for upstart ;)&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>RUN dpkg-divert &mdash;local &mdash;rename &mdash;add /sbin/initctl
+</span><span class='line'>RUN ln -s /bin/true /sbin/initctl&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Update apt sources list to fetch mongodb and a few key packages&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>RUN echo &ldquo;deb &lt;a href="http://archive.ubuntu.com/ubuntu">http://archive.ubuntu.com/ubuntu&lt;/a> precise universe&rdquo; &gt;&gt; /etc/apt/sources.list
+</span><span class='line'>RUN apt-get update
+</span><span class='line'>RUN apt-get install -y python git
+</span><span class='line'>RUN apt-get install -y mongodb&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Finally &ndash; we wanna be able to SSH in&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>RUN apt-get install -y openssh-server
+</span><span class='line'>RUN mkdir /var/run/sshd&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>And we want our SSH key to be added&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>RUN mkdir /root/.ssh &amp;&amp; chmod 700 /root/.ssh
+</span><span class='line'>ADD id_rsa.pub /root/.ssh/authorized_keys
+</span><span class='line'>RUN chmod 400 /root/.ssh/authorized_keys &amp;&amp; chown root. /root/.ssh/authorized_keys&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Expose a bunch of ports .. 22 for SSH and 3000 for our node app&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>EXPOSE 22 3000&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>ENTRYPOINT [&ldquo;/usr/sbin/sshd&rdquo;, &ldquo;-D&rdquo;]&lt;/p>&lt;/li>
+</span><span class='line'>&lt;li>&lt;p>Let&rsquo;s build our image now:&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>$ sudo docker build .&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Missing file id_rsa.pub &hellip; hahaha ! You need an ssh key for your vagrant user&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>$ ssh-keygen
+</span><span class='line'>$ cp -a /home/vagrant/.ssh/id_rsa.pub .&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Try again&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>$ sudo docker build .&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Great Success! High Five!&lt;/h1>&lt;/li>
+</span><span class='line'>&lt;li>&lt;p>Now, let&rsquo;s spin off a container with that setup and log into it (&lt;code>$MY_NEW_IMAGE_ID&lt;/code> is the last id the build process returned to you):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>$ sudo docker run -p 40022:22 -p 80:3000 -d $MY_NEW_IMAGE_ID
+</span><span class='line'>$ ssh root@localhost -p 40022</span></code></pre></td></tr></table></div></figure></notextile></div></p></li>
+</ol>
+</li>
+</ol>
+
+
+<p>You now have a Docker container, inside a Vagrant box (<em>Inception</em> style),
+ready to run a Node.js app.</p>
+
+<h2>Ansible</h2>
+
+<p><a href="http://ansible.cc">Ansible</a> is an orchestration and configuration management tool written in Python. If you want to learn more about Ansible (and you should…), <a href="/blog/2013/07/03/ansible-simply-kicks-ass.html">we wrote about it a few weeks ago</a>.</p>
+
+<p>Let&rsquo;s get to work. We&rsquo;re now gonna deploy an app in our container:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;ol>
+</span><span class='line'>&lt;li>&lt;p> &lt;a href="/blog/2013/07/03/ansible-simply-kicks-ass.html">Install Ansible&lt;/a>, as we showed you in our previous post.&lt;/p>&lt;/li>
+</span><span class='line'>&lt;li>&lt;p> Prepare your inventory file (&lt;code>host&lt;/code>):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p> app ansible_ssh_host=127.0.0.1 ansible_ssh_port=40022&lt;/p>&lt;/li>
+</span><span class='line'>&lt;li>&lt;p> Create a simple playbook to deploy our app (&lt;code>deploy.yml&lt;/code>):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;hr />
+</span><span class='line'>
+</span><span class='line'>&lt;ul>
+</span><span class='line'>&lt;li>hosts: app
+</span><span class='line'>user: root
+</span><span class='line'>tasks:
+</span><span class='line'>  # Fetch the code from github
+</span><span class='line'>
+</span><span class='line'>&lt;ul>
+</span><span class='line'>&lt;li>name: Ensure we got the App code
+</span><span class='line'>git:
+</span><span class='line'>  repo=git://github.com/madhums/node-express-mongoose-demo.git
+</span><span class='line'>  dest=/opt/node-express-mongoose-demo&lt;/li>
+</span><span class='line'>&lt;/ul>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p>  # NPM may or may not succeed, if you give it time, care, etc. it eventually works&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;ul>
+</span><span class='line'>&lt;li>name: Ensure the npm dependencies are installed
+</span><span class='line'>command:
+</span><span class='line'>  chdir=/opt/node-express-mongoose-demo
+</span><span class='line'>  /opt/node/bin/npm install
+</span><span class='line'>ignore_errors: yes&lt;/li>
+</span><span class='line'>&lt;/ul>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p>  # We will assume no changes in the default sample &ndash; or we should consider templates instead&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;ul>
+</span><span class='line'>&lt;li>name: Ensure the config files of the app
+</span><span class='line'>command:
+</span><span class='line'>  creates=/opt/node-express-mongoose-demo/config/$item.js
+</span><span class='line'>  cp /opt/node-express-mongoose-demo/config/$item.example.js /opt/node-express-mongoose-demo/config/$item.js
+</span><span class='line'>with_items:
+</span><span class='line'>
+</span><span class='line'>&lt;ul>
+</span><span class='line'>&lt;li>config&lt;/li>
+</span><span class='line'>&lt;li>imager&lt;/li>
+</span><span class='line'>&lt;/ul>
+</span><span class='line'>&lt;/li>
+</span><span class='line'>&lt;/ul>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p>  # &lt;code>initctl&lt;/code> is now linking to &lt;code>true&lt;/code> and we have no access to services
+</span><span class='line'>  # Need to fake the start&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;ul>
+</span><span class='line'>&lt;li>name: Ensure mongodb data folders
+</span><span class='line'>file:
+</span><span class='line'>  state=directory
+</span><span class='line'>  dest=$item
+</span><span class='line'>  owner=mongodb
+</span><span class='line'>  group=mongodb
+</span><span class='line'>with_items:
+</span><span class='line'>
+</span><span class='line'>&lt;ul>
+</span><span class='line'>&lt;li>/var/lib/mongodb&lt;/li>
+</span><span class='line'>&lt;li>/var/log/mongodb&lt;/li>
+</span><span class='line'>&lt;/ul>
+</span><span class='line'>&lt;/li>
+</span><span class='line'>&lt;/ul>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p>  # Super cheat combo !&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;ul>
+</span><span class='line'>&lt;li>name: Ensure mongodb is running
+</span><span class='line'>shell:
+</span><span class='line'>  LC_ALL=&lsquo;C&rsquo; /sbin/start-stop-daemon &mdash;background &mdash;start &mdash;quiet &mdash;chuid mongodb &mdash;exec  /usr/bin/mongod &mdash; &mdash;config /etc/mongodb.conf&lt;/li>
+</span><span class='line'>&lt;/ul>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p>  # Cheating some more !&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;ul>
+</span><span class='line'>&lt;li>name: Ensure the App is running
+</span><span class='line'>shell:
+</span><span class='line'>  chdir=/opt/node-express-mongoose-demo
+</span><span class='line'>  /opt/node/bin/npm start &amp;&lt;/li>
+</span><span class='line'>&lt;/ul>
+</span><span class='line'>&lt;/li>
+</span><span class='line'>&lt;/ul>
+</span><span class='line'>&lt;/li>
+</span><span class='line'>&lt;li>&lt;p> Run that baby:&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p> $ ansible-playbook -i host deploy.yml&lt;/p>&lt;/li>
+</span><span class='line'>&lt;li>&lt;p> We&rsquo;re done, point your browser at &lt;code>http://localhost:80&lt;/code> &ndash; assuming you have performed the redirection mentioned in the initial setup of your vagrant box.&lt;/p>&lt;/li>
+</span><span class='line'>&lt;/ol>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>That&rsquo;s it. You&rsquo;ve just deployed your app on Docker (in Vagrant).</p>
+
+<h2>Let&rsquo;s wrap it up</h2>
+
+<p>So we just saw (roughly) how these tools can be used, and how they can be
+complementary:</p>
+
+<ol>
+<li> Vagrant will provide you with a full VM, including the OS. It&rsquo;s great at providing you a Linux environment for example when you&rsquo;re on MacOS.</li>
+<li> Docker is a lightweight VM of some sort. It will allow you to build contained architectures faster and cheaper than with Vagrant.</li>
+<li> Ansible is what you&rsquo;ll use to orchestrate and fine-tune things. That&rsquo;s what you want to structure your deployment and orchestration strategy.</li>
+</ol>
+
+
+<p>It takes a bit of reading to get more familiar with these tools, and we&rsquo;ll likely follow up on this post in the next few weeks. However, especially as a small team, this kind of technology allows you to automate and commoditize huge parts of your development and ops workflows. We strongly encourage you to make that investment. It has helped us tremendously increase the pace and
+quality of our throughput.</p>
+]]></content>
+  </entry>
+  
+</feed>

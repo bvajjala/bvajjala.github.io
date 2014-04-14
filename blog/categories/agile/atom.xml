@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Agile | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/agile/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T14:12:32-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Nothing New Under the Sun]]></title>
+    <link href="http://bvajjala.github.io/blog/2011/06/07/nothing-new-under-sun/"/>
+    <updated>2011-06-07T08:00:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2011/06/07/nothing-new-under-sun</id>
+    <content type="html"><![CDATA[<p>Every generation of software developers needs its own fad. For my generation it was Agile, for generation before it was OOP, and before that it was another big thing. Gerald Weinberg, one of the most influential people in our industry, blogged yesterday about this issue. With over 50 years of experience in software development he knows what he is talking about. Read his <a href="http://secretsofconsulting.blogspot.com/2011/06/beyond-agile-programming.html">blog post</a> — he has a very good point.</p>
+
+<p>P.S. I&rsquo;m wondering what will be the next big thing. Will it be Cloud or <a href="/2013/01/15/embrace-big-data/">Big Data</a>?</p>
+]]></content>
+  </entry>
+  
+</feed>

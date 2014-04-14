@@ -1,1 +1,1391 @@
-My Octopress Page is coming soon ...
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="## Workflow : Deploying/Release Apps from Development to Production ## Deploying is a big part of the lives of most of our Engineering employees. We &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/about">about</a></li>
+  <li><a href="/devops-piepline">DevOps Piepline</a></li>
+  <li><a href="/ci">Continuous Integration</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+ </ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow From GitHub</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-04T09:50:50-05:00" pubdate data-updated="true">Feb 4<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>## Workflow : Deploying/Release Apps from Development to Production  ##</h1>
+
+<p>Deploying is a big part of the lives of most of our Engineering employees. We don&rsquo;t have a release manager and there are no set weekly deploys. Developers and designers are responsible for shipping new stuff themselves as soon as it&rsquo;s ready. This means that deploying needs to be as smooth and safe a process as possible.</p>
+
+<p>The best system we&rsquo;ve found so far to provide this flexibility is to have people deploy branches. Changes never get merged to master until they have been verified to work in production from a branch. This means that master is always stable; a safe point that we can roll back to if there&rsquo;s a problem.</p>
+
+<p>The basic workflow goes like this:</p>
+
+<ul>
+<li>Push changes to a branch in GitHub</li>
+<li>Wait for the build to pass on our CI server (Jenkins)</li>
+<li>Tell Hubot to deploy it</li>
+<li>Verify that the changes work and fix any problems that come up</li>
+<li>Merge the branch into master
+Not too long ago, however, this system wasn&rsquo;t very smart. A branch could accidentally be deployed before the build finished, or even if the build failed. Employees could mistakenly deploy over each other. As the company has grown, we&rsquo;ve needed to add some checks and balances to help us prevent these kinds of mistakes.</li>
+</ul>
+
+
+<h2>Safety First</h2>
+
+<p>The first thing we do now, when someone tries to deploy, is make a call to <a href="https://github.com/github/janky">Janky</a> to determine whether the current CI build is green. If it hasn&rsquo;t finished yet or has failed, we&rsquo;ll tell the deployer to fix the situation and try again.</p>
+
+<p>Next we check whether the application is currently &ldquo;locked&rdquo;. The lock indicates that a particular branch is being deployed in production and that no other deploys of the application should proceed for the moment. Successful builds on the master branch would otherwise get deployed automatically, so we don&rsquo;t want those going out while a branch is being tested. We also don&rsquo;t want another developer to accidentally deploy something while the branch is out.</p>
+
+<p>The last step is to make sure that the branch we&rsquo;re deploying contains the latest commit on master that has made it into production. Once a commit on master has been deployed to production, it should never be “removed” from production by deploying a branch that doesn’t have that commit in it yet.</p>
+
+<p>We use the GitHub API to verify this requirement. An endpoint on the github.com application exposes the SHA1 that is currently running in production. We submit this to the GitHub compare API to obtain the &ldquo;merge base&rdquo;, or the common ancestor, of master and the production SHA1. We can then compare this to the branch that we&rsquo;re attempting to deploy to check that the branch is caught up. By using the common ancestor of master and production, code that only exists on a branch can be removed from production, and changes that have landed on master but haven&rsquo;t been deployed yet won&rsquo;t require branches to merge them in before deploying.</p>
+
+<p>If it turns out the branch is behind, master gets merged into it automatically. We do this using the new :sparkles:Merging API:sparkles: that we&rsquo;re making available today. This merge starts a new CI build like any other push-style event, which starts a deploy when it passes.</p>
+
+<p>At this point the code actually gets deployed to our servers. We usually deploy to all servers for consistency, but a subset of servers can be specified if necessary. This subset can be by functional role — front-end, file server, worker, search, etc. — or we can specify an individual machine by name, e.g, &lsquo;fe7&rsquo;.</p>
+
+<h2>Watch it in action</h2>
+
+<p>What now? It depends on the situation, but as a rule of thumb, small to moderate changes should be observed running correctly in production for at least 15 minutes before they can be considered reasonably stable. During this time we monitor exceptions, performance, tweets, and do any extra verification that might be required. If non-critical tweaks need to be made, changes can be pushed to the branch and will be deployed automatically. In the event that something bad happens, rolling back to master only takes 30 seconds.</p>
+
+<h2>All done!</h2>
+
+<p>If everything goes well, it&rsquo;s time to merge the changes. At GitHub, we use Pull Requests for almost all of our development, so merging typically happens through the pull request page. We detect when the branch gets merged into master and unlock the application. The next deployer can now step up and ship something awesome.</p>
+
+<h1>How do we do it?</h1>
+
+<p>Most of the magic is handled by an internal deployment service called Heaven. At its core, Heaven is a catalog of Capistrano recipes wrapped up in a Sinatra application with a JSON API. Many of our applications are deployed using generic recipes, but more complicated apps can define their own to specify additional deployment steps. Wiring it up to Janky, along with clever use of post-receive hooks and the GitHub API, lets us hack on the niceties over time. Hubot is the central interface to both Janky and Heaven, giving everyone in Campfire great visibility into what’s happening all of the time. As of this writing, 75 individual applications are deployed by Heaven.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/">OpenStack : Git Gerrit and Jenkins Workflow</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:54:23-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Gerrit Workflow</h1>
+
+<p><img src="/downloads/code/GerritGitJenkinsWorkflow.png" title="Git Gerrit Jenkins Workflow" alt="Alt text in case picture load fails" /></p>
+
+<h2>Git Account Setup</h2>
+
+<p>You&rsquo;ll need a <a href="https://login.launchpad.net">Launchpad account</a>, since this is how the Web interface for the Gerrit Code Review system will identify you. This is also useful for automatically crediting bug fixes to you when you address them with your code commits.</p>
+
+<p>If you haven&rsquo;t already, <a href="https://www.openstack.org/join/">join The OpenStack Foundation</a> (it&rsquo;s free and required for all code contributors). Among other privileges, this also allows you to vote in elections and run for elected positions within The OpenStack Project. When signing up for Foundation Membership, make sure to give the same E-mail address you&rsquo;ll use for code contributions, since this will need to match your preferred E-mail address in Gerrit.</p>
+
+<p>Visit <a href="https://review.openstack.org/">https://review.openstack.org/</a> and click the Sign In link at the top-right corner of the page. Log in with your Launchpad ID.</p>
+
+<p>Because Gerrit uses Launchpad OpenID single sign-on, you won&rsquo;t need a separate password for Gerrit, and once you log in to one of Launchpad, Gerrit, or Jenkins, you won&rsquo;t have to enter your password for the others.</p>
+
+<p>You&rsquo;ll also want to upload an SSH key while you&rsquo;re at it, so that you&rsquo;ll be able to commit changes for review later.</p>
+
+<p>Ensure that you have run these steps to let git know about your email address:</p>
+
+<figure class='code'><figcaption><span>Git Config </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git config --global user.name "Firstname Lastname"
+</span><span class='line'>git config --global user.email "your_email@youremail.com"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To check your git configuration:</p>
+
+<figure class='code'><figcaption><span>Git Config </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git config --list</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Git Review Installation</h2>
+
+<p>We recommend using the &ldquo;git-review&rdquo; tool which is a git subcommand that handles all the details of working with Gerrit, the code review system used in OpenStack development. Before you start work, make sure you have git-review installed on your system.</p>
+
+<p>On Ubuntu, MacOSx, or most other Unix-like systems, it is as simple as:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pip install git-review</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On Ubuntu Precise (12.04) and later, git-review is included in the distribution, so install it as any other package:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get install git-review</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On Fedora 16 and later, git-review is included into the distribution, so install it as any other package:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install git-review</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On Fedora 15 and earlier you have to install pip (its package name is <code>python-pip</code>), then install git-review using pip in a conventional way.</p>
+
+<p>On Red Hat Enterprise Linux, you must first enable the EPEL repository, then install it as any other package:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install git-review</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On openSUSE 12.2 and later, git-review is included in the distribution under the name python-git-review, so install it as any other package:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zypper in python-git-review</span></code></pre></td></tr></table></div></figure>
+
+
+<p>All of git-review&rsquo;s interactions with gerrit are sequences of normal git commands. If you want to know more about what it&rsquo;s doing, just add -v to the options and it will print out all of the commands it&rsquo;s running.</p>
+
+<h2>Project Setup</h2>
+
+<p>Clone a project in the usual way, for example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://git.openstack.org/openstack/nova.git</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You may want to ask git-review to configure your project to know about Gerrit at this point. If you don&rsquo;t, it will do so the first time you submit a change for review, but you probably want to do this ahead of time so the Gerrit Change-Id commit hook gets installed. To do so (again, using Nova as an example):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd nova
+</span><span class='line'>git review -s</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Git-review checks that you can log in to gerrit with your ssh key. It assumes that your gerrit/launchpad user name is the same as the current running user. If that doesn&rsquo;t work, it asks for your gerrit/launchpad user name. If you don&rsquo;t remember the user name go to the settings page on gerrit to check it out (it&rsquo;s not your email address).</p>
+
+<p>Note that you can verify the SSH host keys for review.openstack.org here: <a href="https://review.openstack.org/#/settings/ssh-keys">https://review.openstack.org/#/settings/ssh-keys</a></p>
+
+<p>If you get the error &ldquo;We don&rsquo;t know where your gerrit is.&rdquo;, you will need to add a new git remote. The url should be in the error message. Copy that and create the new remote.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git remote add gerrit ssh://&lt;username>@review.openstack.org:29418/openstack/nova.git</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the project directory, you have a <code>.git</code> hidden directory and a <code>.gitreview</code> hidden file. You can see them with:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ls -la</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>1.4 Normal Workflow</h2>
+
+<p>Once your local repository is set up as above, you must use the following workflow.</p>
+
+<p>Make sure you have the latest upstream changes:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git remote update
+</span><span class='line'>git checkout master
+</span><span class='line'>git pull --ff-only origin master</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create a topic branch to hold your work and switch to it. If you are working on a blueprint, name your topic branch bp/BLUEPRINT where BLUEPRINT is the name of a blueprint in launchpad (for example, &ldquo;bp/authentication&rdquo;). The general convention when working on bugs is to name the branch bug/BUG-NUMBER (for example, &ldquo;bug/1234567&rdquo;). Otherwise, give it a meaningful name because it will show up as the topic for your change in Gerrit.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git checkout -b TOPIC-BRANCH</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To generate documentation artifacts, navigate to the directory where the pom.xml file is located for the project and run the following command:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mvn clean generate-sources</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>1.4.1 Committing Changes</h3>
+
+<p>Git commit messages should start with a short 50 character or less summary in a single paragraph. The following paragraph(s) should explain the change in more detail.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>If your changes addresses a blueprint or a bug, be sure to mention them in the commit message using the following syntax:
+</span><span class='line'>
+</span><span class='line'>Implements: blueprint BLUEPRINT
+</span><span class='line'>Closes-Bug: ####### (Partial-Bug or Related-Bug are options)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Adds keystone support
+</span><span class='line'>
+</span><span class='line'>...Long multiline description of the change...
+</span><span class='line'>
+</span><span class='line'>Implements: blueprint authentication
+</span><span class='line'>Closes-Bug: #123456
+</span><span class='line'>Change-Id: I4946a16d27f712ae2adf8441ce78e6c0bb0bb657</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that in most cases the Change-Id line should be automatically added by a Gerrit commit hook that you will want to install. See Project Setup for details on configuring your project for Gerrit. If you already made the commit and the Change-Id was not added, do the Gerrit setup step and run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git commit --amend</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The commit hook will automatically add the Change-Id when you finish amending the commit message, even if you don&rsquo;t actually make any changes.</p>
+
+<p>Make your changes, commit them, and submit them for review:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git commit -a
+</span><span class='line'>git review</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Caution: Do not check in changes on your master branch. Doing so will cause merge commits when you pull new upstream changes, and merge commits will not be accepted by Gerrit.</em></p>
+
+<p>Prior to checking in make sure that you run &ldquo;<a href="http://testrun.org/tox/latest/">tox</a>&rdquo;.</p>
+
+<h3>1.4.2 Review</h3>
+
+<h3>1.4.3 Work in Progress</h3>
+
+<h3>1.4.4 Long-lived Topic Branches</h3>
+
+<h3>1.4.5 Updating a Change</h3>
+
+<h3>1.4.6 Add dependency</h3>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing a RESTful API That Doesn&#8217;t Suck</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:23:30-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/03/22/designing-a-restful-api-that-doesn-t-suck.html">Designing A RESTful API That Doesn&rsquo;t Suck</a></h2>
+
+<p>As we&rsquo;re getting closer to shipping the first version of <a href="http://devo.ps">devo.ps</a> and we are joined by a few new team members, the team took the time to review the few principles we followed when designing our RESTful JSON API. A lot of these can be found on <a href="https://blog.apigee.com/taglist/rest_api_design">apigee&rsquo;s blog</a> (a recommended read). Let me give you the gist of it:</p>
+
+<ul>
+<li><p><strong>Design your API for developers first</strong>, they are the main users. In that respect, simplicity and intuitivity matter.</p></li>
+<li><p><strong>Use <a href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods">HTTP verbs</a></strong> instead of relying on parameters (e.g. <code>?action=create</code>). HTTP verbs map nicely with <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a>:</p>
+
+<ul>
+<li><code>POST</code> for <em>create</em>,</li>
+<li><code>GET</code> for <em>read</em>,</li>
+<li><code>DELETE</code> for <em>remove</em>,</li>
+<li><code>PUT</code> for <em>update</em> (and <code>PATCH</code> too).</li>
+</ul>
+</li>
+<li><p><strong>Use <a href="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes">HTTP status codes</a></strong>, especially for errors (authentication required, error on the server side, incorrect parameters)… There are plenty to choose from, here are a few:</p>
+
+<ul>
+<li><code>200</code>: <em>OK</em></li>
+<li><code>201</code>: <em>Created</em></li>
+<li><code>304</code>: <em>Not Modified</em></li>
+<li><code>400</code>: <em>Bad Request</em></li>
+<li><code>401</code>: <em>Unauthorized</em></li>
+<li><code>403</code>: <em>Forbidden</em></li>
+<li><code>404</code>: <em>Not Found</em></li>
+<li><code>500</code>: <em>Internal Server Error</em></li>
+</ul>
+</li>
+<li><p><strong>Simple URLs for resources: first a noun for the collection, then the item</strong>. For example <code>/emails</code> and <code>/emails/1234</code>; the former gives you the collection of emails, the second one a specific one identified by its internal id.</p></li>
+<li><p><strong>Use verbs for special actions</strong>. For example, <code>/search?q=my+keywords</code>.</p></li>
+<li><p><strong>Keep errors simple but verbose (and use HTTP codes)</strong>. We only send something like <code>{ message: "Something terribly wrong happened" }</code> with the proper status code (e.g. <code>401</code> if the call requires authentication) and log more verbose information (origin, error code…) in the backend for debugging and monitoring.</p></li>
+</ul>
+
+
+<p>Relying on HTTP status codes and verbs should already help you keep your API calls and responses lean enough. Less crucial, but still useful:</p>
+
+<ul>
+<li><strong>JSON first</strong>, then extend to other formats if needed and if time permits.</li>
+<li><strong><a href="http://en.wikipedia.org/wiki/Unix_time">Unix time</a></strong>, or you&rsquo;ll have a bad time.</li>
+<li><strong>Prepend your URLs with the API version</strong>, like <code>/v1/emails/1234</code>.</li>
+<li><strong>Lowercase everywhere in URLs</strong>.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:21:03-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/06/19/I-can-haz-init-script.html">I Can Haz Init Script</a></h2>
+
+<p>Something went awfully wrong, and a rogue process is eating up all of the resources on one of your servers. You have no other choice but to restart it. No big deal, really; this is the age of disposable infrastructure after all. Except when it comes back up, everything starts going awry. Half the stuff supposed to be running is down and it&rsquo;s screwing with the rest of your setup.</p>
+
+<p><img src="/images/posts/y-u-no-guy.png" alt="INIT SCRIPTS, Y U NO LIKE?" /></p>
+
+<p>You don&rsquo;t get to think about them very often, but init scripts are a key piece of a sound, scalable strategy for your infrastructure. It&rsquo;s a <a href="">mandatory best practice</a>. Period. And there are quite a few things in the way of getting them to work properly at scale in production environments. It&rsquo;s a tough world out there.</p>
+
+<h3>What we&rsquo;re dealing with…</h3>
+
+<h4>Packages</h4>
+
+<p>Often enough, you&rsquo;re gonna end up installing a service using the package manager of your distro: <code>yum</code>, <code>apt-get</code>, you name it. These packages usually come with an init script that should get you started.</p>
+
+<p>Sadly, as your architecture grows in complexity, you&rsquo;ll probably run into some walls. Wanna have multiple memcache buckets, or several instances of redis running on the same box? You&rsquo;re out of luck buddy. Time to hack your way
+through:</p>
+
+<ul>
+<li>Redefine your start logic,</li>
+<li>Load one or multiple config files from <code>/etc/defaults</code> or <code>/etc/sysconfig</code>,</li>
+<li>Deal with the PIDs, log and lock files,</li>
+<li>Implement conditional logic to start/stop/restart one or more of the services,</li>
+<li>Realize you&rsquo;ve messed something up,</li>
+<li>Same player shoot again.</li>
+</ul>
+
+
+<p>Honestly: PITA.</p>
+
+<h4>Built from source</h4>
+
+<p>First things first: <strong>you shouldn&rsquo;t be building from source</strong> (unless you really, really need to).</p>
+
+<p>Now if you do, you&rsquo;ll have to be thorough: there may be samples of init scripts in there, but you&rsquo;ll have to dig them out. <code>/contrib</code>, <code>/addons</code>, …it&rsquo;s never in the same place.</p>
+
+<p>And that makes things &ldquo;fun&rdquo; when you&rsquo;re <a href="http://devo.ps/blog/2013/03/06/troubleshooting-5minutes-on-a-yet-unknown-box.html">trying to unscrew things on a box</a>:</p>
+
+<ul>
+<li>You figured out that MySQL is running from <code>/home/user/src/mysql</code>,</li>
+<li>You check if there&rsquo;s an init script: no luck this time…</li>
+<li>You try to understand what exactly launched <code>mysqld_safe</code>,</li>
+<li>You spend a while digging into the bash history smiling at typos,</li>
+<li>You stumble on a <code>run.sh</code> script (uncommented, of course) in the home directory. Funny enough, it seems to be starting everything from MySQL, NGINX and php-fpm to the coffee maker.</li>
+<li>You make a mental note to try and track down the &ldquo;genius&rdquo; who did that mess of a job, and get busy with converting everything to a proper init script.</li>
+</ul>
+
+
+<p>Great.</p>
+
+<h3>Why existing solutions suck</h3>
+
+<p>Well, based on what we&rsquo;ve just seen, you really only have two options:</p>
+
+<ol>
+<li> <strong>DIY</strong>; but if you&rsquo;re good at what you do, you&rsquo;re probably also lazy. You may do it the first couple times, but that&rsquo;s not gonna scale, especially when dealing with the various flavors of init daemons (upstart, systemd…),</li>
+<li> <strong>Use that thing called &ldquo;the Internet&rdquo;</strong>; you read through forum pages, issue queues, gists and if you&rsquo;re lucky you&rsquo;ll find a perfect one (or more likely 10 sucky ones). Kudos to all those of whom shared their work, but you&rsquo;ll probably be back to option 1.</li>
+</ol>
+
+
+<h3>We can do better than this</h3>
+
+<p>You&rsquo;ll find a gazillion websites for pictures of kittens, but as far as I know, there is no authoritative source for init scripts. That&rsquo;s just not right: we have to fix it. A few things I&rsquo;m aiming for:</p>
+
+<ul>
+<li><strong>Scalable</strong>; allow for multiple instances of a service to be started at once from different config files (see the memcache/redis example),</li>
+<li><strong>Secure</strong>; ensure <code>configtest</code> is run before a restart/reload (because, you know, a faulty config file preventing the service to restart is kind of a bummer),</li>
+<li><strong>Smart</strong>; ensuring for example that the cache is aggressively flushed before restarting your database (so that you don&rsquo;t end-up waiting 50 min for the DB to cleanly shutdown).</li>
+</ul>
+
+
+<p><a href="https://github.com/devo-ps/init-scripts">I&rsquo;ve just created a repo</a> where I&rsquo;ll be dumping various init scripts that will hopefully be helpful to others. I&rsquo;d love to get suggestions or help.</p>
+
+<p>And by the way, things are not much better with applications, though we&rsquo;re trying our best to improve things there too with things like <a href="https://github.com/Unitech/pm2">pm2</a> (fresh and shinny, more about it in a later post).</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye Node-forever</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:15:10-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/06/26/goodbye-node-forever-hello-pm2.html">Goodbye node-forever, hello PM2</a></h2>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm22.png" alt="pm2 logo" /></p>
+
+<p>It&rsquo;s no secret that the devo.ps team has a crush on Javascript; node.js in the backend, AngularJS for our clients, there isn&rsquo;t much of our stack that isn&rsquo;t at least in part built with it. Our approach of building <a href="http://devo.ps/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">static clients and RESTful JSON APIs</a> means that we run a lot of node.js and I must admit that, despite all of it awesomeness, node.js still is a bit of a
+headache when it comes to running in production. Tooling and best practices (think monitoring, logging, error traces…) are still lacking when compared to some of the more established languages.</p>
+
+<p>So far, we had been relying on the pretty nifty <a href="https://github.com/nodejitsu/forever">node-forever</a>. Great tool, but a few things were missing:</p>
+
+<ul>
+<li>Limited monitoring and logging abilities,</li>
+<li>Poor support for process management configuration,</li>
+<li>No support for clusterization,</li>
+<li>Aging codebase (which meant frequent failures when upgrading Node).</li>
+</ul>
+
+
+<p>This is what led us to write <a href="https://github.com/Unitech/pm2">PM2</a> in the past couple months. We thought we&rsquo;d give you a quick look at it while we&rsquo;re nearing a production ready release.</p>
+
+<h3>So what&rsquo;s in the box?</h3>
+
+<p>First things first, you can install it with <code>npm</code>:</p>
+
+<pre><code>npm install -g pm2
+</code></pre>
+
+<p>Let&rsquo;s open things up with the usual comparison table:</p>
+
+<p>FeatureForeverPM2</p>
+
+<p>Keep Alive</p>
+
+<p>✔</p>
+
+<p>✔</p>
+
+<p>Coffeescript</p>
+
+<p>✔</p>
+
+<p>Log aggregation</p>
+
+<p>✔</p>
+
+<p>API</p>
+
+<p>✔</p>
+
+<p>Terminal monitoring</p>
+
+<p>✔</p>
+
+<p>Clustering</p>
+
+<p>✔</p>
+
+<p>JSON configuration</p>
+
+<p>✔</p>
+
+<p>And now let me geek a tad more about the main features…</p>
+
+<h3>Native clusterization</h3>
+
+<p>Node v0.6 introduced the cluster feature, allowing you to share a socket across multiple networked Node applications. Problem is, it doesn&rsquo;t work out of the box and requires some tweaking to handle master and children processes.</p>
+
+<p>PM2 handles this natively, without any extra code: PM2 itself will act as the master process and wrap your code into a special clustered process, as Nodejs does, to add some global variables to your files.</p>
+
+<p>To start a clustered app using all the CPUs you just need to type something like that:</p>
+
+<pre><code>$ pm2 start app.js -i max
+</code></pre>
+
+<p>Then;</p>
+
+<pre><code>$ pm2 list
+</code></pre>
+
+<p>Which should display something like (ASCII UI FTW);</p>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-list.png" alt="pm2 list" /></p>
+
+<p>As you can see, your app is now forked into multiple processes depending on the number of CPUs available.</p>
+
+<h3>Monitoring <em>a la</em> termcaps-HTOP</h3>
+
+<p>It&rsquo;s nice enough to have an overview of the running processes and their status with the <code>pm2 list</code> command. But what about tracking their resources consumption? Fear not:</p>
+
+<pre><code>$ pm2 monit
+</code></pre>
+
+<p>You should get the CPU usage and memory consumption by process (and cluster).</p>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-monit.png" alt="pm2 monit" /></p>
+
+<p><strong>Disclaimer</strong>: <a href="https://github.com/arunoda/node-usage">node-usage</a> doesn&rsquo;t support MacOS for now (feel free to PR). It works just fine on Linux though.</p>
+
+<p>Now, what about checking on our clusters and GC cleaning of the memory stack?
+Let&rsquo;s consider you already have an HTTP benchmark tool (if not, you should definitely check <a href="https://github.com/wg/wrk">WRK</a>):</p>
+
+<pre><code>$ express bufallo     // Create an express app
+$ cd bufallo
+$ npm install
+$ pm2 start app.js -i max
+$ wrk -c 100 -d 100 http://localhost:3000/
+</code></pre>
+
+<p>In another terminal, launch the monitoring option:</p>
+
+<pre><code>$ pm2 monit
+</code></pre>
+
+<p>W00t!</p>
+
+<h3>Realtime log aggregation</h3>
+
+<p>Now you have to manage multiple clustered processes: one who&rsquo;s crawling data, another who is processing stuff, and so on so forth. That means logs, lots of it. You can still handle it the old fashioned way:</p>
+
+<pre><code>$ tail -f /path/to/log1 /path/to/log2 ...
+</code></pre>
+
+<p>But we&rsquo;re nice, so we wrote the <code>logs</code> feature:</p>
+
+<pre><code>$ pm2 logs
+</code></pre>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-logs.png" alt="pm2 monit" /></p>
+
+<h3>Resurrection</h3>
+
+<p>So things are nice and dandy, your processes are humming and you need to do a hard restart. What now? Well, first, dump things:</p>
+
+<pre><code>$ pm2 dump
+</code></pre>
+
+<p>From there, you should be able to resurrect things from file:</p>
+
+<pre><code>$ pm2 kill     // let's simulate a pm2 stop
+$ pm2 resurect // All my processes are now up and running 
+</code></pre>
+
+<h3>API Health point</h3>
+
+<p>Let&rsquo;s say you want to monitor all the processes managed by PM2, as well as the status of the machine they run on (and maybe even build a nice Angular app to consume this API…):</p>
+
+<pre><code>$ pm2 web
+</code></pre>
+
+<p>Point your browser at <code>http://localhost:9615</code>, aaaaand… done!</p>
+
+<h3>And there&rsquo;s more…</h3>
+
+<ul>
+<li>Full tests,</li>
+<li>Generation of <code>update-rc.d</code> (<code>pm2 startup</code>), though still very alpha,</li>
+<li>Development mode with auto restart on file change (<code>pm2 dev</code>), still very drafty too,</li>
+<li>Log flushing,</li>
+<li>Management of your applications fleet via JSON file,</li>
+<li>Log uncaught exceptions in error logs,</li>
+<li>Log of restart count and time,</li>
+<li>Automated killing of processes exiting too fast.</li>
+</ul>
+
+
+<h3>What&rsquo;s next?</h3>
+
+<p>Well first, you could show your love on Github (we love stars):
+<a href="https://github.com/Unitech/pm2">https://github.com/Unitech/pm2</a>.</p>
+
+<p>We developed PM2 to offer an advanced and complete solution for Node process management. We&rsquo;re looking forward to getting more people helping us getting there: pull requests are more than welcome. A few things already on the
+roadmap that we&rsquo;ll get right at once we have a stable core:</p>
+
+<ul>
+<li>Remote administration/status checking,</li>
+<li>Built-in inter-processes communication channel (message bus),</li>
+<li>V8 GC memory leak detection,</li>
+<li>Web interface,</li>
+<li>Persistent storage for monitoring data,</li>
+<li>Email notifications.</li>
+</ul>
+
+
+<p>Special thanks to <a href="https://github.com/makara">Makara Wang</a> for concepts/tools and <a href="https://github.com/rlidwka">Alex Kocharin</a> for advices and pull requests.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/ansible-simply-kicks-ass/">Ansible Simply Kicks Ass</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:12:31-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/07/03/ansible-simply-kicks-ass.html">Ansible Simply Kicks Ass</a></h2>
+
+<p>The devo.ps team has been putting quite a few tools to the test over the years when it comes to managing infrastructures. We&rsquo;ve developed some ourselves and have adopted others. While the choice to use one over another is not always as clear-cut as we&rsquo;d like (I&rsquo;d love to rant about monitoring but will leave that for a later post), we&rsquo;ve definitely developed kind of a crush for <a href="https://github.com/ansible/ansible">Ansible</a> in the past 6 months. We went through years of using Puppet, then Chef and more recently Salt Stack, before Ansible gained unanimous adoption among our team.</p>
+
+<p>What makes it awesome? Well, on top of my head:</p>
+
+<ul>
+<li>It&rsquo;s <strong>agent-less</strong> and works by default in <strong>push mode</strong> (that last point is subjective, I know).</li>
+<li>It&rsquo;s <strong>easy to pick up</strong> (honestly, try and explain Chef or Puppet to a developer and see how long that takes you compared to Ansible).</li>
+<li>It&rsquo;s <strong>just Python</strong>. It makes it easier for people like me to contribute (Ruby is not necessarily that mainstream among ops) and also means minimal dependency on install (Python is shipped by default with Linux).</li>
+<li>It&rsquo;s <strong>picking up steam</strong> at an impressive pace (I believe we&rsquo;re at 10 to 15 pull requests a day).</li>
+<li>And it has all of the good stuff: idempotence, roles, playbooks, tasks, handlers, lookups, callback plugins…</li>
+</ul>
+
+
+<p>Now, Ansible is still very much in its infancy and some technologies may not yet be supported. But there are a great deal of teams pushing hard on contributions, including us. In the past few weeks, for example, we&rsquo;ve
+contributed both Digital Ocean and Linode modules. And we have a lot more coming, including some experimentations with Vagrant.</p>
+
+<p>Now, an interesting aspect of Ansible, and one that makes it so simple, is that it comes by default with a tool-belt. Understand that it is shipped with a range of modules that add support for well known technologies: <a href="http://www.ansibleworks.com/docs/modules.html">EC2,
+Rackspace, MySQL, PostgreSQL, rpm, apt,…</a>. This now includes our
+Linode contribution. That means that with the latest version of Ansible you can spin off a new Linode box as easily as:</p>
+
+<pre><code>ansible all -m linode -a "name='my-linode-box' plan=1 datacenter=2 distribution=99 password='p@ssword' "
+</code></pre>
+
+<p>Doing this with Chef would probably mean chasing down a knife plugin for adding Linode support, and would simply require a full Chef stack (say hello to RabbitMQ, Solr, CouchDB and a gazillion smaller dependencies). Getting
+Ansible up and running is as easy as:</p>
+
+<pre><code>pip install ansible
+</code></pre>
+
+<p>Et voila! You gotta appreciate the simple things in life. Especially the life of a sysadmin.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/code-reuse-with-node-dot-js/">Code Reuse With Node.js</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:09:35-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/07/11/code-reuse-with-nodejs.html">Code Reuse With Node.js</a></h2>
+
+<p><img src="http://devo.ps/images/posts/recycle.png" alt="Code recycling" /></p>
+
+<p>Any project that grows to a decent size will need to re-use parts of its code extensively. That often means, through the development cycle, a fair amount of rewrites and refactoring exercises. Elegant code re-use is hard to pull off.</p>
+
+<p>With node.js, which we use quite a bit at <a href="http://devo.ps">devo.ps</a>, the most common ways to do this often rely on prototype or class inheritance. The problem is, as the inheritance chain grows, managing attributes and functions
+can become quite complex.</p>
+
+<p>The truth is, people usually just need the objects. This led us to adopt a certain form of object-based prototyping. We believe it to be leaner and more straightforward in most cases. But before we get there, let&rsquo;s have a look at how people usually approach this issue.</p>
+
+<h2>The &ldquo;Function copy&rdquo;</h2>
+
+<p>Usually in the form of <code>this[key] = that[key]</code>. A quick example:</p>
+
+<pre><code>var objectA = {
+    lorem: 'lorem ipsum'
+};
+var objectB = {};
+
+// Direct copy of a string, but you get the idea
+objectB.lorem = objectA.lorem;
+console.log(objectB); // Will output: { lorem: 'lorem ipsum' }
+</code></pre>
+
+<p>Crude, but it works. Next…</p>
+
+<h2>Object.defineProperties()</h2>
+
+<p>The previous method may work with simple structures, but it won&rsquo;t hold when
+your use cases become more complex. That&rsquo;s when I usually call my buddy
+<code>Object.defineProperties()</code>:</p>
+
+<pre><code>var descriptor = Object.getOwnPropertyDescriptor;
+var defineProp = Object.defineProperty;
+
+var objectA = {};
+var objectB = {};
+var objectC = {};
+
+objectA.__defineGetter__('lorem', function() {
+    return 'lorem ipsum';
+});
+console.log(objectA); // Will output: { lorem: [Getter] }
+
+// Direct copy, which copies the result of the getter.
+objectB.lorem = objectA.lorem;
+console.log(objectB); // Will output: { lorem: 'lorem ipsum' }
+
+// Copying with Object.defineProperty(), and it copies the getter itself.
+defineProp(objectC, 'lorem', descriptor(objectA, 'lorem'));
+console.log(objectC); // Will output: { lorem: [Getter] }
+</code></pre>
+
+<p>I often use a library for that. A couple examples (more or less the same stuff
+with different coding styles):</p>
+
+<ol>
+<li><p> <strong><a href="https://github.com/medikoo/es5-ext">es5-ext</a></strong></p>
+
+<p> var extend = require(&lsquo;es5-ext/lib/Object/extend-properties&rsquo;);</p>
+
+<p> var objectA = {};
+ var objectC = {};</p>
+
+<p> objectA.<strong>defineGetter</strong>(&lsquo;lorem&rsquo;, function() {
+     return &lsquo;lorem ipsum&rsquo;;
+ });</p>
+
+<p> extend(objectC, objectA);
+ console.log(objectC); // Will output: { lorem: [Getter] }</p></li>
+<li><p> <strong><a href="https://github.com/devo-ps/carcass">Carcass</a></strong></p>
+
+<p> var carcass = require(&lsquo;carcass&rsquo;);</p>
+
+<p> var objectA = {};
+ var objectC = {};</p>
+
+<p> objectA.<strong>defineGetter</strong>(&lsquo;lorem&rsquo;, function() {
+     return &lsquo;lorem ipsum&rsquo;;
+ });</p>
+
+<p> carcass.mixable(objectC);
+ objectC.mixin(objectA);
+ console.log(objectC); // Will output: { mixin: [Function: mixin], lorem: [Getter] }</p></li>
+</ol>
+
+
+<p>Slightly better, but not optimal. Now, let&rsquo;s see what we end up doing more and
+more often:</p>
+
+<h2>Prototyping through objects</h2>
+
+<p>The basic idea is that we prepare some functions, wrap them into an object which then becomes a &ldquo;feature&rdquo;. That feature can then be re-used by simply merging it with the targeted structure (object or prototype).</p>
+
+<p>Let&rsquo;s take the example of the <a href="https://github.com/devo-ps/carcass/blob/master/lib/proto/loaderSync.js">loaderSync</a> script in <a href="https://github.com/devo-ps/carcass">Carcass</a>:</p>
+
+<pre><code>module.exports = {
+    source: source,
+    parser: parser,
+    reload: reload,
+    get: get
+};
+
+function get() {
+
+(...)
+</code></pre>
+
+<p>Once you copy the functions to an object, this object becomes a &ldquo;loader&rdquo; that can load a &ldquo;source&rdquo; synchronously with a &ldquo;parser&rdquo;. A &ldquo;source&rdquo; can be a file path and the &ldquo;parser&rdquo; can be simply Node.js&#8217; <code>require</code> function.</p>
+
+<p>Let&rsquo;s now see how to use this with a couple object builders. Once again, I&rsquo;ll borrow an example from Carcass; the <a href="https://github.com/devo-ps/carcass/blob/master/benchmark/proto.loaderSync.js">loaderSync benchmark script</a>. The first builder generates a function and copies the methods from what we&rsquo;ve prepared. The second one copies the methods to the prototype of a builder class:</p>
+
+<pre><code>(...)
+
+function LoaderA(_source) {
+    function loader() {
+        return loader.get();
+    }
+    loader.mixin = mixin;
+    loader.mixin(loaderSync);
+    loader.source(_source);
+    return loader;
+}
+
+(...)
+
+function LoaderC(_source) {
+    if (!(this instanceof LoaderC)) return new LoaderC(_source);
+    this.source(_source);
+}
+LoaderC.prototype.mixin = mixin;
+LoaderC.prototype.mixin(loaderSync);
+
+(...)
+</code></pre>
+
+<p>Here we can see the two approaches. Let&rsquo;s compare them quickly:</p>
+
+<p>FeatureLoader ALoader C</p>
+
+<p><strong>Instantiating</strong>
+<code>var a = LoaderA(...)</code></p>
+
+<p><code>var c = LoaderC(...)</code> or <code>var c = new LoaderC(...)</code></p>
+
+<p><strong>Appearance</strong>
+Generates a function</p>
+
+<p>Builds a typical instance which is an object.</p>
+
+<p><strong>Invoking directly</strong>
+<code>a()</code> or <code>a.get()</code></p>
+
+<p><code>c.get()</code></p>
+
+<p><strong>Invoking as a callback</strong>
+<code>ipsum(a)</code></p>
+
+<p><code>ipsum(c.get.bind(c))</code></p>
+
+<h2><strong>Performance † of instantiating</strong></h2>
+
+<p>100x faster</p>
+
+<p><strong>Performance of invoking</strong>
+<em>idem</em></p>
+
+<p><em>idem</em></p>
+
+<p><strong>†</strong>: (check it yourself by <a href="https://github.com/devo-ps/carcass/blob/master/Makefile">benchmarking Carcass with <code>make bm</code></a>)</p>
+
+<h3>&ldquo;Protos&rdquo; and beyond</h3>
+
+<p>That last approach is gaining traction among our team; we prepare functions for our object builders (which, by the way, we call &ldquo;protos&rdquo;). While we still choose to use prototypes in some occurrences, it is mainly because it is
+faster to get done. For the sake of convenience, we also sometimes rely on functions rather than objects to invoke our &ldquo;protos&rdquo;, however keep in mind that this is a performance trade-off.</p>
+
+<p>I&rsquo;ll wrap this up mentioning one more method we use, admittedly less often: &ldquo;Object alter&rdquo;. The idea is to rely on an &ldquo;alter&rdquo; function designed to change objects passed to it. This is sometimes also called a &ldquo;mixin&rdquo;. An example from <a href="https://github.com/visionmedia/configurable.js">vsionmedia&rsquo;s trove of awesomeness on Github</a>:</p>
+
+<pre><code>(...)
+
+module.exports = function(obj){
+
+    obj.settings = {};
+
+    obj.set = function(name, val){
+        (...)
+    };
+
+    (...)
+
+    return obj;
+};
+</code></pre>
+
+<h3>Resources</h3>
+
+<ul>
+<li><a href="http://killdream.github.io/2011/10/09/understanding-javascript-oop.html">A case for prototypes</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">MDN Object reference</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/automation-and-friction/">Automation and Friction</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:06:45-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/06/20/automation-and-friction.html">Automation And Friction</a></h2>
+
+<p>I&rsquo;ll admit that the devo.ps team is a lazy bunch; we like to forget about things, especially the hard stuff. Dealing with a complex process invariably leads one of us to vent about how &ldquo;we should automate that stuff&rdquo;. That&rsquo;s what our team does day and night:</p>
+
+<ol>
+<li> Dumb things down, lower barriers of entry, and then…</li>
+<li> <strong>Automate all the things!</strong></li>
+</ol>
+
+
+<p>This has transpired through every layer of our company, from engineering to operations. Recently we&rsquo;ve started pushing on a third point, but first let me rant a bit…</p>
+
+<h3>The ever increasing surface of friction</h3>
+
+<p>The past few years have seen a healthy push on UI and UX. Even developer tools and enterprise software, historically less user-friendly, have started adopting that trend. We now have things like Github. Great.</p>
+
+<p>This trend grew in parallel with the adoption of SaaS. SaaS are the results of teams focused on specific problems, with the user experience often being a key component (not to undervalue good engineering). It&rsquo;s pretty standard for these services to offer an API for integration&rsquo;s sake. <a href="https://getbase.com">Our CRM</a> plays nicely with Dropbox, GMail and a gazillion other services. Again, great.</p>
+
+<p><strong>However, the success of SaaS means the surface of interfaces we&rsquo;re dealing with is constantly stretching. This is far more difficult to overcome than poor UI or UX.</strong> Many of us have witnessed teams struggling to get adoption on a great tool that happen to be one too many. There&rsquo;s not much you can do about it.</p>
+
+<h3>A bot to rule them all…</h3>
+
+<p><img src="http://devo.ps/images/posts/borat.png" alt="Borat is omnipotent" /></p>
+
+<p>Our team has tried a lot of different approaches over the years. We kicked the tires on a lot of products and ended up doing as usual:</p>
+
+<ol>
+<li><p> <strong>Simplify</strong>. For example, we use Github to manage most tasks and discussions, including operations (HR, admin, …), and marketing. We used <a href="http://trello.com/">Trello</a> alongside Github for a while and we loved it. But it silo-ed the discussions. Everything from our employee handbook to tasks for buying snacks for the office are now on Github. It also had an interesting side effect on transparency, but I&rsquo;ll talk about this another time.</p></li>
+<li><p> <strong>Automate</strong>. We automate pretty much everything we can. When you apply to one of our job by email for example, we push the attachments in Dropbox (likely your resume) and create a ticket with the relevant information on Github. <a href="http://zapier.com">Zapier</a> is great for this kind of stuff by the way.</p></li>
+<li><p> <strong>Make it accessible</strong>. That&rsquo;s the most important point for us at this stage. Borat, our <a href="http://hubot.github.com">Hubot</a> chat bot, is hooked up with most of our infrastructure and is able to pass on requests to the services we use as well as some of our automation. If one of us is awake, chances are you can find us on the chat, making it the most ubiquitous interface for our team:</p>
+
+<ul>
+<li>Need to deploy some code on production or modify some configuration on a server? Ask Borat, he&rsquo;ll relay your demands to the <a href="http://devo.ps">devo.ps</a> API.</li>
+<li>Your latest commit broke the build? A new mail came from support? Expect to hear about it from Borat.</li>
+<li>Need to use our time tracker? Just drop a message to the bot when you&rsquo;re starting your task and let him know when you&rsquo;re done.</li>
+<li>Need to call for a SCRUM? Just mention the Github team you want to chat with and Borat will create a separate channel and invite the right people to join.</li>
+<li>Somebody is at the door? Ask the bot to open it for you (you gotta love hacking on Raspberry PI).</li>
+</ul>
+</li>
+</ol>
+
+
+<p>Anybody with access to our bot&rsquo;s repository can add a script to hook him up to a new service. Git push, kill the bot and wait for him to come back to life with new skills. The tedious stuff ends up sooner or later scripted and one sentence away.</p>
+
+<p>Really, try it. It&rsquo;s worth the investment.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/101-on-devops-and-how-we-plan-on-helping/">101 on DevOps and How We Plan on Helping</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T13:54:32-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2012/10/23/101-on-development-and-operations.html">101 On DevOps And How We Plan On Helping</a></h2>
+
+<p>Here&rsquo;s what usually happens: on one side the development team wants to push new features as fast as possible to production, while on the other side, operations are trying to keep things stable. Both teams are evaluated on
+criteria that are often directly conflicting. The stronger team win one argument… Until the next crisis. And we&rsquo;re not even talking about other teams, they too have conflicting agendas to throw in the mix.</p>
+
+<p>There&rsquo;s no silver bullet for getting evryone to play nicely. That being said, having Dev and Ops on the path of cooperation is not impossible. <a href="http://en.wikipedia.org/wiki/Devops">DevOps</a> is exactly this; fostering a culture of best practices and collaboration between these teams.</p>
+
+<p>In a very similar fashion to what happened with the agile movement, a lot of tools and approaches emerged that can help: methodologies (SCRUMs, kanban…), tools for configuration management (Chef, Puppet), orchestration, automation, logging… But at the core lies the need for nurturing a specific culture.</p>
+
+<p>Operations teams have been slower to adopt these methodologies compared to development teams. The average system administrator spend more time working in FIFO, putting up fires, rather than making long term investments in automation or setting up best practices. Moreover, operations teams are usually faced with a logic of budget cuts and cost &ldquo;optimizations&rdquo;, compared to the larger R&amp;D budget development teams seem to enjoy.</p>
+
+<p>Even when conditions (and resources) are favorable to the growth of a proper culture, recruiting the right profiles can prove very challenging. We&rsquo;re here talking about people with a wide range of skills, on-hands experience and
+strong collaboration and organizational skills. All of this take time. Best practices are forged through years of experience.</p>
+
+<p>That is why we&rsquo;re building <a href="http://devo.ps">devo.ps</a>. We&rsquo;re trying to lower the barriers of entry to this field and help professionals scale themselves in their role. We&rsquo;re a motivated team of engineers who have worked on both sides of the fence, with small to very large code bases and infrastructures. We hope to untangle the mess that often is infrastructure and application management, letting technical teams focus on the higher value tasks of the job.</p>
+
+<ul>
+<li><a href="http://devo.ps/about.html">About</a></li>
+<li><a href="http://devo.ps/blog.html">Blog</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/farewell-to-regular-web-development-approaches/">Farewell to Regular Web Development Approaches</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T13:52:12-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">Farewell to Regular Web Development Approaches</a></h2>
+
+<p>At my <a href="http://wiredcraft.com">previous company</a>, we built Web applications for medium to large organizations, often in the humanitarian and non-profit space, facing original problems revolving around data. Things like building the
+<a href="http://wiredcraft.com/work/southern-sudan-referendum/index.html">voting infrastructure for the Southern Sudan Referendum</a> helped us diversify our technical chops. But until a year ago, we were still mostly building regular Web applications; the user requests a page that we build and serve back.</p>
+
+<p><strong>Until we started falling in love with APIs and static clients.</strong></p>
+
+<p>It&rsquo;s not that we fundamentally disliked the previous approach. We just reached a point where we felt our goals weren&rsquo;t best served by this model. With lots of dynamic data, complex visualizations and a set of &ldquo;static&rdquo; interfaces, the traditional way was hindering our development speed and our ability to experiment. And so we got busy, experimenting at first with smaller parts of our projects (blog, help section, download pages…). We realized our use of complex pieces of softwares like content management systems had seriously biased our approach to problem solving. <strong>The CMS had become a boilerplate, an unchallenged dependency.</strong></p>
+
+<p>We&rsquo;ve gradually adopted a pattern of building front-ends as static clients (may they be Web, mobile or 3rd party integrations) combined with, usually, one RESTful JSON API in the backend. And it works marvelously, thanks in part
+to some awesome tech much smarter people figured out for us:</p>
+
+<ul>
+<li><a href="http://marionettejs.com">Marionette</a> and <a href="http://backbonejs.org">Backbone.js</a>, <a href="http://github.com/component/component">Component</a> (a personal favorite) and <a href="http://github.com/mojombo/jekyll">Jekyll</a> allow us to build static HTML5 + JS + CSS clients for Web and mobile,</li>
+<li><a href="http://nodejs.org">node.js</a> and <a href="http://github.com/devo-ps/carcass">carcass</a> (alpha quality at this stage) in the backend for our APIs.</li>
+</ul>
+
+
+<p>Most of what we build at devo.ps is stemming from this accelerated recovery and follow usually that order:</p>
+
+<ol>
+<li> We start by defining our API interface through user stories and methods,</li>
+<li> Both backend and front-end teams are getting cranking on implementing and solving the challenges specific to their part,</li>
+</ol>
+
+
+<p>A lot of things happen in parallel and changes on one side rarely impact the other: we can make drastic changes in the UI without any change on the backend. And there were a lot of unexpected gains too, in security, speed and
+overall maintainability. More importantly, we&rsquo;ve freed a lot of our resources to focus on building compelling user experiences instead of fighting a large piece of software to do what we want it to do.</p>
+
+<p>If you haven&rsquo;t tried building things that way yet, give it a try honestly (when relevant); it may be a larger initial investment in some cases but you&rsquo;ll come out on top at almost every level.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  A little something about me. Hi I’m Balaji Vajjala, DevOps Evangelist based in Indianapolis. Full stack development is my passion. Feel free to contact me on gmail as `bvajjala`. I’m also on [LinkedIn](http://http://www.linkedin.com/in/bvajjala &#8220;LinkedIn&#8221;) and my [Resume](/about/balaji-vajjala-resume/)
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow From GitHub</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/">OpenStack : Git Gerrit and Jenkins Workflow</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing a RESTful API That Doesn&#8217;t Suck</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye Node-forever</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

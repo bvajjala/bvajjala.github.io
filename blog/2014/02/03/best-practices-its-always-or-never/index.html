@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Best Practices: It's Always or Never - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Best Practices: It&rsquo;s Always Or Never ( And Preferably Always) It&rsquo;s Monday morning. The development team needs a box and you&rsquo;re &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2014/02/03/best-practices-its-always-or-never">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/about">about</a></li>
+  <li><a href="/devops-piepline">DevOps Piepline</a></li>
+  <li><a href="/ci">Continuous Integration</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+ </ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Best Practices: It's Always or Never</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T13:45:48-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2><a href="/blog/2013/02/11/best-practices-it-s-always-or-never.html">Best Practices: It&rsquo;s Always Or Never ( And Preferably Always)</a></h2>
+
+<p><img src="http://farm3.staticflickr.com/2584/4103140420_b98ee1ac62_z.jpg" alt="Messy cables" /></p>
+
+<p>It&rsquo;s Monday morning. The development team needs a box and you&rsquo;re already contemplating the gazillion other urgent tasks that need to be done on the existing infrastructure. _Just that one time_TM, you&rsquo;re going to forget about your own rules. You&rsquo;re just gonna spawn an instance, set up the few services needed and be done with it. You&rsquo;ll drop some of the usual time suckers: backup strategy, access rules, init scripts, documentation… You can&rsquo;t just do the whole of it AND handle the rest of your day-to-day responsibilities. After all, it&rsquo;s just a development server and you&rsquo;ll probably fold it in a couple weeks, or you&rsquo;ll clean it up once your plate is a tad less full.</p>
+
+<p>A few weeks later, the box is still there and your backlog is far from looking less crowded. The development team just rolled out their production application on the same box. <strong>And things start crashing… badly.</strong></p>
+
+<p>After a couple of not so courteous emails from the dev team mentioning repetitive crashes, you log in the box and the fun starts. You can&rsquo;t figure out what services have been deployed, or how exactly they were installed. You can&rsquo;t restore the database because you don&rsquo;t know where the bloody backups are. You waste time to find out that CouchDB wasn&rsquo;t started at boot. All of this while receiving emails of &ldquo;encouragement&rdquo; from your colleagues.</p>
+
+<p>Just because of that &ldquo;one time&rdquo;. Except that it&rsquo;s never just that one time.</p>
+
+<h3>Best practices are not freaking optional</h3>
+
+<p>I hear you: coming up with these best practices and sticking to it <strong>systematically</strong> is hard. It&rsquo;s high investment. But based on our common experience, it&rsquo;s one you can&rsquo;t afford not making. The &ldquo;quick and dirty that
+one time&rdquo; approach will ultimately fail you.</p>
+
+<p>A few things you should never consider skipping:</p>
+
+<ul>
+<li><p><strong>Document the hell out of everything as you go</strong>. You probably won&rsquo;t have time to get it done once you shipped it, and you probably won&rsquo;t remember what you did or why you did it in a few weeks from now. Your colleagues will probably appreciate too.</p></li>
+<li><p><strong>Off-site backups for everything</strong>. Don&rsquo;t even think of keeping your backups on the same physical box. Disks fail (a lot) and storage like S3/Glacier is dirt cheap. Find out a way to backup your code and data and stick to it.</p></li>
+<li><p><strong>Full setup and reliable sources</strong>. Avoid random AWS AMIs or RPM repositories. And when settings things up, go through the whole shebang: init script, dedicated running user, environment variables and such are not optional. Some of us also think that you shouldn&rsquo;t use rc.local for your Web services ever again.</p></li>
+</ul>
+
+
+<h3>Infrastructure As Code And Automation</h3>
+
+<p>Obviously, given what we&rsquo;re working on at <a href="http://devo.ps">devo.ps</a>, we&rsquo;re pretty strong adopters of infrastructure as code and automation. What tools to use is a much larger discussion. Go have a look at the comments on <a href="http://news.ycombinator.com/item?id=5197389">the
+announcement of the new version of Chef</a> to get an idea of what&rsquo;s
+out there.</p>
+
+<p>Ultimately these are just opinions, but behind them are concepts worth investing in. Capturing the work you do on your infrastructure in repeatable and testable code, and automating as much as you can helps removing yourself
+from the equation. Doing so is helping you to reduce the human factor and free yourself of the repetitive boilerplate while you focus on the challenging tasks that only a creative brain can tackle.</p>
+
+<p>Not building upon best practices is simply not an option. By doing so, you fail at investing in the foundation for a more robust infrastructure, and more importantly it is depriving you from scaling yourself.</p>
+
+<p><em><a href="http://www.flickr.com/photos/comedynose/4103140420/">Picture from comedy_nose</a></em></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T13:45:48-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2014/02/03/best-practices-its-always-or-never/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2014/02/03/best-practices-its-always-or-never/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/02/03/troubleshooting-5minutes-on-a-yet-unknown-box/" title="Previous Post: Troubleshooting 5minutes on a yet Unknown Box">&laquo; Troubleshooting 5minutes on a yet Unknown Box</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/02/03/why-we-dropped-swagger-and-i-slash-o-docs/" title="Next Post: Why We Dropped Swagger And I/O Docs">Why We Dropped Swagger And I/O Docs &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  A little something about me. Hi I’m Balaji Vajjala, DevOps Evangelist based in Indianapolis. Full stack development is my passion. Feel free to contact me on gmail as `bvajjala`. I’m also on [LinkedIn](http://http://www.linkedin.com/in/bvajjala "LinkedIn") and my [Resume](/about/balaji-vajjala-resume/)
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow From GitHub</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/">OpenStack : Git Gerrit and Jenkins Workflow</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing a RESTful API That Doesn't Suck</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye Node-forever</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

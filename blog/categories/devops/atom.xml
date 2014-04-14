@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: DevOps | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/devops/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T14:12:32-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[101 on DevOps and How We Plan on Helping]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/02/03/101-on-devops-and-how-we-plan-on-helping/"/>
+    <updated>2014-02-03T13:54:32-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/02/03/101-on-devops-and-how-we-plan-on-helping</id>
+    <content type="html"><![CDATA[<h2><a href="/blog/2012/10/23/101-on-development-and-operations.html">101 On DevOps And How We Plan On Helping</a></h2>
+
+<p>Here&rsquo;s what usually happens: on one side the development team wants to push new features as fast as possible to production, while on the other side, operations are trying to keep things stable. Both teams are evaluated on
+criteria that are often directly conflicting. The stronger team win one argument… Until the next crisis. And we&rsquo;re not even talking about other teams, they too have conflicting agendas to throw in the mix.</p>
+
+<p>There&rsquo;s no silver bullet for getting evryone to play nicely. That being said, having Dev and Ops on the path of cooperation is not impossible. <a href="http://en.wikipedia.org/wiki/Devops">DevOps</a> is exactly this; fostering a culture of best practices and collaboration between these teams.</p>
+
+<p>In a very similar fashion to what happened with the agile movement, a lot of tools and approaches emerged that can help: methodologies (SCRUMs, kanban…), tools for configuration management (Chef, Puppet), orchestration, automation, logging… But at the core lies the need for nurturing a specific culture.</p>
+
+<p>Operations teams have been slower to adopt these methodologies compared to development teams. The average system administrator spend more time working in FIFO, putting up fires, rather than making long term investments in automation or setting up best practices. Moreover, operations teams are usually faced with a logic of budget cuts and cost &ldquo;optimizations&rdquo;, compared to the larger R&amp;D budget development teams seem to enjoy.</p>
+
+<p>Even when conditions (and resources) are favorable to the growth of a proper culture, recruiting the right profiles can prove very challenging. We&rsquo;re here talking about people with a wide range of skills, on-hands experience and
+strong collaboration and organizational skills. All of this take time. Best practices are forged through years of experience.</p>
+
+<p>That is why we&rsquo;re building <a href="http://devo.ps">devo.ps</a>. We&rsquo;re trying to lower the barriers of entry to this field and help professionals scale themselves in their role. We&rsquo;re a motivated team of engineers who have worked on both sides of the fence, with small to very large code bases and infrastructures. We hope to untangle the mess that often is infrastructure and application management, letting technical teams focus on the higher value tasks of the job.</p>
+
+<ul>
+<li><a href="http://devo.ps/about.html">About</a></li>
+<li><a href="http://devo.ps/blog.html">Blog</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[DevOps Tools and Utilities]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/02/01/devops-tools-and-utilities/"/>
+    <updated>2014-02-01T13:13:05-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/02/01/devops-tools-and-utilities</id>
+    <content type="html"><![CDATA[<h1>DevOps Tool chain</h1>
+
+<p>A list of utilities to support configuration management tools. This was produced by the panelists of the Configuration Mgmt Workflow panel at LOPSA-EAST in 2013. One of the attendees also took notes: <a href="http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel">http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel</a></p>
+
+<h2>Individual level: IDE / syntax highlighting etc</h2>
+
+<h2>Puppet:</h2>
+
+<ul>
+<li>vim &ndash; <a href="https://github.com/rodjek/vim-puppet">https://github.com/rodjek/vim-puppet</a></li>
+<li>TextMate &amp; sublime text 2 &ndash; <a href="https://github.com/masterzen/puppet-textmate-bundle">https://github.com/masterzen/puppet-textmate-bundle</a></li>
+<li>gepetto (<a href="http://cloudsmith.github.io/geppetto/">http://cloudsmith.github.io/geppetto/</a>),</li>
+<li>emacs</li>
+</ul>
+
+
+<h2>Chef:</h2>
+
+<ul>
+<li>vim,</li>
+<li>TextMate,</li>
+<li>Sublime Text: <a href="http://www.youtube.com/watch?v=4VtDj_ar1Xg">http://www.youtube.com/watch?v=4VtDj_ar1Xg</a> (video), <a href="https://github.com/cabeca/SublimeChef">https://github.com/cabeca/SublimeChef</a> (GitHub)</li>
+<li>Emacs: chef-mode <a href="https://github.com/mpasternacki/chef-mode">https://github.com/mpasternacki/chef-mode</a></li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li>vim &ndash; <a href="https://github.com/neilhwatson/vim_cf3">https://github.com/neilhwatson/vim_cf3</a></li>
+<li>emacs &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/cfengine.el">https://github.com/cfengine/core/blob/master/contrib/cfengine.el</a></li>
+<li>kate &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml">https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml</a></li>
+<li>eclipse &ndash; <a href="https://cfengine.com/eclipse-cfengine-editor">https://cfengine.com/eclipse-cfengine-editor</a></li>
+<li>Sublime Text &ndash; <a href="https://github.com/kebori/sublime-cfengine3">https://github.com/kebori/sublime-cfengine3</a></li>
+</ul>
+
+
+<h2>Local Testing</h2>
+
+<ul>
+<li>Vagrant &ndash;</li>
+<li>VMware</li>
+<li>OpenStack</li>
+<li>Cloud?</li>
+<li>All of the above?</li>
+</ul>
+
+
+<h2>Revision Control : Which tool? Which workflow?</h2>
+
+<ul>
+<li>Github Flow &ndash; <a href="http://scottchacon.com/2011/08/31/github-flow.html">http://scottchacon.com/2011/08/31/github-flow.html</a></li>
+<li>git-flow &ndash; <a href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a></li>
+<li>Git Dynamic Environments &ndash;</li>
+<li><ul>
+<li><a href="https://puppetlabs.com/blog/git-workflow-and-puppet-environments/">https://puppetlabs.com/blog/git-workflow-and-puppet-environments/</a> ,</li>
+</ul>
+</li>
+<li><ul>
+<li><a href="https://github.com/adrienthebo/puppet-git-hooks">https://github.com/adrienthebo/puppet-git-hooks</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Commit hooks</h2>
+
+<h3>Puppet:</h3>
+
+<ul>
+<li>erb,</li>
+<li>pp parser,</li>
+<li>yaml, <a href="https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit">https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit</a></li>
+</ul>
+
+
+<h3>Chef:</h3>
+
+<ul>
+<li>fc pre-commit: <a href="https://github.com/gregf/chef-git-hooks">https://github.com/gregf/chef-git-hooks</a></li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li>Subversion: <a href="http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html">http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html</a></li>
+<li>Git: <a href="https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit">https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit</a></li>
+</ul>
+
+
+<h2>Style / Lint tools</h2>
+
+<h3>Puppet:</h3>
+
+<ul>
+<li>puppet-lint &ndash; <a href="http://puppet-lint.com/,">http://puppet-lint.com/,</a></li>
+<li>puppet-cleaner &ndash; <a href="https://github.com/santana/puppet-cleaner,">https://github.com/santana/puppet-cleaner,</a></li>
+</ul>
+
+
+<h3>Chef:</h3>
+
+<ul>
+<li>tailor,</li>
+<li>foodcritic</li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li>cf-promises (with GCC-style warnings)</li>
+</ul>
+
+
+<h2>Testing manifests / recipes</h2>
+
+<h3>Puppet:</h3>
+
+<ul>
+<li>rspec-puppet,</li>
+<li>?cucumber-puppet (discontiued)?</li>
+</ul>
+
+
+<h3>Chef:</h3>
+
+<ul>
+<li>chefspec,</li>
+<li>minitest-handler,</li>
+<li>rspec-chef,</li>
+<li>cucumber-chef,</li>
+<li>test-kitchen</li>
+</ul>
+
+
+<h2>Marshalling / Assembling Code &amp; Dependencies</h2>
+
+<h3>Puppet:</h3>
+
+<ul>
+<li>librarian-puppet &ndash; <a href="https://github.com/rodjek/librarian-puppet">https://github.com/rodjek/librarian-puppet</a></li>
+</ul>
+
+
+<h3>Chef:</h3>
+
+<ul>
+<li>berkshelf,</li>
+<li>librarian</li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li>cf-sketch &ndash; <a href="https://github.com/cfengine/design-center/wiki/Design-Center-Tools">https://github.com/cfengine/design-center/wiki/Design-Center-Tools</a></li>
+</ul>
+
+
+<h2>Continuous Integration</h2>
+
+<ul>
+<li>Jenkins CI</li>
+<li>Travis CI</li>
+<li>Atlassian Bamboo?</li>
+<li>TeamCity?</li>
+</ul>
+
+
+<h2>Orchestration</h2>
+
+<h3>Puppet:</h3>
+
+<ul>
+<li>MCollective</li>
+</ul>
+
+
+<h3>Chef :</h3>
+
+<ul>
+<li>has “knife ssh” and Pushy support coming for push jobs</li>
+</ul>
+
+
+<h2>Canary testing &amp; Prod vs QA vs test environments (not prod vs QA app code)</h2>
+
+<h3>Puppet</h3>
+
+<ul>
+<li>serverspec <a href="http://serverspec.org/">http://serverspec.org/</a></li>
+<li>rspec-system <a href="https://github.com/puppetlabs/rspec-system">https://github.com/puppetlabs/rspec-system</a></li>
+<li>nagios checks/ plugins</li>
+</ul>
+
+
+<h3>Chef</h3>
+
+<ul>
+<li>has knife-flip from Etsy, flips nodes into a test environment</li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li>Remote context class matching using remoteclassesmatching (Enterprise)</li>
+</ul>
+
+
+<h2>Provisioning VM&rsquo;s in the cloud?</h2>
+
+<h3>Chef:</h3>
+
+<ul>
+<li>knife ec2 server create&hellip;</li>
+<li>spiceweasel somefile.yml</li>
+<li>knife openstack&hellip;</li>
+<li>knife server create&hellip;</li>
+</ul>
+
+
+<p>Clouds include Azure, Openstack, Rackspace, etc. EC2 OpsWorks (although some limitations since it’s an older version)</p>
+
+<h2>Puppet:</h2>
+
+<ul>
+<li>puppet node_aws create / puppet node_vmware create</li>
+<li>Puppet RAL for AWS, OpenStack, CloudStack:
+  ec2_instance { “instance_name”: type => t1.large, az => ‘USWest’, ensure => present, …. }</li>
+<li>Razor (bare metal)</li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li><a href="https://github.com/cfengine/design-center/tree/master/sketches/cloud">https://github.com/cfengine/design-center/tree/master/sketches/cloud</a></li>
+</ul>
+
+
+<h3>Chef</h3>
+
+<ul>
+<li>Crowbar has Chef server integrated, although I don’t know that much about it.</li>
+<li>Joyent also has a Chef “dataset” that they support.</li>
+</ul>
+
+
+<h2>Team Workflow</h2>
+
+<h3>Puppet: &ndash;?</h3>
+
+<h3>Chef:</h3>
+
+<ul>
+<li>knife-spork (has handlers to notify people)</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

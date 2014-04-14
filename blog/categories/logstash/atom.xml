@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Logstash | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/logstash/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T14:12:32-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Logstash + Opscode Omnibus]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/05/06/logstash-plus-opscode-omnibus/"/>
+    <updated>2013-05-06T19:03:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/05/06/logstash-plus-opscode-omnibus</id>
+    <content type="html"><![CDATA[<p>At <a href="http://devopsdays.org/events/2013-austin/">DevOps Days Austin</a> <a href="http://twitter.com/mattray">@mattray</a> did an Openspace session on <a href="https://github.com/opscode/omnibus-ruby">Omnibus</a> which is a toolset based around the concept of installing an app and all of it&rsquo;s prerequisites from source into a directory and then building a package ( either .deb or .rpm ) of that using <a href="https://github.com/jordansissel/fpm">fpm</a>.</p>
+
+<p>Having battled many times with OS Packages trying to get newer versions of Ruby, or Redis or other software installed and having to hunt down some random package repo or manually build from source this seems like an excellent idea.</p>
+
+<p>To learn the basics I decided to build an <a href="https://github.com/paulczar/omnibus-fpm">omnibus package for fpm</a> which helped me work out the kinks and learn the basics.</p>
+
+<!--more-->
+
+
+<p>From there I moved onto something a little more ambitious&hellip; <a href="http://logstash.net/">logstash</a>, which is an awesome opensource project for log aggregation and searching.</p>
+
+<p>Using Omnibus I took the Logstash .jar file and bundled in Redis, Kibana, Kibana3(+NodeJS), RabbitMQ, Elasticsearch along with all of their depedencies into a big fat package which installs to /opt/logstash and includes init scripts and default configs for each.</p>
+
+<p>The Logstash Omnibus project can be found <a href="https://github.com/paulczar/omnibus-logstash">here</a>.  I also uploaded the resultant packages for <a href="https://s3-us-west-2.amazonaws.com/paulcz-packages/logstash-omnibus-1.1.10_amd64.deb">Ubuntu 12.04</a> and <a href="https://s3-us-west-2.amazonaws.com/paulcz-packages/logstash-omnibus-1.1.10.el6.x86_64.rpm">RHEL 6</a>.</p>
+
+<p>This gives us a really powerful platform to deploy logstash and all of its prequisites in a completely repeatable manner and not have to worry about the existing versions of Ruby, Java, etc.    It also gives a super simple testing platform where a new user to logstash can install logstash with a single <code>dpkg</code> or <code>rpm</code> command and immediately be able to push logs to it via syslog or redis.</p>
+
+<p>Read more about using and building the <a href="https://github.com/paulczar/omnibus-logstash/blob/master/README.md">Logstash Omnibus package here</a></p>
+]]></content>
+  </entry>
+  
+</feed>

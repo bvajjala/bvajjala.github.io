@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Openvswitch | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/openvswitch/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T14:12:32-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Running KVM and Openvswitch on Ubuntu 12.10]]></title>
+    <link href="http://bvajjala.github.io/blog/2012/12/13/running-kvm-and-openvswitch-on-ubuntu-12-dot-10/"/>
+    <updated>2012-12-13T22:40:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2012/12/13/running-kvm-and-openvswitch-on-ubuntu-12-dot-10</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve got an aging VMWare ESXi 4.0 server that needs to be replaced with something a little more modern and flexing.   Obviously at home I don&rsquo;t need all the cool features that licensed VMWare comes with,  but I do want more than just the basic free version.</p>
+
+<p>After a few weeks of installing and testing alternatives  ( I&rsquo;d really love to run openstack,  but it&rsquo;s just not worth it at home for a single box ) I&rsquo;ve settled on Ubuntu 12.10 server running KVM and Openvswitch.</p>
+
+<p>After installing Ubuntu 12.10 I did the following to get KVM up and running&hellip;   I cribbed this mostly from <a href="http://blog.allanglesit.com/2012/10/linux-kvm-ubuntu-12-10-with-openvswitch/">blog.allanglesit.com</a>.</p>
+
+<!--more-->
+
+
+<p><strong>Install updates and Pre-requisites</strong></p>
+
+<p>First of all, make sure Ubuntu is fully up to date:
+<em>sudo to root as pretty much every command here needs to be run as root</em></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo bash
+</span><span class='line'>apt-get update
+</span><span class='line'>apt-get upgrade
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now we can go ahead and install the necessary packages:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>apt-get -y install aptitude apt-show-versions ntp ntpdate vim kvm <span class="se">\</span>
+</span><span class='line'> libvirt-bin vlan virtinst virt-manager virt-viewer openssh-server <span class="se">\</span>
+</span><span class='line'> iperf pv openvswitch-controller openvswitch-brcompat <span class="se">\</span>
+</span><span class='line'> openvswitch-switch nfs-common
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong>Kill off the default libvirt bridge and nuke ebtables</strong></p>
+
+<p>We want to delete the default libvirt interface and we don&rsquo;t need ebtables so we&rsquo;ll get rid of that.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>virsh net-destroy default
+</span><span class='line'>virsh net-autostart &amp;mdash;disable default
+</span><span class='line'>service libvirt-bin stop
+</span><span class='line'>service qemu-kvm stop
+</span><span class='line'>aptitude purge -y ebtables
+</span><span class='line'>service openvswitch-switch restart
+</span><span class='line'>service openvswitch-controller restart
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong>Configure network interfaces</strong></p>
+
+<p>We&rsquo;ll be using just a single interface which will be used for both the bridge and the host itself.    We will also be bridging that network into the the vswitch and then configuring an interface for the host OS.    The network configuration will look something like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/etc/network/interfaces </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>The loopback network interface&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>auto lo
+</span><span class='line'>iface lo inet loopback&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>The primary network interface &ndash; bridge!&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>auto eth0
+</span><span class='line'>iface eth0 inet manual
+</span><span class='line'>up ifconfig $IFACE 0.0.0.0 up
+</span><span class='line'>down ifconfig $IFACE down&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>The host OS network interface&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>DNS settings here,  12.10 resets resolv.conf on reboot.&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>auto ovsbr0p1
+</span><span class='line'>iface ovsbr0p1 inet static
+</span><span class='line'>address 192.168.50.10
+</span><span class='line'>netmask 255.255.255.0
+</span><span class='line'>gateway 192.168.50.1
+</span><span class='line'>dns-nameservers 192.168.50.1
+</span><span class='line'>dns-search example.com</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong>Configure the openvswitch network</strong></p>
+
+<p>Now we need to configure the network on the openvswitch.     We need to define the bridge, connect it to the uplink interface and create a port for the host OS.</p>
+
+<p><em>note: if you&rsquo;re doing this via SSH it will probably break your session</em></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>ovs-vsctl add-br ovsbr0
+</span><span class='line'>ovs-vsctl add-port ovsbr0 eth0
+</span><span class='line'>ovs-vsctl add-port ovsbr0 ovsbr0p1 &amp;mdash; <span class="nb">set </span>interface ovsbr0p1 <span class="nb">type</span><span class="o">=</span>internal
+</span><span class='line'>reboot
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong>Modify network service sleep times</strong></p>
+
+<p>That took forever to boot.    We can fix that by modifying sleeps in /etc/init/failsafe.conf and reboot again to make sure it helped.</p>
+
+<p>Change :</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$PLYMOUTH message &mdash;text=&ldquo;Waiting for network configuration&hellip;&rdquo; || :
+</span><span class='line'>sleep 40
+</span><span class='line'>$PLYMOUTH message &mdash;text=&ldquo;Waiting up to 60 more seconds for network configuration&hellip;&rdquo; || :
+</span><span class='line'>sleep 59
+</span><span class='line'>$PLYMOUTH message &mdash;text=&ldquo;Booting system without full network configuration&hellip;&rdquo; || :</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>To :</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$PLYMOUTH message &mdash;text=&ldquo;Waiting for network configuration&hellip;&rdquo; || :
+</span><span class='line'>sleep 1
+</span><span class='line'>$PLYMOUTH message &mdash;text=&ldquo;Waiting up to 60 more seconds for network configuration&hellip;&rdquo; || :
+</span><span class='line'>sleep 1
+</span><span class='line'>$PLYMOUTH message &mdash;text=&ldquo;Booting system without full network configuration&hellip;&rdquo; || :</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong>LVM configure</strong></p>
+
+<p>We&rsquo;re going to also use LVM to for the KVM virtual machines to use as storage.    I have a pair of 500g disks in a software raid1 which I&rsquo;ll use for this.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>pvcreate /dev/md0
+</span><span class='line'>vgcreate data-disk /dev/md0
+</span><span class='line'>lvcreate -L 10G -n ISO data-disk
+</span><span class='line'>mkfs.ext4 /dev/data-disk/ISO
+</span><span class='line'>mkdir -p /data-disk/ISO
+</span><span class='line'><span class="nb">echo</span> &amp;ldquo;/dev/data-disk/ISO /data-disk/ISO defaults    ext4    0 0&amp;rdquo; &gt;&gt; /etc/fstab
+</span><span class='line'>mount -a
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong>Create VM</strong></p>
+
+<p>Now we can go ahead and create our first VM.   I&rsquo;ve already downloaded the Ubuntu ISO to /data-disk/ISO</p>
+
+<p><em>note: virt-install does not support setting a virtualport type of openvswitch yet .. so we have to trick it</em></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>lvcreate -L 8G -n VM-UbuntuTest data-disk
+</span><span class='line'>virt-install &amp;mdash;name UbuntuTest &amp;mdash;hvm &amp;mdash;noautoconsole &amp;mdash;ram 1024 <span class="se">\</span>
+</span><span class='line'>&amp;mdash;disk <span class="nv">path</span><span class="o">=</span>/dev/data-disk/VM-UbuntuTest &amp;mdash;nonetworks &amp;mdash;vnc <span class="se">\</span>
+</span><span class='line'>&amp;mdash;os-type<span class="o">=</span>linux &amp;mdash;os-variant<span class="o">=</span>ubuntuquantal <span class="se">\</span>
+</span><span class='line'>&amp;mdash;cdrom /data-disk/ISO/ubuntu-12.10-server-amd64.iso
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>set up the networking by editing the VM&rsquo;s XML and adding a network interface stanza just before the &lt;/devices>.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>virsh edit UbuntuTest
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;interface</span> <span class="na">type=</span><span class="s">&#39;bridge&#39;</span><span class="nt">&gt;</span>
+</span><span class='line'> <span class="nt">&lt;source</span> <span class="na">bridge=</span><span class="s">&#39;ovsbr0&#39;</span><span class="nt">/&gt;</span>
+</span><span class='line'> <span class="nt">&lt;virtualport</span> <span class="na">type=</span><span class="s">&#39;openvswitch&#39;</span> <span class="nt">/&gt;</span>
+</span><span class='line'> <span class="nt">&lt;model</span> <span class="na">type=</span><span class="s">&#39;virtio&#39;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;/interface&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The VM will need to be reset to pick up the network change,  however that will cause it to drop the ISO mount.  We can either continue through with the OS install without networking or reset the VM and then re-attach the ISO as a CD.    I connected to it from my desktop using the VirtualMachineManager GUI to do that but you could use virsh commands if you want to stick to CLI.</p>
+]]></content>
+  </entry>
+  
+</feed>

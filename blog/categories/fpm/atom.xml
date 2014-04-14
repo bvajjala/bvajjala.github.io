@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Fpm | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/fpm/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T14:12:32-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Vagrant+Puppet+FPM=Amazeballs]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/"/>
+    <updated>2013-04-07T18:23:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs</id>
+    <content type="html"><![CDATA[<p>Lately I&rsquo;ve been doing a lot of prototyping with <a href="http://www.vagrantup.com/">Vagrant</a>, specifically for a couple of distinct activities:&ndash;</p>
+
+<ul>
+<li>building puppet modules using <a href="https://github.com/elasticdog/puppet-sandbox">the excellent puppet sandbox</a> project</li>
+<li>and building RPM packages with <a href="https://github.com/jordansissel/fpm">FPM</a>.</li>
+</ul>
+
+
+<p>I realized I was spending a bunch of time flipping back and forth between Vagrant environments and I had no quick way to utilize RPMs built with FPM inside my puppet modules.</p>
+
+<!--more-->
+
+
+<p>An idea was born.   I forked off the <a href="https://github.com/paulczar/puppet-sandbox">puppet sandbox</a> project and added a Yum repo module <code>repository</code> to the standalone puppet provisioner that vagrant uses when it first brings up a box.   It adds a Yum repo on the puppet server called <code>sandbox</code> and adds a repo file to the client boxes pointing to the repo.   Now I can simply push an RPM to <code>packages/rpm</code> and run <code>vagrant provision puppet</code> which reruns puppet and rebuilds the yum repo.</p>
+
+<p>Given that I often flip back and forth between Ubuntu and CentOS boxes I also created <code>Vagrantfile.centos63</code> and <code>Vagrantfile.precise64</code> so I can swiftly destroy the existing environment and bring up another of a different flavour by simply symlinking <code>Vagrantfile</code> to the appropriate file.</p>
+
+<p>This worked out pretty well for a while until I realized I was still jumping back and forth between vagrant environments and I realized I had another improvement to make.   So I then went on to create a definition in the puppet sandbox <code>Vagrantfile</code> file for a <code>FPM server</code> and a new module in the provisioner to install FPM on it.   Given that this module simply adds a few packages this module works for both CentOS and Ubuntu.</p>
+
+<p>I also created a couple of sample scripts to download source and build RPMs for both Redis and Elasticsearch which get pushed via the provisioner to <code>/tmp/redis-rpm.sh</code> and <code>/tmp/elasticsearch-rpm.sh</code></p>
+
+<p>Now ( For CentOS boxes at least ) I can very quickly iterate on puppet modules and create RPM packages on the fly and have them instantly available.   The process is very simple and looks a little something like this :</p>
+
+<p><code>
+$ git clone https://github.com/paulczar/puppet-sandbox
+$ cd puppet-sandbox
+$ vagrant up puppet fpm client1
+$ vagrant ssh fpm
+[vagrant@fpm ~]$ sudo /tmp/redis-rpm.sh
+  ...
+  ... A bunch of scrolling text while files are downloaded and rpm is built
+  ...
+[vagrant@fpm ~]$ exit
+$ vagrant provision puppet
+$ vagrant ssh client1
+[vagrant@client1 ~]$ sudo yum clean all
+[vagrant@client1 ~]$ sudo yum -y install redis
+[vagrant@client1 ~]$ sudo service redis-server start
+[vagrant@client1 ~]$ redis-cli ping
+PONG
+[vagrant@client1 ~]$
+</code></p>
+
+<p>If I&rsquo;m building a puppet module that needs redis I can now add the following to it&rsquo;s init.pp ( or more properly create a module for redis and request it from the module I&rsquo;m building )</p>
+
+<p>```
+  package { &lsquo;redis&rsquo;:</p>
+
+<pre><code>ensure =&gt; 'present';
+</code></pre>
+
+<p>  }
+```</p>
+
+<p>Of course Debian/Ubuntu doesn&rsquo;t use Yum/RPM for package management.    I&rsquo;d love to accept a pull request from somebody who wants to extend it to also support a local APT repository.   I left breadcrumbs in the <code>repository</code> module for some appropriate classes to be spliced in&hellip;</p>
+]]></content>
+  </entry>
+  
+</feed>

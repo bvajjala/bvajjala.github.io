@@ -1,0 +1,387 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Creating a Github Pages Blog With Octopress - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="A lot of tech bloggers will write their blog posts in Markdown, convert it to HTML and paste that HTML into their blog of choice and then in the blog &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2012/12/15/creating-a-github-pages-blog-with-octopress">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/about">about</a></li>
+  <li><a href="/devops-piepline">DevOps Piepline</a></li>
+  <li><a href="/ci">Continuous Integration</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+ </ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Creating a Github Pages Blog With Octopress</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-15T11:10:00-05:00" pubdate data-updated="true">Dec 15<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>A lot of tech bloggers will write their blog posts in <a href="http://daringfireball.net/projects/markdown/">Markdown</a>, convert it to HTML and paste that HTML into their blog of choice and then in the blog&rsquo;s editor clean it up to suit their blog.   This is an excellent way to create easy to read portable documents that can easily be published in multiple formats.</p>
+
+<p>However what if there was a way to skip the second part of that and just create a markdown page, submit it into your source control ( you <em>do</em> use source control right? ) and your blog would automagically update.</p>
+
+<p>In comes <a href="http://octopress.org/">Octopress</a>,  it&rsquo;s a framework that wraps around <a href="https://help.github.com/articles/using-jekyll-with-pages">Jekyll</a> which is <a href="https://github.com/">Github&rsquo;s</a> blogging engine that powers <a href="http://pages.github.com/">Github Pages</a>.   Essentially you edit Markdown files and <a href="http://octopress.org/">Octopress</a> will compile it into a static-html <a href="https://help.github.com/articles/using-jekyll-with-pages">Jekyll</a> blog.     This means that your blog will be lightning fast ( no need to run an interpreted language in your web server ) and ultra portable.</p>
+
+<p>Another side benefit is that you can host it for free on <a href="https://github.com/">Github</a> ( as long as you&rsquo;re okay with sharing your source &hellip; and you should be! ) or for free on <a href="http://www.heroku.com/">Heroku</a> ( don&rsquo;t have to share your source ) or host it on any simple no frills Apache, LightHTTP, nginx, node.js, etc server.</p>
+
+<p>Here is how I&rsquo;m porting my blogger site to Octopress hosted on Github Pages.   I&rsquo;m not using any of the fancy <a href="https://github.com/mojombo/jekyll/wiki/blog-migrations">Jekyll migration tools</a> as I only have a few posts and it will help me get used to the extended syntax that Octopress uses in Markdown.</p>
+
+<!--more-->
+
+
+<p>As usual the first step is to install any dependencies.   These instructions are for <a href="http://www.ubuntu.com/">Ubuntu 12.10</a> &hellip; modify to suit your OS of choice.</p>
+
+<p>Most of these steps are taken directly from the <a href="http://octopress.org/docs/">Octopress Documentation</a>,   I&rsquo;m just condensing them into a single document to suit the exact scenario being described in this post.</p>
+
+<h2>Before You Begin</h2>
+
+<ol>
+<li>Install Git</li>
+<li>Install Ruby 1.9.3 via your OS package management or <a href="http://octopress.org/docs/setup/rbenv/">rbenv</a> or <a href="http://octopress.org/docs/setup/rvm/">RVM</a>.  <br/>
+<em>If using package management may need to install ruby-dev</em></li>
+</ol>
+
+
+<p>Check your Ruby version is at least 1.9.3 and install bundler:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ruby --version 
+</span><span class='line'>sudo gem install bundler</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Initial Setup</h2>
+
+<p>Clone the octopress repository and set it up</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/imathis/octopress.git octopress
+</span><span class='line'>cd octopress
+</span><span class='line'>bundle install
+</span><span class='line'>
+</span><span class='line'>rake install</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&rsquo;re going to use Github pages.   Octopress has some rake tasks to make this easier for you.    Your blog will be hosted at <code>http://username.github.com</code> and you need to create a <a href="https://github.com/repositories/new">new Github repository</a> called <code>username.github.com</code> that github pages will use the master branch as the html source for your blog.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake setup_github_pages</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This rake points our clone to the new repistory we just set up, configures your blog&rsquo;s URL and sets up a master branch in the <code>_deploy</code> directory for deployment.</p>
+
+<p>edit <code>_config.yml</code> and fill in your blog name and other details.   There&rsquo;s also some configs for twitter/G+/etc plugins that are worth configuring.</p>
+
+<h2>Write some blog content</h2>
+
+<p><em>Great time to read <a href="http://octopress.org/docs/blogging">Blogging Basics</a></em></p>
+
+<p>Create an <code>About</code> page and a <code>First Post!</code> blog post:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake new_page["About"]
+</span><span class='line'>rake new_post["First Post!"]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Edit the Markdown pages that it creates for you with your preferred <a href="http://sourceforge.net/p/retext/home/ReText/">Markdown editor</a>.   The output of the rake commands should provide appropriate hints as to the location of the created files.</p>
+
+<p>Generate and preview the blog:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate
+</span><span class='line'>rake preview</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will generate the contents of your blog and allow you to preview it at [<a href="http://localhost:4000">http://localhost:4000</a>].</p>
+
+<p>Once you&rsquo;re happy with the contents we can deploy your blog for the first time.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake deploy</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will copy the generated files into <code>_deploy/</code>, add them to git, commit and push them up to the master branch. In a few seconds you should get an email from Github telling you that your commit has been received and will be published on your site.   Being your first commit it could take 10 minutes for the blog to be available at [<a href="http://username.github.com">http://username.github.com</a>]</p>
+
+<p>Don&rsquo;t forget to commit your changes to the source branch:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git add .
+</span><span class='line'>git commit -m 'Added About page and first post!'
+</span><span class='line'>git push origin source</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Want to edit your blog from another machine,  or edit an existing octopress blog?</h2>
+
+<p>This is pretty simple ( assuming you have the prerequisites already install ).</p>
+
+<p><em>If you run Dropbox you can do this inside of your dropbox folders to make this instantly avaiable on any system you use.</em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git@github.com:username/username.github.com.git
+</span><span class='line'>cd username.github.com
+</span><span class='line'>git checkout source
+</span><span class='line'>mkdir _deploy
+</span><span class='line'>cd _deploy
+</span><span class='line'>git init
+</span><span class='line'>git remote add origin git@github.com:username/username.github.com.git
+</span><span class='line'>git pull origin master
+</span><span class='line'>cd ..</span></code></pre></td></tr></table></div></figure>
+
+
+<p>once this is done you can run <code>rake new_post["title"]</code> and all the other rake commands needed to edit/preview/publish your blog.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-15T11:10:00-05:00" pubdate data-updated="true">Dec 15<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/blog/'>blog</a>, <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/octopress/'>octopress</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2012/12/15/creating-a-github-pages-blog-with-octopress/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2012/12/15/creating-a-github-pages-blog-with-octopress/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/12/15/rabbitmq-activemq-zeromq-hornetq/" title="Previous Post: RabbitMQ, ActiveMQ, ZeroMQ, HornetQ">&laquo; RabbitMQ, ActiveMQ, ZeroMQ, HornetQ</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/01/15/embrace-big-data/" title="Next Post: Embrace Big Data">Embrace Big Data &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  A little something about me. Hi I’m Balaji Vajjala, DevOps Evangelist based in Indianapolis. Full stack development is my passion. Feel free to contact me on gmail as `bvajjala`. I’m also on [LinkedIn](http://http://www.linkedin.com/in/bvajjala "LinkedIn") and my [Resume](/about/balaji-vajjala-resume/)
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow From GitHub</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/">OpenStack : Git Gerrit and Jenkins Workflow</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing a RESTful API That Doesn't Suck</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye Node-forever</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

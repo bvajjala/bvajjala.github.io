@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ZooKeeper | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/zookeeper/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T14:12:32-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Simple Zookeeper Cluster]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/03/09/simple-zookeeper-cluster/"/>
+    <updated>2013-03-09T07:00:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/03/09/simple-zookeeper-cluster</id>
+    <content type="html"><![CDATA[<p>Sometimes I need to run <a href="http://zookeeper.apache.org">ZooKeeper</a> ensemble on my development box to test my application on the production-like environment. I found that recreating the whole ensemble from scratch is much faster than cleaning it up using ZooKeeper CLI tool. To automate this process I created a bash script which I want to share in this blog post. I hard-coded all the paths in the script using my regular conventions. You might need to change them to yours — it should be fairly straightforward.</p>
+
+<p>Before you can use the script, you need to install ZooKeeper on your box. That&rsquo;s what I did on my machine</p>
+
+<pre><code>$ cd /opt
+$ sudo mkdir zookeeper
+$ sudo chown -R andrey:admin zookeeper
+$ cd zookeeper
+$ wget http://apache.mirror.rafal.ca/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz
+$ tar xf zookeeper-3.4.5.tar.gz
+$ rm zookeeper-3.4.5.tar.gz
+$ ln -s zookeeper-3.4.5 zookeeper
+</code></pre>
+
+<p>In the end you should have a ZooKeeper installed in <em>/opt/zookeeper/zookeeper</em> directory.</p>
+
+<p>Now download, chmod, and run the <a href="https://gist.github.com/ndpar/5105486">script</a>. It will create the following files</p>
+
+<pre><code>/opt/zookeeper/zookeeper/cluster
+├── server1
+│   ├── conf
+│   │   ├── log4j.properties
+│   │   └── zoo.cfg
+│   ├── data
+│   │   └── myid
+│   └── logs
+├── server2
+│   ├── conf
+│   │   ├── log4j.properties
+│   │   └── zoo.cfg
+│   ├── data
+│   │   └── myid
+│   └── logs
+├── server3
+│   ├── conf
+│   │   ├── log4j.properties
+│   │   └── zoo.cfg
+│   ├── data
+│   │   └── myid
+│   └── logs
+├── start.sh
+└── stop.sh
+</code></pre>
+
+<p>This is the minimum configuration for 3-node ensemble (cluster), which is recommended for production. To start the cluster, run the following command</p>
+
+<pre><code>$ cd /opt/zookeeper/zookeeper
+$ cluster/start.sh
+</code></pre>
+
+<p>Check the log files to see if the cluster is successfully started</p>
+
+<pre><code>$ tail -f cluster/server{1,2,3}/logs/zookeeper.out
+</code></pre>
+
+<p>When the cluster is up and running, you can test your application. After you are done, shutdown the cluster using the following command</p>
+
+<pre><code>$ cluster/stop.sh
+$ ps -ef | grep java
+</code></pre>
+
+<p>To recreate a clean cluster, just run the script again</p>
+
+<pre><code>$ ./zookeeper-init-ensemble.sh
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

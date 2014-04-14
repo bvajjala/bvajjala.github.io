@@ -1,0 +1,389 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Creating Immutable Servers With Chef and docker.io - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Building applications in a docker.io Dockerfile is relatively simple, but sometimes you want to just install the application exactly as you would &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/about">about</a></li>
+  <li><a href="/devops-piepline">DevOps Piepline</a></li>
+  <li><a href="/ci">Continuous Integration</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+ </ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Creating Immutable Servers With Chef and docker.io</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-07T18:18:00-04:00" pubdate data-updated="true">Sep 7<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Building applications in a <a href="http://docker.io">docker.io</a> Dockerfile is relatively simple,  but sometimes you want to just install the application exactly as you would normally via already built chef cookbooks.   Turns out this is actually pretty simple.</p>
+
+<p>The first thing you&rsquo;ll need to do is build a container with chef-client and berkshelf installed.   You can grab the one I&rsquo;ve built by running <code>docker pull paulczar/chef-solo</code> or build one youself from a <code>Dockerfile</code> that looks a little something like the following&hellip;</p>
+
+<!--more-->
+
+
+<h3>Creating a docker.io container with chef and berkshelf</h3>
+
+<figure class='code'><figcaption><span>Dockerfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># DOCKER-VERSION 0.5.3</span>
+</span><span class='line'><span class="no">FROM</span> <span class="ss">ubuntu</span><span class="p">:</span><span class="mi">12</span><span class="o">.</span><span class="mi">10</span>
+</span><span class='line'><span class="no">MAINTAINER</span> <span class="no">Paul</span> <span class="no">Czarkowski</span> <span class="s2">&quot;paul@paulcz.net&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">update</span>
+</span><span class='line'><span class="no">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">curl</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="n">libxml2</span><span class="o">-</span><span class="n">dev</span> <span class="n">libxslt</span><span class="o">-</span><span class="n">dev</span> <span class="n">git</span>
+</span><span class='line'><span class="no">RUN</span> <span class="n">curl</span> <span class="o">-</span><span class="n">L</span> <span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="n">www</span><span class="o">.</span><span class="n">opscode</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">chef</span><span class="o">/</span><span class="n">install</span><span class="o">.</span><span class="n">sh</span> <span class="o">|</span> <span class="n">bash</span>
+</span><span class='line'><span class="no">RUN</span> <span class="n">echo</span> <span class="s2">&quot;gem: --no-ri --no-rdoc&quot;</span> <span class="o">&gt;</span> <span class="o">~</span><span class="sr">/.gemrc</span>
+</span><span class='line'><span class="sr">RUN /o</span><span class="n">pt</span><span class="o">/</span><span class="n">chef</span><span class="o">/</span><span class="n">embedded</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">gem</span> <span class="n">install</span> <span class="n">berkshelf</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>you&rsquo;ll notice I&rsquo;m using the embedded chef ruby to install the berkshelf gem,  this is a handy shortcut to avoid messing around with random ruby versions from your distributions packaging.</em></p>
+
+<p>run <code>$ docker build -t paulczar/chef-solo .</code> to build a usable docker container from the above <code>Dockerfile</code>.</p>
+
+<h3>Using chef-solo and berkshelf to build an application in a docker.io container</h3>
+
+<p>My <a href="https://github.com/paulczar/docker-chef-solo">example application</a> will install <code>Kibana3</code> to your docker container.   I&rsquo;ll step through how it works below.</p>
+
+<h4>Chef-Solo</h4>
+
+<p>To run <code>chef-solo</code> successfully we require two files.   <code>solo.rb</code> to set up file locations, and `solo.json&#8217; to set up the json / run list required for your application.</p>
+
+<figure class='code'><figcaption><span>chef.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">root</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">absolute_path</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">file_cache_path</span> <span class="n">root</span>
+</span><span class='line'><span class="n">cookbook_path</span> <span class="n">root</span> <span class="o">+</span> <span class="s1">&#39;/cookbooks&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>chef.json</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;kibana&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;webserver_listen&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0.0.0&quot;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nt">&quot;run_list&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s2">&quot;recipe[kibana::default]&quot;</span>
+</span><span class='line'>  <span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Berkshelf</h4>
+
+<p>To run <code>berkshelf</code> we need to build a Berksfile which contains a list of all the chef cookbooks required for the applocation.   Berkshelf will download these cookbooks to a local directory which will be usable by chef-solo.</p>
+
+<figure class='code'><figcaption><span>Berksfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">site</span> <span class="ss">:opscode</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cookbook</span> <span class="s1">&#39;build-essential&#39;</span>
+</span><span class='line'><span class="n">cookbook</span> <span class="s1">&#39;apache2&#39;</span>
+</span><span class='line'><span class="n">cookbook</span> <span class="s1">&#39;git&#39;</span>
+</span><span class='line'><span class="n">cookbook</span> <span class="s1">&#39;kibana&#39;</span><span class="p">,</span> <span class="ss">github</span><span class="p">:</span> <span class="s1">&#39;lusis/chef-kibana&#39;</span>
+</span><span class='line'><span class="n">cookbook</span> <span class="s1">&#39;nginx&#39;</span> <span class="p">,</span> <span class="ss">github</span><span class="p">:</span> <span class="s1">&#39;opscode-cookbooks/nginx&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>You can see some of the cookbooks are being pulled from the opscode repository,  whereas others are being pulled directly from github.</em></p>
+
+<h4>Dockerfile</h4>
+
+<p>All that&rsquo;s left now is to create a Dockerfile that will bring it all together.</p>
+
+<figure class='code'><figcaption><span>Dockerfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># DOCKER-VERSION 0.5.3</span>
+</span><span class='line'><span class="no">FROM</span> <span class="n">paulczar</span><span class="o">/</span><span class="n">chef</span><span class="o">-</span><span class="n">client</span>
+</span><span class='line'><span class="no">MAINTAINER</span> <span class="no">Paul</span> <span class="no">Czarkowski</span> <span class="s2">&quot;paul@paulcz.net&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">update</span>
+</span><span class='line'><span class="no">ADD</span> <span class="o">.</span> <span class="sr">/chef</span>
+</span><span class='line'><span class="sr">RUN cd /</span><span class="n">chef</span> <span class="o">&amp;&amp;</span> <span class="sr">/opt/</span><span class="n">chef</span><span class="o">/</span><span class="n">embedded</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">berks</span> <span class="n">install</span> <span class="o">--</span><span class="n">path</span> <span class="sr">/chef/</span><span class="n">cookbooks</span>
+</span><span class='line'><span class="no">RUN</span> <span class="n">chef</span><span class="o">-</span><span class="n">solo</span> <span class="o">-</span><span class="n">c</span> <span class="sr">/chef/so</span><span class="n">lo</span><span class="o">.</span><span class="n">rb</span> <span class="o">-</span><span class="n">j</span> <span class="sr">/chef/so</span><span class="n">lo</span><span class="o">.</span><span class="n">json</span>
+</span><span class='line'><span class="no">RUN</span> <span class="n">echo</span> <span class="s2">&quot;daemon off;&quot;</span> <span class="o">&gt;&gt;</span> <span class="sr">/etc/n</span><span class="n">ginx</span><span class="o">/</span><span class="n">nginx</span><span class="o">.</span><span class="n">conf</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">CMD</span> <span class="o">[</span><span class="s2">&quot;nginx&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Run <code>$ docker build -t demo/kibana3 .</code> to build your application.</p>
+
+<p>It will add the local files ( <code>solo.rb</code>, <code>solo.json</code>, <code>Berksfile</code> ) to /chef in the server and then call berkshelf to download the cookbooks and chef-solo to install your application.   Finally it will give <code>nginx</code> a directive to run in the foreground so that we don&rsquo;t have to do any sneaky prcess control to get it to work with the way <code>docker.io</code> runs processes.</p>
+
+<p>To run the resultant <code>docker.io</code> container you simply need to run <code>$ docker run -d -p 80 demo/kibana3</code></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-07T18:18:00-04:00" pubdate data-updated="true">Sep 7<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/berkshelf/'>berkshelf</a>, <a class='category' href='/blog/categories/chef/'>chef</a>, <a class='category' href='/blog/categories/docker/'>docker</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/07/28/java-12pm-bug/" title="Previous Post: 12PM bug in Java">&laquo; 12PM bug in Java</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/09/25/vagrant-docker-and-ansible-wtf/" title="Next Post: Vagrant, Docker and Ansible, WTF?">Vagrant, Docker and Ansible, WTF? &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  A little something about me. Hi I’m Balaji Vajjala, DevOps Evangelist based in Indianapolis. Full stack development is my passion. Feel free to contact me on gmail as `bvajjala`. I’m also on [LinkedIn](http://http://www.linkedin.com/in/bvajjala "LinkedIn") and my [Resume](/about/balaji-vajjala-resume/)
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow From GitHub</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/">OpenStack : Git Gerrit and Jenkins Workflow</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing a RESTful API That Doesn't Suck</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye Node-forever</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

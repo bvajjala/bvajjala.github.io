@@ -1,0 +1,684 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Lazy Lists in Groovy - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="I like lazy evaluation, and it&rsquo;s one of the reasons I like Haskell and Clojure. Although from engineering perspective lazy evaluation is &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2011/02/03/lazy-lists-in-groovy">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/about">about</a></li>
+  <li><a href="/devops-piepline">DevOps Piepline</a></li>
+  <li><a href="/ci">Continuous Integration</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+ </ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Lazy Lists in Groovy</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-03T07:00:00-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I like lazy evaluation, and it&rsquo;s one of the reasons I like Haskell and Clojure. Although from engineering perspective lazy evaluation is probably not the most needed feature, it&rsquo;s definitely very useful for solving some mathematical problems.</p>
+
+<p>Most languages don&rsquo;t have lazy evaluation out of the box, but you can implement it using some other language features. This is an interesting task, and I use it as a code <a href="http://en.wikipedia.org/wiki/Kata_(programming)">kata</a> which I practice every time I learn a new strict language.</p>
+
+<p>So, how to implement lazy lists in a strict language? Very simple, if the language is functional. Namely, you <em>build lazy list recursively by wrapping strict list within a function</em>. Here is, for example, the strict empty list in Groovy:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="o">[]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If we wrap it with a closure, it becomes lazy empty list:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="o">{-&gt;</span> <span class="o">[]</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If we need a list with one element, we prepend (or speaking Lisp terminology <em>cons</em>) an element to lazy empty list, and make the result lazy again:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="o">{-&gt;</span> <span class="o">[</span> <span class="n">element</span><span class="o">,</span> <span class="o">{-&gt;</span> <span class="o">[]</span> <span class="o">}</span> <span class="o">]</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To add more elements we continue the same process until all elements are lazily consed. Here is, for example, a lazy list with three elements <em>a</em>, <em>b</em> and <em>c</em>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="o">{-&gt;</span> <span class="o">[</span><span class="n">a</span><span class="o">,</span> <span class="o">{-&gt;</span> <span class="o">[</span><span class="n">b</span><span class="o">,</span> <span class="o">{-&gt;</span> <span class="o">[</span> <span class="n">c</span><span class="o">,</span> <span class="o">{-&gt;</span> <span class="o">[]</span> <span class="o">}</span> <span class="o">]</span> <span class="o">}</span> <span class="o">]</span> <span class="o">}</span> <span class="o">]</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, when you have an idea how to build lazy lists, let&rsquo;s build them Groovy way. We start by creating a class:</p>
+
+<figure class='code'><figcaption><span>LazyList.groovy </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kd">class</span> <span class="nc">LazyList</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Closure</span> <span class="n">list</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="nf">LazyList</span><span class="o">(</span><span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">list</span> <span class="o">=</span> <span class="n">list</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The variable <code>list</code> encapsulates the closure wrapper of the list. We need to expose some methods that allow constructing lists using procedure described above:</p>
+
+<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kd">static</span> <span class="n">LazyList</span> <span class="nf">nil</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">new</span> <span class="nf">LazyList</span><span class="o">(</span> <span class="o">{-&gt;</span> <span class="o">[]}</span> <span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">LazyList</span> <span class="nf">cons</span><span class="o">(</span><span class="n">head</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">new</span> <span class="nf">LazyList</span><span class="o">(</span> <span class="o">{-&gt;</span> <span class="o">[</span><span class="n">head</span><span class="o">,</span> <span class="n">list</span><span class="o">]}</span> <span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we can construct lists by consing elements to empty list:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">lazylist</span> <span class="o">=</span> <span class="n">LazyList</span><span class="o">.</span><span class="na">nil</span><span class="o">().</span><span class="na">cons</span><span class="o">(</span><span class="mi">4</span><span class="o">).</span><span class="na">cons</span><span class="o">(</span><span class="mi">3</span><span class="o">).</span><span class="na">cons</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="na">cons</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To access elements of the list we implement two standard functions, <code>car</code> and <code>cdr</code>, that return head and tail of the list respectively.</p>
+
+<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kt">def</span> <span class="nf">car</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="kt">def</span> <span class="n">lst</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">call</span><span class="o">()</span>
+</span><span class='line'>        <span class="n">lst</span> <span class="o">?</span> <span class="n">lst</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">:</span> <span class="kc">null</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">def</span> <span class="nf">cdr</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="kt">def</span> <span class="n">lst</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">call</span><span class="o">()</span>
+</span><span class='line'>        <span class="n">lst</span> <span class="o">?</span> <span class="k">new</span> <span class="n">LazyList</span><span class="o">(</span><span class="n">lst</span><span class="o">[</span><span class="mi">1</span><span class="o">])</span> <span class="o">:</span> <span class="n">nil</span><span class="o">()</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here is how you use these functions to get first and second elements of the list constructed above</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="k">assert</span> <span class="n">lazylist</span><span class="o">.</span><span class="na">car</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span>
+</span><span class='line'><span class="k">assert</span> <span class="n">lazylist</span><span class="o">.</span><span class="na">cdr</span><span class="o">().</span><span class="na">car</span><span class="o">()</span> <span class="o">==</span> <span class="mi">2</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In Lisp there are built-in functions for various <code>car</code> and <code>cdr</code> compositions. For example, the previous assertion would be equivalent to function <code>cadr</code>. Instead of implementing all possible permutations, let&rsquo;s use Groovy metaprogramming to achieve the same goal.</p>
+
+<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kt">def</span> <span class="nf">methodMissing</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="kt">def</span> <span class="n">matcher</span> <span class="o">=</span> <span class="n">name</span> <span class="o">=~</span> <span class="s">/^c([ad]+)r$/</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">matcher</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">matcher</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">1</span><span class="o">].</span><span class="na">reverse</span><span class="o">().</span><span class="na">toList</span><span class="o">().</span><span class="na">inject</span><span class="o">(</span><span class="k">this</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">del</span><span class="o">,</span> <span class="n">cr</span> <span class="o">-&gt;</span> <span class="n">del</span><span class="o">.</span><span class="s2">&quot;c${cr}r&quot;</span><span class="o">()</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nf">MissingMethodException</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It might look complicated, but in reality it&rsquo;s pretty simple if you are familiar with Groovy regex and functional programming. It&rsquo;s easier to explain by example. If we pass &ldquo;caddr&rdquo; as a value of <code>name</code> parameter, the method will create a chain on method calls <code>.cdr().cdr().car()</code> which will be applied to delegate of the operation which is our LazyList object.</p>
+
+<p>With this method in place we can call car/cdr functions with arbitrary depth.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="k">assert</span> <span class="n">lazylist</span><span class="o">.</span><span class="na">caddr</span><span class="o">()</span> <span class="o">==</span> <span class="mi">3</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you create nested lazy lists, you can access any element of any nested list with this dynamic method.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">lmn</span> <span class="o">=</span> <span class="n">LazyList</span><span class="o">.</span><span class="na">nil</span><span class="o">().</span><span class="na">cons</span><span class="o">(</span><span class="s1">&#39;N&#39;</span><span class="o">).</span><span class="na">cons</span><span class="o">(</span><span class="s1">&#39;M&#39;</span><span class="o">).</span><span class="na">cons</span><span class="o">(</span><span class="s1">&#39;L&#39;</span><span class="o">)</span>
+</span><span class='line'><span class="kt">def</span> <span class="n">almnz</span> <span class="o">=</span> <span class="n">LazyList</span><span class="o">.</span><span class="na">nil</span><span class="o">().</span><span class="na">cons</span><span class="o">(</span><span class="s1">&#39;Z&#39;</span><span class="o">).</span><span class="na">cons</span><span class="o">(</span><span class="n">lmn</span><span class="o">).</span><span class="na">cons</span><span class="o">(</span><span class="s1">&#39;A&#39;</span><span class="o">)</span>
+</span><span class='line'><span class="k">assert</span> <span class="n">almnz</span><span class="o">.</span><span class="na">cadadr</span><span class="o">()</span> <span class="o">==</span> <span class="s1">&#39;M&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With so many cons methods it&rsquo;s hard to see the structure of the list. Let&rsquo;s implement <code>lazy</code> method on ArrayList class that converts strict list to lazy. Again, we will use metaprogramming and functional techniques.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">ArrayList</span><span class="o">.</span><span class="na">metaClass</span><span class="o">.</span><span class="na">lazy</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">-&gt;</span> <span class="n">delegate</span><span class="o">.</span><span class="na">reverse</span><span class="o">().</span><span class="na">inject</span><span class="o">(</span><span class="n">LazyList</span><span class="o">.</span><span class="na">nil</span><span class="o">())</span> <span class="o">{</span><span class="n">list</span><span class="o">,</span> <span class="n">item</span> <span class="o">-&gt;</span> <span class="n">list</span><span class="o">.</span><span class="na">cons</span><span class="o">(</span><span class="n">item</span><span class="o">)}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we can rewrite the previous example as follows</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">lazyfied</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;A&#39;</span><span class="o">,</span> <span class="o">[</span><span class="s1">&#39;L&#39;</span><span class="o">,</span><span class="s1">&#39;M&#39;</span><span class="o">,</span><span class="s1">&#39;N&#39;</span><span class="o">].</span><span class="na">lazy</span><span class="o">(),</span> <span class="s1">&#39;Z&#39;</span><span class="o">].</span><span class="na">lazy</span><span class="o">()</span>
+</span><span class='line'><span class="k">assert</span> <span class="n">lazyfied</span><span class="o">.</span><span class="na">cadadr</span><span class="o">()</span> <span class="o">==</span> <span class="s1">&#39;M&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What have we accomplished so far? We learned how to build lazy lists from scratch and from strict lists. We know how to add elements to lazy lists, and how to access them. The next step is to implement <code>fold</code> function. <code>fold</code> is the <a href="http://www.cs.kent.ac.uk/people/staff/dat/miranda/whyfp90.pdf">fundamental</a> operation in functional languages, so our lazy lists must provide it.</p>
+
+<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kt">boolean</span> <span class="nf">isEmpty</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">list</span><span class="o">.</span><span class="na">call</span><span class="o">()</span> <span class="o">==</span> <span class="o">[]</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">def</span> <span class="nf">fold</span><span class="o">(</span><span class="n">n</span><span class="o">,</span> <span class="n">acc</span><span class="o">,</span> <span class="n">f</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">isEmpty</span><span class="o">()</span> <span class="o">?</span> <span class="n">acc</span> <span class="o">:</span> <span class="n">cdr</span><span class="o">().</span><span class="na">fold</span><span class="o">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="n">f</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">acc</span><span class="o">,</span> <span class="n">car</span><span class="o">()),</span> <span class="n">f</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">def</span> <span class="nf">foldAll</span><span class="o">(</span><span class="n">acc</span><span class="o">,</span> <span class="n">f</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">isEmpty</span><span class="o">()</span> <span class="o">?</span> <span class="n">acc</span> <span class="o">:</span> <span class="n">cdr</span><span class="o">().</span><span class="na">foldAll</span><span class="o">(</span><span class="n">f</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">acc</span><span class="o">,</span> <span class="n">car</span><span class="o">()),</span> <span class="n">f</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The only difference between this <code>fold</code> function and the standard one is the additional parameter <em>n</em>. We will need it later when we implement infinite lists. <code>foldAll</code> function to lazy lists is the same as standard <code>fold</code> to strict lists.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="k">assert</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">].</span><span class="na">lazy</span><span class="o">().</span><span class="na">foldAll</span><span class="o">(</span><span class="mi">0</span><span class="o">){</span> <span class="n">acc</span><span class="o">,</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">acc</span> <span class="o">+</span> <span class="n">i</span> <span class="o">}</span> <span class="o">==</span> <span class="mi">15</span>
+</span><span class='line'><span class="k">assert</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">].</span><span class="na">lazy</span><span class="o">().</span><span class="na">fold</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">1</span><span class="o">){</span> <span class="n">acc</span><span class="o">,</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">acc</span> <span class="o">*</span> <span class="n">i</span> <span class="o">}</span> <span class="o">==</span> <span class="mi">6</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>First example calculates the sum of all elements of the list, second calculates the product of first three elements.</p>
+
+<p>If you have <code>fold</code> functions you can easily implement <code>take</code> functions</p>
+
+<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kt">def</span> <span class="nf">take</span><span class="o">(</span><span class="n">n</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">fold</span><span class="o">(</span><span class="n">n</span><span class="o">,</span> <span class="o">[])</span> <span class="o">{</span><span class="n">acc</span><span class="o">,</span> <span class="n">item</span> <span class="o">-&gt;</span> <span class="n">acc</span> <span class="o">&lt;&lt;</span> <span class="n">item</span><span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">def</span> <span class="nf">takeAll</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">foldAll</span><span class="o">([])</span> <span class="o">{</span><span class="n">acc</span><span class="o">,</span> <span class="n">item</span> <span class="o">-&gt;</span> <span class="n">acc</span> <span class="o">&lt;&lt;</span> <span class="n">item</span><span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">def</span> <span class="nf">toList</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">takeAll</span><span class="o">()</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>take</code> is an inverse operation to <code>lazy</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="k">assert</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">].</span><span class="na">lazy</span><span class="o">().</span><span class="na">takeAll</span><span class="o">()</span> <span class="o">==</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
+</span><span class='line'><span class="k">assert</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">].</span><span class="na">lazy</span><span class="o">().</span><span class="na">take</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="o">==</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Our next goal is <code>map</code> function on lazy lists. Ideally I want the implementation look like this</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kt">def</span> <span class="nf">map</span><span class="o">(</span><span class="n">f</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">isEmpty</span><span class="o">()</span> <span class="o">?</span> <span class="n">nil</span><span class="o">()</span> <span class="o">:</span> <span class="n">cdr</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">f</span><span class="o">).</span><span class="na">cons</span><span class="o">(</span><span class="n">f</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">car</span><span class="o">()))</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For some reason it doesn&rsquo;t work lazy way in Groovy &mdash; it&rsquo;s still strictly evaluated. Therefore I have to implement it directly with closure syntax</p>
+
+<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kt">def</span> <span class="nf">map</span><span class="o">(</span><span class="n">f</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">isEmpty</span><span class="o">()</span> <span class="o">?</span> <span class="n">nil</span><span class="o">()</span> <span class="o">:</span> <span class="k">new</span> <span class="n">LazyList</span><span class="o">(</span> <span class="o">{-&gt;</span> <span class="o">[</span><span class="n">f</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">car</span><span class="o">()),</span> <span class="n">cdr</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">f</span><span class="o">).</span><span class="na">list</span><span class="o">]}</span> <span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Unlike <code>fold</code>, lazy <code>map</code> is identical to strict <code>map</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="k">assert</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">].</span><span class="na">lazy</span><span class="o">().</span><span class="na">map</span><span class="o">{</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">it</span> <span class="o">}.</span><span class="na">take</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="o">==</span> <span class="o">[</span><span class="mi">2</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">6</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The following example shows one of the benefits of laziness</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="k">assert</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">6</span><span class="o">].</span><span class="na">lazy</span><span class="o">().</span><span class="na">map</span><span class="o">{</span> <span class="mi">6</span> <span class="o">/</span> <span class="n">it</span> <span class="o">}.</span><span class="na">take</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="o">==</span> <span class="o">[</span><span class="mi">6</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">2</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>map</code> didn&rsquo;t evaluate the entire list, hence there was no exception. If you evaluate the expression for all the elements, the exception will be thrown</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">6</span><span class="o">].</span><span class="na">lazy</span><span class="o">().</span><span class="na">map</span><span class="o">{</span> <span class="mi">6</span> <span class="o">/</span> <span class="n">it</span> <span class="o">}.</span><span class="na">takeAll</span><span class="o">()</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">assert</span> <span class="n">e</span> <span class="k">instanceof</span> <span class="n">ArithmeticException</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For strict lists this is a default behaviour of <code>map</code> function.</p>
+
+<p>The last function I want to implement is <code>filter</code></p>
+
+<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kt">def</span> <span class="nf">filter</span><span class="o">(</span><span class="n">p</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">isEmpty</span><span class="o">()</span> <span class="o">?</span> <span class="n">nil</span><span class="o">()</span> <span class="o">:</span>
+</span><span class='line'>            <span class="n">p</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">car</span><span class="o">())</span> <span class="o">?</span> <span class="k">new</span> <span class="n">LazyList</span><span class="o">(</span> <span class="o">{-&gt;</span> <span class="o">[</span><span class="n">car</span><span class="o">(),</span> <span class="n">cdr</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="n">p</span><span class="o">).</span><span class="na">list</span><span class="o">]}</span> <span class="o">)</span> <span class="o">:</span>
+</span><span class='line'>                <span class="n">cdr</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="n">p</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the following example we find first two elements greater than 2</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="k">assert</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">].</span><span class="na">lazy</span><span class="o">().</span><span class="na">filter</span><span class="o">{</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">it</span> <span class="o">}.</span><span class="na">take</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span> <span class="o">==</span> <span class="o">[</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With the help of <code>car</code>/<code>cdr</code>, <code>fold</code>, <code>map</code> and <code>filter</code> you can implement any other function on lazy lists yourself. Here is, for example, the implementation of <code>zipWith</code> function</p>
+
+<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kd">static</span> <span class="kt">def</span> <span class="nf">zipWith</span><span class="o">(</span><span class="n">alist</span><span class="o">,</span> <span class="n">blist</span><span class="o">,</span> <span class="n">f</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">alist</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span> <span class="o">||</span> <span class="n">blist</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span> <span class="o">?</span> <span class="n">nil</span><span class="o">()</span> <span class="o">:</span>
+</span><span class='line'>            <span class="k">new</span> <span class="nf">LazyList</span><span class="o">(</span> <span class="o">{-&gt;</span> <span class="o">[</span>
+</span><span class='line'>                <span class="n">f</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">alist</span><span class="o">.</span><span class="na">car</span><span class="o">(),</span> <span class="n">blist</span><span class="o">.</span><span class="na">car</span><span class="o">()),</span>
+</span><span class='line'>                <span class="n">zipWith</span><span class="o">(</span><span class="n">alist</span><span class="o">.</span><span class="na">cdr</span><span class="o">(),</span> <span class="n">blist</span><span class="o">.</span><span class="na">cdr</span><span class="o">(),</span> <span class="n">f</span><span class="o">).</span><span class="na">list</span>
+</span><span class='line'>            <span class="o">]}</span> <span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, after we implemented all lazy functions we need, let&rsquo;s define infinite lists</p>
+
+<figure class='code'><figcaption><span>LazyList.groovy (cont&#8217;d) </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="nf">sequence</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="o">{-&gt;</span> <span class="o">[</span><span class="n">n</span><span class="o">,</span> <span class="n">sequence</span><span class="o">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="o">)]}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">static</span> <span class="n">LazyList</span> <span class="nf">integers</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">new</span> <span class="nf">LazyList</span><span class="o">(</span><span class="n">sequence</span><span class="o">(</span><span class="n">n</span><span class="o">))</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">static</span> <span class="n">LazyList</span> <span class="nf">naturals</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">integers</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Infinite lists, from my point of view, is the most useful application of lazy lists</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">naturals</span> <span class="o">=</span> <span class="n">LazyList</span><span class="o">.</span><span class="na">naturals</span><span class="o">()</span>
+</span><span class='line'><span class="k">assert</span> <span class="n">naturals</span><span class="o">.</span><span class="na">take</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="o">==</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">def</span> <span class="n">evens</span> <span class="o">=</span> <span class="n">naturals</span><span class="o">.</span><span class="na">map</span> <span class="o">{</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">it</span> <span class="o">}</span>
+</span><span class='line'><span class="k">assert</span> <span class="n">evens</span><span class="o">.</span><span class="na">take</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="o">==</span> <span class="o">[</span><span class="mi">2</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">6</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">def</span> <span class="n">odds</span> <span class="o">=</span> <span class="n">naturals</span><span class="o">.</span><span class="na">filter</span> <span class="o">{</span> <span class="n">it</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">}</span>
+</span><span class='line'><span class="k">assert</span> <span class="n">odds</span><span class="o">.</span><span class="na">take</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="o">==</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">assert</span> <span class="n">naturals</span><span class="o">.</span><span class="na">cadddddddddr</span><span class="o">()</span> <span class="o">==</span> <span class="mi">10</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">def</span> <span class="n">nonnegatives</span> <span class="o">=</span> <span class="n">naturals</span><span class="o">.</span><span class="na">cons</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+</span><span class='line'><span class="k">assert</span> <span class="n">nonnegatives</span><span class="o">.</span><span class="na">cadr</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">assert</span> <span class="n">LazyList</span><span class="o">.</span><span class="na">zipWith</span><span class="o">(</span><span class="n">evens</span><span class="o">,</span> <span class="n">odds</span><span class="o">){</span> <span class="n">x</span><span class="o">,</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">}.</span><span class="na">take</span><span class="o">(</span><span class="mi">4</span><span class="o">)</span> <span class="o">==</span> <span class="o">[</span><span class="mi">2</span><span class="o">,</span><span class="mi">12</span><span class="o">,</span><span class="mi">30</span><span class="o">,</span><span class="mi">56</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>At this point you have all basic functionality implemented, and you should be able to extend this model to whatever you need in regards to lazy (infinite) lists. Happy lazy programming!</p>
+
+<h2>Resources and links</h2>
+
+<ul>
+<li><a href="http://gist.github.com/810702">Source code</a> for this blog</li>
+<li>Lazy list implementation in <a href="https://github.com/ndpar/erlang/blob/master/src/lazy.erl">Erlang</a></li>
+<li>Lazy list implementation in <a href="https://github.com/ndpar/land-of-lisp/blob/master/lazy.lisp">Lisp</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-03T07:00:00-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/functional-programming/'>Functional Programming</a>, <a class='category' href='/blog/categories/groovy/'>Groovy</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2011/02/03/lazy-lists-in-groovy/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2011/02/03/lazy-lists-in-groovy/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/01/29/counting-modifications-in-git/" title="Previous Post: Counting modifications in Git repository">&laquo; Counting modifications in Git repository</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/06/01/reversing-groovy-switch-statement/" title="Next Post: Reversing Groovy switch statement">Reversing Groovy switch statement &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  A little something about me. Hi I’m Balaji Vajjala, DevOps Evangelist based in Indianapolis. Full stack development is my passion. Feel free to contact me on gmail as `bvajjala`. I’m also on [LinkedIn](http://http://www.linkedin.com/in/bvajjala "LinkedIn") and my [Resume](/about/balaji-vajjala-resume/)
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow From GitHub</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/">OpenStack : Git Gerrit and Jenkins Workflow</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing a RESTful API That Doesn't Suck</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye Node-forever</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

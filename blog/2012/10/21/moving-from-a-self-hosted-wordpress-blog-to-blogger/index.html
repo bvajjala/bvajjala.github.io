@@ -1,0 +1,479 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Moving From a Self Hosted Wordpress Blog to Blogger - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="I have a self hosted wordpress food blog hosted on an old silly domain that I&rsquo;ve wanted to move away from for a while. I also want to stop &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2012/10/21/moving-from-a-self-hosted-wordpress-blog-to-blogger">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/about">about</a></li>
+  <li><a href="/devops-piepline">DevOps Piepline</a></li>
+  <li><a href="/ci">Continuous Integration</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+ </ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Moving From a Self Hosted Wordpress Blog to Blogger</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-21T15:15:00-04:00" pubdate data-updated="true">Oct 21<span>st</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I have a self hosted <a href="http://xesla.ro">wordpress food blog</a> hosted on an old silly domain that I&rsquo;ve wanted to move away from for a while.   I also want to stop paying hosting fees some time soon.   Since I&rsquo;m already looking at moving a lot of my day-to-day activities to the &lsquo;cloud&rsquo;  it made sense to pick a blogging platform that ties into a major cloud hub.   Google&rsquo;s Blogger was the obvious choice as I&rsquo;m already using the Google Apps platform for my new domain <code>paulcz.net</code>.</p>
+
+<p>Creating a blog on blogger is dead simple.   I went ahead and created two: <a href="http://food.paulcz.net">food.paulcz.net</a> for the new food blog and <a href="http://tech.paulcz.net">tech.paulcz.net</a> to start journalling random tech things.     Transfering the blog content itself  is quite simple,  however, doing it in a way as to preserve links between posts, from other sites, and teaching the search engines how to find your new site requires a little more trickery.</p>
+
+<!--more-->
+
+
+<p>I&rsquo;m assuming you already have some technical know-how &hellip;  this isn&rsquo;t for the Octogenarians or Luddites in the audience.     You&rsquo;ll need access to a linux host and have a basic understanding of editing files in vim and navigating the linux  command prompt as well as be able to navigate the Wordpress  and Blogger interfaces.</p>
+
+<p>These examples  use my own blog so where you see <a href="http://food.paulcz.net">food.paulcz.net</a> please modify the text to your own blog URL if you want to use them.   Some of the scripting is a bit silly and could be cleaner but they&rsquo;re throwaway scripts and I didn&rsquo;t want to spend too much time on them.</p>
+
+<h2>Step 1.   Perform Initial Import/Export of blog.</h2>
+
+<p>Log into your wordpress blog and export the blog to an XMLfile ( <code>wordpress_export.xml</code> ).     You should be able to do this by going to <code>Dashboard -&gt; Tools -&gt; Export -&gt; Download Export file</code>.</p>
+
+<p>Browse  to <a href="http://wordpress2blogger.appspot.com/">http://wordpress2blogger.appspot.com/</a>.   This site will convert the file from Wordpress format to Blogger format.   Upload and Convert your file, saving it to <code>blogger_export.xml</code>.</p>
+
+<p>Log into blogger and create a new blog.   if you&rsquo;re using your own domain set up the address in basic settings and then go to <code>Other Settings -&gt; Import blog</code>  and select the <code>blogger-export.xml</code> file.   You&rsquo;ll also need to publish all the posts ( they don&rsquo;t seem to publish by default ).  You can do this  50 at a  time from the Posts section.</p>
+
+<p>Now if you have a small blog, or don&rsquo;t have any intrasite links you&rsquo;re basically done here.   However A lot of my posts have links back to other posts and these are not converted.   This means that there&rsquo;s tons of links on my new blog posting back to my old blog.</p>
+
+<p>Thankfully I don&rsquo;t upload images to the blog, rather link to them on my picasa/google+ albums.   This means I don&rsquo;t have to deal with some wacky image stuff.</p>
+
+<h2>Step 2.   Modify links to point to new site.</h2>
+
+<p>The first thing to do is get a list of all blog post links on your new Blogger site.   This is pretty easy,  you can do it via an RSS feed and some perl magic.</p>
+
+<p>Browse to your new blog like so:   <a href="http://food.paulcz.net/feeds/posts/default?start-index=1&amp;max-results=999">http://food.paulcz.net/feeds/posts/default?start-index=1&amp;max-results=999</a>.   This  will give you a page showing your entire blog ( assuming you have less than 999 posts ).    Save this file from your browser as default.xhtml.</p>
+
+<p>now create a perl script called <code>urls.pl</code> &hellip;    notice the URL ( with \ escaped characters ) .. you&rsquo;ll need to modify this to match your new blogger url.</p>
+
+<figure class='code'><figcaption><span>urls.pl </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="c1">#!/usr/bin/perl</span>
+</span><span class='line'><span class="nb">open</span> <span class="p">(</span><span class="n">TXT</span><span class="p">,</span><span class="s">&quot;&lt; default.xhtml&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="k">while</span> <span class="p">(</span><span class="sr">&lt;TXT&gt;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'> <span class="nb">chomp</span><span class="p">;</span>
+</span><span class='line'> <span class="sr">/(http:\/\/food\.paulcz\.net\/\d\d\d\d.*?html)/</span><span class="p">;</span>
+</span><span class='line'> <span class="k">print</span> <span class="nv">$1</span> <span class="o">.</span> <span class="s">&quot;\n&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then run the following:</p>
+
+<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>perl urls.pl | uniq &gt; blogger_urls.txt<span class="s1">&#39;</span>
+</span><span class='line'><span class="s1">grep &quot;&lt;link&gt;&quot; wordpress_export.xml | sed &quot;s/&lt;link&gt;//&quot; | sed &quot;s/&lt;\/link&gt;//&quot; \</span>
+</span><span class='line'><span class="s1"> | perl -e &#39;</span>print reverse &lt;&gt;<span class="err">&#39;</span> &gt; wordpress_posts.txt
+</span><span class='line'>cp blogger_export.xml blogger_munge.xml
+</span><span class='line'>vim -O wordpress_posts.txt blogger_urls.txt
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This  will extract a unique list of URLs  of posts from both your new blogger and old wordpress sites. Chances are they won&rsquo;t match up exactly and some hand editing will be required.  That&rsquo;s okay the  last line  above will open the  files side-by-side in vim  to allow you  to clean this  up.     Hand edit each side  to ensure that both URLs on the same line match the same a posts.</p>
+
+<p>Once that is done we can write  and run some more perl to create a shell script  that will modify the  <code>blogger_munge.xml</code> file ( copied from the original <code>blogger_export.xml</code> above ) replacing all your old links.</p>
+
+<p>Create the following perl script named <code>create_sed.pl</code></p>
+
+<figure class='code'><figcaption><span>create_sed.pl</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="c1">#!/usr/bin/perl</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">@combined</span><span class="p">;</span>
+</span><span class='line'><span class="nb">open</span><span class="p">(</span><span class="n">TXT</span><span class="p">,</span> <span class="s">&quot;&lt; wordpress_posts.txt&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">@wordpress</span> <span class="o">=</span> <span class="sr">&lt;TXT&gt;</span><span class="p">;</span>
+</span><span class='line'><span class="nb">close</span> <span class="n">TXT</span><span class="p">;</span>
+</span><span class='line'><span class="nb">open</span><span class="p">(</span><span class="n">TXT</span><span class="p">,</span> <span class="s">&quot;&lt; blogger_urls&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">@blogger</span> <span class="o">=</span> <span class="sr">&lt;TXT&gt;</span><span class="p">;</span>
+</span><span class='line'><span class="nb">chomp</span><span class="p">(</span><span class="nv">@wordpress</span><span class="p">);</span>
+</span><span class='line'><span class="nb">chomp</span><span class="p">(</span><span class="nv">@blogger</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$size</span> <span class="o">=</span> <span class="nv">$#blogger</span><span class="p">;</span>
+</span><span class='line'><span class="k">for</span> <span class="p">(</span> <span class="nv">$count</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nv">$count</span><span class="o">&lt;=</span><span class="nv">$size</span><span class="p">;</span><span class="nv">$count</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'> <span class="nv">$string</span> <span class="o">=</span> <span class="nv">$wordpress</span><span class="p">[</span><span class="nv">$count</span><span class="p">]</span> <span class="o">.</span> <span class="s">&quot;|&quot;</span> <span class="o">.</span> <span class="nv">$blogger</span><span class="p">[</span><span class="nv">$count</span><span class="p">];</span>
+</span><span class='line'> <span class="nb">push</span><span class="p">(</span><span class="nv">@combined</span><span class="p">,</span> <span class="nv">$string</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span> <span class="nv">@combined</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'> <span class="sr">s/\//\\\//g</span><span class="p">;</span>
+</span><span class='line'> <span class="sr">s/\./\\./g</span><span class="p">;</span>
+</span><span class='line'> <span class="sr">s/\|/\//</span><span class="p">;</span>
+</span><span class='line'> <span class="k">print</span> <span class="s">&quot;sed -i \&#39;s/$_/g\&#39; blogger-munge.xml\n&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now run <code>create_sed.pl</code>, and the resultant <code>munge.sh</code> script.</p>
+
+<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>perl create_sed.pl  &gt; munge.sh
+</span><span class='line'>sh munge.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>now you have a blogger_munge.xml file that links back to its own articles.    There may be some residual links  back to your old  site.   If you&rsquo;re a perfectionist you  could hand edit  the XML to fix this,  but I&rsquo;d say its now good  enough.</p>
+
+<h2>Step 3. Re-Create your blogger blog.</h2>
+
+<p>Now you&rsquo;ll want to delete your initial blogger blog and recreate it.   Remember to set your URL again, then import the <code>blogger_munge.xml</code> file and republish all the posts.</p>
+
+<h2>Step 4.  Set redirects from your old blog space.</h2>
+
+<p>Since we have the matching pairs of URLs  it becomes quite simple to set up some permanent redirects from your apache config, or even better from inside a <code>.htaccess</code> file.  Setting a permanent redirect not only redirects the user to the correct place,  but in theory also informs a search engine ( on its next pass over your blog )  to update its database to the new location.</p>
+
+<p>Links from around the web pointing at your old domain will continue to work for as long as the redirects work.    At some point if you want to retire your old domain this will break those links&hellip;   But there&rsquo;s not a great deal you can do about that.</p>
+
+<p>save the following perl snippet as <code>rewrite.pl</code>.  remember to rewrite any strings specific to my domains to match your own:</p>
+
+<figure class='code'><figcaption><span>rewrite.pl</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="c1">#!/usr/bin/perl</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">@combined</span><span class="p">;</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">@wordpress</span><span class="p">;</span>
+</span><span class='line'><span class="nb">open</span><span class="p">(</span><span class="n">TXT</span><span class="p">,</span> <span class="s">&quot;&lt; wordpress_posts.txt&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="k">while</span> <span class="p">(</span><span class="sr">&lt;TXT&gt;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'> <span class="nb">chomp</span><span class="p">;</span>
+</span><span class='line'> <span class="sr">s/\/$//</span><span class="p">;</span>  <span class="c1"># remove trailing /</span>
+</span><span class='line'> <span class="k">my</span> <span class="nv">@temp</span> <span class="o">=</span> <span class="nb">split</span> <span class="s">&quot;/&quot;</span><span class="p">;</span>
+</span><span class='line'> <span class="nv">$last</span> <span class="o">=</span> <span class="nb">pop</span> <span class="nv">@temp</span><span class="p">;</span>
+</span><span class='line'> <span class="nb">push</span><span class="p">(</span><span class="nv">@wordpress</span><span class="p">,</span> <span class="nv">$last</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nb">close</span> <span class="n">TXT</span><span class="p">;</span>
+</span><span class='line'><span class="nb">open</span><span class="p">(</span><span class="n">TXT</span><span class="p">,</span> <span class="s">&quot;&lt; blogger_urls&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="k">my</span> <span class="nv">@blogger</span> <span class="o">=</span> <span class="sr">&lt;TXT&gt;</span><span class="p">;</span>
+</span><span class='line'><span class="nb">chomp</span><span class="p">(</span><span class="nv">@blogger</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$size</span> <span class="o">=</span> <span class="nv">$#blogger</span><span class="p">;</span>
+</span><span class='line'><span class="k">for</span> <span class="p">(</span> <span class="nv">$count</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nv">$count</span><span class="o">&lt;=</span><span class="nv">$size</span><span class="p">;</span><span class="nv">$count</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'> <span class="nv">$string</span> <span class="o">=</span> <span class="nv">$wordpress</span><span class="p">[</span><span class="nv">$count</span><span class="p">]</span> <span class="o">.</span> <span class="s">&quot;|&quot;</span> <span class="o">.</span> <span class="nv">$blogger</span><span class="p">[</span><span class="nv">$count</span><span class="p">];</span>
+</span><span class='line'> <span class="nb">push</span><span class="p">(</span><span class="nv">@combined</span><span class="p">,</span> <span class="nv">$string</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">print</span> <span class="s">&quot;rewriteEngine on\n&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span> <span class="nv">@combined</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'> <span class="sr">s/\|/ /</span><span class="p">;</span>
+</span><span class='line'> <span class="sr">s/^http:\/\/*.?\///</span><span class="p">;</span>
+</span><span class='line'> <span class="k">print</span> <span class="s">&quot;rewriteRule $_ [R=permanent,L]\n&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">print</span> <span class="s">&quot;rewriteRule ^.*\$ http://food.paulcz.net [R=permanent,L]\n&quot;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Run the script and output to a file.   The contents of this file can be added to a .htaccess file and will immediately start redirecting your traffic to the correct post on your new blog.   Any hits that don&rsquo;t match a mapped blog post will get redirected to the main page of your blog.</p>
+
+<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>perl rewrite.pl &gt; rewrite.txt
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Inspect the file and if it looks correct you can append it to your <code>.htaccess</code> file.   If you have other redirect rules already in your <code>.htaccess</code> file you&rsquo;ll need to remove them or comment them out.</p>
+
+<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat rewrite.txt &gt;&gt; /var/www/html/.htaccess
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There&rsquo;s no need to restart apache for a changed .htaccess file,  so you can immediately test that the redirects are working &hellip;</p>
+
+<ol>
+<li><a href="http://xesla.ro">http://xesla.ro</a> &mdash;> <a href="http://food.paulcz.net/">http://food.paulcz.net/</a></li>
+<li><a href="http://xesla.ro/wordpress/cooking/prickly-pear-syrup">http://xesla.ro/&hellip;/prickly-pear-syrup</a> &mdash;> <a href="http://food.paulcz.net/2012/08/prickly-pear-syrup.html">http://food.paulcz.net/&hellip;/prickly-pear-syrup.html</a></li>
+</ol>
+
+
+<p>Perfect!  we&rsquo;re working.</p>
+
+<h2>Step 5.   More Things to do &hellip; ?</h2>
+
+<p>This has taken care of almost everything I care about.  However I do want to be able to cancel my webhost subscription so I&rsquo;ll need to try and find a cloud type service to perform the redirects for me.    <a href="www.heroku.com">Heroku</a> is probably the place I&rsquo;ll go for that.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-21T15:15:00-04:00" pubdate data-updated="true">Oct 21<span>st</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/blogger/'>blogger</a>, <a class='category' href='/blog/categories/perl/'>perl</a>, <a class='category' href='/blog/categories/script/'>script</a>, <a class='category' href='/blog/categories/wordpress/'>wordpress</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2012/10/21/moving-from-a-self-hosted-wordpress-blog-to-blogger/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2012/10/21/moving-from-a-self-hosted-wordpress-blog-to-blogger/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/10/01/exporting-solr-documents/" title="Previous Post: Exporting Solr documents">&laquo; Exporting Solr documents</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/11/08/simple-web-application-in-clojure/" title="Next Post: Simple web application in Clojure">Simple web application in Clojure &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  A little something about me. Hi I’m Balaji Vajjala, DevOps Evangelist based in Indianapolis. Full stack development is my passion. Feel free to contact me on gmail as `bvajjala`. I’m also on [LinkedIn](http://http://www.linkedin.com/in/bvajjala "LinkedIn") and my [Resume](/about/balaji-vajjala-resume/)
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow From GitHub</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/">OpenStack : Git Gerrit and Jenkins Workflow</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing a RESTful API That Doesn't Suck</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye Node-forever</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

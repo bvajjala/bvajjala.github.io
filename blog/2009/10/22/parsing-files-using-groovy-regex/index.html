@@ -1,0 +1,421 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Parsing Files Using Groovy Regex - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="In my previous post I mentioned several ways of defining regular expressions in Groovy. Here I want to show how we can use Groovy regex to find the &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2009/10/22/parsing-files-using-groovy-regex">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/about">about</a></li>
+  <li><a href="/devops-piepline">DevOps Piepline</a></li>
+  <li><a href="/ci">Continuous Integration</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+ </ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Parsing Files Using Groovy Regex</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-10-22T08:00:00-04:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In my previous <a href="/2009/09/25/groovy-regular-expressions/">post</a> I mentioned several ways of defining regular expressions in Groovy. Here I want to show how we can use Groovy regex to find the data in the files.</p>
+
+<h2>Parsing properties file (simplified)<sup>1</sup></h2>
+
+<p><em>Data:</em> each line in the file has the same structure; the entire line can be matched by single regex.</p>
+
+<p><em>Task:</em> transform each line to the object.</p>
+
+<p><em>Solution:</em> construct regex with capturing parentheses, apply it to each line, extract captured data.</p>
+
+<p><em>Demonstrates:</em> <code>File.eachLine</code> method, matrix syntax of <em>Matcher</em> object.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">properties</span> <span class="o">=</span> <span class="o">[:]</span>
+</span><span class='line'><span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="s1">&#39;path/to/some.properties&#39;</span><span class="o">).</span><span class="na">eachLine</span> <span class="o">{</span> <span class="n">line</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">((</span><span class="n">matcher</span> <span class="o">=</span> <span class="n">line</span> <span class="o">=~</span> <span class="s">/^([^#=].*?)=(.+)$/</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">properties</span><span class="o">[</span><span class="n">matcher</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">1</span><span class="o">]]</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">2</span><span class="o">]</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="n">println</span> <span class="n">properties</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Parsing CSV files (simplified)<sup>2</sup></h2>
+
+<p><em>Data:</em> each line in the file has the same structure; the line consists of the blocks separated by some character sequence.</p>
+
+<p><em>Task:</em> transform each line to the list of objects.</p>
+
+<p><em>Solution:</em> construct regex with capturing parentheses, parse each line with the regex in a loop extracting captured data.</p>
+
+<p><em>Demonstrates:</em> <code>~//</code> <em>Pattern</em> defenition, <code>Matcher.group</code> method, <code>\G</code> regex meta-sequence.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">regex</span> <span class="o">=</span> <span class="o">~</span><span class="s">/\G(?:^|,)(?:&quot;([^&quot;]*+)&quot;|([^&quot;,]*+))/</span>
+</span><span class='line'><span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="s1">&#39;path/to/file.csv&#39;</span><span class="o">).</span><span class="na">eachLine</span> <span class="o">{</span> <span class="n">line</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="kt">def</span> <span class="n">fields</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>    <span class="kt">def</span> <span class="n">matcher</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">line</span><span class="o">)</span>
+</span><span class='line'>    <span class="k">while</span> <span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">find</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">fields</span> <span class="o">&lt;&lt;</span> <span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span> <span class="o">?:</span> <span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="mi">2</span><span class="o">))</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">println</span> <span class="n">fields</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Finding snapshot dependencies in the POM (simplified)<sup>3</sup></h2>
+
+<p><em>Data:</em> file contains blocks with known boundaries (possibly spanning multiple lines).</p>
+
+<p><em>Task:</em> extract the blocks satisfying some criteria.</p>
+
+<p><em>Solution:</em> read the entire file into the string, construct regex with capturing parentheses, apply the regex to the string in a loop.</p>
+
+<p><em>Demonstrates:</em> <code>File.text</code> property, list syntaxt of <em>Matcher</em> object, named capture, global <code>\x</code> regex modifier, local <code>\s</code> regex modifier.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">pom</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s1">&#39;path/to/pom.xml&#39;</span><span class="o">).</span><span class="na">text</span>
+</span><span class='line'><span class="kt">def</span> <span class="n">matcher</span> <span class="o">=</span> <span class="n">pom</span> <span class="o">=~</span> <span class="s">$/(?x)</span>
+</span><span class='line'><span class="s">    &lt;dependency&gt;                          \s*</span>
+</span><span class='line'><span class="s">      &lt;groupId&gt;([^&lt;]+)&lt;/groupId&gt;          \s*</span>
+</span><span class='line'><span class="s">      &lt;artifactId&gt;([^&lt;]+)&lt;/artifactId&gt;    \s*</span>
+</span><span class='line'><span class="s">      &lt;version&gt;(.+?-SNAPSHOT)&lt;/version&gt;   (?s:.*?)</span>
+</span><span class='line'><span class="s">    &lt;/dependency&gt;</span>
+</span><span class='line'><span class="s">/$</span>
+</span><span class='line'><span class="n">matcher</span><span class="o">.</span><span class="na">each</span> <span class="o">{</span> <span class="n">matched</span><span class="o">,</span> <span class="n">groupId</span><span class="o">,</span> <span class="n">artifactId</span><span class="o">,</span> <span class="n">version</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="n">println</span> <span class="s2">&quot;$groupId:$artifactId:$version&quot;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Finding stacktraces in the log</h2>
+
+<p><em>Data:</em> file contains entries each of which starts with the same pattern and can span multiple lines. Typical example is log4j log files:</p>
+
+<pre><code>2009-10-16 15:32:12,157 DEBUG [com.ndpar.web.RequestProcessor] Loading user
+2009-10-16 15:32:13,258 ERROR [com.ndpar.web.UserController] id to load is required for loading
+java.lang.IllegalArgumentException: id to load is required for loading
+     at org.hibernate.event.LoadEvent.(LoadEvent.java:74)
+     at org.hibernate.event.LoadEvent.(LoadEvent.java:56)
+     at org.hibernate.impl.SessionImpl.get(SessionImpl.java:839)
+     at org.hibernate.impl.SessionImpl.get(SessionImpl.java:835)
+     at org.springframework.orm.hibernate3.HibernateTemplate$1.doInHibernate(HibernateTemplate.java:531)
+     at org.springframework.orm.hibernate3.HibernateTemplate.doExecute(HibernateTemplate.java:419)
+     at org.springframework.orm.hibernate3.HibernateTemplate.executeWithNativeSession(HibernateTemplate.java:374)
+     at org.springframework.orm.hibernate3.HibernateTemplate.get(HibernateTemplate.java:525)
+     at org.springframework.orm.hibernate3.HibernateTemplate.get(HibernateTemplate.java:519)
+     at com.ndpar.dao.UserManager.getUser(UserManager.java:90)
+     ... 62 more
+2009-10-16 15:32:14,659 DEBUG [com.ndpar.jms.MessageListener] Received message:
+     ... multi-line message ...
+2009-10-16 15:32:15,169 INFO  [com.ndpar.dao.UserManager] User: ...
+</code></pre>
+
+<p><em>Task:</em> find entries satisfying some criteria.</p>
+
+<p><em>Solution:</em> read the entire file into the string<sup>4</sup>, construct regex with capturing parentheses and lookahead, split the string into entries, loop through the result and apply criteria to each entry.</p>
+
+<p><em>Demonstrates:</em> regex interpolation, combined global regex modifiers <code>\s</code> and <code>\m</code>.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">log</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s1">&#39;path/to/your.log&#39;</span><span class="o">).</span><span class="na">text</span>
+</span><span class='line'><span class="kt">def</span> <span class="n">logLineStart</span> <span class="o">=</span> <span class="s">/^\d{4}-\d{2}-\d{2}/</span>
+</span><span class='line'><span class="kt">def</span> <span class="n">splitter</span> <span class="o">=</span> <span class="n">log</span> <span class="o">=~</span> <span class="s">$/(?xms)</span>
+</span><span class='line'><span class="s">    (    ${logLineStart}   .*?)</span>
+</span><span class='line'><span class="s">    (?=  ${logLineStart} | \Z)</span>
+</span><span class='line'><span class="s">/$</span>
+</span><span class='line'><span class="n">splitter</span><span class="o">.</span><span class="na">each</span> <span class="o">{</span> <span class="n">matched</span><span class="o">,</span> <span class="n">entry</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">entry</span> <span class="o">=~</span> <span class="s">/(?m)^(?:\t| {8})at/</span><span class="o">)</span> <span class="n">println</span> <span class="n">entry</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Resources</h3>
+
+<ul>
+<li>Groovy <a href="http://groovy.codehaus.org/Regular+Expressions">regexes</a></li>
+<li>Groovy <a href="http://groovy.codehaus.org/Groovy+CLI">one-liners</a></li>
+<li>Using <a href="http://mrhaki.blogspot.com/2009/10/groovy-goodness-using-replaceall.html">String.replaceAll</a> method</li>
+</ul>
+
+
+<h3>Footnotes</h3>
+
+<ol>
+<li>This example is for demonstration purposes only. In real program you would just use <code>Properties.load</code> method.</li>
+<li>The regex is simplified. If you want the real one, take a look at Jeffrey Friedl&rsquo;s <a href="http://regex.info/listing.cgi?ed=3&amp;p=401">example</a>.</li>
+<li>Again, in reality you would find snapshots using <code>mvn dependency:resolve | grep SNAPSHOT</code> command.</li>
+<li>This approach won&rsquo;t work for big files. Take a look at this <a href="http://github.com/ndpar/utilities/blob/master/stacktraces.groovy">script</a> for practical solution.</li>
+</ol>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-10-22T08:00:00-04:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2009</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/groovy/'>Groovy</a>, <a class='category' href='/blog/categories/regex/'>Regex</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2009/10/22/parsing-files-using-groovy-regex/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2009/10/22/parsing-files-using-groovy-regex/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2009/09/25/groovy-regular-expressions/" title="Previous Post: Groovy regular expressions">&laquo; Groovy regular expressions</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2009/11/12/state-machine-in-erlang/" title="Next Post: State Machine in Erlang">State Machine in Erlang &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  A little something about me. Hi I’m Balaji Vajjala, DevOps Evangelist based in Indianapolis. Full stack development is my passion. Feel free to contact me on gmail as `bvajjala`. I’m also on [LinkedIn](http://http://www.linkedin.com/in/bvajjala "LinkedIn") and my [Resume](/about/balaji-vajjala-resume/)
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow From GitHub</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/">OpenStack : Git Gerrit and Jenkins Workflow</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing a RESTful API That Doesn't Suck</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye Node-forever</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

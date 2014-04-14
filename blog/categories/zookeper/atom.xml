@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Zookeper | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/zookeper/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T14:12:32-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ZooKeeper vs. Doozer vs. Etcd]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/02/03/zookeeper-vs-doozer-vs-etcd/"/>
+    <updated>2014-02-03T13:18:39-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/02/03/zookeeper-vs-doozer-vs-etcd</id>
+    <content type="html"><![CDATA[<h2><a href="/blog/2013/09/11/zookeeper-vs-doozer-vs-etcd.html">ZooKeeper vs. Doozer vs. Etcd</a></h2>
+
+<p>While <a href="http://devo.ps">devo.ps</a> is fast approaching a public release, the team has been dealing with an increasingly complex infrastructure. We more recently faced an interesting issue; how do you share configuration across a cluster of servers? More importantly, how do you do so in a resilient, secure, easily deployable and speedy fashion?</p>
+
+<p>That&rsquo;s what got us to evaluate some of the options available out there;
+ZooKeeper, Doozer and etcd. These tools all solve similar sets of problems but their approach differ quite significantly. Since we spent some time evaluating them, we thought we&rsquo;d share our findings.</p>
+
+<h3>ZooKeeper, the old dog</h3>
+
+<p><a href="http://zookeeper.apache.org/">ZooKeeper</a> is the most well known (and oldest) project we&rsquo;ve looked into. It&rsquo;s used by a few big players (Rackspace, Yahoo, eBay, <a href="https://news.ycombinator.com/item?id=6367979">Youtube</a>) and is pretty mature.</p>
+
+<p>It was created by Yahoo to deal with distributed systems applications. I strongly recommend you <a href="http://developer.yahoo.com/blogs/hadoop/apache-zookeeper-making-417.html">read the &ldquo;making of&rdquo;</a> if you&rsquo;re interested in understanding where Yahoo came from when they wrote it.</p>
+
+<p>It stores variables in a structure similar to a file system, an approach that both Doozer and etcd still follow. With ZooKeeper, you maintain a cluster of servers communicating with each other that share the state of the distributed configuration data. Each cluster elects one &ldquo;leader&rdquo; and clients can connect to any of the servers within the cluster to retrieve the data. Zookeeper uses its own algorithm to handle distributed storage.</p>
+
+<ul>
+<li><p><strong>Pros</strong>:</p>
+
+<ul>
+<li><strong>Mature technology</strong>; it is used by some big players (eBay, Yahoo et al).</li>
+<li><strong>Feature-rich</strong>; lots of client bindings, tools, API…</li>
+</ul>
+</li>
+<li><p><strong>Cons</strong>:</p>
+
+<ul>
+<li><strong>Complex</strong>; ZooKeeper is not for the faint of heart. It is pretty heavy and will require you to maintain a fairly large stack.</li>
+<li><strong>It's… Java</strong>; not that we especially hate Java, but it is on the heavy side and introduce a lot of dependencies. We wanted to keep our machines as lean as possible and usually shy away from dependency heavy technologies.</li>
+<li><strong>Apache…</strong>; we have mixed feelings about the Apache Foundation. <a href="http://www.infoworld.com/d/open-source-software/has-apache-lost-its-way-225267">&ldquo;Has Apache Lost Its Way?&rdquo;</a> summarizes it pretty well.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Doozer, kinda dead</h3>
+
+<p><a href="https://github.com/ha/doozerd">Doozer</a> was developed by Heroku a few years
+ago. It&rsquo;s written in Go (yay!), which means it compiles into a single binary
+that runs without dependencies. On a side-note, if you&rsquo;re writing code to
+manage infrastructure, you should spend some time <a href="http://golang.org/">learning
+Go</a>.</p>
+
+<p>Doozer got some initial excitement from the developer community but seems to
+have stalled more recently, with many forks being sporadically maintained and
+no active core development.</p>
+
+<p>It is composed of <a href="https://github.com/ha/doozerd">a daemon</a> and <a href="https://github.com/ha/doozer">a
+client</a>. Once you have at least one Doozer
+server up, you can add any number of servers and have clients get and set data
+by talking to any of the servers within that cluster.</p>
+
+<p>It was one of the first practical implementations (as far as I know) of the
+<a href="http://en.wikipedia.org/wiki/Paxos_(computer_science">Paxos algorithm</a>). This
+means operations can be slow when compared to dealing with a straight database
+since cluster-wide consensus needs to be reached before committing any
+operation.</p>
+
+<p>Doozer was a step in the right direction. It is simple to use and setup.
+However, after using it for a while we started noticing that a lot of its
+parts felt unfinished. Moreover, it wasn&rsquo;t answering some of our needs very
+well (encryption and ACL).</p>
+
+<ul>
+<li><p><strong>Pros</strong>:</p>
+
+<ul>
+<li><strong>Easy to deploy, setup and use</strong> (Go, yay!)</li>
+<li><strong>It works</strong>; lots of people have actually used it in production.</li>
+</ul>
+</li>
+<li><p><strong>Cons</strong>:</p>
+
+<ul>
+<li><strong>Pretty much dead</strong>: the core project hasn&rsquo;t been active in a while (1 commit since May) and is pretty fragmented (150 forks…).</li>
+<li><strong>Security</strong>; no encryption and a fairly simple secure-word based authentication.</li>
+<li><strong>No ACL</strong>; and we badly needed this.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>etcd</h3>
+
+<p>After experiencing the shortcomings of Doozer, we stumbled upon a new
+distributed configuration storage called
+<a href="https://github.com/coreos/etcd">etcd</a>. It was first released by the
+<a href="http://coreos.com">CoreOS</a> team a month ago.</p>
+
+<p>Etcd and Doozer look pretty similar, at least on the surface. The most obvious
+technical difference is that ectd uses the <a href="http://en.wikipedia.org/wiki/Raft_%28computer_science%29">Raft
+algorithm</a> instead
+of Paxos. Raft is designed to be <a href="https://ramcloud.stanford.edu/wiki/%0Adownload/attachments/11370504/raft.pdf">simpler</a> and
+<a href="http://kellabyte.com/2013/05/09/an-alternative-to-paxos-the-raft-%0Aconsensus-algorithm/">easier</a> to implement than Paxos.</p>
+
+<p>Etcd&rsquo;s architecture is similar to Doozer&rsquo;s. It does, however, store data
+persistently (writes log and snapshots), which was of value to us for some
+edge cases. It also has a better take on security, with CA&rsquo;s, certs and
+private keys. While setting it up is not straightforward, it adds conveniency
+and safety of mind.</p>
+
+<p>Beyond the fact that it answered some of our more advanced needs, we were
+seduced (and impressed) by the development pace of the project.</p>
+
+<ul>
+<li><p><strong>Pros</strong>:</p>
+
+<ul>
+<li><strong>Easy to deploy, setup and use</strong> (yay Go and yay HTTP interfaces!).</li>
+<li><strong>Data persistence</strong>.</li>
+<li><strong>Secure</strong>: encryption and authentication by private keys.</li>
+<li><strong>Good documentation</strong> (if a little bit obscure at times).</li>
+<li>Planned ACL implementation.</li>
+</ul>
+</li>
+<li><p><strong>Cons</strong>:</p>
+
+<ul>
+<li>(Very) <strong>young project</strong>; interfaces are still moving pretty quickly.</li>
+<li>Still not a perfect match, especially in the way that data is spread.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>The DIY approach (yeah, right..?)</h3>
+
+<p>It is only fair that technical teams may rely on their understanding of their
+infrastructure and coding skills to get <em>something that just works™</em> in place.
+We haven&rsquo;t seriously considered this approach as we felt that getting security
+and distributed state sharing right was going to be a bigger endeavor than we
+could afford (the backlog is full enough for now).</p>
+
+<h3>Conclusion</h3>
+
+<p>In the end, we decided to give etcd a try. So far it seems to work well for
+our needs and the very active development pace seems to validate our choice.
+It has proven resilient and will likely hold well until we have the resources
+to either customize its data propagation approach, or build our own solution
+that will answer some needs it is not likely to answer (we&rsquo;ve already looked
+into doing so with ZeroMQ and Go).</p>
+]]></content>
+  </entry>
+  
+</feed>

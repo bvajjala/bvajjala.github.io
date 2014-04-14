@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Programming | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/programming/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T14:12:32-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[To Be or Not to Be… Entrepreneur]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/05/26/entrepreneur/"/>
+    <updated>2013-05-26T18:00:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/05/26/entrepreneur</id>
+    <content type="html"><![CDATA[<p><a href="http://www.infoq.com/interviews/rod-johnson-entrepreneurialism">Rod Johnson</a>, creator of Spring, programmer that became entrepreneur:</p>
+
+<blockquote><p>One thing I think that you really need to be careful of as well, particularly if you, like me, are a programmer, is don’t get carried away writing code. Typically in my experience anyone who is a good programmer is pretty passionate about it, love writing code, get addicted to the process of writing code, fell pretty good about their code basis. As soon as you get down that path you are not thinking straight anymore and now you are increasing your emotional investment, you are having lots of fun writing interesting code and you are no longer in a place mentally where you are going to be trying to find some reason that you shouldn’t write that code. That has been a big lesson for me that the quicker I get to coding, the longer it takes me to ask the kind of questions I should ask upfront.</p></blockquote>
+
+<p><a href="http://www.youtube.com/watch?v=MShbP3OpASA">Linus Torvalds</a>, creator of Linux, programmer that still programs:</p>
+
+<blockquote><p>I&rsquo;m interested in programming. When business started happening, I didn&rsquo;t get into this for the business side. I wanted to do programming. When other people started selling Linux, I said &ldquo;Yes! Now I can avoid caring about that side too.&rdquo;</p>
+
+<p>I never had to deal with single business related thing in Linux ever. Seriously, I had to deal with lot of other things but business related things… I got queries and I just said &ldquo;I don&rsquo;t care.&rdquo;</p></blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Joe Armstrong at MostlyErlang]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/05/21/joe-armstrong-mostlyerlang/"/>
+    <updated>2013-05-21T15:13:01-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/05/21/joe-armstrong-mostlyerlang</id>
+    <content type="html"><![CDATA[<p>The main guest at today&rsquo;s <a href="http://mostlyerlang.wordpress.com/2013/05/21/43/">MostlyErlang</a> podcast is Joe Armstrong, the co-inventor of Erlang, a wise man, and a brilliant speaker. I listened to the podcast few times, and every time enjoyed it. I highly recommend it to all programmers regardless whether they are using Erlang or not.</p>
+
+<p>While we are waiting for the oficial transcript, this post provides some highlights. I put here the quotes I found particularly interesting or funny.</p>
+
+<h2>Concurrency</h2>
+
+<blockquote><p>I&rsquo;ve got a blog on my GitHub, and I thouhgt I&rsquo;d put two different types of articles there and see what the response is. One theme I&rsquo;m pursuing is &ldquo;explaining to 5-year-old&rdquo; theme, and the other is &ldquo;technically complicated&rdquo; theme.</p></blockquote>
+
+<p>Then he describes the &ldquo;<a href="http://joearms.github.io/2013/04/05/concurrent-and-parallel-programming.html">concurrency vs parallelism</a>&rdquo; picture for 5 y.o.</p>
+
+<blockquote><p>That blog entry got 25,000 people read it, and they got 10 responses and quite a lot of criticism actually from people who know what concurrency and parallelism is. And then I compare it to some other articles I&rsquo;ve written that technically deeper. There you got only few hundred people read it.</p></blockquote>
+
+<p>I noticed it too. All those people, who responded with <a href="http://www.yosefk.com/blog/parallelism-and-concurrency-need-different-tools.html">long blogs</a> about concurrency, missed the point: This picture was for kids, and for kids it&rsquo;s a pretty good picture. Adults should go and read the technical papers, but they didn&rsquo;t.</p>
+
+<!-- more -->
+
+
+<h2>Let it crash</h2>
+
+<blockquote><p>Once upon a time we had a Leadership Election algorithm in Erlang. We got some theoreticians involved, and they proved the algorithm to be correct. It&rsquo;s been in practice for some time when we sent them a bug report, which showed that the thing elected two leaders, and we can reproduce it. And then they looked at this bug and went back at the code, and said the code is correct, but we had to make certain assumptions that this failure couldn&rsquo;t happen.</p></blockquote>
+
+<p>I like it. We should always keep it in mind: Before you prove anything, make sure, your assumptions are valid.</p>
+
+<h2>Favourite bad idea</h2>
+
+<blockquote><p>The first bad idea we put in Erlang is the process priorities. I don&rsquo;t think it&rsquo;s documented anywhere. It&rsquo;s definitely not in my book. It&rsquo;s not supposed to be documented — that&rsquo;s deliberate.</p></blockquote>
+
+<p><a href="http://www.erlangprogramming.org/">Erlang Programming</a> mentions the process priorities on page 113, but they wrote the whole paragraph explaining why it&rsquo;s a bad idea.</p>
+
+<blockquote><p>I was forced into position where I had to put them in [the language]. So I waited a few weeks and I put in an Erlang code that sets process priorities some integer, and this code didn&rsquo;t do anything at all. It was commented out. I shipped the system, and then I asked &ldquo;How do you like it with priorities?&rdquo; And they said &ldquo;Now it&rsquo;s much better!&rdquo;</p></blockquote>
+
+<p>Brilliant! Although, it pisses them off when people eventually find what&rsquo;s going on in the code.</p>
+
+<h2>Performance</h2>
+
+<blockquote><p>One thing I like about Erlang is it&rsquo;s got pretty predictible performance model.</p>
+
+<p>There was some guy on the mailing list that said &ldquo;I wrote a code that finds line breaks in the large file, and the result surprised me. I expected it to take this long, and it took a heck of a lot longer.&rdquo; I wrote a little benchmark and I couldn&rsquo;t see that effect. I mailed back &ldquo;mine didn&rsquo;t behave like that.&rdquo; Then he said &ldquo;There is another funny thing: the distribution of my file is not uniformed. I&rsquo;ve got extremly long lines in it, and the rest are the same.&rdquo; And from then it took Patrik five minutes to find a bug in the system. But if he hadn&rsquo;t made an observation &ldquo;this thing surprises me&rdquo; and didn&rsquo;t give this clue that it happened under these circumstances, that bug could be in the system for years. But people find performance thing and they don&rsquo;t tell us the fact they are surprised, so we can&rsquo;t debug it.</p></blockquote>
+
+<p>Lesson learned: If you <a href="http://code.mixpanel.com/2011/08/05/how-and-why-we-switched-from-erlang-to-python/">don&rsquo;t like</a> the performance of your Erlang code, don&rsquo;t be shy to speak up about it. Either you are doing something wrong or there is a bug in Erlang. Both things are fixable.</p>
+
+<h2>Scalability</h2>
+
+<blockquote><p><a href="http://www.ericsson.com/ourportfolio/products/sgsn-mme">MME</a> is a thing in the backbone of mobile telephony network, it makes all mobile data work. And it&rsquo;s written in Erlang. Smartphones wouldn&rsquo;t be able to connect to the network at all without MME. Now, Ericsson&rsquo;s got the biggest market share in the world for mobile base stations, for we do 40% of the total world market of 3G and CDMA and 60% of the world market for LTE and 4G. This gives us about 50% of the world market. That means Erlang&rsquo;s controlling 50% of all smartphones world wide.</p></blockquote>
+
+<p>That&rsquo;s impressive, and at the same time it&rsquo;s sad because people don&rsquo;t know about it. People are talking about Twitter scale, Google scale, or other sorts of &ldquo;web-scale&rdquo;, but they don&rsquo;t realize that most of the data Twitter and Google receive nowadays is comming through mobile network, which means most of Twitter and Google data is coming throug Erlang. Think about it.</p>
+
+<p>On the other hand, those who see the power of Erlang get big competitive advantage.</p>
+
+<blockquote><p>At Erlang user conference somebody from gaming company came to me and said &ldquo;Erlang&rsquo;s great! We have it on our server, and we managed to get 3 million connections on it!&rdquo; And he was overjoyed. It&rsquo;s fantastic. I said &ldquo;Great! You got to tell everybody…&rdquo; And he said &ldquo;No, no.&rdquo; — &ldquo;Why not?&rdquo; — &ldquo;Because we tell our competitiors we use Jigsaw.&rdquo;</p>
+
+<p>There is no commercial advantage from using Ruby on Rails or Java or anything else. You might go to the conferences and swap battle stories and swap tips. But if you actually found something which is bloody better, you are not going to tell anybody, are you?</p></blockquote>
+
+<p>Hm, maybe that&rsquo;s why I cannot find any software company in Toronto that&rsquo;s doing Erlang. Hey Toronto programmers, if you are programming in Erlang, please let me know — I won&rsquo;t tell your competitors, I promise.</p>
+
+<h2>Broken software</h2>
+
+<blockquote><p>Most of my time as a programmer is spent fixing broken stuff that shouldn&rsquo;t be broken. Whenever I&rsquo;m trying to do something, it doesn&rsquo;t work. I used to spend more than 50% of my time fixing trivial things, and the percentage of my time is increasing by year. If I look back 20 years ago, I din&rsquo;t spend 50% of my time fixing broken software. The software that was available was a lot lot simpler, and it was written by engineers and teams and by small group of people, and it didn&rsquo;t have errors in it. If we extrapolate this in 20 years time, it&rsquo;s going to be even more software, and 90% of it will be completely broken, unless we find better ways of structuring it and gluing things together.</p></blockquote>
+
+<p>So true. I have the same statistics. One third of my time I&rsquo;m shaving software yaks, and another third I&rsquo;m debugging protocols trying to figure out why my code is not working with another code.</p>
+
+<h2>Conference driven development</h2>
+
+<blockquote><p>I&rsquo;m giving a keynote at LambdaJam. I&rsquo;ve written a <a href="http://lambdajam.com/sessions#armstrong">flushing title</a> but I haven&rsquo;t written the talk yet.</p></blockquote>
+
+<p>Lesson learned: Next time you want to give a talk at a conference, come up with a catchy title, and think about the talk itself later.</p>
+
+<blockquote><p>I deliberately give myself titles for stuff I know nothing about, and I implement it all. You know, Robert did that for Lua. You know why Lua got developed in Erlang? Robert was going to give a talk on writing DSL in Erlang. I remember him talking to me &ldquo;I&rsquo;m giving a talk on implementing DSL in Erlang.&rdquo; I said &ldquo;Oh, yeah.&rdquo; And he said &ldquo;I don&rsquo;t know anything about it. I better implement Lua.&rdquo;</p></blockquote>
+
+<p>It&rsquo;s a really good idea to submit a conference proposal for the stuff you want to learn. When the proposal is accepted, you don&rsquo;t have a choice but go and study the thing. Otherwise you would procrastinate forever. I notice actually many people do that. Maybe I&rsquo;ll do the same with Erlang, at some point.</p>
+
+<h3>Additional Resources</h3>
+
+<ul>
+<li>Joe Armstrong&rsquo;s <a href="https://groups.google.com/forum/#!msg/erlang-programming/OiyGQ4UHqxw/HgGma01CGqYJ">reply</a> about efficiency of Erlang.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Stuck With Your First Programming Language]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/05/09/liskov-programming-abstraction/"/>
+    <updated>2013-05-09T19:39:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/05/09/liskov-programming-abstraction</id>
+    <content type="html"><![CDATA[<p><a href="http://en.wikipedia.org/wiki/Barbara_Liskov">Barbara Liskov</a> in her <a href="http://www.infoq.com/presentations/programming-abstraction-liskov">keynote</a> presentation:</p>
+
+<blockquote><p>I&rsquo;m a little dismayed what&rsquo;s happened in programming languages. And the reason I&rsquo;m dismayed is because on the one hand we have the programming languages that experts use — I&rsquo;m thinking of Java and C# but you can name bunch of others. And the problem with these languages is — they are powerful, you can build big systems in them — but they aren&rsquo;t very good for beginners. And what happens in MIT, and I think this is happening across the US anyway, is the people are no longer using those languages in their introductory programming language courses, because the amount of craft you have to go through in order to write the little print-loop is just too much, and the students just get lost in the process. So they&rsquo;ve been switching to languages like Python.</p>
+
+<p>Python is very simple and nice when you start to use it. But you don&rsquo;t get too far down the road, if you me, before you discover it has no data abstraction at all. That&rsquo;s not good because big programs require modularity and encapsulation, and you&rsquo;d like the language that supports that. So my question is: Can we find a language that will work for both communities? And the reason it matters is because a lot of kids start off programming in their first programming language and that&rsquo;s it. They may have to change eventually, but they are building huge systems in languages that are really ill-suited for this. So it would be good if the language they started off with is the one they can grow with, and would be good for building big programs as well as small ones.</p></blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Code Retreat 2012]]></title>
+    <link href="http://bvajjala.github.io/blog/2012/12/09/code-retreat-2012/"/>
+    <updated>2012-12-09T07:00:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2012/12/09/code-retreat-2012</id>
+    <content type="html"><![CDATA[<p>Yesterday was the Global Day of Code Retreat. Software engineers around the globe met together to learn from each other.</p>
+
+<p><img class="center <a" src="href="https://pbs.twimg.com/media/A9mptOCCAAE0d7z.jpg">https://pbs.twimg.com/media/A9mptOCCAAE0d7z.jpg</a>" title="CR2012 1" ></p>
+
+<p>There were several sessions where people were pair-programming <a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">Conway&rsquo;s Game of Life</a>.</p>
+
+<p><img class="center <a" src="href="https://pbs.twimg.com/media/A9nZYcTCQAEVtkP.jpg">https://pbs.twimg.com/media/A9nZYcTCQAEVtkP.jpg</a>" title="CR2012 2" ></p>
+
+<p>Each session you had to choose a new partner, so that both of you can learn something new.</p>
+
+<p><img class="center <a" src="href="https://pbs.twimg.com/media/A9n_aHzCcAARnkJ.jpg">https://pbs.twimg.com/media/A9n_aHzCcAARnkJ.jpg</a>" title="CR2012 3" ></p>
+
+<p>During the first session my partner and I decided to implement the Game in Java, mainly because it was the language she was most comfortable with. We implemented the procedural solution using two-dimensional array and nested loops. At that moment that was the only solution I could think of. The main challenge was to cover all edge cases and fix all <code>ArrayIndexOutOfBoundsException</code>s. Java is fairly verbose language, and with nested loops and if-else statements the final solution was pretty hard to read. You can see <a href="http://rosettacode.org/wiki/Conway's_Game_of_Life#Java">here</a> how it might look like.</p>
+
+<p>First session was a warmup, during which most people realized that programming arrays is a tedious work. For the second session my new partner suggested an object-oriented approach, where you would operate on Cell objects that would encapsulate coordinates on the grid. In this case you move the game logic from the grid to the cell, making it easier to calculate a new state. This was my first acquaintance with C#. Interesting language — basically, Java with lambdas. Here is an <a href="http://rosettacode.org/wiki/Conway's_Game_of_Life#C.23">example</a> of C# implementation. Our solution was very similar.</p>
+
+<p>While the first session&rsquo;s data structure was array of booleans, on the second session it was replaced by a list of objects. The next step would be to relax the data structure even further. We decided to experiment with un-ordered set of coordinate pairs. For language we chose Clojure. Although we didn&rsquo;t finish the implementation, by the end of the session we had a clear picture how to solve the problem in functional style.</p>
+
+<p>On the fourth session the facilitators put an interesting constraint: the coding must be done in absolute silence. That was the most amazing experience of the day. Before we started I thought we couldn&rsquo;t accomplish much without talking. As it turned out, we could. The key of effective silent coding is to use the tools which both partners are familiar with. In our case we both were advanced users of Vim, and we knew Lisp languages. Our Clojure implementation was based on map/filter/reduce approach and spanned 20 lines of code. After the session <a href="http://langnostic.blogspot.com">Leo</a> showed me Christophe Grand&rsquo;s <a href="http://clj-me.cgrand.net/2011/08/19/conways-game-of-life/">7-line solution</a> based on list comprehensions. It is so wonderful that I want to post it here</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>life.clj </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">neighbours</span> <span class="p">[[</span><span class="nv">x</span> <span class="nv">y</span><span class="p">]]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">dx</span> <span class="p">[</span><span class="mi">-1</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">]</span> <span class="nv">dy</span> <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">dx</span><span class="p">)</span> <span class="p">[</span><span class="mi">-1</span> <span class="mi">1</span><span class="p">]</span> <span class="p">[</span><span class="mi">-1</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">])]</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">[(</span><span class="nb">+ </span><span class="nv">dx</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">dy</span> <span class="nv">y</span><span class="p">)]))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn </span><span class="nv">step</span> <span class="p">[</span><span class="nv">cells</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">for </span><span class="p">[[</span><span class="nv">loc</span> <span class="nv">n</span><span class="p">]</span> <span class="p">(</span><span class="nf">frequencies</span> <span class="p">(</span><span class="nb">mapcat </span><span class="nv">neighbours</span> <span class="nv">cells</span><span class="p">))</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>         <span class="ss">:when</span> <span class="p">(</span><span class="nb">or </span><span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nb">and </span><span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="nf">cells</span> <span class="nv">loc</span><span class="p">)))]</span>
+</span><span class='line'>     <span class="nv">loc</span><span class="p">)))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>For the last session we chose Erlang. Because we already knew how to implement the functional solution, that was just an exercise of translating Clojure code into Erlang. Unfortunately we didn&rsquo;t find an equivalent of <code>frequencies</code> function in the standard library, so we implemented it ourselves. Other than that, the Erlang code is almost identical to Clojure.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>life.erl </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="p">-</span><span class="ni">import</span><span class="p">(</span><span class="n">sets</span><span class="p">,</span> <span class="p">[</span><span class="n">from_list</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> <span class="n">to_list</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> <span class="n">is_element</span><span class="o">/</span><span class="mi">2</span><span class="p">]).</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">neighbours</span><span class="p">({</span><span class="nv">X</span><span class="p">,</span> <span class="nv">Y</span><span class="p">})</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">[{</span><span class="nv">X</span> <span class="o">+</span> <span class="nv">DX</span><span class="p">,</span> <span class="nv">Y</span> <span class="o">+</span> <span class="nv">DY</span><span class="p">}</span> <span class="p">||</span> <span class="nv">DX</span> <span class="err">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">-</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="nv">DY</span> <span class="err">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">-</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">{</span><span class="nv">DX</span><span class="p">,</span> <span class="nv">DY</span><span class="p">}</span> <span class="o">=/=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">}].</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">step</span><span class="p">(</span><span class="nv">Cells</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="nv">Nbs</span> <span class="o">=</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">flatmap</span><span class="p">(</span><span class="k">fun</span> <span class="n">neighbours</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> <span class="n">to_list</span><span class="p">(</span><span class="nv">Cells</span><span class="p">)),</span>
+</span><span class='line'><span class="nv">NewCells</span> <span class="o">=</span> <span class="p">[</span><span class="nv">C</span> <span class="p">||</span> <span class="p">{</span><span class="nv">C</span><span class="p">,</span> <span class="nv">N</span><span class="p">}</span> <span class="err">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">-</span> <span class="n">frequencies</span><span class="p">(</span><span class="nv">Nbs</span><span class="p">),</span>
+</span><span class='line'>                 <span class="p">(</span><span class="nv">N</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">orelse</span> <span class="p">((</span><span class="nv">N</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">andalso</span> <span class="n">is_element</span><span class="p">(</span><span class="nv">C</span><span class="p">,</span> <span class="nv">Cells</span><span class="p">))],</span>
+</span><span class='line'><span class="nf">from_list</span><span class="p">(</span><span class="nv">NewCells</span><span class="p">).</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">frequencies</span><span class="p">(</span><span class="nv">List</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;</span> <span class="n">frequencies</span><span class="p">(</span><span class="nv">List</span><span class="p">,</span> <span class="p">[]).</span>
+</span><span class='line'><span class="nf">frequencies</span><span class="p">([],</span> <span class="nv">Acc</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;</span> <span class="nv">Acc</span><span class="p">;</span>
+</span><span class='line'><span class="nf">frequencies</span><span class="p">([</span><span class="nv">X</span><span class="p">|</span><span class="nv">Xs</span><span class="p">],</span> <span class="nv">Acc</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">case</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">keyfind</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">Acc</span><span class="p">)</span> <span class="k">of</span>
+</span><span class='line'>    <span class="p">{</span><span class="nv">X</span><span class="p">,</span> <span class="nv">F</span><span class="p">}</span> <span class="o">-</span><span class="err">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">frequencies</span><span class="p">(</span><span class="nv">Xs</span><span class="p">,</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">keyreplace</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">Acc</span><span class="p">,</span> <span class="p">{</span><span class="nv">X</span><span class="p">,</span> <span class="nv">F</span><span class="o">+</span><span class="mi">1</span><span class="p">}));</span>
+</span><span class='line'>    <span class="n">false</span>  <span class="o">-</span><span class="err">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">frequencies</span><span class="p">(</span><span class="nv">Xs</span><span class="p">,</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">keystore</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">Acc</span><span class="p">,</span> <span class="p">{</span><span class="nv">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">}))</span>
+</span><span class='line'><span class="k">end</span><span class="p">.</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Summary</h2>
+
+<p>During this day I learnt a lot: new language, new abstractions, new techniques, new ways of communication, new ideas. I met bunch of smart people. I was so overwhelmed with all this cool stuff that I had to write this blog post to offload it from my head.</p>
+
+<p>If you are a programmer and you&rsquo;ve never been to Code Retreat, I strongly encourage you to do it next year. It&rsquo;s an exciting experience.</p>
+
+<p>I want to thank all the people who organized and participated in this event.</p>
+
+<h3>Photo Credits</h3>
+
+<ul>
+<li>Michael DiBernardo <a href="https://twitter.com/mdibernardo/status/277439446381625345/photo/1">[1]</a></li>
+<li>Kunal Gupta <a href="https://twitter.com/kunalfrompolar/status/277491865991921664/photo/1">[2]</a></li>
+<li>Carlo Barrettara <a href="https://twitter.com/barrettara/status/277533676273823746/photo/1">[3]</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Modulo Who?]]></title>
+    <link href="http://bvajjala.github.io/blog/2011/09/16/modulo-who/"/>
+    <updated>2011-09-16T08:00:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2011/09/16/modulo-who</id>
+    <content type="html"><![CDATA[<p>When programmer and mathematician are talking about modulus or modulo, there is often a confusion what this term means. For programmer <a href="http://en.wikipedia.org/wiki/Modulo_operator">modulo</a> means an operator that finds the <em>remainder</em> of division of one number by another, e.g. 5&nbsp;mod&nbsp;2 = 1. For mathematician <a href="http://en.wikipedia.org/wiki/Modular_arithmetic">modulo</a> is a <em>congruence</em> relation between two numbers: <em>a</em> and <em>b</em> are said to be congruent modulo <em>n</em>, written <em>a</em>&nbsp;&#8801;&nbsp;<em>b</em>&nbsp;(mod&nbsp;<em>n</em>), if their difference <em>a</em>&nbsp;&#8722;&nbsp;<em>b</em> is an integer multiple of <em>n</em>.</p>
+
+<p>These two definitions are not equivalent. The former is a special case of the latter: if <em>b</em>&nbsp;mod&nbsp;<em>n</em> = <em>a</em> then <em>a</em>&nbsp;&#8801;&nbsp;<em>b</em>&nbsp;(mod&nbsp;<em>n</em>). The inverse is not true in general case. 5&nbsp;mod&nbsp;2 = 1, and 1&nbsp;&#8801;&nbsp;5&nbsp;(mod&nbsp;2) because 1&nbsp;&ndash;&nbsp;5&nbsp;=&nbsp;–4 is integer multiple of 2. Now 5&nbsp;&#8801;&nbsp;1&nbsp;(mod&nbsp;2), because 5&nbsp;&ndash;&nbsp;1&nbsp;=&nbsp;4 is evenly divisible by 2, but 1&nbsp;mod&nbsp;2 = 1, not 5.</p>
+
+<p>The biggest confusion happens when programmer and mathematician start arguing about Gauss' famous <a href="http://mathworld.wolfram.com/QuadraticReciprocityTheorem.html">Golden Theorem</a> where both definitions of modulus can be used.</p>
+]]></content>
+  </entry>
+  
+</feed>

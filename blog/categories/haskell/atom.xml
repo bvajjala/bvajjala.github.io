@@ -1,0 +1,2038 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Haskell | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/haskell/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T14:12:32-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Lambda Jam 2013]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/07/08/lambdajam-2013/"/>
+    <updated>2013-07-08T05:00:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/07/08/lambdajam-2013</id>
+    <content type="html"><![CDATA[<p>This is my impressionistic non-canonical irregular Clojuresque-Erlangish notes on <a href="http://lambdajam.com">Lambda Jam</a> conference which took place in Chicago on July 8–10, 2013.
+These notes are pretty long, and I don&rsquo;t split them on purpose.
+If you read them all, you should become overwhelmed and overloaded with the information.
+Only this way you can feel the same I felt on the last day of the conference :)</p>
+
+<p><img class="<a" src="href="http://lambdajam.com/storage/2013/GrandBallroom2_header.jpg.jpeg?__SQUARESPACE_CACHEVERSION=1361043346973">http://lambdajam.com/storage/2013/GrandBallroom2_header.jpg.jpeg?__SQUARESPACE_CACHEVERSION=1361043346973</a>"></p>
+
+<!-- more -->
+
+
+<h2>Stuart Sierra — Data, Visibility, and Abstraction</h2>
+
+<ul>
+<li>Video: <a href="http://www.infoq.com/presentations/data-visibility-abstraction">InfoQ</a></li>
+</ul>
+
+
+<h3>Quotes</h3>
+
+<ul>
+<li>QBasic distinguished between subroutines and functions.</li>
+<li>Perl is a QBasic of Linux.</li>
+<li>Perl provided bunch of abstractions that made my life easier.</li>
+<li>Just a few generic data structures can represent pretty much any kind of data.</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="sr">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;</span><span class="o">!</span><span class="sr">/usr/</span><span class="n">bin</span><span class="sr">/env perl&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span><span class="k">my</span> <span class="nv">$user</span> <span class="o">=</span>
+</span><span class='line'>  <span class="p">{</span> <span class="n">name</span>  <span class="o">=&gt;</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">Stuart</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span><span class="sr">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;</span><span class="n">age</span>   <span class="o">=&amp;</span><span class="ow">gt</span><span class="p">;</span> <span class="mi">15</span><span class="p">,</span>
+</span><span class='line'><span class="n">langs</span> <span class="o">=&amp;</span><span class="ow">gt</span><span class="p">;</span> <span class="p">[</span> <span class="s">&quot;BASIC&quot;</span><span class="p">,</span>
+</span><span class='line'>           <span class="s">&quot;C++&quot;</span><span class="p">,</span>
+</span><span class='line'>           <span class="s">&quot;Perl&quot;</span> <span class="p">]</span> <span class="p">};</span>
+</span><span class='line'><span class="sr">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span><span class="k">print</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="p">{</span><span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">langs</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;}[</span><span class="mi">2</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li><code>Tie::File</code> — Access the lines of a disk file via a Perl array.</li>
+<li>XSLT is a homoiconic programming language.</li>
+<li>[In XSLT] you can write the entire program as a series of data transformations.</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/usr/bin/env bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;saxon one.xslt site.xml t1.xml
+</span><span class='line'>saxon two.xslt t1.xml t2.xml
+</span><span class='line'>saxon three.xslt t2.xml t3.xml
+</span><span class='line'>saxon four.xslt t3.xml index.html
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>Clojure has universal data structures.</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="k">def </span><span class="nv">user</span> <span class="p">{</span><span class="ss">:name</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;Stuart&amp;rdquo;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>       <span class="ss">:age</span> <span class="mi">25</span>
+</span><span class='line'>       <span class="ss">:langs</span> <span class="p">[</span><span class="s">&quot;Lisp&quot;</span>
+</span><span class='line'>               <span class="s">&quot;Ruby&quot;</span>
+</span><span class='line'>               <span class="s">&quot;Clojure&quot;</span><span class="p">]})</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>I&rsquo;m frequently suspicious of libraries that use a lot of macros to create their abstractions because it means I can&rsquo;t see them, I can&rsquo;t manipulate them with the tools I already have.</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">require</span> <span class="o">&amp;</span><span class="nv">lsquo</span><span class="c1">;clojure.inspector)</span>
+</span><span class='line'><span class="p">(</span><span class="nf">clojure.inspector/inspect-tree</span> <span class="nv">user</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><img class="center" src="/images/posts/clojure.inspector.png"></p>
+
+<ul>
+<li>I started to write my programs as a series of data transformations with just one set of side-effects at the very end.</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">gather-information</span> <span class="p">[</span><span class="nv">state</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nb">assoc </span><span class="nv">state</span> <span class="ss">:analysis&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>           <span class="p">(</span><span class="nf">computation</span> <span class="p">(</span><span class="ss">:input</span> <span class="nv">state</span><span class="p">))))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn </span><span class="nv">make-decision</span> <span class="p">[</span><span class="nv">state</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nb">assoc </span><span class="nv">state</span> <span class="ss">:response&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>           <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">condition?</span> <span class="p">(</span><span class="ss">:analysis</span> <span class="nv">state</span><span class="p">))</span>
+</span><span class='line'>               <span class="ss">:launch-missile</span>
+</span><span class='line'>               <span class="ss">:erase-hard-drive</span><span class="p">)))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn </span><span class="nv">take-action</span> <span class="p">[</span><span class="nv">state</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">case</span> <span class="p">(</span><span class="ss">:response</span> <span class="nv">state</span><span class="p">)</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="ss">:launch-missile</span> <span class="p">(</span><span class="nf">launch-missile</span><span class="p">)</span>
+</span><span class='line'><span class="ss">:erase-hard-drive</span> <span class="p">(</span><span class="nf">erase-hard-drive</span><span class="p">)))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn </span><span class="nv">complex-process</span> <span class="p">[</span><span class="nv">initial-state</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="o">&amp;</span><span class="nv">ndash</span><span class="c1">;&gt; initial-state&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>  <span class="nv">gather-information</span>
+</span><span class='line'>  <span class="nv">make-decision</span>
+</span><span class='line'>  <span class="nv">take-action</span><span class="p">))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>I try to pursue abstractions that make programs more visible, make easier to see what the program is doing.</li>
+</ul>
+
+
+<p><blockquote><p>Being abstract is something profoundly different from being vague…</p></p><p><p>The purpose of abstraction is not to be vague, but to create a new semantic level in which one can be absolutely precise.</p><footer><strong>Edsger Dijkstra</strong></footer></blockquote></p>
+
+<h2>Aditya Siram — Simile-Free Monad Recipes</h2>
+
+<ul>
+<li>Slides: <a href="https://github.com/strangeloop/lambdajam2013/blob/master/slides/Siram-SimileFreeMonadRecipes.pdf">GitHub</a></li>
+</ul>
+
+
+<h3>Non-idiomatic Haskell monad tutorial</h3>
+
+<p>Working with monads is a switching between monadic and non-monadic context.</p>
+
+<h3>IO</h3>
+
+<ul>
+<li><code>&lt;-</code> operator gets the value from monadic context.</li>
+<li><code>return</code> puts the value into monadic context.</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+</span><span class='line'><span class="nf">main</span> <span class="ow">=</span> <span class="kr">do</span>
+</span><span class='line'>  <span class="n">writeFile</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">test</span><span class="o">.</span><span class="n">txt</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">e</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+</span><span class='line'>  <span class="n">x</span> <span class="ow">::</span> <span class="kt">String</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">ndash</span><span class="p">;</span> <span class="n">readFile</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">test</span><span class="o">.</span><span class="n">txt</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="kt">String</span>
+</span><span class='line'>  <span class="kr">let</span> <span class="n">upCased</span> <span class="ow">::</span> <span class="kt">String</span> <span class="ow">=</span> <span class="n">map</span> <span class="n">toUpper</span> <span class="n">x</span>
+</span><span class='line'>  <span class="n">y</span> <span class="ow">::</span> <span class="kt">String</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">ndash</span><span class="p">;</span> <span class="n">return</span> <span class="n">upCased</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="kt">String</span>
+</span><span class='line'>  <span class="n">print</span> <span class="n">y</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>Reader</h3>
+
+<ul>
+<li>Reader = Read-only State + Result</li>
+<li><code>runReader</code> :: Reader Monad &ndash;> Read-Only State &ndash;> Result</li>
+<li><code>ask</code> extracts the state from the monad for inspection.</li>
+</ul>
+
+
+<h3>Writer</h3>
+
+<ul>
+<li>Writer = Append-Only State + Result</li>
+<li><code>runWriter</code> :: Writer Monad &ndash;> (Result, Accumulated State)</li>
+<li>State is accumulated using <code>tell</code>.</li>
+</ul>
+
+
+<h3>State</h3>
+
+<ul>
+<li>State Monad = Mutable State + Result</li>
+<li><code>get</code>, <code>put</code> do what they sound like.</li>
+<li><code>runState</code> :: State Monad &ndash;> Initial State &ndash;> (Result, New State)</li>
+<li>Initial State is required.</li>
+</ul>
+
+
+<h2>Dean Wampler — Copious Data, the &ldquo;Killer App&rdquo; for FP</h2>
+
+<ul>
+<li>Slides: <a href="https://github.com/strangeloop/lambdajam2013/blob/master/slides/Wampler-CopiousDataTheKillerAppForFP.pdf">GitHub</a></li>
+<li>Video: <a href="http://www.infoq.com/presentations/big-data-functional-programming">InfoQ</a></li>
+</ul>
+
+
+<h3>Quotes</h3>
+
+<ul>
+<li>It’s hard to implement many algorithms in MapReduce.</li>
+<li>MapReduce is very course-grained.</li>
+<li>For Hadoop in particularly, the Java API is hard to use.</li>
+<li>Hadoop is the EJBs of our time</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">org.apache.hadoop.io.</span><span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.hadoop.mapred.</span><span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">class</span> <span class="nc">WCMapper</span> <span class="kd">extends</span> <span class="n">MapReduceBase</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">implements</span> <span class="n">Mapper</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">LongWritable</span><span class="o">,</span> <span class="n">Text</span><span class="o">,</span> <span class="n">Text</span><span class="o">,</span> <span class="n">IntWritable</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">static</span> <span class="kd">final</span> <span class="n">IntWritable</span> <span class="n">one</span> <span class="o">=</span> <span class="k">new</span> <span class="n">IntWritable</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span><span class='line'><span class="kd">static</span> <span class="kd">final</span> <span class="n">Text</span> <span class="n">word</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Text</span><span class="o">();</span> <span class="c1">// Value will be set in a non-thread-safe way!</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">map</span><span class="o">(</span><span class="n">LongWritable</span> <span class="n">key</span><span class="o">,</span> <span class="n">Text</span> <span class="n">valueDocContents</span><span class="o">,</span>
+</span><span class='line'>        <span class="n">OutputCollector</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Text</span><span class="o">,</span> <span class="n">IntWritable</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">output</span><span class="o">,</span> <span class="n">Reporter</span> <span class="n">reporter</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">String</span><span class="o">[]</span> <span class="n">tokens</span> <span class="o">=</span> <span class="n">valueDocContents</span><span class="o">.</span><span class="na">toString</span><span class="o">().</span><span class="na">split</span><span class="o">(</span><span class="s">&quot;\\s+&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="nl">wordString:</span> <span class="n">tokens</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">wordString</span><span class="o">.</span><span class="na">length</span> <span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">word</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">wordString</span><span class="o">.</span><span class="na">toLowerCase</span><span class="o">());</span>
+</span><span class='line'>            <span class="n">output</span><span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="n">one</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">class</span> <span class="nc">Reduce</span> <span class="kd">extends</span> <span class="n">MapReduceBase</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">implements</span> <span class="n">Reducer</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Text</span><span class="o">,</span> <span class="n">IntWritable</span><span class="o">,</span> <span class="n">Text</span><span class="o">,</span> <span class="n">IntWritable</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">reduce</span><span class="o">(</span><span class="n">Text</span> <span class="n">keyWord</span><span class="o">,</span> <span class="n">Iterator</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">IntWritable</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">valuesCounts</span><span class="o">,</span>
+</span><span class='line'>        <span class="n">OutputCollector</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Text</span><span class="o">,</span> <span class="n">IntWritable</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">output</span><span class="o">,</span> <span class="n">Reporter</span> <span class="n">reporter</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">totalCount</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="o">(</span><span class="n">valuesCounts</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">totalCount</span> <span class="o">+=</span> <span class="n">valuesCounts</span><span class="o">.</span><span class="na">next</span><span class="o">().</span><span class="na">get</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">output</span><span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">keyWord</span><span class="o">,</span> <span class="k">new</span> <span class="n">IntWritable</span><span class="o">(</span><span class="n">totalCount</span><span class="o">));</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>Use Cascalog</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">lowercase</span> <span class="p">[</span><span class="nv">w</span><span class="p">]</span> <span class="p">(</span><span class="nf">.toLowerCase</span> <span class="nv">w</span><span class="p">))</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">?</span><span class="o">&amp;</span><span class="nv">lt</span><span class="c1">;&amp;ndash; (stdout) [?word ?count]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">sentence</span> <span class="nv">?s</span><span class="p">)</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">(</span><span class="nf">split</span> <span class="nv">?s</span> <span class="err">:</span><span class="o">&amp;</span><span class="nv">gt</span><span class="c1">; ?word1)</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>  <span class="p">(</span><span class="nf">lowercase</span> <span class="nv">?word1</span> <span class="ss">:&gt;</span> <span class="nv">?word</span><span class="p">)</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">(</span><span class="nf">c/count</span> <span class="nv">?count</span><span class="p">))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>Use Spark</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">object</span> <span class="nc">WordCountSpark</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">def</span> <span class="n">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="n">file</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">textFile</span><span class="o">(</span><span class="n">args</span><span class="o">(</span><span class="mi">0</span><span class="o">))</span>
+</span><span class='line'>    <span class="k">val</span> <span class="n">counts</span> <span class="k">=</span> <span class="n">file</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="n">line</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot;\\W+&quot;</span><span class="o">))</span>
+</span><span class='line'>                     <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">word</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="mi">1</span><span class="o">))</span>
+</span><span class='line'>                     <span class="o">.</span><span class="n">reduceByKey</span><span class="o">(</span><span class="k">_</span> <span class="o">+</span> <span class="k">_</span><span class="o">)</span>
+</span><span class='line'>    <span class="n">counts</span><span class="o">.</span><span class="n">saveAsTextFile</span><span class="o">(</span><span class="n">args</span><span class="o">(</span><span class="mi">1</span><span class="o">))</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>Data problems are fundamentally Mathematics!</li>
+<li>Data will drive widespread FP adoption.</li>
+</ul>
+
+
+<h3>Resources</h3>
+
+<ul>
+<li><a href="http://www.cascading.org">Cascading</a> — an application framework for Java developers to simply develop Data Analytics applications on Hadoop.</li>
+<li>Nathan Marz — Introducing Cascalog: a Clojure-based query language for Hadoop. [<a href="http://nathanmarz.com/blog/introducing-cascalog-a-clojure-based-query-language-for-hado.html">blog</a>]</li>
+<li><a href="http://storm-project.net">Storm</a> — free and open source distributed realtime computation system.</li>
+<li><a href="http://spark-project.org">Spark</a> — an open source cluster computing system that aims to make data analytics fast.</li>
+<li>Evan Miller — The Mathematical Hacker. [<a href="http://www.evanmiller.org/mathematical-hacker.html">blog</a>]</li>
+</ul>
+
+
+<h2>Jam</h2>
+
+<p>A jam is similar to a code retreat, only you work in groups instead of pairs. It starts with a problem description. Then you form a group and work on the problem for three hours. In the end you share your experience with the audience.</p>
+
+<p>The problem of the first jam was Peter Norvig&rsquo;s <a href="http://norvig.com/spell-correct.html">Spelling Corrector</a>. I was wandering the room looking for an Erlang group to join when I bumped into this bunch of wonderful people: <a href="https://twitter.com/Bruce_Adams">Bruce Adams</a>, <a href="https://twitter.com/joeerl">Joe Armstrong</a>, <a href="https://twitter.com/gar1t">Garrett Smith</a>, <a href="https://twitter.com/bryan_hunter">Bryan Hunter</a>, and <a href="https://twitter.com/karl_grz">Karl Grzeszczak</a>.</p>
+
+<p><img class="center <a" src="href="https://pbs.twimg.com/media/BOrdEK6CYAA2zlb.jpg">https://pbs.twimg.com/media/BOrdEK6CYAA2zlb.jpg</a>"></p>
+
+<p>Soon the jam transformed into an Erlang master class from Joe Armstrong. We were watching Joe&rsquo;s work flow, his way of thinking, learning his tips and tricks, listening to his brilliant comments about Erlang and Haskell.</p>
+
+<p><img class="center <a" src="href="https://pbs.twimg.com/media/BOrk-wfCEAE3kKr.jpg">https://pbs.twimg.com/media/BOrk-wfCEAE3kKr.jpg</a>"></p>
+
+<p>At some point I remarked how elegant was the function Joe Armstrong just implemented, on which he replied: <strong><em>There is not much intelligence here. It&rsquo;s all about practice.</em></strong></p>
+
+<p><blockquote><p>Today I watched @joeerl implementing a parallel spell checker in Erlang. That was worth the price of admission alone. Thank you! #LambdaJam</p><footer><strong>@karl_grz <a href="https://twitter.com/karl_grz/statuses/354386650291380224">https://twitter.com/karl_grz/statuses/354386650291380224</a></strong></footer></blockquote></p>
+
+<h3>Resources</h3>
+
+<ul>
+<li><a href="https://github.com/ericnormand/spelling-jam/blob/master/code/erlang/spell.erl">Source code</a></li>
+</ul>
+
+
+<h2>Joe Armstrong — Keynote</h2>
+
+<h3>Systems That Run Forever Self-Heal and Scale</h3>
+
+<ul>
+<li>Slides: <a href="https://github.com/strangeloop/lambdajam2013/blob/master/slides/Armstrong-SystemsThatRunForever.pdf">GitHub</a></li>
+<li>Video: <a href="http://www.infoq.com/presentations/self-heal-scalable-system">InfoQ</a></li>
+</ul>
+
+
+<h3>Quotes</h3>
+
+<ul>
+<li>I&rsquo;m not interested in programming languages. I&rsquo;m interested in solving problems.</li>
+<li>Primary goal Erlang was designed for is the fault-talerant computation.</li>
+<li>I think it&rsquo;s a bad idea to design your system for 10 people and then scale it up for 10,000. It&rsquo;s better to design it for 10M and scale it down.</li>
+<li>The difficult part of making reliable system is to make multiple machines work independently in parallel.</li>
+</ul>
+
+
+<p>Why distributed programming is hard</p>
+
+<ol>
+<li>Difficulty in identifying and dealing with failures.</li>
+<li>Achieving consistency in data across processes.</li>
+<li>Heterogeneous nature of the components involved in the system.</li>
+<li>Testing a distributed system is quite difficult.</li>
+<li>The technologies involved in distributed systems are not easy to understand.</li>
+</ol>
+
+
+<p><em>Chord</em> algorithm: distributing data across several machines</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>S1 <span class="nv">IP</span> <span class="o">=</span> 235.23.34.12
+</span><span class='line'>S2 <span class="nv">IP</span> <span class="o">=</span> 223.23.141.53
+</span><span class='line'>S3 <span class="nv">IP</span> <span class="o">=</span> 122.67.12.23&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;md5<span class="o">(</span>ip<span class="o">(</span>s1<span class="o">))</span> <span class="o">=</span> C82D4DB065065DBDCDADFBC5A727208E
+</span><span class='line'>md5<span class="o">(</span>ip<span class="o">(</span>s2<span class="o">))</span> <span class="o">=</span> 099340C20A42E004716233AB216761C3
+</span><span class='line'>md5<span class="o">(</span>ip<span class="o">(</span>s3<span class="o">))</span> <span class="o">=</span> A0E607462A563C4D8CCDB8194E3DEC8B&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Sorted:
+</span><span class='line'><span class="nv">099340C20A42E004716233AB216761C3</span> <span class="o">=</span>&gt; s2
+</span><span class='line'><span class="nv">A0E607462A563C4D8CCDB8194E3DEC8B</span> <span class="o">=</span>&gt; s3
+</span><span class='line'><span class="nv">C82D4DB065065DBDCDADFBC5A727208E</span> <span class="o">=</span>&gt; s1&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;lookup <span class="nv">Key</span> <span class="o">=</span> &amp;ldquo;mail-23412&amp;rdquo;
+</span><span class='line'>md5<span class="o">(</span>&amp;ldquo;mail-23412&amp;rdquo;<span class="o">)</span> <span class="o">=</span>&gt; B91AF709D7C1E6988FCEE7ADF7094A26&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;So the Value is on machine s3 <span class="o">(</span>first machine with Md5 lower than md5 of key<span class="o">)</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Replica:
+</span><span class='line'>md5<span class="o">(</span>md5<span class="o">(</span>&amp;ldquo;mail-23412&amp;rdquo;<span class="o">))</span> <span class="o">=</span>&gt; D604E7A54DC18FD7AC70D12468C34B63&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;So the replica is on machine s1
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>What if master dies? <em>Paxos</em> — distributed leadership election algorithm. Very complicated algorithm that only few people understand.</li>
+<li>The leadership election is solved in OTP (mnesia, gen_leader) and Riak.</li>
+<li>You don&rsquo;t need libraries to write web server. Any fool can write them. But distributed data storage is difficult.</li>
+</ul>
+
+
+<p>Six rules for building HA systems</p>
+
+<ol>
+<li>Isolation</li>
+<li>Concurrency</li>
+<li>Failure detection</li>
+<li>Fault identification</li>
+<li>Live code upgrade</li>
+<li><p>Stable storage</p></li>
+<li><p>With stable storage you don&rsquo;t need backups. You need snapshots, because you override the data, but you don&rsquo;t need backups.</p></li>
+<li>Threads are evil because they share resources.</li>
+<li>We already solved the problem with parallel computing (in Erlang). <em>We are working on detecting bottlenecks now.</em></li>
+</ol>
+
+
+<h3>Resources</h3>
+
+<ul>
+<li>Ericsson <a href="http://www.ericsson.com/ourportfolio/products/sgsn-mme">SGSN-MME</a>.</li>
+<li>Rajith Attapattu — 5 reasons why Distributed Systems are hard to program. [<a href="http://rajith.2rlabs.com/2008/07/23/5-reasons-why-distributed-systems-are-hard-to-develop/">blog</a>]</li>
+<li><a href="http://en.wikipedia.org/wiki/Chord_(peer-to-peer">Chord</a>) algorithm.</li>
+<li><a href="http://en.wikipedia.org/wiki/Paxos_(computer_science">Paxos</a>) algorithm.</li>
+<li>Leslie Lamport — Paxos Made Simple. [<a href="http://www.cs.utexas.edu/users/lorenzo/corsi/cs380d/past/03F/notes/paxos-simple.pdf">pdf</a>]</li>
+<li>Thomas Arts, Koen Claessen, Hans Svensson — Semi-formal development of a fault-tolerant leader election protocol in Erlang. [<a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.101.3220">article</a>]</li>
+<li><a href="http://concurix.com">Concurix</a> — performance tool for Erlang.</li>
+</ul>
+
+
+<h2>Erlang beer with Joe Armstrong</h2>
+
+<p><blockquote><p>For those who didn&#39;t hear, we&#39;re meeting up at The Public House &ndash; 400 N State St.</p><footer><strong>@gar1t <a href="https://twitter.com/gar1t/statuses/354375863971749888">https://twitter.com/gar1t/statuses/354375863971749888</a></strong></footer></blockquote></p>
+
+<p>This was the best part of the first day :)</p>
+
+<h2>John Daily — Distributed Programming with Riak Core and Pipe</h2>
+
+<ul>
+<li>Slides: <a href="https://github.com/strangeloop/lambdajam2013/blob/master/slides/Daily-RiakCorePipe.pdf">GitHub</a></li>
+</ul>
+
+
+<p>Distributed programming is hard (clocks, latency, lost messages, servers break). Use Riak.</p>
+
+<h3>Resources</h3>
+
+<ul>
+<li>Sources: Riak <a href="https://github.com/basho/riak_core">core</a> and <a href="https://github.com/basho/riak_pipe">pipe</a>.</li>
+<li>Eric Redmond — A Little Riak <a href="https://github.com/coderoshi/little_riak_book/tree/master/rendered/">Book</a>.</li>
+</ul>
+
+
+<h2>Tracy Harms — Semantics, clarity, and notation: the benefits of expressions over statements</h2>
+
+<p><blockquote><p>@kaleidic&rsquo;s &ldquo;Benefits of Expressions Over Statements&rdquo; is gold. Brain is barely keeping up.</p><footer><strong>@bryan_hunter <a href="https://twitter.com/bryan_hunter/statuses/354619102792396803">https://twitter.com/bryan_hunter/statuses/354619102792396803</a></strong></footer></blockquote></p>
+
+<ul>
+<li>Expressions condense meaning in space, and eliminate time.</li>
+<li>Understanding occurs only when meaning is selected and simplified enough for a mind to think about it.</li>
+</ul>
+
+
+<p><blockquote><p>This is the example @kaleidic is showing now</p><footer><strong>@gazoombo <a href="https://twitter.com/gazoombo/statuses/354622989599383552">https://twitter.com/gazoombo/statuses/354622989599383552</a></strong></footer></blockquote></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>allmasks=: 2 #:@i.@^ #
+</span><span class='line'>firstend=: 1 0 i.&amp;1@E.&ldquo;1 ]
+</span><span class='line'>laststart=: 0 1 {:@I.@E."1 ]
+</span><span class='line'>noncont=: &lt;@#~ (#~ firstend &lt; laststart)@allmasks&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>   noncont 1+i.4
+</span><span class='line'>┌───┬───┬───┬─────┬─────┐
+</span><span class='line'>│2 4│1 4│1 3│1 3 4│1 2 4│
+</span><span class='line'>└───┴───┴───┴─────┴─────┘&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>   noncont &lsquo;aeiou&rsquo;
+</span><span class='line'>┌──┬──┬──┬───┬───┬──┬──┬───┬──┬───┬───┬────┬───┬───┬────┬────┐
+</span><span class='line'>│iu│eu│eo│eou│eiu│au│ao│aou│ai│aiu│aio│aiou│aeu│aeo│aeou│aeiu│
+</span><span class='line'>└──┴──┴──┴───┴───┴──┴──┴───┴──┴───┴───┴────┴───┴───┴────┴────┘&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>   #noncont i.10
+</span><span class='line'>968</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>Resources</h3>
+
+<ul>
+<li><ol type="a">
+<li><ol type="a">
+<li>Landin — The Next 700 Programming Languages. [<a href="http://www.cs.cmu.edu/~crary/819-f09/Landin66.pdf">pdf</a>]</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Tracy Harms — J: A Programming Language. [<a href="http://kaleidic.com/talks/ELC2013-1-1.pdf">pdf</a>]</li>
+</ul>
+
+
+<h2>Chris Ford — Functional composition</h2>
+
+<ul>
+<li>Video: <a href="http://www.infoq.com/presentations/music-functional-language">InfoQ</a></li>
+<li>Demo source code: <a href="https://github.com/ctford/functional-composition/tree/LambdaJam-2013">GitHub</a></li>
+</ul>
+
+
+<h3>Quotes</h3>
+
+<ul>
+<li>Western music notation is a DSL designed to be executed on a pecular kind of FSM called the musician.</li>
+<li>Sound error correction happening in the brain.</li>
+<li>Given the audience, let&rsquo;s try <em>F sharp blues</em>.</li>
+<li>A canon is defined as a series of notes that are accompanied by a functional transformation of themselves.</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">canon</span> <span class="p">[</span><span class="nv">f</span> <span class="nv">notes</span><span class="p">]</span> <span class="p">(</span><span class="nb">concat </span><span class="nv">notes</span> <span class="p">(</span><span class="nf">f</span> <span class="nv">notes</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>These are all pure functions, so we can compose them together. And that&rsquo;s what composers did long before the lambda calculus was invented.</li>
+</ul>
+
+
+<h2>Clinton Dreisbach — Functional Web Development with Clojure</h2>
+
+<p>The Clojure way of web development: lots of loosely coupled libraries.</p>
+
+<h3>Ring</h3>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defproject </span><span class="nv">request-echo</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;0.1.0-SNAPSHOT&amp;rdquo;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>  <span class="ss">:dependencies</span> <span class="p">[[</span><span class="nv">org.clojure/clojure</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;1.5.1&amp;rdquo;]&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>             <span class="p">[</span><span class="nv">ring</span> <span class="s">&quot;1.1.8&quot;</span><span class="p">]]</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>  <span class="ss">:plugins</span> <span class="p">[[</span><span class="nv">lein-ring</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;0.8.3&amp;rdquo;]]&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>  <span class="ss">:ring</span> <span class="p">{</span><span class="ss">:handler</span> <span class="nv">request-echo/handler&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>     <span class="ss">:port</span> <span class="mi">3001</span><span class="p">})</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<pre><code>lein ring server
+</code></pre>
+
+<p><img class="center" src="/images/posts/ring.png"></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">ns </span><span class="nv">request-echo</span>
+</span><span class='line'>  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">clojure.pprint</span> <span class="ss">:refer</span> <span class="p">[</span><span class="nv">pprint</span><span class="p">]]))</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn </span><span class="nv">handler</span> <span class="p">[</span><span class="nv">request</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">{</span><span class="ss">:status</span> <span class="mi">200</span>
+</span><span class='line'>   <span class="ss">:headers</span> <span class="p">{</span><span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;Content-Type&amp;rdquo; &amp;ldquo;text/html&amp;rdquo;}</span>
+</span><span class='line'>   <span class="ss">:body</span> <span class="p">(</span><span class="nb">str </span><span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;&lt;h1&gt;Request Echo&lt;/h1&gt;&lt;pre&gt;&amp;rdquo;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>          <span class="p">(</span><span class="nb">with-out-str </span><span class="p">(</span><span class="nf">pprint</span> <span class="nv">request</span><span class="p">))</span>
+</span><span class='line'>          <span class="s">&quot;&amp;lt;/pre&amp;gt;&quot;</span><span class="p">)})</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>Compojure</h3>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">require</span> <span class="o">&amp;</span><span class="nv">lsquo</span><span class="c1">;[compojure.core :refer :all])</span>
+</span><span class='line'><span class="p">(</span><span class="nf">require</span> <span class="o">&amp;</span><span class="nv">rsquo</span><span class="c1">;[compojure.route :as route])&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">routes</span>
+</span><span class='line'>  <span class="c1">;verb  route   parameters        handler</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">GET</span>   <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;/&amp;rdquo;     []                (index-page))</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">GET</span>   <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;/debts/:person&amp;rdquo; [person] (person-page person))</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">GET</span>   <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;/add-debt&amp;rdquo; []            (add-debt-page))</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">POST</span>  <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;/add-debt&amp;rdquo; [from to amount]&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>     <span class="p">(</span><span class="nf">add-debt-post</span> <span class="p">{</span><span class="ss">:from</span> <span class="nv">from</span>, <span class="ss">:to</span> <span class="nv">to</span>, <span class="ss">:amount</span> <span class="nv">amount</span><span class="p">}))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>  <span class="p">(</span><span class="nf">route/resources</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;/&amp;rdquo;)</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">route/not-found</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;Page not found&amp;rdquo;))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>Hiccup</h3>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">require</span> <span class="o">&amp;</span><span class="nv">lsquo</span><span class="c1">;[hiccup.core :refer [html]])&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">html</span> <span class="p">[</span><span class="ss">:a.btn</span>         <span class="c1">; element + class or id&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>   <span class="p">{</span><span class="ss">:href</span> <span class="s">&quot;/go&quot;</span><span class="p">}</span>  <span class="c1">; map for attributes</span>
+</span><span class='line'>   <span class="s">&quot;Click here&quot;</span><span class="p">])</span> <span class="c1">; Content</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="c1">;;=&gt; &amp;ldquo;&lt;a class=&quot;btn&quot; href=&quot;http://bvajjala.github.io/go&quot;&gt;Click here&lt;/a&gt;&amp;rdquo;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>Cheshire</h3>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">require</span> <span class="o">&amp;</span><span class="nv">lsquo</span><span class="c1">;[cheshire.core :as json])&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">debts</span> <span class="p">(</span><span class="ss">:debts</span> <span class="err">@</span><span class="nv">db</span><span class="p">)</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>  <span class="nv">balances</span> <span class="p">(</span><span class="nf">debts/balances</span> <span class="nv">debts</span><span class="p">)]</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>  <span class="p">{</span><span class="ss">:status</span> <span class="mi">200</span>
+</span><span class='line'>   <span class="ss">:headers</span> <span class="p">{</span><span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;Content-Type&amp;rdquo; &amp;ldquo;application/json&amp;rdquo;}</span>
+</span><span class='line'>   <span class="ss">:body</span> <span class="p">(</span><span class="nf">json/generate-string&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>      <span class="p">{</span><span class="ss">:debts</span> <span class="nv">debts</span>
+</span><span class='line'>       <span class="ss">:balances</span> <span class="nv">balances</span><span class="p">})})</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">routes</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">POST</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;/add-debt.json&amp;rdquo; {body :body}&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>    <span class="p">(</span><span class="nf">views/add-debt-json</span> <span class="nv">db</span> <span class="p">(</span><span class="nb">slurp </span><span class="nv">body</span><span class="p">))))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn </span><span class="nv">add-debt-json</span> <span class="p">[</span><span class="nv">db</span> <span class="nv">body</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">json/parse-string</span> <span class="nv">body</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>Garden</h3>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">require</span> <span class="o">&amp;</span><span class="nv">lsquo</span><span class="c1">;[garden.units :as u :refer [px pt]])</span>
+</span><span class='line'><span class="p">(</span><span class="nf">require</span> <span class="o">&amp;</span><span class="nv">rsquo</span><span class="c1">;[garden.core :refer [css]])&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="k">def </span><span class="nv">default-color</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;#EFE&amp;rdquo;)&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">[[</span><span class="ss">:body</span>
+</span><span class='line'>  <span class="p">{</span><span class="ss">:background-color</span> <span class="nv">default-color</span><span class="p">}]</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span> <span class="p">[</span><span class="ss">:.btn-primary</span>
+</span><span class='line'>  <span class="p">{</span><span class="ss">:border-width</span> <span class="p">(</span><span class="nf">px</span> <span class="mi">5</span><span class="p">)}</span>
+</span><span class='line'>  <span class="p">[</span><span class="err">:</span><span class="o">&amp;</span><span class="nv">amp</span><span class="c1">;:hover</span>
+</span><span class='line'>   <span class="p">{</span><span class="ss">:border-color</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;black&amp;rdquo;}]]]&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">routes</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">GET</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;/&lt;em&gt;.css&amp;rdquo; { {path :&lt;/em&gt;} :route-params}&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>   <span class="p">(</span><span class="nf">views/css-page-memoized</span> <span class="nv">path</span><span class="p">)))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn </span><span class="nv">css-page</span> <span class="p">[</span><span class="nv">path</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nb">when-let </span><span class="p">[</span><span class="nv">garden-url</span> <span class="p">(</span><span class="nf">io/resource</span> <span class="p">(</span><span class="nb">str </span><span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;public/&amp;rdquo; path &amp;ldquo;.garden&amp;rdquo;))]&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">garden-data</span> <span class="p">(</span><span class="nb">load-file </span><span class="p">(</span><span class="nf">.getPath</span> <span class="nv">garden-url</span><span class="p">))]</span>
+</span><span class='line'>  <span class="p">{</span><span class="ss">:status</span> <span class="mi">200</span>
+</span><span class='line'>   <span class="ss">:headers</span> <span class="p">{</span><span class="s">&quot;Content-Type&quot;</span> <span class="s">&quot;text/css&quot;</span><span class="p">}</span>
+</span><span class='line'>   <span class="ss">:body</span> <span class="p">(</span><span class="nf">css</span> <span class="nv">garden-data</span><span class="p">)})))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="k">def </span><span class="nv">css-page-memoized</span> <span class="p">(</span><span class="nf">memoize</span> <span class="nv">css-page</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>Resources</h3>
+
+<ul>
+<li><a href="https://github.com/noir-clojure/lib-noir">lib-noir</a> — a set of utilities and helpers for building ring apps.</li>
+<li><a href="http://www.luminusweb.net/">Luminus</a> — another Clojure web framework.</li>
+<li><a href="https://github.com/clojure/clojurescript">ClojureScript</a> — Clojure to JS compiler.</li>
+<li><a href="http://pedestal.io">Pedestal</a> — another framework.</li>
+<li><a href="http://clojure-liberator.github.io/liberator/">Liberator</a> — WebMachine in Clojure.</li>
+</ul>
+
+
+<h2>Gerald Sussman — Keynote</h2>
+
+<h3>Programming for the Expression of Ideas</h3>
+
+<ul>
+<li>Slides: <a href="https://github.com/strangeloop/lambdajam2013/blob/master/slides/Sussman-ExpressionOfIdeas.pdf">GitHub</a></li>
+<li>Video: <a href="http://www.infoq.com/presentations/Expression-of-Ideas">InfoQ</a></li>
+</ul>
+
+
+<p><blockquote><p>Gerald Sussman on stage and Joe Armstrong in the front row nodding along. #LambdaJam is a special place.</p><footer><strong>@bryan_hunter <a href="https://twitter.com/bryan_hunter/statuses/354717953125650432">https://twitter.com/bryan_hunter/statuses/354717953125650432</a></strong></footer></blockquote></p>
+
+<p><img class="center <a" src="href="http://d3j5vwomefv46c.cloudfront.net/photos/large/789035195.jpg">http://d3j5vwomefv46c.cloudfront.net/photos/large/789035195.jpg</a>"></p>
+
+<p>Lagrange&rsquo;s equations of motion in Leibniz notation (with type violation)</p>
+
+<p>$$
+\frac{\mathrm d}{\mathrm d t} \left(\frac{\partial L}{\partial \dot{q}^i}\right) &ndash; \frac{\partial L}{\partial q<sup>i</sup>} = 0
+$$</p>
+
+<p>Expanded form (correct but ugly)</p>
+
+<p>$$
+\frac{\mathrm d}{\mathrm d t} \left(\left.\frac{\partial L(t,q,\dot{q})}{\partial \dot{q}}\right|<em>{\begin{aligned}q &amp;= w(t)\ \dot{q} &amp;= \frac{\mathrm d w(t)}{\mathrm d t}\end{aligned}}\right) &ndash; \left.\frac{\partial L(t,q,\dot{q})}{\partial q}\right|</em>{\begin{aligned}q &amp;= w(t)\ \dot{q} &amp;= \frac{\mathrm d w(t)}{\mathrm d t}\end{aligned}} = 0
+$$</p>
+
+<p>Functional form (correct and beautiful)</p>
+
+<p>$$
+D((\partial_2 L) \circ (\Gamma[w])) &ndash; (\partial_1 L) \circ (\Gamma[w]) = 0
+$$</p>
+
+<p>where</p>
+
+<p>$$
+(Df)(t) = \left.\frac{\mathrm d}{\mathrm d x} f(x)\right|_{x=t}  \qquad  \Gamma<a href="t">w</a> = (t, w(t), Dw(t))
+$$</p>
+
+<p>As Scheme code</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='scheme'><span class='line'><span class="p">(</span><span class="k">define </span><span class="p">((</span><span class="nf">Lagrange-equations</span> <span class="nv">Lagrangian</span><span class="p">)</span> <span class="nv">w</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">&amp;ndash</span><span class="c1">; (D (compose ((partial 2) Lagrangian)&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>             <span class="p">(</span><span class="nf">Gamma</span> <span class="nv">w</span><span class="p">)))</span>
+</span><span class='line'> <span class="p">(</span><span class="nf">compose</span> <span class="p">((</span><span class="nf">partial</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">Lagrangian</span><span class="p">)</span>
+</span><span class='line'>          <span class="p">(</span><span class="nf">Gamma</span> <span class="nv">w</span><span class="p">))))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="k">define </span><span class="p">((</span><span class="nf">Gamma</span> <span class="nv">w</span><span class="p">)</span> <span class="nv">t</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">up</span> <span class="nv">t</span> <span class="p">(</span><span class="nf">w</span> <span class="nv">t</span><span class="p">)</span> <span class="p">((</span><span class="nf">D</span> <span class="nv">w</span><span class="p">)</span> <span class="nv">t</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>We can even generate LaTeX from the Scheme code.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='scheme'><span class='line'><span class="p">(</span><span class="nf">show-expression</span>
+</span><span class='line'>  <span class="p">(((</span><span class="nf">Lagrange-equations</span> <span class="p">(</span><span class="nf">L-harmonic</span> <span class="nv">&amp;rsquo</span><span class="c1">;m &amp;lsquo;k))&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;proposed-solution</span><span class="p">)</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>   <span class="nv">&amp;rsquo</span><span class="c1">;t))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The moral: originally, Lagrange&rsquo;s equations had missing parameters and a type error. Programming them forced an elegant and <em>effective</em> statement.</p>
+
+<p><img class="center <a" src="href="https://pbs.twimg.com/media/BOxIoM5CEAIpW0o.jpg">https://pbs.twimg.com/media/BOxIoM5CEAIpW0o.jpg</a>"></p>
+
+<h3>Quotes</h3>
+
+<ul>
+<li>Computer revolution changed the way we think.</li>
+<li>The way we teach students is not the same way we do it ourselves.</li>
+<li>I&rsquo;ve been doing it all my life. My real goal is to transform things that are hard to understand to the things that are easy to understand. Programming was one of the tools of doing that.</li>
+<li>Students have to learn simultaneously the language and the culture, as well as the content.</li>
+<li>I like to tell students what is going on.</li>
+<li>Idioms make reading hard.</li>
+<li>Leibniz notation for the derivatives happens to be a disaster.</li>
+<li>Let&rsquo;s get to the General Relativity&hellip; I&rsquo;ll be mercifully short.</li>
+<li>The point is, it makes it comprehensible what was badly expressed in the traditional form.</li>
+<li>I have no problem of enslaving electronic apparatus.</li>
+</ul>
+
+
+<h3>Resources</h3>
+
+<ul>
+<li>Michael Spivak — Calculus. [<a href="http://ia801606.us.archive.org/22/items/Calculus_643/Spivak-Calculus.pdf">pdf</a>]</li>
+<li>Gerald Jay Sussman, Jack Wisdom — Functional Differential Geometry. [<a href="http://mitpress.mit.edu/books/functional-differential-geometry">MIT</a>]</li>
+<li>Marvin Minsky — Why programming is a good medium for expressing poorly understood and sloppily-formulated ideas. [<a href="http://web.media.mit.edu/~minsky/papers/Why%20programming%20is--.html">html</a>]</li>
+</ul>
+
+
+<h2>Erlang cocktail</h2>
+
+<p>with
+<a href="https://twitter.com/bryan_hunter">Bryan Hunter</a>,
+<a href="https://twitter.com/joeerl">Joe Armstrong</a>, and
+<a href="https://twitter.com/kscaldef">Kevin Scaldeferri</a></p>
+
+<p><img class="center <a" src="href="https://pbs.twimg.com/media/BOx-YSyCQAAA_TQ.jpg">https://pbs.twimg.com/media/BOx-YSyCQAAA_TQ.jpg</a>"></p>
+
+<p>Wonderful ending of the second day.</p>
+
+<h2>Dave Thomas — Living in Big Data with Vector Functional Programming</h2>
+
+<ul>
+<li>Slides: <a href="https://github.com/strangeloop/lambdajam2013/blob/master/slides/Thomas-LivingInBigDataWithVectorFunctionalProgramming.pdf">GitHub</a></li>
+</ul>
+
+
+<p><blockquote><p>This is the first time I&rsquo;ve been in the audience of a talk on vector languages.</p><footer><strong>@kaleidic <a href="https://twitter.com/kaleidic/statuses/354961117816176642">https://twitter.com/kaleidic/statuses/354961117816176642</a></strong></footer></blockquote></p>
+
+<ul>
+<li>Extreme cases — that&rsquo;s what is interesting.</li>
+<li>I don&rsquo;t do Big Data, I don&rsquo;t have a petabyte in my pocket.</li>
+<li>I&rsquo;m an industrial language pimp.</li>
+<li>I&rsquo;ve got 3 characters on the screen and I have no idea what they’re doing.</li>
+<li>What slows languages down is scalars and non-scalars, boxing and unboxing.</li>
+<li>How to learn an array language? Slowly.</li>
+</ul>
+
+
+<p><img class="center <a" src="href="https://pbs.twimg.com/media/BO0b6S-CMAI2CFd.jpg">https://pbs.twimg.com/media/BO0b6S-CMAI2CFd.jpg</a>"></p>
+
+<ul>
+<li>Pairing is a great way to learn new things.</li>
+<li>Most programs, by 2020, will be queries.</li>
+<li>There are five error messages, they are all irritating.</li>
+<li>WTF (what the function?) error message.</li>
+<li>All IDEs are bad. Intellij is the best of worst.</li>
+</ul>
+
+
+<h3>Resources</h3>
+
+<ul>
+<li>Emily Bache — An introduction to Array Languages. [<a href="http://coding-is-like-cooking.info/2013/09/an-introduction-to-array-languages/">blog</a>]</li>
+<li>Bryan Cantrilla — Conversation with Arthur Whitney. [<a href="http://queue.acm.org/detail.cfm?id=1531242">article</a>]</li>
+</ul>
+
+
+<h2>Steve Vinoski — Addressing Network Congestion in Riak Clusters</h2>
+
+<ul>
+<li>Slides: <a href="https://dl.dropboxusercontent.com/u/10363968/vinoski-addressing-network-congestion-in-riak.pdf">Dropbox</a></li>
+<li><p>Video: <a href="http://www.youtube.com/watch?v=Y6PG6hkUHPM">YouTube</a></p></li>
+<li><p>Riak — A distributed highly available eventually consistent highly scalable open source key-value database written primarily in Erlang, built for operational ease.</p></li>
+<li>Riak TCP traffic:</li>
+<li>Client requests: made to any node in the ring</li>
+<li>Coordination: node receiving client request coordinates the operation across the owning replicas</li>
+<li>Gossip: Riak nodes share ring state via a gossip protocol</li>
+<li>Active Anti-Entropy: nodes actively verify and repair data consistency across the ring</li>
+<li>Erlang: distributed Erlang nodes form a full mesh and do periodic node availability checks</li>
+<li>Handoff</li>
+<li>TCP incast.</li>
+<li>Low Extra Delay Background Transport (LEDBAT).</li>
+<li>Micro Transport Protocol (μTP, or uTP).</li>
+</ul>
+
+
+<h3>Resources</h3>
+
+<ul>
+<li>Amazon&rsquo;s Dynamo Paper and <a href="http://docs.basho.com/riak/latest/theory/dynamo/">Riak</a>.</li>
+<li><a href="https://github.com/bittorrent/libutp">libutp</a> — The uTorrent Transport Protocol library.</li>
+<li><a href="https://github.com/basho-labs/gen_utp">gen_utp</a> — an API and driver for the uTP protocol.</li>
+</ul>
+
+
+<h2>Mahesh Paolini-Subramanya — Finite State Machines. Why the fear?</h2>
+
+<ul>
+<li>Slides: <a href="http://www.slideshare.net/dieswaytoofast/genfsm-the-erlang-behavior-that-gets-no-respect">Slideshare</a></li>
+</ul>
+
+
+<p><blockquote><p>Sitting behind @webyrd, @dfried00, Sussman, and @joeerl in @dieswaytoofast&rsquo;s finite state machine talk.</p><footer><strong>@gazoombo <a href="https://twitter.com/gazoombo/statuses/354991392247906305">https://twitter.com/gazoombo/statuses/354991392247906305</a></strong></footer></blockquote></p>
+
+<p><img class="center <a" src="href="https://pbs.twimg.com/media/BO0uyloCAAAS7X4.jpg">https://pbs.twimg.com/media/BO0uyloCAAAS7X4.jpg</a>"></p>
+
+<ul>
+<li>Write a project in C++ or Java and you’re creating work for 5 other devs. Write it in Erlang and you’re done.</li>
+<li>There is a special place in hell for the people who came up with the Oauth 2.0 spec.</li>
+<li>Everything is an FSM. Problem with actually modeling this is complexity of large FSMs. Answer is encapsulation.</li>
+<li>Design your system as a big FSM that is a collection of little FSMs. Only transition between them as needed.</li>
+</ul>
+
+
+<h2>Sean Cribbs, Chris Meiklejohn — Functional Web Applications with Webmachine</h2>
+
+<p>The keyword here is <em>Functional</em>.</p>
+
+<ul>
+<li>Slides: <a href="https://github.com/strangeloop/lambdajam2013/blob/master/slides/CribbsMeiklejohn-Webmachine.pdf">GitHub</a></li>
+<li>Tutorial: <a href="https://github.com/cmeiklejohn/webmachine-tutorial">GitHub</a></li>
+<li>Webmachine <a href="https://github.com/basho/webmachine/wiki/Diagram">diagram</a></li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone git@github.com:cmeiklejohn/webmachine-tutorial.git
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><img class="center" src="/images/posts/webmachine-diagram.png"></p>
+
+<pre><code>git checkout hello-world
+</code></pre>
+
+<ul>
+<li>f(ReqData,State) &ndash;> {RetV,ReqData,State}.</li>
+<li><code>iolist()</code></li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>src/tweeter_resource.erl </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="nf">init</span><span class="p">([])</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="p">[]}.</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">to_html</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">,</span> <span class="nv">State</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">{[</span><span class="s">&quot;&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;&quot;</span><span class="p">,</span> <span class="nn">wrq</span><span class="p">:</span><span class="nf">get_req_header</span><span class="p">(</span><span class="s">&quot;host&quot;</span><span class="p">,</span> <span class="nv">ReqData</span><span class="p">),</span> <span class="s">&quot;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&quot;</span><span class="p">],</span>
+</span><span class='line'> <span class="nv">ReqData</span><span class="p">,</span>
+</span><span class='line'> <span class="nv">State</span><span class="p">}.</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Supervisor: resources, routes, dispatch</p>
+
+<pre><code>git checkout -f load-tweets
+</code></pre>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>src/tweeter_sup.erl </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="nf">init</span><span class="p">([])</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">...</span>
+</span><span class='line'><span class="nv">Resources</span> <span class="o">=</span> <span class="p">[</span><span class="n">tweeter_wm_tweet_resource</span><span class="p">,</span> <span class="n">tweeter_wm_asset_resource</span><span class="p">],</span>
+</span><span class='line'><span class="nv">Dispatch</span> <span class="o">=</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">flatten</span><span class="p">([</span><span class="nv">Module</span><span class="p">:</span><span class="nf">routes</span><span class="p">()</span> <span class="p">||</span> <span class="nv">Module</span> <span class="err">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">-</span> <span class="nv">Resources</span><span class="p">]),</span>
+</span><span class='line'><span class="p">...</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>src/tweeter_wm_tweet_resource.erl </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="nf">routes</span><span class="p">()</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">[{[</span><span class="s">&quot;tweets&quot;</span><span class="p">],</span> <span class="o">?</span><span class="nv">MODULE</span><span class="p">,</span> <span class="p">[]}].</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>src/tweeter_wm_asset_resource.erl </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="nf">routes</span><span class="p">()</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">[{[</span><span class="s">&quot;&quot;</span><span class="p">],</span> <span class="o">?</span><span class="nv">MODULE</span><span class="p">,</span> <span class="p">[]},</span> <span class="p">{[</span><span class="n">&#39;*&#39;</span><span class="p">],</span> <span class="o">?</span><span class="nv">MODULE</span><span class="p">,</span> <span class="p">[]}].</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Media Types</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>src/tweeter_wm_tweet_resource.erl </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="nf">content_types_provided</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">{[{</span><span class="s">&quot;application/json&quot;</span><span class="p">,</span> <span class="n">to_json</span><span class="p">},</span>
+</span><span class='line'>  <span class="p">{</span><span class="s">&quot;application/x-erlang-binary&quot;</span><span class="p">,</span> <span class="n">to_erlang</span><span class="p">}],</span> <span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">}.</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">to_json</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="nv">Tweets</span> <span class="o">=</span> <span class="p">[</span><span class="nv">Value</span> <span class="p">||</span> <span class="p">[{_</span><span class="nv">Key</span><span class="p">,</span> <span class="nv">Value</span><span class="p">}]</span> <span class="err">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">-</span> <span class="nn">ets</span><span class="p">:</span><span class="nf">match</span><span class="p">(</span><span class="n">tweets</span><span class="p">,</span> <span class="n">&#39;$1&#39;</span><span class="p">)],</span>
+</span><span class='line'><span class="nv">Content</span> <span class="o">=</span> <span class="nn">mochijson2</span><span class="p">:</span><span class="nf">encode</span><span class="p">({</span><span class="n">struct</span><span class="p">,</span> <span class="p">[{</span><span class="n">tweets</span><span class="p">,</span> <span class="nv">Tweets</span><span class="p">}]}),</span>
+</span><span class='line'><span class="p">{</span><span class="nv">Content</span><span class="p">,</span> <span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">}.</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">to_erlang</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="nv">Tweets</span> <span class="o">=</span> <span class="p">[</span><span class="nv">Value</span> <span class="p">||</span> <span class="p">[{_</span><span class="nv">Key</span><span class="p">,</span> <span class="nv">Value</span><span class="p">}]</span> <span class="err">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">-</span> <span class="nn">ets</span><span class="p">:</span><span class="nf">match</span><span class="p">(</span><span class="n">tweets</span><span class="p">,</span> <span class="n">&#39;$1&#39;</span><span class="p">)],</span>
+</span><span class='line'><span class="nv">Content</span> <span class="o">=</span> <span class="nb">term_to_binary</span><span class="p">(</span><span class="nv">Tweets</span><span class="p">),</span>
+</span><span class='line'><span class="p">{</span><span class="nv">Content</span><span class="p">,</span> <span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">}.</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -i -H &ldquo;Accept:application/x-erlang-binary&rdquo; &ldquo;&lt;a href="http://localhost:8080/tweets">http://localhost:8080/tweets&lt;/a>&rdquo;
+</span><span class='line'>HTTP/1.1 200 OK
+</span><span class='line'>Vary: Accept
+</span><span class='line'>Server: MochiWeb/1.1 WebMachine/1.10.0 (never breaks eye contact)
+</span><span class='line'>Content-Type: application/x-erlang-binary&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>?llhdavatarmZ&lt;a href="https://si0.twimg.com/profile_images/2536088319/4sl2go65was3o0km520j_reasonably_small.jpeghdmessageCaremad.jlhdavatarm\https://si0.twimg.com/profile_images/3778090444/e4fde2cad4b921cd8c07fcecc0ff2fff_bigger.jpeghdmessagemRubby">https://si0.twimg.com/profile_images/2536088319/4sl2go65was3o0km520j_reasonably_small.jpeghdmessageCaremad.jlhdavatarm\https://si0.twimg.com/profile_images/3778090444/e4fde2cad4b921cd8c07fcecc0ff2fff_bigger.jpeghdmessagemRubby&lt;/a> is over!jlhdavatarmZ&lt;a href="https://si0.twimg.com/profile_images/2536088319/4sl2go65was3o0km520j_reasonably_small.jpeghdmessagemYou">https://si0.twimg.com/profile_images/2536088319/4sl2go65was3o0km520j_reasonably_small.jpeghdmessagemYou&lt;/a> boys having a taste?jj</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><code>resource_exists</code></p>
+
+<pre><code>git checkout -f tweet-urls
+</code></pre>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>src/tweeter_wm_tweet_resource.erl </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="nf">routes</span><span class="p">()</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">[{[</span><span class="s">&quot;tweets&quot;</span><span class="p">,</span> <span class="n">tweet_id</span><span class="p">],</span> <span class="o">?</span><span class="nv">MODULE</span><span class="p">,</span> <span class="p">[]}].</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">tweet_id</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">time_from_timestamp</span><span class="p">(</span><span class="nn">wrq</span><span class="p">:</span><span class="nf">path_info</span><span class="p">(</span><span class="n">tweet_id</span><span class="p">,</span> <span class="nv">ReqData</span><span class="p">)).</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">resource_exists</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">case</span> <span class="n">maybe_retrieve_tweet</span><span class="p">(</span><span class="nv">Context</span><span class="p">,</span> <span class="n">tweet_id</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">))</span> <span class="k">of</span>
+</span><span class='line'>    <span class="p">{</span><span class="n">true</span><span class="p">,</span> <span class="nv">NewContext</span><span class="p">}</span> <span class="o">-</span><span class="err">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="p">{</span><span class="n">true</span><span class="p">,</span> <span class="nv">ReqData</span><span class="p">,</span> <span class="nv">NewContext</span><span class="p">};</span>
+</span><span class='line'>    <span class="p">{</span><span class="n">false</span><span class="p">,</span> <span class="nv">Context</span><span class="p">}</span>   <span class="o">-</span><span class="err">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="p">{</span><span class="n">false</span><span class="p">,</span> <span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">}</span>
+</span><span class='line'><span class="k">end</span><span class="p">.</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl &lt;a href="http://localhost:8080/tweets">http://localhost:8080/tweets&lt;/a>
+</span><span class='line'>{&ldquo;tweets&rdquo;:[
+</span><span class='line'>  {&ldquo;avatar&rdquo;:&ldquo;&lt;a href="https://si0.twimg.com/profile_images/2536088319/4sl2go65was3o0km520j_reasonably_small.jpeg">https://si0.twimg.com/profile_images/2536088319/4sl2go65was3o0km520j_reasonably_small.jpeg&lt;/a>&rdquo;,&ldquo;message&rdquo;:&ldquo;Caremad.&rdquo;,&ldquo;id&rdquo;:&ldquo;1376843311536798&rdquo;},
+</span><span class='line'>  {&ldquo;avatar&rdquo;:&ldquo;&lt;a href="https://si0.twimg.com/profile_images/3778090444/e4fde2cad4b921cd8c07fcecc0ff2fff_bigger.jpeg">https://si0.twimg.com/profile_images/3778090444/e4fde2cad4b921cd8c07fcecc0ff2fff_bigger.jpeg&lt;/a>&rdquo;,&ldquo;message&rdquo;:&ldquo;Rubby is over!&rdquo;,&ldquo;id&rdquo;:&ldquo;1376843311536799&rdquo;},
+</span><span class='line'>  {&ldquo;avatar&rdquo;:&ldquo;&lt;a href="https://si0.twimg.com/profile_images/2536088319/4sl2go65was3o0km520j_reasonably_small.jpeg">https://si0.twimg.com/profile_images/2536088319/4sl2go65was3o0km520j_reasonably_small.jpeg&lt;/a>&rdquo;,&ldquo;message&rdquo;:&ldquo;You boys having a taste?&rdquo;,&ldquo;id&rdquo;:&ldquo;1376843311536800&rdquo;}]}</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -i &lt;a href="http://localhost:8080/tweets/1376843311536798">http://localhost:8080/tweets/1376843311536798&lt;/a>
+</span><span class='line'>HTTP/1.1 200 OK&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>{&ldquo;tweet&rdquo;:{&ldquo;avatar&rdquo;:&ldquo;&lt;a href="https://si0.twimg.com/profile_images/2536088319/4sl2go65was3o0km520j_reasonably_small.jpeg">https://si0.twimg.com/profile_images/2536088319/4sl2go65was3o0km520j_reasonably_small.jpeg&lt;/a>&rdquo;,&ldquo;message&rdquo;:&ldquo;Caremad.&rdquo;}}</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -i &lt;a href="http://localhost:8080/tweets/42">http://localhost:8080/tweets/42&lt;/a>
+</span><span class='line'>HTTP/1.1 404 Object Not Found&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&lt;HTML>&lt;HEAD>&lt;TITLE>404 Not Found&lt;/TITLE>&lt;/HEAD>&lt;BODY>&lt;H1>Not Found&lt;/H1>The requested document was not found on this server.&lt;P>&lt;HR>&lt;ADDRESS>mochiweb+webmachine web server&lt;/ADDRESS>&lt;/BODY>&lt;/HTML></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><code>POST</code>, response header</p>
+
+<pre><code>git checkout -f create-tweets
+</code></pre>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>src/tweeter_wm_tweets_resource.erl </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="nf">allowed_methods</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">{[</span><span class="n">&#39;HEAD&#39;</span><span class="p">,</span> <span class="n">&#39;GET&#39;</span><span class="p">,</span> <span class="n">&#39;POST&#39;</span><span class="p">],</span> <span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">}.</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">post_is_create</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">{</span><span class="n">true</span><span class="p">,</span> <span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">}.</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">create_path</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">case</span> <span class="n">maybe_create_tweet</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">)</span> <span class="k">of</span>
+</span><span class='line'>    <span class="p">{</span><span class="n">true</span><span class="p">,</span> <span class="nv">NewContext</span><span class="p">}</span> <span class="o">-</span><span class="err">&amp;</span><span class="n">gt</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">{</span><span class="nv">Id</span><span class="p">,</span> <span class="p">_}</span> <span class="o">=</span> <span class="nv">NewContext</span><span class="nl">#context.tweet</span><span class="p">,</span>
+</span><span class='line'>        <span class="nv">Resource</span> <span class="o">=</span> <span class="s">&quot;/tweets/&quot;</span> <span class="o">++</span> <span class="nb">binary_to_list</span><span class="p">(</span><span class="n">time_to_timestamp</span><span class="p">(</span><span class="nv">Id</span><span class="p">)),</span>
+</span><span class='line'>        <span class="nv">NewReqData</span> <span class="o">=</span> <span class="nn">wrq</span><span class="p">:</span><span class="nf">set_resp_header</span><span class="p">(</span><span class="s">&quot;Location&quot;</span><span class="p">,</span> <span class="nv">Resource</span><span class="p">,</span> <span class="nv">ReqData</span><span class="p">),</span>
+</span><span class='line'>        <span class="p">{</span><span class="nv">Resource</span><span class="p">,</span> <span class="nv">NewReqData</span><span class="p">,</span> <span class="nv">NewContext</span><span class="p">};</span>
+</span><span class='line'>    <span class="p">{</span><span class="n">false</span><span class="p">,</span> <span class="nv">Context</span><span class="p">}</span> <span class="o">-</span><span class="err">&amp;</span><span class="n">gt</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">{</span><span class="s">&quot;/users&quot;</span><span class="p">,</span> <span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">}</span>
+</span><span class='line'><span class="k">end</span><span class="p">.</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">content_types_accepted</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">{[{</span><span class="s">&quot;application/json&quot;</span><span class="p">,</span> <span class="n">from_json</span><span class="p">}],</span> <span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">}.</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">from_json</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">case</span> <span class="n">maybe_create_tweet</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">)</span> <span class="k">of</span>
+</span><span class='line'>    <span class="p">{</span><span class="n">true</span><span class="p">,</span> <span class="nv">NewContext</span><span class="p">}</span> <span class="o">-</span><span class="err">&amp;</span><span class="n">gt</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">{_,</span> <span class="nv">Tweet</span><span class="p">}</span> <span class="o">=</span> <span class="nv">NewContext</span><span class="nl">#context.tweet</span><span class="p">,</span>
+</span><span class='line'>        <span class="nv">Response</span> <span class="o">=</span> <span class="nn">mochijson2</span><span class="p">:</span><span class="nf">encode</span><span class="p">({</span><span class="n">struct</span><span class="p">,</span> <span class="p">[{</span><span class="n">tweet</span><span class="p">,</span> <span class="nv">Tweet</span><span class="p">}]}),</span>
+</span><span class='line'>        <span class="nv">NewReqData</span> <span class="o">=</span> <span class="nn">wrq</span><span class="p">:</span><span class="nf">set_resp_body</span><span class="p">(</span><span class="nv">Response</span><span class="p">,</span> <span class="nv">ReqData</span><span class="p">),</span>
+</span><span class='line'>        <span class="p">{</span><span class="n">true</span><span class="p">,</span> <span class="nv">NewReqData</span><span class="p">,</span> <span class="nv">NewContext</span><span class="p">};</span>
+</span><span class='line'>    <span class="p">{</span><span class="n">false</span><span class="p">,</span> <span class="nv">Context</span><span class="p">}</span> <span class="o">-</span><span class="err">&amp;</span><span class="n">gt</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">{</span> <span class="p">{</span><span class="n">halt</span><span class="p">,</span> <span class="mi">409</span><span class="p">},</span> <span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">}</span>
+</span><span class='line'><span class="k">end</span><span class="p">.</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -i -X POST -H &ldquo;Content-Type:application/json&rdquo; \&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>  http://localhost:8080/tweets --data @-
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>{
+</span><span class='line'>  &ldquo;tweet&rdquo;:{&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>"message":"testing...",
+</span><span class='line'>"avatar":"https://si0.twimg.com/profile_images/3778090444/e4fde2cad4b921cd8c07fcecc0ff2fff_bigger.jpeg"
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>  }
+</span><span class='line'>}
+</span><span class='line'>HTTP/1.1 201 Created
+</span><span class='line'>Location: /tweets/1376847941255278
+</span><span class='line'>Content-Type: application/json&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>{&ldquo;tweet&rdquo;:{&ldquo;message&rdquo;:&ldquo;testing&hellip;&rdquo;,&ldquo;avatar&rdquo;:&ldquo;&lt;a href="https://si0.twimg.com/profile_images/3778090444/e4fde2cad4b921cd8c07fcecc0ff2fff_bigger.jpeg">https://si0.twimg.com/profile_images/3778090444/e4fde2cad4b921cd8c07fcecc0ff2fff_bigger.jpeg&lt;/a>&rdquo;}}</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -i -X POST -H &ldquo;Content-Type:application/xml&rdquo; \&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>  http://localhost:8080/tweets --data @-
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>{
+</span><span class='line'>  &ldquo;tweet&rdquo;:{&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>"message":"testing...",
+</span><span class='line'>"avatar":"https://si0.twimg.com/profile_images/3778090444/e4fde2cad4b921cd8c07fcecc0ff2fff_bigger.jpeg"
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>  }
+</span><span class='line'>}
+</span><span class='line'>HTTP/1.1 415 Unsupported Media Type
+</span><span class='line'>Location: /tweets/1376848621307991
+</span><span class='line'>Content-Type: text/html&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&lt;html>&lt;head>&lt;title>415 Unsupported Media Type&lt;/title>&lt;/head>&lt;body>&lt;h1>Unsupported Media Type&lt;/h1>Unsupported Media Type&lt;p>&lt;hr>&lt;address>mochiweb+webmachine web server&lt;/address>&lt;/body>&lt;/html></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Note: <code>create_path</code> is called before <code>content_types_accepted</code></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -i -X POST -H &ldquo;Content-Type:application/xml&rdquo; \&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>  http://localhost:8080/tweets --data @-
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&lt;tweet>
+</span><span class='line'>  &lt;message>testing&hellip;&lt;/message>
+</span><span class='line'>  &lt;avatar>&lt;a href="https://si0.twimg.com/profile_images/3778090444/e4fde2cad4b921cd8c07fcecc0ff2fff_bigger.jpeg">https://si0.twimg.com/profile_images/3778090444/e4fde2cad4b921cd8c07fcecc0ff2fff_bigger.jpeg&lt;/a>&lt;/avatar>
+</span><span class='line'>&lt;/tweet>
+</span><span class='line'>HTTP/1.1 500 Internal Server Error
+</span><span class='line'>Content-Type: text/html&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&lt;html>&lt;head>&lt;title>500 Internal Server Error&lt;/title>&lt;/head>&lt;body>&lt;h1>Internal Server Error&lt;/h1>The server encountered an error while processing this request:&lt;br>&lt;pre>{&ldquo;create_path not a string&rdquo;,
+</span><span class='line'> {error,&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code> {...}}}&lt;/pre&gt;&lt;P&gt;&lt;HR&gt;&lt;ADDRESS&gt;mochiweb+webmachine web server&lt;/ADDRESS&gt;&lt;/body&gt;&lt;/html&gt;
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>ETags, caching, preconditions</p>
+
+<pre><code>git checkout -f etag-tweets
+</code></pre>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>src/tweeter_wm_tweets_resource.erl </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="nf">generate_etag</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">{_,</span> <span class="nv">NewContext</span><span class="p">}</span> <span class="o">=</span>  <span class="n">maybe_retrieve_tweets</span><span class="p">(</span><span class="nv">Context</span><span class="p">),</span>
+</span><span class='line'><span class="nv">ETag</span> <span class="o">=</span> <span class="nn">mochihex</span><span class="p">:</span><span class="nf">to_hex</span><span class="p">(</span><span class="nn">erlang</span><span class="p">:</span><span class="nb">phash2</span><span class="p">(</span><span class="nv">NewContext</span><span class="nl">#context.tweets</span><span class="p">)),</span>
+</span><span class='line'><span class="p">{</span><span class="nv">ETag</span><span class="p">,</span> <span class="nv">ReqData</span><span class="p">,</span> <span class="nv">NewContext</span><span class="p">}.</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">last_modified</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="nv">Id</span> <span class="o">=</span> <span class="nn">ets</span><span class="p">:</span><span class="nf">last</span><span class="p">(</span><span class="n">tweets</span><span class="p">),</span>
+</span><span class='line'><span class="p">{</span><span class="nn">calendar</span><span class="p">:</span><span class="nf">now_to_datetime</span><span class="p">(</span><span class="nv">Id</span><span class="p">),</span> <span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">}.</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -i &lt;a href="http://localhost:8080/tweets">http://localhost:8080/tweets&lt;/a>
+</span><span class='line'>HTTP/1.1 200 OK
+</span><span class='line'>Last-Modified: Sun, 18 Aug 2013 21:44:50 GMT
+</span><span class='line'>ETag: &ldquo;30008d7&rdquo;&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>{&ldquo;tweets&rdquo;:[
+</span><span class='line'>  {&ldquo;avatar&rdquo;:&ldquo;&lt;a href="https://si0.twimg.com/profile_images/2536088319/4sl2go65was3o0km520j_reasonably_small.jpeg">https://si0.twimg.com/profile_images/2536088319/4sl2go65was3o0km520j_reasonably_small.jpeg&lt;/a>&rdquo;,&ldquo;message&rdquo;:&ldquo;Caremad.&rdquo;,&ldquo;id&rdquo;:&ldquo;1376860726482913&rdquo;},
+</span><span class='line'>  {&ldquo;avatar&rdquo;:&ldquo;&lt;a href="https://si0.twimg.com/profile_images/3778090444/e4fde2cad4b921cd8c07fcecc0ff2fff_bigger.jpeg">https://si0.twimg.com/profile_images/3778090444/e4fde2cad4b921cd8c07fcecc0ff2fff_bigger.jpeg&lt;/a>&rdquo;,&ldquo;message&rdquo;:&ldquo;Rubby is over!&rdquo;,&ldquo;id&rdquo;:&ldquo;1376860726482914&rdquo;},
+</span><span class='line'>  {&ldquo;avatar&rdquo;:&ldquo;&lt;a href="https://si0.twimg.com/profile_images/2536088319/4sl2go65was3o0km520j_reasonably_small.jpeg">https://si0.twimg.com/profile_images/2536088319/4sl2go65was3o0km520j_reasonably_small.jpeg&lt;/a>&rdquo;,&ldquo;message&rdquo;:&ldquo;You boys having a taste?&rdquo;,&ldquo;id&rdquo;:&ldquo;1376860726482915&rdquo;}]}</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -i -H &lsquo;If-None-Match:&ldquo;30008d7&rdquo;&rsquo; &lt;a href="http://localhost:8080/tweets">http://localhost:8080/tweets&lt;/a>
+</span><span class='line'>HTTP/1.1 304 Not Modified
+</span><span class='line'>ETag: &ldquo;30008d7&rdquo;</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -i -H &lsquo;If-Modified-Since:Sun, 18 Aug 2013 21:45:41 GMT&rsquo; &lt;a href="http://localhost:8080/tweets">http://localhost:8080/tweets&lt;/a>
+</span><span class='line'>HTTP/1.1 304 Not Modified
+</span><span class='line'>ETag: &ldquo;30008d7&rdquo;</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Authorization, CSRF</p>
+
+<pre><code>git checkout -f csrf
+</code></pre>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>src/tweeter_wm_tweets_resource.erl </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="nf">forbidden</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">)</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">{</span><span class="nn">tweeter_security</span><span class="p">:</span><span class="nf">is_protected</span><span class="p">(</span><span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">),</span> <span class="nv">ReqData</span><span class="p">,</span> <span class="nv">Context</span><span class="p">}.</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Visual debugger</p>
+
+<pre><code>git checkout -f debugger
+</code></pre>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>src/tweeter_wm_asset_resource.erl </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='erlang'><span class='line'><span class="nf">init</span><span class="p">([])</span> <span class="err">&amp;</span><span class="n">ndash</span><span class="p">;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="nn">wmtrace_resource</span><span class="p">:</span><span class="nf">add_dispatch_rule</span><span class="p">(</span><span class="s">&quot;wmtrace&quot;</span><span class="p">,</span> <span class="s">&quot;/tmp&quot;</span><span class="p">),</span>
+</span><span class='line'><span class="p">{</span> <span class="p">{</span><span class="nb">trace</span><span class="p">,</span> <span class="s">&quot;/tmp&quot;</span><span class="p">},</span> <span class="nl">#context</span><span class="p">{}}.</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><img class="center" src="/images/posts/webmachine-debugger-1.png"></p>
+
+<p><img class="center" src="/images/posts/webmachine-debugger-2.png"></p>
+
+<p>ErlyDTL, Dialyzer</p>
+
+<h3>Resources</h3>
+
+<ul>
+<li>Webmachine: <a href="https://github.com/basho/webmachine/wiki/Request-Data-API">Request Data API</a></li>
+<li>James Hague — A Ramble Through Erlang IO Lists. [<a href="http://prog21.dadgum.com/70.html">blog</a>]</li>
+<li>Andrei Neculau — <a href="https://github.com/andreineculau/http-decision-diagram">http-decision-diagram</a></li>
+</ul>
+
+
+<h2>David Nolen — Keynote</h2>
+
+<h3>Everything I Have Learned I Have Learned From Someone Else</h3>
+
+<ul>
+<li>Slides: <a href="https://github.com/strangeloop/lambdajam2013/blob/master/slides/Nolen-EverythingIHaveLearned.pdf">GitHub</a></li>
+<li>Video: <a href="http://www.infoq.com/presentations/learning-developer">InfoQ</a></li>
+</ul>
+
+
+<p><blockquote><p>It is practically impossible to teach good programming to students that have had a prior exposure to BASIC: as potential programmers they are mentally mutilated beyond hope of regeneration.</p><footer><strong>Edsger Dijkstra</strong></footer></blockquote></p>
+
+<h3>Quotes</h3>
+
+<ul>
+<li>We sick of the status quo, and there is a resurgence among engineers and excitement around new programming languages.</li>
+<li>In Clojure we can pattern match on persistent vectors and hashmaps.</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">x</span> <span class="nv">true&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>  <span class="nv">y</span> <span class="nv">true</span>
+</span><span class='line'>  <span class="nv">z</span> <span class="nv">true</span><span class="p">]</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>  <span class="p">(</span><span class="nf">match</span> <span class="p">[</span><span class="nv">x</span> <span class="nv">y</span> <span class="nv">z</span><span class="p">]</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">[</span><span class="nv">_</span> <span class="nv">false</span> <span class="nv">true</span><span class="p">]</span> <span class="mi">1</span>
+</span><span class='line'><span class="p">[</span><span class="nv">false</span> <span class="nv">true</span> <span class="nv">_</span> <span class="p">]</span> <span class="mi">2</span>
+</span><span class='line'><span class="p">[</span><span class="nv">_</span> <span class="nv">_</span> <span class="nv">false</span><span class="p">]</span> <span class="mi">3</span>
+</span><span class='line'><span class="p">[</span><span class="nv">_</span> <span class="nv">_</span> <span class="nv">true</span><span class="p">]</span> <span class="mi">4</span>
+</span><span class='line'><span class="ss">:else</span> <span class="mi">5</span><span class="p">))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">match</span> <span class="p">[</span><span class="nv">x</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">[{</span><span class="ss">:a</span> <span class="nv">_</span> <span class="ss">:b</span> <span class="mi">2</span><span class="p">}]</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="p">[{</span><span class="ss">:a</span> <span class="mi">1</span> <span class="ss">:b</span> <span class="mi">1</span><span class="p">}]</span> <span class="mi">2</span>
+</span><span class='line'>  <span class="p">[{</span><span class="ss">:c</span> <span class="mi">3</span> <span class="ss">:d</span> <span class="nv">_</span> <span class="ss">:e</span> <span class="mi">4</span><span class="p">}]</span> <span class="mi">3</span>
+</span><span class='line'>  <span class="ss">:else</span> <span class="mi">4</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>The best way to predict the future is to read papers and <em>engineer</em> it.</li>
+</ul>
+
+
+<h3>Papers</h3>
+
+<ul>
+<li>Phil Bagwell — Ideal Hash Trees [<a href="http://lampwww.epfl.ch/papers/idealhashtrees.pdf">pdf</a>]</li>
+<li>Phil Bagwell, Tiark Rompf — RRB-Trees: Efficient Immutable Vectors [<a href="http://infoscience.epfl.ch/record/169879/files/RMTrees.pdf">pdf</a>]</li>
+<li>William E. Byrd — Relational Programming in miniKanren: Techniques, Applications, and Implementations [<a href="https://scholarworks.iu.edu/dspace/bitstream/handle/2022/8777/Byrd_indiana_0093A_10344.pdf">pdf</a>]</li>
+<li>David C. Bender, Lindsey Kuper, William E. Byrd, Daniel P. Friedman — Efficient representations for triangular substitutions: A comparison in miniKanren [<a href="http://www.cs.indiana.edu/~lkuper/papers/walk.pdf">pdf</a>]</li>
+<li>William A. Kornfeld — Equality for Prolog [<a href="http://www.ijcai.org/Past%20Proceedings/IJCAI-83-VOL-1/PDF/120.pdf">pdf</a>]</li>
+<li>Philip Wadler, Stephen Blott — Ho to make <em>ad-hoc</em> polymorphism less <em>ad hoc</em> [<a href="http://homepages.inf.ed.ac.uk/wadler/papers/class/class.ps">ps</a>]</li>
+<li>James Cheney, Christian Urban — Nominal Logic Programming [<a href="http://arxiv.org/pdf/cs/0609062v2.pdf">pdf</a>]</li>
+<li>Alexey Radul, Gerald Jay Sussman — The Art of the Propagator [<a href="http://web.mit.edu/~axch/www/art.pdf">pdf</a>]</li>
+<li>Craig Chambers, Weimin Chen — Efficient Multiple and Predicate Dispatching [<a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.37.6735&amp;rep=rep1&amp;type=pdf">pdf</a>]</li>
+<li>Luc Maranget — Compiling Pattern Matching to good Decision Trees [<a href="http://www.cs.tufts.edu/~nr/cs257/archive/luc-maranget/jun08.pdf">pdf</a>]</li>
+<li>Philip Wadler — Views: A way for pattern matching to cohabit with data abstraction [<a href="http://homepages.inf.ed.ac.uk/wadler/papers/view/view.ps">ps</a>]</li>
+<li>Sam Tobin-Hochstadt — Extensible Pattern Matching in an Extensible Language [<a href="http://arxiv.org/pdf/1106.2578v1.pdf">pdf</a>]</li>
+<li>Anurag Mendhekar, Gregor Kiczales, John Lamping — Compilation Strategies as Objects [<a href="http://cl-projects.org/project.OLD/suave/darcs/_darcs/current/experimental/suavescript-old/research/kiczales-compilation-strategies-as-objects.pdf">pdf</a>]</li>
+<li>Emden R. Gansner, John H. Reppy — A Multi-threaded Higher-order User Interface Toolkit [<a href="http://www.cs.tufts.edu/~nr/cs257/archive/john-reppy/exene.ps">ps</a>]</li>
+<li>Conal Elliott, Paul Hudak — Functional Reactive Animation [<a href="http://conal.net/papers/icfp97/icfp97.pdf">pdf</a>]</li>
+</ul>
+
+
+<h3>Books</h3>
+
+<ul>
+<li>Chris Okasaki — Purely Functional Data Structures [<a href="http://www.cs.cmu.edu/~rwh/theses/okasaki.pdf">pdf</a>]</li>
+<li>Daniel P. Friedman, William E. Byrd, Oleg Kiselyov — The Reasoned Schemer [<a href="http://mitpress.mit.edu/books/reasoned-schemer">MIT</a>]</li>
+<li>Peter Van Roy, Seif Haridi — Concepts, Techniques, and Models of Computer Programming [<a href="http://mitpress.mit.edu/books/concepts-techniques-and-models-computer-programming">MIT</a>]</li>
+<li>Gregor Kiczales, Jim des Rivieres, Daniel G. Bobrow — The Art of the Metaobject Protocol [<a href="http://mitpress.mit.edu/books/art-metaobject-protocol">MIT</a>]</li>
+<li><ol type="a">
+<li><ol type="a">
+<li><ol type="a">
+<li>Hoare — Communicating Sequential Processes [<a href="http://www.usingcsp.com/cspbook.pdf">pdf</a>]</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+
+
+<h3>Resources</h3>
+
+<ul>
+<li>core.logic — <a href="https://github.com/clojure/core.logic">GitHub</a></li>
+<li>core.match — <a href="https://github.com/clojure/core.match">GitHub</a></li>
+</ul>
+
+
+<h2>Bonus 1: Joe Armstrong @ CEUG — 26 Years With Erlang</h2>
+
+<p>Video: <a href="http://www.youtube.com/watch?v=HCwRGHj5jOE">YouTube</a></p>
+
+<ul>
+<li>If you are an academic you think to develop a programming language in three or four years because that&rsquo;s the time it takes to get your PhD, then you finish your PhD and the whole world will use it. It doesn&rsquo;t work like that. You got to do quite few other things.</li>
+<li>That&rsquo;s what we did in 1985, before the Internet: we were creating programming languages.</li>
+<li>Version 1.03 lost in the mists of time.</li>
+<li>When Prolog program goes wrong, it says <em>No</em>.</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='prolog'><span class='line'><span class="s-Atom">uni</span> <span class="s-Atom">&amp;mdash</span><span class="p">;</span><span class="s-Atom">&amp;ndash</span><span class="p">;</span><span class="s-Atom">&gt;&lt;/p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="s-Atom">pre&gt;&lt;code</span><span class="o">&gt;</span><span class="nf">case</span><span class="p">(</span><span class="s-Atom">wait</span><span class="p">,[</span>
+</span><span class='line'>    <span class="s-Atom">n</span> <span class="s-Atom">=&amp;gt</span><span class="p">;</span> <span class="p">[</span><span class="s-Atom">term</span><span class="p">,</span><span class="s-Atom">exit</span><span class="p">],</span>
+</span><span class='line'>    <span class="s-Atom">h</span> <span class="s-Atom">=&amp;gt</span><span class="p">;</span> <span class="p">[</span><span class="s-Atom">hold</span><span class="p">,</span>
+</span><span class='line'>          <span class="nf">case</span><span class="p">(</span><span class="s-Atom">new_call</span><span class="p">,[</span>
+</span><span class='line'>              <span class="s-Atom">connected</span> <span class="s-Atom">=&amp;gt</span><span class="p">;</span> <span class="s-Atom">multi</span><span class="p">,</span>
+</span><span class='line'>              <span class="s-Atom">n</span> <span class="s-Atom">=&amp;gt</span><span class="p">;</span> <span class="nf">case</span><span class="p">(</span><span class="s-Atom">gone_away</span><span class="p">,[</span>
+</span><span class='line'>                       <span class="s-Atom">yes</span> <span class="s-Atom">=&amp;gt</span><span class="p">;</span> <span class="s-Atom">exit</span><span class="p">,</span>
+</span><span class='line'>                       <span class="s-Atom">no</span> <span class="s-Atom">=&amp;gt</span><span class="p">;</span> <span class="p">[</span><span class="s-Atom">conv</span><span class="p">,</span><span class="s-Atom">uni</span><span class="p">]</span>
+</span><span class='line'>                   <span class="p">]),</span>
+</span><span class='line'>              <span class="s-Atom">h</span> <span class="s-Atom">=&amp;gt</span><span class="p">;</span> <span class="p">[</span><span class="s-Atom">conv</span><span class="p">,</span><span class="s-Atom">uni</span><span class="p">]</span>
+</span><span class='line'>          <span class="p">])</span>
+</span><span class='line'>         <span class="p">]</span>
+</span><span class='line'><span class="p">]).</span>
+</span><span class='line'><span class="s-Atom">&lt;/code&gt;&lt;/pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="s-Atom">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>This diagrams are nested state machines.</li>
+<li>You do not program the abnormal things, you do not make any decisions about how to program the stuff which is outside of the specification. What you do is you crash your program and let somebody else to resolve the problem and put back all the invariants.</li>
+<li>It took four days to re-write the whole Erlang.</li>
+<li>That&rsquo;s the entire documentation of Erlang 1.05</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>h                help
+</span><span class='line'>reset            reset all queues
+</span><span class='line'>reset_erlang     kill all erlang definitions
+</span><span class='line'>load(F)          load erlang file &lt;F>.erlang
+</span><span class='line'>load             load the same file as before
+</span><span class='line'>load(?)          what is the current load file
+</span><span class='line'>what_erlang      list all loaded erlang files
+</span><span class='line'>go               reduce the main queue to zero
+</span><span class='line'>send(A,B,C)      perform a send to the main queue
+</span><span class='line'>send(A,B)        perform a send to the main queue
+</span><span class='line'>cq               see queue — print main queue
+</span><span class='line'>wait_queue(N)    print wait_queue(N)
+</span><span class='line'>cf               see frozen — print all frozen states
+</span><span class='line'>cqns             see all equations
+</span><span class='line'>cqns(N)          see equation(N)
+</span><span class='line'>start(Mod,Goal)  starts Goal in Mod
+</span><span class='line'>top              top loop run system
+</span><span class='line'>q                quit top loop
+</span><span class='line'>open_dots(Node)  opens Node
+</span><span class='line'>talk(N)          N=1 verbose, =0 silent
+</span><span class='line'>peep(M)          set peeping point on M
+</span><span class='line'>no_peep(M)       unset peeping point on M
+</span><span class='line'>vsn(X)           erlang vsn number is X</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>Don&rsquo;t speculate about performance. Write the program, run it, and measure it.</li>
+<li>Robert collected the whole pile of papers on how abstract machines worked. I borrowed this file and took it for a weekend, and I read every single paper from beginning to end… and I understood nothing. Then Monday morning I suddenly woke up and I understood it.</li>
+<li>There is no garbage collection in atom table.</li>
+<li>The original Erlang movie was made for ISS 90. And we had script!</li>
+<li>Robert wanted to buy a train set on the money from the lab.</li>
+<li>&ldquo;Amazing but true! Blindingly fast!&rdquo;</li>
+<li>8 Dec 1995, AXE-N cancelled. 1996 AXD 301 started.</li>
+<li>AXD 301 could switch up to 160Gb/sec. For countries of the size of Sweeden you can only sell one. I think British Telecom bought 3 or something. It was great technical success but it didn&rsquo;t earn any money.</li>
+<li>Banning things has interesting consequences. Erlang got open sourced. Four days after Erlang was banned all people who developed it left Ericsson and started their own company Bluetail.</li>
+<li>Now DNA of Erlang is spreading through various companies.</li>
+</ul>
+
+
+<h2>Bonus 2: Joe Armstrong @ CEUG — Sherlock&rsquo;s Last Case</h2>
+
+<p>Video: <a href="http://www.youtube.com/watch?v=hh4tmDB9iQI">YouTube</a></p>
+
+<ul>
+<li>&ldquo;How can you be more efficient programmer? By not programming.&rdquo;</li>
+<li>When you program for 20–30 years, the &ldquo;make it work&rdquo; challenge is gone away. It&rsquo;s more challenging to think what problem you are going to solve.</li>
+<li>The problem I&rsquo;ve been thinking for the last five years is how to organize the data, how to organize ideas.</li>
+<li>Value store is a key-value store without keys. How to get the data out of this database?</li>
+<li>Sherlock&rsquo;s Problem: There is $X$, and there are thousands of $Y_i$. Which $Y_i$ is the nearest to $X$?</li>
+<li>The categorization problem is extremly difficult. That&rsquo;s why object-oriented programming is stupid.</li>
+<li>Concurrency oriented programming is a physical modelling.</li>
+<li>Measures of similarity. TF*IDF.</li>
+<li>Naive Bayesian</li>
+</ul>
+
+
+<p>$$
+P(A|B) P(B) = P(B|A) P(A)
+$$</p>
+
+<ul>
+<li>Normalized compression difference: If $A$ and $B$ are similar then size(compress($A$++$B$) will be wee bit larger than size(compress($A$)). It&rsquo;s insensitive to choice of compression algorithm.</li>
+<li>Idea for IDE: Social programming network. It shows all the people working on the code similar to what you are typing.</li>
+</ul>
+
+
+<h3>Q &amp; A</h3>
+
+<ul>
+<li>Macros and include files should be removed from the language.</li>
+<li>Maybe atoms should be garbage collected.</li>
+<li>The biggest problem in building technical systems is &lsquo;connecting thing together&rsquo; problem.</li>
+<li>If I need to write a language, it wouldn&rsquo;t be programming language. I would write a protocol description language.</li>
+<li>Principle of observational equivalence.</li>
+<li><a href="http://ubf.github.io/ubf/">UBF</a>.</li>
+<li>&ldquo;There are languages that people bitch about, and there are languages that nobody&rsquo;s using.&rdquo; — Bjarne Stroustrup</li>
+<li>Scale change. Petabyte change is enormously interesting.</li>
+<li>We need to make cryptography available to all the people.</li>
+<li>Take the data out of the cloud, and put it into your home clouds.</li>
+<li>NSA will kill Google and Facebook.</li>
+</ul>
+
+
+<h2>Epilogue</h2>
+
+<p><blockquote><p>As I leave #LambdaJam I&rsquo;m particularly happy at my improved sense of being able to think about OO stuff in FP terms. That may serve me well.</p><footer><strong>@kaleidic <a href="https://twitter.com/kaleidic/statuses/355327906764959744">https://twitter.com/kaleidic/statuses/355327906764959744</a></strong></footer></blockquote></p>
+
+<p><blockquote><p>Life returning to normal. Have been suffering for PCSD (Post Conference Stress Disorder) — too many ideas in too short time + Jet Lag</p><footer><strong>@joeerl <a href="https://twitter.com/joeerl/statuses/356672073675972609">https://twitter.com/joeerl/statuses/356672073675972609</a></strong></footer></blockquote></p>
+]]></content>
+  </entry>
+  
+</feed>

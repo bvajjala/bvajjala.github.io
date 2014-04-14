@@ -1,0 +1,912 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Java | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/java/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T14:12:32-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[12PM Bug in Java]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/07/28/java-12pm-bug/"/>
+    <updated>2013-07-28T08:00:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/07/28/java-12pm-bug</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve recently hit on a nasty bug in Java. It sits in <code>Date</code> class and shows up only at noon!
+I&rsquo;m going to demonstrate it using Groovy shell, but you can reproduce it in plain Java environment too.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">format</span> <span class="o">=</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="na">text</span><span class="o">.</span><span class="na">SimpleDateFormat</span><span class="o">(&amp;</span><span class="n">lsquo</span><span class="o">;</span><span class="n">EEE</span> <span class="n">MMM</span> <span class="n">d</span> <span class="nl">hh:mm:</span><span class="n">ss</span> <span class="n">z</span> <span class="n">yyyy</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="o">;)</span>
+</span><span class='line'><span class="c1">//= java.text.SimpleDateFormat@fbb27a1c&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">originalDate</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="o">;</span><span class="n">Sun</span> <span class="n">Jul</span> <span class="mi">28</span> <span class="mi">13</span><span class="o">:</span><span class="mi">14</span><span class="o">:</span><span class="mi">15</span> <span class="n">EDT</span> <span class="mi">2013</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="o">;</span>
+</span><span class='line'><span class="c1">//= Sun Jul 28 13:14:15 EDT 2013&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">date</span> <span class="o">=</span> <span class="n">format</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">originalDate</span><span class="o">)</span>
+</span><span class='line'><span class="c1">//= Sun Jul 28 13:14:15 EDT 2013&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">parsedDate</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="na">toString</span><span class="o">()</span>
+</span><span class='line'><span class="c1">//= Sun Jul 28 13:14:15 EDT 2013&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">assert</span> <span class="n">originalDate</span> <span class="o">==</span> <span class="n">parsedDate</span>
+</span><span class='line'><span class="c1">//= null</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>So far so good.</p>
+
+<p>I chose a specific formatter on line 1 to make the bug even more evident. With this formatter lines 5, 8, and 11 must be identical on my machine, and they are in this example. The assertion on line 13 also proves the equality.</p>
+
+<p>Now let&rsquo;s change the example date to one hour earlier</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">originalDate</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="o">;</span><span class="n">Sun</span> <span class="n">Jul</span> <span class="mi">28</span> <span class="mi">12</span><span class="o">:</span><span class="mi">14</span><span class="o">:</span><span class="mi">15</span> <span class="n">EDT</span> <span class="mi">2013</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="o">;</span>
+</span><span class='line'><span class="c1">//= Sun Jul 28 12:14:15 EDT 2013&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">date</span> <span class="o">=</span> <span class="n">format</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">originalDate</span><span class="o">)</span>
+</span><span class='line'><span class="c1">//= Sun Jul 28 00:14:15 EDT 2013&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">parsedDate</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="na">toString</span><span class="o">()</span>
+</span><span class='line'><span class="c1">//= Sun Jul 28 00:14:15 EDT 2013</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Lines 2, 5, and 8 are not identical any more. The String representation of the date is 12 hours off.</p>
+
+<p>To make sure the problem is in <code>toString</code> and not in <code>parse</code>, let&rsquo;s format the date using formatter</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">format</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">date</span><span class="o">)</span>
+</span><span class='line'><span class="c1">//= Sun Jul 28 12:14:15 EDT 2013</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Looks good. The problem is in <code>toString</code> indeed. Or is it?</p>
+
+<p>Let&rsquo;s parse 13 o'clock date and 12 o'clock date. The difference between them should be 1 hour. In reality</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">date13</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="o">;</span><span class="n">Sun</span> <span class="n">Jul</span> <span class="mi">28</span> <span class="mi">13</span><span class="o">:</span><span class="mi">14</span><span class="o">:</span><span class="mi">15</span> <span class="n">EDT</span> <span class="mi">2013</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="o">;</span>
+</span><span class='line'><span class="c1">//= Sun Jul 28 13:14:15 EDT 2013&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">date12</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="o">;</span><span class="n">Sun</span> <span class="n">Jul</span> <span class="mi">28</span> <span class="mi">12</span><span class="o">:</span><span class="mi">14</span><span class="o">:</span><span class="mi">15</span> <span class="n">EDT</span> <span class="mi">2013</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="o">;</span>
+</span><span class='line'><span class="c1">//= Sun Jul 28 12:14:15 EDT 2013&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;(</span><span class="n">format</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">date13</span><span class="o">).</span><span class="na">time</span> <span class="o">&amp;</span><span class="n">ndash</span><span class="o">;</span> <span class="n">format</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">date12</span><span class="o">).</span><span class="na">time</span><span class="o">)</span> <span class="s">/ (1000 * 60 * 60)</span>
+</span><span class='line'><span class="s">/</span><span class="o">/=</span> <span class="mi">13</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Wow, the problem is actually in <code>parse</code>. Then how come the <code>format</code> returned the correct value? That&rsquo;s still a mystery to me.</p>
+
+<p>I&rsquo;m actually quite surprised that this bug survived through JDK 1.7.0_09, and neither Sun nor Oracle hasn&rsquo;t fixed it yet.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Flexible Language]]></title>
+    <link href="http://bvajjala.github.io/blog/2012/11/22/flexible-language/"/>
+    <updated>2012-11-22T07:00:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2012/11/22/flexible-language</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve been learning Lisp for few years now, and every Lisp book I read keeps saying that Lisp is a flexible language that you can extend to the degree when it fits naturally to your domain. It&rsquo;s easy to say, but what exactly does this phrase mean? After all, when you program in your non-Lisp language, don&rsquo;t you modify it for your domain problem? I&rsquo;ve been thinking about it for a long time, and only recently I started to understand what flexibility really means. There is a difference between <em>using</em> the language and <em>changing</em> the language to solve a problem. In this post I will try to show the difference based on a simple example.</p>
+
+<h2>Problem</h2>
+
+<p><img class="right" src="/images/posts/handlers.png"></p>
+
+<p>Suppose you have a process that listens to a message queue. The messages are just ordinary maps. If the map contains certain keys, one or more handlers must be invoked. Here is a matrix that shows which handler is invoked for which key.</p>
+
+<p>For example, if the map has key <strong><em>a</em></strong>, then DocHandler and AlertHandler need to be called. If it has key <strong><em>b</em></strong>, then NoteHandler and AlertHandler are called. In reality there might be more keys and more handlers, but for simplicity we limit our example to three keys and three handlers.</p>
+
+<!-- more -->
+
+
+<h2>Java</h2>
+
+<p>Let&rsquo;s see how this can be implemented in Java. I chose Java just as an example of non-Lisp language. You can pick any other non-Lisp language instead.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>SimpleMessageListener.java </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleMessageListener</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">public</span> <span class="n">List</span> <span class="n">onMessage</span><span class="o">(</span><span class="n">Map</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">List</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedList</span><span class="o">();</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">isDoc</span><span class="o">(</span><span class="n">message</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">handleDoc</span><span class="o">(</span><span class="n">message</span><span class="o">));</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">isNote</span><span class="o">(</span><span class="n">message</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">handleNote</span><span class="o">(</span><span class="n">message</span><span class="o">));</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">isAlert</span><span class="o">(</span><span class="n">message</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">handleAlert</span><span class="o">(</span><span class="n">message</span><span class="o">));</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Decision makers</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isDoc</span><span class="o">(</span><span class="n">Map</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">message</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">message</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="s">&quot;c&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isNote</span><span class="o">(</span><span class="n">Map</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">message</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="s">&quot;b&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">message</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="s">&quot;c&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isAlert</span><span class="o">(</span><span class="n">Map</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">message</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">message</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="s">&quot;b&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Handlers</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">private</span> <span class="n">String</span> <span class="nf">handleDoc</span><span class="o">(</span><span class="n">Map</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;Document:%s:%s&quot;</span><span class="o">,</span> <span class="n">message</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">),</span> <span class="n">message</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;c&quot;</span><span class="o">));</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">private</span> <span class="n">String</span> <span class="nf">handleNote</span><span class="o">(</span><span class="n">Map</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;Note:%s:%s&quot;</span><span class="o">,</span> <span class="n">message</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;b&quot;</span><span class="o">),</span> <span class="n">message</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;c&quot;</span><span class="o">));</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">private</span> <span class="n">String</span> <span class="nf">handleAlert</span><span class="o">(</span><span class="n">Map</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;Alert:%s:%s&quot;</span><span class="o">,</span> <span class="n">message</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">),</span> <span class="n">message</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;b&quot;</span><span class="o">));</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The internals of <code>handle</code> methods might be very different in reality. Consider the fact they have the same structure here as a coincidence. What is not coincidence though is the structure of <code>is</code> methods. Those methods are identical indeed.</p>
+
+<p>Is this code clean? I would say, no. The main issue is that it&rsquo;s split in three separate but closely related parts. If tomorrow I introduce another message key and a new handler, I have to change three places in the code. Another problem is the code duplication in two spots: a series of <code>if</code> statements and a group of <code>is</code> methods.</p>
+
+<p>The last thing to notice about this code is that it&rsquo;s hard to see what kind of problem it&rsquo;s trying to solve. If I didn&rsquo;t provide a matrix which maps message keys to handlers, it would take even more time to figure out what the code is doing.</p>
+
+<p>Can we make this code better? Let&rsquo;s rewrite it as follows:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>FunctionalMessageListener.java </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FunctionalMessageListener</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">private</span> <span class="kd">interface</span> <span class="nc">Handler</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="n">Map</span> <span class="n">message</span><span class="o">,</span> <span class="n">List</span> <span class="n">acc</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">private</span> <span class="kd">class</span> <span class="nc">DocHandler</span> <span class="kd">implements</span> <span class="n">Handler</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isDoc</span><span class="o">(</span><span class="n">Map</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">message</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">message</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="s">&quot;c&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="n">Map</span> <span class="n">message</span><span class="o">,</span> <span class="n">List</span> <span class="n">acc</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">isDoc</span><span class="o">(</span><span class="n">message</span><span class="o">))</span> <span class="n">acc</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;Document:%s:%s&quot;</span><span class="o">,</span> <span class="n">message</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">),</span> <span class="n">message</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;c&quot;</span><span class="o">)));</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">private</span> <span class="kd">class</span> <span class="nc">NoteHandler</span> <span class="kd">implements</span> <span class="n">Handler</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isNote</span><span class="o">(</span><span class="n">Map</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">message</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="s">&quot;b&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">message</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="s">&quot;c&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="n">Map</span> <span class="n">message</span><span class="o">,</span> <span class="n">List</span> <span class="n">acc</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">isNote</span><span class="o">(</span><span class="n">message</span><span class="o">))</span> <span class="n">acc</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;Note:%s:%s&quot;</span><span class="o">,</span> <span class="n">message</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;b&quot;</span><span class="o">),</span> <span class="n">message</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;c&quot;</span><span class="o">)));</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">private</span> <span class="kd">class</span> <span class="nc">AlertHandler</span> <span class="kd">implements</span> <span class="n">Handler</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isAlert</span><span class="o">(</span><span class="n">Map</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">message</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">message</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="s">&quot;b&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">(</span><span class="n">Map</span> <span class="n">message</span><span class="o">,</span> <span class="n">List</span> <span class="n">acc</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">isAlert</span><span class="o">(</span><span class="n">message</span><span class="o">))</span> <span class="n">acc</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;Alert:%s:%s&quot;</span><span class="o">,</span> <span class="n">message</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">),</span> <span class="n">message</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;b&quot;</span><span class="o">)));</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">private</span> <span class="n">List</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Handler</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">handlers</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="n">DocHandler</span><span class="o">(),</span> <span class="k">new</span> <span class="n">NoteHandler</span><span class="o">(),</span> <span class="k">new</span> <span class="n">AlertHandler</span><span class="o">());</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="n">List</span> <span class="nf">onMessage</span><span class="o">(</span><span class="n">Map</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">List</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedList</span><span class="o">();</span>
+</span><span class='line'>    <span class="k">for</span> <span class="o">(</span><span class="n">Handler</span> <span class="n">handler</span> <span class="o">:</span> <span class="n">handlers</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">handler</span><span class="o">.</span><span class="na">handle</span><span class="o">(</span><span class="n">message</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>In this version we eliminated ugly <code>if</code> series, and grouped together <em>decision making</em> logic and <em>message handling</em>. From that perspective the code became cleaner, but not necessarily clearer. Now it actually takes more effort to understand what the code is doing. Also, the duplication inside the <code>is</code> methods is still there. We can fix it by extracting it to some abstract class or utility method. We can also use Java reflection within <code>handlers</code> method to build a collection of handlers without explicitly specifying them. All these manipulations arguably make the code cleaner, but&hellip; one thing we&rsquo;ll never be able to fix is the separation between decision making logic and message handling. <em>Whatever you do, there will always be the if-statement, in one form or another, that checks if you need to process the message, and the message processing logic itself.</em> Those two things will always be separate. This is the point where we hit the language limits.</p>
+
+<h2>Clojure</h2>
+
+<p>Now let&rsquo;s try to solve the same problem in Lisp and see if we can fix the language to eliminate the last issue from the paragraph above. Here is the direct translation of the previous Java snippet to Clojure dialect of Lisp</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn- </span><span class="nv">doc-handler</span> <span class="p">[</span><span class="nv">msg</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">a</span> <span class="p">(</span><span class="nf">msg</span> <span class="ss">:a</span><span class="p">)</span>, <span class="nv">c</span> <span class="p">(</span><span class="nf">msg</span> <span class="ss">:c</span><span class="p">)]</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">or </span><span class="nv">a</span> <span class="nv">c</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">format</span> <span class="s">&quot;Document:%s:%s&quot;</span> <span class="nv">a</span> <span class="nv">c</span><span class="p">))))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn- </span><span class="nv">note-handler</span> <span class="p">[</span><span class="nv">msg</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">b</span> <span class="p">(</span><span class="nf">msg</span> <span class="ss">:b</span><span class="p">)</span>, <span class="nv">c</span> <span class="p">(</span><span class="nf">msg</span> <span class="ss">:c</span><span class="p">)]</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">or </span><span class="nv">b</span> <span class="nv">c</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">format</span> <span class="s">&quot;Note:%s:%s&quot;</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">))))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn- </span><span class="nv">alert-handler</span> <span class="p">[</span><span class="nv">msg</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">a</span> <span class="p">(</span><span class="nf">msg</span> <span class="ss">:a</span><span class="p">)</span>, <span class="nv">b</span> <span class="p">(</span><span class="nf">msg</span> <span class="ss">:b</span><span class="p">)]</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">or </span><span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">format</span> <span class="s">&quot;Alert:%s:%s&quot;</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">))))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn- </span><span class="nv">handlers</span> <span class="p">[]</span>
+</span><span class='line'>  <span class="p">[</span><span class="nv">doc-handler</span> <span class="nv">note-handler</span> <span class="nv">alert-handler</span><span class="p">])</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn </span><span class="nv">on-message</span> <span class="p">[</span><span class="nv">msg</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">letfn</span> <span class="p">[(</span><span class="nf">handle</span> <span class="p">[</span><span class="nv">acc</span> <span class="nv">h</span><span class="p">]</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>        <span class="p">(</span><span class="nb">if-let </span><span class="p">[</span><span class="nv">res</span> <span class="p">(</span><span class="nf">h</span> <span class="nv">msg</span><span class="p">)]</span>
+</span><span class='line'>          <span class="p">(</span><span class="nb">conj </span><span class="nv">acc</span> <span class="nv">res</span><span class="p">)</span>
+</span><span class='line'>          <span class="nv">acc</span><span class="p">))]</span>
+</span><span class='line'><span class="p">(</span><span class="nb">reduce </span><span class="nv">handle</span> <span class="p">[]</span> <span class="p">(</span><span class="nf">handlers</span><span class="p">))))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>This code is already easier to read, but we can do even better. The separation between decision making logic and message handling is still there. At this point we should ask the question: what kind of code do we want to see there? And the answer is: we want to replace the <code>-handler</code> methods above with the following code</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nf">handler</span> <span class="nb">doc </span><span class="p">[</span><span class="nv">a</span> <span class="nv">c</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">format</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;Document:%s:%s&amp;rdquo; a c))&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">handler</span> <span class="nv">note</span> <span class="p">[</span><span class="nv">b</span> <span class="nv">c</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">format</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;Note:%s:%s&amp;rdquo; b c))&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">handler</span> <span class="nv">alert</span> <span class="p">[</span><span class="nv">a</span> <span class="nv">b</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">format</span> <span class="o">&amp;</span><span class="nv">ldquo</span><span class="c1">;Alert:%s:%s&amp;rdquo; a b))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>You see: no conditionals. Handlers are self-sufficient entities which know <em>when</em> they have to be applied and <em>how</em>. In their signatures they explicitly declare which message keys they expect, and in the body they just <em>use</em> those keys. No boilerplate: clean and simple. The beauty of Lisp is that you can actually implement that code. The way you do it is by creating a macro which generates the appropriate functions. Creating a macro is not a simple task, I spent quite some time to get this one working, but it&rsquo;s worth of doing, because it makes the code clean and clear.</p>
+
+<p>We can make one additional step further by moving the <code>handler</code> declarations inside the <code>build-handlers</code> function. (We need one small macro for that.) And here is the final solution</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defmacro </span><span class="nv">handler</span> <span class="p">[</span><span class="nb">name </span><span class="nv">args</span> <span class="o">&amp;</span><span class="nv">amp</span><span class="c1">; body]</span>
+</span><span class='line'>  <span class="o">`</span><span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="o">~&amp;</span><span class="nv">lsquo</span><span class="c1">;msg]&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span> <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="o">~@</span><span class="p">(</span><span class="nb">interleave </span><span class="nv">args</span> <span class="p">(</span><span class="nb">map </span><span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">x</span><span class="p">]</span> <span class="o">`</span><span class="p">(</span><span class="nb">get </span><span class="o">~</span><span class="ss">&#39;msg</span> <span class="o">~</span><span class="p">(</span><span class="nb">keyword </span><span class="nv">x</span><span class="p">)))</span> <span class="nv">args</span><span class="p">))]</span>
+</span><span class='line'>   <span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">or </span><span class="o">~@</span><span class="nv">args</span><span class="p">)</span>
+</span><span class='line'>     <span class="o">~@</span><span class="nv">body</span><span class="p">))))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defmacro </span><span class="nv">build-handlers</span> <span class="p">[</span><span class="o">&amp;</span><span class="nv">amp</span><span class="c1">; body]</span>
+</span><span class='line'>  <span class="o">`</span><span class="p">(</span><span class="kd">defn- </span><span class="nv">handlers</span> <span class="p">[]</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span> <span class="p">[</span><span class="o">~@</span><span class="nv">body</span><span class="p">]))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nf">build-handlers&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>  <span class="p">(</span><span class="nf">handler</span> <span class="nb">doc </span><span class="p">[</span><span class="nv">a</span> <span class="nv">c</span><span class="p">]</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">(</span><span class="nf">format</span> <span class="s">&quot;Document:%s:%s&quot;</span> <span class="nv">a</span> <span class="nv">c</span><span class="p">))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>  <span class="p">(</span><span class="nf">handler</span> <span class="nv">note</span> <span class="p">[</span><span class="nv">b</span> <span class="nv">c</span><span class="p">]</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">(</span><span class="nf">format</span> <span class="s">&quot;Note:%s:%s&quot;</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>  <span class="p">(</span><span class="nf">handler</span> <span class="nv">alert</span> <span class="p">[</span><span class="nv">a</span> <span class="nv">b</span><span class="p">]</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">(</span><span class="nf">format</span> <span class="s">&quot;Alert:%s:%s&quot;</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="kd">defn </span><span class="nv">on-message</span> <span class="p">[</span><span class="nv">msg</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">letfn</span> <span class="p">[(</span><span class="nf">handle</span> <span class="p">[</span><span class="nv">acc</span> <span class="nv">h</span><span class="p">]</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;</span>        <span class="p">(</span><span class="nb">if-let </span><span class="p">[</span><span class="nv">res</span> <span class="p">(</span><span class="nf">h</span> <span class="nv">msg</span><span class="p">)]</span>
+</span><span class='line'>          <span class="p">(</span><span class="nb">conj </span><span class="nv">acc</span> <span class="nv">res</span><span class="p">)</span>
+</span><span class='line'>          <span class="nv">acc</span><span class="p">))]</span>
+</span><span class='line'><span class="p">(</span><span class="nb">reduce </span><span class="nv">handle</span> <span class="p">[]</span> <span class="p">(</span><span class="nf">handlers</span><span class="p">))))</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>As I said, the first macro might be cryptic, but look at the lines 11–20. This is the essence of our problem, and it cannot be done any simpler. Suppose, we need to implement a new handler which should be called if key <strong><em>c</em></strong> is present in the message. Here what we would need to add to <code>build-handler</code>&rsquo;s body to implement this new requirement</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'>  <span class="p">(</span><span class="nf">handler</span> <span class="k">new </span><span class="p">[</span><span class="nv">c</span><span class="p">]</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;...</span><span class="p">)</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Simple, right? And what if a new key <strong><em>d</em></strong> is added to the message that should be processed by document handler? Here is what we need to change</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'>  <span class="p">(</span><span class="nf">handler</span> <span class="nb">doc </span><span class="p">[</span><span class="nv">a</span> <span class="nv">c</span> <span class="nv">d</span><span class="p">]</span><span class="nv">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;pre&gt;&lt;code&gt;...</span><span class="p">)</span>
+</span><span class='line'><span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>We just add a new key to the function&rsquo;s parameter list. That&rsquo;s it — one-word change.</p>
+
+<h2>Summary</h2>
+
+<p>Lisp is the most powerful programming language. By that I mean you can change the language in such a way that the solution to any particular problem can be expressed in the simplest possible way. By changing the language, you can remove all the barriers between the language and the problem domain. I hope I demonstrated this in my simple example.</p>
+
+<h2>Resources</h2>
+
+<p>Clojure <a href="https://github.com/ndpar/clojure/blob/master/src/dojo/handler.clj">source</a> code for this blog, along with the <a href="https://github.com/ndpar/clojure/blob/master/test/dojo/handler_test.clj">unit tests</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Multimethods in Groovy]]></title>
+    <link href="http://bvajjala.github.io/blog/2011/06/05/multimethods-in-groovy/"/>
+    <updated>2011-06-05T08:00:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2011/06/05/multimethods-in-groovy</id>
+    <content type="html"><![CDATA[<p>Every time I switch from Groovy to Java I have to remind myself that some things that seem so natural and work as expected in Groovy, don&rsquo;t work in Java. One of such differences is method dispatching. Groovy supports <a href="http://en.wikipedia.org/wiki/Multiple_dispatch">multiple dispatch</a>, while Java does not. Therefore the following <a href="http://www.gigamonkeys.com/book/object-reorientation-generic-functions.html#multimethods">code</a> works differently in Groovy and Java:</p>
+
+<pre><code>public class A {
+    public void foo(A a) { System.out.println("A/A"); }
+    public void foo(B b) { System.out.println("A/B"); }
+}
+public class B extends A {
+    public void foo(A a) { System.out.println("B/A"); }
+    public void foo(B b) { System.out.println("B/B"); }
+}
+public class Main {
+    public static void main(String[] args) {
+        A a = new A();
+        A b = new B();
+        a.foo(a);
+        b.foo(b);
+    }
+}
+
+$ java Main
+A/A
+B/A
+
+$ groovy Main.groovy
+A/A
+B/B
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SpringOne2GX 2010]]></title>
+    <link href="http://bvajjala.github.io/blog/2010/10/31/springone2gx-2010/"/>
+    <updated>2010-10-31T08:00:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2010/10/31/springone2gx-2010</id>
+    <content type="html"><![CDATA[<p>Last week I attended SpringOne2GX conference in Chicago, the main event in Spring/Groovy/Grails community. Here I want to post my brief review of this conference.</p>
+
+<h3>First impressions</h3>
+
+<p>The hotel (Westin Lombard) was nice and clean. Internet: there were 2 wireless networks and one cable — everything was free and worked pretty well, signal was good in almost all rooms. The conference reception was well organized — every participant received bunch of souvenirs and special edition of NFJS magazine. I saw hundreds of smiling and happy people of different ages and different outfits. Most of them with Macs. Most of them know each other. The food was fantastic, especially dinner with wine and beer.</p>
+
+<h2>Day 1</h2>
+
+<p>The first day was mostly introduction and orientation. There was only one talk on the schedule.</p>
+
+<h3>Rod Johnson — Keynote (<a href="http://www.infoq.com/presentations/SpringOne-2GX-2010-Keynote">video</a>)</h3>
+
+<p>I thought Spring was initially created 7 years ago but the oldest class in the source tree is dated by January 17, 2001, so Spring is actually almost 10 years old. Because of the anniversary the main theme of the presentation was: <em>Where Spring goes in the next decade</em>.</p>
+
+<p>Since the core framework is well crafted already, the focus will be on the integration and making Spring portfolio as a platform for applications. There are three key values in Spring — <em>portability</em>, <em>productivity</em>, and <em>innovation</em> — and the platform will be built along those dimensions.</p>
+
+<h4>Portability</h4>
+
+<p>In the past SpringSource made a good job by providing a framework that makes Java applications easily portable across different application servers. The goal for the next decade is to expand the same portability to the cloud — Google AppEngine, vFabric, vmforce, etc.</p>
+
+<h4>Productivity</h4>
+
+<p>As we all know the ultimate reason of the Spring existence is to make the life of application developer easier, our work is more productive. The framework hides the low-level boilerplate, and provides well defined abstractions. In the next year there will be several features added to the Spring portfolio. Rod mentioned some of them:</p>
+
+<ul>
+<li>Seamless GWT integration</li>
+<li>Database reverse engineering with roundtripping support in Spring Roo 1.1. You will be able to generate the domain object tree based on your database schema, and it will be updated every time you change the database.</li>
+<li>Spring Payment Services project with Visa integration.</li>
+</ul>
+
+
+<p>Another aspect of productivity is a tool suite, where Spring provides STS. Rod invited Christian Dupuis on the stage, where he demoed how to developed Grails applications in STS. If you are a Grails developer you should definitely take a look at the latest version of STS — it will increase your productivity significantly.</p>
+
+<h4>Innovation</h4>
+
+<p>There will be several new projects released in the Spring portfolio soon:</p>
+
+<ul>
+<li>Spring Social — application abstraction for social networks.</li>
+<li>Spring Mobile — platform for multi-device applications.</li>
+<li>Spring-AMQP — API for integration with RabbitMQ.</li>
+<li>Spring Data — API to work with NoSQL databases, in particular Neo4J support in Spring Roo.</li>
+</ul>
+
+
+<p>Keith Donald demoed <a href="http://greenhouse.springsource.org">GreenHouse</a> project and corresponding <a href="http://itunes.apple.com/us/app/greenhouse/id395862873">iPhone app</a>. This is a reference implementation of Spring Mobile and Spring Social, and this app was really really useful during the conference when I needed to check the schedule and find the room.</p>
+
+<p>At the end of the presentation Rod introduced, and Mik Kersten demoed, the next big thing — <em>Code2Cloud</em>. It&rsquo;s basically a tool that allows you to keep and manage your entire development environment in the cloud: the running app, the source code, the issue tracker, and the build server. Everything is in the cloud and configured by mouse click. It looks cool, and it definitely will be a buzz word in the next year, but I&rsquo;m not sure if many people will use it. We&rsquo;ll see.</p>
+
+<h2>Day 2</h2>
+
+<p>I&rsquo;m going to write only about technical sessions I attended.</p>
+
+<h3>J&uuml;rgen H&ouml;ller — What&rsquo;s new in Spring Framework 3.1? (<a href="http://www.infoq.com/presentations/Spring-3.0-3.1-3.2">video</a>)</h3>
+
+<p>That was one of the best talks of this conference: technical, right to the point, with well-wrtten slides, and personal charm of the presenter. Despite the number 3.1 in the title, J&uuml;rgen actually covered three versions of Spring framework: 3.0, 3.1, and 3.2. I&rsquo;m going to briefly mention the interesting features, and if you want more details you can check the excellent on-line documentation.</p>
+
+<h4>Spring 3.0</h4>
+
+<ul>
+<li><p>Custom annotations. You can create your own annotation by combining multiple existing annotations in one group. Spring automatically detects your annotation during the application context startup, and no special configuration is required. This is a very handy feature, especially when you copy-paste the same annotation group over and over again.</p></li>
+<li><p>Configuration classes and annotated factory methods. If you annotate a method with @Bean annotation Spring framework will make the output of the method a Spring bean. There are some other annotations supported, e.g. @Lazy.</p></li>
+<li><p>Standardized annotations. Spring now supports JSR-330 @Inject, JSR-250 @ManagedBean, and EJB 3.x @TransactionAnnotation.</p></li>
+<li><p>EL++. Expression language can be used now in bean definitions inside appcontext XML, and also in component annotations. Very powerful feature.</p></li>
+<li><p>REST support. Spring provides RestTemplate for client code, @PathVariable annotation, and special view resolvers on the server side. It&rsquo;s very interesting topic — check the documentation for details.</p></li>
+<li><p>Declarative model validation. You can specify data constraints right in your code by using annotations — very similar to what you have in GORM.</p></li>
+<li><p>Improved scheduling. New namespace, and @Scheduled and @Async annotations makes your appcontext smaller and more readable.</p></li>
+</ul>
+
+
+<p>If you follow Spring releases, you probably use some or most of these features already. Now let&rsquo;s see what Spring 3.1 brings to us.</p>
+
+<h4>Spring 3.1</h4>
+
+<ul>
+<li><p>Environment profiles for beans. Similar to Maven profiles but works in runtime. The idea here is to create a single deployment unit for all environments and enable certain Spring beans for specific environment. I can&rsquo;t wait to try this feature in our enterprise project.</p></li>
+<li><p>Cache abstraction. After 5 years of hibernation this feature is finally implemented. Spring provides an API to work with distributed cache, in particular in cloud environments. There will be adapters for most popular cache implementations, such as EhCache, GemFire, Coherence.</p></li>
+<li><p>Conversation management, or how J&uuml;rgen calls it HttpSession++. It&rsquo;s basically an extension of HttpSession shared across multiple browsers and window tabs. Looks very interesting.</p></li>
+<li><p>Enhanced Groovy support.</p></li>
+<li><p><code>c:</code> namespace, which is a shortcut for <code>&lt;constructor-arg&gt;</code>, analogous to <code>p:</code> namespace for properties. Small feature that makes your appcontext consistent and more readable.</p></li>
+</ul>
+
+
+<h4>Spring 3.2</h4>
+
+<p>Java SE 7 support, JDBC 4.1, support for fork-join framework, general focus on concurrent programming.</p>
+
+<h3>Jeff Brown — GORM inside and out</h3>
+
+<p>This talk was also good. I worked a bit with GORM before, and had an idea how it&rsquo;s implemented, but it was useful to hear more details from one of its developers.</p>
+
+<p>Jeff started with the background of GORM, the complexity of Hibernate and JPA, and how GORM solves this problem following convention-over-configuration and sensible defaults strategies. He showed how to model the domain objects, what happens behind the scene when you link objects together, how to specify uni- and bi-directional relationships, and how to change default collection implementation in case of one-to-many relationship.</p>
+
+<p>During the presentation he was switching back and forth between sides and terminal, so it was easy to follow and understand the evolution of the sample application. He explained how to introduce various constraints into the model and how Grails would validate them. One of the interesting features I didn&rsquo;t know about was how to test internationalized error messages. You don&rsquo;t need to change your locale for that, simply add <code>lang=your_language</code> parameter to the URL, and Grails will switch to that language for all subsequent requests. Pretty handy.</p>
+
+<p>He concluded the talk by showing how dynamic finders are implemented in GORM using Groovy metaprogramming feature. Interesting part here is that you can implement similar things in your Groovy code using the same technique, basically having custom mini-GORM in your Groovy project!</p>
+
+<h3>Venkat Subramaniam — Improving your Groovy code quality</h3>
+
+<p>The title of this presentation was little bit misleading for me. I expected Venkat to show some Groovy specific mistakes and how to avoid them. Instead, he was talking about the errors that in most cases are equally applied to any programming language. He mentioned various code smells and explained how to fix them. If you are interested, you can download the slides from Venkat&rsquo;s <a href="http://www.agiledeveloper.com/presentations/improving_your_groovy_code_quality.zip">web site</a>.</p>
+
+<p>He also gave an advise how to maintain the high code quality:</p>
+
+<ul>
+<li>Have a respectable colleague review your code.</li>
+<li>Use code analysis tools like CodeNarc and Sonar Groovy plugin.</li>
+</ul>
+
+
+<p>One of the topics he covered was the usage of the <code>return</code> keyword in Groovy. That was interesting. Compare the following two functions, guess what they return, and check your answer in the console</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="nf">func1</span><span class="o">()</span> <span class="o">{&lt;</span><span class="s">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">&lt;pre&gt;&lt;code&gt;try {</span>
+</span><span class='line'><span class="s">    5</span>
+</span><span class='line'><span class="s">} finally {</span>
+</span><span class='line'><span class="s">    return 22</span>
+</span><span class='line'><span class="s">}</span>
+</span><span class='line'><span class="s">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="nf">func2</span><span class="o">()</span> <span class="o">{&lt;</span><span class="s">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">&lt;pre&gt;&lt;code&gt;try {</span>
+</span><span class='line'><span class="s">    5</span>
+</span><span class='line'><span class="s">} finally {</span>
+</span><span class='line'><span class="s">    22</span>
+</span><span class='line'><span class="s">}</span>
+</span><span class='line'><span class="s">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>Paul King, Guillaume Laforge — Groovy.DSLs (from: beginner, to: expert) (<a href="http://www.infoq.com/presentations/Groovy-DSLs">video</a>)</h3>
+
+<p>This would be very nice presentation if the speakers didn&rsquo;t try to cover too much. This talk could be easily split into two: one is an overview of Groovy language and another one is DSL. Unfortunately they spent lot of time on theoretical DSL part and Groovy overview, so the practical DSL part was too short from my perspective. The good thing though is that I have slides now, so I can dig deeper into this subject at my spare time.</p>
+
+<p>In the second part of the talk Paul and Guillaume explained which features of Groovy language make it so simple to create DSLs. Here are some of them:</p>
+
+<ul>
+<li>Static imports and import aliases.</li>
+<li>Simplified collection syntax.</li>
+<li>Small or no language noise.</li>
+<li>Aggregating multiple method calls using &lsquo;with&rsquo; construct.</li>
+<li>Closures.</li>
+<li>Operator overloading.</li>
+<li>Metaprogramming.</li>
+</ul>
+
+
+<p>In the last part speakers talked about different patterns and techniques of DSL implementations. They provided a comprehensive list of books you might want to read if you are interested in building DSLs.</p>
+
+<h3>Adrian Colyer — Technical keynote (<a href="http://www.infoq.com/presentations/Spring-2010-Technology">video</a>)</h3>
+
+<p>Adrian&rsquo;s talk was mostly a reiteration of Rod&rsquo;s keynote from the previous day with some technical details. He mentioned Spring Payment and Spring Data projects, bean profiles and cache support in the Spring core. He showed Spring portability in action by providing links to Spring applications deployed on <a href="http://springtravelsql.appspot.com/login">Google AppEngine</a> and <a href="http://booking-mvc.internal.vmforce.com/spring/intro">vmForce</a>.</p>
+
+<p>Another interesting part was 20 minutes dedicated to RabbitMQ and Spring-AMQP. He even mentioned <em>Spring-Erlang</em> project which is supposed to be a convenient abstraction on top of standard Jinterface library.</p>
+
+<p>As a continuation of innovation theme Graeme Rocher demoed GORM support for NoSQL databases. That was cool. He simply uninstalled Hibernate plugin and installed Redis plugin, without touching data model. Everything worked perfect. Right now Spring works with Redis and GemFire, but soon they are going to add support for CouchDB, Cassandra, Riak, Neo4j, and MongoDB. Another interesting thing Graeme showed was <em>grails-console</em>. It&rsquo;s a pretty nice tool, you should check it out. It allows you to interact with the Grails data storage using GORM features. Very handy.</p>
+
+<p>Another co-presenter was Keith Donald who demoed Spring Social and Spring Mobile. He explained how OAuth works, and how interoperability with social networks was implemented in GreenHouse.</p>
+
+<p>The keynote was concluded by Jon Travis who demoed <em>SpringInsight</em>.</p>
+
+<h2>Day 3</h2>
+
+<h3>Venkat Subramaniam — Functional programming in Groovy</h3>
+
+<p>That was an excellent talk and nice start of the new conference day. Venkat explained main concepts and values of functional programming, and illustrated the theory with comprehensible examples.</p>
+
+<p>He compared imperative and functional style of programming by showing how to implement for-loop using <code>inject</code> function in Groovy. I think it was one of the best explanations of functional folding I&rsquo;ve ever heard. He also demonstrated map and filter operations using <code>collect</code> and <code>findAll</code> methods.</p>
+
+<p>He clarified the difference between function value and closure, and between iterative procedure and iterative process. He gave an example on how to pass closure as a parameter to simulate function object in Groovy. He also showed how to replace tail-recursion, which Groovy doesn&rsquo;t support, with <code>inject</code> method call.</p>
+
+<p>The presentation was concluded with an example of how to use functional techniques to build DSLs in Groovy.</p>
+
+<h3>Matthias Radestock, Mark Pollack, Mark Fisher — RabbitMQ and Spring-AMQP (<a href="http://www.infoq.com/presentations/Spring-AMQP">video</a>)</h3>
+
+<p>If you read my blog, you know that RabbitMQ is one of my latest interests. I decided to go to this talk just to see how the creators would present their projects. It turned out to be a nice introduction to both RabbitMQ and <a href="http://www.springsource.org/spring-amqp">Spring-AMQP</a>. They explained main concepts of AMQP and how it is different from JMS. Here I want to give you some ideas which were not obvious for me when I started working with RabbitMQ.</p>
+
+<ul>
+<li>Messaging is all about decoupling, and AMQP is much more flexible than JMS in terms of publisher-consumer decomposition.</li>
+<li>All resources are dynamically created and destroyed by clients — the static pre-configuration is optional.</li>
+<li>Exchanges are stateless, they don&rsquo;t keep messages, they only copy and dispatch them. Queues hold the messages and deliver one message to a single client. They neither do routing nor message copying.</li>
+<li>Queue never receives the same message twice.</li>
+<li>If the message doesn&rsquo;t match routing key it&rsquo;s dropped.</li>
+<li>Because of the open protocol, you can use all available TCP tools to monitor your message traffic.</li>
+</ul>
+
+
+<p>Besides AMQP implementation RabbitMQ also provides some other useful features like custom exchanges, exchange-to-exchange routing, different protocol adaptors, etc. Spring, as usual, gives you a consistent API on top of the RabbitMQ client which hides all low-level boilerplate and makes your application code more readable.</p>
+
+<h3>Craig Walls — Developing social-ready web applications (<a href="http://www.infoq.com/presentations/Developing-Social-Ready-Web-Apps">video</a>)</h3>
+
+<p>This presentation was about integrating your Java code with different social networks. There are three types of such integration: widgets, embedded code, REST API. Craig briefly explained first two, and then dived into REST.</p>
+
+<p>All popular social networks provide REST API which allows you to communicate with them. For simple operations, like search, you can just use standard Spring RestTemplate class to retrieve the data. Try for example the following URLs:</p>
+
+<ul>
+<li><a href="http://api.twitter.com/1/friends/ids.xml?screen_name=ndpar">http://api.twitter.com/1/friends/ids.xml?screen_name=ndpar</a></li>
+<li><a href="http://search.twitter.com/search.json?q=s2gx">http://search.twitter.com/search.json?q=s2gx</a></li>
+<li><a href="https://graph.facebook.com/ndpar">https://graph.facebook.com/ndpar</a></li>
+</ul>
+
+
+<p>This basic approach fails though if you try to post a new message, because you have to be authorized for update operations. That&rsquo;s where OAuth comes in. The idea behind OAuth is pretty simple: instead of sharing your user-password with different clients, it uses generated tokens. This model is more flexible because if you want to revoke the permission from particular client you don&rsquo;t need to change your password and notify rest of the clients — you just remove that client&rsquo;s token from the list of authorized clients and that&rsquo;s it. The only problem with OAuth and social networks is that they support different versions of OAuth. This problem is solved by Spring Social project.</p>
+
+<p>Spring Social offers consistent template-based API across different social providers. It basically gives you an OAuth aware RestTemplate, so you can do something like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">TwitterTemplate</span> <span class="n">twitter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TwitterTemplate</span><span class="o">(</span><span class="n">API_KEY</span><span class="o">,</span> <span class="n">API_SECRET</span><span class="o">,</span> <span class="n">ACCESS_TOKEN</span><span class="o">,</span> <span class="n">ACCESS_TOKEN_SECRET</span><span class="o">);</span>
+</span><span class='line'><span class="n">twitter</span><span class="o">.</span><span class="na">updateStatus</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">Hello</span> <span class="err">#</span><span class="n">s2gx</span> <span class="o">!&amp;</span><span class="n">rdquo</span><span class="o">;);</span>
+</span><span class='line'><span class="n">twitter</span><span class="o">.</span><span class="na">retweet</span><span class="o">(</span><span class="mi">26887414177L</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>If you are in a social network business, definitely take a look at <a href="http://www.springsource.org/spring-social">Spring Social</a>.</p>
+
+<h3>Mark Pollack, Chris Richardson — Using Spring with non-relational databases (<a href="http://www.infoq.com/presentations/Using-Spring-with-NoSQL-Databases">video</a>)</h3>
+
+<p>Relational databases are great, right? They&rsquo;ve been with us for ages. Everybody knows how to work with them, how to build SQL statements. Every language provides ODBC library. There are bunch of frameworks that make developer&rsquo;s life easier. So why is so much buzz around NoSQL?</p>
+
+<p>Mark and Chris started their talk highlighting some problems that exist in relational database world:</p>
+
+<ul>
+<li>Object-relational impedance mismatch. Complicated mapping of rich domain model to relational schema. Relational schema rigidity.</li>
+<li>Extremely difficult/impossible to scale write operations.</li>
+<li>Suboptimal performance in some cases.</li>
+</ul>
+
+
+<p>All these issues are addressed in NoSQL databases. Although keep in mind that it&rsquo;s not coming for free — you have to trade off ACID semantics, transactions and some other features of RDBMS. But if scalability is more important for you than consistency then NoSQL is your way to go.</p>
+
+<p>There are tons of NoSQL databases available for you, but they all can be split into 4 categories based on their data model:</p>
+
+<ul>
+<li>Key-Value: Amazon Dynamo, Redis, Riak, Voldemort.</li>
+<li>Column: Google Bigtable, HBase, Cassandra.</li>
+<li>Document: CouchDB, MongoDB.</li>
+<li>Graph: Neo4j, Sones, InfiniteGraph.</li>
+</ul>
+
+
+<p>Mark and Chris talked about each type, what their typical use cases are, and how their APIs look like. They showed examples for Redis, Cassandra, MongoDB, CouchDB and Neo4j. Then they introduced <a href="http://www.springsource.org/spring-data">Spring Data</a> project which, as everything from SpringSource, simplifies the application development and hides low-level code. Right now they support most of the popular NoSQL databases, and they plan to add more in the future.</p>
+
+<p>The project is in active development phase, and the new contributors are welcome. So if it sounds interesting for you, go and check it out.</p>
+
+<h2>Day 4</h2>
+
+<h3>Hans Dockter — Gradle — a better way to build</h3>
+
+<p>I never played with Gradle, so I was very curious to see how it looks like. According to Hans, who is the creator of this tool, Gradle is a general purpose build system with Groovy DSL interface. It&rsquo;s written in Java and provides build-in support for Java, Groovy, Scala, web and OSGi projects. It&rsquo;s a build language, so you can extend it for your own purposes if needed.</p>
+
+<p>If you compare it with Ant, Gradle is definitely much better because it&rsquo;s more compact and flexible. It offers dependency resolution with integration with Maven and Ivy repositories. It also has some advanced features like incremental builds for custom tasks and parallel testing.</p>
+
+<p>The only problem I had with this presentation was that Hans kept comparing Gradle with Maven. In my opinion they are not comparable. They have different philosophy if you want. All Maven &ldquo;constraints&rdquo; are imposed by design, so it makes no sense to blame Maven for them. I think Ant-Gradle comparison is more appropriate and that&rsquo;s what Hans should have emphasized.</p>
+
+<p>Other than that the session was pretty informative, and I have a better picture of Gradle now.</p>
+
+<h3>Brian Sletten — Groovy + The Semantic Web</h3>
+
+<p>I had no idea what Semantic Web was. I saw this term first time on the conference schedule, so I decided to go to this talk just to educate myself. I cannot even briefly describe all the discoveries I made during this presentation because I still feel little bit overwhelmed. I just want to provide some links from Brian&rsquo;s slides that can guide you if you want to learn this concept.</p>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Semantic_Web">Semantic Web</a> — article from wikipedia.</li>
+<li>Formal W3C specs: <a href="http://www.w3.org/RDF/">RDF</a>, <a href="http://www.w3.org/TR/rdfa-syntax/">RDFa</a>, <a href="http://www.w3.org/2004/02/skos/">SKOS</a>, <a href="http://www.w3.org/TR/rdf-sparql-query/">SPARQL</a>, <a href="http://www.w3.org/TR/owl2-overview/">OWL</a>.</li>
+<li>SPARQL <a href="http://librdf.org/query">demo</a>.</li>
+<li><a href="http://www.w3.org/2007/08/pyRdfa">RDFa distiller and parser</a>. Try to feed Brian&rsquo;s test page URL (<a href="http://bosatsu.net/nfjs/test.html">http://bosatsu.net/nfjs/test.html</a>) to the distiller and see what it returns.</li>
+<li><a href="http://opengraphprotocol.org">OG</a> — open graph protocol.</li>
+<li><a href="http://jena.sourceforge.net">Jena</a> — Java API to work with Semantic Web.</li>
+<li><a href="http://github.com/shellac/java-rdfa">Java-RDFa</a> parser.</li>
+<li><a href="http://clarkparsia.com/pellet/">Pellet</a> — Java API for OWL.</li>
+</ul>
+
+
+<h3>Conclusion</h3>
+
+<p>Whew! This happened to be longer review than I planned initially. If you are still with me, congratulations!</p>
+
+<p>There were much more presentations at this conference but because of the tight schedule I had to sacrifice 80% of them. My overall impression from this conference is very positive. If you are a Spring/Groovy/Grails developer I encourage you to go to this event next year. The biggest benefit of it: <em>You start seeing the Spring as a universe</em>, not as a bunch of separate projects. You cannot get this feeling from the documentation, even if it&rsquo;s perfect as the Spring one.</p>
+]]></content>
+  </entry>
+  
+</feed>

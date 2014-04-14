@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Runit | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/runit/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-14T14:12:32-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Managing Docker Services With This One Easy Trick]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick/"/>
+    <updated>2013-10-20T15:46:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick</id>
+    <content type="html"><![CDATA[<p>I have been having a lot of internal debate about the idea of running more than one service in a docker container.   A Docker container is built to run a single process in the foreground and to live for only as long as that process is running.  This is great in a utopian world where servers are immutable and sysadmins drink tiki drinks on the beach,  however it doesn&rsquo;t always translate well to the real world.</p>
+
+<p>Examples where you might want to be able to run multiple servers span from the simple use case of running <code>sshd</code> as well as your application to running a web app such as <code>wordpress</code> where you might want both <code>apache</code> and <code>mysql</code> running in the same container.</p>
+
+<p>Wrapping your applications in a supervisor daemon such as <code>runit</code> seems like a perfect fit for this.  All you need to do is install <code>runit</code> as part of your <code>dockerfile</code> and then create appropriate service directories for the apps you want to run in the container.    I was doing some testing of this when I realized a quirk of <code>runit</code> which I could exploit for evil.</p>
+
+<p>To start or stop a service with <code>runit</code> is simply a matter of creating or deleting a symlink in a service directory,   so in theory if you could expose that directory to the server hosting the container you could exploit that to start and stop services from outside of the container.  <code>Docker</code> volume mapping allows exactly this!</p>
+
+<p>Below you will find examples of running three services (logstash,elasticsearch,kibana) that make up the <code>logstash</code> suite.</p>
+
+<!--more-->
+
+
+<h2>Start by cloning the demo git repository and run demo.sh</h2>
+
+<p><code>
+$ git clone https://github.com/paulczar/docker-runit-demo.git
+$ cd docker-runit-demo
+$ ./demo.sh
+</code></p>
+
+<h3>demo.sh script</h3>
+
+<h4>Step 1:  Build the container</h4>
+
+<p>The script uses the below <code>Dockerfile</code> to build the base container that we&rsquo;ll be running.</p>
+
+<p>```</p>
+
+<h1>Installs runit for service management</h1>
+
+<p>#</p>
+
+<h1>Author: Paul Czarkowski</h1>
+
+<h1>Date: 10/20/2013</h1>
+
+<p>FROM paulczar/jre7
+MAINTAINER Paul Czarkowski &ldquo;<a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#112;&#x61;&#x75;&#108;&#64;&#112;&#x61;&#117;&#108;&#99;&#122;&#x2e;&#110;&#x65;&#116;">&#112;&#97;&#x75;&#108;&#64;&#x70;&#97;&#x75;&#108;&#99;&#x7a;&#x2e;&#x6e;&#x65;&#x74;</a>&rdquo;</p>
+
+<p>RUN apt-get update</p>
+
+<p>RUN apt-get -y install curl wget git nginx
+RUN apt-get -y install runit || echo</p>
+
+<p>CMD [&ldquo;/usr/sbin/runsvdir-start&rdquo;]</p>
+
+<p>```</p>
+
+<h4>Step 2: Install the applications</h4>
+
+<p>This will take a few minutes the first time as it needs to download <code>logstash</code>, <code>kibana</code>, and <code>elasticsearch</code> and stage them in a local <code>./opt</code>directory.</p>
+
+<h4>Step 3: Start the Docker container</h4>
+
+<p>Starts the <code>Docker</code> container with the following command:</p>
+
+<p><code>
+docker run -d -p 8080:80 -p 5014:514 -p 9200:9200 \
+  -v $BASE/opt:/opt \
+  -v $BASE/sv:/etc/sv \
+  -v $BASE/init:/etc/init \
+  -v $BASE/service:/etc/service \
+  demo/runit
+</code></p>
+
+<p>The container should be up and running</p>
+
+<p><code>
+$ docker ps
+ID                  IMAGE               COMMAND                CREATED             STATUS              PORTS
+eb495ad92ba0        demo/runit:latest   /usr/sbin/runsvdir-s   4 seconds ago       Up 3 seconds        5014-&gt;514, 8080-&gt;80, 9200-&gt;9200   
+</code></p>
+
+<p>However there aren&rsquo;t any services running!</p>
+
+<p><code>
+$ curl localhost:8080
+curl: (56) Recv failure: Connection reset by peer
+$ curl localhost:9200
+curl: (56) Recv failure: Connection reset by peer
+</code></p>
+
+<p>We can start the services with the following commands</p>
+
+<p><code>
+$ cd service
+$ ln -s ../sv/elasticsearch
+$ ln -s ../sv/logstash
+$ ln -s ../sv/kibana
+cd ..
+</code></p>
+
+<p>We can now see the services are running, test the ports and send some data to logstash.</p>
+
+<p><code>
+$ curl localhost:8080      
+&lt;!DOCTYPE html&gt;&lt;!--[if IE 8]&gt;&lt;html class="no-js lt-ie9" lang="en"&gt;&lt;![endif]--&gt;&lt;!--[if gt IE 8]&gt;&lt;!--&gt;&lt;html class="no-js" lang="en"&gt;
+...
+curl localhost:9200
+{
+  "ok" : true,
+  "status" : 200,
+...
+$tail -100 /var/log/syslog | nc localhost 5014
+</code></p>
+
+<p>Stop a service ?</p>
+
+<p><code>
+$ rm service/elasticsearch
+$ rm service/logstash
+$ rm service/kibana
+</code></p>
+
+<h2>Bonus Round: Logs!</h2>
+
+<p>The beautify of doing this is that we&rsquo;re actually logging the application output to a mounted volume.   This means we now have access to their logs from the host machine.</p>
+
+<p><code>
+$ tail opt/logstash/logs/current
+$ tail opt/elasticsearch-0.90.5/logs/current
+$ tail opt/kibana/logs/access.log
+</code></p>
+
+<h2>Cleanup</h2>
+
+<p>Unfortunately any files created inside the docker instance are owned by root ( an artifact of docker daemon running as root ).   If you&rsquo;re in The following script will clean out any such files after you&rsquo;ve stopped the docker container.</p>
+
+<p>It will delete any files/dirs inside your current directory that are owned by root.  Obviously it can be very dangerous to run &hellip; so be careful where you run it from!</p>
+
+<p><code>
+$ sudo find . -uid 0   -exec rm -rfv {} \;
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>
