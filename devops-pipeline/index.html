@@ -82,7 +82,9 @@
 For pipeline orchestration and visualization, you can use a dedicated deployment pipeline tool or you can use an application release automation (ARA) solution. Whichever direction you take for your orchestration tool, you should be sure that it helps your team detect and expose delays at each stage of the pipeline, including wait times between stages. Visualization and orchestration working in tandem allow teams to quickly identify the places they should optimize first.</p>
 
 <pre><code>Dedicated Deployment pipeline Tools:  Jenkins, Travis CI, ThoughtWorks GO, CircleCI, JetBrains TeamCity, Atlassian Bamboo
+
 APPLICATION RELEASE AUTOMATION (ARA): ElectricCommander, CA LISA, IBM UrbanCode, XebiaLabs XL
+
 Orchestration Engine: MaestroDev, CollabNet 
 </code></pre>
 
@@ -90,19 +92,17 @@ Orchestration Engine: MaestroDev, CollabNet
 
 <p>Most software development teams use a version control system for the files they consider source code. However, many organizations forget to include configuration files, such as the configuration that defines the build and release system. All text-based assets should be stored in  a version control system that everyone can easily access. The code changes should be very easy to review, line-by-line (ideally in a web browser), with a pull or merge request.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>**Version Control:**  Git, Mercurial, Perforce, Subversion, TFS</span></code></pre></td></tr></table></div></figure>
-
+<pre><code>Version Control:  Git, Mercurial, Perforce, Subversion, TFS
+</code></pre>
 
 <h2>CONTINUOUS INTEGRATION</h2>
 
 <p>CI tools can support orchestration and visualization, but their core functionality is to integrate new code with the stable main release line and alert stakeholders if any new code would cause issues with the final product. This makes it easy for teams to combine work on different features while keeping a master code branch ready for release. It should feel natural to integrate many times a day. Teams should also connect a code metrics and profiling utility that can stop integrations if certain metrics reach an undesirable threshold.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>CI:  Jenkins, Travis CI, ThoughtWorks GO, CircleCI, JetBrains TeamCity, Atlassian Bamboo
-</span><span class='line'>Code Metrics:  SonarQube, SLOC (and variants), SciTools Understand</span></code></pre></td></tr></table></div></figure>
+<pre><code>CI:  Jenkins, Travis CI, ThoughtWorks GO, CircleCI, JetBrains TeamCity, Atlassian Bamboo
 
+Code Metrics:  SonarQube, SLOC (and variants), SciTools Understand
+</code></pre>
 
 <h2>ARTIFACT MANAGEMENT</h2>
 
@@ -110,59 +110,49 @@ Orchestration Engine: MaestroDev, CollabNet
 
 <p>Artifact management is most effective with an artifact repository manager. Artifact repositories contain a complete artifact usage history,  similar to the way version control systems track source code changes. They use dependency resolution between the package versions and allow the system to build a dependency graph from the hardware all the way up to the user interface of the application. The ability to verify dependencies through an entire system is powerful for tracking exactly what was (or will be) tested or deployed.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Version Control Systems: Git, Subversion, Mercurial
-</span><span class='line'>
-</span><span class='line'>Artifact Repository Managers: Archiva, Artifactory, Nexus (roll-your-own with zip files, metadata, shared storage, and access controls) Language-specific package Managers: Composer (PHP), Ruby Gems, npm (Node.js), Python PIP
-</span><span class='line'>
-</span><span class='line'>OrchestrationOS-level package Managers: APT, Chocolatey, RPM</span></code></pre></td></tr></table></div></figure>
-
+<pre><code>Version Control Systems: Git, Subversion, Mercurial
+Artifact Repository Managers: Archiva, Artifactory, Nexus (roll-your-own with zip files, metadata, shared storage, and access controls) Language-specific package Managers: Composer (PHP), Ruby Gems, npm (Node.js), Python PIP
+OrchestrationOS-level package Managers: APT, Chocolatey, RPM
+</code></pre>
 
 <h2>TEST AND ENVIRONMENT AUTOMATION</h2>
 
 <p>The only manual testing in a deployment pipeline should be for tests that are tough for a computer to handle, such as exploratory testing, inspection of user interface designs, and user acceptance tests. The rest should be automated. Tools for automated testing should operate in a completely headless (non-interactive) manner and be lightweight enough to run across many test servers simultaneously. Teams also need to create testing environments on-demand by using environment automation tools that can provision a vm and configure an environment template.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Test Automation: JMeter, Selenium/WebDriver, Cucumber (BDD), RSpec (BDD), SpecFlow (BDD), LoadUI (Performance), PageSpeed (Performance), Netem(Network Emulation), SoapUI (Web Services), Test Kitchen (Infrastructure)
-</span><span class='line'>
-</span><span class='line'>Environment Automation:  Vagrant, Docker, Packer</span></code></pre></td></tr></table></div></figure>
+<pre><code>Test Automation: JMeter, Selenium/WebDriver, Cucumber (BDD), RSpec (BDD), SpecFlow (BDD), LoadUI (Performance), PageSpeed (Performance), Netem(Network Emulation), SoapUI (Web Services), Test Kitchen (Infrastructure)
 
+Environment Automation:  Vagrant, Docker, Packer
+</code></pre>
 
 <h2>SERVER CONFIGURATION AND DEPLOYMENT</h2>
 
-<p>Current deployment tools support three models:
-* push model:  manages the distribution and installation of packages to multiple remote machines. It’s a good choice for smaller systems because it’s usually simple and quick.
-* pull model:  Requires an infrastructure configuration tool such as Chef or Puppet. Supporters say it scales better than push and like that it treats the deployment of application code as another step in configuring the infrastructure.
-*  hybrid model:  Uses a push tool to trigger a pull client on target servers.</p>
+<p>Current deployment tools support three models:</p>
+
+<ul>
+<li>push model:  manages the distribution and installation of packages to multiple remote machines. It’s a good choice for smaller systems because it’s usually simple and quick.</li>
+<li>pull model:  Requires an infrastructure configuration tool such as Chef or Puppet. Supporters say it scales better than push and like that it treats the deployment of application code as another step in configuring the infrastructure.</li>
+<li>hybrid model:  Uses a push tool to trigger a pull client on target servers.</li>
+</ul>
+
 
 <p>For any of the three models, your team must ensure that the process is fully automated, provides detailed information with standard output and error messages, and allows easy and rapid rollback to a stable state.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>push deployment:  Capistrano, Fabric, ThoughtWorks Go, MSdeploy, Octopus, RunDeck, various CI and build tools, various ARA tools 
-</span><span class='line'>pull deployment:  Ansible, Chef, CFEngine, Puppet, Salt.</span></code></pre></td></tr></table></div></figure>
-
+<pre><code>push deployment:  Capistrano, Fabric, ThoughtWorks Go, MSdeploy, Octopus, RunDeck, various CI and build tools, various ARA tools 
+pull deployment:  Ansible, Chef, CFEngine, Puppet, Salt.
+</code></pre>
 
 <h2>MONITORING AND REPORTING</h2>
 
 <p>Monitoring your system logs is essential for spotting problems and halting the deployment pipeline. Rather than manually collecting logs from each machine in an environment, logs should be shipped to a central store that indexes them and makes them available for searching via a web browser.
 This is a crucial capability for a Continuous Delivery environment. The log store should be connected to all environments (including the developer’s system) to speed up problem diagnosis and resolution. most monitoring tools should work in a dynamic infrastructure and integrate with yours through scripted configuration.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Log Aggregation & Search: Fluentd, Graylog2, LogStash, nxlog, Splunk 
-</span><span class='line'>Metrics, Monitoring, Audit: Collectd, Ganglia, Graphite, Icinga, Sensu, ScriptRock</span></code></pre></td></tr></table></div></figure>
-
+<pre><code>Log Aggregation &amp; Search: Fluentd, Graylog2, LogStash, nxlog, Splunk
+Metrics, Monitoring, Audit: Collectd, Ganglia, Graphite, Icinga, Sensu, ScriptRock
+</code></pre>
 
 <h2>A FINAL LOOK AT SOME GUIDING PRINCIPLES FOR TOOLS</h2>
 
-<p> It’s important to understand all the capabilities your team needs before selecting the tools to build your Continuous Delivery system. The following list details the key areas you should always keep in mind when selecting tools:</p>
+<p>It’s important to understand all the capabilities your team needs before selecting the tools to build your Continuous Delivery system. The following list details the key areas you should always keep in mind when selecting tools:</p>
 
 <ul>
 <li>Visibility: look for tools that have clear, comprehensive visualizations for everything that your organization needs to track.</li>
