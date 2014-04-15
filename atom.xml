@@ -4,7 +4,7 @@
   <title><![CDATA[Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-15T17:36:08-04:00</updated>
+  <updated>2014-04-15T18:31:16-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,13 +14,10 @@
 
   
   <entry>
-    
-    <title type="html"><![CDATA[A case study on using 100% cloud based Resources with Automated Software Delivery]]></title>
+    <title type="html"><![CDATA[A Case Study on Using 100% Cloud Based Resources With Automated Software Delivery]]></title>
     <link href="http://bvajjala.github.io/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/"/>
-    
     <updated>2014-04-04T14:08:01-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery</id>
-    
     <content type="html"><![CDATA[<h1>A Case Study on using 100% Cloud-based Resources with Automated Software Delivery</h1>
 
 <p><a href="http://stelligent.com" title="Stelligent Continuous Delivery in the Cloud">We</a>
@@ -316,17 +313,13 @@ DevOps philosophy with Continuous Delivery and the Cloud and how this
 has led our customer to more a service-based, unencumbered and agile
 environment. </p>
 ]]></content>
-    
   </entry>
   
   <entry>
-    
     <title type="html"><![CDATA[Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/"/>
-    
     <updated>2014-03-25T15:02:54-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline</id>
-    
     <content type="html"><![CDATA[<p>This article is part of the Continuous Delivery Blueprints series. It
 discusses how to go from no cloud infrastructure and no continuous
 integration set up to having a functioning Continuous Delivery Pipeline
@@ -576,17 +569,13 @@ building out the different stages of the pipeline to work with your
 application. In the next article, we’ll talk about how to set up your
 commit stage to build and test your application.</p>
 ]]></content>
-    
   </entry>
   
   <entry>
-    
-    <title type="html"><![CDATA[Continuous Delivery Implementation : Getting started with AWS]]></title>
+    <title type="html"><![CDATA[Continuous Delivery Implementation : Getting Started With AWS]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/"/>
-    
     <updated>2014-03-25T14:57:15-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws</id>
-    
     <content type="html"><![CDATA[<ul>
 <li>Blog</li>
 <li>This article is part of the Continuous Delivery Blueprints series.
@@ -852,17 +841,13 @@ security of the account. You’re in a great place to start using the
 cloud. In our next post, we’ll lay the foundations for building a
 continuous delivery pipeline.</p>
 ]]></content>
-    
   </entry>
   
   <entry>
-    
     <title type="html"><![CDATA[Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/"/>
-    
     <updated>2014-03-25T11:23:17-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4</id>
-    
     <content type="html"><![CDATA[<h3>Autoscaling for LAMP on AWS | Choosing an instance type: Part 4</h3>
 
 <p>As mentioned in <a href="../autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/index.html" title="Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 1">part 1 of this
@@ -932,17 +917,13 @@ PHP</p>
 
 <p><a href="http://icreatestuff.co.uk/blog/article/apache-performance-tuning">http://icreatestuff.co.uk/blog/article/apache-performance-tuning</a></p>
 ]]></content>
-    
   </entry>
   
   <entry>
-    
     <title type="html"><![CDATA[Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/"/>
-    
     <updated>2014-03-25T11:23:14-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3</id>
-    
     <content type="html"><![CDATA[<h3>Autoscaling for LAMP on AWS | Load Test the Environment: Part 3</h3>
 
 <p>In part 3 of the Autoscaling for LAMP on AWS series,</p>
@@ -1019,17 +1000,13 @@ terminate all instances launched within the lamp-asg autoscale group.</p>
 <p><em>Watch out for the final part of this series tomorrow on how to choose
 an instance type. </em></p>
 ]]></content>
-    
   </entry>
   
   <entry>
-    
     <title type="html"><![CDATA[Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/"/>
-    
     <updated>2014-03-25T11:23:10-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2</id>
-    
     <content type="html"><![CDATA[<h3>Autoscaling for LAMP on AWS | Setting Up Austoscaling Groups : Part 2</h3>
 
 <p>In part 2 of the Autoscaling LAMP in AWS series, let’s discuss how to
@@ -1221,17 +1198,13 @@ the AutoScaling Group to meet your needs.</p>
 <p>Watch out for  Part 3 of this series to understand <a href="../autoscaling-for-lamp-on-aws-load-test-the-environment-part-3/index.html" title="Autoscaling for LAMP on AWS | Load Test the Environment: Part 3">how to load run an
 application</a>.</p>
 ]]></content>
-    
   </entry>
   
   <entry>
-    
     <title type="html"><![CDATA[Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/"/>
-    
     <updated>2014-03-25T11:23:04-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1</id>
-    
     <content type="html"><![CDATA[<h3>Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 1</h3>
 
 <p>This is part 1 of the Autoscaling for LAMP in AWS series. The
@@ -1534,17 +1507,13 @@ groups!</em></strong></p>
 <p><strong>Update</strong>: Check part 2 on how to setup autoscaling groups
 <a href="../autoscaling-for-lamp-on-aws-setting-up-austoscaling-groups-part-2/index.html" title="Autoscaling for LAMP on AWS | Setting Up Austoscaling Groups : Part 2">here</a>.</p>
 ]]></content>
-    
   </entry>
   
   <entry>
-    
-    <title type="html"><![CDATA[A Deep Dive into AWS Reserved Instances]]></title>
+    <title type="html"><![CDATA[A Deep Dive Into AWS Reserved Instances]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/"/>
-    
     <updated>2014-03-25T09:35:27-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances</id>
-    
     <content type="html"><![CDATA[<h3>A Deep Dive into AWS Reserved Instances</h3>
 
 <p>One of our primary goals at Flux7 Labs is to help our clients reduce
@@ -1635,17 +1604,13 @@ reservations and while offering reservations at a relatively low price.</p>
 other considerations. The final decision should be based on capacity
 analysis from a business perspective.</p>
 ]]></content>
-    
   </entry>
   
   <entry>
-    
-    <title type="html"><![CDATA[6 reasons why large enterprises should move to Amazon Web Services]]></title>
+    <title type="html"><![CDATA[6 Reasons Why Large Enterprises Should Move to Amazon Web Services]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/"/>
-    
     <updated>2014-03-25T09:13:48-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services</id>
-    
     <content type="html"><![CDATA[<h2>6 reasons why large enterprises should move to Amazon Web Services</h2>
 
 <h3>6 reasons why large enterprises should move to Amazon Web Services</h3>
@@ -1793,17 +1758,13 @@ concerns you may have, so feel free to contact us anytime during weekly
 needs or situation. We offer this service free of charge with no
 obligation or strings attached.</p>
 ]]></content>
-    
   </entry>
   
   <entry>
-    
     <title type="html"><![CDATA[Creating a Secure Deployment Pipeline in Amazon Web Services]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/23/creating-a-secure-deployment-pipeline-in-amazon-web-services/"/>
-    
     <updated>2014-03-23T11:24:27-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/23/creating-a-secure-deployment-pipeline-in-amazon-web-services</id>
-    
     <content type="html"><![CDATA[<p>Many organizations require a secure infrastructure. I’ve yet to meet a customer that says that security isn’t a concern. But, the decision on “how secure?” should be closely associated with a risk analysis for your organization.</p>
 
 <p>Since Amazon Web Services (AWS) is often referred to as a “public cloud”, people sometimes infer that “public” must mean it’s “out in the public” for all to see. I’ve always seen “public/private clouds” as an
@@ -1959,56 +1920,40 @@ and not relying on environments to always be up and running somewhere.\
 making disruptive environment changes that don’t go through the
 version-control repository.</p>
 ]]></content>
-    
   </entry>
   
   <entry>
-    
-    <title type="html"><![CDATA[CI and Test Automation utilizing OpenStack]]></title>
+    <title type="html"><![CDATA[CI and Test Automation Utilizing OpenStack]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/"/>
-    
     <updated>2014-03-14T09:54:08-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/14/ci-and-test-automation-utilizing-openstack</id>
-    
     <content type="html"><![CDATA[
 ]]></content>
-    
   </entry>
   
   <entry>
-    
     <title type="html"><![CDATA[Continuous Delivery Tools List]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/11/continuous-delivery-tools-list/"/>
-    
     <updated>2014-03-11T12:27:44-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/11/continuous-delivery-tools-list</id>
-    
     <content type="html"><![CDATA[
 ]]></content>
-    
   </entry>
   
   <entry>
-    
-    <title type="html"><![CDATA[Tools in AWS for Implementing Continuous Deployment pipeline]]></title>
+    <title type="html"><![CDATA[Tools in AWS for Implementing Continuous Deployment Pipeline]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/11/tools-in-aws-for-implementing-continuous-deployment-pipeline/"/>
-    
     <updated>2014-03-11T10:13:38-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/11/tools-in-aws-for-implementing-continuous-deployment-pipeline</id>
-    
     <content type="html"><![CDATA[
 ]]></content>
-    
   </entry>
   
   <entry>
-    
     <title type="html"><![CDATA[Creating a Secure Deployment Pipeline in AWS]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/11/creating-a-secure-deployment-pipeline-in-aws/"/>
-    
     <updated>2014-03-11T10:11:47-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/11/creating-a-secure-deployment-pipeline-in-aws</id>
-    
     <content type="html"><![CDATA[<p><img src="http://bvajjala.github.io/downloads/code/opsworks_automation_stack.jpg" alt="" />
 <a href="https://aws.amazon.com/opsworks/">Amazon Web Services (AWS) OpsWorks</a> was released one year ago this month. In the past year, we’ve used OpsWorks on several Cloud Delivery projects at <a href="http://stelligent.com/">Stelligent</a> and at some of our customers. This article describes what’s worked for us and our customers. One of our core aims with any customer is to create a fully repeatable process for delivering software. To us, this translates into several more specific objectives. For each process we automate, the process must be fully documented, tested, scripted, versioned and continuous. This article describes how we achieved each of these five objectives in delivering OpsWorks solutions to our customers. In creating any solution, we version any and every asset required to create the software system. With the exception of certain binary packages, the entire software system gets described in code. This includes the application code, configuration, infrastructure and data.</p>
 
@@ -2154,17 +2099,13 @@ version-control repository.</p>
 </table>
 
 ]]></content>
-    
   </entry>
   
   <entry>
-    
     <title type="html"><![CDATA[Continuous Delivery Patterns]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/11/continuous-delivery-patterns/"/>
-    
     <updated>2014-03-11T00:00:00-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/11/continuous-delivery-patterns</id>
-    
     <content type="html"><![CDATA[<p>ABOUT CONTINUOUS DELIVERY</p>
 
 <p>With Continuous Delivery (CD), teams continuously deliver new  versions of software to production by decreasing the cycle time between an idea and usable software through the automation of the entire delivery system: build, deployment, test, and release. CD is enabled through the Deployment Pipeline, which encompasses a collection of patterns described in this Refcard.</p>
@@ -3311,17 +3252,13 @@ version-control repository.</p>
 </ol>
 
 ]]></content>
-    
   </entry>
   
   <entry>
-    
-    <title type="html"><![CDATA[Jenkins Job Builder and How to Extned it]]></title>
+    <title type="html"><![CDATA[Jenkins Job Builder and How to Extned It]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/"/>
-    
     <updated>2014-02-22T08:57:36-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it</id>
-    
     <content type="html"><![CDATA[<h1>What is jenkins job builder</h1>
 
 <p>Jenkins job builder is extreme good tool to manage your jenkins CI jobs, it takes simple description from YAML files, and use them to configure jenkins.</p>
@@ -3534,17 +3471,13 @@ public ArtifactDeployerPublisher(List&lt;ArtifactDeployerEntry&gt; deployedArtif
 
 <p>It is directly mapping from XML into internal data, if you need know more, learn how to develop jenkins plugin.</p>
 ]]></content>
-    
   </entry>
   
   <entry>
-    
-    <title type="html"><![CDATA[Continuous Delivery with Docker and Jenkins - part II]]></title>
+    <title type="html"><![CDATA[Continuous Delivery With Docker and Jenkins - Part II]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-ii/"/>
-    
     <updated>2014-02-21T14:41:15-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-ii</id>
-    
     <content type="html"><![CDATA[<p>A few weeks ago I started talking about how we use <a href="2014-02-21-continuous-delivery-with-docker-and-jenkins-part-i">Docker and Jenkins for Continuous Delivery</a> in our staging environment. Today, we are open-sourcing a simple bash utility for managing inter-container dependencies, <a href="https://github.com/bv2012/dockerize">Dockerize</a>.</p>
 
 <p>Before I go into specifics, I want to describe our workflow with Jenkins and Docker from a high-level perspective.</p>
@@ -3608,17 +3541,13 @@ vagrant up
 
 <p>Until next time!</p>
 ]]></content>
-    
   </entry>
   
   <entry>
-    
-    <title type="html"><![CDATA[Continuous Delivery with Docker and Jenkins - part I]]></title>
+    <title type="html"><![CDATA[Continuous Delivery With Docker and Jenkins - Part I]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-i/"/>
-    
     <updated>2014-02-21T14:40:59-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-i</id>
-    
     <content type="html"><![CDATA[<p>We have been using Docker in our staging environment for nealrt several months now and are right now planning to make it part of our production setup once the first stable version gets released. We’ll be discussing the staging environment setup today with the promise of following up on the production environment at a later date.</p>
 
 <!--more-->
@@ -3768,17 +3697,13 @@ During our use of Docker, we have used the public Docker images on the <a href="
 
 <p>If you have found this tutorial useful, please help us to improve it by adding your contributions to hi_sinatra-docker.</p>
 ]]></content>
-    
   </entry>
   
   <entry>
-    
-    <title type="html"><![CDATA[Using Docker To Run Ruby Rspec CI In Jenkins]]></title>
+    <title type="html"><![CDATA[Using Docker to Run Ruby Rspec CI in Jenkins]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/17/using-docker-to-run-ruby-rspec-ci-in-jenkins/"/>
-    
     <updated>2014-02-17T17:01:40-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/17/using-docker-to-run-ruby-rspec-ci-in-jenkins</id>
-    
     <content type="html"><![CDATA[<p>In this post, I am going to give a step-by-step introduction into how you can do continuous integration testing with Docker. I will be running the rspec test suite of the CloudFoundry project&rsquo;s Cloud Controller component, although the same process can be applied to any Ruby project. I will show how to build Docker images to easily run repeatable tests and how to set-up Jenkins to do it for you in an automated manner.</p>
 
 <h1>Continuous Integration Using Docker</h1>
@@ -4176,17 +4101,13 @@ During our use of Docker, we have used the public Docker images on the <a href="
 
 <p>This is a big win for DevOps. Developers can create an initial environment in a Dockerfile, check it into git and the Operations team can then collaborate on it. The Operations team may even send a pull request to the Developers that says, &ldquo;Hey, our production environment does not look like that. Try this instead&hellip;&rdquo;. The updated Dockerfile is then checked out by Jenkins, which builds the new test environment and subsequent test runs are run on a more production-like environment.</p>
 ]]></content>
-    
   </entry>
   
   <entry>
-    
     <title type="html"><![CDATA[Nodejs Deployment: Building and Configuring on Amazon Linux AMI]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/"/>
-    
     <updated>2014-02-04T13:47:50-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami</id>
-    
     <content type="html"><![CDATA[<h2>Logging in and updating system to latest</h2>
 
 <p>SSH your shiny new VM,</p>
@@ -4428,7 +4349,6 @@ TODO: Will post more details in the future but you can simply visit “<a href="
 
 <p><a href="https://github.com/pkrumins/nodejs-proxy">https://github.com/pkrumins/nodejs-proxy</a></p>
 ]]></content>
-    
   </entry>
   
 </feed>

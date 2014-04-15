@@ -25,7 +25,7 @@ Running Infrastructure Tests in Cucumber 9.2 Infrastructure Tests Learning Objec
   <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -36,7 +36,7 @@ Running Infrastructure Tests in Cucumber 9.2 Infrastructure Tests Learning Objec
 
 </head>
 
-<body   class="collapse-sidebar sidebar-footer" >
+<body   >
   <header role="banner">
 	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
 
@@ -126,7 +126,7 @@ Running Infrastructure Tests in Cucumber 9.2 Infrastructure Tests Learning Objec
 <li><p>SSH into the AWSCLI instance.</p>
 
 <p>&#8220;`
-ssh -i ditc.pem <a href="&#109;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#101;&#x63;&#x32;&#x2d;&#117;&#x73;&#101;&#x72;&#x40;&#101;&#x63;&#50;&#45;&#50;&#51;&#45;&#50;&#x30;&#45;&#56;&#53;&#x2d;&#50;&#x31;&#x32;&#46;&#99;&#111;&#109;&#112;&#x75;&#116;&#101;&#45;&#x31;&#46;&#x61;&#109;&#97;&#122;&#111;&#x6e;&#97;&#119;&#115;&#46;&#99;&#111;&#x6d;">&#x65;&#x63;&#50;&#45;&#x75;&#x73;&#x65;&#114;&#x40;&#x65;&#99;&#x32;&#45;&#x32;&#x33;&#45;&#50;&#48;&#x2d;&#56;&#53;&#45;&#x32;&#x31;&#50;&#x2e;&#x63;&#x6f;&#109;&#112;&#117;&#x74;&#x65;&#45;&#x31;&#46;&#x61;&#109;&#97;&#122;&#111;&#x6e;&#97;&#119;&#115;&#x2e;&#x63;&#111;&#x6d;</a></p>
+ssh -i ditc.pem <a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#x65;&#x63;&#50;&#45;&#x75;&#x73;&#x65;&#114;&#x40;&#x65;&#x63;&#x32;&#x2d;&#x32;&#x33;&#45;&#x32;&#48;&#45;&#x38;&#53;&#x2d;&#x32;&#49;&#x32;&#x2e;&#x63;&#x6f;&#109;&#112;&#x75;&#x74;&#x65;&#x2d;&#49;&#46;&#97;&#x6d;&#97;&#122;&#111;&#x6e;&#x61;&#119;&#115;&#46;&#99;&#x6f;&#109;">&#101;&#99;&#50;&#x2d;&#x75;&#115;&#x65;&#x72;&#64;&#101;&#x63;&#50;&#x2d;&#x32;&#x33;&#x2d;&#x32;&#x30;&#x2d;&#56;&#x35;&#x2d;&#50;&#49;&#x32;&#46;&#99;&#x6f;&#109;&#x70;&#117;&#116;&#x65;&#45;&#49;&#x2e;&#x61;&#x6d;&#97;&#x7a;&#x6f;&#x6e;&#x61;&#x77;&#115;&#46;&#99;&#x6f;&#x6d;</a></p>
 
 <p>&#8220;`</p></li>
 <li><p>Go to devopsinthecloud/infrastructure/features/ directory.</p>
@@ -173,7 +173,7 @@ cucumber target.feature env_ip=IPADDRESS_TARGETENV env_user=ec2-user</p>
       
         <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/devopsincloud/09/09.04.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/devopsincloud/09/09.04.html" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/devopsincloud/09/09.04.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/devopsincloud/09/09.04.html" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -201,7 +201,7 @@ cucumber target.feature env_ip=IPADDRESS_TARGETENV env_user=ec2-user</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A Case Study on Using 100% Cloud Based Resources With Automated Software Delivery</a>
       </li>
     
       <li class="post">
@@ -209,7 +209,7 @@ cucumber target.feature env_ip=IPADDRESS_TARGETENV env_user=ec2-user</p>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/">Continuous Delivery Implementation : Getting started with AWS</a>
+        <a href="/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/">Continuous Delivery Implementation : Getting Started With AWS</a>
       </li>
     
       <li class="post">
@@ -280,7 +280,7 @@ cucumber target.feature env_ip=IPADDRESS_TARGETENV env_user=ec2-user</p>
       var twitterWidgets = document.createElement('script');
       twitterWidgets.type = 'text/javascript';
       twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
       document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
     })();
   </script>

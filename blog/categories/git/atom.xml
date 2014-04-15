@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Git | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-15T17:36:08-04:00</updated>
+  <updated>2014-04-15T18:31:16-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -20,7 +20,7 @@
     <id>http://bvajjala.github.io/blog/2013/05/05/Git-Internals</id>
     <content type="html"><![CDATA[<p>I found this information very supporting during my personal jorney into learning git, the internals IMO shows the mind shift one has to do when using Git after using any other SCM tool.</p>
 
-<p><script async class="speakerdeck-embed" data-id="9c9899c096f1013054d24e4027241f59" data-ratio="1.33333333333333" src="http://bvajjala.github.io//speakerdeck.com/assets/embed.js"></script></p>
+<p><script async class="speakerdeck-embed" data-id="9c9899c096f1013054d24e4027241f59" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script></p>
 
 
 
