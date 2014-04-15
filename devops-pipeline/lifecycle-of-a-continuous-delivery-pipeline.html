@@ -1,0 +1,396 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>lifecycle of a continuous delivery pipeline - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Lifecycle of a Continuous Delivery Pipeline Apr 15th, 2014 Lifecycle of a Continuous Delivery Pipeline Following on from my recent post, PaaS and &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/devops-pipeline/lifecycle-of-a-continuous-delivery-pipeline.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">Balaji Vajjala's Blog</a></div>
+
+
+	<br><div class="header-subtitle">A DevOps Blog from Trenches</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Lifecycle of a Continuous Delivery Pipeline</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-15T14:43:00-04:00" pubdate data-updated="true">Apr 15<span>th</span>, 2014</time></p>
+  </header>
+  
+  <p>Lifecycle of a Continuous Delivery Pipeline</p>
+
+<p>Following on from my recent post, <a title="PaaS and Continuous Delivery – My 12 Month Journey" href="../../2235/paas-continuous-delivery-12-month-journey/index.html">PaaS and Continuous Delivery – My 12 Month Journey</a>, I wanted to delve deeper into the lifecycle of the staged delivery pipeline.  When working in a heterogeneous technology environment there exists a requirement to support multiple language runtimes, application containers, message brokers, storage engines etc.  For this reason, the lifecycle must be abstracted from the implementation technology.</p>
+
+
+<div id="attachment_2353" style="width: 310px" class="wp-caption aligncenter"><a href="http://i2.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Staged-Delivery-Pipeline-Lifecycle1.png" rel="lightbox-0"><img class="size-medium wp-image-2353" alt="Figure 1: Structure of a Staged Delivery Pipeline" src="http://i2.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Staged-Delivery-Pipeline-Lifecycle1.png?resize=300,160" data-recalc-dims="1" /></a><p class="wp-caption-text">Figure 1: Structure of a Staged Delivery Pipeline</p></div>
+
+
+<p>Figure 1 depicts the structure of a staged delivery pipeline.  For the remainder of this post I will propose a number of stages and the steps within each stage.</p>
+
+
+<p><strong>Introducing the Stages</strong></p>
+
+
+<p>From the abstract, it’s straightforward to identify pipeline stages from your current release process.  What you will discover though, is that you may have to rethink your pipeline to production to fit into this automated process.  An example of this is depicted in figure 2.</p>
+
+
+<div id="attachment_2355" style="width: 310px" class="wp-caption aligncenter"><a href="http://i2.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Staged-Delivery-Pipeline1.png" rel="lightbox-1"><img class="size-medium wp-image-2355" alt="The Staged Delivery Pipeline" src="http://i2.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Staged-Delivery-Pipeline1.png?resize=300,82" data-recalc-dims="1" /></a><p class="wp-caption-text">Figure 2: The Staged Delivery Pipeline</p></div>
+
+
+<p>Before digging into the detail of each stage, it’s important to understand how some of the guiding principles used to design the pipeline stages.  They were:</p>
+
+
+<ul>
+<li>Stages to the left should provide richer feedback to the development team than stages to the right.</li>
+<li>Automatic stage transitions should be built from left to right so that there are fewer queues within the system.</li>
+</ul>
+
+
+<p>The significant change from a manual process is the introduction of automated acceptance testing and Acceptance Test Driven Development (ATDD).<i>  </i>As a result acceptance testing migrated left in the lifecycle.</p>
+
+
+<p>Given the level of automation, I introduce two stages that are often missing within a manual process.  Those are the Performance Test and the Stability Test stages.  I can already hear you gasp at the suggestion that performance testing would not exist prior to this automation.  Naturally, manual performance testing should be performed within both a manual and automated release process.  The Performance Test stage performs performance trend analysis as opposed to absolute performance analysis (I’ll go into this later).</p>
+
+
+<p>Similarly to the performance testing, operational testing did exist prior to automation, it just existed in a very different guise.</p>
+
+
+<p>An obvious enhancement to the process illustrated in figure 2 would be to fork after the build stage to run acceptance test, performance test and stability testing in parallel.  We’ll omit this optimisation for simplicity.</p>
+
+
+<p>I’ll now describe each stage in more detail.</p>
+
+
+<p><em><strong>Code Commit</strong></em></p>
+
+
+<p><em><strong></strong></em>The code commit stage is triggered by a code check-in to the SCM repository.  The purpose of this stage is to provide immediate feedback to the developer by compiling the code and running unit tests.  If development is not in pairs it’s assumed that a code review has also occurred prior to committing to the repository.</p>
+
+
+<div id="attachment_2356" style="width: 310px" class="wp-caption aligncenter"><a href="http://i0.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Code-Commit-Stage.png" rel="lightbox-2"><img class="size-medium wp-image-2356" alt="Code Commit Stage" src="http://i0.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Code-Commit-Stage.png?resize=300,124" data-recalc-dims="1" /></a><p class="wp-caption-text">Figure 3: Code Commit Stage</p></div>
+
+
+<p>The <span style="text-decoration: underline;">Checkout</span> step is self-explanatory and simply checks out the repository locally on the CI server.</p>
+
+
+<p><span style="text-decoration: underline;">Version</span> updates the local source with the build number.  Each execution of the pipeline can be identified by a unique (incrementing) build number that forms part of the semantic versioning scheme (i.e. major.minor.build).</p>
+
+
+<p>The purpose of the <span style="text-decoration: underline;">Branch</span> step is to isolate the pipeline instance from other instances.  The repository is ‘branched’ so that each pipeline operates on a separate copy of the code base.</p>
+
+
+<p>The <span style="text-decoration: underline;">Build</span> step builds the software artefacts.  The actual act of building may be invoked by triggering a Maven, Gradle, Rake etc. task.  Because the pipeline is not implementation specific the choice is only limited by the support provided by the CI server.</p>
+
+
+<p><span style="text-decoration: underline;">Pre Unit Test</span> invokes a task in the build system to facilitate preparation for unit testing.  Typically this is an empty step as there are normally no setup tasks for unit tests.  The <span style="text-decoration: underline;">Unit Test</span> step is rather self-explanatory.  A task is invoked in the build system to trigger unit testing.  Similarly to pre-unit-test, the <span style="text-decoration: underline;">Post Unit Test </span>step invokes a task in the build system to facilitate clean up after unit testing.  Typically this is an empty step as there are normally no teardown tasks for unit tests.</p>
+
+
+<p>Finally, the <span style="text-decoration: underline;">Notify</span> step notifies possible culprits of build failure or on success, invokes the next stage on the pipeline.</p>
+
+
+<p><em><strong>Build</strong></em></p>
+
+
+<p><em><strong></strong></em>The main purpose of the build stage is to create potentially releasable software artefacts that become the ‘golden copy’.</p>
+
+
+<div id="attachment_2357" style="width: 310px" class="wp-caption aligncenter"><a href="http://i1.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Build-Stage.png" rel="lightbox-3"><img class="size-medium wp-image-2357" alt="Build Stage" src="http://i1.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Build-Stage.png?resize=300,131" data-recalc-dims="1" /></a><p class="wp-caption-text">Figure 4: Build Stage</p></div>
+
+
+<p><span style="text-decoration: underline;">Checkout</span> checks out the source from the local repository (as opposed to the remote or origin).  The build, pre-unit-test, unit-test and post-unit-test steps are repeated.</p>
+
+
+<p><span style="text-decoration: underline;">Pre Integration Test</span> and <span style="text-decoration: underline;">Post Integration Test</span> invoke the build setup and teardown before and after the <span style="text-decoration: underline;">Integration Test</span> step.  It’s important to note that these integration tests are executed on a <a href="http://googletesting.blogspot.co.uk/2012/10/hermetic-servers.html">hermetic server</a> so as to ensure the feedback is fast.</p>
+
+
+<p><span style="text-decoration: underline;">Publish Report</span> exports an array of test result reports that are supplemented by the reports generated during the execution of the <span style="text-decoration: underline;">Quality Rules</span>.</p>
+
+
+<p>At this point you can be reasonably confident that the software artefacts are viable release candidates.  To ensure that the exact same artefacts under test are those that are pushed to production they are uploaded to a repository during the <span style="text-decoration: underline;">Repository Install</span>.</p>
+
+
+<p><em><strong>Acceptance Test</strong></em></p>
+
+
+<p><em><strong></strong></em>This stage executes the automated acceptance test suite against a production like (scaled down) environment.</p>
+
+
+<div id="attachment_2358" style="width: 310px" class="wp-caption aligncenter"><a href="http://i1.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Acceptance-Test-Stage.png" rel="lightbox-4"><img class="size-medium wp-image-2358" alt="Acceptance Test Stage" src="http://i1.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Acceptance-Test-Stage.png?resize=300,131" data-recalc-dims="1" /></a><p class="wp-caption-text">Figure 5: Acceptance Test Stage</p></div>
+
+
+<p>Following <span style="text-decoration: underline;">Checkout</span>, the CI server interacts with the PaaS to perform the <span style="text-decoration: underline;">Setup Environment </span>step.  During this step the PaaS provisions the infrastructure required by the application and overlays software and configuration as per the application blueprint.  On completion of the provisioning activity, the environment contextual information (IP addresses etc.) is exported so that it is available within the subsequent test steps.</p>
+
+
+<p><span style="text-decoration: underline;">Pre Smoke Test</span> and <span style="text-decoration: underline;">Post Smoke Test</span> invoke the build setup and teardown before and after the <span style="text-decoration: underline;">Smoke Test</span> step.  Smoke tests may perform read only and synthetic transactions that verify the function of the system but do not modify state.  These smoke tests are invoked during every step that provisions an application environment.</p>
+
+
+<p>The <span style="text-decoration: underline;">Pre Acceptance Test</span>, <span style="text-decoration: underline;">Acceptance Test</span> and <span style="text-decoration: underline;">Post Acceptance Test</span> steps function similar to the other test steps.  The same is true for the <span style="text-decoration: underline;">Publish Report</span> step.  Clearly the reports published are related to the acceptance tests.  <a href="http://www.thucydides.info">Thucydides</a> is an example of the type of testing and reporting that can be performed during this stage.</p>
+
+
+<p>On completion of the acceptance test execution the <span style="text-decoration: underline;">Teardown Environment</span> step un-provisions the test environment.  An important thing to note is that all compute and storage is un-provisioned so if there is valuable information stored locally on the provisioned infrastructure it should be streamed to an archive.  As I mentioned briefly in my previous post, APM and log aggregation tools (such as Logstash) work really well for this purpose.</p>
+
+
+<p><em><strong>Performance Test</strong></em></p>
+
+
+<p><em><strong></strong></em>The Performance Test stage provisions an application environment and executes a suite of performance tests.  Because the environment provisioned is a scaled down ‘production like’ environment I view this as a performance trend stage.  What is asserted is that the variation in performance from previous builds is acceptable.  This is not the same as testing for absolute performance.</p>
+
+
+<div id="attachment_2359" style="width: 310px" class="wp-caption aligncenter"><a href="http://i2.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Performance-Test-Stage.png" rel="lightbox-5"><img class="size-medium wp-image-2359" alt="Performance Test Stage" src="http://i2.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Performance-Test-Stage.png?resize=300,131" data-recalc-dims="1" /></a><p class="wp-caption-text">Figure 6: Performance Test Stage</p></div>
+
+
+<p>I’m not going to describe each step within this stage as the steps are either the same or similar to those within previous stages.</p>
+
+
+<p><em><strong>Stability Test</strong></em></p>
+
+
+<p>This <a href="http://techblog.netflix.com/2011/07/netflix-simian-army.html">Simian Army</a> inspired stage performs the exact same steps and activities as the acceptance test stage.  The intent is to execute the automated acceptance test suite during the <span style="text-decoration: underline;">Stability Test </span>step.  The difference being that during the execution of the acceptance tests, the orchestration engine executes failure scenarios.  Failure scenarios can include node failure, resource starvation etc.</p>
+
+
+<div id="attachment_2360" style="width: 310px" class="wp-caption aligncenter"><a href="http://i1.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Stability-Test-Stage.png" rel="lightbox-6"><img class="size-medium wp-image-2360" alt="Stability Test Stage" src="http://i1.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Stability-Test-Stage.png?resize=300,131" data-recalc-dims="1" /></a><p class="wp-caption-text">Figure 7: Stability Test Stage</p></div>
+
+
+<h4><em><strong>Manual Test</strong></em></h4>
+
+
+<p>On passing the previous stages focused on automated testing of the application, a manual decision can be taken to promote a potentially releasable artefact to a manual test environment.  This decision is typically based on the new feature set available in the release.</p>
+
+
+<div id="attachment_2361" style="width: 310px" class="wp-caption aligncenter"><a href="http://i1.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Manual-Test-Stage.png" rel="lightbox-7"><img class="size-medium wp-image-2361" alt="Manual Test Stage" src="http://i1.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Manual-Test-Stage.png?resize=300,131" data-recalc-dims="1" /></a><p class="wp-caption-text">Figure 8: Manual Test Stage</p></div>
+
+
+<p>The <span style="text-decoration: underline;">Push Branch</span> step pushes the local branch to the remote SCM repository.</p>
+
+
+<p>The <span style="text-decoration: underline;">Publish Report</span> step typically pushes release requests to change management systems (such as Remedy etc.) as well as automatically compiling required release documentation and collating audit information etc.  As a result, if the company you work for employs a release co-ordinator they can be presented with all relevant information with no manual documentation effort.</p>
+
+
+<p>The <span style="text-decoration: underline;">Promote</span> step promotes the software artefacts stored in the artefact repository from a ‘potential release candidates’ repository to a ‘release candidates’ repository.  This indicates that if there is business value to releasing this version of the software that you can be assured that it has past all quality and audit procedures.</p>
+
+
+<p><em><strong>Production</strong></em></p>
+
+
+<p>At last, <span style="text-decoration: underline;">Production</span>!</p>
+
+
+<div id="attachment_2362" style="width: 310px" class="wp-caption aligncenter"><a href="http://i0.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Production-Stage.png" rel="lightbox-8"><img class="size-medium wp-image-2362" alt="Production Stage" src="http://i0.wp.com/thoughtforge.net/wp-content/uploads/2014/02/Production-Stage.png?resize=300,118" data-recalc-dims="1" /></a><p class="wp-caption-text">Figure 9: Production Stage</p></div>
+
+
+<p>Often, this stage is more complex that illustrated and comprises of multiple segments of production and a staged release.  Nevertheless, I’ve described a fairly robust continuous delivery pipeline lifecycle that goes beyond what many practice today.  I strongly believe this capability provides competitive advantage for both technology-enabled and technology-led business domains.  If you are not working to release value to production quicker you can be sure your competitors are…and they are going to eat your lunch!!</p>
+
+
+<h2>A Word on Implementation</h2>
+
+
+<p>There are obviously lots of implementation details I could discuss but I wanted to highlight just one.  This type of build system has lots of moving parts and can become quite complex very quickly if you are not careful.  I would advise that you use the same provisioning and configuration management tools that you use for your applications to manage your build environment…and I mean everything in your build environment.</p>
+
+
+  
+    <footer>
+      <p class="meta">
+        
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-15T14:43:00-04:00" pubdate data-updated="true">Apr 15<span>th</span>, 2014</time>
+        
+      </p>
+      
+        <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/devops-pipeline/lifecycle-of-a-continuous-delivery-pipeline.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/devops-pipeline/lifecycle-of-a-continuous-delivery-pipeline.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      
+    </footer>
+  
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  Balaji Vajjala <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
