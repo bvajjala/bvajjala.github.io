@@ -80,11 +80,13 @@
 <p> Orchestration tools are the backbone of any CD system. They allow teams to build an effective sequence of deployment pipeline steps by integrating with their entire tool chain. These tools can also provide visualization utilities, which are important for enabling the full involvement of stakeholders from all departments.
 For pipeline orchestration and visualization, you can use a dedicated deployment pipeline tool or you can use an application release automation (ARA) solution. Whichever direction you take for your orchestration tool, you should be sure that it helps your team detect and expose delays at each stage of the pipeline, including wait times between stages. Visualization and orchestration working in tandem allow teams to quickly identify the places they should optimize first.</p>
 
-<pre><code>Dedicated Deployment pipeline Tools:  Jenkins, Travis CI, ThoughtWorks GO, CircleCI, JetBrains TeamCity, Atlassian Bamboo
+<pre><code>Dedicated Deployment pipeline Tools:  Jenkins, Travis CI, ThoughtWorks GO,
+                                      CircleCI, JetBrains TeamCity, Atlassian Bamboo
 
-APPLICATION RELEASE AUTOMATION (ARA): ElectricCommander, CA LISA, IBM UrbanCode, XebiaLabs XL
+APPLICATION RELEASE AUTOMATION (ARA): ElectricCommander, CA LISA, 
+                                      IBM UrbanCode, XebiaLabs XL
 
-Orchestration Engine: MaestroDev, CollabNet 
+Orchestration Engine:                 MaestroDev, CollabNet 
 </code></pre>
 
 <h2>VERSION CONTROL</h2>
@@ -98,7 +100,8 @@ Orchestration Engine: MaestroDev, CollabNet
 
 <p>CI tools can support orchestration and visualization, but their core functionality is to integrate new code with the stable main release line and alert stakeholders if any new code would cause issues with the final product. This makes it easy for teams to combine work on different features while keeping a master code branch ready for release. It should feel natural to integrate many times a day. Teams should also connect a code metrics and profiling utility that can stop integrations if certain metrics reach an undesirable threshold.</p>
 
-<pre><code>CI:  Jenkins, Travis CI, ThoughtWorks GO, CircleCI, JetBrains TeamCity, Atlassian Bamboo
+<pre><code>CI:      Jenkins, Travis CI, ThoughtWorks GO, 
+         CircleCI, JetBrains TeamCity, Atlassian Bamboo
 
 Code Metrics:  SonarQube, SLOC (and variants), SciTools Understand
 </code></pre>
@@ -109,8 +112,9 @@ Code Metrics:  SonarQube, SLOC (and variants), SciTools Understand
 
 <p>Artifact management is most effective with an artifact repository manager. Artifact repositories contain a complete artifact usage history,  similar to the way version control systems track source code changes. They use dependency resolution between the package versions and allow the system to build a dependency graph from the hardware all the way up to the user interface of the application. The ability to verify dependencies through an entire system is powerful for tracking exactly what was (or will be) tested or deployed.</p>
 
-<pre><code>Version Control Systems: Git, Subversion, Mercurial
-Artifact Repository Managers: Archiva, Artifactory, Nexus (roll-your-own with zip files, metadata, shared storage, and access controls) Language-specific package Managers: Composer (PHP), Ruby Gems, npm (Node.js), Python PIP
+<pre><code>Version Control Systems:        Git, Subversion, Mercurial
+Artifact Repository Managers:   Archiva, Artifactory, Nexus 
+                                (roll-your-own with zip files, metadata, shared storage, and access controls) Language-specific package Managers: Composer (PHP), Ruby Gems, npm (Node.js), Python PIP
 OrchestrationOS-level package Managers: APT, Chocolatey, RPM
 </code></pre>
 
@@ -118,7 +122,8 @@ OrchestrationOS-level package Managers: APT, Chocolatey, RPM
 
 <p>The only manual testing in a deployment pipeline should be for tests that are tough for a computer to handle, such as exploratory testing, inspection of user interface designs, and user acceptance tests. The rest should be automated. Tools for automated testing should operate in a completely headless (non-interactive) manner and be lightweight enough to run across many test servers simultaneously. Teams also need to create testing environments on-demand by using environment automation tools that can provision a vm and configure an environment template.</p>
 
-<pre><code>Test Automation: JMeter, Selenium/WebDriver, Cucumber (BDD), RSpec (BDD), SpecFlow (BDD), LoadUI (Performance), PageSpeed (Performance), Netem(Network Emulation), SoapUI (Web Services), Test Kitchen (Infrastructure)
+<pre><code>Test Automation: JMeter, Selenium/WebDriver, Cucumber (BDD), 
+                 RSpec (BDD), SpecFlow (BDD), LoadUI (Performance), PageSpeed (Performance), Netem(Network Emulation), SoapUI (Web Services), Test Kitchen (Infrastructure)
 
 Environment Automation:  Vagrant, Docker, Packer
 </code></pre>
@@ -136,7 +141,8 @@ Environment Automation:  Vagrant, Docker, Packer
 
 <p>For any of the three models, your team must ensure that the process is fully automated, provides detailed information with standard output and error messages, and allows easy and rapid rollback to a stable state.</p>
 
-<pre><code>push deployment:  Capistrano, Fabric, ThoughtWorks Go, MSdeploy, Octopus, RunDeck, various CI and build tools, various ARA tools 
+<pre><code>push deployment:  Capistrano, Fabric, ThoughtWorks Go, 
+                  MSdeploy, Octopus, RunDeck, various CI and build tools, various ARA tools 
 pull deployment:  Ansible, Chef, CFEngine, Puppet, Salt.
 </code></pre>
 
@@ -145,8 +151,10 @@ pull deployment:  Ansible, Chef, CFEngine, Puppet, Salt.
 <p>Monitoring your system logs is essential for spotting problems and halting the deployment pipeline. Rather than manually collecting logs from each machine in an environment, logs should be shipped to a central store that indexes them and makes them available for searching via a web browser.
 This is a crucial capability for a Continuous Delivery environment. The log store should be connected to all environments (including the developer’s system) to speed up problem diagnosis and resolution. most monitoring tools should work in a dynamic infrastructure and integrate with yours through scripted configuration.</p>
 
-<pre><code>Log Aggregation &amp; Search: Fluentd, Graylog2, LogStash, nxlog, Splunk
-Metrics, Monitoring, Audit: Collectd, Ganglia, Graphite, Icinga, Sensu, ScriptRock
+<pre><code>Log Aggregation &amp; Search:  Fluentd, Graylog2, 
+                           LogStash, nxlog, Splunk
+Metrics, Monitoring, Audit: Collectd, Ganglia, 
+                            Graphite, Icinga, Sensu, ScriptRock
 </code></pre>
 
 <h2>A FINAL LOOK AT SOME GUIDING PRINCIPLES FOR TOOLS</h2>
