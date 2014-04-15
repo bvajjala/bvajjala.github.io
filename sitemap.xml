@@ -625,8 +625,37 @@
         <lastmod>2014-04-15T13:57:04-04:00</lastmod>
     </url>
     <url>
-        <loc>http://bvajjala.github.io/devops-pipeline/</loc>
+        <loc>http://bvajjala.github.io/devops-pipeline/application-monitoring-past.html</loc>
+        <lastmod>2014-04-15T14:40:50-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/devops-pipeline/cd-toolchain.html</loc>
         <lastmod>2014-04-15T13:57:04-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/devops-pipeline/continuous-delivery-a-maturity-assessment-model.html
+        </loc>
+        <lastmod>2014-04-15T14:41:22-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/devops-pipeline/iaas-making-a-case-for-infrastructure-as-a-service.html
+        </loc>
+        <lastmod>2014-04-15T14:41:50-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/devops-pipeline/Lifecycle of a Continuous
+            Delivery Pipeline.html
+        </loc>
+        <lastmod>2014-04-15T14:43:13-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/devops-pipeline/paas-and-continuous-delivery-my-12-month-journey.html
+        </loc>
+        <lastmod>2014-04-15T14:42:39-04:00</lastmod>
     </url>
     <url>
         <loc>http://bvajjala.github.io/devopsincloud/01/00.00.html</loc>
