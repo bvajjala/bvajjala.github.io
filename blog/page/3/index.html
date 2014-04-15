@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="ABOUT CONTINUOUS DELIVERY With Continuous Delivery (CD), teams continuously deliver new versions of software to production by decreasing the cycle &hellip;">
+  <meta name="description" content="## Workflow : Deploying/Release Apps from Development to Production ## Deploying is a big part of the lives of most of our Engineering employees. We &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,1688 +67,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/11/continuous-delivery-patterns/">Continuous Delivery Patterns</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-11T00:00:00-04:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>ABOUT CONTINUOUS DELIVERY</p>
-
-<p>With Continuous Delivery (CD), teams continuously deliver new  versions of software to production by decreasing the cycle time between an idea and usable software through the automation of the entire delivery system: build, deployment, test, and release. CD is enabled through the Deployment Pipeline, which encompasses a collection of patterns described in this Refcard.</p>
-
-<p>CD is concerned with “…how all the moving parts fit together: configuration management, automated testing, continuous integration and deployment, data management, environment management, and release management.” (1)</p>
-
-<p>THE DEPLOYMENT PIPELINE</p>
-
-<p>The purpose of the deployment pipeline is threefold:</p>
-
-<p> • Visibility: All aspects of the delivery system &ndash; building, deploying, testing, and releasing – are visible to all team members promoting collaboration.</p>
-
-<p> • Feedback: Team members learn of problems as soon as they occur so that issues are fixed as soon as possible.</p>
-
-<p> • Continually Deploy: Through a fully automated process, you can deploy and release any version of the software to any environment. (1)</p>
-
-<p>In the Deployment Pipeline diagram above, all of the patterns are shown in context. There are some patterns that span multiple stages of the pipeline, so I chose the stage where it’s most predominately used.</p>
-
-<p>BENEFITS
- • Empowering Teams: Because the deployment pipeline is a pull system, testers, developers, operations, and others can self service the application version into an environment of their choice.</p>
-
-<p> • Reducing Errors: Ensuring the correct version, configuration, database schema, etc. are applied the same way every time through automation.</p>
-
-<p> • Lowering Stress: Through push-button releases to production and Rehearsing Deployments, a release becomes commonplace without the typical stress.</p>
-
-<p> • Deployment Flexibility: Instantiate a new environment or configuration by making a few changes to the automated delivery system.</p>
-
-<p> • Practice makes Perfect: Through the deployment pipeline, the final deployment into production is being rehearsed every single time the software is deployed to any target environments. (1)</p>
-
-<h1>CONFIGURATION MANAGEMENT</h1>
-
-<p>Configuration Management is “the process by which all artifacts relevant to your project, and the relationships between them, are stored, retrieved, uniquely identified, and modified”. (1)</p>
-
-<p>Note: Each pattern is cited with a number in parentheses that corresponds to the source in the References section.</p>
-
-<h2>Configurable Third-Party Software (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Evaluate and use third-party software that can be easily configured, deployed, and automated. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td> Procuring software that cannot be externally configured. Software without an API or command-line interface that forces teams to use the GUI only. |</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Configuration Catalog (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern  </th>
-<th>  Maintain a catalog of all options for each application, how to change these options and storage locations for each application. Automatically create this catalog as part of the build process. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td> Configuration options are not documented. The catalog of applications and other assets is “tribal knowledge”. |</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Mainline (3)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern  </th>
-<th>  Minimize merging and keep the number of active code lines manageable by developing on a mainline. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td> Multiple branches per project.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Merge Daily (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Changes committed to the mainline are applied to each branch on at least a daily basis. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Merging every iteration once a week or less often than once a day. |</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Protected Configuration (5) ,(1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Store configuration information in secure remotely accessible locations such as a database, directory, or registry.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Open text passwords and/or single machine or share.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Repository (3) , (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>All source files &ndash; executable code, configuration, host environment, and data &ndash; are committed to a version-control repository.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Some files are checked in, others, such as environment configuration or data changes, are not. Binaries – that can be recreated through the build and deployment process – are checked in.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Short-Lived Branches (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Branches must be short lived – ideally less than a few days and never more than an iteration.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Branches that last more than an iteration. Branches by product feature that live past a release.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Single Command Environment (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Check out the project’s version-control repository and run a single command to build and deploy the application to any accessible environment, including the local development.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Forcing the developer to define and configure environment variables. Making the developer install numerous tools in order for the build/deployment to work.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Single Path to Production (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Configuration management of the entire system &ndash; source, configuration, environment and data. Any change can be tied back to a single revision in the version-control system.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Parts of system are not versioned. Inability to get back to a previously configured software system.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>CONTINUOUS INTEGRATION (CI)</h1>
-
-<h2>Build Threshold (5)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Fail a build when a project rule is violated – such as architectural breaches, slow tests, and coding standard violations. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Manual code reviews. Learning of code quality issues later in the development cycle.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Commit Often (6)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Each team member checks in regularly to trunk &ndash; at least once a day but preferably after each task to trigger the CI system.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Source files are committed less frequently than daily due to the number of changes from the developer.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Continuous Feedback (6)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Send automated feedback from CI system to all Cross-Functional Team members.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Notifications are not sent; notifications are ignored; CI system spams everyone with information they cannot use.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Continuous Integration (6)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Building and testing software with every change committed to a project’s version control repository.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Scheduled builds, nightly builds, building periodically, building exclusively on developer’s machines, not building at all. </td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Stop the Line (5) , (1) , (4), (12)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Fix software delivery errors as soon as they occur; stop the line. No one checks in on a broken build as the fix becomes the highest priority.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Builds stay broken for long periods of time, thus preventing developers from checking out functioning code. </td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Independent Build (6)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Write build scripts that are decoupled from IDEs. These build scripts are executed by a CI system so that software is built at every change. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Automated build relies on IDE settings. Builds are unable to be run from the command line.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Visible Dashboards</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Provide large visible displays that aggregate information from your delivery system to provide high-quality feedback to the Cross-Functional Team in real time.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Email-only alerts or not publicizing the feedback to the entire team.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>TESTING</h1>
-
-<h2>Automate Tests</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Automate the verification and validation of software to include unit, component, capacity, functional, and deployment tests</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Manual testing of units, components, deployment, and other types of tests.</td>
-</tr>
-</tbody>
-</table>
-
-
-<blockquote><p>Unit- Automating tests without any dependencies.</p>
-
-<p>Component- Automating tests with dependencies to other components and heavyweight dependencies such as the database or file system.</p>
-
-<p>Deployment- Automating tests to verify the deployment and configuration were successful. Sometimes referred to as a “smoke tests”.</p>
-
-<p>Functional- Automating tests to verify the behavior of the software from a user’s perspective.</p>
-
-<p>Capacity- Automating load and performance testing in near- production conditions.</p></blockquote>
-
-<h2>Isolate Test Data (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Use transactions for database-dependent tests (e.g., component tests) and roll back the transaction when done. Use a small subset of data to effectively test behavior </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td> Using a copy of production data for Commit Stage tests. Running tests against a shared database.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Parallel Tests (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Run multiple tests in parallel across hardware instances to decrease the time in running tests.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Running tests on one machine or instance. Running dependent tests that cannot be run in parallel.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Stub Systems (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Use stubs to simulate external systems to reduce deployment complexity.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Manually installing and configuring interdependent systems for Commit Stage build and deployment.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>DEPLOYMENT PIPELINE</h1>
-
-<h2>Deployment Pipeline (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> A deployment pipeline is an automated implementation of your application’s build, deploy, test, and release process. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Deployments require human intervention (other than approval or clicking a button). Deployments are not production ready. </td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Value-Stream Map (4) ##</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Create a map illustrating the process from check in to the version-control system to the software release to identify process bottlenecks.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Separately defined processes and views of the checkin to release process.</td>
-</tr>
-</tbody>
-</table>
-
-
-<p>BUILD AND DEPLOYMENT SCRIPTING</p>
-
-<h2>Dependency Management (5)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Centralize all dependent libraries to reduce bloat, classpath problems, and repetition of the same dependent libraries and transitive dependencies from project to project. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Multiple copies of the same binary dependencies in each and every project. Redefining the same information for each project. Classpath hell!</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Common Language (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> As a team, agree upon a common scripting language &ndash; such as Perl, Ruby, or Python &ndash; so that any team member can apply changes to the Single Delivery System </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Each team uses a different language making it difficult for anyone to modify the delivery system reducing cross-functional team effectiveness.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Externalize Configuration (5)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Changes between environments are captured as configuration information. All variable values are externalized from the application configuration into build/deployment-time properties </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Hardcoding values inside the source code or per target environment.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Fail Fast (6)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Fail the build as soon as possible. Design scripts so that processes that commonly fail run first. These processes should be run as part of the Commit Stage.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Common build mistakes are not uncovered until late in the deployment process.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Fast Builds (6)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> The Commit Build provides feedback on common build problems as quickly as possible &ndash; usually in under 10 minutes.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Throwing everything into the commit stage process, such as running every type of automated static analysis tool or running load tests such that feedback is delayed.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Scripted Deployment (5)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> All deployment processes are written in a script, checked in to the version-control system, and run as part of the Single Delivery System.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Deployment documentation is used instead of automation. Manual deployments or partially manual deployments. Using GUI to perform a deployment.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Unified Deployment (5)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> The same deployment script is used for each deployment. The Protected Configuration – per environment &ndash; is variable but managed.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td> Different deployment script for each target environment or even for a specific machine. Manual configuration after deployment for each target environment. </td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>DEPLOYING AND RELEASING APPLICATIONS</h1>
-
-<h2>Binary Integrity (5)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Build your binaries once, while deploying the binaries to multiple target environments, as necessary.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td> Software is built in every stage of the deployment pipeline. </td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Canary Release</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Release software to production for a small subset of users (e.g. , 10%) to get feedback prior to a complete rollout. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td> Software is released to all users at once.|</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Blue-Green Deployments (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Deploy software to a non-production environment (call it blue) while production continues to run. Once it’s deployed and “warmed up”, switch production (green) to non-production and blue to green simultaneously. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Production is taken down while the new release is applied to production instance(s).</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Dark Launching (11)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Launch a new application or features when it affects the least amount of users.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Software is deployed regardless of number of active users.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Rollback Release (5)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Provide an automated single command rollback of changes after an unsuccessful deployment.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Manually undoing changes applied in a recent deployment. Shutting down production instances while changes are undone. </td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Self-Service Deployment (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Any Cross-Functional Team member selects the version and environment to deploy the latest working software. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Deployments released to team are at specified intervals by the “Build Team”. Testing can only be performed in a shared state without isolation from others. </td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>INFRASTRUCTURE AND ENVIRONMENTS</h1>
-
-<h2>Automate Provisioning (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Automate the process of configuring your environment to include networks, external services, and infrastructure.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Configured instances are “works of art” requiring team members to perform partially or fully manual steps to provision them.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Behavior-Driven Monitoring (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Automate tests to verify the behavior of the infrastructure. Continually run these tests to provide near real-time alerting. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>No real-time alerting or monitoring. System configuration is written without tests.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Immune Systems</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Deploy software one instance at a time while conducting Behavior-Driven Monitoring. If an error is detected during the incremental deployment, a Rollback Release is initiated to revert changes.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Non-incremental deployments without monitoring.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Lockdown Environments (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Lock down shared environments from unauthorized external and internal usage, including operations staff. All changes are versioned and applied through automation.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>The “Wild West”: any authorized user can access shared environments and apply manual configuration changes, putting the environment in an unknown state leading to deployment errors.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Production-Like Environments (1) ##</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Target environments are as similar to production as possible.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Environments are “production like” only weeks or days before a release. Environments are manually configured and controlled.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Transient Environments</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Utilizing the Automate Provisioning, Scripted Deployment and Scripted Database patterns, any environment should be capable of terminating and launching at will.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Environments are fixed to “DEV, QA” or other pre-determined environments.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>DATA</h1>
-
-<h2>Database Sandbox (7)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Create a lightweight version of your database – using the Isolate Test Data pattern. Each developer uses this lightweight DML to populate his local database sandboxes to expedite test execution.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Shared database. Developers and testers are unable to make data changes without it potentially adversely affecting other team members immediately.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Decouple Database (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Ensure your application is backward and forward compatible with your database so you can deploy each independently</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Application code data are not capable of being deployed separately.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Database Upgrade (7)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Use scripts to apply incremental changes in each target environment to a database schema and data. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Manually applying database and data changes in each target environment.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Scripted Database (7)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Script all database actions as part of the build process. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Using data export/import to apply data changes. Manually applying schema and data changes to the database.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>INCREMENTAL DEVELOPMENT</h1>
-
-<h2>Branch by Abstraction (2)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Instead of using version-control branches, create an abstraction layer that handles both an old and new implementation. Remove the old implementation.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Branching using the version-control system leading to branch proliferation and difficult merging. Feature branching.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Toggle Features (10)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Deploy new features or services to production but limit access dynamically for testing purposes.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Waiting until a feature is fully complete before committing the source code.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>COLLABORATION</h1>
-
-<h2>Delivery Retrospective (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>For each iteration, hold a retrospective meeting where everybody on the Cross-Functional Team discusses how to improve the delivery process for the next iteration. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Waiting until an error occurs during a deployment for Dev and Ops to collaborate. Having Dev and Ops work separately.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Cross-Functional Teams (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Everybody is responsible for the delivery process. Any person on the Cross-Functional Team can modify any part of the delivery system.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Siloed teams: Development, Testing, and Operations have their own scripts and processes and are not part of the same team. </td>
-</tr>
-</tbody>
-</table>
-
-
-<pre><code>Amazon.com has an interesting take on this approach. They call it “You build it, you run it”. Developers take the software they’ve written all the way to production. 
-</code></pre>
-
-<h2>Root-Cause Analysis (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Learn the root cause of a delivery problem by asking “why” of each answer and symptom until discovering the root cause.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Accepting the symptom as the root cause of the problem.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>TOOLS</h1>
-
-<p>This is meant to be an illustrative list, not an exhaustive list, to give you an idea of the types of tools and some of the vendors that help to enable effective Continuous Delivery. The Java, .NET and Ruby platforms are represented. The tools that span categories have been assigned to the most appropriate category or duplicated when necessary.</p>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Category </th>
-<th> Example Software Tools </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Configuration Management </td>
-<td> &lsquo;Subversion (SVN), git, Perforce, PassPack, PasswordSafe, ESCAPE, ConfigGen&rsquo; |</td>
-</tr>
-<tr>
-<td></td>
-<td> Continuous Integration </td>
-<td> &lsquo;Bamboo, Jenkins, AntHill Pro, Go, TeamCity, TFS 2010, Electric Commander&rsquo; &lsquo;Supporting tools: Doxygen, Grand, GraphViz, JavaDoc, NDoc, SchemaSpy, UmlGraph, CheckStyle, Clover, Cobertura, FindBugs,FxCop, JavaNCSS, JDepend, PMD, Sonar, Simian&rsquo; |</td>
-</tr>
-<tr>
-<td></td>
-<td> Testing </td>
-<td> Twist , AntUnit, Cucumber, DbUnit, webrat, easyb, Fitnesse, JMeter, JUnit, NBehave, SoapUI, Selenium, RSpec, SauceLabs |</td>
-</tr>
-<tr>
-<td></td>
-<td> Deployment Pipeline </td>
-<td> Go, AntHill Pro |</td>
-</tr>
-<tr>
-<td></td>
-<td> Build and Deployment Scripting </td>
-<td> Ant, AntContrib, NAnt, MSBuild, Buildr, Gant, Gradle, make, Maven, Rake, Java Secure Channel, ControlTier, Altiris, Capistrano, Fabric, Func |</td>
-</tr>
-<tr>
-<td></td>
-<td> Infrastructure and Environments </td>
-<td> AWS EC2, AWS S3, Windows Azure, Google App Engine, AWS Elastic Beanstalk, Heroku, Capistrano, Cobbler, BMC Bladelogic, CFEngine, IBM Tivoli Provisioning Manager, Puppet, Chef, Bcfg2, AWS Cloud Formation, Windows Azure AppFabric, rPath, JEOS, BoxGrinder, CLIP, Eucalyptus, AppLogic, CloudKick, CloudWatch, Nagios, Zabbix, Zenoss |</td>
-</tr>
-<tr>
-<td></td>
-<td> Data </td>
-<td> Hibernate, MySQL, Liquibase, Oracle, PostgreSQL, SQL Server, SimpleDB, SQL Azure, Ant, MongoDB, dbdeploy |</td>
-</tr>
-<tr>
-<td></td>
-<td> Components and Dependencies </td>
-<td> Ivy, Archiva, Nexus, Artifactory, Bundler |</td>
-</tr>
-<tr>
-<td></td>
-<td> Collaboration </td>
-<td> Mingle, Greenhopper, JIRA |</td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>REFERENCES</h1>
-
-<ol>
-<li><p>Jez Humble and David Farley, “Continuous Delivery: Reliable Software Releases through Build, Test, and Deployment Automation”, Addison Wesley Professional, 2010</p></li>
-<li><p>Paul Hammant and www.continuousdelivery.com</p></li>
-<li><p>Stephen P. Berczuk and Brad Appleton, “Software Configuration Management Patterns.”, Addison Wesley Professional, 2003</p></li>
-<li><p>Mary and Tom Poppendieck, “Leading Lean Software Development”, Addison Wesley, 2009</p></li>
-<li><p>Paul M. Duvall, “Continuous integration. Patterns and Antipatterns”, DZone refcard #84, 2010 <a href="http://bit.ly/l8rfVS">http://bit.ly/l8rfVS</a></p></li>
-<li><p>Paul M. Duvall, “Continuous integration. Improving Software Quality and Reducing Risk”, Addison Wesley, 2007</p></li>
-<li><p>Scott W. Ambler and Pramodkumar J. Saladage, “Refactoring Databases. Evolutionary Database Design”, Addison Wesley, 2006.</p></li>
-<li><p>Paul M. Duvall, IBM developerWorks series “Automation for the people” <a href="http://ibm.co/iwwvPX">http://ibm.co/iwwvPX</a></p></li>
-<li><p>IMVU: <a href="http://bit.ly/jhqP5f">http://bit.ly/jhqP5f</a></p></li>
-<li><p>Martin Fowler and Facebook: <a href="http://on.fb.me/miBrOM">http://on.fb.me/miBrOM</a></p></li>
-<li><p>Facebook Engineering: <a href="http://on.fb.me/miBrOM">http://on.fb.me/miBrOM</a></p></li>
-<li><p>Paul Julius, Enterprise Continuous Integration Maturity Model, <a href="http://bit.ly/m7h5vC">http://bit.ly/m7h5vC</a></p></li>
-</ol>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned It</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-22T08:57:36-05:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>What is jenkins job builder</h1>
-
-<p>Jenkins job builder is extreme good tool to manage your jenkins CI jobs, it takes simple description from YAML files, and use them to configure jenkins.</p>
-
-<pre><code>#set free style job
-#job-template.yml
-- job:
-    name: testjob
-    project-type: freestyle
-    defaults: global
-    disabled: false
-    display-name: 'Fancy job name'
-    concurrent: true
-    quiet-period: 5
-    workspace: /srv/build-area/job-name
-    block-downstream: false
-    block-upstream: false
-</code></pre>
-
-<p>Then put your jenkins access into jenkins.ini file</p>
-
-<pre><code>[jenkins]
-user=USERNAME
-password=USER_TOKEN
-url=JENKINS_URL
-ignore_cache=IGNORE_CACHE_FLAG
-</code></pre>
-
-<p>Based on the job configuration above, you just need to type command</p>
-
-<pre><code>$ jenkins-jobs --conf jenkins.ini update job-template.yaml 
-</code></pre>
-
-<p>Then your job <em>testjob</em> is created in your jenkins server.</p>
-
-<p>The project is created by <a href="https://wiki.openstack.org/wiki/InfraTeam">openstack-infrastructure team</a>, it is used to manage the openstack environment, fairly good.</p>
-
-<h1>How it works</h1>
-
-<p>There is no magic behind it, <em>jenkins-jobs</em> just convert the <em>job-template.yaml</em> to jenkins XML request file, and use jenkins remote API to send create request.</p>
-
-<p>Try to do below to understand this.</p>
-
-<pre><code>$ jenkins-jobs test job-template.yaml -o .
-</code></pre>
-
-<p>Then xml file <em>testjob</em> is created, see</p>
-
-<pre><code>&lt;?xml version="1.0" ?&gt;
-&lt;project&gt;
-  &lt;actions/&gt;
-  &lt;description&gt;
-
-&amp;lt;!-- Managed by Jenkins Job Builder --&amp;gt;&lt;/description&gt;
-  &lt;keepDependencies&gt;false&lt;/keepDependencies&gt;
-  &lt;disabled&gt;false&lt;/disabled&gt;
-  &lt;displayName&gt;Fancy job name&lt;/displayName&gt;
-  &lt;blockBuildWhenDownstreamBuilding&gt;false&lt;/blockBuildWhenDownstreamBuilding&gt;
-  &lt;blockBuildWhenUpstreamBuilding&gt;false&lt;/blockBuildWhenUpstreamBuilding&gt;
-  &lt;concurrentBuild&gt;true&lt;/concurrentBuild&gt;
-  &lt;customWorkspace&gt;/srv/build-area/job-name&lt;/customWorkspace&gt;
-  &lt;quietPeriod&gt;5&lt;/quietPeriod&gt;
-  &lt;canRoam&gt;true&lt;/canRoam&gt;
-  &lt;properties/&gt;
-  &lt;scm class="hudson.scm.NullSCM"/&gt;
-  &lt;builders/&gt;
-  &lt;publishers/&gt;
-  &lt;buildWrappers/&gt;
-&lt;/project&gt;
-</code></pre>
-
-<p>Now you can use curl command to send the request (testjob) directly !!</p>
-
-<pre><code>$ curl --user USER:PASS -H "Content-Type: text/xml" -s --data "@testjob" "http://jenkins-server/createItem?name=testjob"
-</code></pre>
-
-<h2>How to recreate your jenkins job</h2>
-
-<p>Looks great, finally you need think about how to re-create your jenkins job, it is also simple, just download the config.xml</p>
-
-<pre><code>$ curl --user USER:PASS http://jenkins-server/testjob/config.xml
-</code></pre>
-
-<p>Or open the configuration page in broswer *<a href="http://jenkins-server/testjob/configure*">http://jenkins-server/testjob/configure*</a> and map from YAML file.</p>
-
-<p>You need to read <a href="http://ci.openstack.org/jenkins-job-builder/configuration.html">jenkins job builder&rsquo;s guideline</a> to know the map, generate it had level Macro like <a href="https://wiki.openstack.org/wiki/InfraTeam">builders</a>, which is connected to the <a href="https://github.com/openstack-infra/jenkins-job-builder/blob/master/jenkins_jobs/modules/builders.py">real python builders module</a> to do transformation from YAML to XML.</p>
-
-<p>What you stated in YAML file like</p>
-
-<pre><code>-job:
-  name: test_job
-  builders:
-- shell: "make test"
-</code></pre>
-
-<p>it will be converted to</p>
-
-<pre><code>&lt;builders&gt;
-&lt;hudson.tasks.Shell&gt;
-  &lt;command&gt;make test&lt;/command&gt;&lt;/hudson.tasks.Shell&gt;
-&lt;/builders&gt;
-</code></pre>
-
-<h2>How to extend</h2>
-
-<p>Greatly to see jenkins job builder already had lots of default modules to support your normal jenkins jobs, but there is exceptions like some none popular jenkins plugins or your own plugins.</p>
-
-<p>Then it is time to extend the module, the existing document: Extending is not clear enough, I will use example to show how it works, code is in <a href="https://github.com/bv2012/jenkins-buddy">github jenkins-buddy</a> project</p>
-
-<p><a href="https://wiki.jenkins-ci.org/display/JENKINS/ArtifactDeployer+Plugin">ArtifactDeployer</a> Plugin is used as example, this plugin is the popular plugin to deploy the artifacts to other folder.</p>
-
-<p>Artifact Deploy Plugin</p>
-
-<p><img src="../downloads/code/artifactdeploy.png" alt="" /></p>
-
-<p>And I want to have .YAML like below</p>
-
-<pre><code>*#artifactdeploy.yaml*
-- job:
-name: test-job
-publishers:
-  - artifactdeployer: 
-  includes: 'buddy-*.tar.gz'
-  remote: '/project/buddy'
-</code></pre>
-
-<h2>write codes to transform</h2>
-
-<p>Now I need to download the existing jobs to see how XML looks like, using curl above, I got it like</p>
-
-<pre><code>&lt;publishers&gt;
-   ...  
-  &lt;org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher plugin="artifactdeployer@0.27"&gt;
-&lt;entries&gt;
-  &lt;org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry&gt;
-&lt;includes&gt;buddy-*.tar.gz&lt;/includes&gt;
-&lt;basedir&gt;&lt;/basedir&gt;
-&lt;excludes&gt;&lt;/excludes&gt;
-&lt;remote&gt;/project/buddy&lt;/remote&gt;
-&lt;flatten&gt;false&lt;/flatten&gt;
-&lt;deleteRemote&gt;false&lt;/deleteRemote&gt;
-&lt;deleteRemoteArtifacts&gt;false&lt;/deleteRemoteArtifacts&gt;
-&lt;deleteRemoteArtifactsByScript&gt;false&lt;/deleteRemoteArtifactsByScript&gt;
-&lt;failNoFilesDeploy&gt;false&lt;/failNoFilesDeploy&gt;
-  &lt;/org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry&gt;
-&lt;/entries&gt;
-&lt;deployEvenBuildFail&gt;false&lt;/deployEvenBuildFail&gt;
-  &lt;/org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher&gt;
-..
-&lt;/publishers&gt; 
-</code></pre>
-
-<p>It belongs the section publishers So I write the jenkins_buddy/modules/publishers.py module to add one function artifactdeployer:</p>
-
-<pre><code>def artifactdeployer(parser, xml_parent, data):
-    logger = logging.getLogger("%s:artifactdeployer" % __name__)
-    artifactdeployer = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher')
-    entries = XML.SubElement(artifactdeployer, 'entries')
-    entry = XML.SubElement(entries, 'org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry')
-    print data
-    XML.SubElement(entry, 'includes').text = data['includes']
-    XML.SubElement(entry, 'remote').text = data['remote']
-</code></pre>
-
-<p>It is the core part handling convert.</p>
-
-<h3>Hook into jenkins-job builder</h3>
-
-<p>Now you need hook this script into jenkins-jobs builder, thank for the entry_points in python, it can be used for this.</p>
-
-<p>Create the plugin related script and structure, add new entry_point in setup.py</p>
-
-<pre><code>#setup.py in jenkins-buddy
-entry_points={
-    'jenkins_jobs.publishers': [
-    'artifactdeployer=jenkins_buddy.modules.publishers:artifactdeployer',
-    ],
-}
-</code></pre>
-
-<p>it tells jenkins-jobs if you meet new keyword artifactdeployer in publishers, please let me jenkins_buddy.modules.publishers:artifactdeployer to handle.</p>
-
-<h3>Verify it</h3>
-
-<p>Build the pip package local and install it</p>
-
-<pre><code>$ python setup.py sdist
-$ pip install dist/jenkins-buddy-0.0.5.zip
-</code></pre>
-
-<p>And verify the new job, Bingo, it works.</p>
-
-<pre><code>$ jenkins-jobs test artifactdeploy.yaml -o . 
-</code></pre>
-
-<h3>###Make it more complete by checking jenkins plugin java code</h3>
-
-<p>Maybe you noticed, it is hack solution, since I skipped some parameter converting and guess what the XML will look like, if you want to make it more complete, we need to check the java codes directly.</p>
-
-<p>src/main/java/org/jenkinsci/plugins/artifactdeployer/ArtifactDeployerPublisher.java is the class we need to take care.</p>
-
-<pre><code>@DataBoundConstructor
-public ArtifactDeployerPublisher(List&lt;ArtifactDeployerEntry&gt; deployedArtifact, boolean deployEvenBuildFail) {
-    this.entries = deployedArtifact;
-    this.deployEvenBuildFail = deployEvenBuildFail;
-    if (this.entries == null)
-    this.entries = Collections.emptyList();
-}
-</code></pre>
-
-<p>It is directly mapping from XML into internal data, if you need know more, learn how to develop jenkins plugin.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-ii/">Continuous Delivery With Docker and Jenkins - Part II</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-21T14:41:15-05:00" pubdate data-updated="true">Feb 21<span>st</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>A few weeks ago I started talking about how we use <a href="2014-02-21-continuous-delivery-with-docker-and-jenkins-part-i">Docker and Jenkins for Continuous Delivery</a> in our staging environment. Today, we are open-sourcing a simple bash utility for managing inter-container dependencies, <a href="https://github.com/bv2012/dockerize">Dockerize</a>.</p>
-
-<p>Before I go into specifics, I want to describe our workflow with Jenkins and Docker from a high-level perspective.</p>
-
-<ul>
-<li><p>let’s take the <a href="https://github.com/bv2012/hi_sinatra-docker">hi_sinatra</a> Ruby example app. It has its own GitHub repository and we have a simple, non-git Jenkins job for it.</p></li>
-<li><p>every commit pushed to GitHub, regardless of the branch, triggers a Jenkins build (via Amazon SQS). All Jenkins builds will result in a Docker image. A successful build will produce a running Docker container. A failed build will produce a stopped container which can be investigated by either looking at the logs or starting it with a tty attached.</p></li>
-<li><p>if Docker doesn’t have a <strong>hi_sinatra:master</strong> pre-built image, a new one will be created from the master branch. This master image gets re-built every time there’s a commit against the master branch. Having a master image speeds up image builds considerably (eg. installing Ruby gems, installing node modules, C extensions etc). The resulting image won’t use any caching and all intermediary images will be removed. Just to clarify, this image will not be shipped into production.</p></li>
-<li><p>if a Docker image with that app’s name, branch name and git commit sha doesn’t exist, we want Docker to build it for us. At this point, we’re interested to have the eg. <strong>hi_sinatra:second-blog-post.a8e8e83 </strong>Docker image available.</p></li>
-<li><p>before a new container can be started from the image that we’ve just built, all services that the app requires must be running in their own independent containers. Our <strong>hi_sinatra</strong> example app requires a running Redis server.</p></li>
-<li><p>when all dependent services are running in their own containers, we start a container from the newly built app image (in our example, <strong>hi_sinatra:second-blog-post.a8e8e83</strong>). All dependent containers will have their IPs exposed via env options, eg. docker run -e REDIS_HOST=172.17.0.8 -d &hellip;</p></li>
-<li><p>before our <strong>hi_sinatra app</strong> starts in its new Docker container, all tests must pass both unit, integration and acceptance. Full stack tests (also known as acceptance tests) use sandbox services, but they are setup via the same Docker containers that will be made available in production. Code portability is Docker’s strongest point, we’re making full use of it.</p></li>
-<li><p>if everything worked as expected, including interactions with all external services, this Docker image will be tagged as production. The service responsible for bringing up new Docker containers from the latest production images will take it from here.</p></li>
-</ul>
-
-
-<p>Docker containers running on the CI are available only on our office network, anyone inside it can connect to them. All that it takes to get an instance for a specific app (and all its dependencies) is to push a new branch to GitHub.</p>
-
-<h2>Dockerize</h2>
-
-<p>Dockerize acts as a Docker proxy, meaning that all commands which it does not understand get forwarded to the docker binary. Dockerize has just 2 dependencies: bash &amp; git.</p>
-
-<p>The previously described workflow as a single shell command:</p>
-
-<pre><code>dockerize boot cambridge-healthcare/hi_sinatra-docker hi_sinatra
-</code></pre>
-
-<p>The hi_sinatra app comes with 2 files that Dockerize picks up on:</p>
-
-<ul>
-<li><p>dockerize.containers which defines dependencies on other containers (another service such as Redis server or another app)</p></li>
-<li><p>dockerize.envs which will forward specific environment variables from the Docker host into the container</p></li>
-</ul>
-
-
-<p>The Vagrantfile that comes with hi_sinatra will get you up and running with Docker, Jenkins and now Dockerize. The quickest way to try the whole setup (<a href="2014-02-21-continuous-delivery-with-docker-and-jenkins-part-i">provided you have Vagrant installed</a>):</p>
-
-<pre><code>git clone https://github.com/cambridge-healthcare/hi_sinatra-docker.git
-cd hi_sinatra-docker
-vagrant up
-</code></pre>
-
-<p>By the time the VM gets provisioned, there will be a running version of <strong>hi_sinatra</strong> inside a Docker container using a Redis server running in a separate container for tracking requests. Use the IP address and port displayed at the end of the Vagrant run to access the hi_sinatra app in your browser.</p>
-
-<h2>Jenkins + Dockerize</h2>
-
-<p>Dockerize makes Jenkins integration with Docker incredibly simple. In the Jenkins instance running on the Vagrant VM that we have just built, add the following job through the Jenkins web interface:</p>
-
-<p>| Job name | hi_sinatra  |
-| Job type | Build a free-style software project |
-| Build| Execute shell   |</p>
-
-<p>This is the shell command which you will need to use for the build execution:</p>
-
-<pre><code>/bin/bash -c "source $HOME/.profile &amp;&amp; dockerize boot cambridge-healthcare/hi_sinatra-docker hi_sinatra"
-</code></pre>
-
-<p>Every successful Jenkins build will now result in a running Docker container.</p>
-
-<p>CI setups are always opinionated. We have a few more additions such as Campfire notifications, Amazon SQS integration with GitHub and a few others which are specific to our infrastructure. The above Jenkins integration example with Docker is meant to be a most conservative starting point for your own setup.</p>
-
-<p>Until next time!</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-i/">Continuous Delivery With Docker and Jenkins - Part I</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-21T14:40:59-05:00" pubdate data-updated="true">Feb 21<span>st</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>We have been using Docker in our staging environment for nealrt several months now and are right now planning to make it part of our production setup once the first stable version gets released. We’ll be discussing the staging environment setup today with the promise of following up on the production environment at a later date.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-i/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/17/using-docker-to-run-ruby-rspec-ci-in-jenkins/">Using Docker to Run Ruby Rspec CI in Jenkins</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-17T17:01:40-05:00" pubdate data-updated="true">Feb 17<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In this post, I am going to give a step-by-step introduction into how you can do continuous integration testing with Docker. I will be running the rspec test suite of the CloudFoundry project&rsquo;s Cloud Controller component, although the same process can be applied to any Ruby project. I will show how to build Docker images to easily run repeatable tests and how to set-up Jenkins to do it for you in an automated manner.</p>
-
-<h1>Continuous Integration Using Docker</h1>
-
-<p>The goal of this post is to show Jenkins running a project’s test-suite using Docker. This will occur following every code check-in or every N minutes or whenever it is needed.</p>
-
-<p>Why use Docker to do this? Having a clean environment to run tests is one of the ten commandments of running tests. With Docker&rsquo;s Dockerfile, you can specify a series of steps to create the full stack of the test environment you need. Docker can follow the steps to pre-build the test environment, then stash that environment for disposable re-use. Since a running Docker image, or [LXC] &ldquo;container&rdquo;, is ephemeral, you can blow it away and re-create it very quickly. Perfect for continuous integration!</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/02/17/using-docker-to-run-ruby-rspec-ci-in-jenkins/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-04T13:47:50-05:00" pubdate data-updated="true">Feb 4<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Logging in and updating system to latest</h2>
-
-<p>SSH your shiny new VM,</p>
-
-<p>Now lets update the system to the latest:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum update</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Install OS dependencies</h2>
-
-<p>We’r going to build Node.js from sources, some dependencies (such as gcc) are required:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install gcc-c++ make openssl-devel git</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
   
   
     <article>
@@ -2246,6 +564,741 @@ through:</p>
 
     </article>
   
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye Node-forever</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:15:10-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/06/26/goodbye-node-forever-hello-pm2.html">Goodbye node-forever, hello PM2</a></h2>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm22.png" alt="pm2 logo" /></p>
+
+<p>It&rsquo;s no secret that the devo.ps team has a crush on Javascript; node.js in the backend, AngularJS for our clients, there isn&rsquo;t much of our stack that isn&rsquo;t at least in part built with it. Our approach of building <a href="http://devo.ps/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">static clients and RESTful JSON APIs</a> means that we run a lot of node.js and I must admit that, despite all of it awesomeness, node.js still is a bit of a
+headache when it comes to running in production. Tooling and best practices (think monitoring, logging, error traces…) are still lacking when compared to some of the more established languages.</p>
+
+<p>So far, we had been relying on the pretty nifty <a href="https://github.com/nodejitsu/forever">node-forever</a>. Great tool, but a few things were missing:</p>
+
+<ul>
+<li>Limited monitoring and logging abilities,</li>
+<li>Poor support for process management configuration,</li>
+<li>No support for clusterization,</li>
+<li>Aging codebase (which meant frequent failures when upgrading Node).</li>
+</ul>
+
+
+<p>This is what led us to write <a href="https://github.com/Unitech/pm2">PM2</a> in the past couple months. We thought we&rsquo;d give you a quick look at it while we&rsquo;re nearing a production ready release.</p>
+
+<h3>So what&rsquo;s in the box?</h3>
+
+<p>First things first, you can install it with <code>npm</code>:</p>
+
+<pre><code>npm install -g pm2
+</code></pre>
+
+<p>Let&rsquo;s open things up with the usual comparison table:</p>
+
+<p>FeatureForeverPM2</p>
+
+<p>Keep Alive</p>
+
+<p>✔</p>
+
+<p>✔</p>
+
+<p>Coffeescript</p>
+
+<p>✔</p>
+
+<p>Log aggregation</p>
+
+<p>✔</p>
+
+<p>API</p>
+
+<p>✔</p>
+
+<p>Terminal monitoring</p>
+
+<p>✔</p>
+
+<p>Clustering</p>
+
+<p>✔</p>
+
+<p>JSON configuration</p>
+
+<p>✔</p>
+
+<p>And now let me geek a tad more about the main features…</p>
+
+<h3>Native clusterization</h3>
+
+<p>Node v0.6 introduced the cluster feature, allowing you to share a socket across multiple networked Node applications. Problem is, it doesn&rsquo;t work out of the box and requires some tweaking to handle master and children processes.</p>
+
+<p>PM2 handles this natively, without any extra code: PM2 itself will act as the master process and wrap your code into a special clustered process, as Nodejs does, to add some global variables to your files.</p>
+
+<p>To start a clustered app using all the CPUs you just need to type something like that:</p>
+
+<pre><code>$ pm2 start app.js -i max
+</code></pre>
+
+<p>Then;</p>
+
+<pre><code>$ pm2 list
+</code></pre>
+
+<p>Which should display something like (ASCII UI FTW);</p>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-list.png" alt="pm2 list" /></p>
+
+<p>As you can see, your app is now forked into multiple processes depending on the number of CPUs available.</p>
+
+<h3>Monitoring <em>a la</em> termcaps-HTOP</h3>
+
+<p>It&rsquo;s nice enough to have an overview of the running processes and their status with the <code>pm2 list</code> command. But what about tracking their resources consumption? Fear not:</p>
+
+<pre><code>$ pm2 monit
+</code></pre>
+
+<p>You should get the CPU usage and memory consumption by process (and cluster).</p>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-monit.png" alt="pm2 monit" /></p>
+
+<p><strong>Disclaimer</strong>: <a href="https://github.com/arunoda/node-usage">node-usage</a> doesn&rsquo;t support MacOS for now (feel free to PR). It works just fine on Linux though.</p>
+
+<p>Now, what about checking on our clusters and GC cleaning of the memory stack?
+Let&rsquo;s consider you already have an HTTP benchmark tool (if not, you should definitely check <a href="https://github.com/wg/wrk">WRK</a>):</p>
+
+<pre><code>$ express bufallo     // Create an express app
+$ cd bufallo
+$ npm install
+$ pm2 start app.js -i max
+$ wrk -c 100 -d 100 http://localhost:3000/
+</code></pre>
+
+<p>In another terminal, launch the monitoring option:</p>
+
+<pre><code>$ pm2 monit
+</code></pre>
+
+<p>W00t!</p>
+
+<h3>Realtime log aggregation</h3>
+
+<p>Now you have to manage multiple clustered processes: one who&rsquo;s crawling data, another who is processing stuff, and so on so forth. That means logs, lots of it. You can still handle it the old fashioned way:</p>
+
+<pre><code>$ tail -f /path/to/log1 /path/to/log2 ...
+</code></pre>
+
+<p>But we&rsquo;re nice, so we wrote the <code>logs</code> feature:</p>
+
+<pre><code>$ pm2 logs
+</code></pre>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-logs.png" alt="pm2 monit" /></p>
+
+<h3>Resurrection</h3>
+
+<p>So things are nice and dandy, your processes are humming and you need to do a hard restart. What now? Well, first, dump things:</p>
+
+<pre><code>$ pm2 dump
+</code></pre>
+
+<p>From there, you should be able to resurrect things from file:</p>
+
+<pre><code>$ pm2 kill     // let's simulate a pm2 stop
+$ pm2 resurect // All my processes are now up and running 
+</code></pre>
+
+<h3>API Health point</h3>
+
+<p>Let&rsquo;s say you want to monitor all the processes managed by PM2, as well as the status of the machine they run on (and maybe even build a nice Angular app to consume this API…):</p>
+
+<pre><code>$ pm2 web
+</code></pre>
+
+<p>Point your browser at <code>http://localhost:9615</code>, aaaaand… done!</p>
+
+<h3>And there&rsquo;s more…</h3>
+
+<ul>
+<li>Full tests,</li>
+<li>Generation of <code>update-rc.d</code> (<code>pm2 startup</code>), though still very alpha,</li>
+<li>Development mode with auto restart on file change (<code>pm2 dev</code>), still very drafty too,</li>
+<li>Log flushing,</li>
+<li>Management of your applications fleet via JSON file,</li>
+<li>Log uncaught exceptions in error logs,</li>
+<li>Log of restart count and time,</li>
+<li>Automated killing of processes exiting too fast.</li>
+</ul>
+
+
+<h3>What&rsquo;s next?</h3>
+
+<p>Well first, you could show your love on Github (we love stars):
+<a href="https://github.com/Unitech/pm2">https://github.com/Unitech/pm2</a>.</p>
+
+<p>We developed PM2 to offer an advanced and complete solution for Node process management. We&rsquo;re looking forward to getting more people helping us getting there: pull requests are more than welcome. A few things already on the
+roadmap that we&rsquo;ll get right at once we have a stable core:</p>
+
+<ul>
+<li>Remote administration/status checking,</li>
+<li>Built-in inter-processes communication channel (message bus),</li>
+<li>V8 GC memory leak detection,</li>
+<li>Web interface,</li>
+<li>Persistent storage for monitoring data,</li>
+<li>Email notifications.</li>
+</ul>
+
+
+<p>Special thanks to <a href="https://github.com/makara">Makara Wang</a> for concepts/tools and <a href="https://github.com/rlidwka">Alex Kocharin</a> for advices and pull requests.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/ansible-simply-kicks-ass/">Ansible Simply Kicks Ass</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:12:31-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/07/03/ansible-simply-kicks-ass.html">Ansible Simply Kicks Ass</a></h2>
+
+<p>The devo.ps team has been putting quite a few tools to the test over the years when it comes to managing infrastructures. We&rsquo;ve developed some ourselves and have adopted others. While the choice to use one over another is not always as clear-cut as we&rsquo;d like (I&rsquo;d love to rant about monitoring but will leave that for a later post), we&rsquo;ve definitely developed kind of a crush for <a href="https://github.com/ansible/ansible">Ansible</a> in the past 6 months. We went through years of using Puppet, then Chef and more recently Salt Stack, before Ansible gained unanimous adoption among our team.</p>
+
+<p>What makes it awesome? Well, on top of my head:</p>
+
+<ul>
+<li>It&rsquo;s <strong>agent-less</strong> and works by default in <strong>push mode</strong> (that last point is subjective, I know).</li>
+<li>It&rsquo;s <strong>easy to pick up</strong> (honestly, try and explain Chef or Puppet to a developer and see how long that takes you compared to Ansible).</li>
+<li>It&rsquo;s <strong>just Python</strong>. It makes it easier for people like me to contribute (Ruby is not necessarily that mainstream among ops) and also means minimal dependency on install (Python is shipped by default with Linux).</li>
+<li>It&rsquo;s <strong>picking up steam</strong> at an impressive pace (I believe we&rsquo;re at 10 to 15 pull requests a day).</li>
+<li>And it has all of the good stuff: idempotence, roles, playbooks, tasks, handlers, lookups, callback plugins…</li>
+</ul>
+
+
+<p>Now, Ansible is still very much in its infancy and some technologies may not yet be supported. But there are a great deal of teams pushing hard on contributions, including us. In the past few weeks, for example, we&rsquo;ve
+contributed both Digital Ocean and Linode modules. And we have a lot more coming, including some experimentations with Vagrant.</p>
+
+<p>Now, an interesting aspect of Ansible, and one that makes it so simple, is that it comes by default with a tool-belt. Understand that it is shipped with a range of modules that add support for well known technologies: <a href="http://www.ansibleworks.com/docs/modules.html">EC2,
+Rackspace, MySQL, PostgreSQL, rpm, apt,…</a>. This now includes our
+Linode contribution. That means that with the latest version of Ansible you can spin off a new Linode box as easily as:</p>
+
+<pre><code>ansible all -m linode -a "name='my-linode-box' plan=1 datacenter=2 distribution=99 password='p@ssword' "
+</code></pre>
+
+<p>Doing this with Chef would probably mean chasing down a knife plugin for adding Linode support, and would simply require a full Chef stack (say hello to RabbitMQ, Solr, CouchDB and a gazillion smaller dependencies). Getting
+Ansible up and running is as easy as:</p>
+
+<pre><code>pip install ansible
+</code></pre>
+
+<p>Et voila! You gotta appreciate the simple things in life. Especially the life of a sysadmin.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/code-reuse-with-node-dot-js/">Code Reuse With Node.js</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:09:35-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/07/11/code-reuse-with-nodejs.html">Code Reuse With Node.js</a></h2>
+
+<p><img src="http://devo.ps/images/posts/recycle.png" alt="Code recycling" /></p>
+
+<p>Any project that grows to a decent size will need to re-use parts of its code extensively. That often means, through the development cycle, a fair amount of rewrites and refactoring exercises. Elegant code re-use is hard to pull off.</p>
+
+<p>With node.js, which we use quite a bit at <a href="http://devo.ps">devo.ps</a>, the most common ways to do this often rely on prototype or class inheritance. The problem is, as the inheritance chain grows, managing attributes and functions
+can become quite complex.</p>
+
+<p>The truth is, people usually just need the objects. This led us to adopt a certain form of object-based prototyping. We believe it to be leaner and more straightforward in most cases. But before we get there, let&rsquo;s have a look at how people usually approach this issue.</p>
+
+<h2>The &ldquo;Function copy&rdquo;</h2>
+
+<p>Usually in the form of <code>this[key] = that[key]</code>. A quick example:</p>
+
+<pre><code>var objectA = {
+    lorem: 'lorem ipsum'
+};
+var objectB = {};
+
+// Direct copy of a string, but you get the idea
+objectB.lorem = objectA.lorem;
+console.log(objectB); // Will output: { lorem: 'lorem ipsum' }
+</code></pre>
+
+<p>Crude, but it works. Next…</p>
+
+<h2>Object.defineProperties()</h2>
+
+<p>The previous method may work with simple structures, but it won&rsquo;t hold when
+your use cases become more complex. That&rsquo;s when I usually call my buddy
+<code>Object.defineProperties()</code>:</p>
+
+<pre><code>var descriptor = Object.getOwnPropertyDescriptor;
+var defineProp = Object.defineProperty;
+
+var objectA = {};
+var objectB = {};
+var objectC = {};
+
+objectA.__defineGetter__('lorem', function() {
+    return 'lorem ipsum';
+});
+console.log(objectA); // Will output: { lorem: [Getter] }
+
+// Direct copy, which copies the result of the getter.
+objectB.lorem = objectA.lorem;
+console.log(objectB); // Will output: { lorem: 'lorem ipsum' }
+
+// Copying with Object.defineProperty(), and it copies the getter itself.
+defineProp(objectC, 'lorem', descriptor(objectA, 'lorem'));
+console.log(objectC); // Will output: { lorem: [Getter] }
+</code></pre>
+
+<p>I often use a library for that. A couple examples (more or less the same stuff
+with different coding styles):</p>
+
+<ol>
+<li><p> <strong><a href="https://github.com/medikoo/es5-ext">es5-ext</a></strong></p>
+
+<p> var extend = require(&lsquo;es5-ext/lib/Object/extend-properties&rsquo;);</p>
+
+<p> var objectA = {};
+ var objectC = {};</p>
+
+<p> objectA.<strong>defineGetter</strong>(&lsquo;lorem&rsquo;, function() {
+     return &lsquo;lorem ipsum&rsquo;;
+ });</p>
+
+<p> extend(objectC, objectA);
+ console.log(objectC); // Will output: { lorem: [Getter] }</p></li>
+<li><p> <strong><a href="https://github.com/devo-ps/carcass">Carcass</a></strong></p>
+
+<p> var carcass = require(&lsquo;carcass&rsquo;);</p>
+
+<p> var objectA = {};
+ var objectC = {};</p>
+
+<p> objectA.<strong>defineGetter</strong>(&lsquo;lorem&rsquo;, function() {
+     return &lsquo;lorem ipsum&rsquo;;
+ });</p>
+
+<p> carcass.mixable(objectC);
+ objectC.mixin(objectA);
+ console.log(objectC); // Will output: { mixin: [Function: mixin], lorem: [Getter] }</p></li>
+</ol>
+
+
+<p>Slightly better, but not optimal. Now, let&rsquo;s see what we end up doing more and
+more often:</p>
+
+<h2>Prototyping through objects</h2>
+
+<p>The basic idea is that we prepare some functions, wrap them into an object which then becomes a &ldquo;feature&rdquo;. That feature can then be re-used by simply merging it with the targeted structure (object or prototype).</p>
+
+<p>Let&rsquo;s take the example of the <a href="https://github.com/devo-ps/carcass/blob/master/lib/proto/loaderSync.js">loaderSync</a> script in <a href="https://github.com/devo-ps/carcass">Carcass</a>:</p>
+
+<pre><code>module.exports = {
+    source: source,
+    parser: parser,
+    reload: reload,
+    get: get
+};
+
+function get() {
+
+(...)
+</code></pre>
+
+<p>Once you copy the functions to an object, this object becomes a &ldquo;loader&rdquo; that can load a &ldquo;source&rdquo; synchronously with a &ldquo;parser&rdquo;. A &ldquo;source&rdquo; can be a file path and the &ldquo;parser&rdquo; can be simply Node.js&#8217; <code>require</code> function.</p>
+
+<p>Let&rsquo;s now see how to use this with a couple object builders. Once again, I&rsquo;ll borrow an example from Carcass; the <a href="https://github.com/devo-ps/carcass/blob/master/benchmark/proto.loaderSync.js">loaderSync benchmark script</a>. The first builder generates a function and copies the methods from what we&rsquo;ve prepared. The second one copies the methods to the prototype of a builder class:</p>
+
+<pre><code>(...)
+
+function LoaderA(_source) {
+    function loader() {
+        return loader.get();
+    }
+    loader.mixin = mixin;
+    loader.mixin(loaderSync);
+    loader.source(_source);
+    return loader;
+}
+
+(...)
+
+function LoaderC(_source) {
+    if (!(this instanceof LoaderC)) return new LoaderC(_source);
+    this.source(_source);
+}
+LoaderC.prototype.mixin = mixin;
+LoaderC.prototype.mixin(loaderSync);
+
+(...)
+</code></pre>
+
+<p>Here we can see the two approaches. Let&rsquo;s compare them quickly:</p>
+
+<p>FeatureLoader ALoader C</p>
+
+<p><strong>Instantiating</strong>
+<code>var a = LoaderA(...)</code></p>
+
+<p><code>var c = LoaderC(...)</code> or <code>var c = new LoaderC(...)</code></p>
+
+<p><strong>Appearance</strong>
+Generates a function</p>
+
+<p>Builds a typical instance which is an object.</p>
+
+<p><strong>Invoking directly</strong>
+<code>a()</code> or <code>a.get()</code></p>
+
+<p><code>c.get()</code></p>
+
+<p><strong>Invoking as a callback</strong>
+<code>ipsum(a)</code></p>
+
+<p><code>ipsum(c.get.bind(c))</code></p>
+
+<h2><strong>Performance † of instantiating</strong></h2>
+
+<p>100x faster</p>
+
+<p><strong>Performance of invoking</strong>
+<em>idem</em></p>
+
+<p><em>idem</em></p>
+
+<p><strong>†</strong>: (check it yourself by <a href="https://github.com/devo-ps/carcass/blob/master/Makefile">benchmarking Carcass with <code>make bm</code></a>)</p>
+
+<h3>&ldquo;Protos&rdquo; and beyond</h3>
+
+<p>That last approach is gaining traction among our team; we prepare functions for our object builders (which, by the way, we call &ldquo;protos&rdquo;). While we still choose to use prototypes in some occurrences, it is mainly because it is
+faster to get done. For the sake of convenience, we also sometimes rely on functions rather than objects to invoke our &ldquo;protos&rdquo;, however keep in mind that this is a performance trade-off.</p>
+
+<p>I&rsquo;ll wrap this up mentioning one more method we use, admittedly less often: &ldquo;Object alter&rdquo;. The idea is to rely on an &ldquo;alter&rdquo; function designed to change objects passed to it. This is sometimes also called a &ldquo;mixin&rdquo;. An example from <a href="https://github.com/visionmedia/configurable.js">vsionmedia&rsquo;s trove of awesomeness on Github</a>:</p>
+
+<pre><code>(...)
+
+module.exports = function(obj){
+
+    obj.settings = {};
+
+    obj.set = function(name, val){
+        (...)
+    };
+
+    (...)
+
+    return obj;
+};
+</code></pre>
+
+<h3>Resources</h3>
+
+<ul>
+<li><a href="http://killdream.github.io/2011/10/09/understanding-javascript-oop.html">A case for prototypes</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">MDN Object reference</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/automation-and-friction/">Automation and Friction</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:06:45-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/06/20/automation-and-friction.html">Automation And Friction</a></h2>
+
+<p>I&rsquo;ll admit that the devo.ps team is a lazy bunch; we like to forget about things, especially the hard stuff. Dealing with a complex process invariably leads one of us to vent about how &ldquo;we should automate that stuff&rdquo;. That&rsquo;s what our team does day and night:</p>
+
+<ol>
+<li> Dumb things down, lower barriers of entry, and then…</li>
+<li> <strong>Automate all the things!</strong></li>
+</ol>
+
+
+<p>This has transpired through every layer of our company, from engineering to operations. Recently we&rsquo;ve started pushing on a third point, but first let me rant a bit…</p>
+
+<h3>The ever increasing surface of friction</h3>
+
+<p>The past few years have seen a healthy push on UI and UX. Even developer tools and enterprise software, historically less user-friendly, have started adopting that trend. We now have things like Github. Great.</p>
+
+<p>This trend grew in parallel with the adoption of SaaS. SaaS are the results of teams focused on specific problems, with the user experience often being a key component (not to undervalue good engineering). It&rsquo;s pretty standard for these services to offer an API for integration&rsquo;s sake. <a href="https://getbase.com">Our CRM</a> plays nicely with Dropbox, GMail and a gazillion other services. Again, great.</p>
+
+<p><strong>However, the success of SaaS means the surface of interfaces we&rsquo;re dealing with is constantly stretching. This is far more difficult to overcome than poor UI or UX.</strong> Many of us have witnessed teams struggling to get adoption on a great tool that happen to be one too many. There&rsquo;s not much you can do about it.</p>
+
+<h3>A bot to rule them all…</h3>
+
+<p><img src="http://devo.ps/images/posts/borat.png" alt="Borat is omnipotent" /></p>
+
+<p>Our team has tried a lot of different approaches over the years. We kicked the tires on a lot of products and ended up doing as usual:</p>
+
+<ol>
+<li><p> <strong>Simplify</strong>. For example, we use Github to manage most tasks and discussions, including operations (HR, admin, …), and marketing. We used <a href="http://trello.com/">Trello</a> alongside Github for a while and we loved it. But it silo-ed the discussions. Everything from our employee handbook to tasks for buying snacks for the office are now on Github. It also had an interesting side effect on transparency, but I&rsquo;ll talk about this another time.</p></li>
+<li><p> <strong>Automate</strong>. We automate pretty much everything we can. When you apply to one of our job by email for example, we push the attachments in Dropbox (likely your resume) and create a ticket with the relevant information on Github. <a href="http://zapier.com">Zapier</a> is great for this kind of stuff by the way.</p></li>
+<li><p> <strong>Make it accessible</strong>. That&rsquo;s the most important point for us at this stage. Borat, our <a href="http://hubot.github.com">Hubot</a> chat bot, is hooked up with most of our infrastructure and is able to pass on requests to the services we use as well as some of our automation. If one of us is awake, chances are you can find us on the chat, making it the most ubiquitous interface for our team:</p>
+
+<ul>
+<li>Need to deploy some code on production or modify some configuration on a server? Ask Borat, he&rsquo;ll relay your demands to the <a href="http://devo.ps">devo.ps</a> API.</li>
+<li>Your latest commit broke the build? A new mail came from support? Expect to hear about it from Borat.</li>
+<li>Need to use our time tracker? Just drop a message to the bot when you&rsquo;re starting your task and let him know when you&rsquo;re done.</li>
+<li>Need to call for a SCRUM? Just mention the Github team you want to chat with and Borat will create a separate channel and invite the right people to join.</li>
+<li>Somebody is at the door? Ask the bot to open it for you (you gotta love hacking on Raspberry PI).</li>
+</ul>
+</li>
+</ol>
+
+
+<p>Anybody with access to our bot&rsquo;s repository can add a script to hook him up to a new service. Git push, kill the bot and wait for him to come back to life with new skills. The tedious stuff ends up sooner or later scripted and one sentence away.</p>
+
+<p>Really, try it. It&rsquo;s worth the investment.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/101-on-devops-and-how-we-plan-on-helping/">101 on DevOps and How We Plan on Helping</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T13:54:32-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2012/10/23/101-on-development-and-operations.html">101 On DevOps And How We Plan On Helping</a></h2>
+
+<p>Here&rsquo;s what usually happens: on one side the development team wants to push new features as fast as possible to production, while on the other side, operations are trying to keep things stable. Both teams are evaluated on
+criteria that are often directly conflicting. The stronger team win one argument… Until the next crisis. And we&rsquo;re not even talking about other teams, they too have conflicting agendas to throw in the mix.</p>
+
+<p>There&rsquo;s no silver bullet for getting evryone to play nicely. That being said, having Dev and Ops on the path of cooperation is not impossible. <a href="http://en.wikipedia.org/wiki/Devops">DevOps</a> is exactly this; fostering a culture of best practices and collaboration between these teams.</p>
+
+<p>In a very similar fashion to what happened with the agile movement, a lot of tools and approaches emerged that can help: methodologies (SCRUMs, kanban…), tools for configuration management (Chef, Puppet), orchestration, automation, logging… But at the core lies the need for nurturing a specific culture.</p>
+
+<p>Operations teams have been slower to adopt these methodologies compared to development teams. The average system administrator spend more time working in FIFO, putting up fires, rather than making long term investments in automation or setting up best practices. Moreover, operations teams are usually faced with a logic of budget cuts and cost &ldquo;optimizations&rdquo;, compared to the larger R&amp;D budget development teams seem to enjoy.</p>
+
+<p>Even when conditions (and resources) are favorable to the growth of a proper culture, recruiting the right profiles can prove very challenging. We&rsquo;re here talking about people with a wide range of skills, on-hands experience and
+strong collaboration and organizational skills. All of this take time. Best practices are forged through years of experience.</p>
+
+<p>That is why we&rsquo;re building <a href="http://devo.ps">devo.ps</a>. We&rsquo;re trying to lower the barriers of entry to this field and help professionals scale themselves in their role. We&rsquo;re a motivated team of engineers who have worked on both sides of the fence, with small to very large code bases and infrastructures. We hope to untangle the mess that often is infrastructure and application management, letting technical teams focus on the higher value tasks of the job.</p>
+
+<ul>
+<li><a href="http://devo.ps/about.html">About</a></li>
+<li><a href="http://devo.ps/blog.html">Blog</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/farewell-to-regular-web-development-approaches/">Farewell to Regular Web Development Approaches</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T13:52:12-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">Farewell to Regular Web Development Approaches</a></h2>
+
+<p>At my <a href="http://wiredcraft.com">previous company</a>, we built Web applications for medium to large organizations, often in the humanitarian and non-profit space, facing original problems revolving around data. Things like building the
+<a href="http://wiredcraft.com/work/southern-sudan-referendum/index.html">voting infrastructure for the Southern Sudan Referendum</a> helped us diversify our technical chops. But until a year ago, we were still mostly building regular Web applications; the user requests a page that we build and serve back.</p>
+
+<p><strong>Until we started falling in love with APIs and static clients.</strong></p>
+
+<p>It&rsquo;s not that we fundamentally disliked the previous approach. We just reached a point where we felt our goals weren&rsquo;t best served by this model. With lots of dynamic data, complex visualizations and a set of &ldquo;static&rdquo; interfaces, the traditional way was hindering our development speed and our ability to experiment. And so we got busy, experimenting at first with smaller parts of our projects (blog, help section, download pages…). We realized our use of complex pieces of softwares like content management systems had seriously biased our approach to problem solving. <strong>The CMS had become a boilerplate, an unchallenged dependency.</strong></p>
+
+<p>We&rsquo;ve gradually adopted a pattern of building front-ends as static clients (may they be Web, mobile or 3rd party integrations) combined with, usually, one RESTful JSON API in the backend. And it works marvelously, thanks in part
+to some awesome tech much smarter people figured out for us:</p>
+
+<ul>
+<li><a href="http://marionettejs.com">Marionette</a> and <a href="http://backbonejs.org">Backbone.js</a>, <a href="http://github.com/component/component">Component</a> (a personal favorite) and <a href="http://github.com/mojombo/jekyll">Jekyll</a> allow us to build static HTML5 + JS + CSS clients for Web and mobile,</li>
+<li><a href="http://nodejs.org">node.js</a> and <a href="http://github.com/devo-ps/carcass">carcass</a> (alpha quality at this stage) in the backend for our APIs.</li>
+</ul>
+
+
+<p>Most of what we build at devo.ps is stemming from this accelerated recovery and follow usually that order:</p>
+
+<ol>
+<li> We start by defining our API interface through user stories and methods,</li>
+<li> Both backend and front-end teams are getting cranking on implementing and solving the challenges specific to their part,</li>
+</ol>
+
+
+<p>A lot of things happen in parallel and changes on one side rarely impact the other: we can make drastic changes in the UI without any change on the backend. And there were a lot of unexpected gains too, in security, speed and
+overall maintainability. More importantly, we&rsquo;ve freed a lot of our resources to focus on building compelling user experiences instead of fighting a large piece of software to do what we want it to do.</p>
+
+<p>If you haven&rsquo;t tried building things that way yet, give it a try honestly (when relevant); it may be a larger initial investment in some cases but you&rsquo;ll come out on top at almost every level.</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -2271,19 +1324,19 @@ through:</p>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+        <a href="/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/">Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+        <a href="/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/">Continuous Delivery Implementation : Getting started with AWS</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
       </li>
     
   </ul>

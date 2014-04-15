@@ -9,7 +9,8 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Autoscaling for LAMP on AWS | Load Test the Environment: Part 3 In part 3 of the Autoscaling for LAMP on AWS series, After setting up your &hellip;">
+  <meta name="description" content="
+">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,1183 +68,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-25T11:23:14-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Autoscaling for LAMP on AWS | Load Test the Environment: Part 3</h3>
-
-<p>In part 3 of the Autoscaling for LAMP on AWS series,</p>
-
-<p>After setting up your application autoscaling, it’s important to load
-run the application in order to understand the minimum and maximum
-number of instances required for each application.</p>
-
-<p><a href="../autoscaling-for-lamp-on-aws-setting-up-austoscaling-groups-part-2/index.html" title="Autoscaling for LAMP on AWS | Setting Up Austoscaling Groups : Part 2">Read Part 2 to learn more about setting up autoscaling
-groups.</a></p>
-
-<p>First, fire the load run. For this article we’ve used HP LoadRunner
-because it provides more detailed results than others, but there are
-also other load runner tools to choose from. Be sure to run the load
-from multiple IP addresses or else the ELB may not distribute it equally
-across all instances. HP LoadRunner helps you use multiple nodes in
-order to generate the load.</p>
-
-<p>Update the Auto Scaling Group’s minimum and maximum instance counts.\</p>
-
-<p><img src="https://lh5.googleusercontent.com/nXhTs4kEqjzxfAy8aGdgqLvC_yKninSiyM3pClGWhemLXPWFjr_6Y5NU8xnf2j7twuJgVx2TO4tvs8fjm2K1c8y6C23NN8lacgef-JEH4621AXZITbYAAKRF4w" alt="" /></p>
-
-<p>For the this article, we’ve set the minimum and maximum instance counts
-at 2 and 8 respectively.</p>
-
-<p>Now change your Auto Scaling Policies. A scaling policy specifies
-whether to scale the auto scaling group up or down, and by how much.
-Here we’ve chosen 2 instances for Scale Up and Scale Down policies.
-These policies automatically increase or decrease the instances
-according to your defined conditions in order to maintain performance
-and minimize cost.</p>
-
-<p><img src="https://lh3.googleusercontent.com/3G9JdQa1GNjF_2fWOrZ10y-cpc3m8_6gtTH2Y046OK3LoiaMYGx0Nm_N4LsBcBhhRhA3cxr7D1sMlCv90ewW9rZ8QCr8amOHqivVcZZmML7Bx-XMIeM7wdN1Nw" alt="" /></p>
-
-<p>Next, <strong>increase the load</strong> gradually with LoadRunner. Once the CPU
-reaches 75% of the instances, Autoscaling will trigger the scale up
-policy to launch 2 more instances.</p>
-
-<p>Now <strong>decrease the load</strong> gradually and the CPU instances load should
-come down to less than 45%. Autoscaling will then trigger the scale down
-policy and delete the additional instances that were launched.</p>
-
-<p>Consider a scenario in which a 2,000-concurrent-request count is reached
-during peak hours and 500 users are reached during non-peak hours. For
-best load run results, try the following.</p>
-
-<p>Capture load test results and CloudWatch metrics for each of the
-following scenarios:</p>
-
-<p>​1. Start the load test with 500 users. Set the minimum instance count
-to 2 if you choose large or medium types, and set the maximum instance
-count to 4.</p>
-
-<p>​2. Increase the load to 1,000 users. Set the minimum and maximum
-instance counts to 2 and 6 respectively.</p>
-
-<p>​3. Increase the load to 2,000 users. Set the minimum and maximum
-instance counts to 4 and 10 respectively.</p>
-
-<p>​4. Increase the load to 3,000 users. Set the minimum and maximum
-instance counts to 6 and 12 respectively.</p>
-
-<p>Analyze the results for each scenario and note which gives better
-throughput and response times. Also check the DB metrics.</p>
-
-<p>Now it will be easy to choose the best instance type and max/min
-instance counts..</p>
-
-<p><strong>Shutdown Autoscaling</strong></p>
-
-<p>Update the autoscale group to resize the instance count to 0. This will
-terminate all instances launched within the lamp-asg autoscale group.</p>
-
-<p><em>Watch out for the final part of this series tomorrow on how to choose
-an instance type. </em></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-25T11:23:10-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Autoscaling for LAMP on AWS | Setting Up Austoscaling Groups : Part 2</h3>
-
-<p>In part 2 of the Autoscaling LAMP in AWS series, let’s discuss how to
-create autoscaling launch configuration, autoscaling groups and how to
-verify the setup autoscaling.</p>
-
-<h2><strong>Autoscale Implementation</strong> </h2>
-
-<p>Autoscale configuration is now available in console. AWS command lines
-are no longer needed for implementation.</p>
-
-<p>Complete the following steps as detailed in <a href="../autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/index.html" title="Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 1">Part
-1</a>of
-this series in order to set up autoscaling :</p>
-
-<ul>
-<li><p>Configure AMI to launch the Instances.</p></li>
-<li><p>Configure Instance type to launch the instances. (Example:
-m1.small,m1.large).</p></li>
-<li><p>Configure KeyPair Name to access the machines.</p></li>
-<li><p>Configure Security Group to allow the Instances to communicate with
-other components.</p></li>
-<li><p>Keep the ELB name readily available.</p></li>
-<li><p>Keep your availability zones ready. (Example: us-east-1a,
-us-east-1b).</p></li>
-<li><p>Set the minimum number of instances for Maximum and Desired
-Capacity. (Start with zero).</p></li>
-<li><p>Set Health Check Type. (ELB).</p></li>
-<li><p>Set Region.</p></li>
-<li><p>Change Capacity Cooldown time.</p></li>
-<li><p>Adjust for scale up and scale down.</p></li>
-</ul>
-
-
-<h2><strong>1. Create the Autoscaling Launch Config</strong> </h2>
-
-<p>Log in to the AWS console and navigate to Services-> EC2-> Launch
-Configuration.</p>
-
-<p><img src="https://lh5.googleusercontent.com/-E7LhgP_GnMeKXQHtHPieeiqZBbrD3TauY5FHvA90y2hvnWMoncO5gEJASGmYd_v1HjDIzIr949-gjX7N2DlCtzCyO5iwZnUd481qEyiHKVkxhH40xDL3xiTzQ" alt="" /></p>
-
-<p>Click on “Create Autoscaling Group”.\</p>
-
-<p><img src="https://lh6.googleusercontent.com/8MJM4YJXpOnamUnIZdfPkHZDJJ_iyVXg1qj373NTmPKZbihu4C2nqYcm2zvCacxycBN1OjzxbpANVSI7W4t7a8LYo15FbooKxx0UlXXkpJwuWxSNX7ZfSYm-PA" alt="" /></p>
-
-<p>On the next screen, click on “Create Launch Configuration”.\</p>
-
-<p><img src="https://lh6.googleusercontent.com/8h6Tn5ncvwmpG6qqI5vqulA_qoG6ijs4wtOOWA6nDwuCUCF1_OpD1VSWhlJDimgNNyhp_dmEsVx4DNJkls043s_CbBJ3HK0VUsSUphYjNeM3Qnlx1clgXZ5jAA" alt="" /></p>
-
-<p>Create a new launch configuration. The name of the launch configuration
-must be unique within the scope of the client’s AWS account.</p>
-
-<p><strong>Choose AMI:</strong> Go to My AMIs and select the LAMP AMI created.\</p>
-
-<p><img src="https://lh4.googleusercontent.com/SJXQcn4aWSm83eKHuKKZHJomaUvLwJShg8w5M1Q6wEXXNiUv61JNoiaKMYlaacP4TYT8kTvJju2vDKK23RReWFLgLxRGb68xaSuMbHzjQ0H74evkNtINH_T_xQ" alt="" /></p>
-
-<p><strong>Choose Instance Type:</strong> We’ve selected a micro instance for our
-example.\</p>
-
-<p><img src="https://lh3.googleusercontent.com/e7lh5P4VR8i9qJ5QgxUK1PBN6in9HQNpU0cjznY6Giemq8RZrF2wBEfmlL_cCS_cDUBKKUHkmU__YC6YPiNncXXhbXMq9BRE3tLSbDewJR8MZ8upoWi0OwIp2w" alt="" /></p>
-
-<p><strong>Configure Details:</strong> Give a name for the Launch Configuration\</p>
-
-<p><img src="https://lh4.googleusercontent.com/kP646CGpnJLDO-44macZIU6A4FMSeLpu8kSq6hpFIstb_heGHWMCRwtn5EpOw8YZdvCANbd-5Pur5SNw_OaWg7432_WdQ1Rbi9QUsR6FMUIo71Y6REwKA5wJ2w" alt="" /></p>
-
-<p><strong>Add Storage:</strong> Keep the values on default.</p>
-
-<p><strong>Configure the Security Group:</strong>Select the Security group to launch the
-autoscaling instances. Review the details and create the Launch
-Configuration.\</p>
-
-<p><img src="https://lh5.googleusercontent.com/rd0tjYvJyMzG0irkmsj9LZSXrxigf93tfOhOLUtcrQ-c1Pk2XXsOF7ksRbu4BY_6PvPfMWqC9bF4NZcy1aNLBOfUd91vjV9shjfA9IRAA5MNSJXb6sPuVa8gHA" alt="" /></p>
-
-<p>In the next window, select “KeyPair” to access the instances.</p>
-
-<h2><strong>2. Create the Auto Scaling Group</strong> </h2>
-
-<p>Create a new Auto Scaling group with a specified name and other
-attributes. When you make the creation request, the Auto Scaling group
-is ready for use in other calls.</p>
-
-<p>Navigate to EC2-> Auto Scaling Groups-> Create Autoscaling Group.</p>
-
-<p>Select the existing Launch Configuration (lamp-launch-1) and go to “Next
-Step”.\</p>
-
-<p><img src="https://lh4.googleusercontent.com/N9-2P0wrXtd1IKWO58H1i7s6MRx0w_toDG5wjmtvsw0v5wUamXz6oIC88g-YYqnP5H9OTobjDc_X9Hf1shLrn_5tTO4HLuHHUomu8qE8OYv3oLEDp02urv0U4g" alt="" /></p>
-
-<p><strong>Configure Autoscaling Group Details:</strong></p>
-
-<p>Give a name to the Auto Scaling Group.</p>
-
-<p>Group Size: Start with zero instances in order to avoid the immediate
-creation of instances. The exact number of required instances can be set
-after these steps are completed, but just set cost optimization values
-to 0 for now.</p>
-
-<p><strong>Availability Zones:</strong></p>
-
-<p>Choose 2 availability zones in order to maintain high availability.</p>
-
-<p>In “Advanced Details” choose the values as shown below.\</p>
-
-<p><img src="https://lh3.googleusercontent.com/YL14QA7srKzFlnQLXuXtIxo0wrB51aDQuOj8fR5YXDYErg2usKCEaKJ57fKN6UahjFP0KFOTkr_y8odlPVWqDh2z3OMwy_iUCRJ5ubiQ4EsOTTNSLKbz8IU2UQ" alt="" /></p>
-
-<p><strong>Configure Scaling Policies:</strong> Keep minimum and maximum instances count
-to zero.</p>
-
-<p><strong>Increase Group Size:</strong> Keep the name at default.</p>
-
-<p><strong>Execute Policy:</strong> Click on “Add new alarm”.\</p>
-
-<p><img src="https://lh3.googleusercontent.com/ysaxf1OR2wazrUt1lvdkYI-YRoVdijKoJD4m6DDlGOHld-LO_mtz24-kOmvyTHybJPIEK_VOKV_UC5ybIwwt9jKtJhZ_3N3J1B_4e5P1iAyIsynEpODx6S4gKQ" alt="" /></p>
-
-<p>A popup window will appear for creating a “Cloud Watch Alarm”.\</p>
-
-<p><img src="https://lh3.googleusercontent.com/eqvhUKlpyNKv7vWQiAI95g5oUQxp9KpqQJ0WCEJjFNfCfn-PIBtaYEPf7k8T2BrlCxN8EoF6utdR5c67tMMk-K0CW-upVZIKR1jOTumOoiwic5fEvZndn8_aEA" alt="" /></p>
-
-<p>For this example, we chose CPU Load average as the autoscaling trigger.
-Whenever the average CPU load of app servers goes beyond 75% for 5
-minutes, autoscaling will trigger the auto-scale-up-policy to launch the
-1 instance and attach to load balancer. The application here is CPU
-intensive and requires more computing power, so we chose the CPU Load
-Average as the autoscale triggering event.</p>
-
-<p>You can choose any Cloudwatch metric to trigger the autoscaling policy.
-For example, Disk read/writes, Network In/Out, ELB request count, ELB
-latency, etc.</p>
-
-<p><strong>Decrease Group size:</strong>\</p>
-
-<p><img src="https://lh3.googleusercontent.com/wxwMuiWm-72K4zGTx-oT56LdXvjhQXNQZPLg_HXPMb89ey5CEtmOV76euYKqLwbYKm88kOAlmSrW6xfRImjIefcQ7LVFOcUIRoyZ5t3xF_JffVy7R96Ypk8lMg" alt="" /></p>
-
-<p><strong>Configure Notifications:</strong> If you’ve already created notifications,
-select one to receive the notifications of Autoscaling events, else skip
-this step for now.</p>
-
-<p>Review the details and click on “Create Autoscaling Group”.</p>
-
-<p>Auto Scaling evaluates the health of each Amazon EC2 instance in the
-Auto Scaling Group and automatically replaces unhealthy instances in
-order to keep the Auto Scaling Group size fixed. That ensures that the
-application is getting the expected compute capacity.</p>
-
-<p>In this example, we’ve chosen to scale down the environment when the
-average CPU load lowers to 40% for 5 minutes.</p>
-
-<h2><strong>Verify Autoscaling</strong> </h2>
-
-<p>After completing the previous steps, it’s time to test autoscaling.</p>
-
-<p>​1. Update the Autoscaling group minimum and maximum instances count to
-2 and 4. You can change these later to fit your specific requirements.</p>
-
-<p>Navigate to EC2-> Auto Scaling Group- > lamp-asg-1.</p>
-
-<p>Right click on “lamp-asg-1” and select “Edit”.</p>
-
-<p>In the “Details” tab, update Desired Min and Max values to 1, and then
-save.\</p>
-
-<p><img src="https://lh5.googleusercontent.com/hxxgnuVeJGgoMHPJvsr5oTeghIkuhJv4_hX0U1YtdjpO57N84IN4KmuSk4cO9cYeTH7JiSD9EMVAXCwS8z5v0-lZ3Gf4jW67oGNflBhgr10tiUVHbn9lpjE8oQ" alt="" /></p>
-
-<p>Now, navigate to Services->EC2->Instances.</p>
-
-<p>You can see that a new instance has been launched and attached to ELB.\</p>
-
-<p><img src="https://lh3.googleusercontent.com/GPJHyEzUrO4LtbxCSzT6rHiz_RLPIIkmeIS--__XDuzFiW2dLSZwZhSwkvHG2KvW5CJ6Kx8DpvjEXo8Xgbw7Q8HBa6cfNUu2Mf6XAM6jpx-8LVKxEUMNeXCVHA" alt="" /></p>
-
-<p>\</p>
-
-<p><img src="https://lh3.googleusercontent.com/9_cNWARusMs6T9rypbPZWakid_pmJpMwBWLXuPhwaRlpiXLU5XFjQDGzBAYbPTtjSiupY8tELI5s8ROwgZtKCvfKhxVsagLXYoKCl_MnWqvnqrOGAoqj-wHGOg" alt="" /></p>
-
-<p>If your health check is configured properly, the instance status will
-turn into “In Service” rather quickly. Always have a minimum of 2
-instances running in order to maintain high availability.</p>
-
-<p>​2. How to Update Launch Configuration: It’s not possible to update the
-existing Launch configuration, so you’ll have to create a new Launch
-configuration and edit the Autoscaling Group to use that new
-configuration.</p>
-
-<p><img src="https://lh5.googleusercontent.com/_bDZv08DtcohHQkG5s0e2_0rd3VnkzImL-87T5wfku5cmvL69tgMhMwKc71Vo-zgVbVImT-HaD0f_fo7dcv5F0JmkbXZGpllnhldKILcPVdgYR7nKZ0qaRniwQ" alt="" /></p>
-
-<p>Now, start the application load run and find out the minimum and maximum
-instances required for your application to handle the load. Then update
-the AutoScaling Group to meet your needs.</p>
-
-<p>Watch out for  Part 3 of this series to understand <a href="../autoscaling-for-lamp-on-aws-load-test-the-environment-part-3/index.html" title="Autoscaling for LAMP on AWS | Load Test the Environment: Part 3">how to load run an
-application</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/">Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-25T11:23:04-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 1</h3>
-
-<p>This is part 1 of the Autoscaling for LAMP in AWS series. The
-step-by-step guide would walk you through</p>
-
-<p><a href="index.html" title="Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 1">Part 1: Creating a LAMP Stack
-AMI</a></p>
-
-<p><a href="../autoscaling-for-lamp-on-aws-setting-up-austoscaling-groups-part-2/index.html" title="Autoscaling for LAMP on AWS | Setting Up Austoscaling Groups : Part 2">Part 2: Setting up Autoscaling
-Groups. </a></p>
-
-<p><a href="../autoscaling-for-lamp-on-aws-load-test-the-environment-part-3/index.html" title="Autoscaling for LAMP on AWS | Load Test the Environment: Part 3">Part 3: Load Test the
-environment</a></p>
-
-<p><a href="../autoscaling-for-lamp-on-aws-choosing-an-instance-type-part-4/index.html" title="Autoscaling for LAMP on AWS | Choosing an instance type: Part 4">Part 4: Choose instance
-type</a></p>
-
-<p>First, let’s discuss how to prepare the AMI, create an ELB and RDS,
-verify the application and terminate the instance.</p>
-
-<h2><strong>Prepare AMI</strong> </h2>
-
-<p>In Autoscaling, create an AMI with all required packages installed. This
-AMI will be used as a template to launch instances in autoscaling. For
-LAMP Stack, you should install and fine tune the latest versions of
-Apache and PHP.</p>
-
-<p>​1. Log in to AWS console.</p>
-
-<p>​2. Navigate to EC2 services. Make sure to switch to the desired region
-before launching instances.</p>
-
-<p>​3. Click on “Launch instance”.</p>
-
-<p><img src="https://lh4.googleusercontent.com/hRoQeC1-aimLHiAt0ptacAxdMqlX8w0N19bEmMo8vm31e0n3-PRzWJLd6gg5TUn2FgokMj6n9y72S6gE_XKS0jNx9tHGv5kqD9TKz5qM0vYhu9TIF5FBAG6C-Q" alt="" /></p>
-
-<p>​4. Select your favorite <strong>Linux AMI</strong> in Classic Wizard.</p>
-
-<p><img src="https://lh6.googleusercontent.com/aWfL4g9PfAqaFTg3uI0Ntv52hSxUyPCNKN5Sf8Y4R5zYyjGOmHeA2zi6pGk59F9NiNJa16n27rSk111xlUJUt24oCLPdQfBZMr0k5yhCZpQ6B_ibxzU9hQRKeA" alt="" /></p>
-
-<p>For this article we used CentOS 6.3 from the community AMIs, but
-OpenSuse and Ubuntu are also good choices.</p>
-
-<p>​5. Launch a <strong>micro</strong> instance from the selected AMI with the desired
-<strong>Security group</strong> and <strong>Key pair</strong>. Remember, this instance is only for
-creating an AMI and will be terminated once <strong>LAMP Stack</strong> is installed
-on it.</p>
-
-<p><img src="https://lh3.googleusercontent.com/_U5YNCpt3CelshRRvlBG8CLKp8tYd64u1lwFWqqZcN48v3UjL9GBOfHoxL3EXJ9pXOk3tNz0Ig049xbwJa4gIsNvr4Z869PFqwkSfBDkJ8GK1PU9olC7ktBn7w" alt="" /></p>
-
-<p>​6. Now log in to the instance and perform the <strong>PHP</strong> and Apache
-installation steps. For this article, we used <strong>Cygwin</strong> to connect the
-<strong>Linux</strong> servers. Make sure you open port 22 to allow <strong>SSH</strong> access
-using security groups.</p>
-
-<p><img src="https://lh4.googleusercontent.com/Al62wHOtPAxqNRUh_kr47FmQqMSycjLKMJ9zSz47OfIWUVDENcSi6ypdoBaiABQ9Rlr33kid0Be8a-1KuyLDYhFbea4Fw4rdJKxGSoDfbQZP6iClUbDTnUmFGA" alt="" /></p>
-
-<p>We modified the “default” security group to open the SSH port. We
-recommend that you not completely open port 22 for SSH, but rather allow
-incoming requests to SSH from your specific IP address. In our case the
-IP address was 49.206.166.12.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ ssh –I LAMP_AMI.pem root@ec2-54-254-37-17.ap-southeast-1.compute.amazonaws.commailto:root@ec2-54-254-37-17.ap-southeast-1.compute.amazonaws.com
-</span><span class='line'>mailto:root@ec2-54-254-37-17.ap-southeast-1.compute.amazonaws.com
-</span><span class='line'>$ yum install httpd.x86_64 httpd-devel.x86_64 mod_ssl.x86_64 php.x86_64 php-common.x86_64 php-devel.x86_64 php-gd.x86_64 php-mbstring.x86_64 php-mysql.x86_64 php-pdo.x86_64 php-soap.x86_64 php-xml.x86_64 php-xmlrpc.x86_64 php-pecl-apc-devel.x86_64 php-pecl-memcache.x86_64 -y</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Once you’ve successfully executed these commands, Apache and PHP will
-install. Note that the commands we’ve used are specific to CentOS 6.3.
-Choosing a different OS or a different CentOS may cause these commands
-to fail to execute. T<strong>he php modules listed above are required for
-WordPress setup and they may vary depending upon your requirements.</strong></p>
-
-<p>Now update the PHP and Apache configurations for your Instance types and
-for the expected load on application. We used t1.Micro for this article.
-Keep in mind that a production system’s instance types need to be chosen
-very carefully, and that the software must be tuned to those particular
-types.</p>
-
-<p><strong><em>Read more on selecting instance types in <a href="../autoscaling-for-lamp-on-aws-choosing-an-instance-type-part-4/index.html" title="Autoscaling for LAMP on AWS | Choosing an instance type: Part 4">Part 4 of this
-series.</a></em></strong></p>
-
-<p>Install Postfix to send email notification for the script used in the
-next step.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ yum install postfix  
-</span><span class='line'>$ chkconfig –level 2345 postfix on
-</span><span class='line'>$ chkconfig –level 2345 httpd off</span></code></pre></td></tr></table></div></figure>
-
-
-<p>​7. Now all of the required packages are installed and fine-tuned.</p>
-
-<p>So, how does one deploy the code into AMI?</p>
-
-<p>The method described here automates the deployment. One cron job will be
-included in AMI, and it will download and deploy the latest available S3
-code. That means that code updates will deploy to S3 every time, but not
-to instances. Every time a new instance is up, the instance will
-automatically download updates from the S3 bucket and deploy them.</p>
-
-<p>What follows is a script scheduled for machine boot-up. It requires
-updating based on specific user configurations and file paths.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/bash
-</span><span class='line'>S3_URL= “http://s3-ap-southeast-1.amazonaws.com/lamp-deploy/wordpress.zip” #Change the following paths as per your requirement.
-</span><span class='line'>DOCUMENT_ROOT=&lt;/var/www/html&gt;
-</span><span class='line'>TEMP_LOC=&lt;/tmp&gt;
-</span><span class='line'>APACHE_RESTART=`/etc/init.d/httpd restart`
-</span><span class='line'>#Get the instance ID from AWS metadata.
-</span><span class='line'>INSTANCE_ID=` curl http://169.254.169.254/latest/meta-data/instance-id`
-</span><span class='line'>###download the latest code from s3 and deploy###
-</span><span class='line'>cd /tmp
-</span><span class='line'>wget $S3_URL
-</span><span class='line'>if [ $? –ne 0 ]
-</span><span class='line'>then
-</span><span class='line'>pkill -9 httpd
-</span><span class='line'>mail –s “Code Download Failed from S3##$INSTANCE_ID”  test@test.com #Provide valid email ID here”
-</span><span class='line'>exit 1
-</span><span class='line'>fi
-</span><span class='line'>unzip wordpress.zip
-</span><span class='line'>rm –rf  &lt;/var/www/html/*&gt;
-</span><span class='line'>cp –r wordpress/* $DOCUMENT_ROOT
-</span><span class='line'>chmod 775 –R $DOCUMENT_ROOT
-</span><span class='line'>chown –R apache.root $DOCUMENT_ROOT
-</span><span class='line'>$APACHE_RESTART
-</span><span class='line'>if [ $? –ne 0 ]
-</span><span class='line'>then
-</span><span class='line'>pkill -9 httpd
-</span><span class='line'>mail –s “Apache startup Failed- $INSTANCE_ID”  test@test.com #Provide valid email ID here”
-</span><span class='line'>exit 1
-</span><span class='line'>fi
-</span><span class='line'>##script ends here####</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Put this bash script into a file in /opt/ directory:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$vim /opt/auto-deploy.sh
-</span><span class='line'>$chmod +x /opt/auto-deploy.sh</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Open the Crontab and add this script to start at machine boot up:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ crontab –e</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Add the following script:</p>
-
-<p><img src="https://lh4.googleusercontent.com/ZiqV0hI1ocrhmDqqLubt01OQdBcmJZqWhNciW6sbPfEz2Iwr99cxoNK4U5actZ6Vqdqat8asF-IwxjJQrVKiutlBZq6A74t9sp1wA0ezqCDbSR09YOjTQrJblX_8VShJfMA" alt="" /></p>
-
-<p>Save your changes and deploy the code by running the script to test
-whether or not the application is working as expected. This step is
-mandatory before creating an AMI. If you find any issues with the code
-or PHP/Apache settings, be sure to fix them before creating an AMI.</p>
-
-<p>Bundle and Upload the Code to S3</p>
-
-<ol>
-<li><p>Update the code with RDS DB configuration parameters.</p></li>
-<li><p>Now zip the working copy of the code and upload it to the S3
-location. The S3 location should match the location in the script,
-and also match the zip file name.</p></li>
-<li><p>Upload the zip file to the S3 bucket that matches the script. You
-can upload the zip file by using the console or any third party tool
-like Cloudberry.</p></li>
-<li><p>Grant read permissions to download the code from S3 to app servers.</p></li>
-</ol>
-
-
-<h2><strong>Create the ELB</strong> </h2>
-
-<p>Go to Services-> EC2 &ndash;> Load Balancers and select “<strong>Create Load
-Balancer</strong>”.</p>
-
-<p><img src="https://lh5.googleusercontent.com/w-ZRahemXgWVTJcIwpwJYfdXgp7kcmUs23IYzjgdEpwUuYiCkoLJg2dnLs0-5fe8U0UFG1_3qyaNggPesGGHGUq1PwQH5MMo-QowBXfuhGSNthk65DDg5Oc1OA" alt="" /></p>
-
-<p><img src="https://lh5.googleusercontent.com/JU0AmjRaIgFbWa8mdGz2qTlbYTU7wKWiOa93uUVuu-RDO5PPfEVhV1ggUBZ95rr5_z637SffLdwYgHb5srqZlj9GfcL-or3aG3xWsqb9Sd4kJ24LKZ8_84d_YA" alt="" /></p>
-
-<p>Keep Healthy/Unhealthy threshold limits to 4 because that’s proven to be
-an ideal value. Also make sure index.html is available in the Document
-root. ELB looks for the index.html as a health check and removes the
-instance from the load balancer if it doesn’t get the 200 response.
-Create the required security groups and key pair for the autoscaling
-instances.</p>
-
-<h2><strong>Create RDS</strong> </h2>
-
-<p>​1. Go to Services &ndash;> RDS and select the <strong>MySQL</strong> engine.</p>
-
-<p><img src="https://lh5.googleusercontent.com/dgMcoX4gkePTWwEYT8soz9RdvW3iMPmmlVlnkgczHmwIDpfmh39BhRUmWRBEdbR0f6FMJi3LtaSW6z_sRhBmk_WYLfls0bv8VQ8r9PFPl52WOX0B12-vCLKBEQ" alt="" /></p>
-
-<p>​2. Select instance types, provide the details for all required fields
-and launch the instance. The RDS configuration details chosen for this
-article can be seen below.</p>
-
-<p>How should you select the DB instance type? There are many monitoring
-tools available for monitoring MySQL performance. If AWS RDS is used for
-MySQL, then it’s important to consider CloudWatch metrics. Since it’s
-not possible to install agents in RDS, you can rely upon CloudWatch
-metrics.</p>
-
-<p>By default, CloudWatch contains all required RDS monitoring metrics. Be
-sure to monitor the memory, CPU, DB connections and network I/O before
-you scale up the server.</p>
-
-<p>Ideally, m1.small RDS can handle up to 75 concurrent connections easily.
-but that depends upon the DB queries and the code.</p>
-
-<p>​3. After launching RDS, open the 3306 port to the app servers group.</p>
-
-<p>​4. Import the DB and try connecting to the application. Then use
-standard MySQL commands to import the dump.</p>
-
-<p><strong>Example:</strong> mysql –h rds-endpoint –u user –ppasswwd databasename &lt;
-dump.sql</p>
-
-<h2><strong>Verify the Application</strong> </h2>
-
-<p>At this point, it’s mandatory that you thoroughly verify the
-application. Make sure to check Login/logout, upload/download and any
-other relevant verifications. Create an AMI only after making sure that
-the application is working as expected. Fix any issues before proceeding
-to the next step.</p>
-
-<h3><strong>Create an AMI</strong></h3>
-
-<p>​1. Delete the command history:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ history -c</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Delete the deployed code and logs files and make things as clean as
-possible.</p>
-
-<p>​2. Create an AMI using the micro instance that you’ve configured.</p>
-
-<p>Go to AWS Console->Services->EC2, right click on the instance, and
-select “Create Image” (EBS AMI).</p>
-
-<p><img src="https://lh4.googleusercontent.com/pR5iFmQYgO6FygwUB1SNh52dtHhrTr4TDk_G9fd6wlh1ds3V5gnbvhqYdn4yPOPRuQ7JZXwO54xuguOEoczq9yhVx1gsuHuZbVmCRgVFbida6ciJxv0EhNhwdQ" alt="" /></p>
-
-<p>Name the AMI using a date as the naming convention. <strong>Do not</strong> select
-“<strong>No reboot</strong>”. Instead, allow it to reboot while creating the AMI. The
-reboot will give you a consistent snapshot of EBS.</p>
-
-<p><img src="https://lh5.googleusercontent.com/5vWSfAF_enz-JCR8PlW-hDts2pvtUSI8yRFYkx8H27K0UdRCntJjTgcHGODGJpiGkXfFpe-XGva-EZUFF5gEDRcPcw5o8xc_8n1ueqYQaK8hpY9WolFLUdrHRw" alt="" /></p>
-
-<p>In a few minutes an AMI will be created and made available.</p>
-
-<p>Keep the root partition as minimal as possible because that helps to
-prevent bugs. You don’t need large space for root partition in autoscale
-because these instances keep rotating.</p>
-
-<h2><strong>Terminate the Instance</strong> </h2>
-
-<p>Finally, terminate the instance by right clicking on the instance and
-selecting “Terminate”. Keep the ELB and RDS running.</p>
-
-<p><strong><em>Watch out for Part 2, same time tomorrow, on how to setup autoscaling
-groups!</em></strong></p>
-
-<p><strong>Update</strong>: Check part 2 on how to setup autoscaling groups
-<a href="../autoscaling-for-lamp-on-aws-setting-up-austoscaling-groups-part-2/index.html" title="Autoscaling for LAMP on AWS | Setting Up Austoscaling Groups : Part 2">here</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/">A Deep Dive Into AWS Reserved Instances</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-25T09:35:27-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>A Deep Dive into AWS Reserved Instances</h3>
-
-<p>One of our primary goals at Flux7 Labs is to help our clients reduce
-their AWS costs. In fact, our product VyScale is based entirely on cost
-optimization using Spot instances. We inform our clients when it makes
-economic sense for them to buy instance reservations because
-reservations for periods of unexpected minimum usage can be beneficial.
-Reserved instances function exactly like on-demand instances, except
-that you pay an upfront fee to gain cheaper hourly rates.</p>
-
-<h3>Reserved Instance Pricing</h3>
-
-<p>There are several levels of reservations. Higher ones allow you to pay
-more up front in order to achieve a lower hourly cost. The table below
-shows the rates for various types of reserved and on-demand instances
-for m1.large instances.</p>
-
-<hr />
-
-<pre><code>           Upfront   Hourly in cents
-</code></pre>
-
-<p>  On-demand    0         24
-  Light Util   243       13.6
-  Med Util     554       8.4
-  Heavy Util   676       5.6</p>
-
-<hr />
-
-<p>At some levels of utilization it makes sense to purchase reservations,
-rather than to rely solely upon on-demand instances. By factoring in
-upfront costs, we can determine which levels warrant purchasing
-reservations. What’s surprising is that those levels are fairly low,
-especially in the case of light reservations. Even at 30% utilization,
-light-reservation costs start to break even with those of on-demand
-instances. The following graph shows equivalent hourly costs for
-reservations at various utilization levels</p>
-
-<p><a href="../../../wp-content/uploads/AWS-reserved-instances-1.png"><img src="../../../wp-content/uploads/AWS-reserved-instances-1.png" alt="Hourl rates of reserved
-instances" /></a></p>
-
-<p>To better understand these numbers in terms of total cost, as opposed to
-incremental cost, the figure below shows total annual expenditures at
-various levels. For a 100% utilization of an instance, one can reduce
-costs to almost half of Amazon’s standard pricing for reserved
-instances, and that’s without any of the bulk discounts made available
-to high-volume AWS customers. At lower levels, reservations cost almost
-twice as much as those at higher levels. However, keep in mind that, as
-a fraction of overall cost, the amount is still not very high. So, in
-cases where growth is expected, it can make sense to purchase
-reservations early.</p>
-
-<p><a href="../../../wp-content/uploads/AWS-reserved-instances-2.png"><img src="../../../wp-content/uploads/AWS-reserved-instances-2.png" alt="Annual rates of reserved
-instances" /></a></p>
-
-<h3>Do You Have A Reservation?</h3>
-
-<p>Another thing to know about Amazon’s policy is that you receive a
-guaranteed instance when you buy a reservation, whereas there is no such
-guarantee for on-demand instances. When trying to acquire an on-demand
-instance, AWS may return an error message stating that capacity is not
-available for that instance type. On the other hand, once you purchase a
-reservation Amazon guarantees that the instance will be made available
-to you at the moment you request it. If you’re using an autoscaling
-solution it can make sense to make light utilization reservations to
-handle your excess capacity, even if it costs more to guarantee uptime
-to your customers. With Amazon’s guarantee it’s no wonder that Netflix
-runs almost exclusively on reservations. As a matter of policy,
-Netflix’s use of on-demand instances indicates that more reservations
-need to be purchased.</p>
-
-<p>One thing to note is that Amazon always uses reservations first, so you
-can’t keep unused light reservations as backups while using on-demand
-instances for capacity.</p>
-
-<h3>How Amazon Handles Unused Reservations</h3>
-
-<p>Spot instances are one of the best uses of unutilized reserved capacity
-with AWS. They come with no guarantee of availability, and can be taken
-away from you at Amazon’s discretion at any time in order to fulfill
-other customers’ needs. Spot prices hover around 15% of the on-demand
-price, which allows Amazon to make a decent return on unused
-reservations and while offering reservations at a relatively low price.</p>
-
-<h3>Conclusion</h3>
-
-<p>The most common reason to use reservations is price, but there are also
-other considerations. The final decision should be based on capacity
-analysis from a business perspective.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/">6 Reasons Why Large Enterprises Should Move to Amazon Web Services</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-25T09:13:48-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>6 reasons why large enterprises should move to Amazon Web Services</h2>
-
-<h3>6 reasons why large enterprises should move to Amazon Web Services</h3>
-
-<p>Amazon has changed the face of the world of startups with its cloud services. Now it’s possible for two men in a garage to set up large
-computer clusters for zero capital cost.</p>
-
-<p><a href="https://twitter.com/share?text=Amazon+has+its+sights+set+on+enterprise,+which+they+will+conquer+slowly+but+surely.+&amp;via=OurLabs&amp;related=Flux7Labs&amp;url=http://wp.me/p4sEOD-o6">Amazon has its sights set on enterprise, which they will conquer slowly
-but
-surely.</a></p>
-
-<p>At Our Labs, one of our specialties is cloud migration for enterprise
-clients, and we’ve received considerable feedback about both their
-concerns and delights. In this post I’ll explain why I strongly believe
-large enterprises should consider moving to the cloud.</p>
-
-<h2><strong>Agility and Responsiveness</strong> </h2>
-
-<p>Let’s face it, if a startup is a speedboat, then a large enterprise is
-the Titanic. While startups can pivot any time there’s danger and large
-enterprises turn more slowly, there are icebergs that can sink either.
-Disasters happen to everyone, but a large enterprise has significantly
-more skin in the game, and the old model of waiting a month before
-buying a new rack just doesn’t cut it anymore. By shifting to the cloud,
-large enterprises can bring up new servers in minutes, which means
-shorter downtimes, rapid experimentation, more innovation, increased
-global reach, improved demand-surge handling and more successful
-short-lived-but-resource-intensive projects.</p>
-
-<h2><strong>Innovation</strong> </h2>
-
-<p>Business is a cutthroat world in which we must always strive to
-out-innovate our competitors. This article is about the cloud in
-general, but I want to explain why it’s also Amazon focused. Amazon has
-been blazing the cloud-computing trail longer than anyone, which is
-reflected by its 80% market share, and is clearly ahead of its
-competitors. For example, check out Gartner’s analysis of different
-cloud providers in the chart below and you’ll see Amazon in a corner of
-their own. In fact, Amazon so dominated the competition that Gartner had
-to artificially lower the scale. Amazon is innovating at such a rapid
-pace in providing new services and broadening its customer base that
-competitors are struggling to keep pace.</p>
-
-<p>The effect of this innovation is obvious to developers. Do you want to
-provide Active Directory integration with Amazon? You can do that. Do
-you want to save on data costs by using the Bittorrent protocol for
-content distribution? You can do that. Do you want to put heavy compute
-behind your mobile games? You can do that. Do you want to ramp up your
-clients quickly with remote workstations? You can do that, too. With
-Amazon Web Services you can do all of that and more. I’m a
-certified<a href="file:///C:/Users/Vishnu/Documents/Our/SMM/Blog/WhyEnterprisemustAmazon_(REVISED_CLEAN">[1]</a>.docx#_msocom_1) 
-AWS instructor, yet I learn something new about AWS every day as Amazon
-constantly releases new features. The advantage of moving your business
-to the cloud is that you can let your developers focus on your company’s
-area of expertise while leaving the boilerplate to Amazon.</p>
-
-<p>\</p>
-
-<p> <img src="https://lh3.googleusercontent.com/GmdBmLBmcGW9TIBqUCVkf403uIIf9arZ6-brIjBOt8tus6n_7YaKdOW3kcQqSIUbKnQd9vthqX1nyHHGouT8xbmDF3-xkpXUbJV0UJLpguSzg7EKB6QuaqR92uw_og" alt="" /></p>
-
-<h2><strong>A Data Center That Hosts A Top Website</strong> </h2>
-
-<p>One thing we mustn’t forget is what the AWS cloud really is—a product of
-years of innovation by one of the largest e-commerce websites in the
-world. Its data centers are distributed globally in numerous parts of
-the world, with multiple, independently-operating data centers in each
-region that provide different failure domains while being close enough
-together to provide cheap communication. And that’s just the compute
-side of the equation. Amazon also shares its global content distribution
-network, its DNS servers. it compiles traffic data from across the globe
-to find the best route for your network traffic. There are only a
-handful of companies today with that kind of global reach, and they,
-too, are developing cloud capabilities. But unless you’re in that elite
-club, you won’t be able to create a data center that can compete with
-AWS. So by using a cloud solution, rather than an in-house solution,
-you’ll clearly benefit in terms of better performance, better fault
-tolerance, and better disaster recovery.</p>
-
-<h2><strong>Security</strong> </h2>
-
-<p>Security is the biggest concern about cloud computing for most
-enterprises, but Amazon holds many of the most important certifications,
-including PCI, HIPAA, Sarbanes-Oxley, and ISO. Since it has so much at
-stake, it maintains separation of logical and physical access to data in
-order to limit the impact of disgruntled employees. While I certainly
-understand someone hesitating to entrust one’s most valuable information
-with a third party, it’s certainly debatable whether on-premise storage
-is more secure than cloud storage.</p>
-
-<h2><strong>In-house Expertise Not Required</strong> </h2>
-
-<p>Anyone that’s had to hire people knows that good employees are worth
-their weight in platinum. Moving to the cloud allows you to offload much
-of your data-center maintenance onto Amazon. Let it do what it’s best at
-while you focus on what you’re best at.</p>
-
-<p>As we know, you often have to pay dearly to hire someone outside of your
-area of expertise. For example, say you’re a director of IT at a company
-like Schlumberger. Your company is great at what it does and has strong
-brand value in its area of expertise. Do you think you can possibly
-poach someone like <a href="http://mvdirona.com/jrh/work/">James Hamilton</a> for
-your company? No, you can’t. With core expertise in data centers, Amazon
-will likely offer a more intriguing challenge and a deeper sense of
-mission to the kind of people you’ll want to hire for your team. And we
-all know that employee engagement is not about the money, but rather
-about being involved in a greater mission.</p>
-
-<h2><strong>Lower Costs</strong> </h2>
-
-<p>While I’m convinced that moving to the cloud will lower your costs, I
-acknowledge that getting there requires a lot of expertise and hard
-work. Additionally you may very easily find yourself comparing apples
-and oranges. Yet cloud solutions are cheaper than on-premise solutions
-when played right. First, when you pay for a machine on AWS you’re also
-paying for Amazon’s years of expertise in setting up resilient data
-centers, something that’s not true for in-house departments lacking core
-IT expertise. Second, there’s great potential for saving money by
-scaling to your variable demand needs instead of designing for max
-capacity. That’s why Netflix, even though it comprises one-third of the
-Internet in terms of data volume, has gone “all in” on AWS, or they’d
-have to provision enough machines to handle 9PM Friday traffic.
-Alternatively you can have an expected area of needing high demand, as
-say for a chip company close to tapeout, a movie studio needing to
-render for a year
-(<a href="http://gigaom.com/2014/03/02/the-oscars-how-american-hustles-fx-team-made-2013-boston-look-like-1980s-new-york/">http://gigaom.com/2014/03/02/the-oscars-how-american-hustles-fx-team-made-2013-boston-look-like-1980s-new-york/</a>),
-or a game company handling launch day demand
-(<a href="http://www.respawn.com/news/lets-talk-about-the-xbox-live-cloud/">http://www.respawn.com/news/lets-talk-about-the-xbox-live-cloud/</a>).</p>
-
-<h2><strong>Conclusion</strong> </h2>
-
-<p>If you’re a large enterprise and on the fence about whether or not to
-move to the cloud, we highly recommend trying it out. Try it on a
-contained project, rather than one that’s on a critical path, something
-that fits well within the cloud’s capabilities. After implementation, do
-a post-mortem and analyze the results in terms of cost and
-time-to-market. What is the expectation as you build in-house
-expertise<strong>.</strong> The results may well surprise you.</p>
-
-<h2><strong>Let’s Talk</strong> </h2>
-
-<p>Our Research Labs has helped Fortune 100 and Fortune 500 companies move
-successfully to AWS. We’d love to hear any questions, comments or
-concerns you may have, so feel free to contact us anytime during weekly
-<a href="http://ohours.org/aatersuleman">office hours</a> to discuss your specific
-needs or situation. We offer this service free of charge with no
-obligation or strings attached.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/23/creating-a-secure-deployment-pipeline-in-amazon-web-services/">Creating a Secure Deployment Pipeline in Amazon Web Services</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-23T11:24:27-04:00" pubdate data-updated="true">Mar 23<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Many organizations require a secure infrastructure. I’ve yet to meet a customer that says that security isn’t a concern. But, the decision on “how secure?” should be closely associated with a risk analysis for your organization.</p>
-
-<p>Since Amazon Web Services (AWS) is often referred to as a “public cloud”, people sometimes infer that “public” must mean it’s “out in the public” for all to see. I’ve always seen “public/private clouds” as an
-unfortunate use of terms. In this context, public means more like
-“Public Utility”. People often interpret “private clouds” to be
-inherently more secure. Assuming that “public cloud” = less secure and
-“private cloud” = more secure couldn’t be further from the truth. Like
-most things, it’s all about how you architect your infrastructure. While
-you can define your infrastructure to have open access, AWS provides
-many tools to create a truly secure infrastructure while eliminating
-access to all but only authorized users.</p>
-
-<p>I’ve created an initial list of many of the practices we use. We don’t
-employ all these practices in all situations, as it often depends on our
-customers’ particular security requirements. But, if someone asked me
-“How do I create a secure AWS infrastructure using a Deployment
-Pipeline?”, I’d offer some of these practices in the solution. I’ll be
-expanding these over the next few weeks, but I want to start with some
-of our practices.</p>
-
-<p><strong>AWS Security</strong></p>
-
-<p>* After initial AWS account creation and login, configure
-<a href="https://aws.amazon.com/iam/" title="AWS IAM">IAM</a> so that there’s no need to
-use the AWS root account\
- * Apply least privilege to all IAM accounts. Be very careful about who
-gets Administrator access.\
- * Enable all IAM password rules\
- * Enable MFA for all users\
- * Secure all data at rest\
- * Secure all data in transit\
- * Put all AWS resources in a <a href="https://aws.amazon.com/vpc/" title="Virtual Private Cloud">Virtual Private
-Cloud</a> (VPC).\
- * No EC2 Key Pairs should be shared with others. Same goes for Access
-Keys.\
- * Only open required ports to the Internet. For example, with the
-exception of, say, port 80, no security groups should have a CIDR Source
-of 0.0.0.0/0). The bastion host might have access to port 22 (SSH), but
-you should enable
-<a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing" title="CIDR">CIDR</a>
-to limit access to specific subnets. Using a VPC is a part of a solution
-to eliminate Internet access. No canonical environments should have
-SSH/RDP access.\
- * Use IAM to limit access to specific AWS resources and/or
-remove/limit AWS console access\
- * Apply a bastion host configuration to reduce your attack profile\
- * Use <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html" title="IAM Roles">IAM
-Roles</a>
-so that there’s no need to configure Access Keys on the instances\
- * Use resource-level permissions in EC2 and RDS\
- * Use SSE to secure objects in S3 buckets\
- * Share initial IAM credentials with others through a secure mechanism
-(e.g. <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard" title="AES">AES-256
-encryption</a>)\
- * Use and monitor AWS
-<a href="https://aws.amazon.com/cloudtrail/" title="AWS CloudTrail">CloudTrail</a> logs</p>
-
-<p><strong>Deployment Pipeline</strong></p>
-
-<p>A deployment pipeline is a staged process in which the complete software
-system is built and tested with every change. Team members receive
-feedback as it completes each stage. With most customers, we usually
-construct between 4-7 deployment pipeline stages and the pipeline only
-goes to the next stage if the previous stages were successful. If a
-stage fails, the whole pipeline instance fails. The first stage (often
-referred to as the “Commit Stage”) will usually take no more than 10
-minutes to complete. Other stages may take longer than this. Most stages
-require no human intervention as the software system goes through more
-extensive testing on its way to production. With a deployment pipeline,
-software systems can be released at any time the business chooses to do
-so. Here are some of the security-based practices we employ in
-constructing a deployment pipeline.</p>
-
-<p>* Automate everything: Networking (VPC, Route 53) Compute (EC2),
-Storage, etc. All <em>AWS</em> automation should be defined in
-<a href="https://aws.amazon.com/cloudformation/" title="CloudFormation">CloudFormation</a>.
-All environment configuration should be defined using infrastructure
-automation scripts – such as Chef, Puppet, etc.\
- * Version Everything: Application Code, Configuration, Infrastructure
-and Data\
- * Manage your binary dependencies. Be specific about binary version
-numbers. Ensure you have control over these binaries.\
- * Lockdown pipeline environments. Do not allow SSH/RDP access to any
-environment in the deployment pipeline\
- * For project that require it, use permissions on the CI server or
-Deployment application to limit who can run deployments in certain
-environments – such as QA, Pre-Production and Production. When you have
-a policy in which all changes are applied through automation and
-environments are locked down, this usually becomes less of a concern.
-But, it can still be a requirements on some teams.\
- * Use the Disposable Environments pattern – instances are terminated
-once every few days. This approach reduces the attack profile\
- * Log everything outside of the EC2 instances (so that they can be
-access later). Ensure these log files are encrypted e.g. securely
-through S3)\
- * All canonical changes are only applied through automation that are
-part of the deployment pipeline. This includes application,
-configuration, infrastructure and data change. Infrastructure patch
-management would be a part of the pipeline just like any outer software
-system change.\
- * No one has access to nor can make direct changes to pipeline
-environments\
- * Create high-availability systems Multi-AZ, <a href="https://aws.amazon.com/autoscaling/" title="Auto Scaling">Auto
-Scaling</a>, <a href="https://aws.amazon.com/elasticloadbalancing/" title="ELB">Elastic
-Load Balancing</a> and
-Route 53\
- * For non-Admin AWS users, only provide access to AWS through a secure
-<a href="https://en.wikipedia.org/wiki/Continuous_integration" title="Continuous Integration">Continuous
-Integration</a>
-(CI) server or a self-service application\
- * Use Self-Service Deployments and give developers full SSH/RDP access
-to their self-service deployment. Only their particular EC2 Key Pair can
-access the instance(s) associated with the deployment. Self-Service
-Deployments can be defined in the CI server or a lightweight
-self-service application.\
- * Provide capability for any authorized user to perform a self-service
-deployment with full SSH/RDP access to the environment they created
-(while eliminating outside access)\
- * Run two active environments – We’ve yet to do this for customers,
-but if you want to eliminate all access to the canonical production
-environment, you might choose to run two active environments at once so
-that engineers can access the non-production environment to troubleshoot
-a problem in which the environment has the exact same configuration and
-data so you’re troubleshooting accurately.\
- * Run automated infrastructure tests to test for security
-vulnerabilities (e.g. cross-site scripting, SQL injections, etc.) with
-every change committed to the version-control repository as part of the
-deployment pipeline.</p>
-
-<p><strong>FAQ</strong></p>
-
-<p>* <strong>What is a canonical environment?</strong> It’s your system of record. You
-want your canonical environment to be solely defined in source code and
-versioned. If someone makes a change to the canonical system and it
-affects everyone it should only be done through automation. While you
-can use a self-service deployment to get a copy of the canonical system,
-any direct change you make to the environment is isolated and never made
-part of the canonical system unless code is committed to the
-version-control repository.\
- * <strong>How can I troubleshoot if I cannot directly access canonical
-environments?</strong> Using a self-service deployment, you can usually
-determine the cause of the problem. If it’s a data-specific problem, you
-might import a copy of the production database. If this isn’t possible
-for time or security reasons, you might run multiple versions of the
-application at once.\
- * <strong>Why should we dispose of environments regularly?</strong> Two primary
-reasons. The first is to reduce your attack profile (i.e. if
-environments always go up and down, it’s more difficult to hone in on
-specific resources. The second reason is that it ensures that all team
-members are used to applying all canonical changes through automation
-and not relying on environments to always be up and running somewhere.\
- * <strong>Why should we lockdown environments?</strong> To prevent people from
-making disruptive environment changes that don’t go through the
-version-control repository.</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1540,6 +364,1688 @@ version-control repository.</p>
 
     </article>
   
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/11/continuous-delivery-patterns/">Continuous Delivery Patterns</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-11T00:00:00-04:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>ABOUT CONTINUOUS DELIVERY</p>
+
+<p>With Continuous Delivery (CD), teams continuously deliver new  versions of software to production by decreasing the cycle time between an idea and usable software through the automation of the entire delivery system: build, deployment, test, and release. CD is enabled through the Deployment Pipeline, which encompasses a collection of patterns described in this Refcard.</p>
+
+<p>CD is concerned with “…how all the moving parts fit together: configuration management, automated testing, continuous integration and deployment, data management, environment management, and release management.” (1)</p>
+
+<p>THE DEPLOYMENT PIPELINE</p>
+
+<p>The purpose of the deployment pipeline is threefold:</p>
+
+<p> • Visibility: All aspects of the delivery system &ndash; building, deploying, testing, and releasing – are visible to all team members promoting collaboration.</p>
+
+<p> • Feedback: Team members learn of problems as soon as they occur so that issues are fixed as soon as possible.</p>
+
+<p> • Continually Deploy: Through a fully automated process, you can deploy and release any version of the software to any environment. (1)</p>
+
+<p>In the Deployment Pipeline diagram above, all of the patterns are shown in context. There are some patterns that span multiple stages of the pipeline, so I chose the stage where it’s most predominately used.</p>
+
+<p>BENEFITS
+ • Empowering Teams: Because the deployment pipeline is a pull system, testers, developers, operations, and others can self service the application version into an environment of their choice.</p>
+
+<p> • Reducing Errors: Ensuring the correct version, configuration, database schema, etc. are applied the same way every time through automation.</p>
+
+<p> • Lowering Stress: Through push-button releases to production and Rehearsing Deployments, a release becomes commonplace without the typical stress.</p>
+
+<p> • Deployment Flexibility: Instantiate a new environment or configuration by making a few changes to the automated delivery system.</p>
+
+<p> • Practice makes Perfect: Through the deployment pipeline, the final deployment into production is being rehearsed every single time the software is deployed to any target environments. (1)</p>
+
+<h1>CONFIGURATION MANAGEMENT</h1>
+
+<p>Configuration Management is “the process by which all artifacts relevant to your project, and the relationships between them, are stored, retrieved, uniquely identified, and modified”. (1)</p>
+
+<p>Note: Each pattern is cited with a number in parentheses that corresponds to the source in the References section.</p>
+
+<h2>Configurable Third-Party Software (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th> Evaluate and use third-party software that can be easily configured, deployed, and automated. </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td> Procuring software that cannot be externally configured. Software without an API or command-line interface that forces teams to use the GUI only. |</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Configuration Catalog (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern  </th>
+<th>  Maintain a catalog of all options for each application, how to change these options and storage locations for each application. Automatically create this catalog as part of the build process. </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td> Configuration options are not documented. The catalog of applications and other assets is “tribal knowledge”. |</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Mainline (3)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern  </th>
+<th>  Minimize merging and keep the number of active code lines manageable by developing on a mainline. </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td> Multiple branches per project.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Merge Daily (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th> Changes committed to the mainline are applied to each branch on at least a daily basis. </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Merging every iteration once a week or less often than once a day. |</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Protected Configuration (5) ,(1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Store configuration information in secure remotely accessible locations such as a database, directory, or registry.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Open text passwords and/or single machine or share.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Repository (3) , (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>All source files &ndash; executable code, configuration, host environment, and data &ndash; are committed to a version-control repository.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Some files are checked in, others, such as environment configuration or data changes, are not. Binaries – that can be recreated through the build and deployment process – are checked in.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Short-Lived Branches (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Branches must be short lived – ideally less than a few days and never more than an iteration.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Branches that last more than an iteration. Branches by product feature that live past a release.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Single Command Environment (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Check out the project’s version-control repository and run a single command to build and deploy the application to any accessible environment, including the local development.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Forcing the developer to define and configure environment variables. Making the developer install numerous tools in order for the build/deployment to work.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Single Path to Production (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Configuration management of the entire system &ndash; source, configuration, environment and data. Any change can be tied back to a single revision in the version-control system.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Parts of system are not versioned. Inability to get back to a previously configured software system.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h1>CONTINUOUS INTEGRATION (CI)</h1>
+
+<h2>Build Threshold (5)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Fail a build when a project rule is violated – such as architectural breaches, slow tests, and coding standard violations. </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Manual code reviews. Learning of code quality issues later in the development cycle.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Commit Often (6)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Each team member checks in regularly to trunk &ndash; at least once a day but preferably after each task to trigger the CI system.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Source files are committed less frequently than daily due to the number of changes from the developer.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Continuous Feedback (6)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Send automated feedback from CI system to all Cross-Functional Team members.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Notifications are not sent; notifications are ignored; CI system spams everyone with information they cannot use.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Continuous Integration (6)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Building and testing software with every change committed to a project’s version control repository.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Scheduled builds, nightly builds, building periodically, building exclusively on developer’s machines, not building at all. </td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Stop the Line (5) , (1) , (4), (12)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Fix software delivery errors as soon as they occur; stop the line. No one checks in on a broken build as the fix becomes the highest priority.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Builds stay broken for long periods of time, thus preventing developers from checking out functioning code. </td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Independent Build (6)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Write build scripts that are decoupled from IDEs. These build scripts are executed by a CI system so that software is built at every change. </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Automated build relies on IDE settings. Builds are unable to be run from the command line.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Visible Dashboards</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Provide large visible displays that aggregate information from your delivery system to provide high-quality feedback to the Cross-Functional Team in real time.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Email-only alerts or not publicizing the feedback to the entire team.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h1>TESTING</h1>
+
+<h2>Automate Tests</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Automate the verification and validation of software to include unit, component, capacity, functional, and deployment tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Manual testing of units, components, deployment, and other types of tests.</td>
+</tr>
+</tbody>
+</table>
+
+
+<blockquote><p>Unit- Automating tests without any dependencies.</p>
+
+<p>Component- Automating tests with dependencies to other components and heavyweight dependencies such as the database or file system.</p>
+
+<p>Deployment- Automating tests to verify the deployment and configuration were successful. Sometimes referred to as a “smoke tests”.</p>
+
+<p>Functional- Automating tests to verify the behavior of the software from a user’s perspective.</p>
+
+<p>Capacity- Automating load and performance testing in near- production conditions.</p></blockquote>
+
+<h2>Isolate Test Data (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th> Use transactions for database-dependent tests (e.g., component tests) and roll back the transaction when done. Use a small subset of data to effectively test behavior </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td> Using a copy of production data for Commit Stage tests. Running tests against a shared database.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Parallel Tests (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Run multiple tests in parallel across hardware instances to decrease the time in running tests.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Running tests on one machine or instance. Running dependent tests that cannot be run in parallel.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Stub Systems (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th> Use stubs to simulate external systems to reduce deployment complexity.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Manually installing and configuring interdependent systems for Commit Stage build and deployment.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h1>DEPLOYMENT PIPELINE</h1>
+
+<h2>Deployment Pipeline (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th> A deployment pipeline is an automated implementation of your application’s build, deploy, test, and release process. </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Deployments require human intervention (other than approval or clicking a button). Deployments are not production ready. </td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Value-Stream Map (4) ##</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th> Create a map illustrating the process from check in to the version-control system to the software release to identify process bottlenecks.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Separately defined processes and views of the checkin to release process.</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>BUILD AND DEPLOYMENT SCRIPTING</p>
+
+<h2>Dependency Management (5)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th> Centralize all dependent libraries to reduce bloat, classpath problems, and repetition of the same dependent libraries and transitive dependencies from project to project. </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Multiple copies of the same binary dependencies in each and every project. Redefining the same information for each project. Classpath hell!</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Common Language (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th> As a team, agree upon a common scripting language &ndash; such as Perl, Ruby, or Python &ndash; so that any team member can apply changes to the Single Delivery System </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Each team uses a different language making it difficult for anyone to modify the delivery system reducing cross-functional team effectiveness.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Externalize Configuration (5)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th> Changes between environments are captured as configuration information. All variable values are externalized from the application configuration into build/deployment-time properties </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Hardcoding values inside the source code or per target environment.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Fail Fast (6)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th> Fail the build as soon as possible. Design scripts so that processes that commonly fail run first. These processes should be run as part of the Commit Stage.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Common build mistakes are not uncovered until late in the deployment process.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Fast Builds (6)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th> The Commit Build provides feedback on common build problems as quickly as possible &ndash; usually in under 10 minutes.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Throwing everything into the commit stage process, such as running every type of automated static analysis tool or running load tests such that feedback is delayed.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Scripted Deployment (5)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th> All deployment processes are written in a script, checked in to the version-control system, and run as part of the Single Delivery System.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Deployment documentation is used instead of automation. Manual deployments or partially manual deployments. Using GUI to perform a deployment.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Unified Deployment (5)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th> The same deployment script is used for each deployment. The Protected Configuration – per environment &ndash; is variable but managed.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td> Different deployment script for each target environment or even for a specific machine. Manual configuration after deployment for each target environment. </td>
+</tr>
+</tbody>
+</table>
+
+
+<h1>DEPLOYING AND RELEASING APPLICATIONS</h1>
+
+<h2>Binary Integrity (5)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th> Build your binaries once, while deploying the binaries to multiple target environments, as necessary.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td> Software is built in every stage of the deployment pipeline. </td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Canary Release</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th> Release software to production for a small subset of users (e.g. , 10%) to get feedback prior to a complete rollout. </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td> Software is released to all users at once.|</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Blue-Green Deployments (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Deploy software to a non-production environment (call it blue) while production continues to run. Once it’s deployed and “warmed up”, switch production (green) to non-production and blue to green simultaneously. </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Production is taken down while the new release is applied to production instance(s).</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Dark Launching (11)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Launch a new application or features when it affects the least amount of users.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Software is deployed regardless of number of active users.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Rollback Release (5)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Provide an automated single command rollback of changes after an unsuccessful deployment.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Manually undoing changes applied in a recent deployment. Shutting down production instances while changes are undone. </td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Self-Service Deployment (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Any Cross-Functional Team member selects the version and environment to deploy the latest working software. </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Deployments released to team are at specified intervals by the “Build Team”. Testing can only be performed in a shared state without isolation from others. </td>
+</tr>
+</tbody>
+</table>
+
+
+<h1>INFRASTRUCTURE AND ENVIRONMENTS</h1>
+
+<h2>Automate Provisioning (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Automate the process of configuring your environment to include networks, external services, and infrastructure.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Configured instances are “works of art” requiring team members to perform partially or fully manual steps to provision them.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Behavior-Driven Monitoring (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Automate tests to verify the behavior of the infrastructure. Continually run these tests to provide near real-time alerting. </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>No real-time alerting or monitoring. System configuration is written without tests.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Immune Systems</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Deploy software one instance at a time while conducting Behavior-Driven Monitoring. If an error is detected during the incremental deployment, a Rollback Release is initiated to revert changes.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Non-incremental deployments without monitoring.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Lockdown Environments (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Lock down shared environments from unauthorized external and internal usage, including operations staff. All changes are versioned and applied through automation.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>The “Wild West”: any authorized user can access shared environments and apply manual configuration changes, putting the environment in an unknown state leading to deployment errors.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Production-Like Environments (1) ##</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Target environments are as similar to production as possible.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Environments are “production like” only weeks or days before a release. Environments are manually configured and controlled.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Transient Environments</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Utilizing the Automate Provisioning, Scripted Deployment and Scripted Database patterns, any environment should be capable of terminating and launching at will.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Environments are fixed to “DEV, QA” or other pre-determined environments.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h1>DATA</h1>
+
+<h2>Database Sandbox (7)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Create a lightweight version of your database – using the Isolate Test Data pattern. Each developer uses this lightweight DML to populate his local database sandboxes to expedite test execution.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Shared database. Developers and testers are unable to make data changes without it potentially adversely affecting other team members immediately.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Decouple Database (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Ensure your application is backward and forward compatible with your database so you can deploy each independently</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Application code data are not capable of being deployed separately.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Database Upgrade (7)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Use scripts to apply incremental changes in each target environment to a database schema and data. </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Manually applying database and data changes in each target environment.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Scripted Database (7)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Script all database actions as part of the build process. </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Using data export/import to apply data changes. Manually applying schema and data changes to the database.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h1>INCREMENTAL DEVELOPMENT</h1>
+
+<h2>Branch by Abstraction (2)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Instead of using version-control branches, create an abstraction layer that handles both an old and new implementation. Remove the old implementation.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Branching using the version-control system leading to branch proliferation and difficult merging. Feature branching.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Toggle Features (10)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Deploy new features or services to production but limit access dynamically for testing purposes.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Waiting until a feature is fully complete before committing the source code.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h1>COLLABORATION</h1>
+
+<h2>Delivery Retrospective (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>For each iteration, hold a retrospective meeting where everybody on the Cross-Functional Team discusses how to improve the delivery process for the next iteration. </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Waiting until an error occurs during a deployment for Dev and Ops to collaborate. Having Dev and Ops work separately.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Cross-Functional Teams (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th>Everybody is responsible for the delivery process. Any person on the Cross-Functional Team can modify any part of the delivery system.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Siloed teams: Development, Testing, and Operations have their own scripts and processes and are not part of the same team. </td>
+</tr>
+</tbody>
+</table>
+
+
+<pre><code>Amazon.com has an interesting take on this approach. They call it “You build it, you run it”. Developers take the software they’ve written all the way to production. 
+</code></pre>
+
+<h2>Root-Cause Analysis (1)</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Pattern </th>
+<th> Learn the root cause of a delivery problem by asking “why” of each answer and symptom until discovering the root cause.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Anti-Patterns </td>
+<td>Accepting the symptom as the root cause of the problem.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h1>TOOLS</h1>
+
+<p>This is meant to be an illustrative list, not an exhaustive list, to give you an idea of the types of tools and some of the vendors that help to enable effective Continuous Delivery. The Java, .NET and Ruby platforms are represented. The tools that span categories have been assigned to the most appropriate category or duplicated when necessary.</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Category </th>
+<th> Example Software Tools </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Configuration Management </td>
+<td> &lsquo;Subversion (SVN), git, Perforce, PassPack, PasswordSafe, ESCAPE, ConfigGen&rsquo; |</td>
+</tr>
+<tr>
+<td></td>
+<td> Continuous Integration </td>
+<td> &lsquo;Bamboo, Jenkins, AntHill Pro, Go, TeamCity, TFS 2010, Electric Commander&rsquo; &lsquo;Supporting tools: Doxygen, Grand, GraphViz, JavaDoc, NDoc, SchemaSpy, UmlGraph, CheckStyle, Clover, Cobertura, FindBugs,FxCop, JavaNCSS, JDepend, PMD, Sonar, Simian&rsquo; |</td>
+</tr>
+<tr>
+<td></td>
+<td> Testing </td>
+<td> Twist , AntUnit, Cucumber, DbUnit, webrat, easyb, Fitnesse, JMeter, JUnit, NBehave, SoapUI, Selenium, RSpec, SauceLabs |</td>
+</tr>
+<tr>
+<td></td>
+<td> Deployment Pipeline </td>
+<td> Go, AntHill Pro |</td>
+</tr>
+<tr>
+<td></td>
+<td> Build and Deployment Scripting </td>
+<td> Ant, AntContrib, NAnt, MSBuild, Buildr, Gant, Gradle, make, Maven, Rake, Java Secure Channel, ControlTier, Altiris, Capistrano, Fabric, Func |</td>
+</tr>
+<tr>
+<td></td>
+<td> Infrastructure and Environments </td>
+<td> AWS EC2, AWS S3, Windows Azure, Google App Engine, AWS Elastic Beanstalk, Heroku, Capistrano, Cobbler, BMC Bladelogic, CFEngine, IBM Tivoli Provisioning Manager, Puppet, Chef, Bcfg2, AWS Cloud Formation, Windows Azure AppFabric, rPath, JEOS, BoxGrinder, CLIP, Eucalyptus, AppLogic, CloudKick, CloudWatch, Nagios, Zabbix, Zenoss |</td>
+</tr>
+<tr>
+<td></td>
+<td> Data </td>
+<td> Hibernate, MySQL, Liquibase, Oracle, PostgreSQL, SQL Server, SimpleDB, SQL Azure, Ant, MongoDB, dbdeploy |</td>
+</tr>
+<tr>
+<td></td>
+<td> Components and Dependencies </td>
+<td> Ivy, Archiva, Nexus, Artifactory, Bundler |</td>
+</tr>
+<tr>
+<td></td>
+<td> Collaboration </td>
+<td> Mingle, Greenhopper, JIRA |</td>
+</tr>
+</tbody>
+</table>
+
+
+<h1>REFERENCES</h1>
+
+<ol>
+<li><p>Jez Humble and David Farley, “Continuous Delivery: Reliable Software Releases through Build, Test, and Deployment Automation”, Addison Wesley Professional, 2010</p></li>
+<li><p>Paul Hammant and www.continuousdelivery.com</p></li>
+<li><p>Stephen P. Berczuk and Brad Appleton, “Software Configuration Management Patterns.”, Addison Wesley Professional, 2003</p></li>
+<li><p>Mary and Tom Poppendieck, “Leading Lean Software Development”, Addison Wesley, 2009</p></li>
+<li><p>Paul M. Duvall, “Continuous integration. Patterns and Antipatterns”, DZone refcard #84, 2010 <a href="http://bit.ly/l8rfVS">http://bit.ly/l8rfVS</a></p></li>
+<li><p>Paul M. Duvall, “Continuous integration. Improving Software Quality and Reducing Risk”, Addison Wesley, 2007</p></li>
+<li><p>Scott W. Ambler and Pramodkumar J. Saladage, “Refactoring Databases. Evolutionary Database Design”, Addison Wesley, 2006.</p></li>
+<li><p>Paul M. Duvall, IBM developerWorks series “Automation for the people” <a href="http://ibm.co/iwwvPX">http://ibm.co/iwwvPX</a></p></li>
+<li><p>IMVU: <a href="http://bit.ly/jhqP5f">http://bit.ly/jhqP5f</a></p></li>
+<li><p>Martin Fowler and Facebook: <a href="http://on.fb.me/miBrOM">http://on.fb.me/miBrOM</a></p></li>
+<li><p>Facebook Engineering: <a href="http://on.fb.me/miBrOM">http://on.fb.me/miBrOM</a></p></li>
+<li><p>Paul Julius, Enterprise Continuous Integration Maturity Model, <a href="http://bit.ly/m7h5vC">http://bit.ly/m7h5vC</a></p></li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned It</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-22T08:57:36-05:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>What is jenkins job builder</h1>
+
+<p>Jenkins job builder is extreme good tool to manage your jenkins CI jobs, it takes simple description from YAML files, and use them to configure jenkins.</p>
+
+<pre><code>#set free style job
+#job-template.yml
+- job:
+    name: testjob
+    project-type: freestyle
+    defaults: global
+    disabled: false
+    display-name: 'Fancy job name'
+    concurrent: true
+    quiet-period: 5
+    workspace: /srv/build-area/job-name
+    block-downstream: false
+    block-upstream: false
+</code></pre>
+
+<p>Then put your jenkins access into jenkins.ini file</p>
+
+<pre><code>[jenkins]
+user=USERNAME
+password=USER_TOKEN
+url=JENKINS_URL
+ignore_cache=IGNORE_CACHE_FLAG
+</code></pre>
+
+<p>Based on the job configuration above, you just need to type command</p>
+
+<pre><code>$ jenkins-jobs --conf jenkins.ini update job-template.yaml 
+</code></pre>
+
+<p>Then your job <em>testjob</em> is created in your jenkins server.</p>
+
+<p>The project is created by <a href="https://wiki.openstack.org/wiki/InfraTeam">openstack-infrastructure team</a>, it is used to manage the openstack environment, fairly good.</p>
+
+<h1>How it works</h1>
+
+<p>There is no magic behind it, <em>jenkins-jobs</em> just convert the <em>job-template.yaml</em> to jenkins XML request file, and use jenkins remote API to send create request.</p>
+
+<p>Try to do below to understand this.</p>
+
+<pre><code>$ jenkins-jobs test job-template.yaml -o .
+</code></pre>
+
+<p>Then xml file <em>testjob</em> is created, see</p>
+
+<pre><code>&lt;?xml version="1.0" ?&gt;
+&lt;project&gt;
+  &lt;actions/&gt;
+  &lt;description&gt;
+
+&amp;lt;!-- Managed by Jenkins Job Builder --&amp;gt;&lt;/description&gt;
+  &lt;keepDependencies&gt;false&lt;/keepDependencies&gt;
+  &lt;disabled&gt;false&lt;/disabled&gt;
+  &lt;displayName&gt;Fancy job name&lt;/displayName&gt;
+  &lt;blockBuildWhenDownstreamBuilding&gt;false&lt;/blockBuildWhenDownstreamBuilding&gt;
+  &lt;blockBuildWhenUpstreamBuilding&gt;false&lt;/blockBuildWhenUpstreamBuilding&gt;
+  &lt;concurrentBuild&gt;true&lt;/concurrentBuild&gt;
+  &lt;customWorkspace&gt;/srv/build-area/job-name&lt;/customWorkspace&gt;
+  &lt;quietPeriod&gt;5&lt;/quietPeriod&gt;
+  &lt;canRoam&gt;true&lt;/canRoam&gt;
+  &lt;properties/&gt;
+  &lt;scm class="hudson.scm.NullSCM"/&gt;
+  &lt;builders/&gt;
+  &lt;publishers/&gt;
+  &lt;buildWrappers/&gt;
+&lt;/project&gt;
+</code></pre>
+
+<p>Now you can use curl command to send the request (testjob) directly !!</p>
+
+<pre><code>$ curl --user USER:PASS -H "Content-Type: text/xml" -s --data "@testjob" "http://jenkins-server/createItem?name=testjob"
+</code></pre>
+
+<h2>How to recreate your jenkins job</h2>
+
+<p>Looks great, finally you need think about how to re-create your jenkins job, it is also simple, just download the config.xml</p>
+
+<pre><code>$ curl --user USER:PASS http://jenkins-server/testjob/config.xml
+</code></pre>
+
+<p>Or open the configuration page in broswer *<a href="http://jenkins-server/testjob/configure*">http://jenkins-server/testjob/configure*</a> and map from YAML file.</p>
+
+<p>You need to read <a href="http://ci.openstack.org/jenkins-job-builder/configuration.html">jenkins job builder&rsquo;s guideline</a> to know the map, generate it had level Macro like <a href="https://wiki.openstack.org/wiki/InfraTeam">builders</a>, which is connected to the <a href="https://github.com/openstack-infra/jenkins-job-builder/blob/master/jenkins_jobs/modules/builders.py">real python builders module</a> to do transformation from YAML to XML.</p>
+
+<p>What you stated in YAML file like</p>
+
+<pre><code>-job:
+  name: test_job
+  builders:
+- shell: "make test"
+</code></pre>
+
+<p>it will be converted to</p>
+
+<pre><code>&lt;builders&gt;
+&lt;hudson.tasks.Shell&gt;
+  &lt;command&gt;make test&lt;/command&gt;&lt;/hudson.tasks.Shell&gt;
+&lt;/builders&gt;
+</code></pre>
+
+<h2>How to extend</h2>
+
+<p>Greatly to see jenkins job builder already had lots of default modules to support your normal jenkins jobs, but there is exceptions like some none popular jenkins plugins or your own plugins.</p>
+
+<p>Then it is time to extend the module, the existing document: Extending is not clear enough, I will use example to show how it works, code is in <a href="https://github.com/bv2012/jenkins-buddy">github jenkins-buddy</a> project</p>
+
+<p><a href="https://wiki.jenkins-ci.org/display/JENKINS/ArtifactDeployer+Plugin">ArtifactDeployer</a> Plugin is used as example, this plugin is the popular plugin to deploy the artifacts to other folder.</p>
+
+<p>Artifact Deploy Plugin</p>
+
+<p><img src="../downloads/code/artifactdeploy.png" alt="" /></p>
+
+<p>And I want to have .YAML like below</p>
+
+<pre><code>*#artifactdeploy.yaml*
+- job:
+name: test-job
+publishers:
+  - artifactdeployer: 
+  includes: 'buddy-*.tar.gz'
+  remote: '/project/buddy'
+</code></pre>
+
+<h2>write codes to transform</h2>
+
+<p>Now I need to download the existing jobs to see how XML looks like, using curl above, I got it like</p>
+
+<pre><code>&lt;publishers&gt;
+   ...  
+  &lt;org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher plugin="artifactdeployer@0.27"&gt;
+&lt;entries&gt;
+  &lt;org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry&gt;
+&lt;includes&gt;buddy-*.tar.gz&lt;/includes&gt;
+&lt;basedir&gt;&lt;/basedir&gt;
+&lt;excludes&gt;&lt;/excludes&gt;
+&lt;remote&gt;/project/buddy&lt;/remote&gt;
+&lt;flatten&gt;false&lt;/flatten&gt;
+&lt;deleteRemote&gt;false&lt;/deleteRemote&gt;
+&lt;deleteRemoteArtifacts&gt;false&lt;/deleteRemoteArtifacts&gt;
+&lt;deleteRemoteArtifactsByScript&gt;false&lt;/deleteRemoteArtifactsByScript&gt;
+&lt;failNoFilesDeploy&gt;false&lt;/failNoFilesDeploy&gt;
+  &lt;/org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry&gt;
+&lt;/entries&gt;
+&lt;deployEvenBuildFail&gt;false&lt;/deployEvenBuildFail&gt;
+  &lt;/org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher&gt;
+..
+&lt;/publishers&gt; 
+</code></pre>
+
+<p>It belongs the section publishers So I write the jenkins_buddy/modules/publishers.py module to add one function artifactdeployer:</p>
+
+<pre><code>def artifactdeployer(parser, xml_parent, data):
+    logger = logging.getLogger("%s:artifactdeployer" % __name__)
+    artifactdeployer = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher')
+    entries = XML.SubElement(artifactdeployer, 'entries')
+    entry = XML.SubElement(entries, 'org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry')
+    print data
+    XML.SubElement(entry, 'includes').text = data['includes']
+    XML.SubElement(entry, 'remote').text = data['remote']
+</code></pre>
+
+<p>It is the core part handling convert.</p>
+
+<h3>Hook into jenkins-job builder</h3>
+
+<p>Now you need hook this script into jenkins-jobs builder, thank for the entry_points in python, it can be used for this.</p>
+
+<p>Create the plugin related script and structure, add new entry_point in setup.py</p>
+
+<pre><code>#setup.py in jenkins-buddy
+entry_points={
+    'jenkins_jobs.publishers': [
+    'artifactdeployer=jenkins_buddy.modules.publishers:artifactdeployer',
+    ],
+}
+</code></pre>
+
+<p>it tells jenkins-jobs if you meet new keyword artifactdeployer in publishers, please let me jenkins_buddy.modules.publishers:artifactdeployer to handle.</p>
+
+<h3>Verify it</h3>
+
+<p>Build the pip package local and install it</p>
+
+<pre><code>$ python setup.py sdist
+$ pip install dist/jenkins-buddy-0.0.5.zip
+</code></pre>
+
+<p>And verify the new job, Bingo, it works.</p>
+
+<pre><code>$ jenkins-jobs test artifactdeploy.yaml -o . 
+</code></pre>
+
+<h3>###Make it more complete by checking jenkins plugin java code</h3>
+
+<p>Maybe you noticed, it is hack solution, since I skipped some parameter converting and guess what the XML will look like, if you want to make it more complete, we need to check the java codes directly.</p>
+
+<p>src/main/java/org/jenkinsci/plugins/artifactdeployer/ArtifactDeployerPublisher.java is the class we need to take care.</p>
+
+<pre><code>@DataBoundConstructor
+public ArtifactDeployerPublisher(List&lt;ArtifactDeployerEntry&gt; deployedArtifact, boolean deployEvenBuildFail) {
+    this.entries = deployedArtifact;
+    this.deployEvenBuildFail = deployEvenBuildFail;
+    if (this.entries == null)
+    this.entries = Collections.emptyList();
+}
+</code></pre>
+
+<p>It is directly mapping from XML into internal data, if you need know more, learn how to develop jenkins plugin.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-ii/">Continuous Delivery With Docker and Jenkins - Part II</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-21T14:41:15-05:00" pubdate data-updated="true">Feb 21<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>A few weeks ago I started talking about how we use <a href="2014-02-21-continuous-delivery-with-docker-and-jenkins-part-i">Docker and Jenkins for Continuous Delivery</a> in our staging environment. Today, we are open-sourcing a simple bash utility for managing inter-container dependencies, <a href="https://github.com/bv2012/dockerize">Dockerize</a>.</p>
+
+<p>Before I go into specifics, I want to describe our workflow with Jenkins and Docker from a high-level perspective.</p>
+
+<ul>
+<li><p>let’s take the <a href="https://github.com/bv2012/hi_sinatra-docker">hi_sinatra</a> Ruby example app. It has its own GitHub repository and we have a simple, non-git Jenkins job for it.</p></li>
+<li><p>every commit pushed to GitHub, regardless of the branch, triggers a Jenkins build (via Amazon SQS). All Jenkins builds will result in a Docker image. A successful build will produce a running Docker container. A failed build will produce a stopped container which can be investigated by either looking at the logs or starting it with a tty attached.</p></li>
+<li><p>if Docker doesn’t have a <strong>hi_sinatra:master</strong> pre-built image, a new one will be created from the master branch. This master image gets re-built every time there’s a commit against the master branch. Having a master image speeds up image builds considerably (eg. installing Ruby gems, installing node modules, C extensions etc). The resulting image won’t use any caching and all intermediary images will be removed. Just to clarify, this image will not be shipped into production.</p></li>
+<li><p>if a Docker image with that app’s name, branch name and git commit sha doesn’t exist, we want Docker to build it for us. At this point, we’re interested to have the eg. <strong>hi_sinatra:second-blog-post.a8e8e83 </strong>Docker image available.</p></li>
+<li><p>before a new container can be started from the image that we’ve just built, all services that the app requires must be running in their own independent containers. Our <strong>hi_sinatra</strong> example app requires a running Redis server.</p></li>
+<li><p>when all dependent services are running in their own containers, we start a container from the newly built app image (in our example, <strong>hi_sinatra:second-blog-post.a8e8e83</strong>). All dependent containers will have their IPs exposed via env options, eg. docker run -e REDIS_HOST=172.17.0.8 -d &hellip;</p></li>
+<li><p>before our <strong>hi_sinatra app</strong> starts in its new Docker container, all tests must pass both unit, integration and acceptance. Full stack tests (also known as acceptance tests) use sandbox services, but they are setup via the same Docker containers that will be made available in production. Code portability is Docker’s strongest point, we’re making full use of it.</p></li>
+<li><p>if everything worked as expected, including interactions with all external services, this Docker image will be tagged as production. The service responsible for bringing up new Docker containers from the latest production images will take it from here.</p></li>
+</ul>
+
+
+<p>Docker containers running on the CI are available only on our office network, anyone inside it can connect to them. All that it takes to get an instance for a specific app (and all its dependencies) is to push a new branch to GitHub.</p>
+
+<h2>Dockerize</h2>
+
+<p>Dockerize acts as a Docker proxy, meaning that all commands which it does not understand get forwarded to the docker binary. Dockerize has just 2 dependencies: bash &amp; git.</p>
+
+<p>The previously described workflow as a single shell command:</p>
+
+<pre><code>dockerize boot cambridge-healthcare/hi_sinatra-docker hi_sinatra
+</code></pre>
+
+<p>The hi_sinatra app comes with 2 files that Dockerize picks up on:</p>
+
+<ul>
+<li><p>dockerize.containers which defines dependencies on other containers (another service such as Redis server or another app)</p></li>
+<li><p>dockerize.envs which will forward specific environment variables from the Docker host into the container</p></li>
+</ul>
+
+
+<p>The Vagrantfile that comes with hi_sinatra will get you up and running with Docker, Jenkins and now Dockerize. The quickest way to try the whole setup (<a href="2014-02-21-continuous-delivery-with-docker-and-jenkins-part-i">provided you have Vagrant installed</a>):</p>
+
+<pre><code>git clone https://github.com/cambridge-healthcare/hi_sinatra-docker.git
+cd hi_sinatra-docker
+vagrant up
+</code></pre>
+
+<p>By the time the VM gets provisioned, there will be a running version of <strong>hi_sinatra</strong> inside a Docker container using a Redis server running in a separate container for tracking requests. Use the IP address and port displayed at the end of the Vagrant run to access the hi_sinatra app in your browser.</p>
+
+<h2>Jenkins + Dockerize</h2>
+
+<p>Dockerize makes Jenkins integration with Docker incredibly simple. In the Jenkins instance running on the Vagrant VM that we have just built, add the following job through the Jenkins web interface:</p>
+
+<p>| Job name | hi_sinatra  |
+| Job type | Build a free-style software project |
+| Build| Execute shell   |</p>
+
+<p>This is the shell command which you will need to use for the build execution:</p>
+
+<pre><code>/bin/bash -c "source $HOME/.profile &amp;&amp; dockerize boot cambridge-healthcare/hi_sinatra-docker hi_sinatra"
+</code></pre>
+
+<p>Every successful Jenkins build will now result in a running Docker container.</p>
+
+<p>CI setups are always opinionated. We have a few more additions such as Campfire notifications, Amazon SQS integration with GitHub and a few others which are specific to our infrastructure. The above Jenkins integration example with Docker is meant to be a most conservative starting point for your own setup.</p>
+
+<p>Until next time!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-i/">Continuous Delivery With Docker and Jenkins - Part I</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-21T14:40:59-05:00" pubdate data-updated="true">Feb 21<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>We have been using Docker in our staging environment for nealrt several months now and are right now planning to make it part of our production setup once the first stable version gets released. We’ll be discussing the staging environment setup today with the promise of following up on the production environment at a later date.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-i/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/17/using-docker-to-run-ruby-rspec-ci-in-jenkins/">Using Docker to Run Ruby Rspec CI in Jenkins</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-17T17:01:40-05:00" pubdate data-updated="true">Feb 17<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In this post, I am going to give a step-by-step introduction into how you can do continuous integration testing with Docker. I will be running the rspec test suite of the CloudFoundry project&rsquo;s Cloud Controller component, although the same process can be applied to any Ruby project. I will show how to build Docker images to easily run repeatable tests and how to set-up Jenkins to do it for you in an automated manner.</p>
+
+<h1>Continuous Integration Using Docker</h1>
+
+<p>The goal of this post is to show Jenkins running a project’s test-suite using Docker. This will occur following every code check-in or every N minutes or whenever it is needed.</p>
+
+<p>Why use Docker to do this? Having a clean environment to run tests is one of the ten commandments of running tests. With Docker&rsquo;s Dockerfile, you can specify a series of steps to create the full stack of the test environment you need. Docker can follow the steps to pre-build the test environment, then stash that environment for disposable re-use. Since a running Docker image, or [LXC] &ldquo;container&rdquo;, is ephemeral, you can blow it away and re-create it very quickly. Perfect for continuous integration!</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/02/17/using-docker-to-run-ruby-rspec-ci-in-jenkins/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-04T13:47:50-05:00" pubdate data-updated="true">Feb 4<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Logging in and updating system to latest</h2>
+
+<p>SSH your shiny new VM,</p>
+
+<p>Now lets update the system to the latest:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum update</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Install OS dependencies</h2>
+
+<p>We’r going to build Node.js from sources, some dependencies (such as gcc) are required:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install gcc-c++ make openssl-devel git</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1565,19 +2071,19 @@ version-control repository.</p>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+        <a href="/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/">Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+        <a href="/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/">Continuous Delivery Implementation : Getting started with AWS</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
       </li>
     
   </ul>

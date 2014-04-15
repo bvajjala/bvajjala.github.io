@@ -548,42 +548,6 @@
     </url>
     <url>
         <loc>
-            http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-1-of-6/
-        </loc>
-        <lastmod>2014-04-15T13:57:04-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-2-of-6/
-        </loc>
-        <lastmod>2014-04-15T13:57:04-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/
-        </loc>
-        <lastmod>2014-04-15T13:57:04-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/
-        </loc>
-        <lastmod>2014-04-15T13:57:04-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/
-        </loc>
-        <lastmod>2014-04-15T13:57:04-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/
-        </loc>
-        <lastmod>2014-04-15T13:57:04-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
             http://bvajjala.github.io/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/
         </loc>
         <lastmod>2014-04-15T13:57:04-04:00</lastmod>
@@ -1163,5 +1127,37 @@
     <url>
         <loc>http://bvajjala.github.io/robots.txt</loc>
         <lastmod>2014-04-15T13:57:04-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/tutorials/cdincloud/cd-in-the-cloud-part-1-of-6.html</loc>
+        <lastmod>2014-04-15T17:35:24-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/tutorials/cdincloud/cd-in-the-cloud-part-2-of-6.html</loc>
+        <lastmod>2014-04-15T17:35:24-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/tutorials/cdincloud/cd-in-the-cloud-part-3-of-6.html</loc>
+        <lastmod>2014-04-15T17:35:24-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/tutorials/cdincloud/cd-in-the-cloud-part-4-of-6.html</loc>
+        <lastmod>2014-04-15T17:35:24-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/tutorials/cdincloud/cd-in-the-cloud-part-5-of-6.html</loc>
+        <lastmod>2014-04-15T17:35:24-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/tutorials/cdincloud/cd-in-the-cloud-part-6-of-6.html</loc>
+        <lastmod>2014-04-15T17:35:24-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/tutorials/cdincloud/</loc>
+        <lastmod>2014-04-15T17:35:24-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/tutorials/</loc>
+        <lastmod>2014-04-15T17:17:26-04:00</lastmod>
     </url>
 </urlset>

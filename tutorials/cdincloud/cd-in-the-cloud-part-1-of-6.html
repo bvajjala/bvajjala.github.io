@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="We help companies deliver software reliably and repeatedly using Continuous Delivery in the Cloud. With Continuous Delivery (CD), teams can deliver &hellip;">
+  <meta name="description" content="Tutorial : Continuous Delivery in the Cloud Part 1 of 6 We help companies deliver software reliably and repeatedly using Continuous Delivery in the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-1-of-6">
+  <link rel="canonical" href="http://bvajjala.github.io/tutorials/cdincloud/cd-in-the-cloud-part-1-of-6.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
@@ -66,36 +66,14 @@
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-  
-    
-      <h1 class="entry-title">Tutorial : Continuous Delivery in the Cloud Part 1 of 6</h1>
-    
-  
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-04-04T13:59:32-04:00" pubdate data-updated="true">Apr 4<span>th</span>, 2014</time>
-        
-      </p>
+    <h1 class="entry-title">Tutorial : Continuous Delivery in the Cloud Part 1 of 6</h1>
     
   </header>
-
-
-<div class="entry-content"><p>We help companies deliver software reliably and repeatedly using Continuous Delivery in the Cloud. With <a href="http://refcardz.dzone.com/refcardz/continuous-delivery-patterns" title="Continuous Delivery">Continuous Delivery</a> (CD), teams can deliver new versions of software to production by <a href="http://www.ibm.com/developerworks/agile/library/a-devops1/index.html" title="flattening of the software release process">flattening the software delivery process</a> and decreasing the cycle time between an idea and usable software through the automation of the entire delivery system: build, deployment, test, and release. CD is enabled through a delivery pipeline. With CD,our customers can choose when and how often to release to production. On top of this, we utilize the cloud so that customers can scale their infrastructure up and down and deliver software to users on demand.</p>
+  
+  <p>We help companies deliver software reliably and repeatedly using Continuous Delivery in the Cloud. With <a href="http://refcardz.dzone.com/refcardz/continuous-delivery-patterns" title="Continuous Delivery">Continuous Delivery</a> (CD), teams can deliver new versions of software to production by <a href="http://www.ibm.com/developerworks/agile/library/a-devops1/index.html" title="flattening of the software release process">flattening the software delivery process</a> and decreasing the cycle time between an idea and usable software through the automation of the entire delivery system: build, deployment, test, and release. CD is enabled through a delivery pipeline. With CD,our customers can choose when and how often to release to production. On top of this, we utilize the cloud so that customers can scale their infrastructure up and down and deliver software to users on demand.</p>
 
 <p>We offer a solutions called <a href="../solutions/elastic-operations/index.html" title="Elastic Operations">Elastic Operations</a> which provides a Continuous Delivery platform along with expert engineering support and monitoring of a delivery pipeline that builds, tests, provisions and deploys software to target environments – as often as our customers choose. We’re in the process of open sourcing the platform utilized by <a href="../solutions/elastic-operations/index.html" title="Elastic Operations">Elastic Operations</a>.
 In this six-part blog series, I am going to go over how we built out a Continuous Delivery solution for one of our customers <a href="http://public.sea2shore.org/" title="Sea to Shore Alliance">Sea to Shore Alliance</a>:</p>
@@ -335,43 +313,14 @@ CloudFormation requests the environment and then calls Puppet to do the dynamic 
 <p><strong>Part 5 of 6 – Deployment Automation</strong>: I will explain Capistrano in detail along how we used Capistrano to deploy build artifacts and run Liquibase database changesets against target environments</p>
 
 <p><strong>Part 6 of 6 – Infrastructure Automation</strong>: I will describe the features of Puppet in detail along with how we’re using Puppet to build and configure target environments – for which the software is deployed.</p>
-</div>
 
-
-  <footer>
-    <p class="meta">
+  
+    <footer>
       
-  
-
-<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
-
       
-
-
-
-
-
-
-
-
+        <div class="sharing">
   
-
-
-<time datetime="2014-04-04T13:59:32-04:00" pubdate data-updated="true">Apr 4<span>th</span>, 2014</time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/aws/'>AWS</a>, <a class='category' href='/blog/categories/cd/'>CD</a>, <a class='category' href='/blog/categories/ci/'>CI</a>, <a class='category' href='/blog/categories/tutorial/'>Tutorial</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-1-of-6/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-1-of-6/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/tutorials/cdincloud/cd-in-the-cloud-part-1-of-6.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/tutorials/cdincloud/cd-in-the-cloud-part-1-of-6.html" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -381,16 +330,9 @@ CloudFormation requests the environment and then calls Puppet to do the dynamic 
   
 </div>
 
-    
-    <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/" title="Previous Post: Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline">&laquo; Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-2-of-6/" title="Next Post: Tutorial : Continuous Delivery in the Cloud Part 2 of 6">Tutorial : Continuous Delivery in the Cloud Part 2 of 6 &raquo;</a>
-      
-    </p>
-  </footer>
+    </footer>
+  
 </article>
 
 </div>
@@ -410,19 +352,19 @@ CloudFormation requests the environment and then calls Puppet to do the dynamic 
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+        <a href="/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/">Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+        <a href="/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/">Continuous Delivery Implementation : Getting started with AWS</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
       </li>
     
   </ul>

@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="If I haven&rsquo;t told you yet, Git is awesome and yes I do most og the work from the command-line, so in order to make my life easier I did two &hellip;">
+  <meta name="description" content="In continuation to a Chef Introduction session we had last week on meetup, I thought a blog post was called for in order to emphasize the process of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,343 +67,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/24/Git-Productivity-enhancements/">Git Productivity Enhancements</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-24T13:11:00-05:00" pubdate data-updated="true">Feb 24<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/git_logo.jpg" title="'Git Logo'" >If I haven&rsquo;t told you yet, Git is awesome and yes I do most og the work from the command-line, so in order to make my life easier I did two things:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>apt-get install bash-completion
-</span><span class='line'>wget https://raw.github.com/git/git/master/contrib/completion/git-completion.bash -O /etc/bash_completion.d/git
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Upon next login (or execute <em>source /etc/bash_completion.d/git</em>) right away and you have all the bash completion you need for git at your finger tips.</p>
-
-<p>Another awesome script to make your life easier with git is <a href="https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh">git-prompt.sh</a> which you can also include in your bash profile like so:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>wget https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>then add a line to ~/.profile sourcing it upon login shell, see header of git-prompt.sh for more details.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/24/why-octopress/">Why Octopress ?</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-24T09:11:00-05:00" pubdate data-updated="true">Feb 24<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/octopress.png" title="'Octopress Logo'" >
-Yes I am a Hacker wannabe [Octopress slogen is &ldquo;A blogging framewrok for hackers&rdquo; &hellip; ].</p>
-
-<p>Now seriously, i&rsquo;ve been down the road with many blog / CMS engines, <a href="http://ww.drupal.org">Drupal</a>, <a href="http://wordpress.org/">Wordpress</a> and all I really wanted was
-a note-pad with no fancy WYSIWYG editor with a bazillion plug-ins which will enable me to embed images / videos or a simple syntax highlighter.</p>
-
-<p>So I found <a href="http://octopress.org/">Octopress</a> which is just frekin&#8217; simple to use + it&rsquo;s cheap [hosting on Github Pages]</p>
-
-<blockquote><p>Octopress is a framework designed by Brandon Mathis for Jekyll, the blog aware static site generator powering Github Pages. To start blogging with Jekyll, you have to write your own HTML templates, CSS, Javascripts and set up your configuration. But with Octopress All of that is already taken care of. Simply clone or fork Octopress, install dependencies and the theme, and you’re set.</p></blockquote>
-
-<ul>
-<li>Social links preloaded, Facebook, Twitter, disqus &amp; other are built-in</li>
-<li>Syntax high-lighting built-in</li>
-<li>there are more good reasons <a href="http://octopress.org/docs/">here</a> <a href="https://github.com/imathis/octopress/wiki/3rd-party-plugins">and here</a></li>
-</ul>
-
-
-<p>The only problem was / is migrating all the stuff I have on-line so that is still a work in progress &hellip;
-&ndash;>So I guess I&rsquo;ll have to see if this ones sticks!&lt;&ndash;</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/24/adding-facbook-comments-to-octopress/">Adding Facebook Comments to Octopress</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-24T08:47:00-05:00" pubdate data-updated="true">Feb 24<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Inspired by <a href="http://blog.grambo.me.uk/blog/2012/02/20/adding-facebook-comments-to-octopress/">This post</a> Comments are now in FaceBook (Sorry disqus &hellip;).</p>
-
-<p>So now you should see something like the following (If you have JavaScript enabled of-course):
-<img src="/assets/images/FB_comments.png" title="FaceBook Comments Example" alt="FaceBook Comments" /></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/24/introduction-2-opscode-chef-slash-or-chef-for-newbiees-slash/">Introduction 2 Opscode Chef (or Chef for Newbiees)</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-24T00:21:00-05:00" pubdate data-updated="true">Feb 24<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>This Prezi was presented @: <strong>January</strong><strong><strong><strong>16th, 2013 (</strong><a href="http://meetup.tikalk.com/events/98888802/">meetup / conversation details here</a></strong>)</strong></p>
-
-<div markdown="1" align="center">
-<iframe src="http://prezi.com/embed/4z7dsc33f4ne/?bgcolor=ffffff&amp;lock_to_path=0&amp;autoplay=no&amp;autohide_ctrls=0&amp;features=undefined&amp;disabled_features=undefined" width="600" height="450" frameBorder="0"></iframe>
-</div>
-
-
-<p>There where a few issues which I fixed &amp; added to this prezi since the meetup.</p>
-
-<p>As always any comments are welcome :)</p>
-
-<p>Enjoy</p>
-
-<p>HP</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/02/24/introduction-2-opscode-chef-slash-or-chef-for-newbiees-slash/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/05/how-to-run-apt-get-update-before-puppet/">How to Run Apt-get Update Before Puppet</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-05T14:56:00-05:00" pubdate data-updated="true">Feb 5<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>One of the problems I keep running into with Puppet is that the packages I&rsquo;m trying to install are very new and I need to run <code>apt-get update</code> to update the repositories. Because Puppet does not run scripts it gets rather annoying to get the update to run before you install any packages.</p>
-
-<p>I found a lot of solutions around the web but this one seems to work best for me.</p>
-
-<script src="https://gist.github.com/cbetta/4714469.js"></script>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/02/ruby-gems-are-not-safe-to-use/">Ruby Gems Are Still Not Safe to Use</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-02T13:24:00-05:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In the light of the recent <a href="http://rubygems.org">Rubygems.org</a> security compromise the community has been looking at ways to make Rubygems.org and Ruby gems in general more secure. The project is still ongoing and feel free to help them out on #rubygems on Freenode, but here is a highlight of what I think are some of the main issues.</p>
-
-<p>Some of the issues highlighted here are taken from <a href="http://www.youtube.com/watch?v=z-5bO0Q1J9s">Ben Smith&rsquo;s enlightening (but scary) talk at Aloha Ruby Conference</a>.</p>
-
-<h2>Disclaimer</h2>
-
-<p>I am not a security expert. I am just a Ruby developer and a gem author that is worried about the current state of the Ruby gems ecosystem. I also am worried that the next negative news around Ruby will involve the problems described below.</p>
-
-<h2>What are Ruby gems and what is Rubygems.org?</h2>
-
-<p>For those not familiar, <a href="http://rubygems.org">Rubygems.org</a> is the most popular repository of &ldquo;gems&rdquo; for the <a href="http://rubylang.org">Ruby language</a>. Gems are libraries made up out of Ruby (and optionally C) code and can be uploaded by anyone who registered for an account. Rubygems.org currently hosts 50,685 gems which have been downloaded 1,259,533,358 times since July 2009. Ruby gems are not only hosted on Rubygems.org, anyone can run their own repository but Rubygems.org is definitely the most used one.</p>
-
-<h2>Current state</h2>
-
-<p>Some parts of the current infrastructure are worrying.</p>
-
-<ul>
-<li><p><strong>Hard to tell if gems were changed on the repo.</strong> It took the Rubygems.org volunteers more than 24 hours to verify every gem&rsquo;s checksum against external mirrors.</p></li>
-<li><p><strong>Impossible to tell if gems were uploaded by gem owner.</strong> It is currently very hard to know if a gem was actually uploaded by it&rsquo;s owner. Developer machines can be compromised and a users API credentials for Rubygems.org are kept unencrypted in <code>~/gem/credentials</code>.</p></li>
-<li><p><strong>Gem owner isn&rsquo;t notified of new gem uploads.</strong> When a gem developer&rsquo;s credentials are compromised a new version of the gem can be uploaded without the gem owner ever knowing.</p></li>
-<li><p><strong>Impossible to notify a gem user of compromised gems.</strong> When a gem developer&rsquo;s credentials are compromised it is hard to notify anyone who uses any of the gems published by the developer of the situation.</p></li>
-<li><p><strong>Gems can run code on install.</strong> This is probably the most interesting attack vector in the foreseeable future. It seems this feature was relatively unintentional as it involves tying into the fact that Ruby gems can contain C code. Running code on install will mean that gems can steal the unencrypted Rubygems.org credentials which can then be used to modify the compromised user&rsquo;s gems and spread the malicious code further.</p></li>
-</ul>
-
-
-<h2>Proposals for change</h2>
-
-<ul>
-<li><p><strong>Notify gem owners of newly published gems.</strong> Adding a simple email notification to the gem owner will at least allow for easier detection of compromised gems. Sadly at this point the gem is already compromised and possibly already spread over any mirrors and downloaded by users.</p></li>
-<li><p><strong>Secure developer&rsquo;s Rubygems.org credentials.</strong> This is pretty simple. My ssh key has a passphrase on it and so should my Rubygems.org credentials. Stealing a rubygems.org API key is easy, using one that requires a passphrase a lot harder.</p></li>
-<li><p><strong>Stop running code on gem install.</strong> I totally see the need for having C extensions in a Ruby gems, and those extensions need to be compiled, but we seriously need to find a way to compile C code without allowing for the arbitrary execution of code on install of a gem.</p></li>
-<li><p><strong>Automatically mirror gems and checksums.</strong>  A system involving the automatic mirroring of gems and their checksums to other servers would definitely have made the verification of gems a lot easier in the last few days.</p></li>
-<li><p><strong>Force signing of gems.</strong> Yes, <a href="http://docs.rubygems.org/read/chapter/21">you can sign your gems</a> but almost nobody does (and neither do I). Additionally it&rsquo;s a pain to force the usage of signed keys on the gem user&rsquo;s side, not to mention the futility as most gems aren&rsquo;t signed. Signing is the way to go though and work on this has started. It&rsquo;s a difficult topic though and work is being done to make it as painless as possible for users and developers.</p></li>
-<li><p><strong>Notify gem users of unsigned/insecure gems.</strong> The rubygem binary (together with tools like <a href="http://gembundler.com/">Bundler</a>) should be updated to allow for verification of signatures which will allow it to notify gem users of unsigned or compromised gems.</p></li>
-</ul>
-
-
-<h2>How can I help?</h2>
-
-<ul>
-<li><strong>Code:</strong> <a href="https://github.com/rubygems">rubygems</a>, <a href="https://github.com/rubygems-trust">rubygems-trust</a>(fork for implementing a signed approach)</li>
-<li><strong>Discussion:</strong> #rubygems and #rubygems-trust on Freenode</li>
-</ul>
-
-
-<h2>Did I miss anything?</h2>
-
-<p>Please let me know and I&rsquo;ll add it to the list.</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -605,6 +268,831 @@ a note-pad with no fancy WYSIWYG editor with a bazillion plug-ins which will ena
 
     </article>
   
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2012/09/21/ravendb-nuget-review/">RavenDB NuGet Review</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-21T15:25:00-04:00" pubdate data-updated="true">Sep 21<span>st</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://ayende.com/blog">Ayende</a> has been doing a series of posts about how simple and fast RavenDB is, using NuGet
+as an example and pointing out some <a href="http://blog.nuget.org/20120824/nuget-feed-performance-update.html">complex, poorly performing queries</a>
+that have been bogging down nuget.org recently.</p>
+
+<p>Series 1</p>
+
+<ol>
+<li><a href="http://ayende.com/blog/158145/nuget-perf-problems-part-i">NuGet Perf Problems, part I</a></li>
+<li><a href="http://ayende.com/blog/158177/nuget-perf-problem-part-iindash-importing-to-ravendb">Nuget Perf Problem, Part II-Importing To RavenDB</a></li>
+<li><a href="http://ayende.com/blog/158209/nuget-perf-part-iiindash-displaying-the-packages-page">NuGet Perf, Part III-Displaying the Packages page</a></li>
+<li><a href="http://ayende.com/blog/158210/nuget-perf-part-ivndash-modeling-the-packages">NuGet Perf, Part IV-Modeling the packages</a></li>
+<li><a href="http://ayende.com/blog/158211/nugget-perf-part-vndash-searching-packages">NugGet Perf, Part V-Searching Packages</a></li>
+<li><a href="http://ayende.com/blog/158241/nuget-perf-part-vi-aka-how-to-be-the-most-popular-dev-around">NuGet Perf, Part VI AKA how to be the most popular dev around</a></li>
+<li><a href="http://ayende.com/blog/158242/nuget-perf-part-vii-aka-getting-results-is-only-half-the-work">NuGet Perf, Part VII AKA getting results is only half the work</a></li>
+<li><a href="http://ayende.com/blog/158465/nuget-perf-part-viii-correcting-a-mistake-and-doing-aggregations">NuGet Perf, Part VIII: Correcting a mistake and doing aggregations</a></li>
+</ol>
+
+
+<p>Series 2</p>
+
+<ol>
+<li><a href="http://ayende.com/blog/158529/nuget-perf-the-final-part-ndash-load-testing-ndash-setup">NuGet Perf, The Final Part &ndash; Load Testing &ndash; Setup</a></li>
+<li><a href="http://ayende.com/blog/158530/nuget-perf-the-final-part-ndash-load-testing-ndash-the-tests">NuGet Perf, The Final Part &ndash; Load Testing &ndash; The Tests</a></li>
+<li><a href="http://ayende.com/blog/158561/nuget-perf-the-final-part-ndash-loading-testing-ndash-results">NuGet Perf, The Final Part &ndash; Load Testing &ndash; The Results</a></li>
+<li><a href="http://ayende.com/blog/158593/nuget-perf-the-final-part-ndash-load-testing-ndash-results-2">NuGet Perf, The Final Part &ndash; Load Testing &ndash; Results ^ 2</a></li>
+<li><a href="http://ayende.com/blog/158625/nuget-perf-the-final-part-ndash-load-testing-ndash-source-code">NuGet Perf, The Final Part &ndash; Load Testing &ndash; Source Code</a></li>
+</ol>
+
+
+<p>This series piqued my interest given that I&rsquo;ve been working on Lucene.Net.Linq and integrating it with NuGet.Server. I haven&rsquo;t worked
+directly with RavenDB, but I have used some products like Octopus Deploy which uses RavenDB. It seems like a pretty cool product and
+I don&rsquo;t have anything against it. However, there are some problems with the blog series that might lead the casual reader
+to be misled about what has been accomplished, especially with regards to declarations of victory and some misleading
+performance numbers.</p>
+
+<p>I know the blog series is only meant to show off RavenDB and give potential users an idea of what their code might look like,
+but nonetheless some hefty claims are made about performance in comparison to the Entity Framework / SQL Server solution in
+use at <a href="http://nuget.org/">nuget.org</a>. Let&rsquo;s take a look.</p>
+
+<h2>Pick a Schema, Any Schema Will Do</h2>
+
+<p>Of course if you&rsquo;re going to model data in a new persistence layer, it makes perfect sense to simplify or improve the
+way your data is stored and indexed for later retrieval. Ayende points out some problems with the dense, non-semantic
+way some fields are stored in nuget, such as dependency versions and tags. He uses these as examples that illustrate
+how RavenDB can handle nested collections of strings and complex objects.</p>
+
+<p>That&rsquo;s great and all, but if we&rsquo;re redesigning the schema, we&rsquo;ve already changed the rules. Nuget.org is having some
+trouble specifically because of a poorly designed schema that requires too many joins and some other complex hoop-jumping
+to execute some frequently used queries.</p>
+
+<p>Furthermore, regardless of how the data is stored behind the server, NuGet uses an OData API to expose its packages
+to clients. If you change the schema, you have to do it in a way that remains compatible with that client API, or
+the millions of installed instances suddenly stop working.</p>
+
+<h2>Semantic Version Sort vs. Lexical Sort</h2>
+
+<p>One of the primary ways that packages are sorted in NuGet is by version. Unfortunately, the complex nature of
+semantic versions, such as 0.9-alpha or 1.0.5, makes it impossible to sort them correctly using a basic lexical sort.
+For example, 1.0-alpha should get sorted before 1.0, and 1.2 should get sorted before 1.10. With lexical sort
+they do not.</p>
+
+<p>This problem was pointed out in a comment on <a href="http://ayende.com/blog/158210/nuget-perf-part-ivndash-modeling-the-packages">Part IV</a>
+but left unresolved.</p>
+
+<h2>Review</h2>
+
+<p>In using NuGet as an example for RavenDB, the following features are not addressed:</p>
+
+<ol>
+<li>Providing a backwards-compatible OData endpoint</li>
+<li>Sorting correctly by package version</li>
+<li>Storing and retrieving package contents (only package metadata is addressed)</li>
+<li>Adding new packages into the index</li>
+<li>Keeping track of download counters (per-package and total)</li>
+</ol>
+
+
+<p>Without addressing adding new packages and tracking downloads, the data store is effectively read-only,
+meaning that caches never get invalidated and there are no writes to disk. Based on this criteria, is
+it really fair to compare performance benchmarks between this sample and a real, production system?</p>
+
+<h2>The Load Tests</h2>
+
+<p>In the next part of the series, the sample system is put under some load to see what kind of performance
+RavenDB can provide when there are concurrent users. <a href="http://ayende.com/blog/158530/nuget-perf-the-final-part-ndash-load-testing-ndash-the-tests">The Tests</a>
+goes into some detail about the load testing plan.</p>
+
+<p>Reviewing the load test, we have another obvious problem: only a handful of sample queries are being used.
+When the number of search queries is low, say, under 10, the system under load can simply cache the results
+from the previous time the query was executed and return that to the user. Since there isn&rsquo;t any variance
+in which columns are used to sort, what page is retrieved, etc., the system under load doesn&rsquo;t have to think
+very hard at all.</p>
+
+<p>Combine the simplicity of the test plan with the fact that the system under test is not doing any writes at all,
+and you might as well be slinging static html at that point. I guess it does validate, if nothing else, that
+the caching built into RavenDB works.</p>
+
+<p>One indicator that the load test isn&rsquo;t really hitting any critical thresholds is that Pages/Sec grows pretty
+linearly as User Load ramps up. If the system hit such a threshold, one would expect Pages/Sec to peak at
+a certain rate and (ideally) sustain that rate as concurrency continues to grow.</p>
+
+<h2>Summary</h2>
+
+<p>To reiterate, I&rsquo;m not trying to bash RavenDB, which I&rsquo;m sure is an awesome product and probably really would
+perform very effectively under load similar to that experienced by <a href="http://nuget.org/">nuget.org</a>. However,
+casual observers may come away with unrealistic expectations after reading the performance results offered
+up on <a href="http://ayende.com">ayende.com</a>.</p>
+
+<h2>Why Do I Care</h2>
+
+<p>If Ayende had picked virtually any example other than NuGet packages to do a blog series on, I probably would have
+read along and not thought much about any of it. But having worked on NuGet.Server + Lucene.Net.Linq for
+several months earlier this year, the subject matter is near and dear to my heart.</p>
+
+<p>In future posts I&rsquo;ll get into some more compare and contrast on RavenDB vs. <a href="https://github.com/themotleyfool/Lucene.Net.Linq">Lucene.Net.Linq</a>
+and maybe do a load test of my own of our <a href="https://github.com/themotleyfool/NuGet/downloads">custom NuGet.Server builds</a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2012/09/06/how-Angies-Lists-uses-octopus-deploy/">How Angie&#8217;s List Uses Octopus Deploy</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-06T11:23:00-04:00" pubdate data-updated="true">Sep 6<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&rsquo;ve mentioned a few times that my team has been using <a href="http://octopusdeploy.com/">Octopus Deploy</a> in a few of my posts.
+Now I&rsquo;ll describe in more detail some of the ways we&rsquo;ve integrated with Octopus that may help others.</p>
+
+<h2>The Before Times</h2>
+
+<p>Octopus started a beta phase in late 2011, so what were we doing before? Since I started working in an asp.net shop
+in 2006, I&rsquo;ve been surprised by the lack of robust deployment tools for the ecosystem.</p>
+
+<p>The Web Deployment Projects system provided by Microsoft has always seemed like a non-starter for me. When you
+have mature processes like version control, continuous integration, automated testing, and quality assurance,
+how does it make sense to hand the keys over to a developer running Visual Studio to click &ldquo;Deploy&rdquo;
+on their desktop? What guarantee do you have that the code has been checked in, that it builds, that
+the tests pass, that QA signed off?</p>
+
+<p>Even if you only give trusted users permission to deploy, I&rsquo;ve never understood how it makes sense that you
+would need Visual Studio to deploy your projects. I mean, Visual Studio is for development. It isn&rsquo;t even
+needed by a build server to compile your code. But now QA (or whoever is allowed to perform deployments) needs
+to have Visual Studio installed somewhere and checkout the code and build it themselves? So much for automation.
+So much for predictability. So much for repeatability.</p>
+
+<p>So it was with a lack of viable alternatives that I started writing a deployment tool in 2007. The tool was
+named Bazooka (because it &ldquo;shoots&rdquo; software onto servers), and we used it for 5 years. We never released it as
+open source because it made several assumptions particular to us and we didn&rsquo;t take the time to clean it up.</p>
+
+<p>Bazooka was a web application that watched a directory for release candidates to show up as they were
+prepared by our build server. Each release candidate contained a deployment descriptor that had some
+meta data and a list of components that could be deployed to servers that matched certain roles like
+WebServer or AppServer.</p>
+
+<p>Bazooka used xml configuration for everything. The deployment descriptor was xml, the server and environment
+configuration was xml, the permissions were xml, and the log files that recorded what had been deployed where
+were also xml. This made Bazooka pretty slow as deployment logs piled up, but it beat the heck out of
+doing anything more heavy-weight with sql.</p>
+
+<p>Bazooka was, in reality, just a web interface to MSBuild. When you went through the deployment wizard,
+Bazooka simply executed MSBuild in the directory specified by each component with some properties saying
+which server to deploy to, which target to execute, what the environment was, etc.</p>
+
+<p>We could have easily kept improving Bazooka, but we had actual code to write for our business, so Bazooka
+had some weaknesses that we never really addressed. For example, managing servers and environments was
+done by hand-editing the xml files. We didn&rsquo;t build a UI for that. Also, it was pretty tough to answer
+simple questions like, &ldquo;What was the most recent deployment of my project to the staging environment?&rdquo;</p>
+
+<p>But it worked as a fine stand-in for 5 years until someone built something better.</p>
+
+<h2>Octopus Trial</h2>
+
+<p>It was fun playing with Octopus during the beta period and seeing another approach to a web based
+deployment tool. In the beginning there were plenty of things Bazooka had that Octopus didn&rsquo;t (yet),
+but development has been pretty rapid with Octopus delivering frequent releases.</p>
+
+<p>The one time where we asked if using Octopus was right was when Paul Stovell, the creator/developer
+of Octopus Deploy, took a few months to rewrite the persistence layer, converting it from Entity
+Framework to RavenDB. It was the right decision to make and we&rsquo;re happy in the long run, but we
+found ourselves in a lurch waiting for some important features and bugfixes. We came out fine on
+the other side though.</p>
+
+<p>We also found that using a local file-based NuGet feed with Octopus doesn&rsquo;t scale very well, and
+switching to NuGet Server provided no benefit either. This inspired us to create a
+<a href="https://github.com/themotleyfool/NuGet">custom fork</a> of NuGet Server that uses
+<a href="http://incubator.apache.org/lucene.net/">Lucene.Net</a> and
+<a href="https://github.com/themotleyfool/Lucene.Net.Linq">Lucene.Net.Linq</a> to provide a scalable, lightning fast internal feed for Octopus.</p>
+
+<h2>The Switch</h2>
+
+<p>As we integrated some pilot projects with Octopus, we slowly stopped using Bazooka and
+eventually turned off Bazooka integration. Some quick stats of our Octopus configuration today:</p>
+
+<ul>
+<li>48 projects</li>
+<li>18,080 release candidates</li>
+<li>1,405 deployments</li>
+</ul>
+
+
+<p>Octopus has done a decent job managing our high demands. We have experienced some slow page
+loads here and there, but Paul has been very responsive about troubleshooting and optimizing
+these.</p>
+
+<h2>Reusing Deployment Scripts</h2>
+
+<p>Since we already had a highly automated deployment system, we wanted to preserve our exising
+capabilities while finding ways to improve the system.</p>
+
+<p>One problem that Octopus doesn&rsquo;t solve for you is how to share deployment scripts across
+projects. By default, Octopus will execute deployment scripts contained in each project,
+but there isn&rsquo;t a built-in or standard way to reuse common functionality.</p>
+
+<p>One of the first projects we set up in Octopus we named OctopusScripts. This project
+consists of a collection of PowerShell modules that we want to be available everywhere.
+When we deploy the project, the deployment scripts install the modules into a
+standard location where PowerShell will probe for them. Then from other projects,
+we can simply start a script with:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Import-Module SmokeTest</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Reuse Moar</h2>
+
+<p>Moving most of our scripts into PowerShell modules was working great, but we started
+to notice that our Deploy.ps1 scripts still looked awfully repetitious.</p>
+
+<p>All of our web projects follow the same basic deployment recipe:</p>
+
+<ol>
+<li>PreDeploy
+
+<ol>
+<li>Disable machine in load balancer</li>
+<li>Create IIS site and app pool definitions if missing</li>
+<li>Update site host-header bindings as needed</li>
+</ol>
+</li>
+<li>Let Octopus update the document root to point to the new application</li>
+<li>PostDeploy
+
+<ol>
+<li>Execute smoke tests against the server and abort if any URLs return a non-200 response</li>
+<li>Enable machine in load balancer</li>
+</ol>
+</li>
+</ol>
+
+
+<p>Of course we have different configurations and different URLs to use for smoke tests
+for each project. We ended up creating a configuration based, modular script collection
+so that each project simply needs to include a stub:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Import-Module Fool-Octopus
+</span><span class='line'>Invoke-OctopusDeploymentTasks</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The Invoke-OctopusDeploymentTasks function looks at whatever variable and configuration
+are present and figure out which steps to execute. The same scripts are used for Windows
+Service type projects and others too, and they figure out based on conventions if they
+need to run web steps, create services, etc.</p>
+
+<p>If the stub is missing from a project (because why duplicate the stub?) our build scripts
+automatically insert a stub Deploy.ps1, PreDeploy.ps1 and PostDeploy.ps1.</p>
+
+<p>We think we&rsquo;re about as DRY as we can get with regards to our deployment scripts.</p>
+
+<h2>Ad-hoc PowerShell</h2>
+
+<p>One thing we&rsquo;d like to see that hasn&rsquo;t made it into Octopus yet is the concept of ad-hoc
+powershell scripts. Basically, we want to be able to run some arbitrary scripts during a
+deployment, only once. It doesn&rsquo;t need to run once on each machine being deployed to, just
+once and then done. There&rsquo;s a <a href="https://trello.com/card/new-deployment-step-ad-hoc-powershell/4e907de70880ba000079b75c/8">story card</a>
+on Paul&rsquo;s Trello board that we&rsquo;re looking forward to. In the mean time, we&rsquo;ve been emulating
+this behavior by deploying a small package to a dummy server and letting the script run there.</p>
+
+<p>We mostly want this feature to simplify tasks such as sending email/other notifications when
+deployments are beginning or completed. It might also be useful for a green/blue style
+deployment model where the load balancer needs to toggle just once after the servers
+have been updated.</p>
+
+<p>Without the Ad-hoc feature, one of the stumbling points we run into is sometimes forgetting
+to check the &ldquo;Force redeployment&rdquo; checkbox that Octopus leaves unchecked. When we forget,
+some steps get skipped leading to confusing results.</p>
+
+<h2>Looking Ahead</h2>
+
+<p>Because of the level of automation we integrated with Octopus, our business is able to
+deploy software more frequently and more reliably than ever before. In the coming
+months and years, we look forward to seeing improvements in Octopus features that will
+help us with cloud deployments to AWS or Azure. Octopus has definitely filled a gap
+in our deployment capabilities, allowing us to deliver value to our business quickly,
+iteratively and predictably.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/20/how-Angies-List-uses-nuget-part-2/">How Angie&#8217;s List Uses NuGet (Part 2)</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-20T13:56:00-04:00" pubdate data-updated="true">Aug 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="/blog/2012/08/07/how-the-motley-fool-uses-nuget/">Last time</a>
+I talked about how my development team progressed from having all
+of our .net code in a single repository with a single solution to using a more
+modular architecture complete with encapsulated domains.</p>
+
+<p>When we started using this appraoch, we were still limited in a few ways:</p>
+
+<ul>
+<li>Everyone needs to integrate with the newest code</li>
+<li>Difficult to patch an old version of a dependency</li>
+<li>Cascading failures on the build server</li>
+</ul>
+
+
+<p>Even though we broke the ProjectReference rats nest, we still had an
+implicit dependency on various shared code. It all had to be checked out
+and built in the right order.</p>
+
+<h2>Binary Package Management</h2>
+
+<p>The next logical step was to further decouple our shared code by
+packaging it up and publishing those packages. If we could do that,
+we could decide when to upgrade dependencies on a product by product
+basis.</p>
+
+<p>There are two package managers in the .net ecosystem: OpenWrap and NuGet.</p>
+
+<p>When we started shopping around, OpenWrap had been around longer and seemed
+to be a better choice. There&rsquo;s a <a href="http://stackoverflow.com/questions/4256994/openwrap-vs-nuget">comparison of the products</a>
+on stackoverflow.</p>
+
+<p>We worked with OpenWrap for over 6 months and during that time started
+to find some problems around integration with Visual Studio and ReSharper.
+OpenWrap wants to manage dependencies per solution, and we have many cases
+where we want to control dependencies at a per project level. We also
+started to notice that NuGet was getting new versions released on a fairly
+regular schedule, while OpenWrap 2.0 was in unstable beta limbo for over
+a year.</p>
+
+<p>Around the same time we started playing with <a href="http://octopusdeploy.com/">Octopus Deploy</a>
+for deploying our code. Since Octopus uses NuGet packages for deployment, we
+figured it would make sense to standardize on one package management system
+for both deployments and dependency management. It&rsquo;s true that those are
+separate problem spaces, but having less build scripts is always a good thing.</p>
+
+<h2>Thoughts on NuGet</h2>
+
+<h3>Conventions</h3>
+
+<p>NuGet has several conventions that make it easy to create simple packages
+that others can reference. You can share assemblies and content easily,
+and when you want to customize anything there are some powershell extension
+points you can hook into.</p>
+
+<p>One problem we run into is that when building packages, sometimes there&rsquo;s
+a NuGet convention we want to customize or suppress, and often we can&rsquo;t.</p>
+
+<p>For example, if you create a <code>nuspec</code> and place it adjacent to a <code>csproj</code>
+file, NuGet will look at the project and automatically inject metadata
+and content into the package. For some things, you can override this
+behavior with explicit specifications in the nuspec, but the behavior
+can be surprising and confusing.</p>
+
+<h3>Dependency Scoping</h3>
+
+<p>NuGet supports the concept of transitive dependencies&hellip; sort of. If you
+install package A, and A depends on package B, NuGet will go find a version
+of B and install it while installing A. However, NuGet doesn&rsquo;t do any record
+keeping to remember that B is a transitive dependency. To your project, A and
+B appear simply as direct dependencies.</p>
+
+<p>There may be cases where A depends on B at runtime, but consumers of A
+shouldn&rsquo;t need to code against B at design time.</p>
+
+<p>There may be other cases where B is an optional dependency for A, and
+A can be used without it.</p>
+
+<p>Since NuGet doesn&rsquo;t have a concept of scope, it only has one simplistic
+approach to dealing with transitive dependencies: treat them just like
+direct dependencies.</p>
+
+<h3>Upgrade Behavior</h3>
+
+<p>When you ask NuGet to update a specific package, it will first look for
+updates to transitive dependencies that the package depends on. This may
+seem obvious or desirable to some, but personally I find it confusing.
+You can control this behavior with the <code>-IgnoreDependencies</code> flag in
+the Package Management Console, but oddly you don&rsquo;t get that option
+in the command line <code>nuget.exe</code> or from the Visual Studio GUI Package
+Manager.</p>
+
+<h3>Package Feed Performance</h3>
+
+<p>We use continuous integration, and every successful build produces
+&ldquo;release candidate&rdquo; versions of packages. We generate 50 to 100 packages
+a day.</p>
+
+<p>Using the simple NuGet UNC share quickly failed to scale, so next we tried
+NuGet.Server and found that it doesn&rsquo;t perform well either.</p>
+
+<p>NuGet Gallery seemed like overkill with its SQL Server requirement, so
+I started optimizing NuGet.Server. This project ended up taking quite
+a while, but the good news is that the fruits of the labor are now
+open source on GitHub at <a href="https://github.com/themotleyfool/NuGet">https://github.com/themotleyfool/NuGet</a>.</p>
+
+<p>For more information about that project, see my <a href="/blog/2012/07/03/Speeding-Up-NuGet-Server/">previous post</a>.</p>
+
+<h3>Refactoring Applications and Shared Code</h3>
+
+<p>We try to use <a href="http://semver.org/">Semantic Versioning</a> to communicate
+breaking changes in the packages we publish, so sometimes when
+we want to use a refactoring tool like Change Method Signature
+or Use Base Class it would be nice to have application and shared
+code loaded into a single instance of Visual Studio.</p>
+
+<p>We created a tool called <a href="https://github.com/TheMotleyFool/SlimJim">SlimJim</a>
+that generates these Solution files on the fly.</p>
+
+<p>If you create a Solution with application code and shared library code,
+ReSharper will be smart enough to apply refactoring tools across the projects
+even though ProjectReference style references are not being used.</p>
+
+<p>However, Visual Studio won&rsquo;t know the correct order to build projects in,
+and won&rsquo;t automatically copy outputs from shared libraries over to applications.</p>
+
+<p>We extended SlimJim to convert assembly references to project references and back
+to address this limitation.</p>
+
+<h2>Conclusion</h2>
+
+<p>In terms of capability and maturity, we&rsquo;re in a much better place than
+we were a few years ago. However, we still have a ways to go in terms of
+productivity and workflow.</p>
+
+<p>NuGet has helped us move in the right direction and we hope to see
+further enhancements and even contribute some more of our own as we
+develop them.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/07/how-Angies-List-uses-nuget/">How Angie&#8217;s List Uses NuGet (Part 1)</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-07T14:25:00-04:00" pubdate data-updated="true">Aug 7<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This post describes how we came to using binary package management. In the next part I&rsquo;ll get into NuGet.</p>
+
+<p>In the beginning, there was one repository and it held all the projects for The Motley Fool, and it was good.
+There were around a dozen asp.net web projects, a smattering of service and console apps, and a bunch of class libraries
+to hold shared code. There was one Solution (sln) to rule them all.</p>
+
+<p>As time went on, we found that there are downsides to the one-giant-solution approach to .net development:</p>
+
+<ul>
+<li><a href="http://www.laputan.org/mud/">Big Ball of Mud</a></li>
+<li>Slow builds</li>
+<li>Tight coupling</li>
+<li>Configuration hell</li>
+<li>Hard to release different applications on different schedules</li>
+</ul>
+
+
+<p>Typically our larger applications would be split into several projects following a typical N-tier layered architecture:</p>
+
+<ul>
+<li>Web</li>
+<li>Service</li>
+<li>Domain</li>
+<li>Data Access</li>
+</ul>
+
+
+<p>Despite our attempts to encapsulate data access and domain logic behind the service project, code ended up leaking out
+to the point where domain projects were using types and methods from unrelated domain projects. Cats and dogs were
+sleeping together.</p>
+
+<p>Around this time Steven Bohlen presented a <a href="http://unhandled-exceptions.com/blog/index.php/2010/11/27/dc-altnet-presentationthats-a-wrap/">talk</a>
+to the Washington DC Alt.NET User Group titled &ldquo;Domain Driven Design Implementation Patterns in .NET&rdquo;. While some of us
+were already familiar with concepts of DDD, this talk lit a spark for us to try fixing our big ball of mud.</p>
+
+<p>In late 2010 we started to make some changes. Instead of having one giant repository, shared code would be split out
+into separate repositories. We also took this opportunity to introduce a new project organization and architecture.</p>
+
+<p>We established one repository to hold utility code, broken into specific class libraries:</p>
+
+<ul>
+<li><tt>Fool.Abstractions</tt> &ndash; similar in spirit to System.Web.Abstractions; adds interfaces and wrappers to various FCL types that lack them</li>
+<li><tt>Fool.Lang</tt> &ndash; similar in spirit to <a href="http://commons.apache.org/lang/">Jakarta Commons Lang</a>; adds general utility classes and methods not found elsewhere</li>
+<li>Other projects that extend 3rd party class libraries to make them easier for us to work with in standardized ways.</li>
+</ul>
+
+
+<p>Then we established another repository to hold Domain Driven, er, Domains. For example, many of our applications and web sites deal with
+stock market data, so one of our business domains is Quotes. In the Quotes Domain we have these projects:</p>
+
+<ul>
+<li><tt>Fool.Quotes</tt> &ndash; contains service interfaces and value types; serves as an API to the domain</li>
+<li><tt>Fool.Quotes.Core</tt> &ndash; contains domain logic, models, and entities; serves as a private implementation</li>
+<li><tt>Fool.Quotes.Web.Api</tt> &ndash; exposes Fool.Quotes interfaces over a RESTful web API</li>
+</ul>
+
+
+<p>The key to keeping our domains distinct and decoupled is to keep Core projects private. While Core is required at runtime,
+it should never be referenced at compile time. To bridge the gap, we use Dependency Injection to provide concrete implementations.</p>
+
+<p>Domains may depend on other domains provided that they consume each other through the API project. That way entities and business logic
+are kept focused on their own concerns and don&rsquo;t leak out to other problem areas where they don&rsquo;t fit.</p>
+
+<h2>Gluing It Together</h2>
+
+<p>Having projects split into different repositories and different solutions meant that we couldn&rsquo;t simply have one mega Solution
+that includes everything. That&rsquo;s by design, so good on us. But this introduces a problem in that we still need to reference code
+from our utility projects and DDD projects in our applications. The first solution we came up with to handle this problem was
+to use the <a href="http://msdn.microsoft.com/en-us/library/wkze6zky.aspx">AssemblyFolders</a> registry to have our libraries
+appear in the <tt>Add Reference</tt> dialog. Then to solve the runtime dependency on our private Core assemblies, we install
+those to the GAC so they can be loaded using reflection by our IoC container.</p>
+
+<p>This approach worked fine, mostly. But we encountered some downsides after using it for a while:</p>
+
+<ul>
+<li>Need to have all library code checked out and built on each development machine</li>
+<li>No built-in way to manage different versions of the same dependency</li>
+<li><a href="http://www.sellsbrothers.com/Posts/Details/12503">GAC considered harmful</a></li>
+<li>Hard to debug build errors and runtime errors</li>
+</ul>
+
+
+<p>Using Continuous Integration means we&rsquo;re producing new builds dozens of times a day, so it isn&rsquo;t practical for us to
+manage different assembly versions for each build. Like most shops, we leave our assembly versions at 1.0.0.0 despite
+injecting actual version information into the AssemblyInformationalVersion attribute.</p>
+
+<p>In order to support parallel development, we needed to find a more flexible way of managing dependencies, and
+at this point we started to look at binary package management.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/24/devops-4-developers-at-jenkins-conference-hertzliya/">DevOps 4 Developers @ Jenkins Conference Hertzliya</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-24T17:46:00-04:00" pubdate data-updated="true">Jul 24<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>A talk I gave @ <a href="http://blog.cloudbees.com/2012/07/jenkins-user-conference-in-herzliya.html">Jenkins Conferencee</a> in Hertzliya.
+See presentation on prezi:</p>
+
+<div markdown="1" align="center">
+    <iframe src="http://prezi.com/embed/u4zb3h6s5vql/?bgcolor=ffffff&amp;lock_to_path=0&amp;autoplay=no&amp;autohide_ctrls=0&amp;features=undefined&amp;disabled_features=undefined" width="650" height="500" frameBorder="0"></iframe>
+</div>
+
+
+<p>See other great content &amp; presentations @ <a href="http://www.cloudbees.com/jenkins-user-conference-2012-israel-abstracts.cb">this link</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/03/Speeding-Up-NuGet-Server/">Speeding Up NuGet.Server</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-03T00:00:00-04:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><em>(Get the source code at <a href="https://github.com/themotleyfool/NuGet">https://github.com/themotleyfool/NuGet</a>)</em></p>
+
+<p>Last time I wrote about creating a LINQ provider for Lucene.Net, and today I&rsquo;ll talk about integrating that provider
+with NuGet. The existing server part of the NuGet codebase is a drop-in replacement for using local file-system based
+feeds. I wanted to try to preserve that turnkey advantage but improve the performance of various queries.</p>
+
+<p>In order to make sure that my improvements were up to snuff, I set up a private mirror of all packages on <a href="http://nuget.org/">nuget.org</a>,
+which turned out to be 44,193 packages at the time, for a total size of over 20 gigs.</p>
+
+<p>If you try hitting ~/api/v2/Packages on stock NuGet.Server, you&rsquo;ll find that your request just spins and spins. And spins. In fact
+it took so long that I gave up waiting for the application to initialize. In the background, the server is finding all <code>*.nupkg</code>
+files in ~/Packages and calculating a hash of the contents. Needless to say, it can take a while to run a checksum algorithm on 20gb
+of data.</p>
+
+<p>Switching over to my custom lucene branch, the first time the site is started, it scans the Packages folder and finds all packages
+that haven&rsquo;t been indexed by Lucene. The site homepage helpfully tells you the current status, such as &ldquo;Indexing 2113 of 44193 new packages.&rdquo;
+An ajax timer refreshes the info every few seconds so progress can be easily tracked.</p>
+
+<p>The packages don&rsquo;t begin to appear in the feed until they&rsquo;ve all been indexed. So this isn&rsquo;t much better than stock NuGet.Server.</p>
+
+<h2>Incremental Indexing</h2>
+
+<p>The real improvements are appreciated after the initial index is built.</p>
+
+<pre><code>[celdredge@localhost]$ appcmd recycle apppool nuget
+"nuget" successfully recycled
+
+[celdredge@localhost]$ time wget -O /dev/null http://localhost/api/v2/Packages
+
+(snip)
+
+real    0m3.230s
+user    0m0.062s
+sys     0m0.125s
+</code></pre>
+
+<p>This means that you don&rsquo;t have to worry much about IIS shutting down the application during idle times. The index gets loaded and ready to go
+in a matter of seconds. Vast improvement over stock NuGet.Server.</p>
+
+<p>While that happens, a background thread scans the Packages folder to see what might have changed while the application was stopped. New, modified
+and deleted packages are synchronized with the Lucene index. The sycnhronization process takes about 25 seconds to scan 44,193 package files
+split into 6,180 folders and calculate the differences with the Lucene index. That&rsquo;s pretty fast.</p>
+
+<p>After the application finishes this initial scan, a FileSystemWatcher monitors the Packages folder to synchronize any changes in real time.
+This allows the index to stay in sync when new packages appear, even if they are copied into the folder instead of using <code>nuget push</code>.</p>
+
+<h2>Superfast Search</h2>
+
+<p>All sorts of complex queries are possible, and they execute in very reasonable time. I used <a href="http://www.linqpad.net/">LINQPad</a> to
+construct various test queries, like this one that finds packages whose id contain lucene but do not start with lucene:</p>
+
+<pre><code>from p in Packages
+where p.Id.Contains("Lucene")
+where !p.Id.StartsWith("Lucene")
+where p.IsLatestVersion
+orderby p.Id descending
+select p
+
+Query successful (00:00.136)
+</code></pre>
+
+<p>136ms is pretty respectable, IMO.</p>
+
+<p>Another advantage to using Lucene is how queries are analyzed. Term queries will match various word forms, so a query like <tt>build</tt> will
+match packages that use any words like build, builds, building, built, etc. It is also possible to search for phrase queries, such as
+<tt>&ldquo;glue them back together&rdquo;</tt>. That query matches only one package that contains the exact phrase, whereas on nuget.org you&rsquo;ll get
+all kinds of results.</p>
+
+<h2>Other Features</h2>
+
+<p>The <a href="https://github.com/NuGet/NuGetGallery/wiki/Tab-Completion-API-Endpoints">Tab Completion API Endpoints</a> introduced in NuGet 2.0 have
+been implemented, bringing fast results to users of the Package Manager Console.</p>
+
+<h2>Conclusion</h2>
+
+<p>It has taken a substantial amount of time and effort to implement Lucene.Net.Linq and integrate it with NuGet.Server, but the results
+have proven to be worth the investment.</p>
+
+<p>Lucene.Net.Linq has become a fairly mature, though still nascent, project now available on <a href="http://nuget.org/packages/Lucene.Net.Linq">nuget.org</a>. There are a few other
+OSS projects that attempt to do what it does, but I think it is already one of the best.</p>
+
+<p>Binaries of NuGet.Server + Lucene can be downloaded from <a href="https://github.com/themotleyfool/NuGet/downloads">https://github.com/themotleyfool/NuGet/downloads</a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -630,19 +1118,19 @@ a note-pad with no fancy WYSIWYG editor with a bazillion plug-ins which will ena
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+        <a href="/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/">Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+        <a href="/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/">Continuous Delivery Implementation : Getting started with AWS</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
       </li>
     
   </ul>

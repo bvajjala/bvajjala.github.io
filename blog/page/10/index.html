@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="I just watched the “To Package or Not to Package” video from DevOps days Mountain View. The discussion was great, and there were some moments of &hellip;">
+  <meta name="description" content="In the previous post I showed how to replace chained if-else statements in Groovy with one concise switch. It was done for the special case of if- &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,544 +67,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2011/07/27/configuration-management-strategies/">Configuration Management Strategies</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-07-27T12:32:00-04:00" pubdate data-updated="true">Jul 27<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I just watched the “To Package or Not to Package” video from DevOps days Mountain View. The discussion was great, and there were some moments of hilarity. If you haven’t watched it yet, check it out <a href=http://goo.gl/KdDyf> here </a></p>
-
-<p>Stephen Nelson Smith, I salute you, sir.</p>
-
-<p>I’m quite firmly in the “Let your CM tool handle your config files” camp. To explain why, I think it’s worth briefly examining the evolution of configuration management strategies.</p>
-
-<p>In order to keep this post as vague and heady as possible, no distinction between “system” and “application” configurations shall be made.</p>
-
-<h2> What is a configuration file? </h2>
-
-
-<p>Configuration files are text files that control the behavior of programs on a machine. That’s it. They are usually read once, when a program is started from a prompt or init script. A process restart or HUP is typically required for changes to take effect.</p>
-
-<h2> What is configuration management, really? </h2>
-
-
-<p>When thinking about configuration management, especially across multiple machines, it is easy to equate the task to file management. Configs do live in files, after all. Packages are remarkably good at file management, so it’s natural to want to use them.</p>
-
-<p>However, the task goes well beyond that.</p>
-
-<p>An important attribute of an effective management strategy, config or otherwise, is that it reduces the amount of complexity (aka work) that humans need to deal with. But what is the work that we’re trying to avoid?</p>
-
-<h2> Dependency Analysis and Runtime Configuration </h2>
-
-
-<p><img class="right" src="http://farm8.staticflickr.com/7239/7389252518_7c27eb1472_n.jpg">
-Two tasks that systems administrators concern themselves with doing are dependency analysis and runtime configuration.</p>
-
-<p>Within the context of a single machine, dependency analysis usually concerns software installation. Binaries depend on libraries and scripts depend on binaries. When building things from source, headers and compilers are needed. Keeping the details of all this straight is no small task. Packages capture these relationships in their metadata, the construction of which is painstaking and manual. Modern linux distributions can be described as collections of packages and the metadata that binds them. Go out and hug a package maintainer today.</p>
-
-<p>Within the context of infrastructure architecture, dependency analysis involves stringing together layers of services and making individual software components act in concert. A typical web application might depend on database, caching, and email relay services being available on a network. A VPN or WiFi service might rely on PKI, Radius, LDAP and Kerberos services.</p>
-
-<p>Runtime configuration is the process of taking all the details gathered from dependency analysis and encoding them into the system. Appropriate software needs to be installed, configuration files need to be populated, and kernels need to be tuned. Processes need to be started, and of course, it should all still work after a reboot.</p>
-
-<h2> Manual Configuration </h2>
-
-
-<p><img class="left" src="http://farm5.staticflickr.com/4139/4805330106_926dfc074f_m.jpg"></p>
-
-<p>Once upon a time, all systems were configured manually. This strategy is the easiest to understand, but the hardest one to execute. It typically happens in development and small production environments where configuration details are small enough to fit into a wiki or spreadsheet. As a network’s size and scope increases, management efforts became massive, time consuming, and prone to human error. Details end up in the heads of a few key people and reproducibility is abysmal. This is obviously unsustainable.</p>
-
-<h2> Scripting </h2>
-
-
-<p><img class="right" src="http://farm4.staticflickr.com/3101/2428706650_d1fc862fdc_m.jpg">
-The natural progression away from manual configuration was custom scripting. Scripting reduced management complexity by automating things using languages like Bash and Perl. Tutorials and documentation instruction like “add the following line to your /etc/sshd_config” were turned into automated scripts that grepped, sed’ed, appended, and clobbered. These scripts were typically very brittle and would only produce desired outcome after their first run.</p>
-
-<h2> File Distribution </h2>
-
-
-<p><img class="left" src="http://farm5.staticflickr.com/4068/4317655660_61a60f6576_m.jpg">
-File distribution was the next logical tactic. In this scheme, master copies of important configuration files are kept in a centralized location and distributed to machines. Distribution is handled in various ways. RDIST, NFS mounts, scp-on-a-for-loop, and rsync pulls are all popular methods.</p>
-
-<p>This is nice for a lot of reasons. Centralization enables version control and reduces the time it takes to make changes across large groups of hosts. Like scripting, file distribution lowers the chance of human error by automating repetitive tasks.</p>
-
-<p>However, these methods have their drawbacks. NFS mounts introduce single points of failure and brittleness. Push based methods miss hosts that happen to be down for maintenance. Pulling via rsync on a cron is better, but lacks the ability to notify services when files change.</p>
-
-<p>Managing configs with packages falls into this category, and is attractive for a number of reasons. Packages can be written to take actions in their post-install sections, creating a way to restart services. It’s also pretty handy to be able to query package managers to see installed versions. However, you still need a way to manage config content, as well as initiate their installation in the first place.</p>
-
-<h2> Declarative Syntax </h2>
-
-
-<p><img class="right" src="http://farm4.staticflickr.com/3144/2591838509_1fdbc46db7_m.jpg">
-In this scheme, autonomous agents run on hosts under management. The word autonomous is important, because it stresses that the <strong>machines manage themselves</strong> by interpreting policy remotely set by administrators. The policy could state any number of things about installed software and configuration files.</p>
-
-<p>Policy written as code is run through an agent, letting the manipulation of packages, configuration files, and services all be handled by the same process. Brittle scripts behaving badly are eliminated by exploiting the idempotent nature of a declarative interface.</p>
-
-<p>When first encountered, this is often perceived as overly complex and confusing by some administrators. I believe this is because they have equated the task of configuration management to file management for such a long time. After the initial learning curve and picking up some tools, management is dramatically simplified by allowing administrators to spend time focusing on policy definition rather than implementation.</p>
-
-<h2> Configuration File Content Management </h2>
-
-
-<p>This is where things get interesting. We have programs under our command running on every node in an infrastructure, so what should we make them to do concerning configuration files?</p>
-
-<p>“Copy this file from its distribution point” is very common, since it allows for versioning of configuration files. Packaging configs also accomplishes this, and lets you make declarations about dependency. But how are the contents of the files determined?</p>
-
-<p>It’s actually possible to do this by hand. Information can be gathered from wikis, spreadsheets, grey matter, and stick-it notes. Configuration files can then be assembled by engineers, distributed, and manually modified as an infrastructure changes.</p>
-
-<p>File generation is a much better idea. Information about the nodes in an infrastructure can be encoded into a database, then fed into templates by small utility programs that handle various aspects of dependency analysis. When a change is made, such as adding or removing a node from a cluster, configurations concerning themselves with that cluster can be updated with ease.</p>
-
-<h2> Local Configuration Generation </h2>
-
-
-<p><img class="left" src="http://farm5.staticflickr.com/4140/4753170413_f3488f6586_m.jpg">
-The logic that generates configuration files has to be executed somewhere. This is often done on the machine responsible for hosting the file distribution. A better place is directly on the nodes that need the configurations. This eliminates the need for distribution entirely.</p>
-
-<p>Modifications to the node database now end up in all the correct places during the next agent run. Packaging the configs is completely unnecessary, since they don’t need to be moved from anywhere. Management complexity is reduced by eliminating the task entirely. Instead of worrying about file versioning, all that needs to be ensured is code correctness and the accuracy of the database.</p>
-
-<p>Don’t edit config files. Instead, edit the truth.</p>
-
-<p>-s</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2011/07/25/some-random-udpates/">Some Random Udpates&#8230;</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-07-25T06:13:25-04:00" pubdate data-updated="true">Jul 25<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>The launch of our <strong><a href="http://brianarmstrong.org/posts/bitcoin-wallet-for-android/">Bitcoin Wallet</a></strong> app for Android went fairly well.  It got about 800 installs in the first week and <a href="http://www.wired.com/gadgetlab/2011/07/bitcoin-android-app/">Wired</a> ran a small piece on it which was pretty cool.  We&rsquo;ve also gotten a handful of open source contributions, and the app was translated into Russian, Chinese, and German within the first week!</p>
-
-<p>I&rsquo;ve been experimenting with <strong><a href="http://MyBestPic.org">MyBestPic.org</a></strong> a bit here and there with some excellent advice from Gabriel Weinberg and Naseem Hakim.  This was my experiment in inherent virality.  It hasn&rsquo;t gone viral yet but I&rsquo;ve been measuring the <a href="http://mybestpic.org/kfactor">k-factor</a> in various tests and learning a lot in the process.  Hopefully some more updates on this soon.</p>
-
-<p>Joyce Hu&rsquo;s <strong><a href="http://thebookr.com/">thebookr.com</a></strong> has been growing nicely and getting some real bookings, so this is huge for her.  I&rsquo;ve fixed a few things on the site here and there but for the most part it&rsquo;s off and running nicely now, and I think her business is going to do really well.  Investors, get in early on this one.  She is going to be oversubscribed soon :)</p>
-
-<p><strong><a href="http://www.airbnb.com">Airbnb</a></strong> has been an incredible ride, and I&rsquo;ve learned so much from the brilliant people there, making tons of friends already.  I&rsquo;ve been heading up their fraud prevention effort and I&rsquo;m about to launch a big machine learning solution (built entirely in the cloud using the Google Prediction API).  Oh and they just announced their B-round of <a href="http://blogs.wsj.com/venturecapital/2011/07/25/airbnb-from-y-combinator-to-112m-funding-in-three-years/?mod=google_news_blog">funding</a> ($112M).  With press and celebrities in the office weekly (along with our personal chef), this is the definition of what it feels like to work at a hot startup.  Revenue and bookings are growing 30% month over month.</p>
-
-<p>And I finally got a chance to catch up with a few <strong><a href="http://carwoo.com">CarWoo!</a></strong> guys (Tommy and Erik) this weekend in San Francisco for a good old fashioned night on the town.  CarWoo! is doing quite well itself and they&rsquo;ve got some big deals in the works.  Always good to keep in touch with these folks, and converse with talented entrepreneurs.  Apparently Erik is driving <a href="http://gallery.viperclub.org/data/500/medium/4794Viper_GTS_ACR_Orange_by_Dan_Berndt_1001a.jpg">this</a> to work now.</p>
-
-<p>Have been doing yoga every week, and rock climbing on Tuesdays.  Can&rsquo;t wait to get back in the office tomorrow&hellip;</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2011/07/19/Subversion-hot-backup-change-in/">Subversion Hot-backup Change in 1.6.11</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-07-19T09:11:00-04:00" pubdate data-updated="true">Jul 19<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/subversion.jpg" title="'Subversion Logo'" >An important notice to users of the hot-backup.py utility which ships with subversion.</p>
-
-<p>I found our nightly backup of subversion was failing with the following error:</p>
-
-<pre><code>svnadmin: Can't open file '/pathtorepo/db/fsfs.conf': No such file or directory
-</code></pre>
-
-<p>What was troubling me was:</p>
-
-<ol>
-<li>How come a file is missing in my svn repository &ndash; nothing has changes (As far as I know &hellip; :)</li>
-<li>hot-backup.py script hasen&rsquo;t changed much, how come my version has changed ?</li>
-</ol>
-
-
-<p>So I looked up the subversion&rsquo;s change log: <a href="http://svn.apache.org/repos/asf/subversion/tags/1.6.12/CHANGES">http://svn.apache.org/repos/asf/subversion/tags/1.6.12/CHANGES</a> which is the latest release (1.6.12) and took a look on my svn machine to find which version was installed and I found 1.6.12 was indeed in talled and in 1.6.11 release notes you will find:</p>
-
-<pre><code>* make 'svnadmin hotcopy' copy the fsfs config file (r905303)
-</code></pre>
-
-<p>In addition I took a look at hot-bakup.py change log under: <a href="http://svn.apache.org/viewvc/subversion/trunk/tools/backup/hot-backup.py.in?view=log,">http://svn.apache.org/viewvc/subversion/trunk/tools/backup/hot-backup.py.in?view=log,</a> and found that indeed the fsfs file has be included in the hotbackup script since the 1.6.11 version of the file (see link speified above).</p>
-
-<p>Googeling on the fsfs.conf subject led me to: <a href="http://comments.gmane.org/gmane.comp.version-control.subversion.user/97647">http://comments.gmane.org/gmane.comp.version-control.subversion.user/97647</a> which noted the same exact issue.</p>
-
-<p><strong>How do we solve this issue</strong><strong>?</strong></p>
-
-<ol>
-<li>Create a test repository &ndash; svnadmin create /tmp/svntest which will create the fsfs.conf under /tmp/svntest/db/fsfs.conf</li>
-<li>Copy the fsfs.conf to your svnroot/db directory and walla you have the fsfs.conf (what this file does is a different topic)</li>
-</ol>
-
-
-<p>Please note:</p>
-
-<p>1. The svnadmin upgrade &ndash;<strong>Doesn&rsquo;t add this file so unless you are using an old veriosn of the hot-backup.py script your backups will fail!!!</strong> (beleive me I tried).</p>
-
-<p>2. If you update subverison &ndash; don&rsquo;t forget to run <em>svnadmin upgrade /pathto yourrepo/</em> or you miss all the point of upgrading</p>
-
-<p>So I&rsquo;ve learened that subversion was upgraded (again which doesn&rsquo;t say your repository was upgraded!!!) &ndash; but when? &ndash; considering the fact I am running CentOS &ndash; and I didn&rsquo;t have to compile SVN from source and start checking the subversion binaries Creation / Update time I used RPM to tell me when subverions was installed and there is was:</p>
-
-<pre><code>[root@dev ~]# rpm -qi subversion
-Name        : subversion                   Relocations: (not relocatable)
-Version     : 1.6.12                       Vendor: Dag Apt Repository
-Release     : 0.1.el5.rf                   Build Date: Tue 22 Jun 2010 12:55:11 PM IDT
-Install Date: Mon 19 Jul 2010 12:36:54 AM IDT      Build Host: lisse.hasselt.wieers.com
-Group       : Development/Tools             Source RPM: subversion-1.6.12-0.1.el5.rf.src.rpm
-Size        : 21247326                         License: BSD
-Signature   : DSA/SHA1, Tue 22 Jun 2010 04:46:18 PM IDT, Key ID a20e52146b8d79e6
-Packager    : Dag Wieers 
-</code></pre>
-
-<p>I think the <a href="http://search.twitter.com/search?q=%231">#1</a> lesson learned here is before you upgrade read the release notes, see if it impacts you environment in any way &ndash; then you can upgrade.</p>
-
-<p>Hope you find this useful.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2011/07/06/bitcoin-wallet-for-android/">Bitcoin Wallet for Android</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-07-06T07:26:16-04:00" pubdate data-updated="true">Jul 6<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Tonight a buddy of mine (who works at Google) and I released an open source application.</p>
-
-<p>It&rsquo;s an <a href="https://market.android.com/details?id=com.bitcoinandroid">Android app for Bitcoin</a> that allows you to have a digital &ldquo;wallet&rdquo; on your phone.  Here are a few screenshots:</p>
-
-<p><img src="http://i.imgur.com/aqF3p.png" alt="" /></p>
-
-<p><img src="http://i.imgur.com/ilvNp.png" alt="" /></p>
-
-<p><img src="http://i.imgur.com/ObBth.png" alt="" /></p>
-
-<p><img src="http://i.imgur.com/TsZc7.png" alt="" /></p>
-
-<p>Simply put, the app allows you to send and receive bitcoins from your Android phone.</p>
-
-<p>If you&rsquo;ve never heard of bitcoin then you aren&rsquo;t alone.  It is a very new technology.  After reading about bitcoin I still wasn&rsquo;t sure what might become of it, but I wanted to learn more and figured the best way would be to dive in and build something with it!</p>
-
-<p>If I had to sum up bitcoin in one sentence I&rsquo;d say it is a &ldquo;distributed peer-to-peer currency&rdquo;.  But what does this mean and why is it important?</p>
-
-<p>I think it&rsquo;s most important features are that it&hellip;</p>
-
-<ul>
-<li><p>allows you to send money without transactions fees</p></li>
-<li><p>allows you to send money instantly, anywhere in the world</p></li>
-<li><p>and (it appears) it can do this securely</p></li>
-</ul>
-
-
-<p>If you contrast this with how most payments work today, most merchants pay 2-3% as a transaction fee to Visa or Mastercard (and this fee is partially passed on to you as a consumer). In addition, whenever you want to move money between accounts it can take up to 3 business days. With bitcoin, there are no transaction fees and money can be moved instantly, anywhere in the world. This is a potentially very disruptive technology, even if it <a href="http://cdixon.org/2010/01/03/the-next-big-thing-will-start-out-looking-like-a-toy/">looks like a toy</a> today.</p>
-
-<p>Bitcoin accomplishes this using cryptography across a large number of servers on the internet, and doesn&rsquo;t rely on one trusted third party (a bank) to control the money.</p>
-
-<p><strong>It&rsquo;s also important to realize that bitcoin is not a new product or service, it is a new platform.</strong>  Much like email or the internet itself, it has no centralized servers and many products and companies can be built on top of it (our app is just one).  It&rsquo;s also an open source project itself so anyone can see how it works and it isn&rsquo;t owned by anyone. In fact, thousands of computer scientists around the world have looked at it at this point.  This gives it a lot of potential to survive and adapt over the years.</p>
-
-<p>Whether it ever becomes mainstream or not is still very much an open question (I have mixed thoughts on this).  However, at present there is already about $100M in real money tied up in the bitcoin economy, so it has certainly shown some early promise. There are already a few <a href="http://starburst.hackerfriendly.com/?p=1530">stores starting to pop up</a> who accept bitcoin.</p>
-
-<p><strong>I think a day will come very soon where we no longer need to carry a physical wallet, and our smart-phones will take over that job.</strong>  I also think it would be great for the economy to not pay a tax of 2-3% on each transaction to Visa or Mastercard (both for businesses and consumers).</p>
-
-<p>For a glimpse of how this might work, checkout this little demo video we put together.  It shows us instantly transferring money between two phones using just the internet and a distributed network of computers around the world.</p>
-
-<p>The <a href="http://en.wikipedia.org/wiki/QR_code">QR codes</a> you see used there could be on a point of sale device in a store, a mobile device like a phone, or a sticker on the wall.</p>
-
-<p>It&rsquo;s important to realize that those two phones could have been anywhere in the world.  If you&rsquo;d like to send money to another country today, Western Union takes a hefty fee and will take days.  Even Paypal charges 2-3% and will take 3 business days to move money in and out of an account.  Bitcoin is instant, and has zero transaction fees. You can do it from any computer, including a smart phone like the one shown here.</p>
-
-<p>Anyway, I&rsquo;ll see if I can post more about this in the future.  But let me know what you think in the comments below.  And if you have an Android Device, <a href="https://market.android.com/details?id=com.bitcoinandroid">you can download it from the Android Market here</a>. It is 100% free and open source.</p>
-
-<p><a href="https://market.android.com/details?id=com.bitcoinandroid"><img src="http://s3.amazonaws.com/oldbloguploads/2011/07/Screen-shot-2011-07-05-at-11.25.05-PM-500x367.png" alt="" /></a></p>
-
-<p>Finally, if you are a developer, here is a link to the <a href="https://github.com/barmstrong/bitcoin-android">github project page</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2011/06/20/learning-programming/">Learning Programming</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-20T13:46:54-04:00" pubdate data-updated="true">Jun 20<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I was tutoring someone in web app development recently, and the monumental task in front of him really hit me. <strong>He was trying to learn and use nine new languages at the same time</strong>.</p>
-
-<p>In our case it was:</p>
-
-<ul>
-<li><p>Ruby</p></li>
-<li><p>Rails</p></li>
-<li><p>MySQL</p></li>
-<li><p>Bash (command line usage)</p></li>
-<li><p>HTML</p></li>
-<li><p>CSS</p></li>
-<li><p>Javascript</p></li>
-<li><p>JQuery</p></li>
-<li><p>Git</p></li>
-<li><p>(Capistrano, Yaml, nginx, ??)</p></li>
-</ul>
-
-
-<p>Even though some of these aren&rsquo;t true languages in the traditional sense, they appear this way to newcomers since they are each a new syntax to learn.</p>
-
-<p>If you slowly built up these skills over 15 years, they are clearly separate concepts in your mind. But for a newcomer trying to use them, it&rsquo;s not even clear which one is which.</p>
-
-<p>Is that a Ruby method or a Rails method?</p>
-
-<p>Is &ldquo;script/server&rdquo; a shell command or is &ldquo;ls&rdquo; part of rails?</p>
-
-<p>Is this file html, js, or css? (actually a mix of all three)</p>
-
-<p>He made a comment along the lines of &ldquo;wouldn&rsquo;t it be great if you could build an entire web app in one language&rdquo;, and I started thinking about it.</p>
-
-<p>GWT (Google Website Toolkit), ActiveRecord, CoffeeScript, and Heroku are all steps in this direction. You could classify them generally as trying to &ldquo;eliminate a language in the stack&rdquo; or allowing you to do a piece of the stack in a language you already know.</p>
-
-<p>Obviously there is a trade off here between power and simplicity, but I&rsquo;m wondering &ndash; would it be possible or desirable to get an entire web app down to just one language? If not that how few could you use?</p>
-
-<p>Btw, I think there are benefits to seasoned developers here as well. I remember Lars Rasmussen (creator of Google Maps and Wave) mentioned something to this effect at Google IO in 2009, that GWT allowed him to spend his mental CPU cycles at a higher level and be more creative (not having to worry about cross browser css or js). So the benefits of higher abstraction may not only be for newcomers.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2011/06/16/full-stack-chef-installers-for-el5-and-el6/">Full Stack Chef Installers for EL5 and EL6</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-16T12:24:00-04:00" pubdate data-updated="true">Jun 16<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I started at Opscode this week, just in time for the Velocity Conference in Santa Clara. The amount of brain power in the building right now is absolutely astounding, and I’m having a total blast. Manning the Opscode booth in the exhibition hall, a number attendees have stopped by inquiring about when we’re going to improve Centos and Redhat support. So far, this has largely been a community effort, and the experience tends to lag behind that of Ubuntu users.</p>
-
-<p>One thing coming down the pipe are full stack installers for various distributions. A full stack installer provides everything you need to run Chef, above libc. Telling people about this has generated a lot of excitement and interest, so I went ahead and built them for you, live from the floor of Velocity.</p>
-
-<p>Below are instructions for manual installation on EL5 and EL6, clones and derivatives. I’ll leave the creation of a custom knife bootstrap script as an exercise for the reader.</p>
-
-<p>Enjoy!</p>
-
-<p>-s</p>
-
-<h2> For EL5 users: </h2>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>curl http://rpm.aegisco.com/aegisco/el5/aegisco.repo &gt; /etc/yum.repos.d/aegisco.repo
-</span><span class='line'>
-</span><span class='line'>yum clean all ; yum install gecode
-</span><span class='line'>
-</span><span class='line'>wget http://yum.afistfulofservers.net/affs/fatty/el5/chef-full-0.10.0-1-centos-5.4-x86_64.sh
-</span><span class='line'>
-</span><span class='line'>chmod +x ./chef-full-0.10.0-1-centos-5.4-x86_64.sh
-</span><span class='line'>
-</span><span class='line'>sudo ./chef-full-0.10.0-1-centos-5.4-x86_64.sh
-</span><span class='line'>
-</span><span class='line'>sudo /opt/opscode/setup.s
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<h2> For EL6 users: </h2>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>rpm -Uvh http://mirror.pnl.gov/epel/6/x86_64/epel-release-6-5.noarch.rpm
-</span><span class='line'>
-</span><span class='line'>rpm -Uvh http://yum.afistfulofservers.net/affs/centos/6/noarch/affs-release-el6-6-1.noarch.rpm
-</span><span class='line'>
-</span><span class='line'>yum clean all ; yum -y install gecode
-</span><span class='line'>
-</span><span class='line'>wget http://yum.afistfulofservers.net/affs/fatty/el6/chef-full-0.10.0-1-scientific-6.0-x86_64.sh
-</span><span class='line'>
-</span><span class='line'>chmod +x ./chef-full-0.10.0-1-scientific-6.0-x86_64.sh
-</span><span class='line'>
-</span><span class='line'>sudo ./chef-full-0.10.0-1-scientific-6.0-x86_64.sh
-</span><span class='line'>
-</span><span class='line'>sudo /opt/opscode/setup.sh
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>-s</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -918,6 +380,1396 @@ B/B
 
     </article>
   
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/05/29/mount-remote-firsvia-ssh/">Mount Remote Dirs via Ssh With Sshfs / Fuse</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-29T09:11:00-04:00" pubdate data-updated="true">May 29<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/OpenSSH.jpg" title="'SSH'" >Well, there is nothing like a simple and easy innovative solutions to save the day -it&rsquo;s been around for quite a while and never really needed it until now &hellip;</p>
+
+<p><em><strong>Use Case</strong></em><strong>:</strong></p>
+
+<p>we moved Subversion from server A to server B and we wanted to bea ble to utilze the same backup scripts we were using so one (not real elegant way) was to mount the remote location via NFS which has its issues, from time to time you will meet stale NFS records and such so that is almost in all cases out of the question.</p>
+
+<p>A neat solution would be to mount over SSH a specific directory run svnhotbackup and close the share, I took this to another level by utilising this over a VDSL connection which worked like a charm, so how do we do this ?</p>
+
+<p>If you are on Ubuntu (<a href="#aptget">see install snippet below</a>):</p>
+
+<pre><code>sudo apt-get install sshfs
+</code></pre>
+
+<p>add fuse to your /etc/modules [edit /etc/modules and add the word fuse on a single line]</p>
+
+<pre><code>vi /etc/modules ...
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2011/05/29/mount-remote-firsvia-ssh/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/04/07/searching-chef-server/">Searching Chef Server</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-07T12:15:00-04:00" pubdate data-updated="true">Apr 7<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2> Overview </h2>
+
+
+<p>Search is Chef’s killer feature for sure. Searching for the IPs or FQDNs of nodes with particular roles or attributes lets you dynamically string together machines within your infrastructure. This eliminates the need for centralized planning of IP addresses among Chef managed resources. This is especially useful on the clouds or in DHCP environments where you are assigned random IPs.</p>
+
+<h2> Munin </h2>
+
+
+<p>Munin is one of the first cookbooks that I read after finding out about Chef, and is pretty much responsible for selling me on it. Below are the recipes from a simplified version of the munin cookbook.</p>
+
+<p>Munin is a system metrics collection tool that gives you a ton of information out of the box with very little configuration. It’s really great for smaller installations and a great way to get some metrics now if you’re in a hurry. The Opscode apache2 cookbook is included without modification to provide a web console for viewing graphs.</p>
+
+<p>You can view the complete cookbook <a href=https://github.com/someara/affs-blog/tree/0.2.0/cookbooks/munin> here. </a></p>
+
+<h2> Searching </h2>
+
+
+<p>The cookbook is broken into two recipes, server.rb and client.rb</p>
+
+<p>The server searches for clients to poll, and the client searches for servers to accept poll connections from. We start out by setting a node attribute in each recipe so the other half has something to search for.</p>
+
+<p>The search syntax comes from Solr, so a node attribute set with node[:foo][:bar][:baz]=”buzz” is searched for with: search(:node, “foo_bar_baz:buzz”)</p>
+
+<p>Searches return arrays of node objects (JSON blobs), which are then passed into templates where IP information is dug out and rendered into a config file.</p>
+
+<h2> munin::server </h2>
+
+
+
+
+<figure class='code'><figcaption><span>munin/recipes/server.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">node</span><span class="o">.</span><span class="n">set</span><span class="o">[</span><span class="ss">:munin</span><span class="o">][</span><span class="ss">:server</span><span class="o">]</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'><span class="n">munin_clients</span> <span class="o">=</span> <span class="n">search</span><span class="p">(</span><span class="ss">:node</span><span class="p">,</span> <span class="s2">&quot;munin_client:true&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">include_recipe</span> <span class="s2">&quot;apache2&quot;</span>
+</span><span class='line'><span class="n">include_recipe</span> <span class="s2">&quot;apache2::mod_rewrite&quot;</span>
+</span><span class='line'><span class="n">include_recipe</span> <span class="s2">&quot;munin::client&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">package</span> <span class="s2">&quot;munin&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cookbook_file</span> <span class="s2">&quot;/etc/cron.d/munin&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">source</span> <span class="s2">&quot;munin-cron&quot;</span>
+</span><span class='line'>  <span class="n">mode</span> <span class="s2">&quot;0644&quot;</span>
+</span><span class='line'>  <span class="n">owner</span> <span class="s2">&quot;root&quot;</span>
+</span><span class='line'>  <span class="n">group</span> <span class="s2">&quot;root&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">template</span> <span class="s2">&quot;/etc/munin/munin.conf&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">source</span> <span class="s2">&quot;munin.conf.erb&quot;</span>
+</span><span class='line'>  <span class="n">mode</span> <span class="mo">0644</span>
+</span><span class='line'>  <span class="n">variables</span><span class="p">(</span><span class="ss">:munin_clients</span> <span class="o">=&gt;</span> <span class="n">munin_clients</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">apache_site</span> <span class="s2">&quot;000-default&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">enable</span> <span class="kp">false</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">case</span> <span class="n">node</span><span class="o">[</span><span class="ss">:platform</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">when</span> <span class="s2">&quot;fedora&quot;</span><span class="p">,</span> <span class="s2">&quot;redhat&quot;</span><span class="p">,</span> <span class="s2">&quot;centos&quot;</span><span class="p">,</span> <span class="s2">&quot;scientific&quot;</span>
+</span><span class='line'>    <span class="n">file</span> <span class="s2">&quot;/var/www/html/munin/.htaccess&quot;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">action</span> <span class="o">[</span><span class="ss">:delete</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">template</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">node</span><span class="o">[</span><span class="ss">:apache</span><span class="o">][</span><span class="ss">:dir</span><span class="o">]</span><span class="si">}</span><span class="s2">/sites-available/munin.conf&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">source</span> <span class="s2">&quot;localsystem.apache2.conf.erb&quot;</span>
+</span><span class='line'>  <span class="n">mode</span> <span class="mo">0644</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">::</span><span class="no">File</span><span class="o">.</span><span class="n">symlink?</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">node</span><span class="o">[</span><span class="ss">:apache</span><span class="o">][</span><span class="ss">:dir</span><span class="o">]</span><span class="si">}</span><span class="s2">/sites-enabled/munin.conf&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">notifies</span> <span class="ss">:reload</span><span class="p">,</span> <span class="n">resources</span><span class="p">(</span><span class="ss">:service</span> <span class="o">=&gt;</span> <span class="s2">&quot;apache2&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">apache_site</span> <span class="s2">&quot;munin.conf&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h2> munin::client </h2>
+
+
+
+
+<figure class='code'><figcaption><span>munin/recipes/client.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">node</span><span class="o">.</span><span class="n">set</span><span class="o">[</span><span class="ss">:munin</span><span class="o">][</span><span class="ss">:client</span><span class="o">]</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'><span class="n">munin_servers</span> <span class="o">=</span> <span class="n">search</span><span class="p">(</span><span class="ss">:node</span><span class="p">,</span> <span class="s2">&quot;munin_server:true&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">unless</span> <span class="n">munin_servers</span><span class="o">.</span><span class="n">empty?</span>
+</span><span class='line'>  <span class="n">package</span> <span class="s2">&quot;munin-node&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">action</span> <span class="ss">:install</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">template</span> <span class="s2">&quot;/etc/munin/munin-node.conf&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">source</span> <span class="s2">&quot;munin-node.conf.erb&quot;</span>
+</span><span class='line'>    <span class="n">mode</span> <span class="mo">0644</span>
+</span><span class='line'>    <span class="n">variables</span> <span class="ss">:munin_servers</span> <span class="o">=&gt;</span> <span class="n">munin_servers</span>
+</span><span class='line'>    <span class="n">notifies</span> <span class="ss">:restart</span><span class="p">,</span> <span class="s2">&quot;service[munin-node]&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">service</span> <span class="s2">&quot;munin-node&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">supports</span> <span class="ss">:restart</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'>    <span class="n">action</span> <span class="o">[</span> <span class="ss">:enable</span><span class="p">,</span> <span class="ss">:start</span> <span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h2> Roles vs Attributes </h2>
+
+
+<p>A number of people have asked me why I used attributes rather than roles. This is to avoid baking convention into the recipe code, which I like to do whenever I can help it.</p>
+
+<p>Consider the following scenario:</p>
+
+<p>You have a role[monitoring], that includes recipe[nagios::server] and recipe[munin::server]. In the Nagios and Munin client cookbooks, you’ve searched for the role[monitoring] are happily populating your configuration files. A few months pass, and you’ve added more machines to your infrastructure.</p>
+
+<p>One day your monitoring server starts crawling, since it has slow disks and can’t keep up with the IO intensive graph generation. You decide that “monitoring” is an overloaded term, and set off to split your metrics and alerting onto different machines. You edit your role structure and change your node object’s runlist assignment, and bring up some new machines. However, you still have more work to do. Now you have to go into the recipe code and change them to search for their new roles.</p>
+
+<p>Using attributes as above frees you from having to modify the recipe code when editing role definitions. Don’t get me wrong, there are plenty of scenarios where roles are preferable to attributes, but for things like this, I like to avoid them.</p>
+
+<p>-s</p>
+
+<p><em>update</em> A reader has pointed out that instead of using attributes, I could have used the search syntax search(:node, ‘recipes:”munin::server”’). Good to know!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/03/16/a-brief-chef-tutorial-from-concentrate/">A Brief Chef Tutorial (From Concentrate)</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-16T15:18:00-04:00" pubdate data-updated="true">Mar 16<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2> Overview </h2>
+
+
+<p></p>
+
+<p>Chef is configuration management platform written in Ruby. Configuration management is a large topic that most systems administrators and IT management are just now starting to gain experience with. Historically, infrastructures have been maintained either by hand, with structured scripting, by imagine cloning, or a combination of those. Chef’s usage model rejects the idea of cloning and maintaining “golden images”. Instead, the idea is to start with an embryonic image and grow it into it’s desired state. This works much better as infrastructure complexity increases, and eliminates the problem of image sprawl. The convergent nature of the tool allows you to change the infrastructure over time without much fuss. Chef allows you to express your infrastructure as code, which lets you store it in version control.</p>
+
+<p>“A Can of Condensed Chef Documentation” is available <a href=/post/2011/03/15/a-can-of-condensed-chef-documentation/> here </a></p>
+
+<h2> Prerequisites </h2>
+
+
+
+
+<h3> Git </h3>
+
+
+<p>Actually you can use any SCM, but git is the most widely adopted in the Chef community. All Chef Git repos begin their lives as clones of the Opscode chef-repo, found here: <a href="https://github.com/opscode/chef-repo">https://github.com/opscode/chef-repo</a> There is a nice overview of the repo structure (cookbooks, databags, roles, etc) in the README.</p>
+
+<h3> chef-server up and running at a known IP or FQDN. </h3>
+
+
+<p>This is easily installed from packages by following the instructions on the opscode wiki. The process amounts to “add a package repository, install the packages, and turn it on” Alternatively, you could use the Opscode Platform and go dancing with space robots.</p>
+
+<h3> Knife installed on your local system </h3>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>gem install chef net-ssh net-ssh-multi fog highline
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3> Chef git repo checked out on local file system </h3>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone https://github.com/opscode/chef-repo
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3> Client certificate creation </h3>
+
+
+<p>A “client” in chef parlance is an SSL certificate used to access the chef-server API. If the client’s CN name is marked “admin” in chef-server, the client can perform restricted operations such as creating and deleting nodes. This is the kind of client needed by knife to manipulate the infrastructure, and normally correspond to actual human being, but by no means has to. Nodes have non-admin client certificates, and can only manipulate their own node objects. To create a client certificate, you’ll need to log into the chef-server webui, click on “clients”, think of a name for it (I use someara), and paste the displayed private key into a local file.</p>
+
+<p><strong> Copy the validation key </strong><br>
+The validation key is a special key that is shared by all freshly bootstrapped nodes. It has the ability to create new client certificates and nodes objects through the API.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>scp root@chefserver:/etc/chef/validation.pem .chef/
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3> Edit configuration files </h3>
+
+
+<p>For more details on this section, please visit <a href="http://wiki.opscode.com/display/chef/Chef+Configuration+Settings">http://wiki.opscode.com/display/chef/Chef+Configuration+Settings</a></p>
+
+<p>.chef/client.rb &ndash; This file is copied onto the nodes that are bootstrapped with knife, and needs to be configured to point to the IP or FQDN of your chef server</p>
+
+<p>example</p>
+
+<figure class='code'><figcaption><span>$ vim client.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">log_level</span>          <span class="ss">:info</span>
+</span><span class='line'><span class="n">log_location</span>       <span class="no">STDOUT</span>
+</span><span class='line'><span class="n">ssl_verify_mode</span>    <span class="ss">:verify_none</span>
+</span><span class='line'><span class="n">chef_server_url</span>    <span class="s2">&quot;http://y.t.b.d:4000&quot;</span>
+</span><span class='line'><span class="n">file_cache_path</span>    <span class="s2">&quot;/var/cache/chef&quot;</span>
+</span><span class='line'><span class="n">pid_file</span>           <span class="s2">&quot;/var/run/chef/client.pid&quot;</span>
+</span><span class='line'><span class="n">cache_options</span><span class="p">({</span> <span class="ss">:path</span> <span class="o">=&gt;</span> <span class="s2">&quot;/var/cache/chef/checksums&quot;</span><span class="p">,</span> <span class="ss">:skip_expires</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">})</span>
+</span><span class='line'><span class="n">signing_ca_user</span> <span class="s2">&quot;chef&quot;</span>
+</span><span class='line'><span class="ss">Mixlib</span><span class="p">:</span><span class="ss">:Log</span><span class="o">::</span><span class="no">Formatter</span><span class="o">.</span><span class="n">show_time</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'><span class="n">validation_client_name</span> <span class="s2">&quot;chef-validator&quot;</span>
+</span><span class='line'><span class="n">validation_key</span>         <span class="s2">&quot;/etc/chef/validation.pem&quot;</span>
+</span><span class='line'><span class="n">client_key</span>             <span class="s2">&quot;/etc/chef/client.pem&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>.chef/knife.rb &ndash; This file also needs to be configured to point to your chef-server, and also to the client private key that was created earlier.</p>
+
+<p>example</p>
+
+<figure class='code'><figcaption><span>$ vim knife.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">log_level</span>            <span class="ss">:info</span>
+</span><span class='line'><span class="n">log_location</span>         <span class="no">STDOUT</span>
+</span><span class='line'><span class="n">node_name</span>           <span class="s1">&#39;knife&#39;</span>
+</span><span class='line'><span class="n">cache_type</span>          <span class="s1">&#39;BasicFile&#39;</span>
+</span><span class='line'><span class="n">cache_options</span><span class="p">(</span> <span class="ss">:path</span> <span class="o">=&gt;</span> <span class="s2">&quot;~/.chef/checksums&quot;</span> <span class="p">)</span>
+</span><span class='line'><span class="n">client_key</span>       <span class="s1">&#39;~/.chef/knife.key.pem&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cookbook_path</span>       <span class="o">[</span> <span class="s2">&quot;~/mychefrepo/cookbooks&quot;</span> <span class="o">]</span>
+</span><span class='line'><span class="n">cookbook_copyright</span> <span class="s2">&quot;example org&quot;</span>
+</span><span class='line'><span class="n">cookbook_email</span>     <span class="s2">&quot;cookbooks@example.net&quot;</span>
+</span><span class='line'><span class="n">cookbook_license</span>   <span class="s2">&quot;apachev2&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">chef_server_url</span>    <span class="s2">&quot;http://y.t.b.d:4000&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">validation_key</span>      <span class="s2">&quot;~/.chef/validation.pem&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># rackspacecloud</span>
+</span><span class='line'><span class="n">knife</span><span class="o">[</span><span class="ss">:rackspace_api_key</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;00000000000000000000000000000000&#39;</span>
+</span><span class='line'><span class="n">knife</span><span class="o">[</span><span class="ss">:rackspace_username</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;rackspace&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># slicehost</span>
+</span><span class='line'><span class="n">knife</span><span class="o">[</span><span class="ss">:slicehost_password</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;0000000000000000000000000000000000000000000000000000000000000000&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># AFFS aws</span>
+</span><span class='line'><span class="n">knife</span><span class="o">[</span><span class="ss">:aws_access_key_id</span><span class="o">]</span>     <span class="o">=</span> <span class="s1">&#39;00000000000000000000&#39;</span>
+</span><span class='line'><span class="n">knife</span><span class="o">[</span><span class="ss">:aws_secret_access_key</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;0000000000000000000000000000000000000000&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#knife[:region]  = &quot;us-east-1&quot;</span>
+</span><span class='line'><span class="c1">#knife[:availability_zone] = &quot;us-west-1b&quot;</span>
+</span><span class='line'><span class="c1">#knife[:ssh_user] = &quot;root&quot;</span>
+</span><span class='line'><span class="c1">#knife[:flavor] = &quot;t1.micro&quot;</span>
+</span><span class='line'><span class="c1">#knife[:image] = &quot;ami-10a55279&quot;</span>
+</span><span class='line'><span class="c1">#knife[:use_sudo]  = &quot;false&quot;</span>
+</span><span class='line'><span class="c1">#knife[:distro] = &quot;affs-fc13&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h2> Role, recipes, and run lists</h2>
+
+
+<p>As mentioned earlier, run lists are made up from role trees. Here is an example of how you would create a demo server with a correct clock, managed users, and metrics and monitoring capabilities. In this example, six recipes are executed per run, and an unknown number of resources are managed. (To figure that out, you’d have to read the recipes)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>role[demo]
+</span><span class='line'>  role[base]                   &lt;---- nested role
+</span><span class='line'>  recipe[foo::server]
+</span><span class='line'>  recipe[foo::muninplugin]
+</span><span class='line'>       
+</span><span class='line'>role[base]
+</span><span class='line'>  recipe[ntp]
+</span><span class='line'>  recipe[localusers::common]
+</span><span class='line'>  recipe[munin::client]
+</span><span class='line'>  recipe[nagios::client]
+</span><span class='line'>
+</span><span class='line'>expanded run list
+</span><span class='line'>  recipe[ntp]
+</span><span class='line'>    recipe[localusers::common]
+</span><span class='line'>    recipe[munin::client]
+</span><span class='line'>    recipe[nagios::client]
+</span><span class='line'>    recipe[foo::server]
+</span><span class='line'>    recipe[foo::muninplugin]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That’s quite a bit of cooking for a beginner tutorial, so we’re just going to focus on a single node running an NTP client for now. Roles can be written either as .rb files or .json files. I prefer to use the .rb format because they’re easier to read and write. Some people prefer to deal with the JSON formatted version directly, since thats the way they’re dumped with knife. At the end of the day, it doesn’t really matter, so do which ever makes you happy.</p>
+
+<h3> Step One : Creating a demo role file </h3>
+
+
+
+
+<figure class='code'><figcaption><span>$ vim roles/demo.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">name</span> <span class="s2">&quot;demo&quot;</span>
+</span><span class='line'><span class="n">description</span> <span class="s2">&quot;demo role&quot;</span>
+</span><span class='line'><span class="n">run_list</span> <span class="o">[</span>
+</span><span class='line'>    <span class="s2">&quot;recipe[ntp]&quot;</span>
+</span><span class='line'>    <span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3> Step Two : Installing the role on chef-server </h3>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>knife role from file roles/demo.rb
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h2> Writing Recipes </h2>
+
+
+<h3> Hello, NTP! </h3>
+
+
+<p>A machine’s NTP client is simple to install and configure. Every systems administrator is already familiar with it, which makes it a great example.</p>
+
+<p>Most software available as a native package in a given linux distribution can be managed with a “package, template, service” design pattern.</p>
+
+<p>Each of those words refers to a Chef resource, which we pass arguments to.</p>
+
+<h3> Step One : Creating an ntp cookbook </h3>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>knife cookbook create ntp
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This creates a directory structure for the ntp cookbook. You can check it out with ls:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>ls -la cookbooks/ntp/
+</span><span class='line'>total 24
+</span><span class='line'>drwxr-xr-x  13 someara  staff   442 Mar 14 17:56 .
+</span><span class='line'>drwxr-xr-x  36 someara  staff  1224 Mar 15 19:39 ..
+</span><span class='line'>-rw-r--r--   1 someara  staff    58 Mar 14 17:56 README.rdoc
+</span><span class='line'>drwxr-xr-x   2 someara  staff    68 Mar 14 17:56 attributes
+</span><span class='line'>drwxr-xr-x   2 someara  staff    68 Mar 14 17:56 definitions
+</span><span class='line'>drwxr-xr-x   3 someara  staff   102 Mar 14 17:56 files
+</span><span class='line'>drwxr-xr-x   2 someara  staff    68 Mar 14 17:56 libraries
+</span><span class='line'>-rw-r--r--   1 someara  staff   259 Mar 14 17:56 metadata.rb
+</span><span class='line'>drwxr-xr-x   2 someara  staff    68 Mar 14 17:56 providers
+</span><span class='line'>drwxr-xr-x   4 someara  staff   136 Mar 14 17:56 recipes
+</span><span class='line'>drwxr-xr-x   2 someara  staff    68 Mar 14 17:56 resources
+</span><span class='line'>drwxr-xr-x   3 someara  staff   102 Mar 14 17:56 templates
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3> Step Two : Deciding what to name the recipe </h3>
+
+
+<p>Recipe names are related to cookbook structure. Putting recipe[foo::bar] in a node’s run list results in cookbooks/foo/recipes/bar.rb being downloaded from chef-server and executed.</p>
+
+<p>There is a special recipe in every cookbook called default.rb. It is executed by every recipe in the cookbook. Specifying recipe[foo::bar] actually results in cookbooks/foo/recipes/default.rb, as well as cookbooks/foo/recipes/bar.rb being executed.</p>
+
+<p>Default.rb is a good place to put common stuff when writing cookbooks with multiple recipes, but we’re going to keep it simple and just use default.rb for everything.</p>
+
+<h3> Step Three : Creating a recipe </h3>
+
+
+<p>This is where all the fun stuff happens. When using resources, you’re writing things in a declarative fashion. Declarative means you can concentrate on the WHAT without having to worry about the HOW. Chef will take care of that for you with something called a resource provider. When installing a package, it will check to see what your operating system is and use the appropriate methodology. For example, on Debian based systems, it will use apt-get, and on Redhat based systems, it will use yum.</p>
+
+<figure class='code'><figcaption><span>$ vim cookbooks/ntp/recipes/default.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">package</span> <span class="s2">&quot;ntp&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">action</span> <span class="o">[</span><span class="ss">:install</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">template</span> <span class="s2">&quot;/etc/ntp.conf&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">source</span> <span class="s2">&quot;ntp.conf.erb&quot;</span>
+</span><span class='line'>  <span class="n">variables</span><span class="p">(</span> <span class="ss">:ntp_server</span> <span class="o">=&gt;</span> <span class="s2">&quot;time.nist.gov&quot;</span> <span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">service</span> <span class="s2">&quot;ntpd&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">action</span><span class="o">[</span><span class="ss">:enable</span><span class="p">,</span><span class="ss">:start</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Chef recipes are evaluated top down (like a normal ruby program), with each resource being ran in the order it appears. Order is important. In the above example, if we were to reverse the order of those three resources, it would first fail to start the service (as the software is not installed yet), then write the configuration file, then finally clobber the file it just wrote by installing the package.</p>
+
+<h3> Step Four : Creating the ntp.conf.erb template </h3>
+
+
+
+
+<figure class='code'><figcaption><span>$ vim cookbooks/ntp/templates/default/ntp.conf.erb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="x"># generated by Chef.</span>
+</span><span class='line'><span class="x">restrict default kod nomodify notrap nopeer noquery</span>
+</span><span class='line'><span class="x">restrict -6 default kod nomodify notrap nopeer noquery</span>
+</span><span class='line'><span class="x">restrict 127.0.0.1</span>
+</span><span class='line'><span class="x">restrict -6 ::1</span>
+</span><span class='line'><span class="x">server </span><span class="cp">&lt;%=</span> <span class="vi">@ntp_server</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">server  127.127.1.0     # local clock</span>
+</span><span class='line'><span class="x">driftfile /var/lib/ntp/drift</span>
+</span><span class='line'><span class="x">keys /etc/ntp/keys</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3> Step Five : uploading the cookbook to chef-server </h3>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>knife cookbook upload ntp
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h2> Bootstraping nodes </h2>
+
+
+<p>The chef-client needs to somehow get itself installed and running on managed nodes. This process is known as bootstrapping and is accomplished with shell scripting. The method of bootstrap will vary depending on how you go about provisioning your server, and the script will depend on the platform.</p>
+
+<h3> Clouds </h3>
+
+
+<p>Cloud providers like AWS and Rackspace will let you make an API request, then return the IP of your compute resource.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>knife ec2 server create <span class="s2">&quot;role[demo]&quot;</span> -N <span class="s2">&quot;demo.example.net&quot;</span> -i ami-3e02f257
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this example, knife uses the ruby fog library to talk to ec2 and request a server with an argument of the desired AMI. Knife then uses net-ssh-multi to ssh into the machine and execute a bootstrapping script. There are a number of other arguments that can be passed to knife, such as ec2 region, machine size, what ssh key to use. You can read all about them on the Opscode wiki.</p>
+
+<h3> Meatclouds </h3>
+
+
+<p>If your method of provisioning servers is “ask your VMware administrator” or “fill out these forms”, then you’ll probably bootstrap via an IP address.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife boostrap 10.0.0.5 -x root -N demo.example.net -r <span class="s1">&#39;role[demo]&#39;</span> -d pp-centos5
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3> Cobbler / FAI / pxe_dust / Jumpstart / etc </h3>
+
+
+<p>In these provisioning scenarios, you can skip knife completely and put the contents of a bootstrap script kickstart or equivalent.</p>
+
+<h2> Customizing the bootstrap </h2>
+
+
+<p>By default (with no arguments), Chef attempts a gem based installation meant to work on Ubuntu. If you’re not using Ubuntu, or are uncomfortable installing gems directly from rubygems.org, you’ll have to change the script to suite your taste. It works by specifying a template name with the -d flag, SSH’ing into the machine and running the rendered script. When using knife to SSH, make sure you have the correct key loaded into your ssh-agent.</p>
+
+<h3> Example </h3>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife boostrap 10.0.0.5 -x root -N demo.example.net -r ‘role<span class="o">[</span>demo<span class="o">]</span>’ -d my-centos5
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ends up running this</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>ssh root@10.0.0.179 bash -c ‘&lt;contents of rendered .chef/bootstrap/my-centos5.erb template&gt;’
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What I do in my boot scripts:</p>
+
+<ul>
+<li>Correctly set the hostname to value of -N argument. (By correctly, I mean that <code>hostname -f</code> has to work properly)</li>
+<li>Configure the package repositories</li>
+<li>Install Chef. I like packages using the native package manager</li>
+<li>Copy the validation key</li>
+<li>Write /etc/chef/client.rb (points to server)</li>
+<li>Write a json file with the contents of the -r argument</li>
+<li>chef-client -j bootstrap.json</li>
+</ul>
+
+
+<p>After the script is ran, chef-client does the following</p>
+
+<ul>
+<li>Ohai!</li>
+<li>Client registration: SSL CN is FQDN from ohai</li>
+<li>Node creation: Node name is also FQDN from ohai, run lists are from JSON</li>
+<li>Expands run list</li>
+<li>Downloads needed cookbooks</li>
+<li>Starts executing recipes</li>
+</ul>
+
+
+<p>There is an example of a custom bootstrap script <a href=https://github.com/someara/affs-blog/blob/v1/.chef/bootstrap/affs-fc13.erb> here </a></p>
+
+<p>At this point, you should have an ntp client installed, configured, and running.</p>
+
+<p>(It’s actually a little bit more complicated than that. For more information about chef-client runs, see <a href=http://wiki.opscode.com/display/chef/Anatomy+of+a+Chef+Run> <a href="http://wiki.opscode.com/display/chef/Anatomy+of+a+Chef+Run">http://wiki.opscode.com/display/chef/Anatomy+of+a+Chef+Run</a> </a>)</p>
+
+<h2> Databag Driven Recipes </h2>
+
+
+<p>Data driven infrastructures are all the rage these days. This allows you to do things like change the NTP server all your nodes use by editing a single JSON value in chef-server. You can get really creative with this, so let your imagination run wild.</p>
+
+<h3> Step One : Create an ntp data bag </h3>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>knife data bag create ntp
+</span><span class='line'><span class="nv">$ </span>mkdir -p data_bags/ntp
+</span><span class='line'><span class="nv">$ </span>vim data_bags/ntp/default_server.json
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="s2">&quot;id&quot;</span> : <span class="s2">&quot;default_server&quot;</span>,
+</span><span class='line'>      <span class="s2">&quot;value&quot;</span> : <span class="s2">&quot;us.pool.ntp.org&quot;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3> Step Two : Upload data bag to chef-server </h3>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>knife data bag from file ntp data_bags/ntp/default_server.json
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3> Step Three : Modify the recipe to take advantage of it </h3>
+
+
+
+
+<figure class='code'><figcaption><span>ntp/recipes/default.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">package</span> <span class="s2">&quot;ntp&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">action</span> <span class="o">[</span><span class="ss">:install</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ntp_server</span> <span class="o">=</span> <span class="n">data_bag_item</span><span class="p">(</span><span class="s1">&#39;ntp&#39;</span><span class="p">,</span> <span class="s1">&#39;default_server&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">template</span> <span class="s2">&quot;/etc/ntp.conf&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">source</span> <span class="s2">&quot;ntp.conf.erb&quot;</span>
+</span><span class='line'>  <span class="n">variables</span><span class="p">(</span> <span class="ss">:ntp_server</span> <span class="o">=&gt;</span> <span class="n">ntp_server</span><span class="o">[</span><span class="s1">&#39;value&#39;</span><span class="o">]</span> <span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">service</span> <span class="s2">&quot;ntpd&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">action</span><span class="o">[</span><span class="ss">:enable</span><span class="p">,</span><span class="ss">:start</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can also access data bag data through the search() interface, which you can read about on the opscode wiki.</p>
+
+<h3>Step Four : uploading the cookbook to chef-server</h3>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>knife cookbook upload ntp
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h2> Understanding Idempotence and Convergence </h2>
+
+
+<p>We’re not quite done yet. Let’s SSH into our shiny new NTP enabled machine and go poking about.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>grep server /etc/ntp.conf | head -n 1
+</span><span class='line'>server time.nist.gov
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Wait a sec, isn’t that supposed to be “us.pool.ntp.org”? Not yet. We haven’t enabled our convergence mechanism yet! If we manually run chef-client on the node, we will indeed see that the file has changed.</p>
+
+<h3> Convergence </h3>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># chef-client</span>
+</span><span class='line'><span class="nv">$ </span>grep server /etc/ntp.conf | head -n 1
+</span><span class='line'>us.pool.ntp.org
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That file just converged into the correct state. Lets edit the file again, this time filling it with complete garbage.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># dd if=/dev/urandom of=/etc/ntp.conf bs=128 count=1</span>
+</span><span class='line'><span class="c"># chef-client</span>
+</span><span class='line'><span class="nv">$ </span>grep server /etc/ntp.conf | head -n 1
+</span><span class='line'>us.pool.ntp.org
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Again, the file converged into the correct state. Awesome. Running chef-client by hand on a large cluster of nodes would be a real pain, so it makes sense to set it up automatically. Indeed, often found in a “role[base]” is a “recipe[chef-client]” that configures it to run as a daemon, or from a cron.</p>
+
+<h3> Idempotence </h3>
+
+
+<p>It is safe to run the recipes on the nodes time and time again because resources are written to be idempotent. You may remember from math class that a function f is idempotent if, for all values of x, f(f(x))=f(x). That means you can run a function over a resource a bajillion times and it will behave as if it was only done once.</p>
+
+<p>This is implemented under the hood as “If it ain’t broke, don’t fix it.” In a file resource, checksums are calculated and compared. In a package resource, the rpm or dpkg databases are consulted to see if the package is installed. The effect of this is that most chef-client runs do absolutely nothing to resources. That is, until you change the function by altering the inputs to the resource providers.</p>
+
+<h2> Notifications and Subscriptions </h2>
+
+
+<p>Further examination reveals that the ntpd service is still talking to “time.nist.gov”. This is because during the chef-client run, the resource named “ntpd” ran it’s idempotency check, and found that it was, in fact, running. It therefore did nothing. It we want ntpd to restart when the contents /etc/ntp.conf are altered, we have to modify our recipe to set up that relation.</p>
+
+<figure class='code'><figcaption><span>ntp/recipes/default.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">package</span> <span class="s2">&quot;ntp&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">action</span> <span class="o">[</span><span class="ss">:install</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ntp_server</span> <span class="o">=</span> <span class="n">data_bag_item</span><span class="p">(</span><span class="s1">&#39;ntp&#39;</span><span class="p">,</span> <span class="s1">&#39;default_server&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">template</span> <span class="s2">&quot;/etc/ntp.conf&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">source</span> <span class="s2">&quot;ntp.conf.erb&quot;</span>
+</span><span class='line'>  <span class="n">variables</span><span class="p">(</span> <span class="ss">:ntp_server</span> <span class="o">=&gt;</span> <span class="n">ntp_server</span><span class="o">[</span><span class="s1">&#39;value&#39;</span><span class="o">]</span> <span class="p">)</span>
+</span><span class='line'>  <span class="n">notifies</span> <span class="ss">:restart</span><span class="p">,</span> <span class="s2">&quot;service[ntpd]&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">service</span> <span class="s2">&quot;ntpd&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">action</span><span class="o">[</span><span class="ss">:enable</span><span class="p">,</span><span class="ss">:start</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Alternatively, we could have set up the “service[ntpd]” resource to subscribe to the “template[/etc/ntp.conf]” resource.</p>
+
+<p>Upload the modified ntp cookbook to chef-server and re-run the client on your demo server to check your work.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># chef-client</span>
+</span><span class='line'><span class="nv">$ </span>lsof -i | grep ntp | grep pool
+</span><span class='line'>ntpd       5673    ntp   19u  IPv4 12481380      0t0  UDP us.pool.ntp.org:ntp<span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Winning.</p>
+
+<h2> Bulk Loading data into chef-server </h2>
+
+
+<p>To save yourself from writing crazy for loops on command line like</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="k">for </span>i in <span class="sb">`</span>ls cookbooks<span class="sb">`</span> ; <span class="k">do </span>knife cookbook upload <span class="nv">$i</span> ; <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Or even worse,</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="k">for </span>i in <span class="sb">`</span>ls data_bags<span class="sb">`</span> ; <span class="k">do </span>
+</span><span class='line'><span class="k">  for </span>j in <span class="sb">`</span>ls data_bags/<span class="nv">$i</span>/<span class="sb">`</span>; <span class="k">do</span>
+</span><span class='line'><span class="k">    </span>knife data bag create <span class="nv">$i</span>
+</span><span class='line'>    knife data bag from file <span class="nv">$i</span> data_bags/<span class="nv">$i</span>/<span class="nv">$j</span> ;
+</span><span class='line'>  <span class="k">done</span> ;
+</span><span class='line'><span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&hellip; somebody was nice enough to write some rake tasks. List them with rake -T, and then install your repo in chef-server with &ldquo;rake install&rdquo;</p>
+
+<h2> Viewing your Infrastructure </h2>
+
+
+<p>There are two ways to view your infrastructure. The first is through the management console, and the other is from knife. Here is a list of handy commands to get you started.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife node list
+</span><span class='line'>knife node show foo.example.net
+</span><span class='line'>knife data bag list
+</span><span class='line'>knife data bag show whatever
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h2> Deleting Clients, Nodes, and Machines </h2>
+
+
+<p>Remember that nodes, their client certificates, and the machines they’re associated with are three separate entities.</p>
+
+<h3> Nodes </h3>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>knife node delete foo.example.net
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This just deletes the node object from chef-server. The next time the machine runs chef-client, the node object will be recreated in chef-server. This node object will have an empty run list what will have to be repopulated before chef-client actually does anything.</p>
+
+<h3> Clients </h3>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>knife client delete foo.example.net
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This deletes a node object’s associated public key from chef-server. The next time the machine runs chef-client, it will get a permission denied error. If this is done on accident, ssh into the machine, delete it’s client key at /etc/chef/client.pem and re-run chef-client.</p>
+
+<h3> Machines </h3>
+
+
+<p>Deleting a machine will be specific to how it was provisioned. On AWS, it would look like “knife ec2 server delete i-DEAFBEEF”. On a VMware cluster, it could be by clicking buttons in a GUI. I once deleted a hardware machine by throwing it off a balcony. YMMV.</p>
+
+<h2> nodes.sh </h2>
+
+
+<p>I like to keep a special directory called “infrastructures” that contain sub-directories and nodes.sh files. A nodes.sh contains a list of knife commands that can be thought of as the highest level view of the infrastructure. for example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife bootstrap 10.0.0.10 -r <span class="s1">&#39;role[database]&#39;</span>  -N database-01.example.net -x root -d my-fedora13
+</span><span class='line'>knife bootstrap 10.0.0.11 -r <span class="s1">&#39;role[database]&#39;</span> -N database-02.example.net -x root -d my-fedora13
+</span><span class='line'>knife bootstrap 10.0.0.14 -r <span class="s1">&#39;role[redis]&#39;</span> -N redis01.example.net -x root -d my-fedora13
+</span><span class='line'>knife bootstrap 10.0.0.15 -r <span class="s1">&#39;role[redis]&#39;</span> -N redis02.example.net -x root -d my-fedora13
+</span><span class='line'>knife bootstrap 10.0.0.14 -r <span class="s1">&#39;role[files]&#39;</span> -N files01.example.net -x root -d my-fedora13
+</span><span class='line'>knife bootstrap 10.0.0.15 -r <span class="s1">&#39;role[files]&#39;</span> -N files02.example.net -x root -d my-fedora13
+</span><span class='line'>knife bootstrap 10.0.0.16 -r <span class="s1">&#39;role[appdemo]&#39;</span> -N appdemo01.example.net -x root -d my-fedora13
+</span><span class='line'>knife bootstrap 10.0.0.17 -r <span class="s1">&#39;role[appdemo]&#39;</span> -N appdemo02.example.net -x root -d my-fedora13
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This file can eventually be used to bring up entire infrastructures, but during development, lines are typically pasted into a terminal individually.</p>
+
+<p>This is as close as I’ve gotten to replacing myself with a very small shell script so far. Many a sysadmin has been pursuing this for a long time now. It is here. The journey has just begun.</p>
+
+<p>-s</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/03/15/a-can-of-condensed-chef-documentation/">A Can of Condensed Chef Documentation</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-15T14:34:00-04:00" pubdate data-updated="true">Mar 15<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>
+Overview
+</h2>
+
+
+<p>Chef’s documentation is vast and broken up into many pages on the Opscode wiki. The goal here is to index this information and give a brief explanation of each topic without going into too much depth.</p>
+
+<h2>
+Architecture
+</h2>
+
+
+<p><a href= http://wiki.opscode.com/display/chef/Architecture> <a href="http://wiki.opscode.com/display/chef/Architecture">http://wiki.opscode.com/display/chef/Architecture</a> </a></p>
+
+<p>Chef is a configuration management platform in the same class of tools as Cfengine, Bcfg2, and Puppet. The idea is to define policy at a centralized, version controlled place, and then have the machines under management pull down their policy and converge onto that state at regular intervals. This gives you a single point of administration allowing for easier change management and disaster recovery. Combined with a compute resource provisioning layer (such as knife’s ability to manipulate EC2 or Rackspace servers), entire complex infrastructures can pop into existence in minutes.</p>
+
+<h2>
+Chef Server
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Chef+Server> <a href="http://wiki.opscode.com/display/chef/Chef+Server">http://wiki.opscode.com/display/chef/Chef+Server</a> </a></p>
+
+<p>Chef server has various components under the hood. Assorted information (cookbooks, databags, client certificates, and node objects), are stored in CouchDB as JSON blobs. CouchDB is indexed by chef-solr-indexer. RabbitMQ sits between the data store and A RESTful API service that exposes all this to the network as chef-server. If you don’t want to run chef-server yourself, Opscode will do it for you for with their Platform service for a meager $5/node/month. The management console is really handy during development, since it provides a nice way to examine JSON data. However, it should be noted that real chefs value knife techniques.</p>
+
+<h2>
+Clients
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/API+Clients> <a href="http://wiki.opscode.com/display/chef/Api+Clients">http://wiki.opscode.com/display/chef/Api+Clients</a> </a></p>
+
+<p>In Chef, the term “client” refers to an SSL certificate for an API user of chef-server. This is often a point of confusion, and should not be confused with chef-client. Most of the time, one machine has one client certificate, which corresponds to one node object.</p>
+
+<h2>
+Nodes
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Nodes> <a href="http://wiki.opscode.com/display/chef/Nodes">http://wiki.opscode.com/display/chef/Nodes</a> </a></p>
+
+<p>Nodes are JSON representations of machines under Chef management. They live in chef-server. They contain two important things: The node’s run list, and a collection of attributes. The run list is a collection of recipes names that will be ran on the machine when chef-client is invoked. Attributes are various facts about the node, which can be manipulated either by hand, or from recipes.</p>
+
+<h2>
+Attributes
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Attributes> <a href="http://wiki.opscode.com/display/chef/Attributes">http://wiki.opscode.com/display/chef/Attributes</a> </a></p>
+
+<p>Attributes are arbitrary values set in a node object. Ohai provides a lot of informational attributes about the node, and arbitrary attributes can be set by the line cooks. They can be set from recipes or roles, and have a precedence system that allow you to override them. Examples of arbitrary attributes are listen ports for network services, or the names of a package on a particular linux distribution (httpd vs apache2).</p>
+
+<h2>
+Ohai
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Ohai> <a href="http://wiki.opscode.com/display/chef/Ohai">http://wiki.opscode.com/display/chef/Ohai</a> </a></p>
+
+<p>Ohai is the Chef equivilent of Cfengine’s cf-know and Puppet’s facter. When invoked, it collects a bunch of information about the machine its running on, including Chef related stuff, hostname, FQDN, networking, memory, cpu, platform, and kernel data. This information is then output as JSON and used to update the node object on chef-server. It is possible to write custom Ohai plugins, if your’re interested in something not dug up by default.</p>
+
+<h2>
+Chef Client
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Chef+Client> <a href="http://wiki.opscode.com/display/chef/Chef+Client">http://wiki.opscode.com/display/chef/Chef+Client</a> </a></p>
+
+<p>Managed nodes run an agent called chef-client at regular intervals. This agent can be ran as a daemon or invoked from cron. The agent pulls down policy from chef-server and converges the system to the described state. This lets you introduce changes to machines in your infrastructure by manipulating data in chef-server. The pull (vs push) technique ensures machines that are down for maintenance end up the proper state when turned back on.</p>
+
+<h2>
+Resources
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Resources > <a href="http://wiki.opscode.com/display/chef/Resources">http://wiki.opscode.com/display/chef/Resources</a> </a></p>
+
+<p>Resources are the basic configuration items that are manipulated by Chef recipes. Resources make up the Chef DSL by providing a declarative interface to objects on the machine. Examples of core resources include files, directories, users and groups, links, packages, and services.</p>
+
+<h2>
+Recipes
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Recipes > <a href="http://wiki.opscode.com/display/chef/Recipes">http://wiki.opscode.com/display/chef/Recipes</a> </a></p>
+
+<p>Recipes contain the actual code that gets ran on machines by chef-client. Recipes can be made up entirely of declarative resources statements, but rarely are. The real power of Chef stems from a recipes’s ability to search chef-server for information. Recipes can say “give me a list of all the hostnames of my web servers”, and then generate the configuration file for your load balancer. Another recipe might say “give me a list of all my database servers”, so it can configure Nagios to monitor them.</p>
+
+<h2>
+Cookbooks
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Cookbooks> <a href="http://wiki.opscode.com/display/chef/Cookbooks">http://wiki.opscode.com/display/chef/Cookbooks</a> </a></p>
+
+<p>Cookbooks allow you to logically group recipes. Cookbooks come with all the stuff the recipes need to make themselves work, such as files, templates, and custom resources (LWRPs).</p>
+
+<h2>
+Roles
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Roles> <a href="http://wiki.opscode.com/display/chef/Roles">http://wiki.opscode.com/display/chef/Roles</a> </a></p>
+
+<p>Roles allow you to assemble trees of recipe names, which are expanded into run lists. Roles can contain other roles, which serve as vertices, and recipe names, which are the leaves. The tree is walked depth first, which makes ordering intuitive when assembling run lists. It is possible to apply many of these trees to a single node, but you don’t have to. Roles can also contain lists of attributes to apply to nodes, potentially changing recipe behavior.</p>
+
+<h2>
+Databags
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Data+Bags > <a href="http://wiki.opscode.com/display/chef/Data+Bags">http://wiki.opscode.com/display/chef/Data+Bags</a> </a></p>
+
+<p>Databags are arbitrary JSON structures that can be searched for by Chef recipes. They typically contain things like database passwords and other information that needs to be shared between resources on nodes. You can think of them as read only global variables that live on chef-server. They also have a great name that can be used to make various jokes in Campfire.</p>
+
+<h2>
+Knife
+</h2>
+
+
+<p><a href=http://wiki.opscode.com/display/chef/Knife> <a href="http://wiki.opscode.com/display/chef/Knife">http://wiki.opscode.com/display/chef/Knife</a> </a></p>
+
+<p>knife is the CLI interface to the chef-server API. It can manipulate databags, node objects, cookbooks, etc.  It can also be used to provision cloud resources and bootstrap systems.</p>
+
+<p>-s</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/03/07/maven-deployment-linker-plug-in/">Maven Deployment Linker - Plug-in</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-07T09:18:00-05:00" pubdate data-updated="true">Mar 7<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/hudson_logo.png" title="'Hudson Logo'" >This plug-in does something so simple yet very useful instead of archiving artifact it will list the deployments performed at build time to the Maven Proxy you are running regardless to the proxy vendor (Archiva, Artifactory or Nexus).
+All you need to do in your maven build is select 1 check-box:</p>
+
+<p><img src="/assets/images/link2m2deploy.png" title="'Link to maven deployments'" ></p>
+
+<p>You can also filter artifacts with regex.</p>
+
+<p><strong>The result is:</strong></p>
+
+<p><img src="/assets/images/artifacts.png" title="'artifacts'" ></p>
+
+<p>And the status bar shows:
+<img src="/assets/images/statusbar.png"></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/02/22/something-i-coded-up-for-fun/">Something I Coded Up for Fun&#8230;</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-22T02:33:45-05:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I put <a href="http://mybestpic.org">this website</a> together over the last few weeks that I thought you might like.</p>
+
+<p>It&rsquo;s quite simple.  Basically you can hold a &ldquo;photo contest&rdquo; and see which photo your friends like best.</p>
+
+<p>Here are a few examples&hellip;</p>
+
+<ol>
+<li>Choose a photo of yourself.</li>
+</ol>
+
+
+<p><a href="http://mybestpic.org/lTmQAr"><img src="http://s3.amazonaws.com/oldbloguploads/2011/02/Screen-shot-2011-02-21-at-6.24.24-PM-500x360.png" alt="" /></a></p>
+
+<ol>
+<li>Choose artwork or travel photos.</li>
+</ol>
+
+
+<p><a href="http://mybestpic.org/0AbTrQ"><img src="http://s3.amazonaws.com/oldbloguploads/2011/02/Screen-shot-2011-02-21-at-6.22.17-PM-500x360.png" alt="" /></a></p>
+
+<ol>
+<li>For downright silliness.</li>
+</ol>
+
+
+<p><a href="http://mybestpic.org/ac8crN"><img src="http://s3.amazonaws.com/oldbloguploads/2011/02/Screen-shot-2011-02-21-at-6.23.10-PM-500x360.png" alt="" /></a></p>
+
+<p>I&rsquo;ll do a follow up post in a week or so with more details on the idea and results of the site.  But for now&hellip;</p>
+
+<h1><a href="http://mybestpic.org">Try it out</a> and let me know what you think!</h1>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/11/">&larr; Older</a>
@@ -943,19 +1795,19 @@ B/B
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+        <a href="/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/">Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+        <a href="/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/">Continuous Delivery Implementation : Getting started with AWS</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
       </li>
     
   </ul>

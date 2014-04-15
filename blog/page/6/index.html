@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Well just got a mac from my new project FB Status&hellip; &ndash; couldn&rsquo;t resist it :) One of the tasks was to setup an environment, and &hellip;">
+  <meta name="description" content="~4 years ago I wrote a script which will sync my drupal files directory between two servers [ I used rsync for that ], the problem with rsync was &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,443 +67,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/07/13/install-xcode-cli-tools-via-script/">Install Xcode CLI Tools via Script</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-13T22:24:00-04:00" pubdate data-updated="true">Jul 13<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/xcode_cli.png" title="'Xcode CLI Tools'" >
-Well just got a mac from my new project <a href="http://www.facebook.com/photo.php?fbid=10151661183017850&amp;l=69918509f3">FB Status</a>&hellip; &ndash; couldn&rsquo;t resist it :)</p>
-
-<p>One of the tasks was to setup an environment, and learn what a mac is :), a few days later I&rsquo;m in love but still I need a way to destroy an recover
-my environment.
-I have a few plans like bash_it / oh_my_zsh &amp; others, but until then I put togter a few scripts [ more to come ], the first of them is this one installing Xcode CLI Tools on Mac OSX Mountain Lion.</p>
-
-<p>Install or (un-install) with the following simple command:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'> sudo bash &lt; &lt;<span class="o">(</span>curl -L https://raw.github.com/hagzag/xcode-cli-install/master/install.sh<span class="o">)</span>
-</span><span class='line'>  sudo bash &lt; &lt;<span class="o">(</span>curl -L https://raw.github.com/hagzag/xcode-cli-install/master/uninstall.sh<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The essence &hellip; see the rest on <a href="https://github.com/hagzag/xcode-cli-install">Github</a></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>detect_osx_version<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nv">result</span><span class="o">=</span><span class="sb">`</span>sw_vers -productVersion<span class="sb">`</span>
-</span><span class='line'>  ...
-</span><span class='line'>  <span class="nv">osxversion</span><span class="o">=</span><span class="s2">&quot;10.8&quot;</span>
-</span><span class='line'>  <span class="nv">osxvername</span><span class="o">=</span><span class="s2">&quot;Mountain Lion&quot;</span>
-</span><span class='line'>  <span class="nv">cltools</span><span class="o">=</span>xcode462_cltools_10_86938259a.dmg
-</span><span class='line'>  <span class="nv">mountpath</span><span class="o">=</span><span class="s2">&quot;/Volumes/Command Line Tools (Mountain Lion)&quot;</span>
-</span><span class='line'>  <span class="nv">mpkg</span><span class="o">=</span><span class="s2">&quot;Command Line Tools (Mountain Lion).mpkg&quot;</span>
-</span><span class='line'>  <span class="nv">pkg_url</span><span class="o">=</span><span class="s2">&quot;https://www.dropbox.com/s/hw45wvjxrkrl59x/xcode462_cltools_10_86938259a.dmg&quot;</span>
-</span><span class='line'>  <span class="nv">pkgmd5</span><span class="o">=</span><span class="s2">&quot;90c5db99a589c269efa542ff0272fc28&quot;</span>
-</span><span class='line'>  ...
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>download_tools <span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> -f /tmp/<span class="nv">$cltools</span> <span class="o">]</span>; <span class="k">then</span>
-</span><span class='line'><span class="k">    if</span> <span class="o">[</span> <span class="sb">`</span>md5 -q /tmp/<span class="nv">$cltools</span><span class="sb">`</span> <span class="o">=</span> <span class="s2">&quot;${pkgmd5}&quot;</span> <span class="o">]</span>; <span class="k">then</span>
-</span><span class='line'><span class="k">      </span><span class="nb">echo</span> -e <span class="s2">&quot;$info $cltools already downloaded to /tmp/$cltools.&quot;</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'><span class="k">       </span>rm -f /tmp/<span class="nv">$cltools</span>
-</span><span class='line'>    <span class="k">fi</span>
-</span><span class='line'><span class="k">  else</span>
-</span><span class='line'><span class="k">    </span><span class="nb">cd</span> /tmp <span class="o">&amp;&amp;</span> wget <span class="nv">$pkg_url</span> -O ./<span class="nv">$cltools</span>
-</span><span class='line'>  <span class="k">fi</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>install_tools<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="c"># Mount the Command Line Tools dmg</span>
-</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Mounting Command Line Tools...&quot;</span>
-</span><span class='line'>  hdiutil mount -nobrowse /tmp/<span class="nv">$cltools</span>
-</span><span class='line'>  <span class="c"># Run the Command Line Tools Installer</span>
-</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Installing Command Line Tools...&quot;</span>
-</span><span class='line'>  installer -pkg <span class="s2">&quot;$mountpath/$mpkg&quot;</span> -target <span class="s2">&quot;/Volumes/Macintosh HD&quot;</span>
-</span><span class='line'>  <span class="c"># Unmount the Command Line Tools dmg</span>
-</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Unmounting Command Line Tools...&quot;</span>
-</span><span class='line'>  hdiutil unmount <span class="s2">&quot;$mountpath&quot;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nv">gcc_bin</span><span class="o">=</span><span class="sb">`</span>which gcc<span class="sb">`</span>
-</span><span class='line'>  gcc --version &amp;&gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> -e <span class="s2">&quot;$info gcc found in $gcc_bin&quot;</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img class="right" src="/assets/images/DropBox_logo.png" title="'DropBox logo'" ></p>
-
-<p>I took the liberty (not sure it&rsquo;s mine to take &hellip; but still), locating Xcode CLI tools for both mountain lion (10.8) and Lion (10.7) on <a href="http://www.dropbox.com">DropBox</a>, ecause Apple (like Oracle and other Giants) won&rsquo;t let you download without a userid / pass which is quite irretating &hellip;</p>
-
-<p>As Always hope you guy&rsquo;s enjoy this.
-HP</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/07/08/juc-video-net-ci-slash-cd-with-jenkins/">JUC Video - .Net CI/CD With Jenkins</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-08T22:37:00-04:00" pubdate data-updated="true">Jul 8<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>The guy&rsquo;s from <a href="http://www.jfrog.com/">Jfrog</a> were kind enough to put this session on youtube &ndash; here it is enjoy</p>
-
-<iframe width="640" height="360" src="//www.youtube.com/embed/C5-98Fln1jg" frameborder="0" allowfullscreen></iframe>
-
-
-<p>comments are welcome !
-HP</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/06/16/using-jenkins-cli-as-job-gen/">Using Jenkins-cli as Job Gen</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-16T01:06:00-04:00" pubdate data-updated="true">Jun 16<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/jenkins140x140.jpg" title="'Jenkins logo small'" >
-Well a common use case for doing stuff with Jenkins jobs / configuration [ for example: enabling jobs, disabling jobs, executing jobs etc] is to use Jenkins-cli.jar which is included in your jenkins distribution.</p>
-
-<p>In a large company where branches are branched on a daily basis and you need a build for each branch, job creation could become a bottleneck [ so could branch creation &ndash; but that a different topic :) ].</p>
-
-<p>So my use case was to create a Job Generator which would take an existing job from branch 1.0 and create a job ( &amp; the ranch but as I said different topic ) for branch 2.0 with the corresponding name, so as I mentioned thank god for Jenkins in general, Jenkins-cli and in addition to that a shell script, <a href="http://www.gnu.org/software/sed/">sed</a>, <a href="http://xmlstar.sourceforge.net/">xmlstarlet</a> and again jenkins job parameters.</p>
-
-<p>I needed a script which would export the job configuration to an xml file, search and replace for the SCM url, create the job so lets see how its done:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>execJenkinsCli<span class="o">(){</span> <span class="c"># excute jenkins-cli jar </span>
-</span><span class='line'>        <span class="nv">jenkins_clinet_jar</span><span class="o">=</span>./jenkins-cli.jar
-</span><span class='line'>        <span class="c"># download only if it&amp;#39;s newwer than the local version [ curl -z ], the cli jar should be ofthe smae jenkins version ...</span>
-</span><span class='line'>        curl -s -z ./jenkins-cli.jar <span class="k">${</span><span class="nv">JENKINS_URL</span><span class="k">}</span>/jnlpJars/jenkins-cli.jar -o <span class="k">${</span><span class="nv">jenkins_clinet_jar</span><span class="k">}</span> <span class="o">||</span> <span class="o">{</span> <span class="nb">echo</span> &amp;quot;Echo  cannot obtain jenkins-cli.jar exiting&amp;quot;; <span class="nb">exit </span>2;<span class="o">}</span>
-</span><span class='line'>        <span class="nv">cli_cmd</span><span class="o">=</span><span class="nv">$1</span>
-</span><span class='line'>        <span class="nv">cmd_params</span><span class="o">=</span><span class="nv">$2</span>
-</span><span class='line'>        <span class="nv">cmd_prefix</span><span class="o">=</span>&amp;quot;<span class="k">${</span><span class="nv">JAVA_CMD</span><span class="k">}</span> -jar <span class="k">${</span><span class="nv">jenkins_clinet_jar</span><span class="k">}</span> -s <span class="k">${</span><span class="nv">JENKINS_URL</span><span class="k">}</span>&amp;quot;
-</span><span class='line'>
-</span><span class='line'>        <span class="k">${</span><span class="nv">cmd_prefix</span><span class="k">}</span> who-am-i | grep &amp;#39;Authenticated as: anonymous&amp;#39; &amp;amp;&amp;gt;/dev/null &amp;amp;&amp;amp; <span class="nv">anon</span><span class="o">=</span>0
-</span><span class='line'>        <span class="c">#anon=$?</span>
-</span><span class='line'>        <span class="k">if</span> <span class="o">[</span> &amp;quot;<span class="nv">$anon</span>&amp;quot; !<span class="o">=</span> &amp;quot;0&amp;quot; <span class="o">]</span>; <span class="k">then</span>
-</span><span class='line'>                <span class="c">#printf &amp;quot;[ $FUNCNAME ] using jenkins-cli with private key auth&amp;quot;</span>
-</span><span class='line'>                <span class="nb">exec</span> <span class="k">${</span><span class="nv">cmd_prefix</span><span class="k">}</span> <span class="k">${</span><span class="nv">cli_cmd</span><span class="k">}</span> <span class="k">${</span><span class="nv">cmd_params</span><span class="k">}</span>
-</span><span class='line'>        <span class="k">elif</span> <span class="o">[</span> &amp;quot;x&amp;quot; <span class="o">=</span> &amp;quot;x<span class="k">${</span><span class="nv">JENKINS_USER</span><span class="k">}</span>&amp;quot; <span class="o">]</span> <span class="o">||</span> <span class="o">[</span> &amp;quot;x&amp;quot;  <span class="o">=</span> &amp;quot;x<span class="k">${</span><span class="nv">JENKINS_PASS</span><span class="k">}</span>&amp;quot; <span class="o">]</span>; <span class="k">then</span>
-</span><span class='line'><span class="k">                </span><span class="nb">printf</span> &amp;quot;<span class="o">[</span> <span class="nv">$FUNCNAME</span> <span class="o">]</span> cannot determin jenkins credentials<span class="se">\n</span>&amp;quot;;
-</span><span class='line'>                <span class="nb">exit </span>3;
-</span><span class='line'>        <span class="k">else</span>
-</span><span class='line'><span class="k">                </span><span class="nb">exec</span> <span class="k">${</span><span class="nv">cmd_prefix</span><span class="k">}</span> <span class="k">${</span><span class="nv">cli_cmd</span><span class="k">}</span> <span class="k">${</span><span class="nv">cmd_params</span><span class="k">}</span> --username <span class="k">${</span><span class="nv">JENKINS_USER</span><span class="k">}</span> --password <span class="k">${</span><span class="nv">JENKINS_PASS</span><span class="k">}</span>
-</span><span class='line'>        <span class="k">fi</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>execJenkinsCli get-job <span class="k">${</span><span class="nv">tmpl_job_name</span><span class="k">}</span>  | <span class="se">\</span>
-</span><span class='line'>  <span class="k">${</span><span class="nv">XML</span><span class="k">}</span> ed -O -S -P -u &amp;#39;//project/scm/locations/hudson.scm.SubversionSCM_-ModuleLocation/remote&amp;#39; -v <span class="k">${</span><span class="nv">scm_url</span><span class="k">}</span> | <span class="se">\</span>
-</span><span class='line'>  execJenkinsCli create-job <span class="k">${</span><span class="nv">new_job_name</span><span class="k">}</span>
-</span><span class='line'>
-</span><span class='line'>  execJenkinsCli <span class="nb">enable</span>-job <span class="k">${</span><span class="nv">new_job_name</span><span class="k">}</span> <span class="c"># our template is usually disabled, thus the cloned one is too ...</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The full jobGen wrapper script can be <a href="https://gist.github.com/hagzag/9b0d9d74d1920e248959">found here</a></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/06/16/using-jenkins-cli-as-job-gen/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/06/logstash-plus-opscode-omnibus/">Logstash + Opscode Omnibus</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-06T19:03:00-04:00" pubdate data-updated="true">May 6<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>At <a href="http://devopsdays.org/events/2013-austin/">DevOps Days Austin</a> <a href="http://twitter.com/mattray">@mattray</a> did an Openspace session on <a href="https://github.com/opscode/omnibus-ruby">Omnibus</a> which is a toolset based around the concept of installing an app and all of it&rsquo;s prerequisites from source into a directory and then building a package ( either .deb or .rpm ) of that using <a href="https://github.com/jordansissel/fpm">fpm</a>.</p>
-
-<p>Having battled many times with OS Packages trying to get newer versions of Ruby, or Redis or other software installed and having to hunt down some random package repo or manually build from source this seems like an excellent idea.</p>
-
-<p>To learn the basics I decided to build an <a href="https://github.com/paulczar/omnibus-fpm">omnibus package for fpm</a> which helped me work out the kinks and learn the basics.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/05/06/logstash-plus-opscode-omnibus/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/05/Git-Internals/">Git Internals</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-05T22:00:00-04:00" pubdate data-updated="true">May 5<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I found this information very supporting during my personal jorney into learning git, the internals IMO shows the mind shift one has to do when using Git after using any other SCM tool.</p>
-
-<p><script async class="speakerdeck-embed" data-id="9c9899c096f1013054d24e4027241f59" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script></p>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/05/Setup-git-on-ubutnu-12-04/">Setup Git, Gitweb With Git-http-backend / Smart Http on Ubuntu 12.04</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-05T21:00:00-04:00" pubdate data-updated="true">May 5<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/Git_Apache.png" title="'Git Logo'" >Setting up git over http (Smart HTTP in perticular) has it&#39;s caveats I will try to emphesize them as I go along.</p>
-
-<p>Final Goal is to run git over http using git-http-backend (a.k.a smart http) in apposed to using webdav which is also called the dumb-method, webdav was never designed to work with git for the reason that it cannot compress object whilst transporting data between the client and the server hosting git [ there is no real git client &ndash; git server so i am not referring to it a such].</p>
-
-<p><strong><u>Versions used in this setup</u>:</strong></p>
-
-<ul>
-<li>Ubutnu version <em>12.04-LTS</em></li>
-<li>Git version <em>1.7.9.5</em></li>
-<li>Apache2 version <em>2.2.22</em></li>
-</ul>
-
-
-<p><strong><u>1. Install prequirests</u>:</strong></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/05/05/Setup-git-on-ubutnu-12-04/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
   
   
     <article>
@@ -770,6 +333,343 @@ $ ps -ef | grep java
 
     </article>
   
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/24/Git-Productivity-enhancements/">Git Productivity Enhancements</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-24T13:11:00-05:00" pubdate data-updated="true">Feb 24<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/git_logo.jpg" title="'Git Logo'" >If I haven&rsquo;t told you yet, Git is awesome and yes I do most og the work from the command-line, so in order to make my life easier I did two things:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>apt-get install bash-completion
+</span><span class='line'>wget https://raw.github.com/git/git/master/contrib/completion/git-completion.bash -O /etc/bash_completion.d/git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Upon next login (or execute <em>source /etc/bash_completion.d/git</em>) right away and you have all the bash completion you need for git at your finger tips.</p>
+
+<p>Another awesome script to make your life easier with git is <a href="https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh">git-prompt.sh</a> which you can also include in your bash profile like so:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>wget https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>then add a line to ~/.profile sourcing it upon login shell, see header of git-prompt.sh for more details.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/24/why-octopress/">Why Octopress ?</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-24T09:11:00-05:00" pubdate data-updated="true">Feb 24<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/octopress.png" title="'Octopress Logo'" >
+Yes I am a Hacker wannabe [Octopress slogen is &ldquo;A blogging framewrok for hackers&rdquo; &hellip; ].</p>
+
+<p>Now seriously, i&rsquo;ve been down the road with many blog / CMS engines, <a href="http://ww.drupal.org">Drupal</a>, <a href="http://wordpress.org/">Wordpress</a> and all I really wanted was
+a note-pad with no fancy WYSIWYG editor with a bazillion plug-ins which will enable me to embed images / videos or a simple syntax highlighter.</p>
+
+<p>So I found <a href="http://octopress.org/">Octopress</a> which is just frekin&#8217; simple to use + it&rsquo;s cheap [hosting on Github Pages]</p>
+
+<blockquote><p>Octopress is a framework designed by Brandon Mathis for Jekyll, the blog aware static site generator powering Github Pages. To start blogging with Jekyll, you have to write your own HTML templates, CSS, Javascripts and set up your configuration. But with Octopress All of that is already taken care of. Simply clone or fork Octopress, install dependencies and the theme, and you’re set.</p></blockquote>
+
+<ul>
+<li>Social links preloaded, Facebook, Twitter, disqus &amp; other are built-in</li>
+<li>Syntax high-lighting built-in</li>
+<li>there are more good reasons <a href="http://octopress.org/docs/">here</a> <a href="https://github.com/imathis/octopress/wiki/3rd-party-plugins">and here</a></li>
+</ul>
+
+
+<p>The only problem was / is migrating all the stuff I have on-line so that is still a work in progress &hellip;
+&ndash;>So I guess I&rsquo;ll have to see if this ones sticks!&lt;&ndash;</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/24/adding-facbook-comments-to-octopress/">Adding Facebook Comments to Octopress</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-24T08:47:00-05:00" pubdate data-updated="true">Feb 24<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Inspired by <a href="http://blog.grambo.me.uk/blog/2012/02/20/adding-facebook-comments-to-octopress/">This post</a> Comments are now in FaceBook (Sorry disqus &hellip;).</p>
+
+<p>So now you should see something like the following (If you have JavaScript enabled of-course):
+<img src="/assets/images/FB_comments.png" title="FaceBook Comments Example" alt="FaceBook Comments" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/24/introduction-2-opscode-chef-slash-or-chef-for-newbiees-slash/">Introduction 2 Opscode Chef (or Chef for Newbiees)</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-24T00:21:00-05:00" pubdate data-updated="true">Feb 24<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This Prezi was presented @: <strong>January</strong><strong><strong><strong>16th, 2013 (</strong><a href="http://meetup.tikalk.com/events/98888802/">meetup / conversation details here</a></strong>)</strong></p>
+
+<div markdown="1" align="center">
+<iframe src="http://prezi.com/embed/4z7dsc33f4ne/?bgcolor=ffffff&amp;lock_to_path=0&amp;autoplay=no&amp;autohide_ctrls=0&amp;features=undefined&amp;disabled_features=undefined" width="600" height="450" frameBorder="0"></iframe>
+</div>
+
+
+<p>There where a few issues which I fixed &amp; added to this prezi since the meetup.</p>
+
+<p>As always any comments are welcome :)</p>
+
+<p>Enjoy</p>
+
+<p>HP</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/02/24/introduction-2-opscode-chef-slash-or-chef-for-newbiees-slash/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/05/how-to-run-apt-get-update-before-puppet/">How to Run Apt-get Update Before Puppet</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-05T14:56:00-05:00" pubdate data-updated="true">Feb 5<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>One of the problems I keep running into with Puppet is that the packages I&rsquo;m trying to install are very new and I need to run <code>apt-get update</code> to update the repositories. Because Puppet does not run scripts it gets rather annoying to get the update to run before you install any packages.</p>
+
+<p>I found a lot of solutions around the web but this one seems to work best for me.</p>
+
+<script src="https://gist.github.com/cbetta/4714469.js"></script>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/02/ruby-gems-are-not-safe-to-use/">Ruby Gems Are Still Not Safe to Use</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-02T13:24:00-05:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In the light of the recent <a href="http://rubygems.org">Rubygems.org</a> security compromise the community has been looking at ways to make Rubygems.org and Ruby gems in general more secure. The project is still ongoing and feel free to help them out on #rubygems on Freenode, but here is a highlight of what I think are some of the main issues.</p>
+
+<p>Some of the issues highlighted here are taken from <a href="http://www.youtube.com/watch?v=z-5bO0Q1J9s">Ben Smith&rsquo;s enlightening (but scary) talk at Aloha Ruby Conference</a>.</p>
+
+<h2>Disclaimer</h2>
+
+<p>I am not a security expert. I am just a Ruby developer and a gem author that is worried about the current state of the Ruby gems ecosystem. I also am worried that the next negative news around Ruby will involve the problems described below.</p>
+
+<h2>What are Ruby gems and what is Rubygems.org?</h2>
+
+<p>For those not familiar, <a href="http://rubygems.org">Rubygems.org</a> is the most popular repository of &ldquo;gems&rdquo; for the <a href="http://rubylang.org">Ruby language</a>. Gems are libraries made up out of Ruby (and optionally C) code and can be uploaded by anyone who registered for an account. Rubygems.org currently hosts 50,685 gems which have been downloaded 1,259,533,358 times since July 2009. Ruby gems are not only hosted on Rubygems.org, anyone can run their own repository but Rubygems.org is definitely the most used one.</p>
+
+<h2>Current state</h2>
+
+<p>Some parts of the current infrastructure are worrying.</p>
+
+<ul>
+<li><p><strong>Hard to tell if gems were changed on the repo.</strong> It took the Rubygems.org volunteers more than 24 hours to verify every gem&rsquo;s checksum against external mirrors.</p></li>
+<li><p><strong>Impossible to tell if gems were uploaded by gem owner.</strong> It is currently very hard to know if a gem was actually uploaded by it&rsquo;s owner. Developer machines can be compromised and a users API credentials for Rubygems.org are kept unencrypted in <code>~/gem/credentials</code>.</p></li>
+<li><p><strong>Gem owner isn&rsquo;t notified of new gem uploads.</strong> When a gem developer&rsquo;s credentials are compromised a new version of the gem can be uploaded without the gem owner ever knowing.</p></li>
+<li><p><strong>Impossible to notify a gem user of compromised gems.</strong> When a gem developer&rsquo;s credentials are compromised it is hard to notify anyone who uses any of the gems published by the developer of the situation.</p></li>
+<li><p><strong>Gems can run code on install.</strong> This is probably the most interesting attack vector in the foreseeable future. It seems this feature was relatively unintentional as it involves tying into the fact that Ruby gems can contain C code. Running code on install will mean that gems can steal the unencrypted Rubygems.org credentials which can then be used to modify the compromised user&rsquo;s gems and spread the malicious code further.</p></li>
+</ul>
+
+
+<h2>Proposals for change</h2>
+
+<ul>
+<li><p><strong>Notify gem owners of newly published gems.</strong> Adding a simple email notification to the gem owner will at least allow for easier detection of compromised gems. Sadly at this point the gem is already compromised and possibly already spread over any mirrors and downloaded by users.</p></li>
+<li><p><strong>Secure developer&rsquo;s Rubygems.org credentials.</strong> This is pretty simple. My ssh key has a passphrase on it and so should my Rubygems.org credentials. Stealing a rubygems.org API key is easy, using one that requires a passphrase a lot harder.</p></li>
+<li><p><strong>Stop running code on gem install.</strong> I totally see the need for having C extensions in a Ruby gems, and those extensions need to be compiled, but we seriously need to find a way to compile C code without allowing for the arbitrary execution of code on install of a gem.</p></li>
+<li><p><strong>Automatically mirror gems and checksums.</strong>  A system involving the automatic mirroring of gems and their checksums to other servers would definitely have made the verification of gems a lot easier in the last few days.</p></li>
+<li><p><strong>Force signing of gems.</strong> Yes, <a href="http://docs.rubygems.org/read/chapter/21">you can sign your gems</a> but almost nobody does (and neither do I). Additionally it&rsquo;s a pain to force the usage of signed keys on the gem user&rsquo;s side, not to mention the futility as most gems aren&rsquo;t signed. Signing is the way to go though and work on this has started. It&rsquo;s a difficult topic though and work is being done to make it as painless as possible for users and developers.</p></li>
+<li><p><strong>Notify gem users of unsigned/insecure gems.</strong> The rubygem binary (together with tools like <a href="http://gembundler.com/">Bundler</a>) should be updated to allow for verification of signatures which will allow it to notify gem users of unsigned or compromised gems.</p></li>
+</ul>
+
+
+<h2>How can I help?</h2>
+
+<ul>
+<li><strong>Code:</strong> <a href="https://github.com/rubygems">rubygems</a>, <a href="https://github.com/rubygems-trust">rubygems-trust</a>(fork for implementing a signed approach)</li>
+<li><strong>Discussion:</strong> #rubygems and #rubygems-trust on Freenode</li>
+</ul>
+
+
+<h2>Did I miss anything?</h2>
+
+<p>Please let me know and I&rsquo;ll add it to the list.</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -795,19 +695,19 @@ $ ps -ef | grep java
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+        <a href="/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/">Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+        <a href="/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/">Continuous Delivery Implementation : Getting started with AWS</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
       </li>
     
   </ul>

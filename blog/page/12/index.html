@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="JBoss, Selenium, Maven, Hudson, M2 Extra Steps &amp; Files Found Trigger plugins &ndash; how do all these work together in a continuous build + &hellip;">
+  <meta name="description" content="In one of my previous projects I needed to deploy 2 Tomcat servers as part of the build process, this could be done by profiling the parent project &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,350 +67,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2010/09/12/JBoss-Selenium-Maven-Hudson-M2-Extra-Steps-Files-Found-Trigger-Plugins-Playing-Well-Together/">JBoss, Selenium, Maven, Hudson, M2 Extra Steps & Files Found Trigger Plugins Playing Well Together</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-09-12T18:09:00-04:00" pubdate data-updated="true">Sep 12<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>JBoss, Selenium, Maven, Hudson, <a href="http://wiki.hudson-ci.org/display/HUDSON/M2+Extra+Steps+Plugin">M2 Extra Steps</a> &amp; <a href="http://wiki.hudson-ci.org/display/HUDSON/Files+Found+Trigger">Files Found Trigger</a> plugins &ndash; how do all these work together in a continuous build + Integration test life-cycle ?</p>
-
-<p><strong>The Story &ndash; The Use Case</strong>:</p>
-
-<p>We have two projects with two war artifacts which need to be deployed to a JBoss Application Server, whilst both webapps share a common base configuration, although the release life-cycle of each war have no correlation to the other.</p>
-
-<p>In production both application servers are running &amp; serving one another thus, Integration test should cover both JBoss instances &amp; test their web services.</p>
-
-<p>We are using selenium tests for both webapps and they need to run straight after a continuous build of each of the servers mentioned above. That said a change in project A or in project B should trigger the Integration tests job, whilst if either project A or project B are running the integration test plugin shouldn&rsquo;t run (at least until both projects / one of them is complete).</p>
-
-<p><strong>The &ldquo;work around&rdquo; &ndash; forcing the &ldquo;native Hudson&rdquo; configuration</strong> (which we didn&rsquo;t go with naturally):</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2010/09/12/JBoss-Selenium-Maven-Hudson-M2-Extra-Steps-Files-Found-Trigger-Plugins-Playing-Well-Together/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2010/09/07/hudson-pinned-slash-pinning-plugins/">Hudson - Pinned/pinning Plugins</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-09-07T19:14:00-04:00" pubdate data-updated="true">Sep 7<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/hudson_logo.png" title="'Hudson Logo'" >If you wish to &ldquo;hang on&rdquo; to a certain plugin which shipps with hudson.war just unpin it in the Manage Hudson >> Manage Plugins page &ndash; this option is availabe sine <a href="http://www.hudson-ci.org/download/war/1.374/hudson.war">1.374 release</a> (and you can alwasy grab the latest @: <a href="http://www.hudson-ci.org/latest/hudson.war">latest</a>)</p>
-
-<p>See full explanation below quoted from <a href="http://wiki.hudson-ci.org">hudson wiki</a>:</p>
-
-<p>The notion of <strong>pinned plugins</strong> applies to plugins that are bundled with Hudson, such as the Subversion plugin.</p>
-
-<p>Normally, when you upgrade/downgrade Hudson, its built-in plugins overwrite whatever versions of the plugins you currently have in $HUDSON_HOME. This ensures that you use the consistent version of those plugins. However, this behavior also means that those plugins can be never manually updated, as every time you start Hudson they&rsquo;ll be replaced by the bundled versions.</p>
-
-<p>So when you manually update those bundled plugins, Hudson will mark those plugins as pinned to the particular version. Pinned plugins will never be overwritten by the bundled plugins during Hudson boot up. However, by definition, with pinned plugins you lose the benefit of automatic upgrade when you upgrade Hudson.</p>
-
-<p>So the plugin manager in Hudson allows you to explicitly unpin plugins. On file system, Hudson creates an empty file called $HUDSON_HOME/plugins/plugin.hpi.pinned to indicate the pinning. This file can be manually created/deleted to control the pinning behavior.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2010/09/01/remove-the-all-view-in-hudson-plus-view-enhancement-plugins/">Remove the All View in Hudson + View Enhancement Plugins</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-09-01T19:22:00-04:00" pubdate data-updated="true">Sep 1<span>st</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/hudson_logo.png" title="'Hudson Logo'" >I had tow motivations of getting rid of the All view</p>
-
-<ol>
-<li>The <em><strong>All view</strong></em> is quite annoying don&rsquo;t you think? After using Hudson for a while you have tens/hundreds of jobs lined up in a huge list &ndash; who needs that right.</li>
-<li>I wanted a &ldquo;<em><strong>hidden jobs section</strong></em>&rdquo; &ndash; Jobs no one but myself (and who ever needs access to it) can see.</li>
-</ol>
-
-
-<p>In order to get rid of it (the <em><strong>All view</strong>)****</em>simply:
- </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2010/09/01/remove-the-all-view-in-hudson-plus-view-enhancement-plugins/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2010/08/27/The-hudson-plugins-you-cant-live-without/">The Hudson Plug-ins You Can&#8217;t Live Without</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-08-27T09:18:00-04:00" pubdate data-updated="true">Aug 27<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/hudson_logo.png" title="'Hudson Logo'" >This post was originally posted &amp; active @: <a href="http://www.tikalk.com/node/4994">http://www.tikalk.com</a>
-As a big fan of hudson-ci I would like to take a note of the most commonly used hudson plug-ins (at least by me) needed in order to maintain a good build environment.
-This list was collected as part of my experience in the last couple of years. I am sure your may differ then mine mine :).</p>
-
-<p><strong>Setenv plug-in</strong></p>
-
-<p>The <a href="http://wiki.hudson-ci.org/display/HUDSON/Setenv+plug-in">The Setenv plug-in</a> lets you set environment variables for a job upon build execution. During migration from CruiseControl I found this plug-in extremely useful, for I could provide the imported script the exact environment it had on the CC machine without the need to change a thing in the build&rsquo;s logic / parameters, this also applied to the following recommended plug-in:</p>
-
-<p><strong>Parameterized Trigger plug-in</strong></p>
-
-<p>The <a href="http://wiki.hudson-ci.org/display/HUDSON/Parameterized+Trigger+plug-in">Parameterized Trigger</a> plug-in lets you add parameters to your build jobs that users enter when they trigger a build. This a very useful plug-in for release or deployment automation, for example, where you want to enter the version number (or label) you want to release or deploy. The biggest feature of this plug-in is the default value so even automatic / SCM triggers get a default value to execute silently.</p>
-
-<p><strong>The <a href="http://wiki.hudson-ci.org/display/HUDSON/Cygpath+plug-in">Cygpath plug-in</a></strong></p>
-
-<p><img class="left" src="/assets/images/small_cygwin-logo.jpg" title="'Cygpath plug-in'" > for a *nix oriented guy as myself, this was a great help, all our &ldquo;special&rdquo; shell script do not have to be re-written when we are running builds on Windows nodes &ndash; and yest we have too &hellip; :)</p>
-
-<p>The Cygpath gave me the opportunity to share tools between linux and windows machines this gave us the ability to maintain one tool repository for all our slave regardless of their architecture.</p>
-
-<p>And did I forget to say all you need it to enable this and automatically every batch executed on a windows slave will automatically use Cygwin ? from Cygpath wiki:</p>
-
-<ul>
-<li><p>You install Cygwin on all the Windows slaves</p></li>
-<li><p>Jobs on Hudson that assume Unix environment can now run on all the slaves (including Windows ones)</p></li>
-<li><p>In the system configuration, you use Unix paths for all your tools.</p></li>
-</ul>
-
-
-<p><strong>Promoted Builds plug-in</strong></p>
-
-<p><img class="left" src="/assets/images/promotion.png" title="'Promotion'" >Definitely the #1 plug-in on the list here &ndash; this plug-in enables you to do almost anything you can do in a certain Job but run it as a promotion task &ndash; if you wish to promote you build to your QA team for testing, or if you want to tag it in SVN or Deploy your artifacts to a maven repository, this is the plug-in you &ldquo;cannot live without&rdquo;. Without this plug-in you will need to configure a separate job or Bach Task (see <a href="http://wiki.hudson-ci.org/display/HUDSON/Batch+Task+plug-in">batch tasks plug-in</a> for more details) for every task you want to perform on your build &ndash; which makes managing Hudson job a nightmare &hellip;</p>
-
-<p><strong>Clover plug-in</strong></p>
-
-<p><img class="left" src="/assets/images/logo-clover.png" title="'Clover logo'" >
-<a href="http://www.atlassian.com/software/clover/">Clover</a> is a non-free code coverage tool which is the commercial alternative to Cobertura Emma etc, the Hudson <a href="http://wiki.hudson-ci.org/display/HUDSON/Clover+plug-in">Clover</a> plug-in is an amazing add on which integrates Clover reports and Historical reports into the build flow, which I found extremely helpful. Try configuring Clover to generate historical reports and then publish them to some third-party web server for viewing &ndash; this has made Clover integration a breeze, the challenge is even bigger with a distributed build environment which Hudson &amp; Clover plug-in have overcome.</p>
-
-<p><img src="/assets/images/CloverSS_0.png" alt="" /></p>
-
-<p>If you don&rsquo;t have Clover, as mentioned above &ndash; the <a href="http://wiki.hudson-ci.org/display/HUDSON/Cobertura+plug-in">Cobertura</a> and <a href="http://wiki.hudson-ci.org/display/HUDSON/Emma+plug-in">Emma</a> plug-ins are great too which will also integrate with:</p>
-
-<p><strong>Sonar plug-in</strong></p>
-
-<p><img class="left" src="/assets/images/sonar_0.png" title="'Sonar logo'" >
-Although I am only &ldquo;P.O.C ing&rdquo; Sonar+Hudson+Clover, The <a href="http://wiki.hudson-ci.org/display/HUDSON/Sonar+plug-in">Sonar</a> plug-in made it trivial to integrate hudson projects with Sonar. <a href="http://sonar.codehaus.org/">Sonar</a> is a powerful open source code quality metrics reporting tool, which displays code quality metrics for multiple projects in a variety of ways on a centralized web location.</p>
-
-<p>For Maven based builds you do not even need to change a line of code in order to get sonar to work which made this module a <a href="http://search.twitter.com/search?q=%232">#2</a> on my &ldquo;can&rsquo;t live without plug-ins&rdquo;.</p>
-
-<p><strong>Sectioned View plug-in<a href="http://wiki.hudson-ci.org/display/HUDSON/Setenv+plug-in"><br/>
-</a></strong></p>
-
-<p><a href="http://wiki.hudson-ci.org/display/HUDSON/Sectioned+View+plug-in">Sectioned view</a> gives you the ability to create a &ldquo;Dashboard view&rdquo; for your job(s) / project(s) &ndash; it is quite feature rich if you take a look at it&rsquo;s configuration and it is very simple to comprehend. A great example is taken from the plug-ins wiki page see:</p>
-
-<p><img src="/assets/images/sectioned.png" alt="Section view scrrenshot" /></p>
-
-<p><strong>Nested Views plug-in</strong></p>
-
-<p><a href="http://wiki.hudson-ci.org/display/HUDSON/Nested+View+plug-in">Nested view</a>s another View type which allows grouping job views into multiple levels instead of one big list of tabs &ndash; this is quite useful and the only disadvantage is you can have both a view and jobs in the same page it&rsquo;s either a nested view or a list of views &ndash; but I presume it will sure be included.</p>
-
-<p><strong>Shelve Project plug-in</strong></p>
-
-<p>If you ever wanted to Hide a jo you are working on and you also would like to prevent it from being triggered by mistake this is the plug-in for you. I often find my self setting up a job and it becomes a work in progress so hiding it to a later time is a great help &ndash; this plug-in does just that.</p>
-
-<p><strong>Bugzilla &amp; Jira plug-ins</strong> (&amp; there or others I presume)</p>
-
-<p><img class="left" src="/assets/images/bugzilla.png" title="'Bugzilla logo'" >Well the fact I need both in the same Hudson cluster and I can still have them work side by side was really important. In order for this plug-in to serve you well your CM team has to some extra work on your SCM side, that done you got yourself a link directly into your bug tracking system &ndash; the latest versions, query <a href="http://wiki.hudson-ci.org/display/HUDSON/Bugzilla+plug-in">Bugzilla</a> &amp; <a href="http://wiki.hudson-ci.org/display/HUDSON/JIRA+plug-in">Jira</a> and can display the Bug details.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2010/08/18/mac-os-xi-eleven/">Mac OS XI (Eleven)</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-08-18T05:14:18-04:00" pubdate data-updated="true">Aug 18<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Random thought for the day: for the next version of Apple&rsquo;s operating system, they should really think about synching all your programs, settings, etc across ALL your computers.</p>
-
-<p>Right now I carry a MacBook Pro between home and work every day because maintaining all my programs, files, and settings on two separate machines would simply be far too much work.  Why can&rsquo;t those all be in the cloud?  I&rsquo;d love to have the raw power and convenience of desktop machines at home and work &ndash; but the software underneath would have to all be the same virtualized computer or it would be too much of a hassle.</p>
-
-<p>How many more computers could Apple sell if everyone who currently uses a MacBook as their primary machine went out and bought a desktop or two to complement it?</p>
-
-<p>I wouldn&rsquo;t be surprised if they are already working on this&hellip;</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2010/08/17/Job-configuration-change-in-Hudson-1.372/">Job Configuration Change in Hudson 1.372</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-08-17T09:11:00-04:00" pubdate data-updated="true">Aug 17<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/hudson_logo.png" title="'Hudson Logo'" >Yesterday I upgraded hudson to the greatest an latest which was a seamless upgrade.</p>
-
-<p>A very obvious change in the Job configuration form was added instead of &ldquo;<strong>Tie Build to a node</strong>&rdquo;:
-<img src="/assets/images/old-slave-daialog_0.png" title="'old_slave_selection_dialog'" ></p>
-
-<p>There is now <strong>&ldquo;Restrict where this project can be run&rdquo;</strong>:</p>
-
-<p><img src="/assets/images/new-slave-daialog_0.png" title="'new__slave_selection_dialog'" ></p>
-
-<p>The disadvantage in this feature is if you want to a build to a node you need to know its name / node group name prior to the actual configuration. The Advantage of this feature is you can be more specific in where you want you build to run and with a large number of slaves this is quite important, <strong>Please note</strong>: &ldquo;old&rdquo; jobs aren&rsquo;t affected of this change.</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -780,9 +436,144 @@ java.lang.IllegalArgumentException: id to load is required for loading
 
     </article>
   
-  <div class="pagination">
+  
+    <article>
+      
+  <header>
+  
     
-      <a class="prev" href="/blog/page/13/">&larr; Older</a>
+      <h1 class="entry-title"><a href="/blog/2009/09/25/groovy-regular-expressions/">Groovy Regular Expressions</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-25T08:00:00-04:00" pubdate data-updated="true">Sep 25<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Because of the compact syntax regular expressions in Groovy are more readable than in Java. Here is how Jeffrey Friedl&rsquo;s <a href="http://regex.info/listing.cgi?ed=3&amp;p=208">example</a> looks in Groovy:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">subDomain</span>  <span class="o">=</span> <span class="s1">&#39;(?i:[a-z0-9]|[a-z0-9][-a-z0-9]*[a-z0-9])&#39;</span> <span class="c1">// simple regex in single quotes</span>
+</span><span class='line'><span class="kt">def</span> <span class="n">topDomains</span> <span class="o">=</span> <span class="s">$/</span>
+</span><span class='line'><span class="s">    (?x-i : com         \b     # you can put whitespaces and comments</span>
+</span><span class='line'><span class="s">          | edu         \b     # inside regex in eXtended mode</span>
+</span><span class='line'><span class="s">          | biz         \b</span>
+</span><span class='line'><span class="s">          | in(?:t|fo)  \b     # backslash is not escaped</span>
+</span><span class='line'><span class="s">          | mil         \b     # in dollar-slash strings</span>
+</span><span class='line'><span class="s">          | net         \b</span>
+</span><span class='line'><span class="s">          | org         \b</span>
+</span><span class='line'><span class="s">          | [a-z][a-z]  \b</span>
+</span><span class='line'><span class="s">    )/$</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">def</span> <span class="n">hostname</span> <span class="o">=</span> <span class="s">/(?:${subDomain}\.)+${topDomains}/</span>  <span class="c1">// variable substitution in slashy string</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">def</span> <span class="n">NOT_IN</span>   <span class="o">=</span> <span class="s">/;\&quot;&#39;&lt;&gt;()\[\]{}\s\x7F-\xFF/</span>     <span class="c1">// backslash is not escaped in slashy strings</span>
+</span><span class='line'><span class="kt">def</span> <span class="n">NOT_END</span>  <span class="o">=</span> <span class="s">/!.,?/</span>
+</span><span class='line'><span class="kt">def</span> <span class="n">ANYWHERE</span> <span class="o">=</span> <span class="s">/[^${NOT_IN}${NOT_END}]/</span>
+</span><span class='line'><span class="kt">def</span> <span class="n">EMBEDDED</span> <span class="o">=</span> <span class="s">/[$NOT_END]/</span>                        <span class="c1">// you can ommit {} around var name</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">def</span> <span class="n">urlPath</span>  <span class="o">=</span> <span class="s2">&quot;/$ANYWHERE*($EMBEDDED+$ANYWHERE+)*&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">def</span> <span class="n">url</span> <span class="o">=</span>
+</span><span class='line'>    <span class="s2">&quot;&quot;&quot;(?x:</span>
+</span><span class='line'><span class="s2">             # you have to escape backslash in multi-line double quotes</span>
+</span><span class='line'><span class="s2">             \\b</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">             # match the hostname part</span>
+</span><span class='line'><span class="s2">             (</span>
+</span><span class='line'><span class="s2">               (?: ftp | http s? ): // [-\\w]+(\\.\\w[-\\w]*)+</span>
+</span><span class='line'><span class="s2">             |</span>
+</span><span class='line'><span class="s2">               $hostname</span>
+</span><span class='line'><span class="s2">             )</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">             # allow optional port</span>
+</span><span class='line'><span class="s2">             (?: :\\d+ )?</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">             # rest of url is optional, and begins with /</span>
+</span><span class='line'><span class="s2">             (?: $urlPath )?</span>
+</span><span class='line'><span class="s2">       )&quot;&quot;&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">assert</span> <span class="s1">&#39;http://www.google.com/search?rls=en&amp;q=regex&amp;ie=UTF-8&amp;oe=UTF-8&#39;</span> <span class="o">==~</span> <span class="n">url</span>
+</span><span class='line'><span class="k">assert</span> <span class="s1">&#39;pages.github.io&#39;</span> <span class="o">==~</span> <span class="n">url</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see, there are several notations, and for every subexpression you can choose the one that is most expressive.</p>
+
+<h3>Resources</h3>
+
+<ul>
+<li>Martin Fowler on <a href="http://martinfowler.com/bliki/ComposedRegex.html">composed regexes</a></li>
+<li><a href="http://jira.codehaus.org/browse/GROOVY-2701">Introducing dollar-slash</a> notation into Groovy</li>
+<li><a href="http://regex.info/">Mastering Regular Expressions</a> — the best regex book</li>
+<li>Groovy <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-using-regular.html">Pattern</a> and <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-matchers-for-regular.html">Matcher</a> classes</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -805,19 +596,19 @@ java.lang.IllegalArgumentException: id to load is required for loading
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutotial-continuous-delivery-in-the-cloud-part-6-of-6/">Tutotial : Continuous Delivery in the Cloud Part 6 of 6</a>
+        <a href="/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/">Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-5-of-6/">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</a>
+        <a href="/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/">Continuous Delivery Implementation : Getting started with AWS</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-4-of-6/">Tutotial : Continuous Delivery in the Cloud Part 4 of 6</a>
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/04/tutorial-continuous-delivery-in-the-cloud-part-3-of-6/">Tutorial : Continuous Delivery in the Cloud Part 3 of 6</a>
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
       </li>
     
   </ul>
