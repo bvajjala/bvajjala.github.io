@@ -114,7 +114,8 @@ Code Metrics:  SonarQube, SLOC (and variants), SciTools Understand
 
 <pre><code>Version Control Systems:        Git, Subversion, Mercurial
 Artifact Repository Managers:   Archiva, Artifactory, Nexus 
-                                (roll-your-own with zip files, metadata, shared storage, and access controls) Language-specific package Managers: Composer (PHP), Ruby Gems, npm (Node.js), Python PIP
+                                (roll-your-own with zip files, metadata, shared storage, and access controls)
+Language-specific package Managers: Composer (PHP), Ruby Gems, npm(Node.js)                                    , Python PIP
 OrchestrationOS-level package Managers: APT, Chocolatey, RPM
 </code></pre>
 
@@ -123,7 +124,9 @@ OrchestrationOS-level package Managers: APT, Chocolatey, RPM
 <p>The only manual testing in a deployment pipeline should be for tests that are tough for a computer to handle, such as exploratory testing, inspection of user interface designs, and user acceptance tests. The rest should be automated. Tools for automated testing should operate in a completely headless (non-interactive) manner and be lightweight enough to run across many test servers simultaneously. Teams also need to create testing environments on-demand by using environment automation tools that can provision a vm and configure an environment template.</p>
 
 <pre><code>Test Automation: JMeter, Selenium/WebDriver, Cucumber (BDD), 
-                 RSpec (BDD), SpecFlow (BDD), LoadUI (Performance), PageSpeed (Performance), Netem(Network Emulation), SoapUI (Web Services), Test Kitchen (Infrastructure)
+                 RSpec (BDD), SpecFlow (BDD), LoadUI (Performance), 
+                 PageSpeed (Performance), Netem(Network Emulation), 
+                 SoapUI (Web Services), Test Kitchen (Infrastructure)
 
 Environment Automation:  Vagrant, Docker, Packer
 </code></pre>
