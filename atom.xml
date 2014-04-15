@@ -4,7 +4,7 @@
   <title><![CDATA[Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-15T18:31:16-04:00</updated>
+  <updated>2014-04-15T18:34:11-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[A Case Study on Using 100% Cloud Based Resources With Automated Software Delivery]]></title>
+    <title type="html"><![CDATA[A case study on using 100% cloud based Resources with Automated Software Delivery]]></title>
     <link href="http://bvajjala.github.io/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/"/>
     <updated>2014-04-04T14:08:01-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery</id>
@@ -572,7 +572,7 @@ commit stage to build and test your application.</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Continuous Delivery Implementation : Getting Started With AWS]]></title>
+    <title type="html"><![CDATA[Continuous Delivery Implementation : Getting started with AWS]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/"/>
     <updated>2014-03-25T14:57:15-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws</id>
@@ -1510,7 +1510,7 @@ groups!</em></strong></p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[A Deep Dive Into AWS Reserved Instances]]></title>
+    <title type="html"><![CDATA[A Deep Dive into AWS Reserved Instances]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/"/>
     <updated>2014-03-25T09:35:27-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances</id>
@@ -1607,7 +1607,7 @@ analysis from a business perspective.</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[6 Reasons Why Large Enterprises Should Move to Amazon Web Services]]></title>
+    <title type="html"><![CDATA[6 reasons why large enterprises should move to Amazon Web Services]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/"/>
     <updated>2014-03-25T09:13:48-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services</id>
@@ -1923,7 +1923,7 @@ version-control repository.</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[CI and Test Automation Utilizing OpenStack]]></title>
+    <title type="html"><![CDATA[CI and Test Automation utilizing OpenStack]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/"/>
     <updated>2014-03-14T09:54:08-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/14/ci-and-test-automation-utilizing-openstack</id>
@@ -1941,7 +1941,7 @@ version-control repository.</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Tools in AWS for Implementing Continuous Deployment Pipeline]]></title>
+    <title type="html"><![CDATA[Tools in AWS for Implementing Continuous Deployment pipeline]]></title>
     <link href="http://bvajjala.github.io/blog/2014/03/11/tools-in-aws-for-implementing-continuous-deployment-pipeline/"/>
     <updated>2014-03-11T10:13:38-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/11/tools-in-aws-for-implementing-continuous-deployment-pipeline</id>
@@ -3255,7 +3255,7 @@ version-control repository.</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Jenkins Job Builder and How to Extned It]]></title>
+    <title type="html"><![CDATA[Jenkins Job Builder and How to Extned it]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/"/>
     <updated>2014-02-22T08:57:36-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it</id>
@@ -3474,7 +3474,7 @@ public ArtifactDeployerPublisher(List&lt;ArtifactDeployerEntry&gt; deployedArtif
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Continuous Delivery With Docker and Jenkins - Part II]]></title>
+    <title type="html"><![CDATA[Continuous Delivery with Docker and Jenkins - part II]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-ii/"/>
     <updated>2014-02-21T14:41:15-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-ii</id>
@@ -3544,7 +3544,7 @@ vagrant up
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Continuous Delivery With Docker and Jenkins - Part I]]></title>
+    <title type="html"><![CDATA[Continuous Delivery with Docker and Jenkins - part I]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-i/"/>
     <updated>2014-02-21T14:40:59-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-i</id>
@@ -3700,7 +3700,7 @@ During our use of Docker, we have used the public Docker images on the <a href="
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Using Docker to Run Ruby Rspec CI in Jenkins]]></title>
+    <title type="html"><![CDATA[Using Docker To Run Ruby Rspec CI In Jenkins]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/17/using-docker-to-run-ruby-rspec-ci-in-jenkins/"/>
     <updated>2014-02-17T17:01:40-05:00</updated>
     <id>http://bvajjala.github.io/blog/2014/02/17/using-docker-to-run-ruby-rspec-ci-in-jenkins</id>

@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: 
+Disallow:
 
-Sitemap: http://bvajjala.github.io/sitemap.xml 
+Sitemap: http://bvajjala.github.io/sitemap.xml
