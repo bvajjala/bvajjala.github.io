@@ -71,100 +71,56 @@
     
   </header>
   
-  <p>I usually shy away from giving a list of tools that we use because
-people have their particular tool preferences and are sometimes
-indignant in considering others. However, I realize it’s helpful for
-people to understand the tool landscape when it comes to Continuous
-Delivery in the Cloud just so they know where to start looking. After
-reading my <a href="http://www.amazon.com/gp/product/0321336380/?tag=integratecom-20" title="Continuous Integration book">Continuous Integration</a>
-book, this is often the most common question I get from readers.</p>
+  <p>I usually shy away from giving a list of tools that we use because people have their particular tool preferences and are sometimes indignant in considering others. However, I realize it’s helpful for people to understand the tool landscape when it comes to Continuous Delivery in the Cloud just so they know where to start looking. After reading my blog, this is often the most common question I get from readers.</p>
 
-<p>I want to say up front that I’m not advocating the use of any of these
-tools, just that <a href="http://stelligent.com/" title="Continuous Delivery in the Cloud">we’ve</a> used some of the tools or investigated when creating Continuous Delivery systems. I’m sure some of the tools that we use on a daily basis won’t
+<p>I want to say up front that I’m not advocating the use of any of these tools, just that <a href="http://stelligent.com/" title="Continuous Delivery in the Cloud">we’ve</a> used some of the tools or investigated when creating Continuous Delivery systems. I’m sure some of the tools that we use on a daily basis won’t
 make it to this list.</p>
 
-<p>The precise toolset a team may choose to use depends upon numerous
-factors including project, cost and customer constraints – to
-n<a href="http://blog.stelligent.com/.a/6a011570babac3970c014e600f61c1970c-pi"><img src="http://blog.stelligent.com/.a/6a011570babac3970c014e600f61c1970c-320wi" title="Tool_pliers" alt="Tool_pliers" /></a>ame
-a few. Therefore, I suggest that you focus more on the <em>type</em> of tool
-and determine which one meets their particular needs for their
-Continuous Delivery ecosystem. Just because I’m not mentioning a
-particular tool doesn’t mean I’m not using it or that I don’t think it’s
-a good tool; these are meant to be illustrative. We tend to focus more
-on freely-available tools because people can download and use them
-quickly. There are good reasons to choose commercial tools. As implied
-before, you don’t need to be using all of these tools to get significant
-benefit from Continuous Delivery. Start small and build it up. I’ve
+<p>The precise toolset a team may choose to use depends upon numerous factors including project, cost and customer constraints – to name a few. Therefore, I suggest that you focus more on the <em>type</em> of tool and determine which one meets their particular needs for their Continuous Delivery ecosystem. Just because I’m not mentioning a particular tool doesn’t mean I’m not using it or that I don’t think it’s a good tool; these are meant to be illustrative. We tend to focus more on freely-available tools because people can download and use them quickly. There are good reasons to choose commercial tools. As implied before, you don’t need to be using all of these tools to get significant benefit from Continuous Delivery. Start small and build it up. I’ve
 listed some of the tools in each category for the Java, .NET and Ruby
-platforms. Since, we <a href="http://www.stelligent.com/products/elasticoperations.php" title="Elastic Operations">lean heavily toward Cloud
-tools</a>,
-you’ll see that we opt for the SaaS-based tools, when applicable. Let me
-know if your preferred tool didn’t make the list. Ok, there’s my
-disclaimer. On with the list:</p>
+platforms. Since, we <a href="http://www.stelligent.com/products/elasticoperations.php" title="Elastic Operations">lean heavily toward Cloud tools</a>, you’ll see that we opt for the SaaS-based tools, when applicable. Let me know if your preferred tool didn’t make the list. Ok, there’s my disclaimer. On with the list:</p>
 
-<p>
-**Application Containers –**[JBoss](http://jboss.org/),
-[Tomcat](http://tomcat.apache.org/), [IIS](http://www.iis.net/),
-[Mongrel](http://en.wikipedia.org/wiki/Mongrel_(web_server) &#8220;Mongrel&#8221;).
-*NOTE: there are so many app containers, I’m not going to try to list
-all of them.*
-</p>
+<p><strong>Application Containers –</strong><a href="http://jboss.org/">JBoss</a>,
+<a href="http://tomcat.apache.org/">Tomcat</a>, <a href="http://www.iis.net/">IIS</a>,
+<a href="http://en.wikipedia.org/wiki/Mongrel_(web_server">Mongrel</a> &ldquo;Mongrel&rdquo;).
+<em>NOTE: there are so many app containers, I’m not going to try to list
+all of them.</em></p>
 
+<p><strong>Build Tools</strong> – <a href="http://ant.apache.org/">Ant</a>,
+<a href="http://ant-contrib.sourceforge.net/">AntContrib</a>,
+<a href="http://nant.sourceforge.net/">NAnt</a>,
+<a href="http://en.wikipedia.org/wiki/MSBuild">MSBuild</a>,
+<a href="http://buildr.apache.org/">Buildr</a>, <a href="http://buildr.apache.org/">Gant</a>,
+<a href="http://www.gradle.org/">Gradle</a>,
+<a href="http://www.gnu.org/software/make/">make</a>,
+<a href="http://maven.apache.org/">Maven</a>,
+<a href="http://rake.rubyforge.org/" title="Rake">Rake</a></p>
 
-<p>
- **Build Tools** – [Ant](http://ant.apache.org/),
-[AntContrib](http://ant-contrib.sourceforge.net/),
-[NAnt](http://nant.sourceforge.net/),
-[MSBuild](http://en.wikipedia.org/wiki/MSBuild),
-[Buildr](http://buildr.apache.org/), [Gant](http://buildr.apache.org/),
-[Gradle](http://www.gradle.org/),
-[make](http://www.gnu.org/software/make/),
-[Maven](http://maven.apache.org/),
-[Rake](http://rake.rubyforge.org/ &#8220;Rake&#8221;)
-</p>
+<p><strong>Code Review</strong>&ndash;
+<a href="http://confluence.atlassian.com/display/JIRASTUDIO/2010/06/28/JIRA+Studio+2.2+Released#JIRAStudio2.2Released-Crucible2.2.4">Crucible</a></p>
 
+<p><strong>Code Insight</strong> –
+<a href="http://confluence.atlassian.com/display/JIRASTUDIO/2010/06/28/JIRA+Studio+2.2+Released#JIRAStudio2.2Released-FishEye2.2.4">Fisheye</a></p>
 
-<p>
- **Code Review**-
-[Crucible](http://confluence.atlassian.com/display/JIRASTUDIO/2010/06/28/JIRA+Studio+2.2+Released#JIRAStudio2.2Released-Crucible2.2.4)
-</p>
+<p><strong>Continuous Integration</strong> –
+**<a href="http://www.atlassian.com/software/bamboo/">Bamboo</a>,
+<a href="http://jenkins-ci.org/">Jenkins</a>, <a href="http://www.anthillpro.com/html/default.html">AntHill
+Pro</a>,
+<a href="http://www.thoughtworks-studios.com/go-agile-release-management">Go</a>,
+<a href="http://www.jetbrains.com/teamcity/">TeamCity</a>, <a href="http://msdn.microsoft.com/en-us/vstudio/ff637362.aspx">TFS
+2010</a></p>
 
+<p><strong>Cloud IaaS</strong>
+- <a href="http://aws.amazon.com/ec2/">AWS EC2</a>, <a href="http://aws.amazon.com/s3/">AWS
+S3</a><strong> </strong>, <strong> </strong><a href="http://www.microsoft.com/windowsazure/">Windows
+Azure</a></p>
 
-<p>
- **Code Insight** –
-[Fisheye](http://confluence.atlassian.com/display/JIRASTUDIO/2010/06/28/JIRA+Studio+2.2+Released#JIRAStudio2.2Released-FishEye2.2.4)
-</p>
+<p><strong>Cloud PaaS</strong> – <a href="http://code.google.com/appengine/">Google App
+Engine</a>, <a href="http://aws.amazon.com/elasticbeanstalk/">AWS Elastic
+Beanstalk</a>,
+<a href="http://heroku.com/" title="Heroku">Heroku</a></p>
 
-
-<p>
-*Continuous Integration** –
-**[Bamboo](http://www.atlassian.com/software/bamboo/),
-[Jenkins](http://jenkins-ci.org/), [AntHill
-Pro](http://www.anthillpro.com/html/default.html),
-[Go](http://www.thoughtworks-studios.com/go-agile-release-management),
-[TeamCity](http://www.jetbrains.com/teamcity/), [TFS
-2010](http://msdn.microsoft.com/en-us/vstudio/ff637362.aspx)
-</p>
-
-
-<p>
-**Cloud IaaS** 
-- [AWS EC2](http://aws.amazon.com/ec2/), [AWS
-S3](http://aws.amazon.com/s3/)** **, ** **[Windows
-Azure](http://www.microsoft.com/windowsazure/)
-</p>
-
-
-<p>
-**Cloud PaaS** – [Google App
-Engine](http://code.google.com/appengine/), [AWS Elastic
-Beanstalk](http://aws.amazon.com/elasticbeanstalk/),
-[Heroku](http://heroku.com/ &#8220;Heroku&#8221;)
-</p>
-
-
-<p><p>
-<strong>Database –</strong><a href="http://www.hibernate.org/">Hibernate</a>,
+<p><strong>Database –</strong><a href="http://www.hibernate.org/">Hibernate</a>,
 <a href="http://www.mysql.com/">MySQL</a>, <a href="http://www.liquibase.org/">Liquibase</a>,
 <a href="http://www.oracle.com/index.html">Oracle</a>,
 <a href="http://www.postgresql.org/">PostgreSQL</a>, <a href="http://en.wikipedia.org/wiki/Microsoft_SQL_Server" title="Microsoft SQL Server">SQL
