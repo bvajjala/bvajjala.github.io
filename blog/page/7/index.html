@@ -9,8 +9,8 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="
-">
+  <meta name="description" content="Ayende has been doing a series of posts about how simple and fast RavenDB is, using NuGet
+as an example and pointing out some complex, poorly &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,153 +66,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/15/embrace-big-data/">Embrace Big Data</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-15T07:00:00-05:00" pubdate data-updated="true">Jan 15<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="center" src="/images/posts/BigData.jpg"></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/30/installing-chef-server-on-cnetos-5-dot-8/">Installing Chef Server - on CnetOs 5.8</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-30T01:51:00-05:00" pubdate data-updated="true">Dec 30<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/Opscode_chef_logo.png" title="'Chef Logo'" > Following the Fuse day (#6) and the very poor documentation and the amount of bugs found in the Chef Solo cookbooks for the Chef OSS server, I put together a set of script which will attempt to clear all the clutter around installing a Chef OSS server.</p>
-
-<p>There is a <a href="https://github.com/tikalk/chef-server-install">Git repository on git hub</a> which will install Chef Server on CentOS 5.8 &amp; 6 and I will be adding support for Ubuntu in the near future (its in the works), there is no magic here just a fair amount of trial and error which led me to automate it &ndash; it just was too much time to do manually over and over again &hellip;</p>
-
-<p>During my attempt I was planning on using Chef-Solo to do the work based on <a href="http://wiki.opscode.com/display/chef/Installing+Chef+Server+using+Chef+Solo">this wiki page</a> but there were so many bugs in it which led me to user rble repository.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/30/installing-chef-server-on-cnetos-5-dot-8/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/11/12/some-notes-on-puppet/">Some Notes on Puppet</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-12T16:40:00-05:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&rsquo;ve been playing with <a href="http://puppetlabs.com/">Puppet</a> recently in order to finally teach myself a bit about server management. I decided for Puppet because&hellip; well&hellip; I didn&rsquo;t have time to play with <a href="http://www.opscode.com/chef/">Chef</a> yet.</p>
-
-<p>I can&rsquo;t show any of my code because it contains some stuff I&rsquo;d rather not open up, but here are some of my global notes on Puppet that I wanted to share.</p>
-
-<h2>The good</h2>
-
-<ul>
-<li><strong>It did the job.</strong> I now have a few scripts that I can use to quickly setup a server for Rails, including NGINX, PostgreSQL, Unicorn, Monit, and much more.</li>
-<li><strong>Quick deployment.</strong> I can now deploy a new Rails app to a server within minutes!</li>
-<li><strong><a href="http://docs.puppetlabs.com/learning/">The Learning Puppet series</a></strong> is a good starting point and explains most of the basics</li>
-<li><strong>Low tech.</strong> Running a puppet script really doesn&rsquo;t involve much more than running: <code>puppet apply path/to/puppet/file.pp</code></li>
-</ul>
-
-
-<h2>The bad</h2>
-
-<ul>
-<li><strong>No single server deployment solution.</strong> There doesn&rsquo;t seem to be a best practice on how to use puppet with just one server. I know that the serious people will have to manage many many servers, but I think that they could make Puppet more accessible to newcomers by having a good solid solution for their own server. Many of us learn new things by trying them out for our own hobby projects before using them in big-business contexts. I have resorted to using Capistrano for deployment, but it just feels wrong somehow.</li>
-<li><strong>Not many great modules.</strong> Puppet has a modules system which allows anyone to package their solutions and share them with the community. Sadly most of the modules are old, unmaintained, and often broken. Additionally the modules often don&rsquo;t solve the problems in a way that I&rsquo;d like them to, forcing me to write my own.</li>
-<li><strong>Convoluted language.</strong> Puppet requires Ruby to run, but the DSL is not Ruby, nor is it Javascript, or JSON,or YAML, or anything else that so many developers already know. The architecture for defining classes, types, and modules is convoluted, backwards, and feels very awkward. I think one of the reasons why there aren&rsquo;t many well written modules is very much related to this.</li>
-<li><strong>Compiling from source.</strong> One of the biggest missing features seems to be some good architecture for installing anything that isn&rsquo;t packaged up. I often want to run a different Ruby, Nginx, Apache, PHP version than is in the package repositories. I know this is a hard problem, but again I wish there was some kind of best practice.</li>
-<li><strong>Ordering from hell.</strong> Puppet does not run your actions in order as specified in your <code>.pp</code> file. Instead you can tell it if something has a requirement. In my experience almost everything has a requirement and specifying the orders is becoming a nightmare and a real frustration.</li>
-<li><strong>Missing features.</strong> There are a few features that are still missing. One of the most important ones (in my eyes) is the ability to generate a folder recursively (e.g. <code>mkdir -p path/with/multiple/folders</code>). Instead you are now forced to create every layer as a new statement.</li>
-</ul>
-
-
-<h2>Conclusion</h2>
-
-<p>Puppet will do for now, but I wish it was a bit more opinionated in how it thought it should be used. The language is not pretty and very verbose, and its lack of best practices for single server deployment is a real omission.</p>
-
-<p>Does anyone know how Chef performs in these regards?</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1091,6 +944,152 @@ OSS projects that attempt to do what it does, but I think it is already one of t
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/05/08/opencodecamp-where-the-best-of-hackdays-and-barcamps-come-together/">OpenCodeCamp - Where the Best of HackDays and BarCamps Come Together</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-08T12:18:00-04:00" pubdate data-updated="true">May 8<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>tl;dr</h3>
+
+<p>I want to run a new kind of event: <strong>OpenCodeCamp</strong> (working title). OpenCodeCamp should be an event that promotes knowledge sharing and skills swapping amongst developers of any age or level of experience. It should be free of commercialism, competition, sexism, racism, age-ism and accessible to developers of any seniority.</p>
+
+<p>Read the full post and leave a comment if you want to get involved.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/05/08/opencodecamp-where-the-best-of-hackdays-and-barcamps-come-together/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/04/29/what-i-miss-about-hackdays-dot-dot-dot/">What I Miss About HackDays</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-29T17:49:00-04:00" pubdate data-updated="true">Apr 29<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&rsquo;ve been attending HackDays since 2007 when I travelled to Alexandra Palace for the first <a href="http://upcoming.yahoo.com/event/173371/LONDON/London/Yahoo-BBC-Hackday-2007/Alexandra-Palace/">HackDay organised by Yahoo and the BBC</a>. I was a n00b at that time (some might say I still am, #shakesfist) and I had no idea what to build. At the time I was trying to learn how to use web frameworks and at the HackDay I got my first exposures to APIs, Django, Rails, OpenID and much more. I don&rsquo;t think I made anything that weekend, but damn did I learn a lot!</p>
+
+<p>Since then we&rsquo;ve come a long way; HackDays are no longer just organised by big organisations. There&rsquo;s pretty much one happening every weekend (sometimes more), and they are more often than not focussed around a topic. I attended at least 20 HackDays since, and I even helped organise <a href="http://www.hackcamp.org.uk/">not 1 but 2 HackCamps</a> with <a href="http://geeksoflondon.com">GeeksOfLondon</a>.</p>
+
+<p>But lately I&rsquo;ve been noticing a little trend. I was at <a href="http://www.gamehack.co.uk/">GameHack</a> yesterday and I had come to have a fun weekend to play with some APIs, maybe play with some WebGL libraries, and get an idea of how game development works. I am not a game developer and don&rsquo;t intend to be one, but I always enjoy learning new things.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/04/29/what-i-miss-about-hackdays-dot-dot-dot/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/04/19/tech-on-my-radar/">Tech on My Radar</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-19T23:19:00-04:00" pubdate data-updated="true">Apr 19<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Here are just some interesting gems and other software that have caught my attention recently:</p>
+
+<ul>
+<li><a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a> makes it easy to use zshell as a replacement for bash on OS X. It is very easy to install and comes with a whole bunch of useful plugins. I&rsquo;ve only really dived half into it but already feel like it&rsquo;s been making my console better. I personally love how it shows the Git branch I&rsquo;m working on at the moment.</li>
+<li><a href="http://en.wikipedia.org/wiki/Bloom_filter">Bloom Filters</a> are a very cool way of doing a quick and space efficient lookup if an item exists in a set. It&rsquo;s used by databases and caches, and Google uses it for their Save Browsing service. There&rsquo;s some cool <a href="https://github.com/igrigorik/bloomfilter-rb">ruby gems</a> that make it easy to use them and I already have an idea where to deploy them next.</li>
+<li><a href="http://zachholman.com/talk/how-github-uses-github-to-build-github">How Github uses Github</a> is pretty much how we use Github at EmberAds. The more we do it the more I see the benefits especially:
+
+<ul>
+<li>We work asynchronously</li>
+<li>We use the hell out of Campfire</li>
+<li>Master is always deployable</li>
+<li>Pull Requests are our code reviews, requests for comments, and discussion boards.</li>
+<li>Other apps have great features like prioritising stuff. But honestly, we have barely touched BaseCamp in weeks.</li>
+</ul>
+</li>
+<li><a href="https://github.com/EmberAds/cuuid">Fast UUID generation</a> is something we needed at EmberAds seeing as we use UUIDs everywhere and most of the Ruby gems were rather slow.    <a href="http://caius.name">Caius</a> cooked up a Ruby gem that uses a native C library which in our simple benchmarks spit out UUIDs about 6x faster.</li>
+<li>On that note, <a href="https://github.com/EmberAds/acts_as_uuid">acts_as_uuid</a> is what we use to store UUIDs on our models in Postgres.</li>
+<li><a href="https://github.com/ondrejbartas/rake-progressbar">Rake progressbar</a> makes it easier for me to understand if I can go and make a brew or not when some of my rake tasks are running.</li>
+<li>And finally, static site generators like <a href="http://nanoc.stoneship.org/">Nanoc</a>, <a href="https://github.com/mojombo/jekyll">Jekyll</a>, and <a href="http://octopress.org/">Octopress</a> (used on this site) have been really catching my eye lately. Mainly because of the security and scaling implications. I&rsquo;ve been working on a blog post on this, mainly to inspire regular bloggers that you don&rsquo;t need a big server and a massive database to render a Wordpress site that will load slow as hell regardless.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -1116,10 +1115,6 @@ OSS projects that attempt to do what it does, but I think it is already one of t
       </li>
     
       <li class="post">
-        <a href="/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/">Continuous Delivery Implementation : Getting started with AWS</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
       </li>
     
@@ -1129,6 +1124,10 @@ OSS projects that attempt to do what it does, but I think it is already one of t
     
       <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/">Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1</a>
       </li>
     
   </ul>

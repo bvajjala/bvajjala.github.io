@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Introduction Over the past few years, the topic of Infrastructure Automation has received a huge amount of attention. The three most commonly used &hellip;">
+  <meta name="description" content="I just watched the “To Package or Not to Package” video from DevOps days Mountain View. The discussion was great, and there were some moments of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,317 +65,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/12/30/cfengine-puppet-and-chef-part-1/">CFEngine Puppet and Chef Part 1</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-12-30T20:09:00-05:00" pubdate data-updated="true">Dec 30<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2> Introduction </h2>
-
-
-<p>Over the past few years, the topic of Infrastructure Automation has received a huge amount of attention. The three most commonly used tools for doing this (in order of appearance) are CFEngine, Puppet, and Chef. This article explores each of them by using one to set up another. If you have a chef-server or Hosted Chef account, you can follow along by following the instructions in the setup section. (Full disclosure: I work for Opscode, creators of Chef.)</p>
-
-<h2> Infrastructure </h2>
-
-
-<p><a href=http://www.infrastructures.org target="_blank">“Infrastructure”</a> turns out to be the hardest thing to explain when discussing automation, yet is the most critical to understand. In this context, Infrastructure isn’t anything physical (or virtualized) like servers or networks. Instead, what we’re talking about is all the “stuff” that is configured across machines to enable an application or service.</p>
-
-<p>In practice, “stuff” translates to operating system baselines, kernel settings, disk mounts, OS user accounts, directories, symlinks, software installations, configuration files, running processes, etc. People of the ITIL persuasion may think of these as Configuration Items. Units of management are composed into larger constructs, and complexity arises as these arrangements become more intricate.</p>
-
-<p>Services running in an Infrastructure need to communicate with each other, and do so via networks. Even when running on a single node, things still communicate over a loopback address or a Unix domain socket. This means that Infrastructure has a topology, which is in itself yet another thing to manage.</p>
-
-<h2> Automation </h2>
-
-
-<p><img class="left" src="http://upload.wikimedia.org/wikipedia/commons/7/75/Duck_of_Vaucanson.jpg"></p>
-
-<p>Here is a picture of a duck.</p>
-
-<p>This duck happens to be an <a href=http://en.wikipedia.org/wiki/Automaton target="_blank">automaton</a>. An automaton is a self-operating machine. This one pretends to digest grain. It interacts with its environment by taking input and producing output. To continue operating, the duck requires maintenance. It needs to be wound, cleaned, and repaired. Automated services running on a computer are no different.</p>
-
-<p>Once turned on, an automated service takes input, does something useful, then leaves logs and other data in its wake. Its machinery is the arrangement of software installation, configuration, and the running state of a process. Maintenance is performed in a <a href=http://en.wikipedia.org/wiki/Autonomic_Computing target="_blank">control loop</a>, where an agent comes around at regular intervals inspecting its parts and fixing anything that’s broken.</p>
-
-<p>In automated configuration management, the name of the game is hosting policy. The agents that build and maintain systems pull down blueprints and set to work building our automatons. When systems come back up from maintenance or new ones spring into existence, they configure themselves by downloading policy from the server.</p>
-
-<h2> Setup </h2>
-
-
-<p>If you&rsquo;d like to follow along by configuring your own machines with knife, follow the setup instructions <a href=/cfchefipuppetengine-setup target="_blank">here</a>. The setup will get your Chef workstation configured, code checked out from my blog git repo, and uploaded to chef-server for use. Otherwise, you can just browse the source <a href=https://github.com/someara/affs-blog target="_blank">here</a></p>
-
-<h2> CFEngine </h2>
-
-
-<p><img class="right" src="http://farm1.staticflickr.com/120/293693669_59574a7640_m.jpg" title="A picture of what a cloud may look like" ></p>
-
-<p>CFEngine is a system based on <a href=http://research.iu.hio.no/papers/rosegarden.pdf target="_blank">promise</a> <a href=http://project.iu.hio.no/papers/origin2.pdf target="_blank">theory</a>. Promises are the basic atoms of the CFEngine universe. They have names, types, and intentions (among other things), and each acts as a convergent operator to move its subject toward an intended state. Like the parts in our duck, promises are assembled to create a larger whole.</p>
-
-<p>Promises of various types are capable of different things. Promises of type &ldquo;package&rdquo; can interact with a package manager to make sure somthing is installed or removed, while a promise of type &ldquo;file&rdquo;, can copy, edit, and set permissions. Processes can be started or stopped, and commands can be ran if needed. Read all about them in the CFEngine <a href=http://cfengine.com/manuals/cf3-reference.html target="_blank">reference manual</a>.</p>
-
-<p>Promises provide a <a href=http://c2.com/cgi/wiki?DeclarativeDefinition target="_blank">declarative</a> interface to resources under management, which has the remarkably handy attribute of being <a href=http://en.wikipedia.org/wiki/Idempotence target="_blank">idempotent</a>. An idempotent function gives the same result when applied multiple times. This allows our duck repairing maintence loop (in the form of cf-agent on a cron) to come around and safely execute instructions without having to worry about side effects. Consider &ldquo;the line &lsquo;foo&rsquo; should exist in the file&rdquo; vs &ldquo;append &lsquo;foo&rsquo; to the end of the file&rdquo;; the non-declarative &lsquo;append&rsquo; would not be safe to repeat.</p>
-
-<p><a href=http://en.wikipedia.org/wiki/Convergence_(mathematics) target="_blank">Convergent</a> maintenance refers to the continuous repair of a system towards a desired state. At the individual promise level, convergence happens in a single run of the maintenance loop. If a package is supposed to be installed but isn&rsquo;t, action will be taken to fix it. If a process is not running but should be, action will be taken again. Convergence in a larger system of promises can take multiple runs if things are processed in a non-optimal order. Consider the following:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Start the NTP service.
-</span><span class='line'>Make sure the NTP configuration file is correct, restart the NTP service if repaired.
-</span><span class='line'>Install the NTP package.</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Assuming a system with a base install, the first promise would fail to be kept. The NTP binary is not available, since we haven&rsquo;t installed its package yet. The second promise would write the configuration file, but fail to restart the service. The third promise would succeed, assuming an appropriate package repo was available and functioning properly. After the first run is complete, the system has converged closer to where we want it to be, but isn&rsquo;t quite there yet. Applying the functions again gets us closer to our goal.</p>
-
-<p>The second run of the loop would succeed in starting the service, but would be using the wrong configuration file. The package install from the previous loop clobbered the one written previously. Promise number two would fix the config and restart the service, and the third would do nothing because the package is already installed. Finally, we&rsquo;ve converged to our desired system state. A third loop would take no actions at all.</p>
-
-<h2> Kicking things off </h2>
-
-
-<p>To set up a CFEngine server, invoke the following Chef command:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife bootstrap centos6-1 -r <span class="s1">&#39;role[cfengine]&#39;</span> -N <span class="s2">&quot;cfengine-1.example.com&quot;</span> -E development -d affs-omnibus-pre -x root
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>When Chef is done doing its thing, you&rsquo;ll end up with a functioning CFEngine policy host, happily promising to serve policy. Log into the freshly configured machine and check it out. Three things have happened. First, the cfengine package itself has been installed. Second, two directories have been created and populated: <code>/var/cfengine/inputs</code>, and <code>/var/cfengine/masterfiles</code>.</p>
-
-<p>The <code>inputs</code> directory contains configuration for the CFEngine itself, which includes a promise to make the contents of <code>masterfiles</code> available for distribution. When a CFEngine client comes up, it will copy the contents of <code>/var/cfengine/masterfiles</code> from the server into its own <code>inputs</code> directory.</p>
-
-<h2> Examining policy </h2>
-
-
-<p>CFEngine&rsquo;s main configuration file is <code>promises.cf</code>, from which everything else flows.  Here&rsquo;s a short snippet:</p>
-
-<figure class='code'><figcaption><span>promises.cf snippet </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">body</span> <span class="n">common</span> <span class="n">control</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="n">bundlesequence</span>  <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;update&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;garbage_collection&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;cfengine&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;puppet_server&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">inputs</span>  <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;update.cf&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;cfengine_stdlib.cf&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;cfengine.cf&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;garbage_collection.cf&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;puppet.cf&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="p">};</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The bundlesequence section tells cf-agent what promise bundles to execute, and in what order. The one we&rsquo;re examining today is named puppet_server, found in <code>puppet.cf</code></p>
-
-<p>File /Users/balajivajjala/Development/opress-src/bvajjala.github.io/source/downloads/code/cookbooks/cfengine/templates/default/inputs/puppet.cf.erb could not be found</p>
-
-<p>A promise bundle is CFEngine&rsquo;s basic unit of intent. It&rsquo;s a place to logically group related promises. Within a bundle, CFEngine processes things with <a href=http://cfengine.com/manuals/cf3-reference.html#Normal-ordering target="_blank">normal ordering</a>. That is, variables are converged first, then classes, then files, then packages, and so on. I wrote the bundle sections in normal order to make it easier to read, but they could be rearranged and still have the same effect. Without going into too much detail about the language, I&rsquo;ll give a couple hints to help with groking the example.</p>
-
-<p>First, in CFEngine, the word &lsquo;class&rsquo; does not mean what it normally does in other programming languages. Instead, classes are boolean flags that describe context. Classes can be &lsquo;hard classes&rsquo;, which are discovered attributes about the environment (hostname, operating system, time, etc), or &lsquo;soft classes&rsquo;, which are defined by the programmer. In the above example, puppetmaster_enabled and iptables_enabled are soft classes set based on the return status of a command. In the place of <code>if</code> or <code>case</code> statements, boolean checks on classes are used.</p>
-
-<p>Second, there are no control statements like <code>for</code> or <code>while</code>. Instead, when lists are encountered they are automatically iterated. Check out the packages section for examples of both class decisions and list iteration. Given those two things, you should be able to work your way through the example. However, there&rsquo;s really no getting around reading the reference manual if you want to learn CFEngine.</p>
-
-<h2> On to Puppet </h2>
-
-
-<p>Finally, let&rsquo;s go ahead and use Chef to bring up a CFEngine client, which will be turned into a Puppet server.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife bootstrap centos6-2 -r <span class="s1">&#39;role[puppet]&#39;</span> -N <span class="s2">&quot;puppet-1.example.com&quot;</span> -E development -d affs-omnibus-pre -x root
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The first run will fail, since the host&rsquo;s IP isn&rsquo;t yet in the cfengine server&rsquo;s allowed hosts lists. Complete the convergence by running these commands:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife ssh <span class="s2">&quot;role:cfengine&quot;</span> -a ipaddress chef-client
-</span><span class='line'>knife ssh <span class="s2">&quot;role:puppet&quot;</span> -a ipaddress chef-client
-</span><span class='line'>knife ssh <span class="s2">&quot;role:puppet&quot;</span> -a ipaddress chef-client
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And viola! A working Puppet server, serving policy.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/11/29/migration-to-octopress/">Migration to Octopress</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-11-29T23:44:00-05:00" pubdate data-updated="true">Nov 29<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I am currently migrating my blog from <em>Wordpress</em> to <em>Octopress</em>. The main
-reason for the migration is the awful (at least for coding blogs) post editor in
-Wordpress. With the migration I can write the posts in Markdown and Vim which,
-hopefully, leads to more posts !</p>
-
-<p>And because Octopress is new and shiny and geeky !</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/11/27/announcing-ribbot-com-build-your-own-reddithacker-news-style-discussion-forum/">Announcing Ribbot.com - Build Your Own Reddit/Hacker News Style Discussion Forum</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-11-27T22:04:33-05:00" pubdate data-updated="true">Nov 27<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I launched a new site about a week ago &ndash; <a href="http://ribbot.com">Ribbot.com</a> .  It allows you to create better discussion forums online.</p>
-
-<p><a href="http://ribbot.com"><img src="http://s3.amazonaws.com/oldbloguploads/2011/11/Screen-Shot-2011-11-26-at-7.27.19-PM-500x377.png" alt="" /></a></p>
-
-<p>If you&rsquo;ve ever used Hacker News, Reddit, StackOverflow, or 37Signals Answers &ndash; these are all examples of a new breed of forum that has emerged online and tends to be much better than than traditional forums.</p>
-
-<p>Traditional forums often have low quality discussions, and are a place for a vocal minority to rant online.  Many companies avoid user discussion forums because they&rsquo;re worried about giving people a public place to rant.</p>
-
-<p>Ribbot allows anyone to create one of these new types of discussion forums (like the sites mentioned above) with the following features:</p>
-
-<ul>
-<li><p>User voting and reputation</p></li>
-<li><p>Threaded comments</p></li>
-<li><p>Post and comment ranking algorithms</p></li>
-</ul>
-
-
-<p><a href="http://ribbot.com"><img src="http://s3.amazonaws.com/oldbloguploads/2011/11/Screen-Shot-2011-11-26-at-7.27.39-PM-500x377.png" alt="" /></a></p>
-
-<p>Here&rsquo;s how they work: if someone posts something off-topic or unproductive then they are quickly down-voted by the community, and their content is less likely to be seen.  Likewise, if someone posts something helpful or insightful, they are quickly up-voted by the community and their content is more likely to be seen.  The net result of this is that (with enough users) you are more likely to see good content when you visit the forum, and hopefully contribute some yourself.</p>
-
-<p>Who might want a new forum like this?  You never quite know (and I&rsquo;m eager to find out) but my hunch is this might be useful for:</p>
-
-<ul>
-<li><p><strong>Businesses</strong>: most companies would like to have user discussion forums because they are a great way to reduce customer support costs. Instead of having customer support reps answering the same questions over and over, users can answer each other&rsquo;s questions &ndash; and those answers become public for all to find later (Ribbot lets you search old content easily).  Traditionally, most businesses have been skittish about user discussion forums because they become a public place for a vocal minority of users to rant (see Google Groups). But I believe this new style of forum with the features mentioned above largely solves this quality problem, and businesses will be more likely to adopt it (or their users will for them).</p></li>
-<li><p><strong>Question &amp; Answer sites</strong>: these have become very popular lately (see StackExchange and Quora) but there still isn&rsquo;t an easy way for people to start their own QA site on any topic. StackExchange originally started with this vision but they decided to cut off the long tail of smaller topic sites (a mistake in my opinion). Ribbot would allow any special interest group or company to create their own.</p></li>
-<li><p><strong>Link aggregation sites</strong>: many community sites have grown up around sharing relevant or interesting links on a particular topic (Hacker News is an example of this where the majority of posts are links to external sites with some discussion around them happening in the comments). These are more oriented around timely &ldquo;latest news and events&rdquo; links.</p></li>
-<li><p><strong>Special interest groups</strong>: these could be around health (people with some particular  condition), sports, hobbies, tech stuff (open source projects), classes &amp; learning, etc.  Basically, anything people are using Google Groups for now could work better on Ribbot.</p></li>
-</ul>
-
-
-<p>Ribbot is a good fit for the use cases above because it&rsquo;s customizable.  You can change the terminology of the site to reflect questions and answers, link submissions, posts and comments, or anything you&rsquo;d like.  You can also allow only certain types of submission (links, posts, questions, etc).  Three other features allow customization (some of these are still under development):</p>
-
-<ul>
-<li><p><strong>Themes</strong>: Ribbot supports custom themes (much like Tumblr) which I hope will eventually create many diverse and beautiful sites.  Any designer can share (and sell) a custom theme on Ribbot.</p></li>
-<li><p><strong>Custom domains</strong>: By default Ribbot gives you a subdomain site (again, like Tumblr). But you will soon be able to host the forum on any custom domain of your choosing.</p></li>
-<li><p><strong>Monetization options</strong>: Ribbot is completely free if you are ok with some ads on the site. But I wanted a way for forum owners and moderators to monetize their sites and be compensated for their work. So with the paid option (see pricing <a href="http://ribbot.com/pricing">here</a>) you are able to run your own ads and turn a profit. My hope is that a number of forums will generate sufficient traction so that their owners can eventually make it a full time gig. For others, I imagine it could make a nice side income or hobby project.  Many businesses I suspect will keep the paid option and run it entirely without ads &ndash; the customer support savings would make it more than worth it.</p></li>
-</ul>
-
-
-<p>In short, I think Ribbot will help people build better discussion forums online across a variety of topics.</p>
-
-<h3>Final notes:</h3>
-
-<p>Ribbot is still in an early beta.</p>
-
-<p>To give Ribbot a try you can <strong><a href="http://support.ribbot.com">visit the Ribbot support forum</a></strong>. This is both the support forum for the site and a demo of the product itself.</p>
-
-<p>As always, <strong>please send me your feedback and first impressions in the support forum or in the comments below</strong>. I always love to hear feedback from people on how/if it can be useful to them (or why it&rsquo;s not).</p>
-
-<p>And finally, you can create your own Ribbot forum <a href="http://ribbot.com">right here on the homepage</a> if you want to try it out.</p>
-
-<p>Until next time, keep breaking free!
-Brian Armstrong</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -998,6 +687,215 @@ def positive = {
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/07/nothing-new-under-sun/">Nothing New Under the Sun</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-07T08:00:00-04:00" pubdate data-updated="true">Jun 7<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Every generation of software developers needs its own fad. For my generation it was Agile, for generation before it was OOP, and before that it was another big thing. Gerald Weinberg, one of the most influential people in our industry, blogged yesterday about this issue. With over 50 years of experience in software development he knows what he is talking about. Read his <a href="http://secretsofconsulting.blogspot.com/2011/06/beyond-agile-programming.html">blog post</a> — he has a very good point.</p>
+
+<p>P.S. I&rsquo;m wondering what will be the next big thing. Will it be Cloud or <a href="/2013/01/15/embrace-big-data/">Big Data</a>?</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/05/multimethods-in-groovy/">Multimethods in Groovy</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-05T08:00:00-04:00" pubdate data-updated="true">Jun 5<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Every time I switch from Groovy to Java I have to remind myself that some things that seem so natural and work as expected in Groovy, don&rsquo;t work in Java. One of such differences is method dispatching. Groovy supports <a href="http://en.wikipedia.org/wiki/Multiple_dispatch">multiple dispatch</a>, while Java does not. Therefore the following <a href="http://www.gigamonkeys.com/book/object-reorientation-generic-functions.html#multimethods">code</a> works differently in Groovy and Java:</p>
+
+<pre><code>public class A {
+    public void foo(A a) { System.out.println("A/A"); }
+    public void foo(B b) { System.out.println("A/B"); }
+}
+public class B extends A {
+    public void foo(A a) { System.out.println("B/A"); }
+    public void foo(B b) { System.out.println("B/B"); }
+}
+public class Main {
+    public static void main(String[] args) {
+        A a = new A();
+        A b = new B();
+        a.foo(a);
+        b.foo(b);
+    }
+}
+
+$ java Main
+A/A
+B/A
+
+$ groovy Main.groovy
+A/A
+B/B
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/01/reversing-groovy-switch-statement/">Reversing Groovy Switch Statement</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-01T08:00:00-04:00" pubdate data-updated="true">Jun 1<span>st</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Recently I&rsquo;ve been working on a Groovy code that had many methods with long multibranch conditionals like this:</p>
+
+<pre><code>def parse(message, options) {
+    if (options.contains('A')) {
+        parseARule message
+    } else if (options.contains(2)) {
+        parseSmallDigitRule message
+    ...
+    } else if (options.contains(something)) {
+        parseSomeRule message
+    } else {
+        parseSomeOtherRule message
+    }
+}
+</code></pre>
+
+<p>Although this code is working, it is hard to see which branch is called under which condition. It would be much better if we could replace this code with something like Lisp <code>cond</code> macro. The best candidate for such a task in Groovy would be a <code>switch</code> statement. If we could only refactor the code above to something like following, it would significantly improve readability:</p>
+
+<pre><code>def parse(message, options) {
+    switch (options) {
+        case 'A' : return parseARule(message)
+        case 2   : return parseSmallDigitRule(message)
+        ...
+        case ... : return parseSomeRule(message)
+        default  : return parseSomeOtherRule(message)
+    }
+}
+</code></pre>
+
+<p>Unfortunately, this code doesn&rsquo;t work out of the box in Groovy, but it works if we do some metaprogramming.</p>
+
+<p>The way <code>switch</code> statement works in Groovy is a bit <a href="http://docs.codehaus.org/display/GROOVY/Logical+Branching#LogicalBranching-switchstatement">different</a> than in Java. Instead of equals() it uses isCase() method to match case-value and switch-value. The default implementation of isCase() method falls back to equals() method, but some classes, including <a href="http://groovy.codehaus.org/groovy-jdk/java/util/Collection.html#isCase(java.lang.Object)">Collection</a>, override this behaviour. That&rsquo;s why in Groovy you can do things like this:</p>
+
+<pre><code>switch (value) {
+    case ['A','E','I','O','U'] : return 'vowel'
+    case 0..9                  : return 'digit'
+    case Date                  : return 'date'
+    default                    : return 'something else'
+}
+</code></pre>
+
+<p>For our purposes we need some sort of reverse <code>switch</code>, where collection is used as a switch-value, and String and Integer are used as a case-value. To do this we need to override default implementation of isCase() method on String and Integer classes. It&rsquo;s not possible in Java, but is very easy in Groovy. You can change method implementation globally by replacing it in corresponding meta class, or locally with the help of categories. Let&rsquo;s create a category that swaps object and subject of isCase() method:</p>
+
+<pre><code>class CaseCategory {
+    static boolean isCase(String string, Collection col) {
+        reverseCase(string, col)
+    }
+    static boolean isCase(Integer integer, Collection col) {
+        reverseCase(integer, col)
+    }
+    // Add more overloaded methods here if needed
+
+    private static boolean reverseCase(left, right) {
+        right.isCase(left)
+    }
+}
+</code></pre>
+
+<p>Now we can use this category to achieve the goal we stated at the beginning of this post:</p>
+
+<pre><code>def parse(message, options) {
+    use (CaseCategory) {
+        switch (options) {
+            case 'A' : return parseARule(message)
+            case 2   : return parseSmallDigitRule(message)
+            ...
+            case ... : return parseSomeRule(message)
+            default  : return parseSomeOtherRule(message)
+        }
+    }
+}
+</code></pre>
+
+<p>If you are comfortable with global method replacement, you can amend String and Integer meta classes. In this case you don&rsquo;t need to wrap <code>switch</code> statement with <code>use</code> keyword.</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/10/">&larr; Older</a>
@@ -1023,10 +921,6 @@ def positive = {
       </li>
     
       <li class="post">
-        <a href="/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/">Continuous Delivery Implementation : Getting started with AWS</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
       </li>
     
@@ -1036,6 +930,10 @@ def positive = {
     
       <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/">Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1</a>
       </li>
     
   </ul>

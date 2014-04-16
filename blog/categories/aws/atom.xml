@@ -4,7 +4,7 @@
   <title><![CDATA[Category: AWS | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/aws/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-16T11:42:54-04:00</updated>
+  <updated>2014-04-16T12:23:37-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -12,278 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Continuous Delivery Implementation : Getting started with AWS]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/"/>
-    <updated>2014-03-25T14:57:15-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws</id>
-    <content type="html"><![CDATA[<ul>
-<li>Blog</li>
-<li>This article is part of the Continuous Delivery Blueprints series.
-It discusses how to go from no cloud infrastructure and no
-continuous integration set up to having a functioning Continuous
-Delivery Pipeline in Amazon Web Services. It discusses high level
-topics while also providing a reference implementation so it’s easy
-to follow along with.
-
-<ul>
-<li>Turn on CloudTrail</li>
-<li>Turn on Programmatic Billing</li>
-<li>If CloudTrail and Programmatic Billing are so important, why
-aren’t they turned on by default?</li>
-<li>Create IAM Users</li>
-<li>Comments</li>
-<li>Trackbacks</li>
-<li>Post a comment</li>
-<li>Categories</li>
-</ul>
-</li>
-</ul>
-
-
-<h1>This article is part of the Continuous Delivery Blueprints series. It discusses how to go from no cloud infrastructure and no continuous integration set up to having a functioning Continuous Delivery Pipeline in Amazon Web Services. It discusses high level topics while also providing a reference implementation so it’s easy to follow along with.</h1>
-
-<p>Everyone is talking about migrating to the cloud these days, and getting
-started with Amazon Web Services is super simple to do. However, most
-people just rush in, creating headaches for themselves down the road.
-There are some best practices you should take at the beginning of your
-cloud migration that will make things easier, more secure, and allow you
-to scale up and out better.</p>
-
-<p>What we’re going to do today:</p>
-
-<ul>
-<li>• Create an AWS Account</li>
-<li>• Turn On AWS CloudTrail</li>
-<li>• Turn On Programmatic Billing</li>
-<li>• Create IAM Users and Groups</li>
-<li>• Add MFA for New Users</li>
-</ul>
-
-
-<p><strong>Create your AWS Account</strong></p>
-
-<p>It all starts here: <a href="http://aws.amazon.com/">aws.amazon.com</a>. Find the
-big sign up button and just follow the prompts. A couple of things to
-note before getting started:</p>
-
-<ol>
-<li><ol>
-<li>It’ll prompt you for your information (name, email, address, etc)
-and credit card info, so you should get that figured out first.</li>
-</ol>
-</li>
-<li><ol>
-<li>You’ll need to verify your account via a phone call, so have your
-phone handy.</li>
-</ol>
-</li>
-<li><ol>
-<li>You don’t need to sign up for support just yet.</li>
-</ol>
-</li>
-</ol>
-
-
-<p>Once you’re signed up, just login into the AWS console. The console
-allows you to interact with most AWS services. Most people will start
-building their servers in the sky right away, but there’s a bit of
-information you should probably know up front, and some account set up
-we recommend before getting started. Let’s go over that first.</p>
-
-<p><strong>What You Need To Know About AWS Before Setting Stuff Up</strong></p>
-
-<p>Amazon Web Services offers a lot of different services, from virtual
-computing instances and storage to transcoding and streaming. Going over
-each service would take a whole series of blog posts, but an
-understanding of how AWS is laid out will be helpful when getting
-started.</p>
-
-<p>AWS has data centers all over the world, and has two ways of grouping
-them. At global scale there are <strong>regions</strong>, representing parts of or
-entire continents. Inside each region are <strong>availability zones</strong>.
-Regions are completely distinct entities, and you can only work in one
-at a time. Availability zones are designed to talk to each other, and
-AWS will automatically spread your resources across availability zones.
-Availability zones, however, can only speak to other zones within the
-same region.</p>
-
-<p>Choosing a region is important, though these directions are the same
-more-or-less in every region. However, be aware that not all services
-are available in all regions, and pricing does vary by region. In
-addition to that, US-East-1 is the “default” zone when you start with
-AWS, and has been around the longest. For that reason, it’s also the
-most popular, and sometimes you won’t be able to allocate resources in
-certain Availability Zones in the US-East-1 region due to those zones
-being at capacity.</p>
-
-<p>AWS provides <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html">lots of
-documentation</a>
-on how to choose a region, so definitely look through that to decide the
-best place to host your infrastructure. If you’re just doing initial
-investigation into AWS and aren’t sure what region to use, just pick one
-close to you.</p>
-
-<p><strong>Making a Name For Yourself</strong></p>
-
-<p>We’ll be talking about several AWS services in this section, and many of
-them make use of AWS Simple Storage Service, or <strong>S3</strong>. S3 allows you to
-store objects in the cloud with a high degree of durability. Where S3
-objects are stored are called “buckets”. S3 bucket names have to be
-unique, not just across you account, but across the entire world. A
-bucket name is globally unique. By the time we’re done, we’ll have
-created a couple buckets, as well globally unique login URL. For that
-reason, you should come up with a unique identifier now. For example,
-when we tested this documentation, we used the identifier
-“stelligent-cdblueprints.” Just note it down now and we’ll refer to it
-as we go on.</p>
-
-<h4>Turn on CloudTrail</h4>
-
-<p>First thing is to turn on CloudTrail. CloudTrail is basically logging
-for your AWS account. It will generate JSON files and store them in an
-S3 bucket (Amazon’s cloud storage solution) every time an action is
-performed on the account. While we won’t be doing a lot with CloudTrail
-right away, we’re turning it on now because it’s not retroactive — you
-can only see logs after you’ve turned it on. So let’s turn it on first.</p>
-
-<p>(Quick note: CloudTrail is a relatively new service, and at the time of
-this writing is only available in two regions: US-East-1 and US-West-2.
-If you’re using a different region, you might not be able to turn
-CloudTrail on. If that’s the case, just skip on to the next step.)</p>
-
-<ol>
-<li>Find CloudTrail panel from the main AWS Console,</li>
-<li>Click Get Started and just punch in an S3 Bucket name. (As was
-mentioned above, the S3 bucket name has to be globally unique. One
-approach is to take the unique identifier you came up with before,
-and just append -cloudtrail to it. We’ve named our bucket
-“stelligent-cdblueprints-cloudtrail”.)</li>
-<li>Click OK and you’re done.</li>
-</ol>
-
-
-<p>That was easy.</p>
-
-<h4>Turn on Programmatic Billing</h4>
-
-<p>Next, we’ll want to turn on Programmatic Billing. This will store your
-AWS billing in JSON files in another S3 bucket, so that other services
-can analyze your spending and plot trends over time. We’ll be visiting
-those kind of tools later on, but we want to enable programmatic billing
-now because (just like CloudTrail) it only generates data from the
-present — there’s no way to go back and generate historical data. By
-turning it on now, when we do start parsing that data for trends, you’ll
-have a good amount of data to go back through.</p>
-
-<p>Unlike CloudTrail, you’ll need to create and permission the bucket for
-this yourself.</p>
-
-<ol>
-<li>Go to the S3 console so we can create a new bucket. (Taking your
-previous unique identifier and just appending -billing to it isn’t a
-bad idea. We’ve named ours “stelligent-cdblueprints-billing” to keep
-with the theme.)</li>
-<li>Click Create Bucket and punch that name in.</li>
-<li>We’ll need to get a bucket permissions policy. Luckily, AWS will
-generate that for us at this page (we’ll need to flip back to the S3
-page in a second, so open this in a new
-tab): <a href="https://portal.aws.amazon.com/gp/aws/developer/account?ie=UTF8&amp;action=billing-preferences">https://portal.aws.amazon.com/gp/aws/developer/account?ie=UTF8&amp;action=billing-preferences</a></li>
-<li>Go down the list and turn everything on one and a time.</li>
-<li>When you get to to Programmatic billing, punch in the name of
-your bucket, and click “sample policy.” Just copy that policy, then
-flip back to your S3 bucket.</li>
-<li>Click on the bucket, then properties, then Permissions, and
-you’ll see an option for setting an access policy.</li>
-<li>Click into that, paste the policy you just copied, and save.</li>
-<li>Now, flip back to the Billing Preferences page, click save there</li>
-<li>Continue to enable everything else on this page.</li>
-</ol>
-
-
-<h4>If CloudTrail and Programmatic Billing are so important, why aren’t they turned on by default?</h4>
-
-<p>One thing to be aware of with these two services is that they will put
-data into your S3 buckets. S3 storage is very cheap, and while it is
-pretty close, it is not free. You’ll be paying between nine and fifteen
-cents a gig for storage, depending on region. For more details, <a href="https://aws.amazon.com/s3/pricing/">check
-out the S3 pricing page</a>. The
-services themselves don’t cost anything, though; you only pay for
-storing the data they generate.</p>
-
-<h4>Create IAM Users</h4>
-
-<p>Now that the bookkeeping is taken care of, let’s set up some users. A
-lot of new AWS users will start doing everything as the root account,
-which besides being a bit of a security risk, also poses some issues
-when you try to have multiple developers building solutions in your
-cloud. That’s why we strongly recommend setting up IAM users and roles
-from the beginning.</p>
-
-<p>We’re going to use the AWS Identity and Access Management (IAM) console.
-IAM allows you to create users, groups, and roles so that you can manage
-users and access to your AWS account. For the first section, we’ll only
-be creating one user (for you) and one group (admins) but as your usage
-of the cloud increases and you need to add more users, you’ll be able to
-control that from here.</p>
-
-<p>To create a new admins group, head to the IAM console</p>
-
-<ol>
-<li>Click Create Group, and follow the prompts.</li>
-<li>We’ll name the group “admins” and give it Administrator access.</li>
-</ol>
-
-
-<p>Now that we have an admins group, go to the Users panel and create a new
-user for yourself to log in as. It’s pretty straightforward, and if you
-hit any bumps in the road, <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/Using_SettingUpUser.html">AWS has some pretty good documentation about
-it</a>.</p>
-
-<p>After you create the user, add it to the admins group. Then, for each
-user we want to set up two types of authentication. The first is a
-simple password. Under each users’ Security Credentials tab, click the
-“Manage Passwords” button and you’ll be able to assign a password.</p>
-
-<p>After each user logs in, you’ll want to require them to add a
-multi-factor authentication (MFA) device to their account. To add an MFA
-device</p>
-
-<ol>
-<li>the user will need to login and go to the IAM console</li>
-<li>find their username</li>
-<li>under the security credentials tab, select “Manage MFA device.”</li>
-<li>Then follow the steps to add your virtual MFA device to the account.</li>
-</ol>
-
-
-<p>Having MFAs set up for all accounts helps ensure that AWS accounts won’t
-be compromised, keeping your data safe. Also, it helps ensure that your
-account won’t be used for malicious purposes (DDOS attacks, spam emails,
-etc) which would at best would increase your AWS bill and worst case
-have your entire account disabled. We strongly recommend enabling MFAs
-for all user accounts.</p>
-
-<p>Now that users are able to log in, we’ll need to give them a URL to do
-so. If you go to the main IAM console, you’ll find a IAM User Sign-In
-URL section. Remember the unique identifier you came up with your
-CloudTrail and Programatic Billing buckets? That’s probably a good
-option for your sign in URL. Changing it is optional, though highly
-recommended.</p>
-
-<p><strong>Wrapping Up</strong></p>
-
-<p>Using AWS is easy; using it well takes some thought. By setting up
-logging of your usage and billing information, you’ll be able to
-identify trends as time goes on. By setting up groups and users, your
-account is prepared to scale as you bring on more developers. And by
-giving those users multi-factor authentication, you’ve helped ensure the
-security of the account. You’re in a great place to start using the
-cloud. In our next post, we’ll lay the foundations for building a
-continuous delivery pipeline.</p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4]]></title>
@@ -772,7 +500,7 @@ wget $S3_URL
 if [ $? –ne 0 ]
 then
 pkill -9 httpd
-mail –s “Code Download Failed from S3##$INSTANCE_ID”  <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#116;&#101;&#115;&#116;&#x40;&#x74;&#101;&#115;&#x74;&#x2e;&#99;&#111;&#x6d;">&#x74;&#x65;&#x73;&#116;&#64;&#x74;&#101;&#x73;&#116;&#46;&#x63;&#111;&#109;</a> #Provide valid email ID here”
+mail –s “Code Download Failed from S3##$INSTANCE_ID”  <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#x3a;&#116;&#x65;&#x73;&#x74;&#x40;&#116;&#x65;&#x73;&#116;&#46;&#x63;&#111;&#x6d;">&#x74;&#101;&#x73;&#x74;&#x40;&#x74;&#101;&#115;&#x74;&#x2e;&#99;&#111;&#109;</a> #Provide valid email ID here”
 exit 1
 fi
 unzip wordpress.zip
@@ -784,7 +512,7 @@ $APACHE_RESTART
 if [ $? –ne 0 ]
 then
 pkill -9 httpd
-mail –s “Apache startup Failed- $INSTANCE_ID”  <a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#x3a;&#116;&#101;&#115;&#x74;&#64;&#116;&#x65;&#x73;&#116;&#x2e;&#99;&#x6f;&#x6d;">&#x74;&#x65;&#x73;&#116;&#64;&#116;&#x65;&#115;&#x74;&#x2e;&#x63;&#111;&#x6d;</a> #Provide valid email ID here”
+mail –s “Apache startup Failed- $INSTANCE_ID”  <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#x74;&#101;&#115;&#x74;&#x40;&#116;&#101;&#x73;&#x74;&#46;&#x63;&#x6f;&#109;">&#116;&#101;&#115;&#x74;&#64;&#116;&#x65;&#115;&#x74;&#x2e;&#99;&#x6f;&#109;</a> #Provide valid email ID here”
 exit 1
 fi</p>
 
@@ -923,6 +651,103 @@ groups!</em></strong></p>
 
 <p><strong>Update</strong>: Check part 2 on how to setup autoscaling groups
 <a href="../autoscaling-for-lamp-on-aws-setting-up-austoscaling-groups-part-2/index.html" title="Autoscaling for LAMP on AWS | Setting Up Austoscaling Groups : Part 2">here</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A Deep Dive into AWS Reserved Instances]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/"/>
+    <updated>2014-03-25T09:35:27-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances</id>
+    <content type="html"><![CDATA[<h3>A Deep Dive into AWS Reserved Instances</h3>
+
+<p>One of our primary goals at Flux7 Labs is to help our clients reduce
+their AWS costs. In fact, our product VyScale is based entirely on cost
+optimization using Spot instances. We inform our clients when it makes
+economic sense for them to buy instance reservations because
+reservations for periods of unexpected minimum usage can be beneficial.
+Reserved instances function exactly like on-demand instances, except
+that you pay an upfront fee to gain cheaper hourly rates.</p>
+
+<h3>Reserved Instance Pricing</h3>
+
+<p>There are several levels of reservations. Higher ones allow you to pay
+more up front in order to achieve a lower hourly cost. The table below
+shows the rates for various types of reserved and on-demand instances
+for m1.large instances.</p>
+
+<hr />
+
+<pre><code>           Upfront   Hourly in cents
+</code></pre>
+
+<p>  On-demand    0         24
+  Light Util   243       13.6
+  Med Util     554       8.4
+  Heavy Util   676       5.6</p>
+
+<hr />
+
+<p>At some levels of utilization it makes sense to purchase reservations,
+rather than to rely solely upon on-demand instances. By factoring in
+upfront costs, we can determine which levels warrant purchasing
+reservations. What’s surprising is that those levels are fairly low,
+especially in the case of light reservations. Even at 30% utilization,
+light-reservation costs start to break even with those of on-demand
+instances. The following graph shows equivalent hourly costs for
+reservations at various utilization levels</p>
+
+<p><a href="../../../wp-content/uploads/AWS-reserved-instances-1.png"><img src="../../../wp-content/uploads/AWS-reserved-instances-1.png" alt="Hourl rates of reserved
+instances" /></a></p>
+
+<p>To better understand these numbers in terms of total cost, as opposed to
+incremental cost, the figure below shows total annual expenditures at
+various levels. For a 100% utilization of an instance, one can reduce
+costs to almost half of Amazon’s standard pricing for reserved
+instances, and that’s without any of the bulk discounts made available
+to high-volume AWS customers. At lower levels, reservations cost almost
+twice as much as those at higher levels. However, keep in mind that, as
+a fraction of overall cost, the amount is still not very high. So, in
+cases where growth is expected, it can make sense to purchase
+reservations early.</p>
+
+<p><a href="../../../wp-content/uploads/AWS-reserved-instances-2.png"><img src="../../../wp-content/uploads/AWS-reserved-instances-2.png" alt="Annual rates of reserved
+instances" /></a></p>
+
+<h3>Do You Have A Reservation?</h3>
+
+<p>Another thing to know about Amazon’s policy is that you receive a
+guaranteed instance when you buy a reservation, whereas there is no such
+guarantee for on-demand instances. When trying to acquire an on-demand
+instance, AWS may return an error message stating that capacity is not
+available for that instance type. On the other hand, once you purchase a
+reservation Amazon guarantees that the instance will be made available
+to you at the moment you request it. If you’re using an autoscaling
+solution it can make sense to make light utilization reservations to
+handle your excess capacity, even if it costs more to guarantee uptime
+to your customers. With Amazon’s guarantee it’s no wonder that Netflix
+runs almost exclusively on reservations. As a matter of policy,
+Netflix’s use of on-demand instances indicates that more reservations
+need to be purchased.</p>
+
+<p>One thing to note is that Amazon always uses reservations first, so you
+can’t keep unused light reservations as backups while using on-demand
+instances for capacity.</p>
+
+<h3>How Amazon Handles Unused Reservations</h3>
+
+<p>Spot instances are one of the best uses of unutilized reserved capacity
+with AWS. They come with no guarantee of availability, and can be taken
+away from you at Amazon’s discretion at any time in order to fulfill
+other customers’ needs. Spot prices hover around 15% of the on-demand
+price, which allows Amazon to make a decent return on unused
+reservations and while offering reservations at a relatively low price.</p>
+
+<h3>Conclusion</h3>
+
+<p>The most common reason to use reservations is price, but there are also
+other considerations. The final decision should be based on capacity
+analysis from a business perspective.</p>
 ]]></content>
   </entry>
   

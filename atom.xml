@@ -4,7 +4,7 @@
   <title><![CDATA[Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-16T11:42:54-04:00</updated>
+  <updated>2014-04-16T12:23:37-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -266,278 +266,6 @@ your continuous integration server running, you’re ready to start
 building out the different stages of the pipeline to work with your
 application. In the next article, we’ll talk about how to set up your
 commit stage to build and test your application.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Continuous Delivery Implementation : Getting started with AWS]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/"/>
-    <updated>2014-03-25T14:57:15-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws</id>
-    <content type="html"><![CDATA[<ul>
-<li>Blog</li>
-<li>This article is part of the Continuous Delivery Blueprints series.
-It discusses how to go from no cloud infrastructure and no
-continuous integration set up to having a functioning Continuous
-Delivery Pipeline in Amazon Web Services. It discusses high level
-topics while also providing a reference implementation so it’s easy
-to follow along with.
-
-<ul>
-<li>Turn on CloudTrail</li>
-<li>Turn on Programmatic Billing</li>
-<li>If CloudTrail and Programmatic Billing are so important, why
-aren’t they turned on by default?</li>
-<li>Create IAM Users</li>
-<li>Comments</li>
-<li>Trackbacks</li>
-<li>Post a comment</li>
-<li>Categories</li>
-</ul>
-</li>
-</ul>
-
-
-<h1>This article is part of the Continuous Delivery Blueprints series. It discusses how to go from no cloud infrastructure and no continuous integration set up to having a functioning Continuous Delivery Pipeline in Amazon Web Services. It discusses high level topics while also providing a reference implementation so it’s easy to follow along with.</h1>
-
-<p>Everyone is talking about migrating to the cloud these days, and getting
-started with Amazon Web Services is super simple to do. However, most
-people just rush in, creating headaches for themselves down the road.
-There are some best practices you should take at the beginning of your
-cloud migration that will make things easier, more secure, and allow you
-to scale up and out better.</p>
-
-<p>What we’re going to do today:</p>
-
-<ul>
-<li>• Create an AWS Account</li>
-<li>• Turn On AWS CloudTrail</li>
-<li>• Turn On Programmatic Billing</li>
-<li>• Create IAM Users and Groups</li>
-<li>• Add MFA for New Users</li>
-</ul>
-
-
-<p><strong>Create your AWS Account</strong></p>
-
-<p>It all starts here: <a href="http://aws.amazon.com/">aws.amazon.com</a>. Find the
-big sign up button and just follow the prompts. A couple of things to
-note before getting started:</p>
-
-<ol>
-<li><ol>
-<li>It’ll prompt you for your information (name, email, address, etc)
-and credit card info, so you should get that figured out first.</li>
-</ol>
-</li>
-<li><ol>
-<li>You’ll need to verify your account via a phone call, so have your
-phone handy.</li>
-</ol>
-</li>
-<li><ol>
-<li>You don’t need to sign up for support just yet.</li>
-</ol>
-</li>
-</ol>
-
-
-<p>Once you’re signed up, just login into the AWS console. The console
-allows you to interact with most AWS services. Most people will start
-building their servers in the sky right away, but there’s a bit of
-information you should probably know up front, and some account set up
-we recommend before getting started. Let’s go over that first.</p>
-
-<p><strong>What You Need To Know About AWS Before Setting Stuff Up</strong></p>
-
-<p>Amazon Web Services offers a lot of different services, from virtual
-computing instances and storage to transcoding and streaming. Going over
-each service would take a whole series of blog posts, but an
-understanding of how AWS is laid out will be helpful when getting
-started.</p>
-
-<p>AWS has data centers all over the world, and has two ways of grouping
-them. At global scale there are <strong>regions</strong>, representing parts of or
-entire continents. Inside each region are <strong>availability zones</strong>.
-Regions are completely distinct entities, and you can only work in one
-at a time. Availability zones are designed to talk to each other, and
-AWS will automatically spread your resources across availability zones.
-Availability zones, however, can only speak to other zones within the
-same region.</p>
-
-<p>Choosing a region is important, though these directions are the same
-more-or-less in every region. However, be aware that not all services
-are available in all regions, and pricing does vary by region. In
-addition to that, US-East-1 is the “default” zone when you start with
-AWS, and has been around the longest. For that reason, it’s also the
-most popular, and sometimes you won’t be able to allocate resources in
-certain Availability Zones in the US-East-1 region due to those zones
-being at capacity.</p>
-
-<p>AWS provides <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html">lots of
-documentation</a>
-on how to choose a region, so definitely look through that to decide the
-best place to host your infrastructure. If you’re just doing initial
-investigation into AWS and aren’t sure what region to use, just pick one
-close to you.</p>
-
-<p><strong>Making a Name For Yourself</strong></p>
-
-<p>We’ll be talking about several AWS services in this section, and many of
-them make use of AWS Simple Storage Service, or <strong>S3</strong>. S3 allows you to
-store objects in the cloud with a high degree of durability. Where S3
-objects are stored are called “buckets”. S3 bucket names have to be
-unique, not just across you account, but across the entire world. A
-bucket name is globally unique. By the time we’re done, we’ll have
-created a couple buckets, as well globally unique login URL. For that
-reason, you should come up with a unique identifier now. For example,
-when we tested this documentation, we used the identifier
-“stelligent-cdblueprints.” Just note it down now and we’ll refer to it
-as we go on.</p>
-
-<h4>Turn on CloudTrail</h4>
-
-<p>First thing is to turn on CloudTrail. CloudTrail is basically logging
-for your AWS account. It will generate JSON files and store them in an
-S3 bucket (Amazon’s cloud storage solution) every time an action is
-performed on the account. While we won’t be doing a lot with CloudTrail
-right away, we’re turning it on now because it’s not retroactive — you
-can only see logs after you’ve turned it on. So let’s turn it on first.</p>
-
-<p>(Quick note: CloudTrail is a relatively new service, and at the time of
-this writing is only available in two regions: US-East-1 and US-West-2.
-If you’re using a different region, you might not be able to turn
-CloudTrail on. If that’s the case, just skip on to the next step.)</p>
-
-<ol>
-<li>Find CloudTrail panel from the main AWS Console,</li>
-<li>Click Get Started and just punch in an S3 Bucket name. (As was
-mentioned above, the S3 bucket name has to be globally unique. One
-approach is to take the unique identifier you came up with before,
-and just append -cloudtrail to it. We’ve named our bucket
-“stelligent-cdblueprints-cloudtrail”.)</li>
-<li>Click OK and you’re done.</li>
-</ol>
-
-
-<p>That was easy.</p>
-
-<h4>Turn on Programmatic Billing</h4>
-
-<p>Next, we’ll want to turn on Programmatic Billing. This will store your
-AWS billing in JSON files in another S3 bucket, so that other services
-can analyze your spending and plot trends over time. We’ll be visiting
-those kind of tools later on, but we want to enable programmatic billing
-now because (just like CloudTrail) it only generates data from the
-present — there’s no way to go back and generate historical data. By
-turning it on now, when we do start parsing that data for trends, you’ll
-have a good amount of data to go back through.</p>
-
-<p>Unlike CloudTrail, you’ll need to create and permission the bucket for
-this yourself.</p>
-
-<ol>
-<li>Go to the S3 console so we can create a new bucket. (Taking your
-previous unique identifier and just appending -billing to it isn’t a
-bad idea. We’ve named ours “stelligent-cdblueprints-billing” to keep
-with the theme.)</li>
-<li>Click Create Bucket and punch that name in.</li>
-<li>We’ll need to get a bucket permissions policy. Luckily, AWS will
-generate that for us at this page (we’ll need to flip back to the S3
-page in a second, so open this in a new
-tab): <a href="https://portal.aws.amazon.com/gp/aws/developer/account?ie=UTF8&amp;action=billing-preferences">https://portal.aws.amazon.com/gp/aws/developer/account?ie=UTF8&amp;action=billing-preferences</a></li>
-<li>Go down the list and turn everything on one and a time.</li>
-<li>When you get to to Programmatic billing, punch in the name of
-your bucket, and click “sample policy.” Just copy that policy, then
-flip back to your S3 bucket.</li>
-<li>Click on the bucket, then properties, then Permissions, and
-you’ll see an option for setting an access policy.</li>
-<li>Click into that, paste the policy you just copied, and save.</li>
-<li>Now, flip back to the Billing Preferences page, click save there</li>
-<li>Continue to enable everything else on this page.</li>
-</ol>
-
-
-<h4>If CloudTrail and Programmatic Billing are so important, why aren’t they turned on by default?</h4>
-
-<p>One thing to be aware of with these two services is that they will put
-data into your S3 buckets. S3 storage is very cheap, and while it is
-pretty close, it is not free. You’ll be paying between nine and fifteen
-cents a gig for storage, depending on region. For more details, <a href="https://aws.amazon.com/s3/pricing/">check
-out the S3 pricing page</a>. The
-services themselves don’t cost anything, though; you only pay for
-storing the data they generate.</p>
-
-<h4>Create IAM Users</h4>
-
-<p>Now that the bookkeeping is taken care of, let’s set up some users. A
-lot of new AWS users will start doing everything as the root account,
-which besides being a bit of a security risk, also poses some issues
-when you try to have multiple developers building solutions in your
-cloud. That’s why we strongly recommend setting up IAM users and roles
-from the beginning.</p>
-
-<p>We’re going to use the AWS Identity and Access Management (IAM) console.
-IAM allows you to create users, groups, and roles so that you can manage
-users and access to your AWS account. For the first section, we’ll only
-be creating one user (for you) and one group (admins) but as your usage
-of the cloud increases and you need to add more users, you’ll be able to
-control that from here.</p>
-
-<p>To create a new admins group, head to the IAM console</p>
-
-<ol>
-<li>Click Create Group, and follow the prompts.</li>
-<li>We’ll name the group “admins” and give it Administrator access.</li>
-</ol>
-
-
-<p>Now that we have an admins group, go to the Users panel and create a new
-user for yourself to log in as. It’s pretty straightforward, and if you
-hit any bumps in the road, <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/Using_SettingUpUser.html">AWS has some pretty good documentation about
-it</a>.</p>
-
-<p>After you create the user, add it to the admins group. Then, for each
-user we want to set up two types of authentication. The first is a
-simple password. Under each users’ Security Credentials tab, click the
-“Manage Passwords” button and you’ll be able to assign a password.</p>
-
-<p>After each user logs in, you’ll want to require them to add a
-multi-factor authentication (MFA) device to their account. To add an MFA
-device</p>
-
-<ol>
-<li>the user will need to login and go to the IAM console</li>
-<li>find their username</li>
-<li>under the security credentials tab, select “Manage MFA device.”</li>
-<li>Then follow the steps to add your virtual MFA device to the account.</li>
-</ol>
-
-
-<p>Having MFAs set up for all accounts helps ensure that AWS accounts won’t
-be compromised, keeping your data safe. Also, it helps ensure that your
-account won’t be used for malicious purposes (DDOS attacks, spam emails,
-etc) which would at best would increase your AWS bill and worst case
-have your entire account disabled. We strongly recommend enabling MFAs
-for all user accounts.</p>
-
-<p>Now that users are able to log in, we’ll need to give them a URL to do
-so. If you go to the main IAM console, you’ll find a IAM User Sign-In
-URL section. Remember the unique identifier you came up with your
-CloudTrail and Programatic Billing buckets? That’s probably a good
-option for your sign in URL. Changing it is optional, though highly
-recommended.</p>
-
-<p><strong>Wrapping Up</strong></p>
-
-<p>Using AWS is easy; using it well takes some thought. By setting up
-logging of your usage and billing information, you’ll be able to
-identify trends as time goes on. By setting up groups and users, your
-account is prepared to scale as you bring on more developers. And by
-giving those users multi-factor authentication, you’ve helped ensure the
-security of the account. You’re in a great place to start using the
-cloud. In our next post, we’ll lay the foundations for building a
-continuous delivery pipeline.</p>
 ]]></content>
   </entry>
   
@@ -1625,24 +1353,6 @@ version-control repository.</p>
     <link href="http://bvajjala.github.io/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/"/>
     <updated>2014-03-14T09:54:08-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/03/14/ci-and-test-automation-utilizing-openstack</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Continuous Delivery Tools List]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/11/continuous-delivery-tools-list/"/>
-    <updated>2014-03-11T12:27:44-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/11/continuous-delivery-tools-list</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Tools in AWS for Implementing Continuous Deployment pipeline]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/11/tools-in-aws-for-implementing-continuous-deployment-pipeline/"/>
-    <updated>2014-03-11T10:13:38-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/11/tools-in-aws-for-implementing-continuous-deployment-pipeline</id>
     <content type="html"><![CDATA[
 ]]></content>
   </entry>
@@ -4097,6 +3807,335 @@ Not too long ago, however, this system wasn&rsquo;t very smart. A branch could a
 <h1>How do we do it?</h1>
 
 <p>Most of the magic is handled by an internal deployment service called Heaven. At its core, Heaven is a catalog of Capistrano recipes wrapped up in a Sinatra application with a JSON API. Many of our applications are deployed using generic recipes, but more complicated apps can define their own to specify additional deployment steps. Wiring it up to Janky, along with clever use of post-receive hooks and the GitHub API, lets us hack on the niceties over time. Hubot is the central interface to both Janky and Heaven, giving everyone in Campfire great visibility into what’s happening all of the time. As of this writing, 75 individual applications are deployed by Heaven.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[OpenStack : Git Gerrit and Jenkins Workflow]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/"/>
+    <updated>2014-02-03T14:54:23-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow</id>
+    <content type="html"><![CDATA[<h1>Gerrit Workflow</h1>
+
+<p><img src="http://bvajjala.github.io/downloads/code/GerritGitJenkinsWorkflow.png" title="Git Gerrit Jenkins Workflow" alt="Alt text in case picture load fails" /></p>
+
+<h2>Git Account Setup</h2>
+
+<p>You&rsquo;ll need a <a href="https://login.launchpad.net">Launchpad account</a>, since this is how the Web interface for the Gerrit Code Review system will identify you. This is also useful for automatically crediting bug fixes to you when you address them with your code commits.</p>
+
+<p>If you haven&rsquo;t already, <a href="https://www.openstack.org/join/">join The OpenStack Foundation</a> (it&rsquo;s free and required for all code contributors). Among other privileges, this also allows you to vote in elections and run for elected positions within The OpenStack Project. When signing up for Foundation Membership, make sure to give the same E-mail address you&rsquo;ll use for code contributions, since this will need to match your preferred E-mail address in Gerrit.</p>
+
+<p>Visit <a href="https://review.openstack.org/">https://review.openstack.org/</a> and click the Sign In link at the top-right corner of the page. Log in with your Launchpad ID.</p>
+
+<p>Because Gerrit uses Launchpad OpenID single sign-on, you won&rsquo;t need a separate password for Gerrit, and once you log in to one of Launchpad, Gerrit, or Jenkins, you won&rsquo;t have to enter your password for the others.</p>
+
+<p>You&rsquo;ll also want to upload an SSH key while you&rsquo;re at it, so that you&rsquo;ll be able to commit changes for review later.</p>
+
+<p>Ensure that you have run these steps to let git know about your email address:</p>
+
+<figure class='code'><figcaption><span>Git Config </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git config --global user.name "Firstname Lastname"
+</span><span class='line'>git config --global user.email "your_email@youremail.com"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To check your git configuration:</p>
+
+<figure class='code'><figcaption><span>Git Config </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git config --list</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Git Review Installation</h2>
+
+<p>We recommend using the &ldquo;git-review&rdquo; tool which is a git subcommand that handles all the details of working with Gerrit, the code review system used in OpenStack development. Before you start work, make sure you have git-review installed on your system.</p>
+
+<p>On Ubuntu, MacOSx, or most other Unix-like systems, it is as simple as:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pip install git-review</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On Ubuntu Precise (12.04) and later, git-review is included in the distribution, so install it as any other package:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get install git-review</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On Fedora 16 and later, git-review is included into the distribution, so install it as any other package:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install git-review</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On Fedora 15 and earlier you have to install pip (its package name is <code>python-pip</code>), then install git-review using pip in a conventional way.</p>
+
+<p>On Red Hat Enterprise Linux, you must first enable the EPEL repository, then install it as any other package:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install git-review</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On openSUSE 12.2 and later, git-review is included in the distribution under the name python-git-review, so install it as any other package:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zypper in python-git-review</span></code></pre></td></tr></table></div></figure>
+
+
+<p>All of git-review&rsquo;s interactions with gerrit are sequences of normal git commands. If you want to know more about what it&rsquo;s doing, just add -v to the options and it will print out all of the commands it&rsquo;s running.</p>
+
+<h2>Project Setup</h2>
+
+<p>Clone a project in the usual way, for example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://git.openstack.org/openstack/nova.git</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You may want to ask git-review to configure your project to know about Gerrit at this point. If you don&rsquo;t, it will do so the first time you submit a change for review, but you probably want to do this ahead of time so the Gerrit Change-Id commit hook gets installed. To do so (again, using Nova as an example):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd nova
+</span><span class='line'>git review -s</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Git-review checks that you can log in to gerrit with your ssh key. It assumes that your gerrit/launchpad user name is the same as the current running user. If that doesn&rsquo;t work, it asks for your gerrit/launchpad user name. If you don&rsquo;t remember the user name go to the settings page on gerrit to check it out (it&rsquo;s not your email address).</p>
+
+<p>Note that you can verify the SSH host keys for review.openstack.org here: <a href="https://review.openstack.org/#/settings/ssh-keys">https://review.openstack.org/#/settings/ssh-keys</a></p>
+
+<p>If you get the error &ldquo;We don&rsquo;t know where your gerrit is.&rdquo;, you will need to add a new git remote. The url should be in the error message. Copy that and create the new remote.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git remote add gerrit ssh://&lt;username>@review.openstack.org:29418/openstack/nova.git</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the project directory, you have a <code>.git</code> hidden directory and a <code>.gitreview</code> hidden file. You can see them with:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ls -la</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>1.4 Normal Workflow</h2>
+
+<p>Once your local repository is set up as above, you must use the following workflow.</p>
+
+<p>Make sure you have the latest upstream changes:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git remote update
+</span><span class='line'>git checkout master
+</span><span class='line'>git pull --ff-only origin master</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create a topic branch to hold your work and switch to it. If you are working on a blueprint, name your topic branch bp/BLUEPRINT where BLUEPRINT is the name of a blueprint in launchpad (for example, &ldquo;bp/authentication&rdquo;). The general convention when working on bugs is to name the branch bug/BUG-NUMBER (for example, &ldquo;bug/1234567&rdquo;). Otherwise, give it a meaningful name because it will show up as the topic for your change in Gerrit.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git checkout -b TOPIC-BRANCH</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To generate documentation artifacts, navigate to the directory where the pom.xml file is located for the project and run the following command:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mvn clean generate-sources</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>1.4.1 Committing Changes</h3>
+
+<p>Git commit messages should start with a short 50 character or less summary in a single paragraph. The following paragraph(s) should explain the change in more detail.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>If your changes addresses a blueprint or a bug, be sure to mention them in the commit message using the following syntax:
+</span><span class='line'>
+</span><span class='line'>Implements: blueprint BLUEPRINT
+</span><span class='line'>Closes-Bug: ####### (Partial-Bug or Related-Bug are options)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Adds keystone support
+</span><span class='line'>
+</span><span class='line'>...Long multiline description of the change...
+</span><span class='line'>
+</span><span class='line'>Implements: blueprint authentication
+</span><span class='line'>Closes-Bug: #123456
+</span><span class='line'>Change-Id: I4946a16d27f712ae2adf8441ce78e6c0bb0bb657</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that in most cases the Change-Id line should be automatically added by a Gerrit commit hook that you will want to install. See Project Setup for details on configuring your project for Gerrit. If you already made the commit and the Change-Id was not added, do the Gerrit setup step and run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git commit --amend</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The commit hook will automatically add the Change-Id when you finish amending the commit message, even if you don&rsquo;t actually make any changes.</p>
+
+<p>Make your changes, commit them, and submit them for review:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git commit -a
+</span><span class='line'>git review</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Caution: Do not check in changes on your master branch. Doing so will cause merge commits when you pull new upstream changes, and merge commits will not be accepted by Gerrit.</em></p>
+
+<p>Prior to checking in make sure that you run &ldquo;<a href="http://testrun.org/tox/latest/">tox</a>&rdquo;.</p>
+
+<h3>1.4.2 Review</h3>
+
+<h3>1.4.3 Work in Progress</h3>
+
+<h3>1.4.4 Long-lived Topic Branches</h3>
+
+<h3>1.4.5 Updating a Change</h3>
+
+<h3>1.4.6 Add dependency</h3>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Designing A RESTful API That Doesn't Suck]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/"/>
+    <updated>2014-02-03T14:23:30-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck</id>
+    <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2013/03/22/designing-a-restful-api-that-doesn-t-suck.html">Designing A RESTful API That Doesn&rsquo;t Suck</a></h2>
+
+<p>As we&rsquo;re getting closer to shipping the first version of <a href="http://devo.ps">devo.ps</a> and we are joined by a few new team members, the team took the time to review the few principles we followed when designing our RESTful JSON API. A lot of these can be found on <a href="https://blog.apigee.com/taglist/rest_api_design">apigee&rsquo;s blog</a> (a recommended read). Let me give you the gist of it:</p>
+
+<ul>
+<li><p><strong>Design your API for developers first</strong>, they are the main users. In that respect, simplicity and intuitivity matter.</p></li>
+<li><p><strong>Use <a href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods">HTTP verbs</a></strong> instead of relying on parameters (e.g. <code>?action=create</code>). HTTP verbs map nicely with <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a>:</p>
+
+<ul>
+<li><code>POST</code> for <em>create</em>,</li>
+<li><code>GET</code> for <em>read</em>,</li>
+<li><code>DELETE</code> for <em>remove</em>,</li>
+<li><code>PUT</code> for <em>update</em> (and <code>PATCH</code> too).</li>
+</ul>
+</li>
+<li><p><strong>Use <a href="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes">HTTP status codes</a></strong>, especially for errors (authentication required, error on the server side, incorrect parameters)… There are plenty to choose from, here are a few:</p>
+
+<ul>
+<li><code>200</code>: <em>OK</em></li>
+<li><code>201</code>: <em>Created</em></li>
+<li><code>304</code>: <em>Not Modified</em></li>
+<li><code>400</code>: <em>Bad Request</em></li>
+<li><code>401</code>: <em>Unauthorized</em></li>
+<li><code>403</code>: <em>Forbidden</em></li>
+<li><code>404</code>: <em>Not Found</em></li>
+<li><code>500</code>: <em>Internal Server Error</em></li>
+</ul>
+</li>
+<li><p><strong>Simple URLs for resources: first a noun for the collection, then the item</strong>. For example <code>/emails</code> and <code>/emails/1234</code>; the former gives you the collection of emails, the second one a specific one identified by its internal id.</p></li>
+<li><p><strong>Use verbs for special actions</strong>. For example, <code>/search?q=my+keywords</code>.</p></li>
+<li><p><strong>Keep errors simple but verbose (and use HTTP codes)</strong>. We only send something like <code>{ message: "Something terribly wrong happened" }</code> with the proper status code (e.g. <code>401</code> if the call requires authentication) and log more verbose information (origin, error code…) in the backend for debugging and monitoring.</p></li>
+</ul>
+
+
+<p>Relying on HTTP status codes and verbs should already help you keep your API calls and responses lean enough. Less crucial, but still useful:</p>
+
+<ul>
+<li><strong>JSON first</strong>, then extend to other formats if needed and if time permits.</li>
+<li><strong><a href="http://en.wikipedia.org/wiki/Unix_time">Unix time</a></strong>, or you&rsquo;ll have a bad time.</li>
+<li><strong>Prepend your URLs with the API version</strong>, like <code>/v1/emails/1234</code>.</li>
+<li><strong>Lowercase everywhere in URLs</strong>.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[I Can Haz Init Script]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/02/03/i-can-haz-init-script/"/>
+    <updated>2014-02-03T14:21:03-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/02/03/i-can-haz-init-script</id>
+    <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2013/06/19/I-can-haz-init-script.html">I Can Haz Init Script</a></h2>
+
+<p>Something went awfully wrong, and a rogue process is eating up all of the resources on one of your servers. You have no other choice but to restart it. No big deal, really; this is the age of disposable infrastructure after all. Except when it comes back up, everything starts going awry. Half the stuff supposed to be running is down and it&rsquo;s screwing with the rest of your setup.</p>
+
+<p><img src="http://bvajjala.github.io/images/posts/y-u-no-guy.png" alt="INIT SCRIPTS, Y U NO LIKE?" /></p>
+
+<p>You don&rsquo;t get to think about them very often, but init scripts are a key piece of a sound, scalable strategy for your infrastructure. It&rsquo;s a <a href="">mandatory best practice</a>. Period. And there are quite a few things in the way of getting them to work properly at scale in production environments. It&rsquo;s a tough world out there.</p>
+
+<h3>What we&rsquo;re dealing with…</h3>
+
+<h4>Packages</h4>
+
+<p>Often enough, you&rsquo;re gonna end up installing a service using the package manager of your distro: <code>yum</code>, <code>apt-get</code>, you name it. These packages usually come with an init script that should get you started.</p>
+
+<p>Sadly, as your architecture grows in complexity, you&rsquo;ll probably run into some walls. Wanna have multiple memcache buckets, or several instances of redis running on the same box? You&rsquo;re out of luck buddy. Time to hack your way
+through:</p>
+
+<ul>
+<li>Redefine your start logic,</li>
+<li>Load one or multiple config files from <code>/etc/defaults</code> or <code>/etc/sysconfig</code>,</li>
+<li>Deal with the PIDs, log and lock files,</li>
+<li>Implement conditional logic to start/stop/restart one or more of the services,</li>
+<li>Realize you&rsquo;ve messed something up,</li>
+<li>Same player shoot again.</li>
+</ul>
+
+
+<p>Honestly: PITA.</p>
+
+<h4>Built from source</h4>
+
+<p>First things first: <strong>you shouldn&rsquo;t be building from source</strong> (unless you really, really need to).</p>
+
+<p>Now if you do, you&rsquo;ll have to be thorough: there may be samples of init scripts in there, but you&rsquo;ll have to dig them out. <code>/contrib</code>, <code>/addons</code>, …it&rsquo;s never in the same place.</p>
+
+<p>And that makes things &ldquo;fun&rdquo; when you&rsquo;re <a href="http://devo.ps/blog/2013/03/06/troubleshooting-5minutes-on-a-yet-unknown-box.html">trying to unscrew things on a box</a>:</p>
+
+<ul>
+<li>You figured out that MySQL is running from <code>/home/user/src/mysql</code>,</li>
+<li>You check if there&rsquo;s an init script: no luck this time…</li>
+<li>You try to understand what exactly launched <code>mysqld_safe</code>,</li>
+<li>You spend a while digging into the bash history smiling at typos,</li>
+<li>You stumble on a <code>run.sh</code> script (uncommented, of course) in the home directory. Funny enough, it seems to be starting everything from MySQL, NGINX and php-fpm to the coffee maker.</li>
+<li>You make a mental note to try and track down the &ldquo;genius&rdquo; who did that mess of a job, and get busy with converting everything to a proper init script.</li>
+</ul>
+
+
+<p>Great.</p>
+
+<h3>Why existing solutions suck</h3>
+
+<p>Well, based on what we&rsquo;ve just seen, you really only have two options:</p>
+
+<ol>
+<li> <strong>DIY</strong>; but if you&rsquo;re good at what you do, you&rsquo;re probably also lazy. You may do it the first couple times, but that&rsquo;s not gonna scale, especially when dealing with the various flavors of init daemons (upstart, systemd…),</li>
+<li> <strong>Use that thing called &ldquo;the Internet&rdquo;</strong>; you read through forum pages, issue queues, gists and if you&rsquo;re lucky you&rsquo;ll find a perfect one (or more likely 10 sucky ones). Kudos to all those of whom shared their work, but you&rsquo;ll probably be back to option 1.</li>
+</ol>
+
+
+<h3>We can do better than this</h3>
+
+<p>You&rsquo;ll find a gazillion websites for pictures of kittens, but as far as I know, there is no authoritative source for init scripts. That&rsquo;s just not right: we have to fix it. A few things I&rsquo;m aiming for:</p>
+
+<ul>
+<li><strong>Scalable</strong>; allow for multiple instances of a service to be started at once from different config files (see the memcache/redis example),</li>
+<li><strong>Secure</strong>; ensure <code>configtest</code> is run before a restart/reload (because, you know, a faulty config file preventing the service to restart is kind of a bummer),</li>
+<li><strong>Smart</strong>; ensuring for example that the cache is aggressively flushed before restarting your database (so that you don&rsquo;t end-up waiting 50 min for the DB to cleanly shutdown).</li>
+</ul>
+
+
+<p><a href="https://github.com/devo-ps/init-scripts">I&rsquo;ve just created a repo</a> where I&rsquo;ll be dumping various init scripts that will hopefully be helpful to others. I&rsquo;d love to get suggestions or help.</p>
+
+<p>And by the way, things are not much better with applications, though we&rsquo;re trying our best to improve things there too with things like <a href="https://github.com/Unitech/pm2">pm2</a> (fresh and shinny, more about it in a later post).</p>
 ]]></content>
   </entry>
   

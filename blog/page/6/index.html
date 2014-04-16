@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Lately I&rsquo;ve been doing a lot of prototyping with Vagrant, specifically for a couple of distinct activities:&ndash; building puppet modules &hellip;">
+  <meta name="description" content="If I haven&rsquo;t told you yet, Git is awesome and yes I do most og the work from the command-line, so in order to make my life easier I did two &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,209 +65,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/">Vagrant+Puppet+FPM=Amazeballs</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-07T18:23:00-04:00" pubdate data-updated="true">Apr 7<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Lately I&rsquo;ve been doing a lot of prototyping with <a href="http://www.vagrantup.com/">Vagrant</a>, specifically for a couple of distinct activities:&ndash;</p>
-
-<ul>
-<li>building puppet modules using <a href="https://github.com/elasticdog/puppet-sandbox">the excellent puppet sandbox</a> project</li>
-<li>and building RPM packages with <a href="https://github.com/jordansissel/fpm">FPM</a>.</li>
-</ul>
-
-
-<p>I realized I was spending a bunch of time flipping back and forth between Vagrant environments and I had no quick way to utilize RPMs built with FPM inside my puppet modules.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/03/11/install-mysql2-gem-file-solved/">Install Mysql2 Gem File :: Solved</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-11T22:26:00-04:00" pubdate data-updated="true">Mar 11<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/ruby_logo2.jpg" title="'Ruby Logo'" ></p>
-
-<h2><strong>Problem</strong> </h2>
-
-<p>can&rsquo;t install mysql2 gem :(
-See the full error below &hellip; (or in &ldquo;Read on&rdquo; link) what solved the issue was:
-installing the two missing dependencies <em>&ldquo;mysql-client libmysqlclient-dev&rdquo;</em></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install mysql-client libmysqlclient-dev
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/03/11/install-mysql2-gem-file-solved/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/03/09/simple-zookeeper-cluster/">Simple Zookeeper Cluster</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-09T07:00:00-05:00" pubdate data-updated="true">Mar 9<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Sometimes I need to run <a href="http://zookeeper.apache.org">ZooKeeper</a> ensemble on my development box to test my application on the production-like environment. I found that recreating the whole ensemble from scratch is much faster than cleaning it up using ZooKeeper CLI tool. To automate this process I created a bash script which I want to share in this blog post. I hard-coded all the paths in the script using my regular conventions. You might need to change them to yours — it should be fairly straightforward.</p>
-
-<p>Before you can use the script, you need to install ZooKeeper on your box. That&rsquo;s what I did on my machine</p>
-
-<pre><code>$ cd /opt
-$ sudo mkdir zookeeper
-$ sudo chown -R andrey:admin zookeeper
-$ cd zookeeper
-$ wget http://apache.mirror.rafal.ca/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz
-$ tar xf zookeeper-3.4.5.tar.gz
-$ rm zookeeper-3.4.5.tar.gz
-$ ln -s zookeeper-3.4.5 zookeeper
-</code></pre>
-
-<p>In the end you should have a ZooKeeper installed in <em>/opt/zookeeper/zookeeper</em> directory.</p>
-
-<p>Now download, chmod, and run the <a href="https://gist.github.com/ndpar/5105486">script</a>. It will create the following files</p>
-
-<pre><code>/opt/zookeeper/zookeeper/cluster
-├── server1
-│   ├── conf
-│   │   ├── log4j.properties
-│   │   └── zoo.cfg
-│   ├── data
-│   │   └── myid
-│   └── logs
-├── server2
-│   ├── conf
-│   │   ├── log4j.properties
-│   │   └── zoo.cfg
-│   ├── data
-│   │   └── myid
-│   └── logs
-├── server3
-│   ├── conf
-│   │   ├── log4j.properties
-│   │   └── zoo.cfg
-│   ├── data
-│   │   └── myid
-│   └── logs
-├── start.sh
-└── stop.sh
-</code></pre>
-
-<p>This is the minimum configuration for 3-node ensemble (cluster), which is recommended for production. To start the cluster, run the following command</p>
-
-<pre><code>$ cd /opt/zookeeper/zookeeper
-$ cluster/start.sh
-</code></pre>
-
-<p>Check the log files to see if the cluster is successfully started</p>
-
-<pre><code>$ tail -f cluster/server{1,2,3}/logs/zookeeper.out
-</code></pre>
-
-<p>When the cluster is up and running, you can test your application. After you are done, shutdown the cluster using the following command</p>
-
-<pre><code>$ cluster/stop.sh
-$ ps -ef | grep java
-</code></pre>
-
-<p>To recreate a clean cluster, just run the script again</p>
-
-<pre><code>$ ./zookeeper-init-ensemble.sh
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -639,6 +436,153 @@ a note-pad with no fancy WYSIWYG editor with a bazillion plug-ins which will ena
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/15/embrace-big-data/">Embrace Big Data</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-15T07:00:00-05:00" pubdate data-updated="true">Jan 15<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="center" src="/images/posts/BigData.jpg"></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/12/30/installing-chef-server-on-cnetos-5-dot-8/">Installing Chef Server - on CnetOs 5.8</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-30T01:51:00-05:00" pubdate data-updated="true">Dec 30<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/Opscode_chef_logo.png" title="'Chef Logo'" > Following the Fuse day (#6) and the very poor documentation and the amount of bugs found in the Chef Solo cookbooks for the Chef OSS server, I put together a set of script which will attempt to clear all the clutter around installing a Chef OSS server.</p>
+
+<p>There is a <a href="https://github.com/tikalk/chef-server-install">Git repository on git hub</a> which will install Chef Server on CentOS 5.8 &amp; 6 and I will be adding support for Ubuntu in the near future (its in the works), there is no magic here just a fair amount of trial and error which led me to automate it &ndash; it just was too much time to do manually over and over again &hellip;</p>
+
+<p>During my attempt I was planning on using Chef-Solo to do the work based on <a href="http://wiki.opscode.com/display/chef/Installing+Chef+Server+using+Chef+Solo">this wiki page</a> but there were so many bugs in it which led me to user rble repository.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/12/30/installing-chef-server-on-cnetos-5-dot-8/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/12/some-notes-on-puppet/">Some Notes on Puppet</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-12T16:40:00-05:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&rsquo;ve been playing with <a href="http://puppetlabs.com/">Puppet</a> recently in order to finally teach myself a bit about server management. I decided for Puppet because&hellip; well&hellip; I didn&rsquo;t have time to play with <a href="http://www.opscode.com/chef/">Chef</a> yet.</p>
+
+<p>I can&rsquo;t show any of my code because it contains some stuff I&rsquo;d rather not open up, but here are some of my global notes on Puppet that I wanted to share.</p>
+
+<h2>The good</h2>
+
+<ul>
+<li><strong>It did the job.</strong> I now have a few scripts that I can use to quickly setup a server for Rails, including NGINX, PostgreSQL, Unicorn, Monit, and much more.</li>
+<li><strong>Quick deployment.</strong> I can now deploy a new Rails app to a server within minutes!</li>
+<li><strong><a href="http://docs.puppetlabs.com/learning/">The Learning Puppet series</a></strong> is a good starting point and explains most of the basics</li>
+<li><strong>Low tech.</strong> Running a puppet script really doesn&rsquo;t involve much more than running: <code>puppet apply path/to/puppet/file.pp</code></li>
+</ul>
+
+
+<h2>The bad</h2>
+
+<ul>
+<li><strong>No single server deployment solution.</strong> There doesn&rsquo;t seem to be a best practice on how to use puppet with just one server. I know that the serious people will have to manage many many servers, but I think that they could make Puppet more accessible to newcomers by having a good solid solution for their own server. Many of us learn new things by trying them out for our own hobby projects before using them in big-business contexts. I have resorted to using Capistrano for deployment, but it just feels wrong somehow.</li>
+<li><strong>Not many great modules.</strong> Puppet has a modules system which allows anyone to package their solutions and share them with the community. Sadly most of the modules are old, unmaintained, and often broken. Additionally the modules often don&rsquo;t solve the problems in a way that I&rsquo;d like them to, forcing me to write my own.</li>
+<li><strong>Convoluted language.</strong> Puppet requires Ruby to run, but the DSL is not Ruby, nor is it Javascript, or JSON,or YAML, or anything else that so many developers already know. The architecture for defining classes, types, and modules is convoluted, backwards, and feels very awkward. I think one of the reasons why there aren&rsquo;t many well written modules is very much related to this.</li>
+<li><strong>Compiling from source.</strong> One of the biggest missing features seems to be some good architecture for installing anything that isn&rsquo;t packaged up. I often want to run a different Ruby, Nginx, Apache, PHP version than is in the package repositories. I know this is a hard problem, but again I wish there was some kind of best practice.</li>
+<li><strong>Ordering from hell.</strong> Puppet does not run your actions in order as specified in your <code>.pp</code> file. Instead you can tell it if something has a requirement. In my experience almost everything has a requirement and specifying the orders is becoming a nightmare and a real frustration.</li>
+<li><strong>Missing features.</strong> There are a few features that are still missing. One of the most important ones (in my eyes) is the ability to generate a folder recursively (e.g. <code>mkdir -p path/with/multiple/folders</code>). Instead you are now forced to create every layer as a new statement.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Puppet will do for now, but I wish it was a bit more opinionated in how it thought it should be used. The language is not pretty and very verbose, and its lack of best practices for single server deployment is a real omission.</p>
+
+<p>Does anyone know how Chef performs in these regards?</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -664,10 +608,6 @@ a note-pad with no fancy WYSIWYG editor with a bazillion plug-ins which will ena
       </li>
     
       <li class="post">
-        <a href="/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/">Continuous Delivery Implementation : Getting started with AWS</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
       </li>
     
@@ -677,6 +617,10 @@ a note-pad with no fancy WYSIWYG editor with a bazillion plug-ins which will ena
     
       <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/">Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1</a>
       </li>
     
   </ul>

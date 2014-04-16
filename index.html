@@ -356,305 +356,6 @@ commit stage to build and test your application.</p>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/">Continuous Delivery Implementation : Getting Started With AWS</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-25T14:57:15-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li>Blog</li>
-<li>This article is part of the Continuous Delivery Blueprints series.
-It discusses how to go from no cloud infrastructure and no
-continuous integration set up to having a functioning Continuous
-Delivery Pipeline in Amazon Web Services. It discusses high level
-topics while also providing a reference implementation so it’s easy
-to follow along with.
-
-<ul>
-<li>Turn on CloudTrail</li>
-<li>Turn on Programmatic Billing</li>
-<li>If CloudTrail and Programmatic Billing are so important, why
-aren’t they turned on by default?</li>
-<li>Create IAM Users</li>
-<li>Comments</li>
-<li>Trackbacks</li>
-<li>Post a comment</li>
-<li>Categories</li>
-</ul>
-</li>
-</ul>
-
-
-<h1>This article is part of the Continuous Delivery Blueprints series. It discusses how to go from no cloud infrastructure and no continuous integration set up to having a functioning Continuous Delivery Pipeline in Amazon Web Services. It discusses high level topics while also providing a reference implementation so it’s easy to follow along with.</h1>
-
-<p>Everyone is talking about migrating to the cloud these days, and getting
-started with Amazon Web Services is super simple to do. However, most
-people just rush in, creating headaches for themselves down the road.
-There are some best practices you should take at the beginning of your
-cloud migration that will make things easier, more secure, and allow you
-to scale up and out better.</p>
-
-<p>What we’re going to do today:</p>
-
-<ul>
-<li>• Create an AWS Account</li>
-<li>• Turn On AWS CloudTrail</li>
-<li>• Turn On Programmatic Billing</li>
-<li>• Create IAM Users and Groups</li>
-<li>• Add MFA for New Users</li>
-</ul>
-
-
-<p><strong>Create your AWS Account</strong></p>
-
-<p>It all starts here: <a href="http://aws.amazon.com/">aws.amazon.com</a>. Find the
-big sign up button and just follow the prompts. A couple of things to
-note before getting started:</p>
-
-<ol>
-<li><ol>
-<li>It’ll prompt you for your information (name, email, address, etc)
-and credit card info, so you should get that figured out first.</li>
-</ol>
-</li>
-<li><ol>
-<li>You’ll need to verify your account via a phone call, so have your
-phone handy.</li>
-</ol>
-</li>
-<li><ol>
-<li>You don’t need to sign up for support just yet.</li>
-</ol>
-</li>
-</ol>
-
-
-<p>Once you’re signed up, just login into the AWS console. The console
-allows you to interact with most AWS services. Most people will start
-building their servers in the sky right away, but there’s a bit of
-information you should probably know up front, and some account set up
-we recommend before getting started. Let’s go over that first.</p>
-
-<p><strong>What You Need To Know About AWS Before Setting Stuff Up</strong></p>
-
-<p>Amazon Web Services offers a lot of different services, from virtual
-computing instances and storage to transcoding and streaming. Going over
-each service would take a whole series of blog posts, but an
-understanding of how AWS is laid out will be helpful when getting
-started.</p>
-
-<p>AWS has data centers all over the world, and has two ways of grouping
-them. At global scale there are <strong>regions</strong>, representing parts of or
-entire continents. Inside each region are <strong>availability zones</strong>.
-Regions are completely distinct entities, and you can only work in one
-at a time. Availability zones are designed to talk to each other, and
-AWS will automatically spread your resources across availability zones.
-Availability zones, however, can only speak to other zones within the
-same region.</p>
-
-<p>Choosing a region is important, though these directions are the same
-more-or-less in every region. However, be aware that not all services
-are available in all regions, and pricing does vary by region. In
-addition to that, US-East-1 is the “default” zone when you start with
-AWS, and has been around the longest. For that reason, it’s also the
-most popular, and sometimes you won’t be able to allocate resources in
-certain Availability Zones in the US-East-1 region due to those zones
-being at capacity.</p>
-
-<p>AWS provides <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html">lots of
-documentation</a>
-on how to choose a region, so definitely look through that to decide the
-best place to host your infrastructure. If you’re just doing initial
-investigation into AWS and aren’t sure what region to use, just pick one
-close to you.</p>
-
-<p><strong>Making a Name For Yourself</strong></p>
-
-<p>We’ll be talking about several AWS services in this section, and many of
-them make use of AWS Simple Storage Service, or <strong>S3</strong>. S3 allows you to
-store objects in the cloud with a high degree of durability. Where S3
-objects are stored are called “buckets”. S3 bucket names have to be
-unique, not just across you account, but across the entire world. A
-bucket name is globally unique. By the time we’re done, we’ll have
-created a couple buckets, as well globally unique login URL. For that
-reason, you should come up with a unique identifier now. For example,
-when we tested this documentation, we used the identifier
-“stelligent-cdblueprints.” Just note it down now and we’ll refer to it
-as we go on.</p>
-
-<h4>Turn on CloudTrail</h4>
-
-<p>First thing is to turn on CloudTrail. CloudTrail is basically logging
-for your AWS account. It will generate JSON files and store them in an
-S3 bucket (Amazon’s cloud storage solution) every time an action is
-performed on the account. While we won’t be doing a lot with CloudTrail
-right away, we’re turning it on now because it’s not retroactive — you
-can only see logs after you’ve turned it on. So let’s turn it on first.</p>
-
-<p>(Quick note: CloudTrail is a relatively new service, and at the time of
-this writing is only available in two regions: US-East-1 and US-West-2.
-If you’re using a different region, you might not be able to turn
-CloudTrail on. If that’s the case, just skip on to the next step.)</p>
-
-<ol>
-<li>Find CloudTrail panel from the main AWS Console,</li>
-<li>Click Get Started and just punch in an S3 Bucket name. (As was
-mentioned above, the S3 bucket name has to be globally unique. One
-approach is to take the unique identifier you came up with before,
-and just append -cloudtrail to it. We’ve named our bucket
-“stelligent-cdblueprints-cloudtrail”.)</li>
-<li>Click OK and you’re done.</li>
-</ol>
-
-
-<p>That was easy.</p>
-
-<h4>Turn on Programmatic Billing</h4>
-
-<p>Next, we’ll want to turn on Programmatic Billing. This will store your
-AWS billing in JSON files in another S3 bucket, so that other services
-can analyze your spending and plot trends over time. We’ll be visiting
-those kind of tools later on, but we want to enable programmatic billing
-now because (just like CloudTrail) it only generates data from the
-present — there’s no way to go back and generate historical data. By
-turning it on now, when we do start parsing that data for trends, you’ll
-have a good amount of data to go back through.</p>
-
-<p>Unlike CloudTrail, you’ll need to create and permission the bucket for
-this yourself.</p>
-
-<ol>
-<li>Go to the S3 console so we can create a new bucket. (Taking your
-previous unique identifier and just appending -billing to it isn’t a
-bad idea. We’ve named ours “stelligent-cdblueprints-billing” to keep
-with the theme.)</li>
-<li>Click Create Bucket and punch that name in.</li>
-<li>We’ll need to get a bucket permissions policy. Luckily, AWS will
-generate that for us at this page (we’ll need to flip back to the S3
-page in a second, so open this in a new
-tab): <a href="https://portal.aws.amazon.com/gp/aws/developer/account?ie=UTF8&amp;action=billing-preferences">https://portal.aws.amazon.com/gp/aws/developer/account?ie=UTF8&amp;action=billing-preferences</a></li>
-<li>Go down the list and turn everything on one and a time.</li>
-<li>When you get to to Programmatic billing, punch in the name of
-your bucket, and click “sample policy.” Just copy that policy, then
-flip back to your S3 bucket.</li>
-<li>Click on the bucket, then properties, then Permissions, and
-you’ll see an option for setting an access policy.</li>
-<li>Click into that, paste the policy you just copied, and save.</li>
-<li>Now, flip back to the Billing Preferences page, click save there</li>
-<li>Continue to enable everything else on this page.</li>
-</ol>
-
-
-<h4>If CloudTrail and Programmatic Billing are so important, why aren’t they turned on by default?</h4>
-
-<p>One thing to be aware of with these two services is that they will put
-data into your S3 buckets. S3 storage is very cheap, and while it is
-pretty close, it is not free. You’ll be paying between nine and fifteen
-cents a gig for storage, depending on region. For more details, <a href="https://aws.amazon.com/s3/pricing/">check
-out the S3 pricing page</a>. The
-services themselves don’t cost anything, though; you only pay for
-storing the data they generate.</p>
-
-<h4>Create IAM Users</h4>
-
-<p>Now that the bookkeeping is taken care of, let’s set up some users. A
-lot of new AWS users will start doing everything as the root account,
-which besides being a bit of a security risk, also poses some issues
-when you try to have multiple developers building solutions in your
-cloud. That’s why we strongly recommend setting up IAM users and roles
-from the beginning.</p>
-
-<p>We’re going to use the AWS Identity and Access Management (IAM) console.
-IAM allows you to create users, groups, and roles so that you can manage
-users and access to your AWS account. For the first section, we’ll only
-be creating one user (for you) and one group (admins) but as your usage
-of the cloud increases and you need to add more users, you’ll be able to
-control that from here.</p>
-
-<p>To create a new admins group, head to the IAM console</p>
-
-<ol>
-<li>Click Create Group, and follow the prompts.</li>
-<li>We’ll name the group “admins” and give it Administrator access.</li>
-</ol>
-
-
-<p>Now that we have an admins group, go to the Users panel and create a new
-user for yourself to log in as. It’s pretty straightforward, and if you
-hit any bumps in the road, <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/Using_SettingUpUser.html">AWS has some pretty good documentation about
-it</a>.</p>
-
-<p>After you create the user, add it to the admins group. Then, for each
-user we want to set up two types of authentication. The first is a
-simple password. Under each users’ Security Credentials tab, click the
-“Manage Passwords” button and you’ll be able to assign a password.</p>
-
-<p>After each user logs in, you’ll want to require them to add a
-multi-factor authentication (MFA) device to their account. To add an MFA
-device</p>
-
-<ol>
-<li>the user will need to login and go to the IAM console</li>
-<li>find their username</li>
-<li>under the security credentials tab, select “Manage MFA device.”</li>
-<li>Then follow the steps to add your virtual MFA device to the account.</li>
-</ol>
-
-
-<p>Having MFAs set up for all accounts helps ensure that AWS accounts won’t
-be compromised, keeping your data safe. Also, it helps ensure that your
-account won’t be used for malicious purposes (DDOS attacks, spam emails,
-etc) which would at best would increase your AWS bill and worst case
-have your entire account disabled. We strongly recommend enabling MFAs
-for all user accounts.</p>
-
-<p>Now that users are able to log in, we’ll need to give them a URL to do
-so. If you go to the main IAM console, you’ll find a IAM User Sign-In
-URL section. Remember the unique identifier you came up with your
-CloudTrail and Programatic Billing buckets? That’s probably a good
-option for your sign in URL. Changing it is optional, though highly
-recommended.</p>
-
-<p><strong>Wrapping Up</strong></p>
-
-<p>Using AWS is easy; using it well takes some thought. By setting up
-logging of your usage and billing information, you’ll be able to
-identify trends as time goes on. By setting up groups and users, your
-account is prepared to scale as you bring on more developers. And by
-giving those users multi-factor authentication, you’ve helped ensure the
-security of the account. You’re in a great place to start using the
-cloud. In our next post, we’ll lay the foundations for building a
-continuous delivery pipeline.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
       <h1 class="entry-title"><a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a></h1>
     
     
@@ -1954,6 +1655,185 @@ version-control repository.</p>
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/11/creating-a-secure-deployment-pipeline-in-aws/">Creating a Secure Deployment Pipeline in AWS</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-11T10:11:47-04:00" pubdate data-updated="true">Mar 11<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/downloads/code/opsworks_automation_stack.jpg" alt="" />
+<a href="https://aws.amazon.com/opsworks/">Amazon Web Services (AWS) OpsWorks</a> was released one year ago this month. In the past year, we’ve used OpsWorks on several Cloud Delivery projects at <a href="http://stelligent.com/">Stelligent</a> and at some of our customers. This article describes what’s worked for us and our customers. One of our core aims with any customer is to create a fully repeatable process for delivering software. To us, this translates into several more specific objectives. For each process we automate, the process must be fully documented, tested, scripted, versioned and continuous. This article describes how we achieved each of these five objectives in delivering OpsWorks solutions to our customers. In creating any solution, we version any and every asset required to create the software system. With the exception of certain binary packages, the entire software system gets described in code. This includes the application code, configuration, infrastructure and data.</p>
+
+<p>As a note, we’ve developed other AWS solutions without OpsWorks using CloudFormation, Chef, Puppet and some of the other tools mentioned here, but the purpose of this is to describe our approach when using OpsWorks.</p>
+
+<h2>AWS Tools</h2>
+
+<p>AWS has over 30 services and we use a majority of these services when creating deployment pipelines for continuous delivery and automating infrastructure. However, we typically use only a few services directly when building these infrastructure. For instance, when creating infrastructure with OpsWorks, we’ll use the AWS Ruby SDK to provision the OpsWorks resources and CloudFormation for the resources we cannot provision through OpsWorks. We use these three services to access services such as EC2, Route 53, VPC, S3, Elastic Load Balancing, Auto Scaling, etc. These three services are described below.</p>
+
+<h2>AWS OpsWorks</h2>
+
+<p>– OpsWorks is an infrastructure orchestration and event modeling service for provisioning infrastructure resources. It also enables you to call out to Chef cookbooks (more on Chef later). The OpsWorks model logically defines infrastructure in terms of stacks, layers and apps. Within stacks, you can define layers; within layers you can define applications and within applications, you can run deployments. An event model automatically triggers events against these stacks (e.g. Setup, Configure, Deploy, Undeploy, Shutdown). As mentioned, we use the AWS API (through the Ruby SDK) to script the provisioning of all OpsWorks behavior. We never manually make changes to OpsWorks through the console (we make these changes to the versioned AWS API scripts).</p>
+
+<h2>CloudFormation</h2>
+
+<p>– We use CloudFormation to automatically provision resources that we cannot provision directly through OpsWorks. For example, while OpsWorks connects with Virtual Private Clouds (VPC)s and Elastic Load Balancer (ELB)s, you cannot provision VPC or ELB directly through OpsWorks. Since we choose to script all infrastructure provisioning and workflow, we wrote CloudFormation templates for defining VPCs, ELBs, Relational Database Service (RDS) and Elasticache. We orchestrate the workflow in Jenkins so that these resources are automatically provisioned prior to provisioning the OpsWorks stacks. This way, the OpsWorks stacks can consume these resources that were provisioned in the CloudFormation templates. As with any other program, these templates are version-controlled.</p>
+
+<h2>AWS API</h2>
+
+<p>(using Ruby SDK) – We use the AWS Ruby SDK to script the provisioning of OpsWorks stacks. While we avoid using the SDK directly for most other AWS services (because we can use CloudFormation), we chose to use the SDK for scripting OpsWorks because CloudFormation does not currently support OpsWorks. Everything that you might do using the OpsWorks dashboard – creating stacks, JSON configuration, calling out to Chef, deployments – are all written in Ruby programs that utilize the OpsWorks portion of the AWS API.</p>
+
+<h2>Infrastructure Automation</h2>
+
+<p>There are other non-AWS specific tools that we use in automating infrastructure. One of them is the infrastructure automation tool, Chef. Chef Solo is called from OpsWorks. We use infrastructure automation tools to script and as a way to document the process of provisioning infrastructure.</p>
+
+<h2>Chef</h2>
+
+<p>– OpsWorks is designed to run Chef cookbooks (i.e. scripts/programs). Ultimately, Chef is where a bulk of the behavior for provisioning environments is defined – particularly once the EC2 instance is up and running. In Chef, we write recipes (logically stored in cookbooks) to install and configure web servers such as Apache and Nginx or application servers such as Rails and Tomcat. All of these Chef recipes are version-controlled and called from OpsWorks or CloudFormation.</p>
+
+<h2>Ubuntu</h2>
+
+<p> – When using OpsWorks and there’s no specific operating system flavor requirement from our customer, we choose to use Ubuntu 12.04 LTS. We do this for two reasons. The first is that at the time of this writing, OpsWorks supports two Linux flavors: Amazon Linux and Ubuntu 12.04 LTS. The reason we choose Ubuntu is because it allows us to use Vagrant (more on Vagrant later). Vagrant provides us a way to test our Chef infrastructure automation scripts locally – increasing our infrastructure development speed.</p>
+
+<h2>Supporting Tools</h2>
+
+<p>Other supporting tools such as Jenkins, Vagrant and Cucumber help with Continuous Integration, local infrastructure development and testing. Each are described below.</p>
+
+<h2>Jenkins</h2>
+
+<p> – Jenkins is a Continuous Integration server, but we also use it to orchestrate the coarse-grained workflow for the Cloud Delivery system and infrastructure for our customers. We use Jenkins fairly regularly in creating Cloud Delivery solutions for our customers. We configure Jenkins to run Cucumber features, build scripts, automated tests, static analysis, AWS Ruby SDK programs, CloudFormation templates and many more activities. Since Jenkins is an infrastructure component as well, we’ve automated the creation in OpsWorks and Chef and it also runs Cucumber features that we’ve written. These scripts and configuration are stored in Git as well and we can simply type a single command to get the Jenkins environment up and running. Any canonical changes to the Jenkins server are made by modifying the programs or configuration stored in Git.</p>
+
+<h2>Vagrant##</h2>
+
+<p>– Vagrant runs a virtualized environment on your desktop and comes with support for certain OS flavors and environments. As mentioned, we use Vagrant to run and test our infrastructure automation scripts locally to increase the speed of development. In many cases, what might take 30-40 minutes to run the same Chef cookbooks can take 4-5 minutes to run locally in Vagrant – significantly increase our infrastructure development productivity.</p>
+
+<h2>Cucumber</h2>
+
+<p> – We use Cucumber to write infrastructure specifications in code called features. This provides executable documented specifications that get run with each Jenkins build. Before we write any Chef, OpsWorks or CloudFormation code, we write Cucumber features. When completed, these features are run automatically after the Chef, OpsWorks and/or CloudFormation scripts provision the infrastructure to ensure the infrastructure is meeting the specifications described in the features. At first, these features are written without step definitions (i.e. they don’t actually verify behavior against the infrastructure), but then we iterate through a process of writing programs to automate the infrastructure provisioning while adding step definitions and refining the Cucumber features. Once all of this is hooked up to the Jenkins Continuous Integration server, it provisions the infrastructure and then runs the infrastructure tests/features written in Cucumber. Just like writing XUnit tests for the application code, this approach ensures our infrastructure behaves as designed and provides a set of regression tests that are run with every change to any part of the software system. So, Cucumber helps us document the feature as well as automate infrastructure tests. We also write usage and architecture documentation in READMEs, wikis, etc.</p>
+
+<p>A list of the AWS tools we utilized are enumerated below.</p>
+
+<p>We applied the on-demand usability of the cloud with a proven continuous delivery approach to build an automated one click method for building and deploying software into scripted production environments.</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Tool </th>
+<th> What is it? </th>
+<th> Our Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>  AWS EC2      </td>
+<td> Cloud-based virtual hardware instances       </td>
+<td> We use EC2 for all of our virtual hardware needs. All instances, from development to production are run on EC2</td>
+</tr>
+<tr>
+<td></td>
+<td> AWS S3 </td>
+<td> Cloud-based storage </td>
+<td> We use S3 as both a binary repository and a place to store successful build artifacts.</td>
+</tr>
+<tr>
+<td></td>
+<td> AWS IAM </td>
+<td> User-based access to AWS resources </td>
+<td> We create users dynamically and use their AWS access and secret access keys so we don’t have to store credentials as properties.</td>
+</tr>
+<tr>
+<td></td>
+<td> AWS CloudWatch </td>
+<td>System monitoring</td>
+<td> Monitors all instances in production. If an instance takes an abnormal amount of strain or shuts down unexpectedly, SNS sends an email to designated parties.</td>
+</tr>
+<tr>
+<td></td>
+<td> AWS SNS </td>
+<td> Email notifications </td>
+<td> When an environment is created or a deployment is run, SNS is used to send notifications to affected parties.</td>
+</tr>
+<tr>
+<td></td>
+<td>Cucumber </td>
+<td> Acceptance testing </td>
+<td> Cucumber is used for testing at almost every step of the way. We use Cucumber to test infrastructure, deployments and application code to ensure correct functionality. Cucumber’s unique english-ess  verbiage allows both technical personnel and customers to communicate using an executable test.</td>
+</tr>
+<tr>
+<td></td>
+<td> Liquibase </td>
+<td> Automated database change management </td>
+<td> Liquibase is used for all database changesets. When a change is necessary within the database, it is made to a liquibase changelog.xml.</td>
+</tr>
+<tr>
+<td></td>
+<td>AWS CloudFormation </td>
+<td> Templating language for orchestrating all AWS resources </td>
+<td> CloudFormation is used for creating a fully working Jenkins environment and Target environment. For instance for the Jenkins environment it creates the EC2 instance with CloudWatch monitoring alarms, associated IAM user, SNS notification topic, everything required for Jenkins to build. This along with Jenkins are the major pieces of the infrastructure.</td>
+</tr>
+<tr>
+<td></td>
+<td>AWS SimpleDB </td>
+<td> Cloud-based NoSQL database </td>
+<td> SimpleDB is used for storing dynamic property configuration and passing properties through the CD Pipeline. As part of the environment creation process, we store multiple values such as IP addresses that we need when deploying the application to the created environment.</td>
+</tr>
+<tr>
+<td></td>
+<td>Jenkins </td>
+<td> We’re using Jenkins to implement a CD pipeline using the Build Pipeline plugin.</td>
+<td> Jenkins runs the CD pipeline which does the building, testing, environment creation and deploying. Since the CD pipeline is also code (i.e. configuration code), we version our Jenkins configuration.</td>
+</tr>
+<tr>
+<td></td>
+<td> Capistrano </td>
+<td> Deployment automation </td>
+<td> Capistrano orchestrates and automates deployments. Capistrano is a Ruby-based deployment DSL that can be used to deploy to multiple platforms including Java, Ruby and PHP. It is called as part of the CD pipeline and deploys to the target environment.</td>
+</tr>
+<tr>
+<td></td>
+<td>Puppet </td>
+<td> Infrastructure automation </td>
+<td> Puppet takes care of the environment provisioning. CloudFormation requests the environment and then calls Puppet to do the dynamic configuration. We configured Puppet to install, configure, and manage the packages, files and services.</td>
+</tr>
+<tr>
+<td></td>
+<td> Git </td>
+<td> Version control system </td>
+<td> Git is the version control repository where every piece of the Manatee infrastructure is stored. This includes the environment scripts such as the Puppet modules, the CloudFormation templates, Capistrano deployment scripts, etc.</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1977,10 +1857,6 @@ version-control repository.</p>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/">Continuous Delivery Implementation : Getting started with AWS</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
       </li>
     
@@ -1990,6 +1866,10 @@ version-control repository.</p>
     
       <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/">Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1</a>
       </li>
     
   </ul>

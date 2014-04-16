@@ -478,16 +478,6 @@
     </url>
     <url>
         <loc>
-            http://bvajjala.github.io/blog/2014/03/11/tools-in-aws-for-implementing-continuous-deployment-pipeline/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/blog/2014/03/11/continuous-delivery-tools-list/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
             http://bvajjala.github.io/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/
         </loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
@@ -531,12 +521,6 @@
     <url>
         <loc>
             http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/
         </loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
@@ -1135,12 +1119,18 @@
         <lastmod>2014-04-16T11:07:47-04:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://bvajjala.github.io/projects/continuous-delivery-implementation-getting-started-with-aws/
+        </loc>
+        <lastmod>2014-04-16T12:18:24-04:00</lastmod>
+    </url>
+    <url>
         <loc>http://bvajjala.github.io/projects/continuous-delivery-tools-list/</loc>
         <lastmod>2014-04-16T11:42:42-04:00</lastmod>
     </url>
     <url>
         <loc>http://bvajjala.github.io/projects/</loc>
-        <lastmod>2014-04-16T11:28:51-04:00</lastmod>
+        <lastmod>2014-04-16T12:09:33-04:00</lastmod>
     </url>
     <url>
         <loc>http://bvajjala.github.io/robots.txt</loc>

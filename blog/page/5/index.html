@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="I&rsquo;ve been tempted to write a bit about Static Site Generators (SSGs) for a while now, mainly because I love them. I&rsquo;ve been using (Jekyll &hellip;">
+  <meta name="description" content="Well just got a mac from my new project FB Status&hellip; &ndash; couldn&rsquo;t resist it :) One of the tasks was to setup an environment, and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,363 +65,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/21/the-joy-and-pain-of-using-jekyll/">The Joy and Pain of Using Jekyll</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-21T22:48:00-04:00" pubdate data-updated="true">Aug 21<span>st</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&rsquo;ve been tempted to write a bit about Static Site Generators (SSGs) for a while now, mainly because I love them. I&rsquo;ve been using (Jekyll)[<a href="http://jekyllrb.com/">http://jekyllrb.com/</a>] for various projects for a while now and I love it. The simplified hosting, higher security, and general hackability are just a few pros that make it worth it.</p>
-
-<p>But they have also pained me, and after reading <a href="http://screamingatmyscreen.com/2013/8/the-joy-and-pain-of-using-a-static-site-generator-for-private-and-client-work/">&ldquo;The joy and pain of using a static site generator for private and client work&rdquo;</a> I thought I&rsquo;d add in my own few observations from a Jekyll perspective.</p>
-
-<h2>The joys</h2>
-
-<p>Why would I talk about Jekyll specifically? It has a lot of pros that make it
-one of the most popular SSGs out there, and hence worth dicussing. Here are just a few:</p>
-
-<ul>
-<li>It&rsquo;s extremely simple, has no predefined structure, just write HTML or Markdown and go</li>
-<li>No server side code is a big pro to me, easier deployment, easier security, simpler hosting.</li>
-<li>It&rsquo;s the default recommended SSG for <a href="http://pages.github.com/">Github Pages</a>, allowing you to use them as free hosting!</li>
-<li>Github even compiles Jekyll for you server side meaning you can use <a href="http://github.com">Github.com</a> to edit your site.</li>
-</ul>
-
-
-<h2>Pain points</h2>
-
-<p>Sadly not all is perfect and here are some of my main observations of working on a few Jekyll sites in small teams.</p>
-
-<h3>Forget about I18n</h3>
-
-<p>Most of you might not ever need any internationalisation but the day a client turns around to you and asks &ldquo;Can we translate this one page to Spanish?&rdquo; you will hate yourself for using Jekyll. Internationalisation is not standard supported and therefore a royal pain in the *** to do nice.</p>
-
-<p>Not to mention that you can&rsquo;t serve the same content in different languages under the same URL depending on the user&rsquo;s cookie or locale. Forget about it, ain&rsquo;t gonna happen.</p>
-
-<h3>No plugins on Github</h3>
-
-<p>There are a lot of plugins for Jekyll and they&rsquo;re awesome. There&rsquo;s even a few for I18n, though I never tried them. Sadly non of them are supported by Github. Sure, you can compile your code client side, then push the compiled code (including the plugin generated code) to the server. This stops you from quickly pushing any mayor changes without using a laptop.</p>
-
-<h3>No predefined structure</h3>
-
-<p>Jekyll is ridiculously simple. I think all you need is a config file and some HTML or Markdown and <strong>boom</strong> your site is there.  But when your site extends beyond a few files you quickly start adding some folders: images go into <code>/images/</code>, stylesheets into <code>/stylesheets/</code>, etc. But what about pages? Use <code>foo.html</code> or <code>foo/index.html</code>? Store the images for that pages in <code>/images/foo/</code> or <code>/foo/images/</code>?</p>
-
-<p>All of these decisions are easily made, but it does mean you need to explain every new decision to your colleagues, and it increases the technical debt when bringing onboard new developers.</p>
-
-<h3>Markdown is limited</h3>
-
-<p>I love Markdown but sometimes it can be such a pain. Especially when you want to go outside of the standard &ldquo;headers, paragraphs, links&rdquo; it can just be upsetting. Getting HTML inside Markdown to work in Jekyll used to (and probably still) require switching to a different Markdown parser, which wasn&rsquo;t supported on Github, etc.</p>
-
-<p>To be honest this is a bit of a pet peeve with Markdown, not Jekyll. Often all I want to do is just add a class to something, either a header or a link. I often wished Markdown supported something like this:</p>
-
-<script src="https://gist.github.com/cbetta/48c07f2bd1e1915aefa6.js"></script>
-
-
-<h2>Suggestions</h2>
-
-<p>In short, I think a few suggestions for the further improvements of Jekyll, Github Pages, and Markdown are at hand:</p>
-
-<ol>
-<li>Standard I18n support in Jekyll would be nice</li>
-<li>Support for some default &ldquo;safe&rdquo; plugins on Github would be amazing</li>
-<li>A generator to generate a &ldquo;default&rdquo; site structure would be nice and could help promote best practices.</li>
-<li>Markdown should support some basic classes and indexes, allowing easier application of CSS and JS.</li>
-</ol>
-
-
-<p>Alternatively I highly recommend using <a href="http://middlemanapp.com/">Middleman</a>, another SSG that seems to solve some of the pain points described above.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/16/cheffile-and-librarian-locks/">Cheffile &amp; &#8216;Librarian Locks&#8217;</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-16T00:56:00-04:00" pubdate data-updated="true">Aug 16<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/librarian.png" title="'librarian chef'" >
-If you don&rsquo;t know what librarian is &ndash; get to know it :) (it makes life much easier)[<a href="http://rubydoc.info/gems/librarian-chef">http://rubydoc.info/gems/librarian-chef</a>] than way back when &hellip;</p>
-
-<p>The most annoying thing happend to me earlier this evening, I was working on a cookbook [A chef cookbook &hellip;, I don&rsquo;t actually do the cooking at home :)], and running librarian install yielded the following error:</p>
-
-<pre><code>"Cheffile and Cheffile.lock are out of sync!"
-</code></pre>
-
-<p>So like a good boy I remoced the Cheffile.lock and ran it again resulting with the same damn error message &hellip; arrrrrr !</p>
-
-<p>So after examening my Cheffile over and over I noticed I have listed a dependency from two different location somthing like the followin [ clieng url&rsquo;s omitted from snippet ]:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'> <span class="c">#!/usr/bin/env ruby</span>
-</span><span class='line'>  <span class="c">#^syntax detection</span>
-</span><span class='line'>  site <span class="s2">&quot;http://shelf.clients_domain.corp:8080&quot;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;simple_proxy&#39;</span>, :git <span class="o">=</span>&gt; <span class="s1">&#39;git://clients_domain.corp/hagzag/simple_proxy.git&#39;</span>, :ref <span class="o">=</span>&gt; <span class="s1">&#39;master&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;nw-abap&#39;</span>,     :git <span class="o">=</span>&gt; <span class="s1">&#39;git://clients_domain.corp/hagzag/nw-abap.git&#39;</span>, :ref <span class="o">=</span>&gt; <span class="s1">&#39;master&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;sapinst&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c"># for lvm volume creation do this once ...</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;lvm&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;sap-lvm&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>,      :site <span class="o">=</span>&gt; <span class="s1">&#39;http://community.opscode.com/api/v1&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  cookbook <span class="s1">&#39;nfs&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you look a line numbers 11 &amp; 14 you will see I am specifying the smae cookbook from tow different sources &hellip;, this is a good thing, your dependecny mechanisem / tool isn&rsquo;t making decitions for you [ unlike Maven for exmaple &hellip; ].</p>
-
-<p>So in order to avoid this error and to comtinue working I had to remove one if the lines and I was good to go.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'> ...
-</span><span class='line'>  <span class="c">#cookbook &#39;line&#39;,      :site =&gt; &#39;http://community.opscode.com/api/v1&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  cookbook <span class="s1">&#39;nfs&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Another fraction on my time line &hellip;</p>
-
-<p>Enjoy.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/07/30/putting-the-web-into-webapi/">Putting the Web Into WebApi</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-30T22:05:00-04:00" pubdate data-updated="true">Jul 30<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>The .net api developers, the WebApi framework offers a compelling alternative
-to asp.net mvc for slinging json or (gasp) xml over http. One great feature
-you get out of the box is content negotiation, where WebApi will look at
-request headers to decide which format to use when processing a request
-body or sending back a response.</p>
-
-<p>WebApi also includes the concept of an ApiExplorer, a built in service that
-knows about all the routes, templates and parameters an application is
-configured to handle. It even supports attaching human friendly documentation.</p>
-
-<p>With these built in perks, WebApi gets you 95% of the way there. What it
-doesn&rsquo;t do out of the box, unfortunately, is something that it says right
-on the box. It doesn&rsquo;t do web.</p>
-
-<h2>HTTP, ReST and the Web</h2>
-
-<p>There&rsquo;s been a growing buzz around the idea that writing an application
-that speaks json does not give you something that can be called ReST.
-To get to ReST nirvana your api needs to speak with hypermedia, giving
-the client, in addition to data, links and forms that can do stuff with
-the data.</p>
-
-<p>If you aren&rsquo;t familiar with this distinction, here are some resources
-that sell the concept well:</p>
-
-<ul>
-<li><a href="http://martinfowler.com/articles/richardsonMaturityModel.html">Richardson Maturity Model</a></li>
-<li><a href="http://www.infoq.com/presentations/web-api-html">Building Hypermedia APIs with HTML</a> (talk by Jon Moore)</li>
-<li><a href="https://speakerdeck.com/stilkov">Many slides by Stefan Tilkov</a></li>
-<li><a href="https://speakerdeck.com/ammeep/exist-in-the-web-not-on-it">Exist In the Web &ndash; Not on it</a> by Amy Palamountain</li>
-</ul>
-
-
-<h2>Microdata</h2>
-
-<p>Jon Moore&rsquo;s work is particularly intriguing because he shows what
-you can already do with <a href="http://en.wikipedia.org/wiki/Microdata_(HTML">Microdata</a>).</p>
-
-<p>Microdata boils down to 3 attributes that you stick on elements in your
-html5 markup, and they&rsquo;re all you need to give a computer semantic
-data. You can nest properties into a scope, describe the type of data
-being represented, and even nest scopes with scopes recursively.</p>
-
-<p>Jon&rsquo;s talks show how a web client that speaks Microdata can already start
-on sites like <a href="http://ebay.com/">ebay.com</a> and find and manipulate resources
-without knowing anything ahead of time about what resources are there and
-what URLs are used to access them.</p>
-
-<h2>WebApi + Microdata</h2>
-
-<p>On the one hand we have a .net framework for writing HTTP apis that
-has pluggable support for different mime types. On the other hand we
-have html5 and Microdata. Think they could be friends?</p>
-
-<p>I&rsquo;m excited to announce HtmlMicrodataFormatter,
-a new open source (APL) project available
-on <a href="">nuget.org</a>
-and hosted on <a href="">GitHub</a>.</p>
-
-<p>When you install this package into your WebApi project, it adds two
-features.</p>
-
-<p>First, if you enter the URL for one of your api methods into a web
-browser, you get (relatively) nice, human friendly html5 back instead
-of the wall of xml you would otherwise be greeted with.</p>
-
-<p>Second, and perhaps more importantly, if you browse to ~/api,
-you will be greeted by an html5 page that includes links and
-forms for all the routes that are registered with ApiExplorer.</p>
-
-<p>If your routes are not templated, you can fill in the inputs
-and submit forms to test them out right in the browser. If your
-routes are templated, you can still use the forms in the browser,
-but you&rsquo;ll need to do some extra work to fill in the template
-and update the form action in javascript before the form is
-submitted. A future post will cover how this can be done.</p>
-
-<p>Turn on xml documentation for your project, rebuild, and now
-all the documentation comments you attach to your controllers
-and actions appear on the forms.</p>
-
-<h2>Why it Matters</h2>
-
-<p>Obviously, getting a free browser based form generated for
-each action can be a productivity boon for developers who
-are tired of writing</p>
-
-<pre><code>curl -X DELETE -H 'Accept: application/json' http://localhost:49497/api/users/fred'
-</code></pre>
-
-<p>But it&rsquo;s more than that. Make your client project use html5
-and instead of hard-coding URLs for each thing the client
-wants to do, it enters at /api, finds the form it wants,
-fills it in and submits it. The Microdata attributes in
-the response, along with links and forms, give the client
-the pieces it needs to drive state, just like Roy T. Fielding
-intended when ReST was first described.</p>
-
-<p>Have third party clients that consume your api? Now you
-don&rsquo;t have to give them a separate document or website
-that describes (out of band) how to use your api. Just
-link them to yourwebsite/api, and they can read the
-documentation and discover what they can do without
-guessing or following brittle conventions.</p>
-
-<p>Putting the web into WebApi removes the tight coupling
-between client and server. Now you can change your routes,
-rename parameters, add parameters, and the client will
-automatically see those changes reflected in the forms
-and links they see when they enter your api. No more <code>/api/v1/users</code>
-through <code>/api/v23/users</code>. No more api version headers.</p>
-
-<h2>Next Steps</h2>
-
-<p>HtmlMicrodataFormatter is pretty young and there are
-many ideas left to flesh out. For example, making it easy to add
-links and forms to the output of controller actions,
-or improving how xml documentation is collected and
-converted to html, or making it easier to link from
-resources to related resources with appropriate rel
-attributes, or, or, or…</p>
-
-<p>I hope you like HtmlMicrodataFormatter, and if you
-do, maybe get involved and help improve it by
-submitting feedback, bugs, enhancements or pull
-requests to the GitHub project.</p>
-
-<p>Similar to Jon Moore&rsquo;s python based microdata
-client, work has started on a .net dynamic
-client which I hope to share soon.</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -902,6 +545,209 @@ Well a common use case for doing stuff with Jenkins jobs / configuration [ for e
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/">Vagrant+Puppet+FPM=Amazeballs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-07T18:23:00-04:00" pubdate data-updated="true">Apr 7<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Lately I&rsquo;ve been doing a lot of prototyping with <a href="http://www.vagrantup.com/">Vagrant</a>, specifically for a couple of distinct activities:&ndash;</p>
+
+<ul>
+<li>building puppet modules using <a href="https://github.com/elasticdog/puppet-sandbox">the excellent puppet sandbox</a> project</li>
+<li>and building RPM packages with <a href="https://github.com/jordansissel/fpm">FPM</a>.</li>
+</ul>
+
+
+<p>I realized I was spending a bunch of time flipping back and forth between Vagrant environments and I had no quick way to utilize RPMs built with FPM inside my puppet modules.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/11/install-mysql2-gem-file-solved/">Install Mysql2 Gem File :: Solved</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-11T22:26:00-04:00" pubdate data-updated="true">Mar 11<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/ruby_logo2.jpg" title="'Ruby Logo'" ></p>
+
+<h2><strong>Problem</strong> </h2>
+
+<p>can&rsquo;t install mysql2 gem :(
+See the full error below &hellip; (or in &ldquo;Read on&rdquo; link) what solved the issue was:
+installing the two missing dependencies <em>&ldquo;mysql-client libmysqlclient-dev&rdquo;</em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install mysql-client libmysqlclient-dev
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/03/11/install-mysql2-gem-file-solved/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/09/simple-zookeeper-cluster/">Simple Zookeeper Cluster</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-09T07:00:00-05:00" pubdate data-updated="true">Mar 9<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Sometimes I need to run <a href="http://zookeeper.apache.org">ZooKeeper</a> ensemble on my development box to test my application on the production-like environment. I found that recreating the whole ensemble from scratch is much faster than cleaning it up using ZooKeeper CLI tool. To automate this process I created a bash script which I want to share in this blog post. I hard-coded all the paths in the script using my regular conventions. You might need to change them to yours — it should be fairly straightforward.</p>
+
+<p>Before you can use the script, you need to install ZooKeeper on your box. That&rsquo;s what I did on my machine</p>
+
+<pre><code>$ cd /opt
+$ sudo mkdir zookeeper
+$ sudo chown -R andrey:admin zookeeper
+$ cd zookeeper
+$ wget http://apache.mirror.rafal.ca/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz
+$ tar xf zookeeper-3.4.5.tar.gz
+$ rm zookeeper-3.4.5.tar.gz
+$ ln -s zookeeper-3.4.5 zookeeper
+</code></pre>
+
+<p>In the end you should have a ZooKeeper installed in <em>/opt/zookeeper/zookeeper</em> directory.</p>
+
+<p>Now download, chmod, and run the <a href="https://gist.github.com/ndpar/5105486">script</a>. It will create the following files</p>
+
+<pre><code>/opt/zookeeper/zookeeper/cluster
+├── server1
+│   ├── conf
+│   │   ├── log4j.properties
+│   │   └── zoo.cfg
+│   ├── data
+│   │   └── myid
+│   └── logs
+├── server2
+│   ├── conf
+│   │   ├── log4j.properties
+│   │   └── zoo.cfg
+│   ├── data
+│   │   └── myid
+│   └── logs
+├── server3
+│   ├── conf
+│   │   ├── log4j.properties
+│   │   └── zoo.cfg
+│   ├── data
+│   │   └── myid
+│   └── logs
+├── start.sh
+└── stop.sh
+</code></pre>
+
+<p>This is the minimum configuration for 3-node ensemble (cluster), which is recommended for production. To start the cluster, run the following command</p>
+
+<pre><code>$ cd /opt/zookeeper/zookeeper
+$ cluster/start.sh
+</code></pre>
+
+<p>Check the log files to see if the cluster is successfully started</p>
+
+<pre><code>$ tail -f cluster/server{1,2,3}/logs/zookeeper.out
+</code></pre>
+
+<p>When the cluster is up and running, you can test your application. After you are done, shutdown the cluster using the following command</p>
+
+<pre><code>$ cluster/stop.sh
+$ ps -ef | grep java
+</code></pre>
+
+<p>To recreate a clean cluster, just run the script again</p>
+
+<pre><code>$ ./zookeeper-init-ensemble.sh
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -927,10 +773,6 @@ Well a common use case for doing stuff with Jenkins jobs / configuration [ for e
       </li>
     
       <li class="post">
-        <a href="/blog/2014/03/25/continuous-delivery-implementation-getting-started-with-aws/">Continuous Delivery Implementation : Getting started with AWS</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
       </li>
     
@@ -940,6 +782,10 @@ Well a common use case for doing stuff with Jenkins jobs / configuration [ for e
     
       <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/">Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1</a>
       </li>
     
   </ul>
