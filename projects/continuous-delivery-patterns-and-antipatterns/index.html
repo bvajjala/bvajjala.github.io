@@ -101,115 +101,147 @@
 
 <h1>CONFIGURATION MANAGEMENT</h1>
 
-<p>Configuration Management is “the process by which all artifacts relevant to your project, and the relationships between them, are stored, retrieved, uniquely identified, and modified”. (1)</p>
-
-<p>Note: Each pattern is cited with a number in parentheses that corresponds to the source in the References section.</p>
+<p>Configuration Management is “the process by which all artifacts relevant to your project, and the relationships between them, are stored, retrieved, uniquely identified, and modified”. (1) <em>Note: Each pattern is cited with a number in parentheses that corresponds to the source in the References section.</em></p>
 
 <h2>Configurable Third-Party Software (1)</h2>
 
-<p><strong>Pattern</strong> Evaluate and use third-party software that can be easily configured, deployed, and automated.</p>
+<ul>
+<li><strong>Pattern</strong> Evaluate and use third-party software that can be easily configured, deployed, and automated.</li>
+<li><strong>Anti-Patterns</strong> Procuring software that cannot be externally configured. Software without an API or command-line interface that forces teams to use the GUI only.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong> Procuring software that cannot be externally configured. Software without an API or command-line interface that forces teams to use the GUI only.</p>
 
 <h2>Configuration Catalog (1)</h2>
 
-<p><strong>Pattern</strong>  Maintain a catalog of all options for each application, how to change these options and storage locations for each application. Automatically create this catalog as part of the build process.</p>
+<ul>
+<li><strong>Pattern</strong>  Maintain a catalog of all options for each application, how to change these options and storage locations for each application. Automatically create this catalog as part of the build process.</li>
+<li><strong>Anti-Patterns</strong> Configuration options are not documented. The catalog of applications and other assets is “tribal knowledge”.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong> Configuration options are not documented. The catalog of applications and other assets is “tribal knowledge”.</p>
 
 <h2>Mainline (3)</h2>
 
-<p><strong>Pattern</strong>  Minimize merging and keep the number of active code lines manageable by developing on a mainline.</p>
+<ul>
+<li><strong>Pattern</strong>  Minimize merging and keep the number of active code lines manageable by developing on a mainline.</li>
+<li><strong>Anti-Patterns</strong> Multiple branches per project.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong> Multiple branches per project.</p>
 
 <h2>Merge Daily (1)</h2>
 
-<p><strong>Pattern</strong> Changes committed to the mainline are applied to each branch on at least a daily basis.</p>
+<ul>
+<li><strong>Pattern</strong> Changes committed to the mainline are applied to each branch on at least a daily basis.</li>
+<li><strong>Anti-Patterns</strong>   Merging every iteration once a week or less often than once a day.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Merging every iteration once a week or less often than once a day.</p>
 
 <h2>Protected Configuration (5) ,(1)</h2>
 
-<p><strong>Pattern</strong>Store configuration information in secure remotely accessible locations such as a database, directory, or registry.</p>
+<ul>
+<li><strong>Pattern</strong>Store configuration information in secure remotely accessible locations such as a database, directory, or registry.</li>
+<li><strong>Anti-Patterns</strong>   Open text passwords and/or single machine or share.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Open text passwords and/or single machine or share.</p>
 
 <h2>Repository (3) , (1)</h2>
 
-<p><strong>Pattern</strong>All source files &ndash; executable code, configuration, host environment, and data &ndash; are committed to a version-control repository.</p>
+<ul>
+<li><strong>Pattern</strong>All source files &ndash; executable code, configuration, host environment, and data &ndash; are committed to a version-control repository.</li>
+<li><strong>Anti-Patterns</strong>   Some files are checked in, others, such as environment configuration or data changes, are not. Binaries – that can be recreated through the build and deployment process – are checked in.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Some files are checked in, others, such as environment configuration or data changes, are not. Binaries – that can be recreated through the build and deployment process – are checked in.</p>
 
 <h2>Short-Lived Branches (1)</h2>
 
-<p><strong>Pattern</strong>Branches must be short lived – ideally less than a few days and never more than an iteration.</p>
+<ul>
+<li><strong>Pattern</strong>Branches must be short lived – ideally less than a few days and never more than an iteration.</li>
+<li><strong>Anti-Patterns</strong>   Branches that last more than an iteration. Branches by product feature that live past a release.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Branches that last more than an iteration. Branches by product feature that live past a release.</p>
 
 <h2>Single Command Environment (1)</h2>
 
-<p><strong>Pattern</strong>Check out the project’s version-control repository and run a single command to build and deploy the application to any accessible environment, including the local development.</p>
+<ul>
+<li><strong>Pattern</strong>Check out the project’s version-control repository and run a single command to build and deploy the application to any accessible environment, including the local development.</li>
+<li><strong>Anti-Patterns</strong>   Forcing the developer to define and configure environment variables. Making the developer install numerous tools in order for the build/deployment to work.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Forcing the developer to define and configure environment variables. Making the developer install numerous tools in order for the build/deployment to work.</p>
 
 <h2>Single Path to Production (1)</h2>
 
-<p><strong>Pattern</strong>Configuration management of the entire system &ndash; source, configuration, environment and data. Any change can be tied back to a single revision in the version-control system.</p>
+<ul>
+<li><strong>Pattern</strong>Configuration management of the entire system &ndash; source, configuration, environment and data. Any change can be tied back to a single revision in the version-control system.</li>
+<li><strong>Anti-Patterns</strong>   Parts of system are not versioned. Inability to get back to a previously configured software system.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Parts of system are not versioned. Inability to get back to a previously configured software system.</p>
 
 <h1>CONTINUOUS INTEGRATION (CI)</h1>
 
 <h2>Build Threshold (5)</h2>
 
-<p><strong>Pattern</strong> Fail a build when a project rule is violated – such as architectural breaches, slow tests, and coding standard violations.</p>
+<ul>
+<li><strong>Pattern</strong> Fail a build when a project rule is violated – such as architectural breaches, slow tests, and coding standard violations.</li>
+<li><strong>Anti-Patterns</strong>   Manual code reviews. Learning of code quality issues later in the development cycle.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Manual code reviews. Learning of code quality issues later in the development cycle.</p>
 
 <h2>Commit Often (6)</h2>
 
-<p><strong>Pattern</strong> Each team member checks in regularly to trunk &ndash; at least once a day but preferably after each task to trigger the CI system.</p>
+<ul>
+<li><strong>Pattern</strong> Each team member checks in regularly to trunk &ndash; at least once a day but preferably after each task to trigger the CI system.</li>
+<li><strong>Anti-Patterns</strong>   Source files are committed less frequently than daily due to the number of changes from the developer.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Source files are committed less frequently than daily due to the number of changes from the developer.</p>
 
 <h2>Continuous Feedback (6)</h2>
 
-<p><strong>Pattern</strong> Send automated feedback from CI system to all Cross-Functional Team members.</p>
+<ul>
+<li><strong>Pattern</strong> Send automated feedback from CI system to all Cross-Functional Team members.</li>
+<li><strong>Anti-Patterns</strong>   Notifications are not sent; notifications are ignored; CI system spams everyone with information they cannot use.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Notifications are not sent; notifications are ignored; CI system spams everyone with information they cannot use.</p>
 
 <h2>Continuous Integration (6)</h2>
 
-<p><strong>Pattern</strong> Building and testing software with every change committed to a project’s version control repository.</p>
+<ul>
+<li><strong>Pattern</strong> Building and testing software with every change committed to a project’s version control repository.</li>
+<li><strong>Anti-Patterns</strong>   Scheduled builds, nightly builds, building periodically, building exclusively on developer’s machines, not building at all.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Scheduled builds, nightly builds, building periodically, building exclusively on developer’s machines, not building at all.</p>
 
 <h2>Stop the Line (5) , (1) , (4), (12)</h2>
 
-<p><strong>Pattern</strong> Fix software delivery errors as soon as they occur; stop the line. No one checks in on a broken build as the fix becomes the highest priority.</p>
+<ul>
+<li><strong>Pattern</strong> Fix software delivery errors as soon as they occur; stop the line. No one checks in on a broken build as the fix becomes the highest priority.</li>
+<li><strong>Anti-Patterns</strong>   Builds stay broken for long periods of time, thus preventing developers from checking out functioning code.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Builds stay broken for long periods of time, thus preventing developers from checking out functioning code.</p>
 
 <h2>Independent Build (6)</h2>
 
-<p><strong>Pattern</strong> Write build scripts that are decoupled from IDEs. These build scripts are executed by a CI system so that software is built at every change.</p>
+<ul>
+<li><strong>Pattern</strong> Write build scripts that are decoupled from IDEs. These build scripts are executed by a CI system so that software is built at every change</li>
+<li><strong>Anti-Patterns</strong>   Automated build relies on IDE settings. Builds are unable to be run from the command line.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Automated build relies on IDE settings. Builds are unable to be run from the command line.</p>
 
 <h2>Visible Dashboards</h2>
 
-<p><strong>Pattern</strong> Provide large visible displays that aggregate information from your delivery system to provide high-quality feedback to the Cross-Functional Team in real time.</p>
+<ul>
+<li><strong>Pattern</strong> Provide large visible displays that aggregate information from your delivery system to provide high-quality feedback to the Cross-Functional Team in real time.</li>
+<li><strong>Anti-Patterns</strong>   Email-only alerts or not publicizing the feedback to the entire team.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Email-only alerts or not publicizing the feedback to the entire team.</p>
 
 <h1>TESTING</h1>
 
 <h2>Automate Tests</h2>
 
-<p><strong>Pattern</strong> Automate the verification and validation of software to include unit, component, capacity, functional, and deployment tests</p>
+<ul>
+<li><strong>Pattern</strong> Automate the verification and validation of software to include unit, component, capacity, functional, and deployment tests</li>
+<li><strong>Anti-Patterns</strong>   Manual testing of units, components, deployment, and other types of tests.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Manual testing of units, components, deployment, and other types of tests.</p>
 
 <blockquote><ul>
 <li>Unit- Automating tests without any dependencies.</li>
@@ -222,199 +254,282 @@
 
 <h2>Isolate Test Data (1)</h2>
 
-<p><strong>Pattern</strong> Use transactions for database-dependent tests (e.g., component tests) and roll back the transaction when done. Use a small subset of data to effectively test behavior</p>
+<ul>
+<li><strong>Pattern</strong> Use transactions for database-dependent tests (e.g., component tests) and roll back the transaction when done. Use a small subset of data to effectively test behavior</li>
+<li><strong>Anti-Patterns</strong>   Using a copy of production data for Commit Stage tests. Running tests against a shared database.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Using a copy of production data for Commit Stage tests. Running tests against a shared database.</p>
 
 <h2>Parallel Tests (1)</h2>
 
-<p><strong>Pattern</strong> Run multiple tests in parallel across hardware instances to decrease the time in running tests.</p>
+<ul>
+<li><strong>Pattern</strong> Run multiple tests in parallel across hardware instances to decrease the time in running tests.</li>
+<li><strong>Anti-Patterns</strong>   Running tests on one machine or instance. Running dependent tests that cannot be run in parallel.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Running tests on one machine or instance. Running dependent tests that cannot be run in parallel.</p>
 
 <h2>Stub Systems (1)</h2>
 
-<p><strong>Pattern</strong> Use stubs to simulate external systems to reduce deployment complexity.</p>
+<ul>
+<li><strong>Pattern</strong> Use stubs to simulate external systems to reduce deployment complexity.</li>
+<li><strong>Anti-Patterns</strong>   Manually installing and configuring interdependent systems for Commit Stage build and deployment.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Manually installing and configuring interdependent systems for Commit Stage build and deployment.</p>
 
 <h1>DEPLOYMENT PIPELINE</h1>
 
 <h2>Deployment Pipeline (1)</h2>
 
-<p><strong>Pattern</strong> A deployment pipeline is an automated implementation of your application’s build, deploy, test, and release process.</p>
+<ul>
+<li><strong>Pattern</strong> A deployment pipeline is an automated implementation of your application’s build, deploy, test, and release process.</li>
+<li><strong>Anti-Patterns</strong>   Deployments require human intervention (other than approval or clicking a button). Deployments are not production ready.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Deployments require human intervention (other than approval or clicking a button). Deployments are not production ready.</p>
 
 <h2>Value-Stream Map (4) ##</h2>
 
-<p><strong>Pattern</strong> Create a map illustrating the process from check in to the version-control system to the software release to identify process bottlenecks.</p>
+<ul>
+<li><strong>Pattern</strong> Create a map illustrating the process from check in to the version-control system to the software release to identify process bottlenecks.</li>
+<li><strong>Anti-Patterns</strong>   Separately defined processes and views of the checkin to release process.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Separately defined processes and views of the checkin to release process.</p>
 
 <h1>BUILD AND DEPLOYMENT SCRIPTING</h1>
 
 <h2>Dependency Management (5)</h2>
 
-<p><strong>Pattern</strong> Centralize all dependent libraries to reduce bloat, classpath problems, and repetition of the same dependent libraries and transitive dependencies from project to project.</p>
+<ul>
+<li><strong>Pattern</strong> Centralize all dependent libraries to reduce bloat, classpath problems, and repetition of the same dependent libraries and transitive dependencies from project to project.</li>
+<li><strong>Anti-Patterns</strong>   Multiple copies of the same binary dependencies in each and every project. Redefining the same information for each project. Classpath hell!</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Multiple copies of the same binary dependencies in each and every project. Redefining the same information for each project. Classpath hell!</p>
 
 <h2>Common Language (1)</h2>
 
-<p><strong>Pattern</strong> As a team, agree upon a common scripting language &ndash; such as Perl, Ruby, or Python &ndash; so that any team member can apply changes to the Single Delivery System</p>
+<ul>
+<li><strong>Pattern</strong> As a team, agree upon a common scripting language &ndash; such as Perl, Ruby, or Python &ndash; so that any team member can apply changes to the Single Delivery System</li>
+<li><strong>Anti-Patterns</strong>   Each team uses a different language making it difficult for anyone to modify the delivery system reducing cross-functional team effectiveness.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Each team uses a different language making it difficult for anyone to modify the delivery system reducing cross-functional team effectiveness.</p>
 
 <h2>Externalize Configuration (5)</h2>
 
-<p><strong>Pattern</strong> Changes between environments are captured as configuration information. All variable values are externalized from the application configuration into build/deployment-time properties</p>
+<ul>
+<li><strong>Pattern</strong> Changes between environments are captured as configuration information. All variable values are externalized from the application configuration into build/deployment-time properties</li>
+<li><strong>Anti-Patterns</strong>   Hardcoding values inside the source code or per target environment.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Hardcoding values inside the source code or per target environment.</p>
 
 <h2>Fail Fast (6)</h2>
 
-<p><strong>Pattern</strong> Fail the build as soon as possible. Design scripts so that processes that commonly fail run first. These processes should be run as part of the Commit Stage.</p>
+<ul>
+<li><strong>Pattern</strong> Fail the build as soon as possible. Design scripts so that processes that commonly fail run first. These processes should be run as part of the Commit Stage.</li>
+<li><strong>Anti-Patterns</strong>   Common build mistakes are not uncovered until late in the deployment process.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Common build mistakes are not uncovered until late in the deployment process.</p>
 
 <h2>Fast Builds (6)</h2>
 
-<p><strong>Pattern</strong> The Commit Build provides feedback on common build problems as quickly as possible &ndash; usually in under 10 minutes.</p>
+<ul>
+<li><strong>Pattern</strong> The Commit Build provides feedback on common build problems as quickly as possible &ndash; usually in under 10 minutes.</li>
+<li><strong>Anti-Patterns</strong>   Throwing everything into the commit stage process, such as running every type of automated static analysis tool or running load tests such that feedback is delayed.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Throwing everything into the commit stage process, such as running every type of automated static analysis tool or running load tests such that feedback is delayed.</p>
 
 <h2>Scripted Deployment (5)</h2>
 
-<p><strong>Pattern</strong> All deployment processes are written in a script, checked in to the version-control system, and run as part of the Single Delivery System.</p>
+<ul>
+<li><strong>Pattern</strong> All deployment processes are written in a script, checked in to the version-control system, and run as part of the Single Delivery System.</li>
+<li><strong>Anti-Patterns</strong>   Deployment documentation is used instead of automation.Manual deployments or partially manual deployments. Using GUI to perform a deployment.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Deployment documentation is used instead of automation. Manual deployments or partially manual deployments. Using GUI to perform a deployment.</p>
 
 <h2>Unified Deployment (5)</h2>
 
-<p><strong>Pattern</strong> The same deployment script is used for each deployment. The Protected Configuration – per environment &ndash; is variable but managed.
-<strong>Anti-Patterns</strong>Different deployment script for each target environment or even for a specific machine. Manual configuration after deployment for each target environment.</p>
+<ul>
+<li><strong>Pattern</strong> The same deployment script is used for each deployment. The Protected Configuration – per environment &ndash; is variable but managed.</li>
+<li><strong>Anti-Patterns</strong>   Different deployment script for each target environment or even for a specific machine. Manual configuration after deployment for each target environment.</li>
+</ul>
+
 
 <h1>DEPLOYING AND RELEASING APPLICATIONS</h1>
 
 <h2>Binary Integrity (5)</h2>
 
-<p><strong>Pattern</strong> Build your binaries once, while deploying the binaries to multiple target environments, as necessary.
-<strong>Anti-Patterns</strong>Software is built in every stage of the deployment pipeline.</p>
+<ul>
+<li><strong>Pattern</strong> Build your binaries once, while deploying the binaries to multiple target environments, as necessary.</li>
+<li><strong>Anti-Patterns</strong>   Software is built in every stage of the deployment pipeline.</li>
+</ul>
+
 
 <h2>Canary Release</h2>
 
-<p><strong>Pattern</strong> Release software to production for a small subset of users (e.g. , 10%) to get feedback prior to a complete rollout.
-<strong>Anti-Patterns</strong>Software is released to all users at once.|</p>
+<ul>
+<li><strong>Pattern</strong> Release software to production for a small subset of users (e.g. , 10%) to get feedback prior to a complete rollout.</li>
+<li><strong>Anti-Patterns</strong>   Software is released to all users at once.</li>
+</ul>
+
 
 <h2>Blue-Green Deployments (1)</h2>
 
-<p><strong>Pattern</strong>Deploy software to a non-production environment (call it blue) while production continues to run. Once it’s deployed and “warmed up”, switch production (green) to non-production and blue to green simultaneously.
-<strong>Anti-Patterns</strong>   Production is taken down while the new release is applied to production instance(s).</p>
+<ul>
+<li><strong>Pattern</strong>  Deploy software to a non-production environment (call it blue) while production continues to run. Once it’s deployed and “warmed up”, switch production (green) to non-production and blue to green simultaneously.&ndash; <strong>Anti-Patterns</strong>   Production is taken down while the new release is applied to production instance(s).</li>
+</ul>
+
 
 <h2>Dark Launching (11)</h2>
 
-<p><strong>Pattern</strong>Launch a new application or features when it affects the least amount of users.
-<strong>Anti-Patterns</strong>   Software is deployed regardless of number of active users.</p>
+<ul>
+<li><strong>Pattern</strong> Launch a new application or features when it affects the least amount of users.</li>
+<li><strong>Anti-Patterns</strong>   Software is deployed regardless of number of active users.</li>
+</ul>
+
 
 <h2>Rollback Release (5)</h2>
 
-<p><strong>Pattern</strong>Provide an automated single command rollback of changes after an unsuccessful deployment.
-<strong>Anti-Patterns</strong>   Manually undoing changes applied in a recent deployment. Shutting down production instances while changes are undone.</p>
+<ul>
+<li><strong>Pattern</strong> Provide an automated single command rollback of changes after an unsuccessful deployment.</li>
+<li><strong>Anti-Patterns</strong>   Manually undoing changes applied in a recent deployment. Shutting down production instances while changes are undone.</li>
+</ul>
+
 
 <h2>Self-Service Deployment (1)</h2>
 
-<p><strong>Pattern</strong>Any Cross-Functional Team member selects the version and environment to deploy the latest working software.
-<strong>Anti-Patterns</strong>   Deployments released to team are at specified intervals by the “Build Team”. Testing can only be performed in a shared state without isolation from others.</p>
+<ul>
+<li><strong>Pattern</strong> Any Cross-Functional Team member selects the version and environment to deploy the latest working software.</li>
+<li><strong>Anti-Patterns</strong>   Deployments released to team are at specified intervals by the “Build Team”. Testing can only be performed in a shared state without isolation from others.</li>
+</ul>
+
 
 <h1>INFRASTRUCTURE AND ENVIRONMENTS</h1>
 
 <h2>Automate Provisioning (1)</h2>
 
-<p><strong>Pattern</strong>Automate the process of configuring your environment to include networks, external services, and infrastructure.
-<strong>Anti-Patterns</strong>   Configured instances are “works of art” requiring team members to perform partially or fully manual steps to provision them.</p>
+<ul>
+<li><strong>Pattern</strong> Automate the process of configuring your environment to include networks, external services, and infrastructure.</li>
+<li><strong>Anti-Patterns</strong>   Configured instances are “works of art” requiring team members to perform partially or fully manual steps to provision them.</li>
+</ul>
+
 
 <h2>Behavior-Driven Monitoring (1)</h2>
 
-<p><strong>Pattern</strong>Automate tests to verify the behavior of the infrastructure. Continually run these tests to provide near real-time alerting.
-<strong>Anti-Patterns</strong>   No real-time alerting or monitoring. System configuration is written without tests.</p>
+<ul>
+<li><strong>Pattern</strong> Automate tests to verify the behavior of the infrastructure. Continually run these tests to provide near real-time alerting.</li>
+<li><strong>Anti-Patterns</strong>   No real-time alerting or monitoring. System configuration is written without tests.</li>
+</ul>
+
 
 <h2>Immune Systems</h2>
 
-<p><strong>Pattern</strong>Deploy software one instance at a time while conducting Behavior-Driven Monitoring. If an error is detected during the incremental deployment, a Rollback Release is initiated to revert changes.</p>
+<ul>
+<li><strong>Pattern</strong> Deploy software one instance at a time while conducting Behavior-Driven Monitoring. If an error is detected during the incremental deployment, a Rollback Release is initiated to revert changes.</li>
+<li><strong>Anti-Patterns</strong>   Non-incremental deployments without monitoring.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Non-incremental deployments without monitoring.</p>
 
 <h2>Lockdown Environments (1)</h2>
 
-<p><strong>Pattern</strong>Lock down shared environments from unauthorized external and internal usage, including operations staff. All changes are versioned and applied through automation.
-<strong>Anti-Patterns</strong>   The “Wild West”: any authorized user can access shared environments and apply manual configuration changes, putting the environment in an unknown state leading to deployment errors.</p>
+<ul>
+<li><strong>Pattern</strong> Lock down shared environments from unauthorized external and internal usage, including operations staff. All changes are versioned and applied through automation.</li>
+<li><strong>Anti-Patterns</strong>   The “Wild West”: any authorized user can access shared environments and apply manual configuration changes, putting the environment in an unknown state leading to deployment errors.</li>
+</ul>
+
 
 <h2>Production-Like Environments (1) ##</h2>
 
-<p><strong>Pattern</strong>Target environments are as similar to production as possible.
-<strong>Anti-Patterns</strong>   Environments are “production like” only weeks or days before a release. Environments are manually configured and controlled.</p>
+<ul>
+<li><strong>Pattern</strong> Target environments are as similar to production as possible.</li>
+<li><strong>Anti-Patterns</strong>   Environments are “production like” only weeks or days before a release. Environments are manually configured and controlled.</li>
+</ul>
+
 
 <h2>Transient Environments</h2>
 
-<p><strong>Pattern</strong>Utilizing the Automate Provisioning, Scripted Deployment and Scripted Database patterns, any environment should be capable of terminating and launching at will.</p>
+<ul>
+<li><strong>Pattern</strong> Utilizing the Automate Provisioning, Scripted Deployment and Scripted Database patterns, any environment should be capable of terminating and launching at will.</li>
+<li><strong>Anti-Patterns</strong>   Environments are fixed to “DEV, QA” or other pre-determined environments.</li>
+</ul>
 
-<p><strong>Anti-Patterns</strong>   Environments are fixed to “DEV, QA” or other pre-determined environments.</p>
 
 <h1>DATA</h1>
 
 <h2>Database Sandbox (7)</h2>
 
-<p><strong>Pattern</strong>Create a lightweight version of your database – using the Isolate Test Data pattern. Each developer uses this lightweight DML to populate his local database sandboxes to expedite test execution.
-<strong>Anti-Patterns</strong>   Shared database. Developers and testers are unable to make data changes without it potentially adversely affecting other team members immediately.</p>
+<ul>
+<li><strong>Pattern</strong> Create a lightweight version of your database – using the Isolate Test Data pattern. Each developer uses this lightweight DML to populate his local database sandboxes to expedite test execution.</li>
+<li><strong>Anti-Patterns</strong>   Shared database. Developers and testers are unable to make data changes without it potentially adversely affecting other team members immediately.</li>
+</ul>
+
 
 <h2>Decouple Database (1)</h2>
 
-<p><strong>Pattern</strong>Ensure your application is backward and forward compatible with your database so you can deploy each independently
-<strong>Anti-Patterns</strong>   Application code data are not capable of being deployed separately.</p>
+<ul>
+<li><strong>Pattern</strong> Ensure your application is backward and forward compatible with your database so you can deploy each independently</li>
+<li><strong>Anti-Patterns</strong>   Application code data are not capable of being deployed separately.</li>
+</ul>
+
 
 <h2>Database Upgrade (7)</h2>
 
-<p><strong>Pattern</strong>Use scripts to apply incremental changes in each target environment to a database schema and data.
-<strong>Anti-Patterns</strong>   Manually applying database and data changes in each target environment.</p>
+<ul>
+<li><strong>Pattern</strong> Use scripts to apply incremental changes in each target environment to a database schema and data.</li>
+<li><strong>Anti-Patterns</strong>   Manually applying database and data changes in each target environment.</li>
+</ul>
+
 
 <h2>Scripted Database (7)</h2>
 
-<p><strong>Pattern</strong>Script all database actions as part of the build process.
-<strong>Anti-Patterns</strong>   Using data export/import to apply data changes. Manually applying schema and data changes to the database.</p>
+<ul>
+<li><strong>Pattern</strong> Script all database actions as part of the build process.</li>
+<li><strong>Anti-Patterns</strong>   Using data export/import to apply data changes. Manually applying schema and data changes to the database.</li>
+</ul>
+
 
 <h1>INCREMENTAL DEVELOPMENT</h1>
 
 <h2>Branch by Abstraction (2)</h2>
 
-<p><strong>Pattern</strong> Instead of using version-control branches, create an abstraction layer that handles both an old and new implementation. Remove the old implementation.
-<strong>Anti-Patterns</strong>   Branching using the version-control system leading to branch proliferation and difficult merging. Feature branching.</p>
+<ul>
+<li><strong>Pattern</strong> Instead of using version-control branches, create an abstraction layer that handles both an old and new implementation. Remove the old implementation.</li>
+<li><strong>Anti-Patterns</strong>   Branching using the version-control system leading to branch proliferation and difficult merging. Feature branching.</li>
+</ul>
+
 
 <h2>Toggle Features (10)</h2>
 
-<p><strong>Pattern</strong> Deploy new features or services to production but limit access dynamically for testing purposes.
-<strong>Anti-Patterns</strong>   Waiting until a feature is fully complete before committing the source code.</p>
+<ul>
+<li><strong>Pattern</strong> Deploy new features or services to production but limit access dynamically for testing purposes.</li>
+<li><strong>Anti-Patterns</strong>   Waiting until a feature is fully complete before committing the source code.</li>
+</ul>
+
 
 <h1>COLLABORATION</h1>
 
 <h2>Delivery Retrospective (1)</h2>
 
-<p><strong>Pattern</strong> For each iteration, hold a retrospective meeting where everybody on the Cross-Functional Team discusses how to improve the delivery process for the next iteration.
-<strong>Anti-Patterns</strong>   Waiting until an error occurs during a deployment for Dev and Ops to collaborate. Having Dev and Ops work separately.</p>
+<ul>
+<li><strong>Pattern</strong> For each iteration, hold a retrospective meeting where everybody on the Cross-Functional Team discusses how to improve the delivery process for the next iteration.</li>
+<li><strong>Anti-Patterns</strong>   Waiting until an error occurs during a deployment for Dev and Ops to collaborate. Having Dev and Ops work separately.</li>
+</ul>
+
 
 <h2>Cross-Functional Teams (1)</h2>
 
-<p><strong>Pattern</strong>Everybody is responsible for the delivery process. Any person on the Cross-Functional Team can modify any part of the delivery system.
-<strong>Anti-Patterns</strong>   Siloed teams: Development, Testing, and Operations have their own scripts and processes and are not part of the same team.</p>
+<ul>
+<li><strong>Pattern</strong> Everybody is responsible for the delivery process. Any person on the Cross-Functional Team can modify any part of the delivery system.</li>
+<li><p><strong>Anti-Patterns</strong>   Siloed teams: Development, Testing, and Operations have their own scripts and processes and are not part of the same team.</p>
 
-<pre><code>Amazon.com has an interesting take on this approach. They call it “You build it, you run it”. Developers take the software they’ve written all the way to production. 
-</code></pre>
+<p>Amazon.com has an interesting take on this approach. They call it “You build it, you run it”. Developers take the software they’ve written all the way to production.</p></li>
+</ul>
+
 
 <h2>Root-Cause Analysis (1)</h2>
 
-<p><strong>Pattern</strong> Learn the root cause of a delivery problem by asking “why” of each answer and symptom until discovering the root cause.
-| &mdash;&mdash;&mdash;&mdash; &mdash;&mdash;&mdash;&mdash;&ndash;
-<strong>Anti-Patterns</strong>   Accepting the symptom as the root cause of the problem.</p>
+<ul>
+<li><strong>Pattern</strong> Learn the root cause of a delivery problem by asking “why” of each answer and symptom until discovering the root cause.</li>
+<li><strong>Anti-Patterns</strong>   Accepting the symptom as the root cause of the problem.</li>
+</ul>
+
 
 <h1>TOOLS</h1>
 
@@ -432,7 +547,7 @@
 <li><strong>Deployment Pipeline</strong> Go, AntHill Pro</li>
 <li><strong>Build and Deployment Scripting</strong> Ant, AntContrib, NAnt, MSBuild, Buildr, Gant, Gradle, make, Maven, Rake, Java Secure Channel, ControlTier, Altiris, Capistrano, Fabric, Func</li>
 <li><strong>Infrastructure and Environments</strong> AWS EC2, AWS S3, Windows Azure, Google App Engine, AWS Elastic Beanstalk, Heroku, Capistrano, Cobbler, BMC Bladelogic, CFEngine, IBM Tivoli Provisioning Manager, Puppet, Chef, Bcfg2, AWS Cloud Formation, Windows Azure AppFabric, rPath, JEOS, BoxGrinder, CLIP, Eucalyptus, AppLogic, CloudKick, CloudWatch, Nagios, Zabbix, Zenoss</li>
-<li><strong>Data</strong>* Hibernate, MySQL, Liquibase, Oracle, PostgreSQL, SQL Server, SimpleDB, SQL Azure, Ant, MongoDB, dbdeploy</li>
+<li><strong>Data</strong> Hibernate, MySQL, Liquibase, Oracle, PostgreSQL, SQL Server, SimpleDB, SQL Azure, Ant, MongoDB, dbdeploy</li>
 <li><strong>Components and Dependencies</strong> Ivy, Archiva, Nexus, Artifactory, Bundler</li>
 <li><strong>Collaboration</strong>* Mingle, Greenhopper, JIRA</li>
 </ul>
