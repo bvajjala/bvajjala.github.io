@@ -126,44 +126,44 @@
 <p>We applied the on-demand usability of the cloud with a proven continuous delivery approach to build an automated one click method for building and deploying software into scripted production environments.</p>
 
 <ol>
-<li>AWS EC2
- Cloud-based virtual hardware instances.
+<li><strong>AWS EC2</strong>
+ <em>Cloud-based virtual hardware instances.</em>
  We use EC2 for all of our virtual hardware needs. All instances, from development to production are run on EC2</li>
-<li>AWS S3
- Cloud-based storage
+<li><strong>AWS S3</strong>
+ <em>Cloud-based storage</em>
  We use S3 as both a binary repository and a place to store successful build artifacts.</li>
-<li>AWS IAM
- User-based access to AWS resources
+<li><strong>AWS IAM</strong>
+ <em>User-based access to AWS resources</em>
  We create users dynamically and use their AWS access and secret access keys so we don’t have to store credentials as properties.</li>
-<li>AWS CloudWatch
- System monitoring
+<li><strong>AWS CloudWatch</strong>
+ <em>System monitoring</em>
  Monitors all instances in production. If an instance takes an abnormal amount of strain or shuts down unexpectedly, SNS sends an email to designated parties.</li>
-<li>AWS SNS
- Email notifications
+<li><strong>AWS SNS</strong>
+ <em>Email notifications</em>
  When an environment is created or a deployment is run, SNS is used to send notifications to affected parties.</li>
-<li>Cucumber
- Acceptance testing
+<li><strong>Cucumber</strong>
+ <em>Acceptance testing</em>
  Cucumber is used for testing at almost every step of the way. We use Cucumber to test infrastructure, deployments and application code to ensure correct functionality. Cucumber’s unique english-ess  verbiage allows both technical personnel and customers to communicate using an executable test.</li>
-<li>Liquibase
- Automated database change management
+<li><strong>Liquibase</strong>
+ <em>Automated database change management</em>
  Liquibase is used for all database changesets. When a change is necessary within the database, it is made to a liquibase changelog.xml.</li>
-<li>AWS CloudFormation
- Templating language for orchestrating all AWS resources
+<li><strong>AWS CloudFormation</strong>
+ <em>Templating language for orchestrating all AWS resources</em>
  CloudFormation is used for creating a fully working Jenkins environment and Target environment. For instance for the Jenkins environment it creates the EC2 instance with CloudWatch monitoring alarms, associated IAM user, SNS notification topic, everything required for Jenkins to build. This along with Jenkins are the major pieces of the infrastructure.</li>
-<li>AWS SimpleDB
- Cloud-based NoSQL database
+<li><strong>AWS SimpleDB</strong>
+ <em>Cloud-based NoSQL database</em>
  SimpleDB is used for storing dynamic property configuration and passing properties through the CD Pipeline. As part of the environment creation process, we store multiple values such as IP addresses that we need when deploying the application to the created environment.</li>
-<li>Jenkins
-We’re using Jenkins to implement a CD pipeline using the Build Pipeline plugin.
+<li><strong>Jenkins</strong>
+_We’re using Jenkins to implement a CD pipeline using the Build Pipeline plugin.__
 Jenkins runs the CD pipeline which does the building, testing, environment creation and deploying. Since the CD pipeline is also code (i.e. configuration code), we version our Jenkins configuration.</li>
-<li>Capistrano
-Deployment automation
+<li><strong>Capistrano</strong>
+<em>Deployment automation</em>
 Capistrano orchestrates and automates deployments. Capistrano is a Ruby-based deployment DSL that can be used to deploy to multiple platforms including Java, Ruby and PHP. It is called as part of the CD pipeline and deploys to the target environment.</li>
-<li>Puppet
-Infrastructure automation
+<li><strong>Puppet</strong>
+<em>Infrastructure automation</em>
 Puppet takes care of the environment provisioning. CloudFormation requests the environment and then calls Puppet to do the dynamic configuration. We configured Puppet to install, configure, and manage the packages, files and services.</li>
-<li>Git
-Version control system
+<li><strong>Git</strong>
+<em>Version control system</em>
 Git is the version control repository where every piece of the Manatee infrastructure is stored. This includes the environment scripts such as the Puppet modules, the CloudFormation templates, Capistrano deployment scripts, etc.</li>
 </ol>
 
