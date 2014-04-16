@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Goodbye node-forever, hello PM2 It&rsquo;s no secret that the devo.ps team has a crush on Javascript; node.js in the backend, AngularJS for our &hellip;">
+  <meta name="description" content="Ansible Simply Kicks Ass The devo.ps team has been putting quite a few tools to the test over the years when it comes to managing infrastructures. We &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,224 +65,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye Node-forever</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-03T14:15:10-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2013/06/26/goodbye-node-forever-hello-pm2.html">Goodbye node-forever, hello PM2</a></h2>
-
-<p><img src="http://apps.hemca.com/pm2/pres/pm22.png" alt="pm2 logo" /></p>
-
-<p>It&rsquo;s no secret that the devo.ps team has a crush on Javascript; node.js in the backend, AngularJS for our clients, there isn&rsquo;t much of our stack that isn&rsquo;t at least in part built with it. Our approach of building <a href="http://devo.ps/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">static clients and RESTful JSON APIs</a> means that we run a lot of node.js and I must admit that, despite all of it awesomeness, node.js still is a bit of a
-headache when it comes to running in production. Tooling and best practices (think monitoring, logging, error traces…) are still lacking when compared to some of the more established languages.</p>
-
-<p>So far, we had been relying on the pretty nifty <a href="https://github.com/nodejitsu/forever">node-forever</a>. Great tool, but a few things were missing:</p>
-
-<ul>
-<li>Limited monitoring and logging abilities,</li>
-<li>Poor support for process management configuration,</li>
-<li>No support for clusterization,</li>
-<li>Aging codebase (which meant frequent failures when upgrading Node).</li>
-</ul>
-
-
-<p>This is what led us to write <a href="https://github.com/Unitech/pm2">PM2</a> in the past couple months. We thought we&rsquo;d give you a quick look at it while we&rsquo;re nearing a production ready release.</p>
-
-<h3>So what&rsquo;s in the box?</h3>
-
-<p>First things first, you can install it with <code>npm</code>:</p>
-
-<pre><code>npm install -g pm2
-</code></pre>
-
-<p>Let&rsquo;s open things up with the usual comparison table:</p>
-
-<p>FeatureForeverPM2</p>
-
-<p>Keep Alive</p>
-
-<p>✔</p>
-
-<p>✔</p>
-
-<p>Coffeescript</p>
-
-<p>✔</p>
-
-<p>Log aggregation</p>
-
-<p>✔</p>
-
-<p>API</p>
-
-<p>✔</p>
-
-<p>Terminal monitoring</p>
-
-<p>✔</p>
-
-<p>Clustering</p>
-
-<p>✔</p>
-
-<p>JSON configuration</p>
-
-<p>✔</p>
-
-<p>And now let me geek a tad more about the main features…</p>
-
-<h3>Native clusterization</h3>
-
-<p>Node v0.6 introduced the cluster feature, allowing you to share a socket across multiple networked Node applications. Problem is, it doesn&rsquo;t work out of the box and requires some tweaking to handle master and children processes.</p>
-
-<p>PM2 handles this natively, without any extra code: PM2 itself will act as the master process and wrap your code into a special clustered process, as Nodejs does, to add some global variables to your files.</p>
-
-<p>To start a clustered app using all the CPUs you just need to type something like that:</p>
-
-<pre><code>$ pm2 start app.js -i max
-</code></pre>
-
-<p>Then;</p>
-
-<pre><code>$ pm2 list
-</code></pre>
-
-<p>Which should display something like (ASCII UI FTW);</p>
-
-<p><img src="http://apps.hemca.com/pm2/pres/pm2-list.png" alt="pm2 list" /></p>
-
-<p>As you can see, your app is now forked into multiple processes depending on the number of CPUs available.</p>
-
-<h3>Monitoring <em>a la</em> termcaps-HTOP</h3>
-
-<p>It&rsquo;s nice enough to have an overview of the running processes and their status with the <code>pm2 list</code> command. But what about tracking their resources consumption? Fear not:</p>
-
-<pre><code>$ pm2 monit
-</code></pre>
-
-<p>You should get the CPU usage and memory consumption by process (and cluster).</p>
-
-<p><img src="http://apps.hemca.com/pm2/pres/pm2-monit.png" alt="pm2 monit" /></p>
-
-<p><strong>Disclaimer</strong>: <a href="https://github.com/arunoda/node-usage">node-usage</a> doesn&rsquo;t support MacOS for now (feel free to PR). It works just fine on Linux though.</p>
-
-<p>Now, what about checking on our clusters and GC cleaning of the memory stack?
-Let&rsquo;s consider you already have an HTTP benchmark tool (if not, you should definitely check <a href="https://github.com/wg/wrk">WRK</a>):</p>
-
-<pre><code>$ express bufallo     // Create an express app
-$ cd bufallo
-$ npm install
-$ pm2 start app.js -i max
-$ wrk -c 100 -d 100 http://localhost:3000/
-</code></pre>
-
-<p>In another terminal, launch the monitoring option:</p>
-
-<pre><code>$ pm2 monit
-</code></pre>
-
-<p>W00t!</p>
-
-<h3>Realtime log aggregation</h3>
-
-<p>Now you have to manage multiple clustered processes: one who&rsquo;s crawling data, another who is processing stuff, and so on so forth. That means logs, lots of it. You can still handle it the old fashioned way:</p>
-
-<pre><code>$ tail -f /path/to/log1 /path/to/log2 ...
-</code></pre>
-
-<p>But we&rsquo;re nice, so we wrote the <code>logs</code> feature:</p>
-
-<pre><code>$ pm2 logs
-</code></pre>
-
-<p><img src="http://apps.hemca.com/pm2/pres/pm2-logs.png" alt="pm2 monit" /></p>
-
-<h3>Resurrection</h3>
-
-<p>So things are nice and dandy, your processes are humming and you need to do a hard restart. What now? Well, first, dump things:</p>
-
-<pre><code>$ pm2 dump
-</code></pre>
-
-<p>From there, you should be able to resurrect things from file:</p>
-
-<pre><code>$ pm2 kill     // let's simulate a pm2 stop
-$ pm2 resurect // All my processes are now up and running 
-</code></pre>
-
-<h3>API Health point</h3>
-
-<p>Let&rsquo;s say you want to monitor all the processes managed by PM2, as well as the status of the machine they run on (and maybe even build a nice Angular app to consume this API…):</p>
-
-<pre><code>$ pm2 web
-</code></pre>
-
-<p>Point your browser at <code>http://localhost:9615</code>, aaaaand… done!</p>
-
-<h3>And there&rsquo;s more…</h3>
-
-<ul>
-<li>Full tests,</li>
-<li>Generation of <code>update-rc.d</code> (<code>pm2 startup</code>), though still very alpha,</li>
-<li>Development mode with auto restart on file change (<code>pm2 dev</code>), still very drafty too,</li>
-<li>Log flushing,</li>
-<li>Management of your applications fleet via JSON file,</li>
-<li>Log uncaught exceptions in error logs,</li>
-<li>Log of restart count and time,</li>
-<li>Automated killing of processes exiting too fast.</li>
-</ul>
-
-
-<h3>What&rsquo;s next?</h3>
-
-<p>Well first, you could show your love on Github (we love stars):
-<a href="https://github.com/Unitech/pm2">https://github.com/Unitech/pm2</a>.</p>
-
-<p>We developed PM2 to offer an advanced and complete solution for Node process management. We&rsquo;re looking forward to getting more people helping us getting there: pull requests are more than welcome. A few things already on the
-roadmap that we&rsquo;ll get right at once we have a stable core:</p>
-
-<ul>
-<li>Remote administration/status checking,</li>
-<li>Built-in inter-processes communication channel (message bus),</li>
-<li>V8 GC memory leak detection,</li>
-<li>Web interface,</li>
-<li>Persistent storage for monitoring data,</li>
-<li>Email notifications.</li>
-</ul>
-
-
-<p>Special thanks to <a href="https://github.com/makara">Makara Wang</a> for concepts/tools and <a href="https://github.com/rlidwka">Alex Kocharin</a> for advices and pull requests.</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1340,6 +1122,302 @@ into doing so with ZeroMQ and Go).</p>
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/01/devops-tools-and-utilities/">DevOps Tools and Utilities</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-01T13:13:05-05:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>DevOps Tool chain</h1>
+
+<p>A list of utilities to support configuration management tools. This was produced by the panelists of the Configuration Mgmt Workflow panel at LOPSA-EAST in 2013. One of the attendees also took notes: <a href="http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel">http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel</a></p>
+
+<h2>Individual level: IDE / syntax highlighting etc</h2>
+
+<h2>Puppet:</h2>
+
+<ul>
+<li>vim &ndash; <a href="https://github.com/rodjek/vim-puppet">https://github.com/rodjek/vim-puppet</a></li>
+<li>TextMate &amp; sublime text 2 &ndash; <a href="https://github.com/masterzen/puppet-textmate-bundle">https://github.com/masterzen/puppet-textmate-bundle</a></li>
+<li>gepetto (<a href="http://cloudsmith.github.io/geppetto/">http://cloudsmith.github.io/geppetto/</a>),</li>
+<li>emacs</li>
+</ul>
+
+
+<h2>Chef:</h2>
+
+<ul>
+<li>vim,</li>
+<li>TextMate,</li>
+<li>Sublime Text: <a href="http://www.youtube.com/watch?v=4VtDj_ar1Xg">http://www.youtube.com/watch?v=4VtDj_ar1Xg</a> (video), <a href="https://github.com/cabeca/SublimeChef">https://github.com/cabeca/SublimeChef</a> (GitHub)</li>
+<li>Emacs: chef-mode <a href="https://github.com/mpasternacki/chef-mode">https://github.com/mpasternacki/chef-mode</a></li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li>vim &ndash; <a href="https://github.com/neilhwatson/vim_cf3">https://github.com/neilhwatson/vim_cf3</a></li>
+<li>emacs &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/cfengine.el">https://github.com/cfengine/core/blob/master/contrib/cfengine.el</a></li>
+<li>kate &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml">https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml</a></li>
+<li>eclipse &ndash; <a href="https://cfengine.com/eclipse-cfengine-editor">https://cfengine.com/eclipse-cfengine-editor</a></li>
+<li>Sublime Text &ndash; <a href="https://github.com/kebori/sublime-cfengine3">https://github.com/kebori/sublime-cfengine3</a></li>
+</ul>
+
+
+<h2>Local Testing</h2>
+
+<ul>
+<li>Vagrant &ndash;</li>
+<li>VMware</li>
+<li>OpenStack</li>
+<li>Cloud?</li>
+<li>All of the above?</li>
+</ul>
+
+
+<h2>Revision Control : Which tool? Which workflow?</h2>
+
+<ul>
+<li>Github Flow &ndash; <a href="http://scottchacon.com/2011/08/31/github-flow.html">http://scottchacon.com/2011/08/31/github-flow.html</a></li>
+<li>git-flow &ndash; <a href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a></li>
+<li>Git Dynamic Environments &ndash;</li>
+<li><ul>
+<li><a href="https://puppetlabs.com/blog/git-workflow-and-puppet-environments/">https://puppetlabs.com/blog/git-workflow-and-puppet-environments/</a> ,</li>
+</ul>
+</li>
+<li><ul>
+<li><a href="https://github.com/adrienthebo/puppet-git-hooks">https://github.com/adrienthebo/puppet-git-hooks</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Commit hooks</h2>
+
+<h3>Puppet:</h3>
+
+<ul>
+<li>erb,</li>
+<li>pp parser,</li>
+<li>yaml, <a href="https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit">https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit</a></li>
+</ul>
+
+
+<h3>Chef:</h3>
+
+<ul>
+<li>fc pre-commit: <a href="https://github.com/gregf/chef-git-hooks">https://github.com/gregf/chef-git-hooks</a></li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li>Subversion: <a href="http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html">http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html</a></li>
+<li>Git: <a href="https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit">https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit</a></li>
+</ul>
+
+
+<h2>Style / Lint tools</h2>
+
+<h3>Puppet:</h3>
+
+<ul>
+<li>puppet-lint &ndash; <a href="http://puppet-lint.com/,">http://puppet-lint.com/,</a></li>
+<li>puppet-cleaner &ndash; <a href="https://github.com/santana/puppet-cleaner,">https://github.com/santana/puppet-cleaner,</a></li>
+</ul>
+
+
+<h3>Chef:</h3>
+
+<ul>
+<li>tailor,</li>
+<li>foodcritic</li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li>cf-promises (with GCC-style warnings)</li>
+</ul>
+
+
+<h2>Testing manifests / recipes</h2>
+
+<h3>Puppet:</h3>
+
+<ul>
+<li>rspec-puppet,</li>
+<li>?cucumber-puppet (discontiued)?</li>
+</ul>
+
+
+<h3>Chef:</h3>
+
+<ul>
+<li>chefspec,</li>
+<li>minitest-handler,</li>
+<li>rspec-chef,</li>
+<li>cucumber-chef,</li>
+<li>test-kitchen</li>
+</ul>
+
+
+<h2>Marshalling / Assembling Code &amp; Dependencies</h2>
+
+<h3>Puppet:</h3>
+
+<ul>
+<li>librarian-puppet &ndash; <a href="https://github.com/rodjek/librarian-puppet">https://github.com/rodjek/librarian-puppet</a></li>
+</ul>
+
+
+<h3>Chef:</h3>
+
+<ul>
+<li>berkshelf,</li>
+<li>librarian</li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li>cf-sketch &ndash; <a href="https://github.com/cfengine/design-center/wiki/Design-Center-Tools">https://github.com/cfengine/design-center/wiki/Design-Center-Tools</a></li>
+</ul>
+
+
+<h2>Continuous Integration</h2>
+
+<ul>
+<li>Jenkins CI</li>
+<li>Travis CI</li>
+<li>Atlassian Bamboo?</li>
+<li>TeamCity?</li>
+</ul>
+
+
+<h2>Orchestration</h2>
+
+<h3>Puppet:</h3>
+
+<ul>
+<li>MCollective</li>
+</ul>
+
+
+<h3>Chef :</h3>
+
+<ul>
+<li>has “knife ssh” and Pushy support coming for push jobs</li>
+</ul>
+
+
+<h2>Canary testing &amp; Prod vs QA vs test environments (not prod vs QA app code)</h2>
+
+<h3>Puppet</h3>
+
+<ul>
+<li>serverspec <a href="http://serverspec.org/">http://serverspec.org/</a></li>
+<li>rspec-system <a href="https://github.com/puppetlabs/rspec-system">https://github.com/puppetlabs/rspec-system</a></li>
+<li>nagios checks/ plugins</li>
+</ul>
+
+
+<h3>Chef</h3>
+
+<ul>
+<li>has knife-flip from Etsy, flips nodes into a test environment</li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li>Remote context class matching using remoteclassesmatching (Enterprise)</li>
+</ul>
+
+
+<h2>Provisioning VM&rsquo;s in the cloud?</h2>
+
+<h3>Chef:</h3>
+
+<ul>
+<li>knife ec2 server create&hellip;</li>
+<li>spiceweasel somefile.yml</li>
+<li>knife openstack&hellip;</li>
+<li>knife server create&hellip;</li>
+</ul>
+
+
+<p>Clouds include Azure, Openstack, Rackspace, etc. EC2 OpsWorks (although some limitations since it’s an older version)</p>
+
+<h2>Puppet:</h2>
+
+<ul>
+<li>puppet node_aws create / puppet node_vmware create</li>
+<li>Puppet RAL for AWS, OpenStack, CloudStack:
+  ec2_instance { “instance_name”: type => t1.large, az => ‘USWest’, ensure => present, …. }</li>
+<li>Razor (bare metal)</li>
+</ul>
+
+
+<h3>CFEngine:</h3>
+
+<ul>
+<li><a href="https://github.com/cfengine/design-center/tree/master/sketches/cloud">https://github.com/cfengine/design-center/tree/master/sketches/cloud</a></li>
+</ul>
+
+
+<h3>Chef</h3>
+
+<ul>
+<li>Crowbar has Chef server integrated, although I don’t know that much about it.</li>
+<li>Joyent also has a Chef “dataset” that they support.</li>
+</ul>
+
+
+<h2>Team Workflow</h2>
+
+<h3>Puppet: &ndash;?</h3>
+
+<h3>Chef:</h3>
+
+<ul>
+<li>knife-spork (has handlers to notify people)</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1361,10 +1439,6 @@ into doing so with ZeroMQ and Go).</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/">Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
       </li>
     
@@ -1378,6 +1452,10 @@ into doing so with ZeroMQ and Go).</p>
     
       <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/">Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/">A Deep Dive into AWS Reserved Instances</a>
       </li>
     
   </ul>

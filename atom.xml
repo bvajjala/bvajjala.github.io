@@ -4,7 +4,7 @@
   <title><![CDATA[Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-16T12:23:37-04:00</updated>
+  <updated>2014-04-16T12:49:58-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -12,262 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/"/>
-    <updated>2014-03-25T15:02:54-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline</id>
-    <content type="html"><![CDATA[<p>This article is part of the Continuous Delivery Blueprints series. It
-discusses how to go from no cloud infrastructure and no continuous
-integration set up to having a functioning Continuous Delivery Pipeline
-in Amazon Web Services. It discusses high level topics while also
-providing a reference implementation so it’s easy to follow along with.
-You can read part one
-<a href="../getting-started-with-aws-the-right-way/index.html" title="here">here</a>.</p>
-
-<p>What we’re going to do today:</p>
-
-<ul>
-<li>• Set up Version Control System</li>
-<li>• Migrate code into Version Control System</li>
-<li>• Launch Jenkins Server</li>
-<li>• Explore Jenkins Server</li>
-</ul>
-
-
-<p>With your AWS account set up and ready to go, it’s time to start setting
-up your pipeline. At the end of this article, you’ll have a functioning
-Continuous Integration server, and can start building out your
-pipeline.\</p>
-
-<hr />
-
-<p><strong>Set up a Version Control System</strong></p>
-
-<p>****To do any kind of continuous integration, delivery, or deployment,
-you need your source code in source control. It’s the foundation upon
-which everything else is built. If your source is already under a
-version control system, you can just skip this step.</p>
-
-<p>Otherwise, it’s time to set up a source control system there are two
-options when it comes to source control: either you can build and run
-the server which your source control service lives on, or you can use a
-hosted source control provider.</p>
-
-<p>Choosing a hosted provider gives you a lot of things — you can instantly
-start using it without having to configure any sort of server; you don’t
-have to worry about backups and disaster recovery; you’ll always be able
-to take advantage of the latest features. On the downside, you are
-giving your source code to another entity, which may not be an
-acceptable trade off at your organization. You’ll need to figure out
-which solution works best for you. If you’re not using source control
-already, this is probably the easiest option.</p>
-
-<p>For the purposes of these blueprints, we’ll be using Github for our
-source hosting. If you’d like to set up your own git server, <a href="http://git-scm.com/book/en/Git-on-the-Server-Setting-Up-the-Server" title="there are directions for that online">there are
-directions for that
-online</a>.</p>
-
-<p>There are other version control options (like Mercurial) and other
-hosted source options (like bitbucket). All major version control
-solutions will work with the Continuous Delivery Pipeline. That said,
-we’d advise against using Subversion. Subversion is easy to pick up, but
-once you really get going with it you can lose a lot of time dealing
-with merge headaches. Distributed version control systems like Git and
-Mercurial and better choices in the long run. (If you already have your
-source code in Subversion, don’t worry — you’ll still be able to do
-everything we talk about.)</p>
-
-<p>Throughout the blueprints, we’ll be referring to our reference
-implementation project, CanaryBoard. It’s an open source project
-Stelligent built. It is currently hosted in Github, and if you’re just
-getting started, we recommend you use Github as well. Setting up an
-account with Github is pretty easy, here’s the account sign up form if
-you don’t already have an account. Note that if you use the free github
-account, you do not get any private repositories, and your code is open
-up to the world. If you need a private repository, Github offers paid
-plans with private repositories.</p>
-
-<p>With an account set up, it’s time to import your code. If your
-organization doesn’t use source control, it’s a snap to get it added,
-just follow these instructions to set up a repo, copy your code in, and
-then commit the code and push it to github. Boom. Done.</p>
-
-<p>If you’re not ready to import your code, you can fork the CanaryBoard
-repository and follow along using that as a reference implementation. To
-do that, just go to the CanaryBoard repo page, and look for the “Fork”
-button at the top right.</p>
-
-<p><strong>Set up your AWS Access Credentials</strong></p>
-
-<p>****To interact with AWS programmatically, you need to provide it with
-access credentials. These are created via the AWS console and stored in
-environment variables for the scripts to use. Since we’re going to be
-running scripts to set up the Jenkins server, we need to create those
-keys now. To do this, log into the AWS Console:</p>
-
-<ol>
-<li>Navigate to the IAM panel</li>
-<li>Select “Users” from the left side</li>
-<li>Select the user you want to create credentials for</li>
-<li>In the lower pane, click the “Security Credentials tab”</li>
-<li>Click “Manage Access Keys”</li>
-<li>Click “Create Access Key”</li>
-<li>Click “Download Credentials”</li>
-</ol>
-
-
-<p>Now we have the credentials created, but we need to store them in
-environment variables. On Linux or OSX, use these commands (replacing
-the values with your actual key values)</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>export AWS_ACCESS_KEY_ID=ASDF1234567890ASDF
-</span><span class='line'>export AWS_SECRET_ACCESS_KEY=qwerty1234567890qwerty1234567890qwerty</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On Windows:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>set AWS_ACCESS_KEY_ID=ASDF1234567890ASDF
-</span><span class='line'>set AWS_SECRET_ACCESS_KEY=qwerty1234567890qwerty1234567890qwerty</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Boom. Now we’re ready to programmatically create some computing
-instances.</p>
-
-<p><strong>Set up a Continuous Integration Server</strong></p>
-
-<p>So, with your source in source control, we’re ready to set up your
-Continuous Integration server. For the purpose of these blueprints,
-we’ll be using Jenkins. Jenkins is a free, open source Continuous
-Integration server, and it’s widely used. In fact, you might already be
-using Jenkins somewhere in your organization.\
- Jenkins is pretty easy to set up, but during these lessons we’ll be
-taking advantage of several Jenkins plugins and using a bunch of job
-configuration that is pretty static. Because of that, we’re able to
-provide you with a script to launch a Jenkins server. It creates an
-Opsworks stack, and then pulls in some Chef cookbooks we collected to
-set up a Jenkins server that’s ready for you to work on.</p>
-
-<p>The first thing you’ll want to do is clone the Stelligent CDRI repo and
-run the Jenkins server script:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git clone https://github.com/stelligent/cdri.git
-</span><span class='line'>cd cdri
-</span><span class='line'>bundle install
-</span><span class='line'>ruby bin/create_jenkins_server_stack.rb</span></code></pre></td></tr></table></div></figure>
-
-
-<p>(Don’t have Git and/or Ruby installed? Well then, you’ll probably want
-to follow these directions for <a href="http://git-scm.com/book/en/Getting-Started-Installing-Git" title="installing Git">installing
-Git</a>
-or <a href="https://www.ruby-lang.org/en/downloads/" title="installing Ruby">installing
-Ruby</a>.) The
-script will take a couple of minutes to lay down everything it needs to
-set up a Jenkins server. After the script completes, though, it’ll still
-take a bit of time for the Jenkins server to build itself and be ready
-to go. The script actually has a couple options you may want to take
-advantage of:</p>
-
-<pre><code>$ ruby bin/create_jenkins_server_stack.rb --help
-Options:
- --region, -r &lt;s&gt;: The AWS region to use (default: us-west-2)
- --zone, -z &lt;s&gt;: The AWS availability zone to use (default: us-west-2a)
- --source, -s &lt;s&gt;: The github repo where the source to build resides (will not work with anything but github!)
- (default: https://github.com/stelligent/canaryboard.git)
- --size, -i &lt;s&gt;: The instance size to use (default: m1.large)
- --help, -h: Show this message
-</code></pre>
-
-<p>The default region is us-west-2. If you’re in North America, this is
-probably fine; otherwise you may want to switch it to a region closer to
-you. (A list of AWS regions is <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html" title="available here">available
-here</a>.)
-The default zone us us-west-2a, so if you change the region, you will
-need to change this as well.</p>
-
-<p>The source repo is configurable, with a couple of caveats. The
-repository must be a github repository, and it must be a public repo. It
-is possible to have Jenkins connect to really any other repository type,
-and it is possible to set up username / password information or SSH keys
-to authenticate against a private repo. Both increase complexity, so to
-keep things simple, we’ve restricted the script to only run against
-public Github repositories.</p>
-
-<p>Finally, you can configure the size of the EC2 instance that the Jenkins
-server will run on. A list of instance sizes and prices is available
-here. Note that anything smaller that a c3.large instance will take
-considerably longer to start up, but shouldn’t impact your ability to
-run builds at all. (However, Jenkins is a bit too heavy to run on a
-t1.micro instance, so don’t try going that low; the Chef scripts won’t
-even successfully run.)</p>
-
-<p><strong>How the Jenkins Server is Set Up</strong></p>
-
-<p>To set up the Jenkins server, we take advantage of two AWS services:
-CloudFormation and OpsWorks. These services handle a lot of the tedious
-bits about setting up AWS resources, and handle coordinating all the
-Chef calls necessary. AWS has a bunch of CloudFormation and OpsWorks
-documentation you can refer to, and any questions you have about it
-should be in there. We’ll just give you the highlights in the blueprints
-to get around the tools we provide; if you need more information, please
-refer to the documentation.</p>
-
-<p>The first thing the script does is create a CloudFormation stack to
-create everything that the subsequent OpsWorks stack will need (security
-groups, roles, and policies). Once those are in place, it then sets up a
-new OpsWorks stack with a single custom layer and instance for the
-Jenkins server. If you go to the OpsWorks console, you’ll see a Jenkins
-stack with an instance starting. Once that instance turns green, your
-Jenkins server will be up and running. You can access it by clicking on
-the IP address in the instance details.</p>
-
-<p>Since you’re just getting started, it’s probably a good idea to note
-that the server you just launched will cost you money for each hour it’s
-up. If you’re not going to be doing anything with it right away, you may
-want to stop it when you’re not using it.</p>
-
-<p>Note: when you stop the instance through OpsWorks you’ll lose any
-configuration changes you’ve made to the server!</p>
-
-<p><strong>Exploring the Pipeline</strong></p>
-
-<p>The Jenkins server comes prepopulated with the beginnings of a
-continuous delivery pipeline. If you go to the “Continuous Delivery
-Pipeline” view, you’ll see all the different stages laid out. As you
-work through this series, you’ll build out each of these stages for your
-application. For now, let’s take a look at the first two stages, the
-trigger stage and the commit stage.</p>
-
-<p>The trigger stage is a simple monitoring job. Its purpose is to look for
-changes in the repositories of your project, and if it detects a change,
-it kicks off a new run of the pipeline.</p>
-
-<p>The commit stage handles building, packaging, and unit testing the
-application. It is supposed to run quickly (around five minutes) and
-give fast feedback to the developers. We will cover the commit stage in
-depth in the next part of this series.</p>
-
-<p><strong>Wrapping Up</strong></p>
-
-<p>If you didn’t already have source control setup, you do now. That’s
-huge! Source control is probably the most important part of a continuous
-delivery pipeline. We also set up a Jenkins server, to automate the
-different parts of our pipeline. With your code in source control, and
-your continuous integration server running, you’re ready to start
-building out the different stages of the pipeline to work with your
-application. In the next article, we’ll talk about how to set up your
-commit stage to build and test your application.</p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4]]></title>
@@ -4136,6 +3880,197 @@ through:</p>
 <p><a href="https://github.com/devo-ps/init-scripts">I&rsquo;ve just created a repo</a> where I&rsquo;ll be dumping various init scripts that will hopefully be helpful to others. I&rsquo;d love to get suggestions or help.</p>
 
 <p>And by the way, things are not much better with applications, though we&rsquo;re trying our best to improve things there too with things like <a href="https://github.com/Unitech/pm2">pm2</a> (fresh and shinny, more about it in a later post).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Goodbye node-forever]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/02/03/goodbye-node-forever/"/>
+    <updated>2014-02-03T14:15:10-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/02/03/goodbye-node-forever</id>
+    <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2013/06/26/goodbye-node-forever-hello-pm2.html">Goodbye node-forever, hello PM2</a></h2>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm22.png" alt="pm2 logo" /></p>
+
+<p>It&rsquo;s no secret that the devo.ps team has a crush on Javascript; node.js in the backend, AngularJS for our clients, there isn&rsquo;t much of our stack that isn&rsquo;t at least in part built with it. Our approach of building <a href="http://devo.ps/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">static clients and RESTful JSON APIs</a> means that we run a lot of node.js and I must admit that, despite all of it awesomeness, node.js still is a bit of a
+headache when it comes to running in production. Tooling and best practices (think monitoring, logging, error traces…) are still lacking when compared to some of the more established languages.</p>
+
+<p>So far, we had been relying on the pretty nifty <a href="https://github.com/nodejitsu/forever">node-forever</a>. Great tool, but a few things were missing:</p>
+
+<ul>
+<li>Limited monitoring and logging abilities,</li>
+<li>Poor support for process management configuration,</li>
+<li>No support for clusterization,</li>
+<li>Aging codebase (which meant frequent failures when upgrading Node).</li>
+</ul>
+
+
+<p>This is what led us to write <a href="https://github.com/Unitech/pm2">PM2</a> in the past couple months. We thought we&rsquo;d give you a quick look at it while we&rsquo;re nearing a production ready release.</p>
+
+<h3>So what&rsquo;s in the box?</h3>
+
+<p>First things first, you can install it with <code>npm</code>:</p>
+
+<pre><code>npm install -g pm2
+</code></pre>
+
+<p>Let&rsquo;s open things up with the usual comparison table:</p>
+
+<p>FeatureForeverPM2</p>
+
+<p>Keep Alive</p>
+
+<p>✔</p>
+
+<p>✔</p>
+
+<p>Coffeescript</p>
+
+<p>✔</p>
+
+<p>Log aggregation</p>
+
+<p>✔</p>
+
+<p>API</p>
+
+<p>✔</p>
+
+<p>Terminal monitoring</p>
+
+<p>✔</p>
+
+<p>Clustering</p>
+
+<p>✔</p>
+
+<p>JSON configuration</p>
+
+<p>✔</p>
+
+<p>And now let me geek a tad more about the main features…</p>
+
+<h3>Native clusterization</h3>
+
+<p>Node v0.6 introduced the cluster feature, allowing you to share a socket across multiple networked Node applications. Problem is, it doesn&rsquo;t work out of the box and requires some tweaking to handle master and children processes.</p>
+
+<p>PM2 handles this natively, without any extra code: PM2 itself will act as the master process and wrap your code into a special clustered process, as Nodejs does, to add some global variables to your files.</p>
+
+<p>To start a clustered app using all the CPUs you just need to type something like that:</p>
+
+<pre><code>$ pm2 start app.js -i max
+</code></pre>
+
+<p>Then;</p>
+
+<pre><code>$ pm2 list
+</code></pre>
+
+<p>Which should display something like (ASCII UI FTW);</p>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-list.png" alt="pm2 list" /></p>
+
+<p>As you can see, your app is now forked into multiple processes depending on the number of CPUs available.</p>
+
+<h3>Monitoring <em>a la</em> termcaps-HTOP</h3>
+
+<p>It&rsquo;s nice enough to have an overview of the running processes and their status with the <code>pm2 list</code> command. But what about tracking their resources consumption? Fear not:</p>
+
+<pre><code>$ pm2 monit
+</code></pre>
+
+<p>You should get the CPU usage and memory consumption by process (and cluster).</p>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-monit.png" alt="pm2 monit" /></p>
+
+<p><strong>Disclaimer</strong>: <a href="https://github.com/arunoda/node-usage">node-usage</a> doesn&rsquo;t support MacOS for now (feel free to PR). It works just fine on Linux though.</p>
+
+<p>Now, what about checking on our clusters and GC cleaning of the memory stack?
+Let&rsquo;s consider you already have an HTTP benchmark tool (if not, you should definitely check <a href="https://github.com/wg/wrk">WRK</a>):</p>
+
+<pre><code>$ express bufallo     // Create an express app
+$ cd bufallo
+$ npm install
+$ pm2 start app.js -i max
+$ wrk -c 100 -d 100 http://localhost:3000/
+</code></pre>
+
+<p>In another terminal, launch the monitoring option:</p>
+
+<pre><code>$ pm2 monit
+</code></pre>
+
+<p>W00t!</p>
+
+<h3>Realtime log aggregation</h3>
+
+<p>Now you have to manage multiple clustered processes: one who&rsquo;s crawling data, another who is processing stuff, and so on so forth. That means logs, lots of it. You can still handle it the old fashioned way:</p>
+
+<pre><code>$ tail -f /path/to/log1 /path/to/log2 ...
+</code></pre>
+
+<p>But we&rsquo;re nice, so we wrote the <code>logs</code> feature:</p>
+
+<pre><code>$ pm2 logs
+</code></pre>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-logs.png" alt="pm2 monit" /></p>
+
+<h3>Resurrection</h3>
+
+<p>So things are nice and dandy, your processes are humming and you need to do a hard restart. What now? Well, first, dump things:</p>
+
+<pre><code>$ pm2 dump
+</code></pre>
+
+<p>From there, you should be able to resurrect things from file:</p>
+
+<pre><code>$ pm2 kill     // let's simulate a pm2 stop
+$ pm2 resurect // All my processes are now up and running 
+</code></pre>
+
+<h3>API Health point</h3>
+
+<p>Let&rsquo;s say you want to monitor all the processes managed by PM2, as well as the status of the machine they run on (and maybe even build a nice Angular app to consume this API…):</p>
+
+<pre><code>$ pm2 web
+</code></pre>
+
+<p>Point your browser at <code>http://localhost:9615</code>, aaaaand… done!</p>
+
+<h3>And there&rsquo;s more…</h3>
+
+<ul>
+<li>Full tests,</li>
+<li>Generation of <code>update-rc.d</code> (<code>pm2 startup</code>), though still very alpha,</li>
+<li>Development mode with auto restart on file change (<code>pm2 dev</code>), still very drafty too,</li>
+<li>Log flushing,</li>
+<li>Management of your applications fleet via JSON file,</li>
+<li>Log uncaught exceptions in error logs,</li>
+<li>Log of restart count and time,</li>
+<li>Automated killing of processes exiting too fast.</li>
+</ul>
+
+
+<h3>What&rsquo;s next?</h3>
+
+<p>Well first, you could show your love on Github (we love stars):
+<a href="https://github.com/Unitech/pm2">https://github.com/Unitech/pm2</a>.</p>
+
+<p>We developed PM2 to offer an advanced and complete solution for Node process management. We&rsquo;re looking forward to getting more people helping us getting there: pull requests are more than welcome. A few things already on the
+roadmap that we&rsquo;ll get right at once we have a stable core:</p>
+
+<ul>
+<li>Remote administration/status checking,</li>
+<li>Built-in inter-processes communication channel (message bus),</li>
+<li>V8 GC memory leak detection,</li>
+<li>Web interface,</li>
+<li>Persistent storage for monitoring data,</li>
+<li>Email notifications.</li>
+</ul>
+
+
+<p>Special thanks to <a href="https://github.com/makara">Makara Wang</a> for concepts/tools and <a href="https://github.com/rlidwka">Alex Kocharin</a> for advices and pull requests.</p>
 ]]></content>
   </entry>
   

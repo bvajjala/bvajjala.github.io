@@ -525,12 +525,6 @@
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
-        <loc>
-            http://bvajjala.github.io/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
         <loc>http://bvajjala.github.io/404.html</loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
@@ -1122,7 +1116,13 @@
         <loc>
             http://bvajjala.github.io/projects/continuous-delivery-implementation-getting-started-with-aws/
         </loc>
-        <lastmod>2014-04-16T12:18:24-04:00</lastmod>
+        <lastmod>2014-04-16T12:27:56-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/
+        </loc>
+        <lastmod>2014-04-16T12:48:54-04:00</lastmod>
     </url>
     <url>
         <loc>http://bvajjala.github.io/projects/continuous-delivery-tools-list/</loc>
@@ -1130,7 +1130,7 @@
     </url>
     <url>
         <loc>http://bvajjala.github.io/projects/</loc>
-        <lastmod>2014-04-16T12:09:33-04:00</lastmod>
+        <lastmod>2014-04-16T12:48:54-04:00</lastmod>
     </url>
     <url>
         <loc>http://bvajjala.github.io/robots.txt</loc>

@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="JBoss, Selenium, Maven, Hudson, M2 Extra Steps &amp; Files Found Trigger plugins &ndash; how do all these work together in a continuous build + &hellip;">
+  <meta name="description" content="If you wish to &ldquo;hang on&rdquo; to a certain plugin which shipps with hudson.war just unpin it in the Manage Hudson >> Manage Plugins page & &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,57 +65,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/09/12/JBoss-Selenium-Maven-Hudson-M2-Extra-Steps-Files-Found-Trigger-Plugins-Playing-Well-Together/">JBoss, Selenium, Maven, Hudson, M2 Extra Steps & Files Found Trigger Plugins Playing Well Together</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-09-12T18:09:00-04:00" pubdate data-updated="true">Sep 12<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>JBoss, Selenium, Maven, Hudson, <a href="http://wiki.hudson-ci.org/display/HUDSON/M2+Extra+Steps+Plugin">M2 Extra Steps</a> &amp; <a href="http://wiki.hudson-ci.org/display/HUDSON/Files+Found+Trigger">Files Found Trigger</a> plugins &ndash; how do all these work together in a continuous build + Integration test life-cycle ?</p>
-
-<p><strong>The Story &ndash; The Use Case</strong>:</p>
-
-<p>We have two projects with two war artifacts which need to be deployed to a JBoss Application Server, whilst both webapps share a common base configuration, although the release life-cycle of each war have no correlation to the other.</p>
-
-<p>In production both application servers are running &amp; serving one another thus, Integration test should cover both JBoss instances &amp; test their web services.</p>
-
-<p>We are using selenium tests for both webapps and they need to run straight after a continuous build of each of the servers mentioned above. That said a change in project A or in project B should trigger the Integration tests job, whilst if either project A or project B are running the integration test plugin shouldn&rsquo;t run (at least until both projects / one of them is complete).</p>
-
-<p><strong>The &ldquo;work around&rdquo; &ndash; forcing the &ldquo;native Hudson&rdquo; configuration</strong> (which we didn&rsquo;t go with naturally):</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2010/09/12/JBoss-Selenium-Maven-Hudson-M2-Extra-Steps-Files-Found-Trigger-Plugins-Playing-Well-Together/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
   
   
     <article>
@@ -758,9 +707,142 @@ java.lang.IllegalArgumentException: id to load is required for loading
 
     </article>
   
-  <div class="pagination">
+  
+    <article>
+      
+  <header>
     
-      <a class="prev" href="/blog/page/12/">&larr; Older</a>
+      <h1 class="entry-title"><a href="/blog/2009/09/25/groovy-regular-expressions/">Groovy Regular Expressions</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-25T08:00:00-04:00" pubdate data-updated="true">Sep 25<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Because of the compact syntax regular expressions in Groovy are more readable than in Java. Here is how Jeffrey Friedl&rsquo;s <a href="http://regex.info/listing.cgi?ed=3&amp;p=208">example</a> looks in Groovy:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">subDomain</span>  <span class="o">=</span> <span class="s1">&#39;(?i:[a-z0-9]|[a-z0-9][-a-z0-9]*[a-z0-9])&#39;</span> <span class="c1">// simple regex in single quotes</span>
+</span><span class='line'><span class="kt">def</span> <span class="n">topDomains</span> <span class="o">=</span> <span class="s">$/</span>
+</span><span class='line'><span class="s">    (?x-i : com         \b     # you can put whitespaces and comments</span>
+</span><span class='line'><span class="s">          | edu         \b     # inside regex in eXtended mode</span>
+</span><span class='line'><span class="s">          | biz         \b</span>
+</span><span class='line'><span class="s">          | in(?:t|fo)  \b     # backslash is not escaped</span>
+</span><span class='line'><span class="s">          | mil         \b     # in dollar-slash strings</span>
+</span><span class='line'><span class="s">          | net         \b</span>
+</span><span class='line'><span class="s">          | org         \b</span>
+</span><span class='line'><span class="s">          | [a-z][a-z]  \b</span>
+</span><span class='line'><span class="s">    )/$</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">def</span> <span class="n">hostname</span> <span class="o">=</span> <span class="s">/(?:${subDomain}\.)+${topDomains}/</span>  <span class="c1">// variable substitution in slashy string</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">def</span> <span class="n">NOT_IN</span>   <span class="o">=</span> <span class="s">/;\&quot;&#39;&lt;&gt;()\[\]{}\s\x7F-\xFF/</span>     <span class="c1">// backslash is not escaped in slashy strings</span>
+</span><span class='line'><span class="kt">def</span> <span class="n">NOT_END</span>  <span class="o">=</span> <span class="s">/!.,?/</span>
+</span><span class='line'><span class="kt">def</span> <span class="n">ANYWHERE</span> <span class="o">=</span> <span class="s">/[^${NOT_IN}${NOT_END}]/</span>
+</span><span class='line'><span class="kt">def</span> <span class="n">EMBEDDED</span> <span class="o">=</span> <span class="s">/[$NOT_END]/</span>                        <span class="c1">// you can ommit {} around var name</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">def</span> <span class="n">urlPath</span>  <span class="o">=</span> <span class="s2">&quot;/$ANYWHERE*($EMBEDDED+$ANYWHERE+)*&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">def</span> <span class="n">url</span> <span class="o">=</span>
+</span><span class='line'>    <span class="s2">&quot;&quot;&quot;(?x:</span>
+</span><span class='line'><span class="s2">             # you have to escape backslash in multi-line double quotes</span>
+</span><span class='line'><span class="s2">             \\b</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">             # match the hostname part</span>
+</span><span class='line'><span class="s2">             (</span>
+</span><span class='line'><span class="s2">               (?: ftp | http s? ): // [-\\w]+(\\.\\w[-\\w]*)+</span>
+</span><span class='line'><span class="s2">             |</span>
+</span><span class='line'><span class="s2">               $hostname</span>
+</span><span class='line'><span class="s2">             )</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">             # allow optional port</span>
+</span><span class='line'><span class="s2">             (?: :\\d+ )?</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">             # rest of url is optional, and begins with /</span>
+</span><span class='line'><span class="s2">             (?: $urlPath )?</span>
+</span><span class='line'><span class="s2">       )&quot;&quot;&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">assert</span> <span class="s1">&#39;http://www.google.com/search?rls=en&amp;q=regex&amp;ie=UTF-8&amp;oe=UTF-8&#39;</span> <span class="o">==~</span> <span class="n">url</span>
+</span><span class='line'><span class="k">assert</span> <span class="s1">&#39;pages.github.io&#39;</span> <span class="o">==~</span> <span class="n">url</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see, there are several notations, and for every subexpression you can choose the one that is most expressive.</p>
+
+<h3>Resources</h3>
+
+<ul>
+<li>Martin Fowler on <a href="http://martinfowler.com/bliki/ComposedRegex.html">composed regexes</a></li>
+<li><a href="http://jira.codehaus.org/browse/GROOVY-2701">Introducing dollar-slash</a> notation into Groovy</li>
+<li><a href="http://regex.info/">Mastering Regular Expressions</a> — the best regex book</li>
+<li>Groovy <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-using-regular.html">Pattern</a> and <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-matchers-for-regular.html">Matcher</a> classes</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -779,10 +861,6 @@ java.lang.IllegalArgumentException: id to load is required for loading
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/">Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
       </li>
     
@@ -796,6 +874,10 @@ java.lang.IllegalArgumentException: id to load is required for loading
     
       <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/">Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/">A Deep Dive into AWS Reserved Instances</a>
       </li>
     
   </ul>
