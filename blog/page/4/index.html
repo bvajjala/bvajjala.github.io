@@ -9,7 +9,8 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Originally posted on Tikal Knolwedge&rsquo;s webiste @ this link Deploy reveal.js slideshow on github-pages was ridiculously easy. Cloned reveal.js &hellip;">
+  <meta name="description" content="For the past ~6 monthes or so I have been working solely with chef-solo.
+There are quite a few helpers for solo out there such as: soloist &ndash; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,109 +66,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/11/05/deploy-reveal-dot-js-slideshow-on-github-pages/">Deploy reveal.js Slideshow on Github-pages</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-05T21:03:00-05:00" pubdate data-updated="true">Nov 5<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Originally posted on <a href="http://www.tikalk.com">Tikal Knolwedge&rsquo;s webiste</a> @ this <a href="http://www.tikalk.com/alm/deploy-revealjs-slideshow-github-pages">link</a><br></p>
-
-<p><img class="left" src="/assets/images/gh-pages.png" title="'gh-pages'" >Deploy <a href="https://github.com/hakimel/reveal.js/">reveal.js slideshow</a> on github-pages was ridiculously easy.</p>
-
-<p>Cloned reveal.js master branch to my local machine:</p>
-
-<pre><code>git clone git@github.com:hakimel/reveal.js.git
-</code></pre>
-
-<p>Remove the history &ndash; of you want to preserve history ( <strong>git remote rm origin</strong> and add your new remote)</p>
-
-<pre><code>rm -Rf .git 
-</code></pre>
-
-<p>Add your new remote (you need to create a repository first)</p>
-
-<pre><code>git remote add origin git@github.com:tikalk-cookbooks/chef_workshop_presentation.git
-</code></pre>
-
-<p>You know the rest &hellip;</p>
-
-<pre><code>git add .
-git commit -m "Initial commit"
-git push origin master
-</code></pre>
-
-<p>In order to push master to github pages you should create a branch names <em><strong>gh-pages</strong></em> and it&nbsp;<strong>must</strong> be named that, the commit &amp; push to this branch and about 2 minuets later you can browse to your presentation on gh-pages.</p>
-
-<p><em><strong>Create a branch</strong></em>:</p>
-
-<pre><code>git branch hg-pages
-git push origin gh-pages&lt;/pre&gt;
-</code></pre>
-
-<p>updating this &quot;site&quot; can be done by editing the stuff you want on the &quot;master&quot; branch, then merge     those changes in the gh-pages branch and finally push those changes to the remote gh-pages which will automatically deploy youe reveal.js presentaion.</p>
-
-<p>the merge sould look somthing like:</p>
-
-<pre><code>hagzag-Lap-hagzag:chef_workshop_presentaion(master) $ git checkout gh-pages&amp;nbsp;
-
-hagzag-Lap-hagzag:chef_workshop_presentaion(gh-pages) $ git merge master&amp;nbsp;
-Updating 0f4f1e1..fb0d73d
-
-Fast-forward
-
-css/custom.css | &amp;nbsp; 4 ++++
-
-index.html &amp;nbsp; &amp;nbsp; | 104 +++++++++++++++++++++++++++++++++++++++++++++++++-----------    --------------------------------------------
-
-2 files changed, 53 insertions(+), 55 deletions(-)
-
-create mode 100644 css/custom.css
-
-git push origin gh-pages
-</code></pre>
-
-<p>the url is built from the followng pattern:</p>
-
-<pre><code>[github_username].github.io/[repo_name]
-</code></pre>
-
-<p>in this case:</p>
-
-<p><a href="http://tikalk-cookbooks.github.io/chef_workshop_presentation/#/">http://tikalk-cookbooks.github.io/chef_workshop_presentation/</a></p>
-
-<p>Hope you find this useful !</p>
-
-<p>HP</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1296,6 +1194,48 @@ I have a few plans like bash_it / oh_my_zsh &amp; others, but until then I put t
 <p>I took the liberty (not sure it&rsquo;s mine to take &hellip; but still), locating Xcode CLI tools for both mountain lion (10.8) and Lion (10.7) on <a href="http://www.dropbox.com">DropBox</a>, ecause Apple (like Oracle and other Giants) won&rsquo;t let you download without a userid / pass which is quite irretating &hellip;</p>
 
 <p>As Always hope you guy&rsquo;s enjoy this.
+HP</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/08/juc-video-net-ci-slash-cd-with-jenkins/">JUC Video - .Net CI/CD With Jenkins</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-08T22:37:00-04:00" pubdate data-updated="true">Jul 8<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The guy&rsquo;s from <a href="http://www.jfrog.com/">Jfrog</a> were kind enough to put this session on youtube &ndash; here it is enjoy</p>
+
+<iframe width="640" height="360" src="//www.youtube.com/embed/C5-98Fln1jg" frameborder="0" allowfullscreen></iframe>
+
+
+<p>comments are welcome !
 HP</p>
 </div>
   

@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="What is jenkins job builder Jenkins job builder is extreme good tool to manage your jenkins CI jobs, it takes simple description from YAML files, and &hellip;">
+  <meta name="description" content="A few weeks ago I started talking about how we use Docker and Jenkins for Continuous Delivery in our staging environment. Today, we are open-sourcing &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,252 +65,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned It</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-22T08:57:36-05:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>What is jenkins job builder</h1>
-
-<p>Jenkins job builder is extreme good tool to manage your jenkins CI jobs, it takes simple description from YAML files, and use them to configure jenkins.</p>
-
-<pre><code>#set free style job
-#job-template.yml
-- job:
-    name: testjob
-    project-type: freestyle
-    defaults: global
-    disabled: false
-    display-name: 'Fancy job name'
-    concurrent: true
-    quiet-period: 5
-    workspace: /srv/build-area/job-name
-    block-downstream: false
-    block-upstream: false
-</code></pre>
-
-<p>Then put your jenkins access into jenkins.ini file</p>
-
-<pre><code>[jenkins]
-user=USERNAME
-password=USER_TOKEN
-url=JENKINS_URL
-ignore_cache=IGNORE_CACHE_FLAG
-</code></pre>
-
-<p>Based on the job configuration above, you just need to type command</p>
-
-<pre><code>$ jenkins-jobs --conf jenkins.ini update job-template.yaml 
-</code></pre>
-
-<p>Then your job <em>testjob</em> is created in your jenkins server.</p>
-
-<p>The project is created by <a href="https://wiki.openstack.org/wiki/InfraTeam">openstack-infrastructure team</a>, it is used to manage the openstack environment, fairly good.</p>
-
-<h1>How it works</h1>
-
-<p>There is no magic behind it, <em>jenkins-jobs</em> just convert the <em>job-template.yaml</em> to jenkins XML request file, and use jenkins remote API to send create request.</p>
-
-<p>Try to do below to understand this.</p>
-
-<pre><code>$ jenkins-jobs test job-template.yaml -o .
-</code></pre>
-
-<p>Then xml file <em>testjob</em> is created, see</p>
-
-<pre><code>&lt;?xml version="1.0" ?&gt;
-&lt;project&gt;
-  &lt;actions/&gt;
-  &lt;description&gt;
-
-&amp;lt;!-- Managed by Jenkins Job Builder --&amp;gt;&lt;/description&gt;
-  &lt;keepDependencies&gt;false&lt;/keepDependencies&gt;
-  &lt;disabled&gt;false&lt;/disabled&gt;
-  &lt;displayName&gt;Fancy job name&lt;/displayName&gt;
-  &lt;blockBuildWhenDownstreamBuilding&gt;false&lt;/blockBuildWhenDownstreamBuilding&gt;
-  &lt;blockBuildWhenUpstreamBuilding&gt;false&lt;/blockBuildWhenUpstreamBuilding&gt;
-  &lt;concurrentBuild&gt;true&lt;/concurrentBuild&gt;
-  &lt;customWorkspace&gt;/srv/build-area/job-name&lt;/customWorkspace&gt;
-  &lt;quietPeriod&gt;5&lt;/quietPeriod&gt;
-  &lt;canRoam&gt;true&lt;/canRoam&gt;
-  &lt;properties/&gt;
-  &lt;scm class="hudson.scm.NullSCM"/&gt;
-  &lt;builders/&gt;
-  &lt;publishers/&gt;
-  &lt;buildWrappers/&gt;
-&lt;/project&gt;
-</code></pre>
-
-<p>Now you can use curl command to send the request (testjob) directly !!</p>
-
-<pre><code>$ curl --user USER:PASS -H "Content-Type: text/xml" -s --data "@testjob" "http://jenkins-server/createItem?name=testjob"
-</code></pre>
-
-<h2>How to recreate your jenkins job</h2>
-
-<p>Looks great, finally you need think about how to re-create your jenkins job, it is also simple, just download the config.xml</p>
-
-<pre><code>$ curl --user USER:PASS http://jenkins-server/testjob/config.xml
-</code></pre>
-
-<p>Or open the configuration page in broswer *<a href="http://jenkins-server/testjob/configure*">http://jenkins-server/testjob/configure*</a> and map from YAML file.</p>
-
-<p>You need to read <a href="http://ci.openstack.org/jenkins-job-builder/configuration.html">jenkins job builder&rsquo;s guideline</a> to know the map, generate it had level Macro like <a href="https://wiki.openstack.org/wiki/InfraTeam">builders</a>, which is connected to the <a href="https://github.com/openstack-infra/jenkins-job-builder/blob/master/jenkins_jobs/modules/builders.py">real python builders module</a> to do transformation from YAML to XML.</p>
-
-<p>What you stated in YAML file like</p>
-
-<pre><code>-job:
-  name: test_job
-  builders:
-- shell: "make test"
-</code></pre>
-
-<p>it will be converted to</p>
-
-<pre><code>&lt;builders&gt;
-&lt;hudson.tasks.Shell&gt;
-  &lt;command&gt;make test&lt;/command&gt;&lt;/hudson.tasks.Shell&gt;
-&lt;/builders&gt;
-</code></pre>
-
-<h2>How to extend</h2>
-
-<p>Greatly to see jenkins job builder already had lots of default modules to support your normal jenkins jobs, but there is exceptions like some none popular jenkins plugins or your own plugins.</p>
-
-<p>Then it is time to extend the module, the existing document: Extending is not clear enough, I will use example to show how it works, code is in <a href="https://github.com/bv2012/jenkins-buddy">github jenkins-buddy</a> project</p>
-
-<p><a href="https://wiki.jenkins-ci.org/display/JENKINS/ArtifactDeployer+Plugin">ArtifactDeployer</a> Plugin is used as example, this plugin is the popular plugin to deploy the artifacts to other folder.</p>
-
-<p>Artifact Deploy Plugin</p>
-
-<p><img src="../downloads/code/artifactdeploy.png" alt="" /></p>
-
-<p>And I want to have .YAML like below</p>
-
-<pre><code>*#artifactdeploy.yaml*
-- job:
-name: test-job
-publishers:
-  - artifactdeployer: 
-  includes: 'buddy-*.tar.gz'
-  remote: '/project/buddy'
-</code></pre>
-
-<h2>write codes to transform</h2>
-
-<p>Now I need to download the existing jobs to see how XML looks like, using curl above, I got it like</p>
-
-<pre><code>&lt;publishers&gt;
-   ...  
-  &lt;org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher plugin="artifactdeployer@0.27"&gt;
-&lt;entries&gt;
-  &lt;org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry&gt;
-&lt;includes&gt;buddy-*.tar.gz&lt;/includes&gt;
-&lt;basedir&gt;&lt;/basedir&gt;
-&lt;excludes&gt;&lt;/excludes&gt;
-&lt;remote&gt;/project/buddy&lt;/remote&gt;
-&lt;flatten&gt;false&lt;/flatten&gt;
-&lt;deleteRemote&gt;false&lt;/deleteRemote&gt;
-&lt;deleteRemoteArtifacts&gt;false&lt;/deleteRemoteArtifacts&gt;
-&lt;deleteRemoteArtifactsByScript&gt;false&lt;/deleteRemoteArtifactsByScript&gt;
-&lt;failNoFilesDeploy&gt;false&lt;/failNoFilesDeploy&gt;
-  &lt;/org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry&gt;
-&lt;/entries&gt;
-&lt;deployEvenBuildFail&gt;false&lt;/deployEvenBuildFail&gt;
-  &lt;/org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher&gt;
-..
-&lt;/publishers&gt; 
-</code></pre>
-
-<p>It belongs the section publishers So I write the jenkins_buddy/modules/publishers.py module to add one function artifactdeployer:</p>
-
-<pre><code>def artifactdeployer(parser, xml_parent, data):
-    logger = logging.getLogger("%s:artifactdeployer" % __name__)
-    artifactdeployer = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher')
-    entries = XML.SubElement(artifactdeployer, 'entries')
-    entry = XML.SubElement(entries, 'org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry')
-    print data
-    XML.SubElement(entry, 'includes').text = data['includes']
-    XML.SubElement(entry, 'remote').text = data['remote']
-</code></pre>
-
-<p>It is the core part handling convert.</p>
-
-<h3>Hook into jenkins-job builder</h3>
-
-<p>Now you need hook this script into jenkins-jobs builder, thank for the entry_points in python, it can be used for this.</p>
-
-<p>Create the plugin related script and structure, add new entry_point in setup.py</p>
-
-<pre><code>#setup.py in jenkins-buddy
-entry_points={
-    'jenkins_jobs.publishers': [
-    'artifactdeployer=jenkins_buddy.modules.publishers:artifactdeployer',
-    ],
-}
-</code></pre>
-
-<p>it tells jenkins-jobs if you meet new keyword artifactdeployer in publishers, please let me jenkins_buddy.modules.publishers:artifactdeployer to handle.</p>
-
-<h3>Verify it</h3>
-
-<p>Build the pip package local and install it</p>
-
-<pre><code>$ python setup.py sdist
-$ pip install dist/jenkins-buddy-0.0.5.zip
-</code></pre>
-
-<p>And verify the new job, Bingo, it works.</p>
-
-<pre><code>$ jenkins-jobs test artifactdeploy.yaml -o . 
-</code></pre>
-
-<h3>###Make it more complete by checking jenkins plugin java code</h3>
-
-<p>Maybe you noticed, it is hack solution, since I skipped some parameter converting and guess what the XML will look like, if you want to make it more complete, we need to check the java codes directly.</p>
-
-<p>src/main/java/org/jenkinsci/plugins/artifactdeployer/ArtifactDeployerPublisher.java is the class we need to take care.</p>
-
-<pre><code>@DataBoundConstructor
-public ArtifactDeployerPublisher(List&lt;ArtifactDeployerEntry&gt; deployedArtifact, boolean deployEvenBuildFail) {
-    this.entries = deployedArtifact;
-    this.deployEvenBuildFail = deployEvenBuildFail;
-    if (this.entries == null)
-    this.entries = Collections.emptyList();
-}
-</code></pre>
-
-<p>It is directly mapping from XML into internal data, if you need know more, learn how to develop jenkins plugin.</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1255,6 +1009,73 @@ roadmap that we&rsquo;ll get right at once we have a stable core:</p>
 
 
 <p>Special thanks to <a href="https://github.com/makara">Makara Wang</a> for concepts/tools and <a href="https://github.com/rlidwka">Alex Kocharin</a> for advices and pull requests.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/ansible-simply-kicks-ass/">Ansible Simply Kicks Ass</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:12:31-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/07/03/ansible-simply-kicks-ass.html">Ansible Simply Kicks Ass</a></h2>
+
+<p>The devo.ps team has been putting quite a few tools to the test over the years when it comes to managing infrastructures. We&rsquo;ve developed some ourselves and have adopted others. While the choice to use one over another is not always as clear-cut as we&rsquo;d like (I&rsquo;d love to rant about monitoring but will leave that for a later post), we&rsquo;ve definitely developed kind of a crush for <a href="https://github.com/ansible/ansible">Ansible</a> in the past 6 months. We went through years of using Puppet, then Chef and more recently Salt Stack, before Ansible gained unanimous adoption among our team.</p>
+
+<p>What makes it awesome? Well, on top of my head:</p>
+
+<ul>
+<li>It&rsquo;s <strong>agent-less</strong> and works by default in <strong>push mode</strong> (that last point is subjective, I know).</li>
+<li>It&rsquo;s <strong>easy to pick up</strong> (honestly, try and explain Chef or Puppet to a developer and see how long that takes you compared to Ansible).</li>
+<li>It&rsquo;s <strong>just Python</strong>. It makes it easier for people like me to contribute (Ruby is not necessarily that mainstream among ops) and also means minimal dependency on install (Python is shipped by default with Linux).</li>
+<li>It&rsquo;s <strong>picking up steam</strong> at an impressive pace (I believe we&rsquo;re at 10 to 15 pull requests a day).</li>
+<li>And it has all of the good stuff: idempotence, roles, playbooks, tasks, handlers, lookups, callback plugins…</li>
+</ul>
+
+
+<p>Now, Ansible is still very much in its infancy and some technologies may not yet be supported. But there are a great deal of teams pushing hard on contributions, including us. In the past few weeks, for example, we&rsquo;ve
+contributed both Digital Ocean and Linode modules. And we have a lot more coming, including some experimentations with Vagrant.</p>
+
+<p>Now, an interesting aspect of Ansible, and one that makes it so simple, is that it comes by default with a tool-belt. Understand that it is shipped with a range of modules that add support for well known technologies: <a href="http://www.ansibleworks.com/docs/modules.html">EC2,
+Rackspace, MySQL, PostgreSQL, rpm, apt,…</a>. This now includes our
+Linode contribution. That means that with the latest version of Ansible you can spin off a new Linode box as easily as:</p>
+
+<pre><code>ansible all -m linode -a "name='my-linode-box' plan=1 datacenter=2 distribution=99 password='p@ssword' "
+</code></pre>
+
+<p>Doing this with Chef would probably mean chasing down a knife plugin for adding Linode support, and would simply require a full Chef stack (say hello to RabbitMQ, Solr, CouchDB and a gazillion smaller dependencies). Getting
+Ansible up and running is as easy as:</p>
+
+<pre><code>pip install ansible
+</code></pre>
+
+<p>Et voila! You gotta appreciate the simple things in life. Especially the life of a sysadmin.</p>
 </div>
   
   

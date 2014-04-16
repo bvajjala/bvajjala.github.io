@@ -1556,7 +1556,7 @@ version-control repository.</p>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/03/11/continuous-delivery-patterns/">Continuous Delivery Patterns</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned It</a></h1>
     
     
       <p class="meta">
@@ -1572,1158 +1572,224 @@ version-control repository.</p>
   
 
 
-<time datetime="2014-03-11T00:00:00-04:00" pubdate data-updated="true"></time>
+<time datetime="2014-02-22T08:57:36-05:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>ABOUT CONTINUOUS DELIVERY</p>
-
-<p>With Continuous Delivery (CD), teams continuously deliver new  versions of software to production by decreasing the cycle time between an idea and usable software through the automation of the entire delivery system: build, deployment, test, and release. CD is enabled through the Deployment Pipeline, which encompasses a collection of patterns described in this Refcard.</p>
-
-<p>CD is concerned with “…how all the moving parts fit together: configuration management, automated testing, continuous integration and deployment, data management, environment management, and release management.” (1)</p>
-
-<p>THE DEPLOYMENT PIPELINE</p>
-
-<p>The purpose of the deployment pipeline is threefold:</p>
-
-<p> • Visibility: All aspects of the delivery system &ndash; building, deploying, testing, and releasing – are visible to all team members promoting collaboration.</p>
-
-<p> • Feedback: Team members learn of problems as soon as they occur so that issues are fixed as soon as possible.</p>
-
-<p> • Continually Deploy: Through a fully automated process, you can deploy and release any version of the software to any environment. (1)</p>
-
-<p>In the Deployment Pipeline diagram above, all of the patterns are shown in context. There are some patterns that span multiple stages of the pipeline, so I chose the stage where it’s most predominately used.</p>
-
-<p>BENEFITS
- • Empowering Teams: Because the deployment pipeline is a pull system, testers, developers, operations, and others can self service the application version into an environment of their choice.</p>
-
-<p> • Reducing Errors: Ensuring the correct version, configuration, database schema, etc. are applied the same way every time through automation.</p>
-
-<p> • Lowering Stress: Through push-button releases to production and Rehearsing Deployments, a release becomes commonplace without the typical stress.</p>
-
-<p> • Deployment Flexibility: Instantiate a new environment or configuration by making a few changes to the automated delivery system.</p>
-
-<p> • Practice makes Perfect: Through the deployment pipeline, the final deployment into production is being rehearsed every single time the software is deployed to any target environments. (1)</p>
-
-<h1>CONFIGURATION MANAGEMENT</h1>
-
-<p>Configuration Management is “the process by which all artifacts relevant to your project, and the relationships between them, are stored, retrieved, uniquely identified, and modified”. (1)</p>
-
-<p>Note: Each pattern is cited with a number in parentheses that corresponds to the source in the References section.</p>
-
-<h2>Configurable Third-Party Software (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Evaluate and use third-party software that can be easily configured, deployed, and automated. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td> Procuring software that cannot be externally configured. Software without an API or command-line interface that forces teams to use the GUI only. |</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Configuration Catalog (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern  </th>
-<th>  Maintain a catalog of all options for each application, how to change these options and storage locations for each application. Automatically create this catalog as part of the build process. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td> Configuration options are not documented. The catalog of applications and other assets is “tribal knowledge”. |</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Mainline (3)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern  </th>
-<th>  Minimize merging and keep the number of active code lines manageable by developing on a mainline. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td> Multiple branches per project.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Merge Daily (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Changes committed to the mainline are applied to each branch on at least a daily basis. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Merging every iteration once a week or less often than once a day. |</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Protected Configuration (5) ,(1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Store configuration information in secure remotely accessible locations such as a database, directory, or registry.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Open text passwords and/or single machine or share.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Repository (3) , (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>All source files &ndash; executable code, configuration, host environment, and data &ndash; are committed to a version-control repository.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Some files are checked in, others, such as environment configuration or data changes, are not. Binaries – that can be recreated through the build and deployment process – are checked in.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Short-Lived Branches (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Branches must be short lived – ideally less than a few days and never more than an iteration.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Branches that last more than an iteration. Branches by product feature that live past a release.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Single Command Environment (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Check out the project’s version-control repository and run a single command to build and deploy the application to any accessible environment, including the local development.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Forcing the developer to define and configure environment variables. Making the developer install numerous tools in order for the build/deployment to work.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Single Path to Production (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Configuration management of the entire system &ndash; source, configuration, environment and data. Any change can be tied back to a single revision in the version-control system.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Parts of system are not versioned. Inability to get back to a previously configured software system.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>CONTINUOUS INTEGRATION (CI)</h1>
-
-<h2>Build Threshold (5)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Fail a build when a project rule is violated – such as architectural breaches, slow tests, and coding standard violations. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Manual code reviews. Learning of code quality issues later in the development cycle.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Commit Often (6)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Each team member checks in regularly to trunk &ndash; at least once a day but preferably after each task to trigger the CI system.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Source files are committed less frequently than daily due to the number of changes from the developer.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Continuous Feedback (6)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Send automated feedback from CI system to all Cross-Functional Team members.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Notifications are not sent; notifications are ignored; CI system spams everyone with information they cannot use.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Continuous Integration (6)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Building and testing software with every change committed to a project’s version control repository.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Scheduled builds, nightly builds, building periodically, building exclusively on developer’s machines, not building at all. </td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Stop the Line (5) , (1) , (4), (12)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Fix software delivery errors as soon as they occur; stop the line. No one checks in on a broken build as the fix becomes the highest priority.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Builds stay broken for long periods of time, thus preventing developers from checking out functioning code. </td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Independent Build (6)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Write build scripts that are decoupled from IDEs. These build scripts are executed by a CI system so that software is built at every change. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Automated build relies on IDE settings. Builds are unable to be run from the command line.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Visible Dashboards</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Provide large visible displays that aggregate information from your delivery system to provide high-quality feedback to the Cross-Functional Team in real time.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Email-only alerts or not publicizing the feedback to the entire team.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>TESTING</h1>
-
-<h2>Automate Tests</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Automate the verification and validation of software to include unit, component, capacity, functional, and deployment tests</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Manual testing of units, components, deployment, and other types of tests.</td>
-</tr>
-</tbody>
-</table>
-
-
-<blockquote><p>Unit- Automating tests without any dependencies.</p>
-
-<p>Component- Automating tests with dependencies to other components and heavyweight dependencies such as the database or file system.</p>
-
-<p>Deployment- Automating tests to verify the deployment and configuration were successful. Sometimes referred to as a “smoke tests”.</p>
-
-<p>Functional- Automating tests to verify the behavior of the software from a user’s perspective.</p>
-
-<p>Capacity- Automating load and performance testing in near- production conditions.</p></blockquote>
-
-<h2>Isolate Test Data (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Use transactions for database-dependent tests (e.g., component tests) and roll back the transaction when done. Use a small subset of data to effectively test behavior </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td> Using a copy of production data for Commit Stage tests. Running tests against a shared database.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Parallel Tests (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Run multiple tests in parallel across hardware instances to decrease the time in running tests.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Running tests on one machine or instance. Running dependent tests that cannot be run in parallel.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Stub Systems (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Use stubs to simulate external systems to reduce deployment complexity.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Manually installing and configuring interdependent systems for Commit Stage build and deployment.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>DEPLOYMENT PIPELINE</h1>
-
-<h2>Deployment Pipeline (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> A deployment pipeline is an automated implementation of your application’s build, deploy, test, and release process. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Deployments require human intervention (other than approval or clicking a button). Deployments are not production ready. </td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Value-Stream Map (4) ##</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Create a map illustrating the process from check in to the version-control system to the software release to identify process bottlenecks.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Separately defined processes and views of the checkin to release process.</td>
-</tr>
-</tbody>
-</table>
-
-
-<p>BUILD AND DEPLOYMENT SCRIPTING</p>
-
-<h2>Dependency Management (5)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Centralize all dependent libraries to reduce bloat, classpath problems, and repetition of the same dependent libraries and transitive dependencies from project to project. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Multiple copies of the same binary dependencies in each and every project. Redefining the same information for each project. Classpath hell!</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Common Language (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> As a team, agree upon a common scripting language &ndash; such as Perl, Ruby, or Python &ndash; so that any team member can apply changes to the Single Delivery System </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Each team uses a different language making it difficult for anyone to modify the delivery system reducing cross-functional team effectiveness.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Externalize Configuration (5)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Changes between environments are captured as configuration information. All variable values are externalized from the application configuration into build/deployment-time properties </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Hardcoding values inside the source code or per target environment.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Fail Fast (6)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Fail the build as soon as possible. Design scripts so that processes that commonly fail run first. These processes should be run as part of the Commit Stage.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Common build mistakes are not uncovered until late in the deployment process.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Fast Builds (6)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> The Commit Build provides feedback on common build problems as quickly as possible &ndash; usually in under 10 minutes.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Throwing everything into the commit stage process, such as running every type of automated static analysis tool or running load tests such that feedback is delayed.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Scripted Deployment (5)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> All deployment processes are written in a script, checked in to the version-control system, and run as part of the Single Delivery System.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Deployment documentation is used instead of automation. Manual deployments or partially manual deployments. Using GUI to perform a deployment.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Unified Deployment (5)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> The same deployment script is used for each deployment. The Protected Configuration – per environment &ndash; is variable but managed.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td> Different deployment script for each target environment or even for a specific machine. Manual configuration after deployment for each target environment. </td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>DEPLOYING AND RELEASING APPLICATIONS</h1>
-
-<h2>Binary Integrity (5)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Build your binaries once, while deploying the binaries to multiple target environments, as necessary.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td> Software is built in every stage of the deployment pipeline. </td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Canary Release</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Release software to production for a small subset of users (e.g. , 10%) to get feedback prior to a complete rollout. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td> Software is released to all users at once.|</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Blue-Green Deployments (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Deploy software to a non-production environment (call it blue) while production continues to run. Once it’s deployed and “warmed up”, switch production (green) to non-production and blue to green simultaneously. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Production is taken down while the new release is applied to production instance(s).</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Dark Launching (11)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Launch a new application or features when it affects the least amount of users.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Software is deployed regardless of number of active users.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Rollback Release (5)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Provide an automated single command rollback of changes after an unsuccessful deployment.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Manually undoing changes applied in a recent deployment. Shutting down production instances while changes are undone. </td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Self-Service Deployment (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Any Cross-Functional Team member selects the version and environment to deploy the latest working software. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Deployments released to team are at specified intervals by the “Build Team”. Testing can only be performed in a shared state without isolation from others. </td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>INFRASTRUCTURE AND ENVIRONMENTS</h1>
-
-<h2>Automate Provisioning (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Automate the process of configuring your environment to include networks, external services, and infrastructure.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Configured instances are “works of art” requiring team members to perform partially or fully manual steps to provision them.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Behavior-Driven Monitoring (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Automate tests to verify the behavior of the infrastructure. Continually run these tests to provide near real-time alerting. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>No real-time alerting or monitoring. System configuration is written without tests.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Immune Systems</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Deploy software one instance at a time while conducting Behavior-Driven Monitoring. If an error is detected during the incremental deployment, a Rollback Release is initiated to revert changes.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Non-incremental deployments without monitoring.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Lockdown Environments (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Lock down shared environments from unauthorized external and internal usage, including operations staff. All changes are versioned and applied through automation.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>The “Wild West”: any authorized user can access shared environments and apply manual configuration changes, putting the environment in an unknown state leading to deployment errors.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Production-Like Environments (1) ##</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Target environments are as similar to production as possible.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Environments are “production like” only weeks or days before a release. Environments are manually configured and controlled.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Transient Environments</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Utilizing the Automate Provisioning, Scripted Deployment and Scripted Database patterns, any environment should be capable of terminating and launching at will.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Environments are fixed to “DEV, QA” or other pre-determined environments.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>DATA</h1>
-
-<h2>Database Sandbox (7)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Create a lightweight version of your database – using the Isolate Test Data pattern. Each developer uses this lightweight DML to populate his local database sandboxes to expedite test execution.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Shared database. Developers and testers are unable to make data changes without it potentially adversely affecting other team members immediately.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Decouple Database (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Ensure your application is backward and forward compatible with your database so you can deploy each independently</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Application code data are not capable of being deployed separately.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Database Upgrade (7)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Use scripts to apply incremental changes in each target environment to a database schema and data. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Manually applying database and data changes in each target environment.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Scripted Database (7)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Script all database actions as part of the build process. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Using data export/import to apply data changes. Manually applying schema and data changes to the database.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>INCREMENTAL DEVELOPMENT</h1>
-
-<h2>Branch by Abstraction (2)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Instead of using version-control branches, create an abstraction layer that handles both an old and new implementation. Remove the old implementation.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Branching using the version-control system leading to branch proliferation and difficult merging. Feature branching.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Toggle Features (10)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Deploy new features or services to production but limit access dynamically for testing purposes.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Waiting until a feature is fully complete before committing the source code.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h1>COLLABORATION</h1>
-
-<h2>Delivery Retrospective (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>For each iteration, hold a retrospective meeting where everybody on the Cross-Functional Team discusses how to improve the delivery process for the next iteration. </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Waiting until an error occurs during a deployment for Dev and Ops to collaborate. Having Dev and Ops work separately.</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>Cross-Functional Teams (1)</h2>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th>Everybody is responsible for the delivery process. Any person on the Cross-Functional Team can modify any part of the delivery system.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Siloed teams: Development, Testing, and Operations have their own scripts and processes and are not part of the same team. </td>
-</tr>
-</tbody>
-</table>
-
-
-<pre><code>Amazon.com has an interesting take on this approach. They call it “You build it, you run it”. Developers take the software they’ve written all the way to production. 
+  <div class="entry-content"><h1>What is jenkins job builder</h1>
+
+<p>Jenkins job builder is extreme good tool to manage your jenkins CI jobs, it takes simple description from YAML files, and use them to configure jenkins.</p>
+
+<pre><code>#set free style job
+#job-template.yml
+- job:
+    name: testjob
+    project-type: freestyle
+    defaults: global
+    disabled: false
+    display-name: 'Fancy job name'
+    concurrent: true
+    quiet-period: 5
+    workspace: /srv/build-area/job-name
+    block-downstream: false
+    block-upstream: false
 </code></pre>
 
-<h2>Root-Cause Analysis (1)</h2>
+<p>Then put your jenkins access into jenkins.ini file</p>
 
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Pattern </th>
-<th> Learn the root cause of a delivery problem by asking “why” of each answer and symptom until discovering the root cause.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Anti-Patterns </td>
-<td>Accepting the symptom as the root cause of the problem.</td>
-</tr>
-</tbody>
-</table>
+<pre><code>[jenkins]
+user=USERNAME
+password=USER_TOKEN
+url=JENKINS_URL
+ignore_cache=IGNORE_CACHE_FLAG
+</code></pre>
 
+<p>Based on the job configuration above, you just need to type command</p>
 
-<h1>TOOLS</h1>
+<pre><code>$ jenkins-jobs --conf jenkins.ini update job-template.yaml 
+</code></pre>
 
-<p>This is meant to be an illustrative list, not an exhaustive list, to give you an idea of the types of tools and some of the vendors that help to enable effective Continuous Delivery. The Java, .NET and Ruby platforms are represented. The tools that span categories have been assigned to the most appropriate category or duplicated when necessary.</p>
+<p>Then your job <em>testjob</em> is created in your jenkins server.</p>
 
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Category </th>
-<th> Example Software Tools </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> Configuration Management </td>
-<td> &lsquo;Subversion (SVN), git, Perforce, PassPack, PasswordSafe, ESCAPE, ConfigGen&rsquo; |</td>
-</tr>
-<tr>
-<td></td>
-<td> Continuous Integration </td>
-<td> &lsquo;Bamboo, Jenkins, AntHill Pro, Go, TeamCity, TFS 2010, Electric Commander&rsquo; &lsquo;Supporting tools: Doxygen, Grand, GraphViz, JavaDoc, NDoc, SchemaSpy, UmlGraph, CheckStyle, Clover, Cobertura, FindBugs,FxCop, JavaNCSS, JDepend, PMD, Sonar, Simian&rsquo; |</td>
-</tr>
-<tr>
-<td></td>
-<td> Testing </td>
-<td> Twist , AntUnit, Cucumber, DbUnit, webrat, easyb, Fitnesse, JMeter, JUnit, NBehave, SoapUI, Selenium, RSpec, SauceLabs |</td>
-</tr>
-<tr>
-<td></td>
-<td> Deployment Pipeline </td>
-<td> Go, AntHill Pro |</td>
-</tr>
-<tr>
-<td></td>
-<td> Build and Deployment Scripting </td>
-<td> Ant, AntContrib, NAnt, MSBuild, Buildr, Gant, Gradle, make, Maven, Rake, Java Secure Channel, ControlTier, Altiris, Capistrano, Fabric, Func |</td>
-</tr>
-<tr>
-<td></td>
-<td> Infrastructure and Environments </td>
-<td> AWS EC2, AWS S3, Windows Azure, Google App Engine, AWS Elastic Beanstalk, Heroku, Capistrano, Cobbler, BMC Bladelogic, CFEngine, IBM Tivoli Provisioning Manager, Puppet, Chef, Bcfg2, AWS Cloud Formation, Windows Azure AppFabric, rPath, JEOS, BoxGrinder, CLIP, Eucalyptus, AppLogic, CloudKick, CloudWatch, Nagios, Zabbix, Zenoss |</td>
-</tr>
-<tr>
-<td></td>
-<td> Data </td>
-<td> Hibernate, MySQL, Liquibase, Oracle, PostgreSQL, SQL Server, SimpleDB, SQL Azure, Ant, MongoDB, dbdeploy |</td>
-</tr>
-<tr>
-<td></td>
-<td> Components and Dependencies </td>
-<td> Ivy, Archiva, Nexus, Artifactory, Bundler |</td>
-</tr>
-<tr>
-<td></td>
-<td> Collaboration </td>
-<td> Mingle, Greenhopper, JIRA |</td>
-</tr>
-</tbody>
-</table>
+<p>The project is created by <a href="https://wiki.openstack.org/wiki/InfraTeam">openstack-infrastructure team</a>, it is used to manage the openstack environment, fairly good.</p>
 
+<h1>How it works</h1>
 
-<h1>REFERENCES</h1>
+<p>There is no magic behind it, <em>jenkins-jobs</em> just convert the <em>job-template.yaml</em> to jenkins XML request file, and use jenkins remote API to send create request.</p>
 
-<ol>
-<li><p>Jez Humble and David Farley, “Continuous Delivery: Reliable Software Releases through Build, Test, and Deployment Automation”, Addison Wesley Professional, 2010</p></li>
-<li><p>Paul Hammant and www.continuousdelivery.com</p></li>
-<li><p>Stephen P. Berczuk and Brad Appleton, “Software Configuration Management Patterns.”, Addison Wesley Professional, 2003</p></li>
-<li><p>Mary and Tom Poppendieck, “Leading Lean Software Development”, Addison Wesley, 2009</p></li>
-<li><p>Paul M. Duvall, “Continuous integration. Patterns and Antipatterns”, DZone refcard #84, 2010 <a href="http://bit.ly/l8rfVS">http://bit.ly/l8rfVS</a></p></li>
-<li><p>Paul M. Duvall, “Continuous integration. Improving Software Quality and Reducing Risk”, Addison Wesley, 2007</p></li>
-<li><p>Scott W. Ambler and Pramodkumar J. Saladage, “Refactoring Databases. Evolutionary Database Design”, Addison Wesley, 2006.</p></li>
-<li><p>Paul M. Duvall, IBM developerWorks series “Automation for the people” <a href="http://ibm.co/iwwvPX">http://ibm.co/iwwvPX</a></p></li>
-<li><p>IMVU: <a href="http://bit.ly/jhqP5f">http://bit.ly/jhqP5f</a></p></li>
-<li><p>Martin Fowler and Facebook: <a href="http://on.fb.me/miBrOM">http://on.fb.me/miBrOM</a></p></li>
-<li><p>Facebook Engineering: <a href="http://on.fb.me/miBrOM">http://on.fb.me/miBrOM</a></p></li>
-<li><p>Paul Julius, Enterprise Continuous Integration Maturity Model, <a href="http://bit.ly/m7h5vC">http://bit.ly/m7h5vC</a></p></li>
-</ol>
+<p>Try to do below to understand this.</p>
 
+<pre><code>$ jenkins-jobs test job-template.yaml -o .
+</code></pre>
+
+<p>Then xml file <em>testjob</em> is created, see</p>
+
+<pre><code>&lt;?xml version="1.0" ?&gt;
+&lt;project&gt;
+  &lt;actions/&gt;
+  &lt;description&gt;
+
+&amp;lt;!-- Managed by Jenkins Job Builder --&amp;gt;&lt;/description&gt;
+  &lt;keepDependencies&gt;false&lt;/keepDependencies&gt;
+  &lt;disabled&gt;false&lt;/disabled&gt;
+  &lt;displayName&gt;Fancy job name&lt;/displayName&gt;
+  &lt;blockBuildWhenDownstreamBuilding&gt;false&lt;/blockBuildWhenDownstreamBuilding&gt;
+  &lt;blockBuildWhenUpstreamBuilding&gt;false&lt;/blockBuildWhenUpstreamBuilding&gt;
+  &lt;concurrentBuild&gt;true&lt;/concurrentBuild&gt;
+  &lt;customWorkspace&gt;/srv/build-area/job-name&lt;/customWorkspace&gt;
+  &lt;quietPeriod&gt;5&lt;/quietPeriod&gt;
+  &lt;canRoam&gt;true&lt;/canRoam&gt;
+  &lt;properties/&gt;
+  &lt;scm class="hudson.scm.NullSCM"/&gt;
+  &lt;builders/&gt;
+  &lt;publishers/&gt;
+  &lt;buildWrappers/&gt;
+&lt;/project&gt;
+</code></pre>
+
+<p>Now you can use curl command to send the request (testjob) directly !!</p>
+
+<pre><code>$ curl --user USER:PASS -H "Content-Type: text/xml" -s --data "@testjob" "http://jenkins-server/createItem?name=testjob"
+</code></pre>
+
+<h2>How to recreate your jenkins job</h2>
+
+<p>Looks great, finally you need think about how to re-create your jenkins job, it is also simple, just download the config.xml</p>
+
+<pre><code>$ curl --user USER:PASS http://jenkins-server/testjob/config.xml
+</code></pre>
+
+<p>Or open the configuration page in broswer *<a href="http://jenkins-server/testjob/configure*">http://jenkins-server/testjob/configure*</a> and map from YAML file.</p>
+
+<p>You need to read <a href="http://ci.openstack.org/jenkins-job-builder/configuration.html">jenkins job builder&rsquo;s guideline</a> to know the map, generate it had level Macro like <a href="https://wiki.openstack.org/wiki/InfraTeam">builders</a>, which is connected to the <a href="https://github.com/openstack-infra/jenkins-job-builder/blob/master/jenkins_jobs/modules/builders.py">real python builders module</a> to do transformation from YAML to XML.</p>
+
+<p>What you stated in YAML file like</p>
+
+<pre><code>-job:
+  name: test_job
+  builders:
+- shell: "make test"
+</code></pre>
+
+<p>it will be converted to</p>
+
+<pre><code>&lt;builders&gt;
+&lt;hudson.tasks.Shell&gt;
+  &lt;command&gt;make test&lt;/command&gt;&lt;/hudson.tasks.Shell&gt;
+&lt;/builders&gt;
+</code></pre>
+
+<h2>How to extend</h2>
+
+<p>Greatly to see jenkins job builder already had lots of default modules to support your normal jenkins jobs, but there is exceptions like some none popular jenkins plugins or your own plugins.</p>
+
+<p>Then it is time to extend the module, the existing document: Extending is not clear enough, I will use example to show how it works, code is in <a href="https://github.com/bv2012/jenkins-buddy">github jenkins-buddy</a> project</p>
+
+<p><a href="https://wiki.jenkins-ci.org/display/JENKINS/ArtifactDeployer+Plugin">ArtifactDeployer</a> Plugin is used as example, this plugin is the popular plugin to deploy the artifacts to other folder.</p>
+
+<p>Artifact Deploy Plugin</p>
+
+<p><img src="../downloads/code/artifactdeploy.png" alt="" /></p>
+
+<p>And I want to have .YAML like below</p>
+
+<pre><code>*#artifactdeploy.yaml*
+- job:
+name: test-job
+publishers:
+  - artifactdeployer: 
+  includes: 'buddy-*.tar.gz'
+  remote: '/project/buddy'
+</code></pre>
+
+<h2>write codes to transform</h2>
+
+<p>Now I need to download the existing jobs to see how XML looks like, using curl above, I got it like</p>
+
+<pre><code>&lt;publishers&gt;
+   ...  
+  &lt;org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher plugin="artifactdeployer@0.27"&gt;
+&lt;entries&gt;
+  &lt;org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry&gt;
+&lt;includes&gt;buddy-*.tar.gz&lt;/includes&gt;
+&lt;basedir&gt;&lt;/basedir&gt;
+&lt;excludes&gt;&lt;/excludes&gt;
+&lt;remote&gt;/project/buddy&lt;/remote&gt;
+&lt;flatten&gt;false&lt;/flatten&gt;
+&lt;deleteRemote&gt;false&lt;/deleteRemote&gt;
+&lt;deleteRemoteArtifacts&gt;false&lt;/deleteRemoteArtifacts&gt;
+&lt;deleteRemoteArtifactsByScript&gt;false&lt;/deleteRemoteArtifactsByScript&gt;
+&lt;failNoFilesDeploy&gt;false&lt;/failNoFilesDeploy&gt;
+  &lt;/org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry&gt;
+&lt;/entries&gt;
+&lt;deployEvenBuildFail&gt;false&lt;/deployEvenBuildFail&gt;
+  &lt;/org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher&gt;
+..
+&lt;/publishers&gt; 
+</code></pre>
+
+<p>It belongs the section publishers So I write the jenkins_buddy/modules/publishers.py module to add one function artifactdeployer:</p>
+
+<pre><code>def artifactdeployer(parser, xml_parent, data):
+    logger = logging.getLogger("%s:artifactdeployer" % __name__)
+    artifactdeployer = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher')
+    entries = XML.SubElement(artifactdeployer, 'entries')
+    entry = XML.SubElement(entries, 'org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry')
+    print data
+    XML.SubElement(entry, 'includes').text = data['includes']
+    XML.SubElement(entry, 'remote').text = data['remote']
+</code></pre>
+
+<p>It is the core part handling convert.</p>
+
+<h3>Hook into jenkins-job builder</h3>
+
+<p>Now you need hook this script into jenkins-jobs builder, thank for the entry_points in python, it can be used for this.</p>
+
+<p>Create the plugin related script and structure, add new entry_point in setup.py</p>
+
+<pre><code>#setup.py in jenkins-buddy
+entry_points={
+    'jenkins_jobs.publishers': [
+    'artifactdeployer=jenkins_buddy.modules.publishers:artifactdeployer',
+    ],
+}
+</code></pre>
+
+<p>it tells jenkins-jobs if you meet new keyword artifactdeployer in publishers, please let me jenkins_buddy.modules.publishers:artifactdeployer to handle.</p>
+
+<h3>Verify it</h3>
+
+<p>Build the pip package local and install it</p>
+
+<pre><code>$ python setup.py sdist
+$ pip install dist/jenkins-buddy-0.0.5.zip
+</code></pre>
+
+<p>And verify the new job, Bingo, it works.</p>
+
+<pre><code>$ jenkins-jobs test artifactdeploy.yaml -o . 
+</code></pre>
+
+<h3>###Make it more complete by checking jenkins plugin java code</h3>
+
+<p>Maybe you noticed, it is hack solution, since I skipped some parameter converting and guess what the XML will look like, if you want to make it more complete, we need to check the java codes directly.</p>
+
+<p>src/main/java/org/jenkinsci/plugins/artifactdeployer/ArtifactDeployerPublisher.java is the class we need to take care.</p>
+
+<pre><code>@DataBoundConstructor
+public ArtifactDeployerPublisher(List&lt;ArtifactDeployerEntry&gt; deployedArtifact, boolean deployEvenBuildFail) {
+    this.entries = deployedArtifact;
+    this.deployEvenBuildFail = deployEvenBuildFail;
+    if (this.entries == null)
+    this.entries = Collections.emptyList();
+}
+</code></pre>
+
+<p>It is directly mapping from XML into internal data, if you need know more, learn how to develop jenkins plugin.</p>
 </div>
   
   

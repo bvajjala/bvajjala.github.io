@@ -467,10 +467,6 @@
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
-        <loc>http://bvajjala.github.io/blog/2014/03/11/continuous-delivery-patterns/</loc>
-        <lastmod>2014-03-11T16:18:06-04:00</lastmod>
-    </url>
-    <url>
         <loc>
             http://bvajjala.github.io/blog/2014/03/11/creating-a-secure-deployment-pipeline-in-aws/
         </loc>
@@ -1125,12 +1121,18 @@
         <lastmod>2014-04-16T12:48:54-04:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://bvajjala.github.io/projects/continuous-delivery-patterns-and-antipatterns/
+        </loc>
+        <lastmod>2014-04-16T13:00:16-04:00</lastmod>
+    </url>
+    <url>
         <loc>http://bvajjala.github.io/projects/continuous-delivery-tools-list/</loc>
         <lastmod>2014-04-16T11:42:42-04:00</lastmod>
     </url>
     <url>
         <loc>http://bvajjala.github.io/projects/</loc>
-        <lastmod>2014-04-16T12:48:54-04:00</lastmod>
+        <lastmod>2014-04-16T13:02:04-04:00</lastmod>
     </url>
     <url>
         <loc>http://bvajjala.github.io/robots.txt</loc>
