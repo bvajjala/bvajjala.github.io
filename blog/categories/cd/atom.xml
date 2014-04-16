@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CD | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/cd/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-16T13:40:16-04:00</updated>
+  <updated>2014-04-16T14:13:46-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -12,168 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Creating a Secure Deployment Pipeline in Amazon Web Services]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/23/creating-a-secure-deployment-pipeline-in-amazon-web-services/"/>
-    <updated>2014-03-23T11:24:27-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/23/creating-a-secure-deployment-pipeline-in-amazon-web-services</id>
-    <content type="html"><![CDATA[<p>Many organizations require a secure infrastructure. I’ve yet to meet a customer that says that security isn’t a concern. But, the decision on “how secure?” should be closely associated with a risk analysis for your organization.</p>
-
-<p>Since Amazon Web Services (AWS) is often referred to as a “public cloud”, people sometimes infer that “public” must mean it’s “out in the public” for all to see. I’ve always seen “public/private clouds” as an
-unfortunate use of terms. In this context, public means more like
-“Public Utility”. People often interpret “private clouds” to be
-inherently more secure. Assuming that “public cloud” = less secure and
-“private cloud” = more secure couldn’t be further from the truth. Like
-most things, it’s all about how you architect your infrastructure. While
-you can define your infrastructure to have open access, AWS provides
-many tools to create a truly secure infrastructure while eliminating
-access to all but only authorized users.</p>
-
-<p>I’ve created an initial list of many of the practices we use. We don’t
-employ all these practices in all situations, as it often depends on our
-customers’ particular security requirements. But, if someone asked me
-“How do I create a secure AWS infrastructure using a Deployment
-Pipeline?”, I’d offer some of these practices in the solution. I’ll be
-expanding these over the next few weeks, but I want to start with some
-of our practices.</p>
-
-<p><strong>AWS Security</strong></p>
-
-<p>* After initial AWS account creation and login, configure
-<a href="https://aws.amazon.com/iam/" title="AWS IAM">IAM</a> so that there’s no need to
-use the AWS root account\
- * Apply least privilege to all IAM accounts. Be very careful about who
-gets Administrator access.\
- * Enable all IAM password rules\
- * Enable MFA for all users\
- * Secure all data at rest\
- * Secure all data in transit\
- * Put all AWS resources in a <a href="https://aws.amazon.com/vpc/" title="Virtual Private Cloud">Virtual Private
-Cloud</a> (VPC).\
- * No EC2 Key Pairs should be shared with others. Same goes for Access
-Keys.\
- * Only open required ports to the Internet. For example, with the
-exception of, say, port 80, no security groups should have a CIDR Source
-of 0.0.0.0/0). The bastion host might have access to port 22 (SSH), but
-you should enable
-<a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing" title="CIDR">CIDR</a>
-to limit access to specific subnets. Using a VPC is a part of a solution
-to eliminate Internet access. No canonical environments should have
-SSH/RDP access.\
- * Use IAM to limit access to specific AWS resources and/or
-remove/limit AWS console access\
- * Apply a bastion host configuration to reduce your attack profile\
- * Use <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html" title="IAM Roles">IAM
-Roles</a>
-so that there’s no need to configure Access Keys on the instances\
- * Use resource-level permissions in EC2 and RDS\
- * Use SSE to secure objects in S3 buckets\
- * Share initial IAM credentials with others through a secure mechanism
-(e.g. <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard" title="AES">AES-256
-encryption</a>)\
- * Use and monitor AWS
-<a href="https://aws.amazon.com/cloudtrail/" title="AWS CloudTrail">CloudTrail</a> logs</p>
-
-<p><strong>Deployment Pipeline</strong></p>
-
-<p>A deployment pipeline is a staged process in which the complete software
-system is built and tested with every change. Team members receive
-feedback as it completes each stage. With most customers, we usually
-construct between 4-7 deployment pipeline stages and the pipeline only
-goes to the next stage if the previous stages were successful. If a
-stage fails, the whole pipeline instance fails. The first stage (often
-referred to as the “Commit Stage”) will usually take no more than 10
-minutes to complete. Other stages may take longer than this. Most stages
-require no human intervention as the software system goes through more
-extensive testing on its way to production. With a deployment pipeline,
-software systems can be released at any time the business chooses to do
-so. Here are some of the security-based practices we employ in
-constructing a deployment pipeline.</p>
-
-<p>* Automate everything: Networking (VPC, Route 53) Compute (EC2),
-Storage, etc. All <em>AWS</em> automation should be defined in
-<a href="https://aws.amazon.com/cloudformation/" title="CloudFormation">CloudFormation</a>.
-All environment configuration should be defined using infrastructure
-automation scripts – such as Chef, Puppet, etc.\
- * Version Everything: Application Code, Configuration, Infrastructure
-and Data\
- * Manage your binary dependencies. Be specific about binary version
-numbers. Ensure you have control over these binaries.\
- * Lockdown pipeline environments. Do not allow SSH/RDP access to any
-environment in the deployment pipeline\
- * For project that require it, use permissions on the CI server or
-Deployment application to limit who can run deployments in certain
-environments – such as QA, Pre-Production and Production. When you have
-a policy in which all changes are applied through automation and
-environments are locked down, this usually becomes less of a concern.
-But, it can still be a requirements on some teams.\
- * Use the Disposable Environments pattern – instances are terminated
-once every few days. This approach reduces the attack profile\
- * Log everything outside of the EC2 instances (so that they can be
-access later). Ensure these log files are encrypted e.g. securely
-through S3)\
- * All canonical changes are only applied through automation that are
-part of the deployment pipeline. This includes application,
-configuration, infrastructure and data change. Infrastructure patch
-management would be a part of the pipeline just like any outer software
-system change.\
- * No one has access to nor can make direct changes to pipeline
-environments\
- * Create high-availability systems Multi-AZ, <a href="https://aws.amazon.com/autoscaling/" title="Auto Scaling">Auto
-Scaling</a>, <a href="https://aws.amazon.com/elasticloadbalancing/" title="ELB">Elastic
-Load Balancing</a> and
-Route 53\
- * For non-Admin AWS users, only provide access to AWS through a secure
-<a href="https://en.wikipedia.org/wiki/Continuous_integration" title="Continuous Integration">Continuous
-Integration</a>
-(CI) server or a self-service application\
- * Use Self-Service Deployments and give developers full SSH/RDP access
-to their self-service deployment. Only their particular EC2 Key Pair can
-access the instance(s) associated with the deployment. Self-Service
-Deployments can be defined in the CI server or a lightweight
-self-service application.\
- * Provide capability for any authorized user to perform a self-service
-deployment with full SSH/RDP access to the environment they created
-(while eliminating outside access)\
- * Run two active environments – We’ve yet to do this for customers,
-but if you want to eliminate all access to the canonical production
-environment, you might choose to run two active environments at once so
-that engineers can access the non-production environment to troubleshoot
-a problem in which the environment has the exact same configuration and
-data so you’re troubleshooting accurately.\
- * Run automated infrastructure tests to test for security
-vulnerabilities (e.g. cross-site scripting, SQL injections, etc.) with
-every change committed to the version-control repository as part of the
-deployment pipeline.</p>
-
-<p><strong>FAQ</strong></p>
-
-<p>* <strong>What is a canonical environment?</strong> It’s your system of record. You
-want your canonical environment to be solely defined in source code and
-versioned. If someone makes a change to the canonical system and it
-affects everyone it should only be done through automation. While you
-can use a self-service deployment to get a copy of the canonical system,
-any direct change you make to the environment is isolated and never made
-part of the canonical system unless code is committed to the
-version-control repository.\
- * <strong>How can I troubleshoot if I cannot directly access canonical
-environments?</strong> Using a self-service deployment, you can usually
-determine the cause of the problem. If it’s a data-specific problem, you
-might import a copy of the production database. If this isn’t possible
-for time or security reasons, you might run multiple versions of the
-application at once.\
- * <strong>Why should we dispose of environments regularly?</strong> Two primary
-reasons. The first is to reduce your attack profile (i.e. if
-environments always go up and down, it’s more difficult to hone in on
-specific resources. The second reason is that it ensures that all team
-members are used to applying all canonical changes through automation
-and not relying on environments to always be up and running somewhere.\
- * <strong>Why should we lockdown environments?</strong> To prevent people from
-making disruptive environment changes that don’t go through the
-version-control repository.</p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Jenkins Job Builder and How to Extned it]]></title>
@@ -472,7 +310,7 @@ Not too long ago, however, this system wasn&rsquo;t very smart. A branch could a
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>git config &mdash;global user.name &ldquo;Firstname Lastname&rdquo;
-</span><span class='line'>git config &mdash;global user.email &ldquo;&lt;a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;&#58;&#x79;&#x6f;&#x75;&#x72;&#95;&#101;&#x6d;&#x61;&#x69;&#x6c;&#x40;&#x79;&#x6f;&#117;&#114;&#x65;&#x6d;&#x61;&#105;&#x6c;&#x2e;&#99;&#x6f;&#109;">&#121;&#111;&#x75;&#x72;&#95;&#101;&#x6d;&#x61;&#x69;&#x6c;&#64;&#x79;&#x6f;&#117;&#x72;&#x65;&#x6d;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#109;&lt;/a>&rdquo;</span></code></pre></td></tr></table></div></figure></notextile></div>
+</span><span class='line'>git config &mdash;global user.email &ldquo;&lt;a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#121;&#111;&#117;&#x72;&#95;&#101;&#x6d;&#x61;&#x69;&#108;&#x40;&#121;&#x6f;&#117;&#114;&#101;&#x6d;&#x61;&#105;&#x6c;&#46;&#x63;&#111;&#x6d;">&#121;&#x6f;&#x75;&#x72;&#95;&#101;&#x6d;&#x61;&#x69;&#x6c;&#64;&#x79;&#x6f;&#117;&#x72;&#x65;&#109;&#97;&#x69;&#108;&#46;&#x63;&#111;&#x6d;&lt;/a>&rdquo;</span></code></pre></td></tr></table></div></figure></notextile></div>
 To check your git configuration:
 <div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Git Config </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>

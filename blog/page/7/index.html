@@ -9,9 +9,9 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Last time
-I talked about how my development team progressed from having all
-of our .net code in a single repository with a single solution to using a &hellip;">
+  <meta name="description" content="A talk I gave @ Jenkins Conferencee in Hertzliya.
+See presentation on prezi: See other great content &amp; presentations @ this link
+">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,301 +67,6 @@ of our .net code in a single repository with a single solution to using a &helli
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/08/20/how-Angies-List-uses-nuget-part-2/">How Angie&#8217;s List Uses NuGet (Part 2)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-20T13:56:00-04:00" pubdate data-updated="true">Aug 20<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="/blog/2012/08/07/how-the-motley-fool-uses-nuget/">Last time</a>
-I talked about how my development team progressed from having all
-of our .net code in a single repository with a single solution to using a more
-modular architecture complete with encapsulated domains.</p>
-
-<p>When we started using this appraoch, we were still limited in a few ways:</p>
-
-<ul>
-<li>Everyone needs to integrate with the newest code</li>
-<li>Difficult to patch an old version of a dependency</li>
-<li>Cascading failures on the build server</li>
-</ul>
-
-
-<p>Even though we broke the ProjectReference rats nest, we still had an
-implicit dependency on various shared code. It all had to be checked out
-and built in the right order.</p>
-
-<h2>Binary Package Management</h2>
-
-<p>The next logical step was to further decouple our shared code by
-packaging it up and publishing those packages. If we could do that,
-we could decide when to upgrade dependencies on a product by product
-basis.</p>
-
-<p>There are two package managers in the .net ecosystem: OpenWrap and NuGet.</p>
-
-<p>When we started shopping around, OpenWrap had been around longer and seemed
-to be a better choice. There&rsquo;s a <a href="http://stackoverflow.com/questions/4256994/openwrap-vs-nuget">comparison of the products</a>
-on stackoverflow.</p>
-
-<p>We worked with OpenWrap for over 6 months and during that time started
-to find some problems around integration with Visual Studio and ReSharper.
-OpenWrap wants to manage dependencies per solution, and we have many cases
-where we want to control dependencies at a per project level. We also
-started to notice that NuGet was getting new versions released on a fairly
-regular schedule, while OpenWrap 2.0 was in unstable beta limbo for over
-a year.</p>
-
-<p>Around the same time we started playing with <a href="http://octopusdeploy.com/">Octopus Deploy</a>
-for deploying our code. Since Octopus uses NuGet packages for deployment, we
-figured it would make sense to standardize on one package management system
-for both deployments and dependency management. It&rsquo;s true that those are
-separate problem spaces, but having less build scripts is always a good thing.</p>
-
-<h2>Thoughts on NuGet</h2>
-
-<h3>Conventions</h3>
-
-<p>NuGet has several conventions that make it easy to create simple packages
-that others can reference. You can share assemblies and content easily,
-and when you want to customize anything there are some powershell extension
-points you can hook into.</p>
-
-<p>One problem we run into is that when building packages, sometimes there&rsquo;s
-a NuGet convention we want to customize or suppress, and often we can&rsquo;t.</p>
-
-<p>For example, if you create a <code>nuspec</code> and place it adjacent to a <code>csproj</code>
-file, NuGet will look at the project and automatically inject metadata
-and content into the package. For some things, you can override this
-behavior with explicit specifications in the nuspec, but the behavior
-can be surprising and confusing.</p>
-
-<h3>Dependency Scoping</h3>
-
-<p>NuGet supports the concept of transitive dependencies&hellip; sort of. If you
-install package A, and A depends on package B, NuGet will go find a version
-of B and install it while installing A. However, NuGet doesn&rsquo;t do any record
-keeping to remember that B is a transitive dependency. To your project, A and
-B appear simply as direct dependencies.</p>
-
-<p>There may be cases where A depends on B at runtime, but consumers of A
-shouldn&rsquo;t need to code against B at design time.</p>
-
-<p>There may be other cases where B is an optional dependency for A, and
-A can be used without it.</p>
-
-<p>Since NuGet doesn&rsquo;t have a concept of scope, it only has one simplistic
-approach to dealing with transitive dependencies: treat them just like
-direct dependencies.</p>
-
-<h3>Upgrade Behavior</h3>
-
-<p>When you ask NuGet to update a specific package, it will first look for
-updates to transitive dependencies that the package depends on. This may
-seem obvious or desirable to some, but personally I find it confusing.
-You can control this behavior with the <code>-IgnoreDependencies</code> flag in
-the Package Management Console, but oddly you don&rsquo;t get that option
-in the command line <code>nuget.exe</code> or from the Visual Studio GUI Package
-Manager.</p>
-
-<h3>Package Feed Performance</h3>
-
-<p>We use continuous integration, and every successful build produces
-&ldquo;release candidate&rdquo; versions of packages. We generate 50 to 100 packages
-a day.</p>
-
-<p>Using the simple NuGet UNC share quickly failed to scale, so next we tried
-NuGet.Server and found that it doesn&rsquo;t perform well either.</p>
-
-<p>NuGet Gallery seemed like overkill with its SQL Server requirement, so
-I started optimizing NuGet.Server. This project ended up taking quite
-a while, but the good news is that the fruits of the labor are now
-open source on GitHub at <a href="https://github.com/themotleyfool/NuGet">https://github.com/themotleyfool/NuGet</a>.</p>
-
-<p>For more information about that project, see my <a href="/blog/2012/07/03/Speeding-Up-NuGet-Server/">previous post</a>.</p>
-
-<h3>Refactoring Applications and Shared Code</h3>
-
-<p>We try to use <a href="http://semver.org/">Semantic Versioning</a> to communicate
-breaking changes in the packages we publish, so sometimes when
-we want to use a refactoring tool like Change Method Signature
-or Use Base Class it would be nice to have application and shared
-code loaded into a single instance of Visual Studio.</p>
-
-<p>We created a tool called <a href="https://github.com/TheMotleyFool/SlimJim">SlimJim</a>
-that generates these Solution files on the fly.</p>
-
-<p>If you create a Solution with application code and shared library code,
-ReSharper will be smart enough to apply refactoring tools across the projects
-even though ProjectReference style references are not being used.</p>
-
-<p>However, Visual Studio won&rsquo;t know the correct order to build projects in,
-and won&rsquo;t automatically copy outputs from shared libraries over to applications.</p>
-
-<p>We extended SlimJim to convert assembly references to project references and back
-to address this limitation.</p>
-
-<h2>Conclusion</h2>
-
-<p>In terms of capability and maturity, we&rsquo;re in a much better place than
-we were a few years ago. However, we still have a ways to go in terms of
-productivity and workflow.</p>
-
-<p>NuGet has helped us move in the right direction and we hope to see
-further enhancements and even contribute some more of our own as we
-develop them.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/08/07/how-Angies-List-uses-nuget/">How Angie&#8217;s List Uses NuGet (Part 1)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-07T14:25:00-04:00" pubdate data-updated="true">Aug 7<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>This post describes how we came to using binary package management. In the next part I&rsquo;ll get into NuGet.</p>
-
-<p>In the beginning, there was one repository and it held all the projects for The Motley Fool, and it was good.
-There were around a dozen asp.net web projects, a smattering of service and console apps, and a bunch of class libraries
-to hold shared code. There was one Solution (sln) to rule them all.</p>
-
-<p>As time went on, we found that there are downsides to the one-giant-solution approach to .net development:</p>
-
-<ul>
-<li><a href="http://www.laputan.org/mud/">Big Ball of Mud</a></li>
-<li>Slow builds</li>
-<li>Tight coupling</li>
-<li>Configuration hell</li>
-<li>Hard to release different applications on different schedules</li>
-</ul>
-
-
-<p>Typically our larger applications would be split into several projects following a typical N-tier layered architecture:</p>
-
-<ul>
-<li>Web</li>
-<li>Service</li>
-<li>Domain</li>
-<li>Data Access</li>
-</ul>
-
-
-<p>Despite our attempts to encapsulate data access and domain logic behind the service project, code ended up leaking out
-to the point where domain projects were using types and methods from unrelated domain projects. Cats and dogs were
-sleeping together.</p>
-
-<p>Around this time Steven Bohlen presented a <a href="http://unhandled-exceptions.com/blog/index.php/2010/11/27/dc-altnet-presentationthats-a-wrap/">talk</a>
-to the Washington DC Alt.NET User Group titled &ldquo;Domain Driven Design Implementation Patterns in .NET&rdquo;. While some of us
-were already familiar with concepts of DDD, this talk lit a spark for us to try fixing our big ball of mud.</p>
-
-<p>In late 2010 we started to make some changes. Instead of having one giant repository, shared code would be split out
-into separate repositories. We also took this opportunity to introduce a new project organization and architecture.</p>
-
-<p>We established one repository to hold utility code, broken into specific class libraries:</p>
-
-<ul>
-<li><tt>Fool.Abstractions</tt> &ndash; similar in spirit to System.Web.Abstractions; adds interfaces and wrappers to various FCL types that lack them</li>
-<li><tt>Fool.Lang</tt> &ndash; similar in spirit to <a href="http://commons.apache.org/lang/">Jakarta Commons Lang</a>; adds general utility classes and methods not found elsewhere</li>
-<li>Other projects that extend 3rd party class libraries to make them easier for us to work with in standardized ways.</li>
-</ul>
-
-
-<p>Then we established another repository to hold Domain Driven, er, Domains. For example, many of our applications and web sites deal with
-stock market data, so one of our business domains is Quotes. In the Quotes Domain we have these projects:</p>
-
-<ul>
-<li><tt>Fool.Quotes</tt> &ndash; contains service interfaces and value types; serves as an API to the domain</li>
-<li><tt>Fool.Quotes.Core</tt> &ndash; contains domain logic, models, and entities; serves as a private implementation</li>
-<li><tt>Fool.Quotes.Web.Api</tt> &ndash; exposes Fool.Quotes interfaces over a RESTful web API</li>
-</ul>
-
-
-<p>The key to keeping our domains distinct and decoupled is to keep Core projects private. While Core is required at runtime,
-it should never be referenced at compile time. To bridge the gap, we use Dependency Injection to provide concrete implementations.</p>
-
-<p>Domains may depend on other domains provided that they consume each other through the API project. That way entities and business logic
-are kept focused on their own concerns and don&rsquo;t leak out to other problem areas where they don&rsquo;t fit.</p>
-
-<h2>Gluing It Together</h2>
-
-<p>Having projects split into different repositories and different solutions meant that we couldn&rsquo;t simply have one mega Solution
-that includes everything. That&rsquo;s by design, so good on us. But this introduces a problem in that we still need to reference code
-from our utility projects and DDD projects in our applications. The first solution we came up with to handle this problem was
-to use the <a href="http://msdn.microsoft.com/en-us/library/wkze6zky.aspx">AssemblyFolders</a> registry to have our libraries
-appear in the <tt>Add Reference</tt> dialog. Then to solve the runtime dependency on our private Core assemblies, we install
-those to the GAC so they can be loaded using reflection by our IoC container.</p>
-
-<p>This approach worked fine, mostly. But we encountered some downsides after using it for a while:</p>
-
-<ul>
-<li>Need to have all library code checked out and built on each development machine</li>
-<li>No built-in way to manage different versions of the same dependency</li>
-<li><a href="http://www.sellsbrothers.com/Posts/Details/12503">GAC considered harmful</a></li>
-<li>Hard to debug build errors and runtime errors</li>
-</ul>
-
-
-<p>Using Continuous Integration means we&rsquo;re producing new builds dozens of times a day, so it isn&rsquo;t practical for us to
-manage different assembly versions for each build. Like most shops, we leave our assembly versions at 1.0.0.0 despite
-injecting actual version information into the AssemblyInformationalVersion attribute.</p>
-
-<p>In order to support parallel development, we needed to find a more flexible way of managing dependencies, and
-at this point we started to look at binary package management.</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -824,6 +529,90 @@ OSS projects that attempt to do what it does, but I think it is already one of t
 <p><img class="center" src="/images/blog/2012/thehackdaymanifesto.png"></p>
 </div>
   
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/04/07/a-new-blog/">A New Blog</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-07T15:17:00-04:00" pubdate data-updated="true">Apr 7<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>It has been a while since I last blogged, and to be fair I&rsquo;ve been kinda busy, but I also was frustrated with my old blog. It was bloated and heavy to load, all mainly due to Wordpress and Site5&rsquo;s shared hosting. Wordpress started as a nice blogging platform but lately it has been pissing me off (more on this), and I realised that running a whole PHP script for pages that barely ever change is stupid.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/04/07/a-new-blog/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/03/29/bypassing-the-google-feed-api-cache/">Bypassing the Google Feed API Cache</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-29T23:22:00-04:00" pubdate data-updated="true">Mar 29<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="center" src="/images/posts/google_feed_api_meme.png"></p>
+
+<p>I noticed recently that the download count of the packages in my <a href="https://github.com/kmees/Octopress-NuGet-Aside">NuGet Aside</a> didn&rsquo;t update properly. As I <a href="/blog/2012/02/29/nuget-aside-for-octopress/">mentioned earlier</a>, I use the <a href="https://developers.google.com/feed/">Google Feed API</a> to get the data from the NuGet Gallery feed of an author. This indicrection is needed because the NuGet Gallery API doesn&rsquo;t support the <strong>jsonp</strong> response type (yet). Anyway, the problem is that Google caches the feeds heavily and only adds new entries but doesn&rsquo;t update existing ones. This means that the packages keep their download count of the first request.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/03/29/bypassing-the-google-feed-api-cache/">Read on &rarr;</a>
+    </footer>
   
 
 

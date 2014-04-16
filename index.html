@@ -1152,195 +1152,6 @@ obligation or strings attached.</p>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/03/23/creating-a-secure-deployment-pipeline-in-amazon-web-services/">Creating a Secure Deployment Pipeline in Amazon Web Services</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-23T11:24:27-04:00" pubdate data-updated="true">Mar 23<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Many organizations require a secure infrastructure. I’ve yet to meet a customer that says that security isn’t a concern. But, the decision on “how secure?” should be closely associated with a risk analysis for your organization.</p>
-
-<p>Since Amazon Web Services (AWS) is often referred to as a “public cloud”, people sometimes infer that “public” must mean it’s “out in the public” for all to see. I’ve always seen “public/private clouds” as an
-unfortunate use of terms. In this context, public means more like
-“Public Utility”. People often interpret “private clouds” to be
-inherently more secure. Assuming that “public cloud” = less secure and
-“private cloud” = more secure couldn’t be further from the truth. Like
-most things, it’s all about how you architect your infrastructure. While
-you can define your infrastructure to have open access, AWS provides
-many tools to create a truly secure infrastructure while eliminating
-access to all but only authorized users.</p>
-
-<p>I’ve created an initial list of many of the practices we use. We don’t
-employ all these practices in all situations, as it often depends on our
-customers’ particular security requirements. But, if someone asked me
-“How do I create a secure AWS infrastructure using a Deployment
-Pipeline?”, I’d offer some of these practices in the solution. I’ll be
-expanding these over the next few weeks, but I want to start with some
-of our practices.</p>
-
-<p><strong>AWS Security</strong></p>
-
-<p>* After initial AWS account creation and login, configure
-<a href="https://aws.amazon.com/iam/" title="AWS IAM">IAM</a> so that there’s no need to
-use the AWS root account\
- * Apply least privilege to all IAM accounts. Be very careful about who
-gets Administrator access.\
- * Enable all IAM password rules\
- * Enable MFA for all users\
- * Secure all data at rest\
- * Secure all data in transit\
- * Put all AWS resources in a <a href="https://aws.amazon.com/vpc/" title="Virtual Private Cloud">Virtual Private
-Cloud</a> (VPC).\
- * No EC2 Key Pairs should be shared with others. Same goes for Access
-Keys.\
- * Only open required ports to the Internet. For example, with the
-exception of, say, port 80, no security groups should have a CIDR Source
-of 0.0.0.0/0). The bastion host might have access to port 22 (SSH), but
-you should enable
-<a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing" title="CIDR">CIDR</a>
-to limit access to specific subnets. Using a VPC is a part of a solution
-to eliminate Internet access. No canonical environments should have
-SSH/RDP access.\
- * Use IAM to limit access to specific AWS resources and/or
-remove/limit AWS console access\
- * Apply a bastion host configuration to reduce your attack profile\
- * Use <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html" title="IAM Roles">IAM
-Roles</a>
-so that there’s no need to configure Access Keys on the instances\
- * Use resource-level permissions in EC2 and RDS\
- * Use SSE to secure objects in S3 buckets\
- * Share initial IAM credentials with others through a secure mechanism
-(e.g. <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard" title="AES">AES-256
-encryption</a>)\
- * Use and monitor AWS
-<a href="https://aws.amazon.com/cloudtrail/" title="AWS CloudTrail">CloudTrail</a> logs</p>
-
-<p><strong>Deployment Pipeline</strong></p>
-
-<p>A deployment pipeline is a staged process in which the complete software
-system is built and tested with every change. Team members receive
-feedback as it completes each stage. With most customers, we usually
-construct between 4-7 deployment pipeline stages and the pipeline only
-goes to the next stage if the previous stages were successful. If a
-stage fails, the whole pipeline instance fails. The first stage (often
-referred to as the “Commit Stage”) will usually take no more than 10
-minutes to complete. Other stages may take longer than this. Most stages
-require no human intervention as the software system goes through more
-extensive testing on its way to production. With a deployment pipeline,
-software systems can be released at any time the business chooses to do
-so. Here are some of the security-based practices we employ in
-constructing a deployment pipeline.</p>
-
-<p>* Automate everything: Networking (VPC, Route 53) Compute (EC2),
-Storage, etc. All <em>AWS</em> automation should be defined in
-<a href="https://aws.amazon.com/cloudformation/" title="CloudFormation">CloudFormation</a>.
-All environment configuration should be defined using infrastructure
-automation scripts – such as Chef, Puppet, etc.\
- * Version Everything: Application Code, Configuration, Infrastructure
-and Data\
- * Manage your binary dependencies. Be specific about binary version
-numbers. Ensure you have control over these binaries.\
- * Lockdown pipeline environments. Do not allow SSH/RDP access to any
-environment in the deployment pipeline\
- * For project that require it, use permissions on the CI server or
-Deployment application to limit who can run deployments in certain
-environments – such as QA, Pre-Production and Production. When you have
-a policy in which all changes are applied through automation and
-environments are locked down, this usually becomes less of a concern.
-But, it can still be a requirements on some teams.\
- * Use the Disposable Environments pattern – instances are terminated
-once every few days. This approach reduces the attack profile\
- * Log everything outside of the EC2 instances (so that they can be
-access later). Ensure these log files are encrypted e.g. securely
-through S3)\
- * All canonical changes are only applied through automation that are
-part of the deployment pipeline. This includes application,
-configuration, infrastructure and data change. Infrastructure patch
-management would be a part of the pipeline just like any outer software
-system change.\
- * No one has access to nor can make direct changes to pipeline
-environments\
- * Create high-availability systems Multi-AZ, <a href="https://aws.amazon.com/autoscaling/" title="Auto Scaling">Auto
-Scaling</a>, <a href="https://aws.amazon.com/elasticloadbalancing/" title="ELB">Elastic
-Load Balancing</a> and
-Route 53\
- * For non-Admin AWS users, only provide access to AWS through a secure
-<a href="https://en.wikipedia.org/wiki/Continuous_integration" title="Continuous Integration">Continuous
-Integration</a>
-(CI) server or a self-service application\
- * Use Self-Service Deployments and give developers full SSH/RDP access
-to their self-service deployment. Only their particular EC2 Key Pair can
-access the instance(s) associated with the deployment. Self-Service
-Deployments can be defined in the CI server or a lightweight
-self-service application.\
- * Provide capability for any authorized user to perform a self-service
-deployment with full SSH/RDP access to the environment they created
-(while eliminating outside access)\
- * Run two active environments – We’ve yet to do this for customers,
-but if you want to eliminate all access to the canonical production
-environment, you might choose to run two active environments at once so
-that engineers can access the non-production environment to troubleshoot
-a problem in which the environment has the exact same configuration and
-data so you’re troubleshooting accurately.\
- * Run automated infrastructure tests to test for security
-vulnerabilities (e.g. cross-site scripting, SQL injections, etc.) with
-every change committed to the version-control repository as part of the
-deployment pipeline.</p>
-
-<p><strong>FAQ</strong></p>
-
-<p>* <strong>What is a canonical environment?</strong> It’s your system of record. You
-want your canonical environment to be solely defined in source code and
-versioned. If someone makes a change to the canonical system and it
-affects everyone it should only be done through automation. While you
-can use a self-service deployment to get a copy of the canonical system,
-any direct change you make to the environment is isolated and never made
-part of the canonical system unless code is committed to the
-version-control repository.\
- * <strong>How can I troubleshoot if I cannot directly access canonical
-environments?</strong> Using a self-service deployment, you can usually
-determine the cause of the problem. If it’s a data-specific problem, you
-might import a copy of the production database. If this isn’t possible
-for time or security reasons, you might run multiple versions of the
-application at once.\
- * <strong>Why should we dispose of environments regularly?</strong> Two primary
-reasons. The first is to reduce your attack profile (i.e. if
-environments always go up and down, it’s more difficult to hone in on
-specific resources. The second reason is that it ensures that all team
-members are used to applying all canonical changes through automation
-and not relying on environments to always be up and running somewhere.\
- * <strong>Why should we lockdown environments?</strong> To prevent people from
-making disruptive environment changes that don’t go through the
-version-control repository.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
       <h1 class="entry-title"><a href="/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/">CI and Test Automation Utilizing OpenStack</a></h1>
     
     
@@ -1365,185 +1176,6 @@ version-control repository.</p>
 
 
   <div class="entry-content">
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/11/creating-a-secure-deployment-pipeline-in-aws/">Creating a Secure Deployment Pipeline in AWS</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-11T10:11:47-04:00" pubdate data-updated="true">Mar 11<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/downloads/code/opsworks_automation_stack.jpg" alt="" />
-<a href="https://aws.amazon.com/opsworks/">Amazon Web Services (AWS) OpsWorks</a> was released one year ago this month. In the past year, we’ve used OpsWorks on several Cloud Delivery projects at <a href="http://stelligent.com/">Stelligent</a> and at some of our customers. This article describes what’s worked for us and our customers. One of our core aims with any customer is to create a fully repeatable process for delivering software. To us, this translates into several more specific objectives. For each process we automate, the process must be fully documented, tested, scripted, versioned and continuous. This article describes how we achieved each of these five objectives in delivering OpsWorks solutions to our customers. In creating any solution, we version any and every asset required to create the software system. With the exception of certain binary packages, the entire software system gets described in code. This includes the application code, configuration, infrastructure and data.</p>
-
-<p>As a note, we’ve developed other AWS solutions without OpsWorks using CloudFormation, Chef, Puppet and some of the other tools mentioned here, but the purpose of this is to describe our approach when using OpsWorks.</p>
-
-<h2>AWS Tools</h2>
-
-<p>AWS has over 30 services and we use a majority of these services when creating deployment pipelines for continuous delivery and automating infrastructure. However, we typically use only a few services directly when building these infrastructure. For instance, when creating infrastructure with OpsWorks, we’ll use the AWS Ruby SDK to provision the OpsWorks resources and CloudFormation for the resources we cannot provision through OpsWorks. We use these three services to access services such as EC2, Route 53, VPC, S3, Elastic Load Balancing, Auto Scaling, etc. These three services are described below.</p>
-
-<h2>AWS OpsWorks</h2>
-
-<p>– OpsWorks is an infrastructure orchestration and event modeling service for provisioning infrastructure resources. It also enables you to call out to Chef cookbooks (more on Chef later). The OpsWorks model logically defines infrastructure in terms of stacks, layers and apps. Within stacks, you can define layers; within layers you can define applications and within applications, you can run deployments. An event model automatically triggers events against these stacks (e.g. Setup, Configure, Deploy, Undeploy, Shutdown). As mentioned, we use the AWS API (through the Ruby SDK) to script the provisioning of all OpsWorks behavior. We never manually make changes to OpsWorks through the console (we make these changes to the versioned AWS API scripts).</p>
-
-<h2>CloudFormation</h2>
-
-<p>– We use CloudFormation to automatically provision resources that we cannot provision directly through OpsWorks. For example, while OpsWorks connects with Virtual Private Clouds (VPC)s and Elastic Load Balancer (ELB)s, you cannot provision VPC or ELB directly through OpsWorks. Since we choose to script all infrastructure provisioning and workflow, we wrote CloudFormation templates for defining VPCs, ELBs, Relational Database Service (RDS) and Elasticache. We orchestrate the workflow in Jenkins so that these resources are automatically provisioned prior to provisioning the OpsWorks stacks. This way, the OpsWorks stacks can consume these resources that were provisioned in the CloudFormation templates. As with any other program, these templates are version-controlled.</p>
-
-<h2>AWS API</h2>
-
-<p>(using Ruby SDK) – We use the AWS Ruby SDK to script the provisioning of OpsWorks stacks. While we avoid using the SDK directly for most other AWS services (because we can use CloudFormation), we chose to use the SDK for scripting OpsWorks because CloudFormation does not currently support OpsWorks. Everything that you might do using the OpsWorks dashboard – creating stacks, JSON configuration, calling out to Chef, deployments – are all written in Ruby programs that utilize the OpsWorks portion of the AWS API.</p>
-
-<h2>Infrastructure Automation</h2>
-
-<p>There are other non-AWS specific tools that we use in automating infrastructure. One of them is the infrastructure automation tool, Chef. Chef Solo is called from OpsWorks. We use infrastructure automation tools to script and as a way to document the process of provisioning infrastructure.</p>
-
-<h2>Chef</h2>
-
-<p>– OpsWorks is designed to run Chef cookbooks (i.e. scripts/programs). Ultimately, Chef is where a bulk of the behavior for provisioning environments is defined – particularly once the EC2 instance is up and running. In Chef, we write recipes (logically stored in cookbooks) to install and configure web servers such as Apache and Nginx or application servers such as Rails and Tomcat. All of these Chef recipes are version-controlled and called from OpsWorks or CloudFormation.</p>
-
-<h2>Ubuntu</h2>
-
-<p> – When using OpsWorks and there’s no specific operating system flavor requirement from our customer, we choose to use Ubuntu 12.04 LTS. We do this for two reasons. The first is that at the time of this writing, OpsWorks supports two Linux flavors: Amazon Linux and Ubuntu 12.04 LTS. The reason we choose Ubuntu is because it allows us to use Vagrant (more on Vagrant later). Vagrant provides us a way to test our Chef infrastructure automation scripts locally – increasing our infrastructure development speed.</p>
-
-<h2>Supporting Tools</h2>
-
-<p>Other supporting tools such as Jenkins, Vagrant and Cucumber help with Continuous Integration, local infrastructure development and testing. Each are described below.</p>
-
-<h2>Jenkins</h2>
-
-<p> – Jenkins is a Continuous Integration server, but we also use it to orchestrate the coarse-grained workflow for the Cloud Delivery system and infrastructure for our customers. We use Jenkins fairly regularly in creating Cloud Delivery solutions for our customers. We configure Jenkins to run Cucumber features, build scripts, automated tests, static analysis, AWS Ruby SDK programs, CloudFormation templates and many more activities. Since Jenkins is an infrastructure component as well, we’ve automated the creation in OpsWorks and Chef and it also runs Cucumber features that we’ve written. These scripts and configuration are stored in Git as well and we can simply type a single command to get the Jenkins environment up and running. Any canonical changes to the Jenkins server are made by modifying the programs or configuration stored in Git.</p>
-
-<h2>Vagrant##</h2>
-
-<p>– Vagrant runs a virtualized environment on your desktop and comes with support for certain OS flavors and environments. As mentioned, we use Vagrant to run and test our infrastructure automation scripts locally to increase the speed of development. In many cases, what might take 30-40 minutes to run the same Chef cookbooks can take 4-5 minutes to run locally in Vagrant – significantly increase our infrastructure development productivity.</p>
-
-<h2>Cucumber</h2>
-
-<p> – We use Cucumber to write infrastructure specifications in code called features. This provides executable documented specifications that get run with each Jenkins build. Before we write any Chef, OpsWorks or CloudFormation code, we write Cucumber features. When completed, these features are run automatically after the Chef, OpsWorks and/or CloudFormation scripts provision the infrastructure to ensure the infrastructure is meeting the specifications described in the features. At first, these features are written without step definitions (i.e. they don’t actually verify behavior against the infrastructure), but then we iterate through a process of writing programs to automate the infrastructure provisioning while adding step definitions and refining the Cucumber features. Once all of this is hooked up to the Jenkins Continuous Integration server, it provisions the infrastructure and then runs the infrastructure tests/features written in Cucumber. Just like writing XUnit tests for the application code, this approach ensures our infrastructure behaves as designed and provides a set of regression tests that are run with every change to any part of the software system. So, Cucumber helps us document the feature as well as automate infrastructure tests. We also write usage and architecture documentation in READMEs, wikis, etc.</p>
-
-<p>A list of the AWS tools we utilized are enumerated below.</p>
-
-<p>We applied the on-demand usability of the cloud with a proven continuous delivery approach to build an automated one click method for building and deploying software into scripted production environments.</p>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Tool </th>
-<th> What is it? </th>
-<th> Our Use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td>  AWS EC2      </td>
-<td> Cloud-based virtual hardware instances       </td>
-<td> We use EC2 for all of our virtual hardware needs. All instances, from development to production are run on EC2</td>
-</tr>
-<tr>
-<td></td>
-<td> AWS S3 </td>
-<td> Cloud-based storage </td>
-<td> We use S3 as both a binary repository and a place to store successful build artifacts.</td>
-</tr>
-<tr>
-<td></td>
-<td> AWS IAM </td>
-<td> User-based access to AWS resources </td>
-<td> We create users dynamically and use their AWS access and secret access keys so we don’t have to store credentials as properties.</td>
-</tr>
-<tr>
-<td></td>
-<td> AWS CloudWatch </td>
-<td>System monitoring</td>
-<td> Monitors all instances in production. If an instance takes an abnormal amount of strain or shuts down unexpectedly, SNS sends an email to designated parties.</td>
-</tr>
-<tr>
-<td></td>
-<td> AWS SNS </td>
-<td> Email notifications </td>
-<td> When an environment is created or a deployment is run, SNS is used to send notifications to affected parties.</td>
-</tr>
-<tr>
-<td></td>
-<td>Cucumber </td>
-<td> Acceptance testing </td>
-<td> Cucumber is used for testing at almost every step of the way. We use Cucumber to test infrastructure, deployments and application code to ensure correct functionality. Cucumber’s unique english-ess  verbiage allows both technical personnel and customers to communicate using an executable test.</td>
-</tr>
-<tr>
-<td></td>
-<td> Liquibase </td>
-<td> Automated database change management </td>
-<td> Liquibase is used for all database changesets. When a change is necessary within the database, it is made to a liquibase changelog.xml.</td>
-</tr>
-<tr>
-<td></td>
-<td>AWS CloudFormation </td>
-<td> Templating language for orchestrating all AWS resources </td>
-<td> CloudFormation is used for creating a fully working Jenkins environment and Target environment. For instance for the Jenkins environment it creates the EC2 instance with CloudWatch monitoring alarms, associated IAM user, SNS notification topic, everything required for Jenkins to build. This along with Jenkins are the major pieces of the infrastructure.</td>
-</tr>
-<tr>
-<td></td>
-<td>AWS SimpleDB </td>
-<td> Cloud-based NoSQL database </td>
-<td> SimpleDB is used for storing dynamic property configuration and passing properties through the CD Pipeline. As part of the environment creation process, we store multiple values such as IP addresses that we need when deploying the application to the created environment.</td>
-</tr>
-<tr>
-<td></td>
-<td>Jenkins </td>
-<td> We’re using Jenkins to implement a CD pipeline using the Build Pipeline plugin.</td>
-<td> Jenkins runs the CD pipeline which does the building, testing, environment creation and deploying. Since the CD pipeline is also code (i.e. configuration code), we version our Jenkins configuration.</td>
-</tr>
-<tr>
-<td></td>
-<td> Capistrano </td>
-<td> Deployment automation </td>
-<td> Capistrano orchestrates and automates deployments. Capistrano is a Ruby-based deployment DSL that can be used to deploy to multiple platforms including Java, Ruby and PHP. It is called as part of the CD pipeline and deploys to the target environment.</td>
-</tr>
-<tr>
-<td></td>
-<td>Puppet </td>
-<td> Infrastructure automation </td>
-<td> Puppet takes care of the environment provisioning. CloudFormation requests the environment and then calls Puppet to do the dynamic configuration. We configured Puppet to install, configure, and manage the packages, files and services.</td>
-</tr>
-<tr>
-<td></td>
-<td> Git </td>
-<td> Version control system </td>
-<td> Git is the version control repository where every piece of the Manatee infrastructure is stored. This includes the environment scripts such as the Puppet modules, the CloudFormation templates, Capistrano deployment scripts, etc.</td>
-</tr>
-</tbody>
-</table>
-
 </div>
   
   
@@ -1792,6 +1424,144 @@ public ArtifactDeployerPublisher(List&lt;ArtifactDeployerEntry&gt; deployedArtif
 <p>It is directly mapping from XML into internal data, if you need know more, learn how to develop jenkins plugin.</p>
 </div>
   
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-ii/">Continuous Delivery With Docker and Jenkins - Part II</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-21T14:41:15-05:00" pubdate data-updated="true">Feb 21<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>A few weeks ago I started talking about how we use <a href="2014-02-21-continuous-delivery-with-docker-and-jenkins-part-i">Docker and Jenkins for Continuous Delivery</a> in our staging environment. Today, we are open-sourcing a simple bash utility for managing inter-container dependencies, <a href="https://github.com/bv2012/dockerize">Dockerize</a>.</p>
+
+<p>Before I go into specifics, I want to describe our workflow with Jenkins and Docker from a high-level perspective.</p>
+
+<ul>
+<li><p>let’s take the <a href="https://github.com/bv2012/hi_sinatra-docker">hi_sinatra</a> Ruby example app. It has its own GitHub repository and we have a simple, non-git Jenkins job for it.</p></li>
+<li><p>every commit pushed to GitHub, regardless of the branch, triggers a Jenkins build (via Amazon SQS). All Jenkins builds will result in a Docker image. A successful build will produce a running Docker container. A failed build will produce a stopped container which can be investigated by either looking at the logs or starting it with a tty attached.</p></li>
+<li><p>if Docker doesn’t have a <strong>hi_sinatra:master</strong> pre-built image, a new one will be created from the master branch. This master image gets re-built every time there’s a commit against the master branch. Having a master image speeds up image builds considerably (eg. installing Ruby gems, installing node modules, C extensions etc). The resulting image won’t use any caching and all intermediary images will be removed. Just to clarify, this image will not be shipped into production.</p></li>
+<li><p>if a Docker image with that app’s name, branch name and git commit sha doesn’t exist, we want Docker to build it for us. At this point, we’re interested to have the eg. <strong>hi_sinatra:second-blog-post.a8e8e83 </strong>Docker image available.</p></li>
+<li><p>before a new container can be started from the image that we’ve just built, all services that the app requires must be running in their own independent containers. Our <strong>hi_sinatra</strong> example app requires a running Redis server.</p></li>
+<li><p>when all dependent services are running in their own containers, we start a container from the newly built app image (in our example, <strong>hi_sinatra:second-blog-post.a8e8e83</strong>). All dependent containers will have their IPs exposed via env options, eg. docker run -e REDIS_HOST=172.17.0.8 -d &hellip;</p></li>
+<li><p>before our <strong>hi_sinatra app</strong> starts in its new Docker container, all tests must pass both unit, integration and acceptance. Full stack tests (also known as acceptance tests) use sandbox services, but they are setup via the same Docker containers that will be made available in production. Code portability is Docker’s strongest point, we’re making full use of it.</p></li>
+<li><p>if everything worked as expected, including interactions with all external services, this Docker image will be tagged as production. The service responsible for bringing up new Docker containers from the latest production images will take it from here.</p></li>
+</ul>
+
+
+<p>Docker containers running on the CI are available only on our office network, anyone inside it can connect to them. All that it takes to get an instance for a specific app (and all its dependencies) is to push a new branch to GitHub.</p>
+
+<h2>Dockerize</h2>
+
+<p>Dockerize acts as a Docker proxy, meaning that all commands which it does not understand get forwarded to the docker binary. Dockerize has just 2 dependencies: bash &amp; git.</p>
+
+<p>The previously described workflow as a single shell command:</p>
+
+<pre><code>dockerize boot cambridge-healthcare/hi_sinatra-docker hi_sinatra
+</code></pre>
+
+<p>The hi_sinatra app comes with 2 files that Dockerize picks up on:</p>
+
+<ul>
+<li><p>dockerize.containers which defines dependencies on other containers (another service such as Redis server or another app)</p></li>
+<li><p>dockerize.envs which will forward specific environment variables from the Docker host into the container</p></li>
+</ul>
+
+
+<p>The Vagrantfile that comes with hi_sinatra will get you up and running with Docker, Jenkins and now Dockerize. The quickest way to try the whole setup (<a href="2014-02-21-continuous-delivery-with-docker-and-jenkins-part-i">provided you have Vagrant installed</a>):</p>
+
+<pre><code>git clone https://github.com/cambridge-healthcare/hi_sinatra-docker.git
+cd hi_sinatra-docker
+vagrant up
+</code></pre>
+
+<p>By the time the VM gets provisioned, there will be a running version of <strong>hi_sinatra</strong> inside a Docker container using a Redis server running in a separate container for tracking requests. Use the IP address and port displayed at the end of the Vagrant run to access the hi_sinatra app in your browser.</p>
+
+<h2>Jenkins + Dockerize</h2>
+
+<p>Dockerize makes Jenkins integration with Docker incredibly simple. In the Jenkins instance running on the Vagrant VM that we have just built, add the following job through the Jenkins web interface:</p>
+
+<p>| Job name | hi_sinatra  |
+| Job type | Build a free-style software project |
+| Build| Execute shell   |</p>
+
+<p>This is the shell command which you will need to use for the build execution:</p>
+
+<pre><code>/bin/bash -c "source $HOME/.profile &amp;&amp; dockerize boot cambridge-healthcare/hi_sinatra-docker hi_sinatra"
+</code></pre>
+
+<p>Every successful Jenkins build will now result in a running Docker container.</p>
+
+<p>CI setups are always opinionated. We have a few more additions such as Campfire notifications, Amazon SQS integration with GitHub and a few others which are specific to our infrastructure. The above Jenkins integration example with Docker is meant to be a most conservative starting point for your own setup.</p>
+
+<p>Until next time!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-i/">Continuous Delivery With Docker and Jenkins - Part I</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-21T14:40:59-05:00" pubdate data-updated="true">Feb 21<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>We have been using Docker in our staging environment for nealrt several months now and are right now planning to make it part of our production setup once the first stable version gets released. We’ll be discussing the staging environment setup today with the promise of following up on the production environment at a later date.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-i/">Read on &rarr;</a>
+    </footer>
   
 
 

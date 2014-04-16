@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Code Reuse With Node.js Any project that grows to a decent size will need to re-use parts of its code extensively. That often means, through the &hellip;">
+  <meta name="description" content="101 On DevOps And How We Plan On Helping Here&rsquo;s what usually happens: on one side the development team wants to push new features as fast as &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,323 +65,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/03/code-reuse-with-node-dot-js/">Code Reuse With Node.js</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-03T14:09:35-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2013/07/11/code-reuse-with-nodejs.html">Code Reuse With Node.js</a></h2>
-
-<p><img src="http://devo.ps/images/posts/recycle.png" alt="Code recycling" /></p>
-
-<p>Any project that grows to a decent size will need to re-use parts of its code extensively. That often means, through the development cycle, a fair amount of rewrites and refactoring exercises. Elegant code re-use is hard to pull off.</p>
-
-<p>With node.js, which we use quite a bit at <a href="http://devo.ps">devo.ps</a>, the most common ways to do this often rely on prototype or class inheritance. The problem is, as the inheritance chain grows, managing attributes and functions
-can become quite complex.</p>
-
-<p>The truth is, people usually just need the objects. This led us to adopt a certain form of object-based prototyping. We believe it to be leaner and more straightforward in most cases. But before we get there, let&rsquo;s have a look at how people usually approach this issue.</p>
-
-<h2>The &ldquo;Function copy&rdquo;</h2>
-
-<p>Usually in the form of <code>this[key] = that[key]</code>. A quick example:</p>
-
-<pre><code>var objectA = {
-    lorem: 'lorem ipsum'
-};
-var objectB = {};
-
-// Direct copy of a string, but you get the idea
-objectB.lorem = objectA.lorem;
-console.log(objectB); // Will output: { lorem: 'lorem ipsum' }
-</code></pre>
-
-<p>Crude, but it works. Next…</p>
-
-<h2>Object.defineProperties()</h2>
-
-<p>The previous method may work with simple structures, but it won&rsquo;t hold when
-your use cases become more complex. That&rsquo;s when I usually call my buddy
-<code>Object.defineProperties()</code>:</p>
-
-<pre><code>var descriptor = Object.getOwnPropertyDescriptor;
-var defineProp = Object.defineProperty;
-
-var objectA = {};
-var objectB = {};
-var objectC = {};
-
-objectA.__defineGetter__('lorem', function() {
-    return 'lorem ipsum';
-});
-console.log(objectA); // Will output: { lorem: [Getter] }
-
-// Direct copy, which copies the result of the getter.
-objectB.lorem = objectA.lorem;
-console.log(objectB); // Will output: { lorem: 'lorem ipsum' }
-
-// Copying with Object.defineProperty(), and it copies the getter itself.
-defineProp(objectC, 'lorem', descriptor(objectA, 'lorem'));
-console.log(objectC); // Will output: { lorem: [Getter] }
-</code></pre>
-
-<p>I often use a library for that. A couple examples (more or less the same stuff
-with different coding styles):</p>
-
-<ol>
-<li><p> <strong><a href="https://github.com/medikoo/es5-ext">es5-ext</a></strong></p>
-
-<p> var extend = require(&lsquo;es5-ext/lib/Object/extend-properties&rsquo;);</p>
-
-<p> var objectA = {};
- var objectC = {};</p>
-
-<p> objectA.<strong>defineGetter</strong>(&lsquo;lorem&rsquo;, function() {
-     return &lsquo;lorem ipsum&rsquo;;
- });</p>
-
-<p> extend(objectC, objectA);
- console.log(objectC); // Will output: { lorem: [Getter] }</p></li>
-<li><p> <strong><a href="https://github.com/devo-ps/carcass">Carcass</a></strong></p>
-
-<p> var carcass = require(&lsquo;carcass&rsquo;);</p>
-
-<p> var objectA = {};
- var objectC = {};</p>
-
-<p> objectA.<strong>defineGetter</strong>(&lsquo;lorem&rsquo;, function() {
-     return &lsquo;lorem ipsum&rsquo;;
- });</p>
-
-<p> carcass.mixable(objectC);
- objectC.mixin(objectA);
- console.log(objectC); // Will output: { mixin: [Function: mixin], lorem: [Getter] }</p></li>
-</ol>
-
-
-<p>Slightly better, but not optimal. Now, let&rsquo;s see what we end up doing more and
-more often:</p>
-
-<h2>Prototyping through objects</h2>
-
-<p>The basic idea is that we prepare some functions, wrap them into an object which then becomes a &ldquo;feature&rdquo;. That feature can then be re-used by simply merging it with the targeted structure (object or prototype).</p>
-
-<p>Let&rsquo;s take the example of the <a href="https://github.com/devo-ps/carcass/blob/master/lib/proto/loaderSync.js">loaderSync</a> script in <a href="https://github.com/devo-ps/carcass">Carcass</a>:</p>
-
-<pre><code>module.exports = {
-    source: source,
-    parser: parser,
-    reload: reload,
-    get: get
-};
-
-function get() {
-
-(...)
-</code></pre>
-
-<p>Once you copy the functions to an object, this object becomes a &ldquo;loader&rdquo; that can load a &ldquo;source&rdquo; synchronously with a &ldquo;parser&rdquo;. A &ldquo;source&rdquo; can be a file path and the &ldquo;parser&rdquo; can be simply Node.js&#8217; <code>require</code> function.</p>
-
-<p>Let&rsquo;s now see how to use this with a couple object builders. Once again, I&rsquo;ll borrow an example from Carcass; the <a href="https://github.com/devo-ps/carcass/blob/master/benchmark/proto.loaderSync.js">loaderSync benchmark script</a>. The first builder generates a function and copies the methods from what we&rsquo;ve prepared. The second one copies the methods to the prototype of a builder class:</p>
-
-<pre><code>(...)
-
-function LoaderA(_source) {
-    function loader() {
-        return loader.get();
-    }
-    loader.mixin = mixin;
-    loader.mixin(loaderSync);
-    loader.source(_source);
-    return loader;
-}
-
-(...)
-
-function LoaderC(_source) {
-    if (!(this instanceof LoaderC)) return new LoaderC(_source);
-    this.source(_source);
-}
-LoaderC.prototype.mixin = mixin;
-LoaderC.prototype.mixin(loaderSync);
-
-(...)
-</code></pre>
-
-<p>Here we can see the two approaches. Let&rsquo;s compare them quickly:</p>
-
-<p>FeatureLoader ALoader C</p>
-
-<p><strong>Instantiating</strong>
-<code>var a = LoaderA(...)</code></p>
-
-<p><code>var c = LoaderC(...)</code> or <code>var c = new LoaderC(...)</code></p>
-
-<p><strong>Appearance</strong>
-Generates a function</p>
-
-<p>Builds a typical instance which is an object.</p>
-
-<p><strong>Invoking directly</strong>
-<code>a()</code> or <code>a.get()</code></p>
-
-<p><code>c.get()</code></p>
-
-<p><strong>Invoking as a callback</strong>
-<code>ipsum(a)</code></p>
-
-<p><code>ipsum(c.get.bind(c))</code></p>
-
-<h2><strong>Performance † of instantiating</strong></h2>
-
-<p>100x faster</p>
-
-<p><strong>Performance of invoking</strong>
-<em>idem</em></p>
-
-<p><em>idem</em></p>
-
-<p><strong>†</strong>: (check it yourself by <a href="https://github.com/devo-ps/carcass/blob/master/Makefile">benchmarking Carcass with <code>make bm</code></a>)</p>
-
-<h3>&ldquo;Protos&rdquo; and beyond</h3>
-
-<p>That last approach is gaining traction among our team; we prepare functions for our object builders (which, by the way, we call &ldquo;protos&rdquo;). While we still choose to use prototypes in some occurrences, it is mainly because it is
-faster to get done. For the sake of convenience, we also sometimes rely on functions rather than objects to invoke our &ldquo;protos&rdquo;, however keep in mind that this is a performance trade-off.</p>
-
-<p>I&rsquo;ll wrap this up mentioning one more method we use, admittedly less often: &ldquo;Object alter&rdquo;. The idea is to rely on an &ldquo;alter&rdquo; function designed to change objects passed to it. This is sometimes also called a &ldquo;mixin&rdquo;. An example from <a href="https://github.com/visionmedia/configurable.js">vsionmedia&rsquo;s trove of awesomeness on Github</a>:</p>
-
-<pre><code>(...)
-
-module.exports = function(obj){
-
-    obj.settings = {};
-
-    obj.set = function(name, val){
-        (...)
-    };
-
-    (...)
-
-    return obj;
-};
-</code></pre>
-
-<h3>Resources</h3>
-
-<ul>
-<li><a href="http://killdream.github.io/2011/10/09/understanding-javascript-oop.html">A case for prototypes</a></li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">MDN Object reference</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/03/automation-and-friction/">Automation and Friction</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-03T14:06:45-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2013/06/20/automation-and-friction.html">Automation And Friction</a></h2>
-
-<p>I&rsquo;ll admit that the devo.ps team is a lazy bunch; we like to forget about things, especially the hard stuff. Dealing with a complex process invariably leads one of us to vent about how &ldquo;we should automate that stuff&rdquo;. That&rsquo;s what our team does day and night:</p>
-
-<ol>
-<li> Dumb things down, lower barriers of entry, and then…</li>
-<li> <strong>Automate all the things!</strong></li>
-</ol>
-
-
-<p>This has transpired through every layer of our company, from engineering to operations. Recently we&rsquo;ve started pushing on a third point, but first let me rant a bit…</p>
-
-<h3>The ever increasing surface of friction</h3>
-
-<p>The past few years have seen a healthy push on UI and UX. Even developer tools and enterprise software, historically less user-friendly, have started adopting that trend. We now have things like Github. Great.</p>
-
-<p>This trend grew in parallel with the adoption of SaaS. SaaS are the results of teams focused on specific problems, with the user experience often being a key component (not to undervalue good engineering). It&rsquo;s pretty standard for these services to offer an API for integration&rsquo;s sake. <a href="https://getbase.com">Our CRM</a> plays nicely with Dropbox, GMail and a gazillion other services. Again, great.</p>
-
-<p><strong>However, the success of SaaS means the surface of interfaces we&rsquo;re dealing with is constantly stretching. This is far more difficult to overcome than poor UI or UX.</strong> Many of us have witnessed teams struggling to get adoption on a great tool that happen to be one too many. There&rsquo;s not much you can do about it.</p>
-
-<h3>A bot to rule them all…</h3>
-
-<p><img src="http://devo.ps/images/posts/borat.png" alt="Borat is omnipotent" /></p>
-
-<p>Our team has tried a lot of different approaches over the years. We kicked the tires on a lot of products and ended up doing as usual:</p>
-
-<ol>
-<li><p> <strong>Simplify</strong>. For example, we use Github to manage most tasks and discussions, including operations (HR, admin, …), and marketing. We used <a href="http://trello.com/">Trello</a> alongside Github for a while and we loved it. But it silo-ed the discussions. Everything from our employee handbook to tasks for buying snacks for the office are now on Github. It also had an interesting side effect on transparency, but I&rsquo;ll talk about this another time.</p></li>
-<li><p> <strong>Automate</strong>. We automate pretty much everything we can. When you apply to one of our job by email for example, we push the attachments in Dropbox (likely your resume) and create a ticket with the relevant information on Github. <a href="http://zapier.com">Zapier</a> is great for this kind of stuff by the way.</p></li>
-<li><p> <strong>Make it accessible</strong>. That&rsquo;s the most important point for us at this stage. Borat, our <a href="http://hubot.github.com">Hubot</a> chat bot, is hooked up with most of our infrastructure and is able to pass on requests to the services we use as well as some of our automation. If one of us is awake, chances are you can find us on the chat, making it the most ubiquitous interface for our team:</p>
-
-<ul>
-<li>Need to deploy some code on production or modify some configuration on a server? Ask Borat, he&rsquo;ll relay your demands to the <a href="http://devo.ps">devo.ps</a> API.</li>
-<li>Your latest commit broke the build? A new mail came from support? Expect to hear about it from Borat.</li>
-<li>Need to use our time tracker? Just drop a message to the bot when you&rsquo;re starting your task and let him know when you&rsquo;re done.</li>
-<li>Need to call for a SCRUM? Just mention the Github team you want to chat with and Borat will create a separate channel and invite the right people to join.</li>
-<li>Somebody is at the door? Ask the bot to open it for you (you gotta love hacking on Raspberry PI).</li>
-</ul>
-</li>
-</ol>
-
-
-<p>Anybody with access to our bot&rsquo;s repository can add a script to hook him up to a new service. Git push, kill the bot and wait for him to come back to life with new skills. The tedious stuff ends up sooner or later scripted and one sentence away.</p>
-
-<p>Really, try it. It&rsquo;s worth the investment.</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1447,6 +1130,142 @@ git push origin gh-pages
 <p>Hope you find this useful !</p>
 
 <p>HP</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/27/manage-data-bags-in-solo-mode/">Manage Data Bags in Solo Mode</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-27T15:08:00-04:00" pubdate data-updated="true">Oct 27<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/Opscode_chef_logo.png" title="'Chef Logo'" > For the past ~6 monthes or so I have been working solely with <a href="http://docs.opscode.com/chef_solo.html">chef-solo</a>.
+There are quite a few helpers for solo out there such as:</p>
+
+<ol>
+<li>soloist &ndash; <a href="https://github.com/mkocher/soloist">https://github.com/mkocher/soloist</a></li>
+<li>knife-solo &ndash; <a href="https://github.com/matschaffer/knife-solo">https://github.com/matschaffer/knife-solo</a>
+&amp; a few more.</li>
+</ol>
+
+
+<p>What kept annoying me for some time is I couldn&rsquo;t manage databas with knife whilst working in solo mode &hellip; ARRRRRRGH!!!</p>
+
+<p>It looked somthing like:</p>
+
+<pre><code>[oper@sandbox chef_repo]$ knife data bag create admins
+ERROR: The object you are looking for could not be found
+Response: &lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL /data was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.2.15 (CentOS) Server at : Port 80&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;
+</code></pre>
+
+<p>Then came <a href="https://github.com/thbishop/knife-solo_data_bag">knife-solo_data_bag</a> I am quite embaressed to say ;) I haven&rsquo;t found this sooner.
+Now with a totally bogus knife.rb file I can generate / edit / manager databags with knife-solo &amp; knife-solo_data_bag.</p>
+
+<p>Again, hope you find this useful, I know I do ;)</p>
+
+<p>HP</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/20/mounting-s3-buckets-with-f3fs/">S3 - Mounting S3 Buckets With S3fs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-20T20:32:00-04:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/amazon-s3.png" title="'S3 logo'" >A <code>cheap</code> solution on Amazon s3 for uploading files to s3 via SSH</p>
+
+<p>I needed to upload files from my Corporate environment in a <code>push mode</code> meaning I do not open any &ldquo;special&rdquo; ports in my environemnt in order to enable users to put files on S3.
+I am curentelly testing to see how robust this solution really is but basically what I found myself doing is install s3fs (<a href="https://code.google.com/p/s3fs/">link to project page</a>) like so:</p>
+
+<pre><code>wget http://s3fs.googlecode.com/files/s3fs-1.73.tar.gz
+tar xvzf s3fs-1.73.tar.gz
+cd s3fs-1.73
+./configure --prefix=/usr
+make &amp;&amp; make install
+</code></pre>
+
+<p>I was installing this for Suse but for Amazon linux/redhat etc you might find a package see: <a href="http://rpmfind.net/linux/rpm2html/search.php?query=fuse-s3fs">here</a>.</p>
+
+<p>Once the package is installed you can use <code>s3fs</code></p>
+
+<pre><code>s3fs BUCKET:[PATH] MOUNTPOINT [OPTION]...
+
+s3fs dev_tools /mnt/dev_tools/ 
+</code></pre>
+
+<p>Worth noting you do not need to specify the s3 url, you only specify the bucket name !</p>
+
+<p>The same thing / very similir in <code>/etc/fstab</code> will look like so:</p>
+
+<pre><code>s3fs#dev_tools /mnt/dev_tools fuse allow_other,user=youruser 0 0
+</code></pre>
+
+<p>The mount opts are <strong>extreemly important</strong> &ndash; without the <code>allow_other</code> flag the user cannot write to the directory.</p>
+
+<p>This is really awesome &ndash; we now jsut need to make sure the connectivity is reliable / fast enough and this will become very usefull.</p>
+
+<p>As always hope you find this useful.</p>
 </div>
   
   

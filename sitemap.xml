@@ -468,19 +468,7 @@
     </url>
     <url>
         <loc>
-            http://bvajjala.github.io/blog/2014/03/11/creating-a-secure-deployment-pipeline-in-aws/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
             http://bvajjala.github.io/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2014/03/23/creating-a-secure-deployment-pipeline-in-amazon-web-services/
         </loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
@@ -1131,8 +1119,18 @@
         <lastmod>2014-04-16T11:42:42-04:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://bvajjala.github.io/projects/creating-a-secure-deployment-pipeline-in-amazon-web-services/
+        </loc>
+        <lastmod>2014-04-16T13:56:59-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/how-we-use-aws-opsworks/</loc>
+        <lastmod>2014-04-16T14:12:39-04:00</lastmod>
+    </url>
+    <url>
         <loc>http://bvajjala.github.io/projects/</loc>
-        <lastmod>2014-04-16T13:19:21-04:00</lastmod>
+        <lastmod>2014-04-16T14:12:39-04:00</lastmod>
     </url>
     <url>
         <loc>http://bvajjala.github.io/robots.txt</loc>
