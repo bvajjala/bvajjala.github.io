@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="In the previous installment, we used Chef to configure CFEngine to serve policy that allowed us to create a Puppet service. In this one, we&rsquo;ll &hellip;">
+  <meta name="description" content="Introduction Over the past few years, the topic of Infrastructure Automation has received a huge amount of attention. The three most commonly used &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,91 +65,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/12/30/cfengine-puppet-and-chef-part-2/">CFEngine Puppet and Chef Part 2</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-12-30T20:10:00-05:00" pubdate data-updated="true">Dec 30<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In the previous installment, we used Chef to configure CFEngine to serve policy that allowed us to create a Puppet service. In this one, we&rsquo;ll have Chef use that Puppet service to create a Chef server. If you think this is a ridiculous thing to do, I would be inclined to agree with you. However, this is my blog so I make the rules.</p>
-
-<h2> Puppet </h2>
-
-
-<p>Puppet at its core works like CFEngine. Statements in Puppet are convergent operators, in that they are declarative (and therefore idempotent), and convergent in that they check a resource&rsquo;s state before taking any action. Like the NTP example from the CFEngine installment, non-optimally ordered execution will usually work itself out after repeated Puppet runs.</p>
-
-<p>Unlike CFEngine, where policy is copied and evaluated on the edges, Puppet clients connect to the Puppet server where configuration is determined based on a certificate CN. A catalog of serialized configuration data is shipped back to the client for execution. This catalog is computed based on the contents of the manifests stored on the server, as well as a collection of <a href=http://puppetlabs.com/puppet/related-projects/facter target="_blank">facts</a> collected from the clients. Puppet facts, like CFEngine hard classes, are discoverable things about a node such as OS version, hostname, kernel version, network information, etc.</p>
-
-<p><img class="left" src="http://images3.wikia.nocookie.net/__cb20050917222913/memoryalpha/en/images/d/d6/Coffee_replicates_then_mug.jpg" width="300" height="300"></p>
-
-<p>Puppet works a bit like the food replicators in Star Trek. <a href=http://docs.puppetlabs.com/references/stable/type.html target="_blank">Resources</a> make up the basic atoms of a system, and the precise configuration of each must be defined. If a resource is defined twice in a manifest with conflicting states, Puppet refuses to run.</p>
-
-<p>Ordering can be specified though <code>require</code> statements that set up relations between resources. These are used to build a <a href=http://en.wikipedia.org/wiki/Directed_graph target="_blank">directed graph</a>, which Puppet sorts <a href=http://en.wikipedia.org/wiki/Topological_sorting>topologically</a> and uses to determine the final ordering. If a resource in a chain fails for some reason, dependent resources down the graph will be skipped.</p>
-
-<p>This allows for isolation of non-related resources collections. For example, if a package repository for some reason fails to deliver the &lsquo;httpd&rsquo; package, its dependent configuration file and service resources will be skipped. This has nothing to do with an SSH resource collection, so the resources concerning that service will be executed even though the httpd collection had previously failed.</p>
-
-<p>Just be careful not to create the coffee without the cup.</p>
-
-<h2> chef.pp </h2>
-
-
-<p>Let&rsquo;s examine a Puppet manifest that creates a Chef server on Centos 6.</p>
-
-<p>File /Users/balajivajjala/Development/opress-src/bvajjala.github.io/source/downloads/code/cookbooks/cfengine/files/default/server/puppet/manifests/classes/chef.pp could not be found</p>
-
-<h2> Picking it apart </h2>
-
-
-<p>Line 1 is a Puppet class definition. This groups the resource statments between together, allowing us to assign <code>chef-server</code> to a node based on its hostname. This can be accomplished with an explicit nodes.pp definition, or with an external node classifier.</p>
-
-<p>Line 3 is an <code>exec</code> resource, which we can later refer to with its name: <code>rbel6-release</code>. When using <code>exec</code> resources, it&rsquo;s up to you to specify a convergence check. In this case, we used the <code>unless</code> keyword to check the return status of an rpm command. The same goes for <code>command</code> promise types in CFEngine, or an <code>execute</code> resources in Chef.</p>
-
-<p>Line 9 is an example of an array variable, which is iterated over in line 21, much like a CFEngine slist.</p>
-
-<p>Everything else is a standard Puppet resource declaration, each of which have a type, a name, and an argument list. Like CFEngine promises, each type has various intentions available under the hood. Packages can be installed. Services can be running or stopped, and files can be present with certain contents and permissions.</p>
-
-<p>Refer to the Puppet <a href=http://docs.puppetlabs.com/ target="_blank">documentation</a> for more details.</p>
-
-<h2> On to Chef </h2>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>knife bootstrap centos6-3 -r <span class="s1">&#39;role[affs-chef]&#39;</span> -N <span class="s2">&quot;affs-chef-1.example.com&quot;</span> -E development -d affs-omnibus-pre -x root
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -988,6 +903,101 @@ Packager    : Dag Wieers
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/08/functional-groovy-switch-statement/">Functional Groovy Switch Statement</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-08T08:00:00-04:00" pubdate data-updated="true">Jun 8<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In the previous <a href="/2011/06/01/reversing-groovy-switch-statement">post</a> I showed how to replace chained if-else statements in Groovy with one concise switch. It was done for the special case of if-stement where every branch was evaluated using the same condition function. Today I want to make a generalization of that technique by allowing to use different conditionals.</p>
+
+<p>Suppose your code looks like this:</p>
+
+<pre><code>if (param % 2 == 0) {
+    'even'
+} else if (param % 3 == 0) {
+    'threeven'
+} else if (0 &lt; param) {
+    'positive'
+} else {
+    'negative'
+}
+</code></pre>
+
+<p>As long as every condition operates on the same parameter, you can replace the entire chain with a switch. In this scenario <code>param</code> becomes a switch parameter and conditions become <code>case</code> parameters of Closure type. The only thing we need to do is to override <code>Closure.isCase()</code> method as I described in the previous post. The safest way to do it is to create a category class:</p>
+
+<pre><code>class CaseCategory {
+    static boolean isCase(Closure casePredicate, Object switchParameter) {
+        casePredicate.call switchParameter
+    }
+}
+</code></pre>
+
+<p>Now we can replace if-statement with the following switch:</p>
+
+<pre><code>use (CaseCategory) {
+    switch (param) {
+        case { it % 2 == 0 } : return 'even'
+        case { it % 3 == 0 } : return 'threeven'
+        case { 0 &lt; it }      : return 'positive'
+        default              : return 'negative'
+    }
+}
+</code></pre>
+
+<p>We can actually go further and extract in-line closures:</p>
+
+<pre><code>def even = {
+    it % 2 == 0
+}
+def threeven = {
+    it % 3 == 0
+}
+def positive = {
+    0 &lt; it
+}
+</code></pre>
+
+<p>After which the code becomes even more readable:</p>
+
+<pre><code>use (CaseCategory) {
+    switch (param) {
+        case even     : return 'even'
+        case threeven : return 'threeven'
+        case positive : return 'positive'
+        default       : return 'negative'
+    }
+}
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/10/">&larr; Older</a>
@@ -1009,10 +1019,6 @@ Packager    : Dag Wieers
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/">Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline</a>
       </li>
     
@@ -1026,6 +1032,10 @@ Packager    : Dag Wieers
     
       <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a>
       </li>
     
   </ul>

@@ -9,7 +9,8 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="In continuation to a Chef Introduction session we had last week on meetup, I thought a blog post was called for in order to emphasize the process of &hellip;">
+  <meta name="description" content="
+">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,51 +66,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/20/writing-a-chef-cookbook/">Writing a Chef Cookbook, or Writing Your First Cookbook</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-20T13:00:00-05:00" pubdate data-updated="true">Jan 20<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/Opscode_chef_logo.png" title="'Chef Logo'" > In continuation to a Chef Introduction session we had <a href="http://meetup.tikalk.com/events/98888802/">last week on meetup</a>, I thought a blog post was called for in order to emphasize the process of writing a recipe. And/Or working with chef in general as a buy product of that.</p>
-
-<p>I will be using the basic &ldquo;ntp&rdquo; example Opscode uses on their wiki, but in order to understand the components of a recipe I will stretch it a bit further in order to show the true power of Attributes and Templates.</p>
-
-<p>At the end of this post [or now if you really insist] you can clone <a href="https://github.com/tikalk/chef-intro-repo">https://github.com/tikalk/chef-intro-repo</a> and see the ntp recipe alongside other stuff which was presented in the meetup.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/20/writing-a-chef-cookbook/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
   
   
     <article>
@@ -1071,6 +1027,70 @@ OSS projects that attempt to do what it does, but I think it is already one of t
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/06/04/on-phonegap-slash-cordova-and-cross-platform-mobile-development/">On PhoneGap/Cordova and Cross Platform Mobile Development</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-04T12:34:00-04:00" pubdate data-updated="true">Jun 4<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>So last weekend I was at <a href="http://overtheair.org/">Over The Air 2012</a> &ndash; on of my favorite regular Hack days &ndash; and for the first time I decided to actually try and make a &ldquo;native&rdquo; mobile app.</p>
+
+<p>Seeing as I don&rsquo;t want to have to redo the app for every platform I decided to try out one of the more famous cross platform development frameworks: <a href="http://phonegap.com/">PhoneGap</a>.</p>
+
+<p>Here are some of the things I discovered during the weekend:</p>
+
+<ul>
+<li>PhoneGap isn&rsquo;t really a framework. It&rsquo;s really nothing more than a wrapper around a local HTML page with an extra JS library to access native features like the camera, local storage, etc.</li>
+<li>Although <a href="http://jquerymobile.com/">jQuery Mobile</a> looks very nice, it seems to emulate iOS, making it look out of place on any Android or Windows device.</li>
+<li>PhoneGap in combination with jQuery Mobile allows you to very quickly make a static native app, but as soon as you want to add any dynamics it seems to become quite hard. You will need some kind of JS MVC to tie it all together.</li>
+<li>I had a play with <a href="http://knockoutjs.com/">KnockoutJS</a> &ndash; which we already use at <a href="http://emberads.com">EmberAds</a> &ndash; but it had its issues:
+
+<ul>
+<li>Good tutorials on how to integrate with jQuery Mobile were missing, and I was encountering rendering issues.</li>
+<li>It&rsquo;s not really a MVC, and tying it to template partials seemed harder than it should.</li>
+<li>Automatic storage of models to local storage/server was missing.</li>
+</ul>
+</li>
+</ul>
+
+
+<p>So although I&rsquo;m happy with the work we did on the first version of our app it clearly will need a rewrite in time to be viable. Here&rsquo;s some of the research I&rsquo;ve done so far:</p>
+
+<ul>
+<li>I will probably replace Knockout with <a href="http://backbonejs.org/">BackboneJS</a> which seems to be more flexible and actually support storing to server and/or local storage.</li>
+<li>Alternatively I might look at <a href="http://docs.sencha.com/touch/2-0/">Sensa Touch 2.0</a> which seems to be more than just a UI framework but actually also include a full MVC framework.</li>
+<li>I found some tutorial describing how to integrate PhoneGap, jQuery Mobile, and Backbone, <a href="https://github.com/ccoenraets/backbone-directory/tree/master/jquerymobile">including a bootstrapped app</a> that integrates them all in a way I might be able to re-use.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -1092,10 +1112,6 @@ OSS projects that attempt to do what it does, but I think it is already one of t
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/">Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline</a>
       </li>
     
@@ -1109,6 +1125,10 @@ OSS projects that attempt to do what it does, but I think it is already one of t
     
       <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CD | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/cd/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-15T18:51:17-04:00</updated>
+  <updated>2014-04-16T09:48:34-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -12,308 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[A case study on using 100% cloud based Resources with Automated Software Delivery]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/"/>
-    <updated>2014-04-04T14:08:01-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery</id>
-    <content type="html"><![CDATA[<h1>A Case Study on using 100% Cloud-based Resources with Automated Software Delivery</h1>
-
-<p><a href="http://stelligent.com" title="Stelligent Continuous Delivery in the Cloud">We</a>
-help – typically large – organizations create one-click software
-delivery systems so that they can deliver software in a more rapid,
-reliable and repeatable manner (AKA <a href="http://www.amazon.com/Continuous-Delivery-Deployment-Automation-Addison-Wesley/dp/0321601912" title="Continuous Delivery book">Continuous
-Delivery</a>).
-The only way this works is when Development works with Operations. As
-has been written elsewhere in this series, this means changing the
-hearts and minds of people because most organizations are used to
-working in ‘siloed’ environments. In this entry, I focus on
-implementation, by describing a real-world case study in which we have
-brought Continuous Delivery Operations to the Cloud consisting of a team
-of Systems and Software Engineers.  </p>
-
-<p>For years, we’ve helped customers in <a href="http://www.amazon.com/gp/product/0321336380/?tag=integratecom-20" title="Continuous Integration">Continuous
-Integration</a>
-and Testing so more of our work was with Developers and Testers. Several
-years ago, we hired a Sys Admin/Engineer/DBA who was passionate about
-automation. As a result of this, we began assembling multiple two-person
-“<a href="http://en.wikipedia.org/wiki/DevOps" title="DevOps on Wikipedia">DevOps</a>”
-teams consisting of a Software Engineer and a Systems Engineer both of
-whom being big-picture thinkers and not just “Developers” or “Sys
-Admins”. These days, we put together these targeted teams of Continuous
-Delivery and Cloud experts with hands-on experience as Software
-Engineers and Systems Engineers so that organizations can deliver
-software as quickly and as often as the business requires.</p>
-
-<p>A couple of years ago we already had a few people in the company who
-were experimenting with using Cloud infrastructures so we thought this
-would be a great opportunity in providing cloud-based delivery
-solutions. In this case study, I cover a project we are currently
-working on for a large organization. It is a new Java-based web services
-project so we’ve been able to implement solutions using our recommended
-software delivery patterns rather than being constrained by legacy tools
-or decisions. However, as I note, we aren’t without constraints on this
-project. If I were you, I’d call “BS!” on any “case study” in which
-everything went flawlessly and assume it was an extremely small or a
-theoretical project in the author’s mind. This is the real deal. Enough
-said, on to the case study.      </p>
-
-<p><img src="https://s3.amazonaws.com/stelligent_img/aws_tools.jpg" alt="AWS Tools" /></p>
-
-<p><strong>Fast Facts</strong></p>
-
-<p><strong>Industry</strong>: Healthcare, Public Sector\
-<strong>Profile</strong>: The customer is making available to all, free of charge, a
-series of software specifications and open source software modules that
-together make up an oncology-extended Electronic Health Record
-capability.\
-<strong>Key Business Issues</strong>: The customer was seeking that all team members
-are provided “unencumbered” access to infrastructure resources without
-the usual “request and wait” queued-based procedures present in most
-organizations \
-<strong>Stakeholders</strong>: Over 100 people consisting of Developers, Testers,
-Analysts, Architects, and Project Management.\
-<strong>Solution:</strong> Continuous Delivery Operations in the Cloud\
-<strong>Key Tools/Technologies</strong>: Amazon Web Services  - AWS (Elastic Computer
-Cloud (EC2), (Simple Storage Service (S3), Elastic Block Storage (EBS),
-etc.), Jenkins, JIRA Studio, Ant, Ivy, Tomcat and PostgreSQL</p>
-
-<p><strong>The Business Problem</strong>\
-The customer was used to dealing with long drawn-out processes with
-Operations teams that lacked agility. They were accustomed to submitting
-Word documents via email to an Operations teams, attending multiple
-meetings and getting their environments setup weeks or months later. We
-were compelled to develop a solution that reduced or eliminated these
-problems that are all too common in many large organizations (Note: each
-problem is identified as a letter and number, for example: P1, and
-referred to later):</p>
-
-<ol>
-<li>Unable to deliver software to users on demand (P1)</li>
-<li>Queued requests for provisioned instances (P2)</li>
-<li>Unable to reprovision precise target environment configuration on
-demand (P3)</li>
-<li>Unable to provision instances on demand (P4)</li>
-<li>Configuration errors in target environments presenting deployment
-bottlenecks while Operations and Development teams troubleshoot
-errors (P5)</li>
-<li>Underutilized instances (P6)</li>
-<li>No visibility into purpose of instance (P7)</li>
-<li>No visibility into the costs of instance (P8)</li>
-<li>Users cannot terminate instances (P9)</li>
-<li>Increased Systems Operations personnel costs (P10)</li>
-</ol>
-
-
-<p><strong>Our Team</strong>\
-We put together a four-person team to create a solution for delivering
-software and managing the internal Systems Operations for this 100+
-person project. We also hired a part-time Security expert. The team
-consists of two Systems Engineers and two Software Engineers focused on
-Continuous Delivery and the Cloud. One of the Software Engineers is the
-Solutions Architect/PM for our team.</p>
-
-<p><strong>Our Solution</strong>\
-We began with the end in mind based on the customer’s desire for
-unencumbered access to resources. To us, “unencumbered” did not mean
-without controls; it meant providing automated services over queued
-“request and wait for the Ops guy to fulfill the request” processes. Our
-approach is that every resource is in the cloud: Software as a Service
-(SaaS), Platform as a Service (PaaS) or Infrastructure as a Service
-(IaaS) to reduce operations costs (P10) and increase efficiency. In
-doing this, effectively all project resources are available on demand in
-the cloud. We have also automated the software delivery process to
-Development and Test environments and working on the process of
-one-click delivery to production. I’ve identified the problem we’re
-solving – from above – in parentheses (P1, P8, etc.). The solution
-includes:</p>
-
-<ul>
-<li><strong>On-Demand Provisioning</strong> – All hardware is provided via EC2’s
-virtual instances in the cloud, on demand (P2). We’ve developed a
-“Provisioner” (PaaS) that provides any authorized team member the
-capability to click a button and get their project-specific target
-environment (P3) in the AWS’ cloud – thus, providing unencumbered
-access to hardware resources. (P4) The Provisioner provides all
-authorized team members the capability to monitor instance usage
-(P6) and adjust accordingly. Users can terminate their own virtual
-instances (P9).</li>
-<li><strong>Continuous Delivery</strong> Solution so that the team can deliver
-software to users on demand (P1):
-
-<ul>
-<li>Automated build script using Ant – used to drive most of the
-other automation tools</li>
-<li>Dependency Management using Ivy. We will be adding Sonatype
-Nexus</li>
-<li>Database Integration/Change using Ant and Liquibase</li>
-<li>Automated Static Analysis using Sonar (with CheckStyle,
-FindBugs, JDepend, and Cobertura)</li>
-<li>Test framework hooks for running JUnit, etc.</li>
-<li>Reusing remote Deployment custom Ant scripts that use Java
-Secure Channel and Web container configuration. However, we will
-be starting a process of using a more robust tool such as
-ControlTier to perform deployment</li>
-<li>Automated document generation using Grand, SchemaSpy (ERDs) and
-UMLGraph</li>
-<li>Continuous Integration server using Hudson</li>
-<li>Continuous Delivery pipeline system – we are customizing Hudson
-to emulate a Deployment Pipeline</li>
-</ul>
-</li>
-<li><strong>Issue Tracking</strong> – We’re using the JIRA Studio SaaS product from
-Atlassian (P10), which provides issue tracking, version-control
-repository, online code review and a Wiki. We also manage the
-relationship with the vendor and perform the user administration
-including workflow management and reporting.</li>
-<li><strong>Development Infrastructure</strong>&ndash; There were numerous tools selected
-by the customer for Requirements Management and Test Management and
-Execution including HP QC, LoadRunner, SoapUI, Jama Contour. Many of
-these tools were installed and managed by our team onto the EC2
-instances</li>
-<li><strong>Instance Management</strong>&ndash; Any authorized team member is able to
-monitor virtual instance usage by viewing a web-based dashboard (P6,
-P7, P8) we developed. This helps to determine instances that should
-no longer be in use or may be eating up too much money. There is a
-policy that test instances (e.g. Sprint Testing) are terminated no
-less than every two weeks. This promotes ephemeral environments and
-test automation.</li>
-<li><strong>Deployment to Production</strong> – Much of the pre-production
-infrastructure is in place, but we will be adding some additional
-automation features to make it available to users in production
-(P1). The deployment sites are unique in that we aren’t hosting a
-single instance used by all users and it’s likely the software will
-be installed at each site. One plan is to deploy separate instances
-to the cloud or to virtual instances that are shipped to the user
-centers</li>
-<li><p><strong>System Monitoring and Disaster Recovery</strong> – Using
-<a href="https://www.cloudkick.com/" title="CloudKick AWS Monitoring">CloudKick</a>
-to notify us of instance errors or anomalies. EC2 provides us with
-some monitoring as well. We will be implementing a more robust
-monitoring solution using Nagios or something similar in the coming
-months. Through automation and supporting process, we’ve implemented
-a disaster recovery solution.</p></li>
-</ul>
-
-
-<p><strong>Benefits</strong>\
-The benefits are primarily around removing the common bottlenecks from
-processes so that software can be delivered to users and team members
-more often. Also, we think our approach to providing on-demand services
-over queued-based requests increases agility and significantly reduces
-costs. Here are some of the benefits:</p>
-
-<ul>
-<li><strong>Deliver software more often</strong> – to users and internally (testers,
-managers, demos)</li>
-<li><strong>Deliver software more quickly</strong> – since the software delivery
-process is automated, we identify the SVN tag and click a button to
-deliver the software to any environment</li>
-<li><strong>Software delivery is rapid, reliable and repeatable</strong>. All
-resources can be reproduced with a single click – source code,
-configuration, environment configuration, database and network
-configuration is all checked in and versioned and part of a single
-delivery system.</li>
-<li><strong>Increased visibility</strong> to environments and other resources – All
-preconfigured virtual hardware instances are available for any
-project member to provision without needing to submit forms or
-attend countless meetings</li>
-</ul>
-
-
-<p><strong>Tools</strong>\
-Here are some of the tools we are using to deliver this solution. Some
-of the tools were chosen by our team exclusively and some by other
-stakeholders on the project.</p>
-
-<ul>
-<li><a href="http://aws.amazon.com/ec2/" title="AWS EC2"><strong>AWS EC2</strong></a>&ndash; Cloud-based
-virtual hardware instances</li>
-<li><a href="http://aws.amazon.com/s3/" title="AWS S3"><strong>AWS S3</strong></a> – Cloud-based
-storage. We use S3 to store temporary software binaries and backups</li>
-<li><a href="http://aws.amazon.com/ebs/" title="AWS EBS"><strong>AWS EBS</strong></a> – Elastic Block
-Storage. We use EBS to attach PostgreSQL data volumes</li>
-<li><a href="http://ant.apache.org/" title="Ant"><strong>Ant</strong></a> – Build Automation</li>
-<li><a href="https://www.cloudkick.com/" title="CloudKick"><strong>CloudKick</strong></a> – Real-time
-Cloud instance monitoring</li>
-<li><a href="http://controltier.com/" title="ControlTier"><strong>ControlTier</strong></a> –
-Deployment Automation. Not implemented yet.</li>
-<li><strong>HP LoadRunner</strong> – Load Testing</li>
-<li><strong>HP Quality Center (QC)</strong> – Test Management and Orchestration</li>
-<li><strong>Ivy</strong> – Dependency Management</li>
-<li><strong>Jama Contor</strong>&ndash; Requirements Management</li>
-<li><a href="http://jenkins-ci.org/" title="Jenkins"><strong>Jenkins</strong></a> – Continuous
-Integration Server</li>
-<li><a href="http://www.atlassian.com/hosted/studio/" title="JIRA Studio"><strong>JIRA
-Studio</strong></a>&ndash;
-Issue Tracking, Code Review, Version-Control, Wiki</li>
-<li><strong>JUnit</strong> – Unit and Component Testing</li>
-<li><a href="http://www.liquibase.org/" title="Liquibase"><strong>Liquibase</strong></a> – Automated
-database change management</li>
-<li><strong>Nagios</strong> – or Zenoss. Not implemented yet</li>
-<li><strong>Nexus</strong> – Dependency Management Repository Manager (not
-implemented yet)</li>
-<li><strong>PostgreSQL</strong> – Database used by Development team. We’ve written
-script that automate database change management</li>
-<li><strong>Provisioner</strong> (Custom Web-based) – Target Environment Provisioning
-and Virtual Instance Monitoring</li>
-<li><a href="http://www.puppetlabs.com/" title="Puppet"><strong>Puppet</strong></a> – Systems
-Configuration Management</li>
-<li><strong>QTP</strong> – Test Automation</li>
-<li><strong>SoapUI</strong> – Web Services Test Automation</li>
-<li><a href="http://www.sonarsource.org/" title="Sonar"><strong>Sonar</strong></a> – code quality
-analysis (Includes CheckStyle, PMD, Cobertura, etc.)</li>
-<li><strong>Tomcat/JBoss</strong> – Web container used by Development. We’ve written
-script to automate the deployment and container configuration</li>
-</ul>
-
-
-<p><strong>Solutions we’re in the process of Implementing</strong>\
-We’re less than a year into the project and have much more work to do.
-Here are a few projects we’re in the process or will be starting to
-implement soon:</p>
-
-<ul>
-<li>System Configuration Management – We’ve started using Puppet, but we
-are expanding how it’s being used in the future</li>
-<li>Deployment Automation – The move to a more robust Deployment
-automation tool such as ControlTier</li>
-<li>Development Infrastructure Automation – Automating the provisioning
-and configuration of tools such as HP QC in a cloud environment.
-etc.</li>
-</ul>
-
-
-<p><strong>What we would do Differently</strong>\
-Typically, if we were start a Java-based project and recommend tools
-around testing, we might choose the following tools for testing,
-requirements and test management based on the particular need:</p>
-
-<ul>
-<li>Selenium with
-<a href="http://saucelabs.com/" title="SauceLabs Selenium">SauceLabs</a></li>
-<li>JIRA Studio for Test Management</li>
-<li>JIRA Studio for Requirements Management</li>
-<li>JMeter – or other open source tool – for Load Testing</li>
-</ul>
-
-
-<p>However, like most projects there are many stakeholders who have their
-preferred approach and tools they are familiar in using, the same way
-our team does. Overall, we are pleased with how things are going so far
-and the customer is happy with the infrastructure and approach that is
-in place at this time. I could probably do another case study on dealing
-with multiple SaaS vendors, but I will leave that for another post.</p>
-
-<p><strong>Summary</strong>\
-There’s much more I could have written about what we’re doing, but I
-hope this gives you a decent perspective of how we’ve implemented a
-DevOps philosophy with Continuous Delivery and the Cloud and how this
-has led our customer to more a service-based, unencumbered and agile
-environment. </p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Continuous Delivery Implementation : Getting started with AWS]]></title>
@@ -1016,6 +714,168 @@ Not too long ago, however, this system wasn&rsquo;t very smart. A branch could a
 <h1>How do we do it?</h1>
 
 <p>Most of the magic is handled by an internal deployment service called Heaven. At its core, Heaven is a catalog of Capistrano recipes wrapped up in a Sinatra application with a JSON API. Many of our applications are deployed using generic recipes, but more complicated apps can define their own to specify additional deployment steps. Wiring it up to Janky, along with clever use of post-receive hooks and the GitHub API, lets us hack on the niceties over time. Hubot is the central interface to both Janky and Heaven, giving everyone in Campfire great visibility into what’s happening all of the time. As of this writing, 75 individual applications are deployed by Heaven.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[OpenStack : Git Gerrit and Jenkins Workflow]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/"/>
+    <updated>2014-02-03T14:54:23-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow</id>
+    <content type="html"><![CDATA[<h1>Gerrit Workflow</h1>
+
+<p><img src="/downloads/code/GerritGitJenkinsWorkflow.png" title="Git Gerrit Jenkins Workflow" alt="Alt text in case picture load fails" /></p>
+
+<h2>Git Account Setup</h2>
+
+<p>You&rsquo;ll need a <a href="https://login.launchpad.net">Launchpad account</a>, since this is how the Web interface for the Gerrit Code Review system will identify you. This is also useful for automatically crediting bug fixes to you when you address them with your code commits.</p>
+
+<p>If you haven&rsquo;t already, <a href="https://www.openstack.org/join/">join The OpenStack Foundation</a> (it&rsquo;s free and required for all code contributors). Among other privileges, this also allows you to vote in elections and run for elected positions within The OpenStack Project. When signing up for Foundation Membership, make sure to give the same E-mail address you&rsquo;ll use for code contributions, since this will need to match your preferred E-mail address in Gerrit.</p>
+
+<p>Visit <a href="https://review.openstack.org/">https://review.openstack.org/</a> and click the Sign In link at the top-right corner of the page. Log in with your Launchpad ID.</p>
+
+<p>Because Gerrit uses Launchpad OpenID single sign-on, you won&rsquo;t need a separate password for Gerrit, and once you log in to one of Launchpad, Gerrit, or Jenkins, you won&rsquo;t have to enter your password for the others.</p>
+
+<p>You&rsquo;ll also want to upload an SSH key while you&rsquo;re at it, so that you&rsquo;ll be able to commit changes for review later.</p>
+
+<p>Ensure that you have run these steps to let git know about your email address:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Git Config </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git config &mdash;global user.name &ldquo;Firstname Lastname&rdquo;
+</span><span class='line'>git config &mdash;global user.email &ldquo;&lt;a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x79;&#x6f;&#x75;&#114;&#x5f;&#101;&#109;&#x61;&#105;&#108;&#64;&#x79;&#111;&#117;&#114;&#101;&#x6d;&#x61;&#x69;&#108;&#x2e;&#x63;&#111;&#x6d;">&#121;&#111;&#117;&#x72;&#x5f;&#x65;&#x6d;&#97;&#x69;&#x6c;&#64;&#121;&#x6f;&#x75;&#x72;&#x65;&#x6d;&#x61;&#x69;&#x6c;&#x2e;&#x63;&#111;&#109;&lt;/a>&rdquo;</span></code></pre></td></tr></table></div></figure></notextile></div>
+To check your git configuration:
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Git Config </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git config &mdash;list</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Git Review Installation</h2>
+
+<p>We recommend using the &ldquo;git-review&rdquo; tool which is a git subcommand that handles all the details of working with Gerrit, the code review system used in OpenStack development. Before you start work, make sure you have git-review installed on your system.</p>
+
+<p>On Ubuntu, MacOSx, or most other Unix-like systems, it is as simple as:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pip install git-review</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>On Ubuntu Precise (12.04) and later, git-review is included in the distribution, so install it as any other package:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get install git-review</span></code></pre></td></tr></table></div></figure></notextile></div>
+On Fedora 16 and later, git-review is included into the distribution, so install it as any other package:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install git-review</span></code></pre></td></tr></table></div></figure></notextile></div>
+On Fedora 15 and earlier you have to install pip (its package name is <code>python-pip</code>), then install git-review using pip in a conventional way.</p>
+
+<p>On Red Hat Enterprise Linux, you must first enable the EPEL repository, then install it as any other package:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install git-review</span></code></pre></td></tr></table></div></figure></notextile></div>
+On openSUSE 12.2 and later, git-review is included in the distribution under the name python-git-review, so install it as any other package:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zypper in python-git-review</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>All of git-review&rsquo;s interactions with gerrit are sequences of normal git commands. If you want to know more about what it&rsquo;s doing, just add -v to the options and it will print out all of the commands it&rsquo;s running.</p>
+
+<h2>Project Setup</h2>
+
+<p>Clone a project in the usual way, for example:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://git.openstack.org/openstack/nova.git</span></code></pre></td></tr></table></div></figure></notextile></div>
+You may want to ask git-review to configure your project to know about Gerrit at this point. If you don&rsquo;t, it will do so the first time you submit a change for review, but you probably want to do this ahead of time so the Gerrit Change-Id commit hook gets installed. To do so (again, using Nova as an example):
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd nova
+</span><span class='line'>git review -s</span></code></pre></td></tr></table></div></figure></notextile></div>
+Git-review checks that you can log in to gerrit with your ssh key. It assumes that your gerrit/launchpad user name is the same as the current running user. If that doesn&rsquo;t work, it asks for your gerrit/launchpad user name. If you don&rsquo;t remember the user name go to the settings page on gerrit to check it out (it&rsquo;s not your email address).</p>
+
+<p>Note that you can verify the SSH host keys for review.openstack.org here: <a href="https://review.openstack.org/#/settings/ssh-keys">https://review.openstack.org/#/settings/ssh-keys</a></p>
+
+<p>If you get the error &ldquo;We don&rsquo;t know where your gerrit is.&rdquo;, you will need to add a new git remote. The url should be in the error message. Copy that and create the new remote.
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git remote add gerrit ssh://&lt;username>@review.openstack.org:29418/openstack/nova.git</span></code></pre></td></tr></table></div></figure></notextile></div>
+In the project directory, you have a <code>.git</code> hidden directory and a <code>.gitreview</code> hidden file. You can see them with:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ls -la</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>1.4 Normal Workflow</h2>
+
+<p>Once your local repository is set up as above, you must use the following workflow.</p>
+
+<p>Make sure you have the latest upstream changes:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git remote update
+</span><span class='line'>git checkout master
+</span><span class='line'>git pull &mdash;ff-only origin master</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Create a topic branch to hold your work and switch to it. If you are working on a blueprint, name your topic branch bp/BLUEPRINT where BLUEPRINT is the name of a blueprint in launchpad (for example, &ldquo;bp/authentication&rdquo;). The general convention when working on bugs is to name the branch bug/BUG-NUMBER (for example, &ldquo;bug/1234567&rdquo;). Otherwise, give it a meaningful name because it will show up as the topic for your change in Gerrit.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git checkout -b TOPIC-BRANCH</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>To generate documentation artifacts, navigate to the directory where the pom.xml file is located for the project and run the following command:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mvn clean generate-sources</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>1.4.1 Committing Changes</h3>
+
+<p>Git commit messages should start with a short 50 character or less summary in a single paragraph. The following paragraph(s) should explain the change in more detail.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>If your changes addresses a blueprint or a bug, be sure to mention them in the commit message using the following syntax:&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>Implements: blueprint BLUEPRINT
+</span><span class='line'>Closes-Bug: ####### (Partial-Bug or Related-Bug are options)</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>For example:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Adds keystone support&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&hellip;Long multiline description of the change&hellip;&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>Implements: blueprint authentication
+</span><span class='line'>Closes-Bug: #123456
+</span><span class='line'>Change-Id: I4946a16d27f712ae2adf8441ce78e6c0bb0bb657</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Note that in most cases the Change-Id line should be automatically added by a Gerrit commit hook that you will want to install. See Project Setup for details on configuring your project for Gerrit. If you already made the commit and the Change-Id was not added, do the Gerrit setup step and run:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git commit &mdash;amend</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The commit hook will automatically add the Change-Id when you finish amending the commit message, even if you don&rsquo;t actually make any changes.</p>
+
+<p>Make your changes, commit them, and submit them for review:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git commit -a
+</span><span class='line'>git review</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><em>Caution: Do not check in changes on your master branch. Doing so will cause merge commits when you pull new upstream changes, and merge commits will not be accepted by Gerrit.</em></p>
+
+<p>Prior to checking in make sure that you run &ldquo;<a href="http://testrun.org/tox/latest/">tox</a>&rdquo;.</p>
+
+<h3>1.4.2 Review</h3>
+
+<h3>1.4.3 Work in Progress</h3>
+
+<h3>1.4.4 Long-lived Topic Branches</h3>
+
+<h3>1.4.5 Updating a Change</h3>
+
+<h3>1.4.6 Add dependency</h3>
 ]]></content>
   </entry>
   

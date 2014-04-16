@@ -547,12 +547,6 @@
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
-        <loc>
-            http://bvajjala.github.io/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
         <loc>http://bvajjala.github.io/404.html</loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
@@ -1123,6 +1117,16 @@
     <url>
         <loc>http://bvajjala.github.io/md-resrc/markdown/</loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/
+        </loc>
+        <lastmod>2014-04-16T09:41:08-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/</loc>
+        <lastmod>2014-04-16T09:41:08-04:00</lastmod>
     </url>
     <url>
         <loc>http://bvajjala.github.io/robots.txt</loc>

@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="## Workflow : Deploying/Release Apps from Development to Production ## Deploying is a big part of the lives of most of our Engineering employees. We &hellip;">
+  <meta name="description" content="Gerrit Workflow Git Account Setup You&rsquo;ll need a Launchpad account, since this is how the Web interface for the Gerrit Code Review system will &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,84 +65,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow From GitHub</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-04T09:50:50-05:00" pubdate data-updated="true">Feb 4<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>## Workflow : Deploying/Release Apps from Development to Production  ##</h1>
-
-<p>Deploying is a big part of the lives of most of our Engineering employees. We don&rsquo;t have a release manager and there are no set weekly deploys. Developers and designers are responsible for shipping new stuff themselves as soon as it&rsquo;s ready. This means that deploying needs to be as smooth and safe a process as possible.</p>
-
-<p>The best system we&rsquo;ve found so far to provide this flexibility is to have people deploy branches. Changes never get merged to master until they have been verified to work in production from a branch. This means that master is always stable; a safe point that we can roll back to if there&rsquo;s a problem.</p>
-
-<p>The basic workflow goes like this:</p>
-
-<ul>
-<li>Push changes to a branch in GitHub</li>
-<li>Wait for the build to pass on our CI server (Jenkins)</li>
-<li>Tell Hubot to deploy it</li>
-<li>Verify that the changes work and fix any problems that come up</li>
-<li>Merge the branch into master
-Not too long ago, however, this system wasn&rsquo;t very smart. A branch could accidentally be deployed before the build finished, or even if the build failed. Employees could mistakenly deploy over each other. As the company has grown, we&rsquo;ve needed to add some checks and balances to help us prevent these kinds of mistakes.</li>
-</ul>
-
-
-<h2>Safety First</h2>
-
-<p>The first thing we do now, when someone tries to deploy, is make a call to <a href="https://github.com/github/janky">Janky</a> to determine whether the current CI build is green. If it hasn&rsquo;t finished yet or has failed, we&rsquo;ll tell the deployer to fix the situation and try again.</p>
-
-<p>Next we check whether the application is currently &ldquo;locked&rdquo;. The lock indicates that a particular branch is being deployed in production and that no other deploys of the application should proceed for the moment. Successful builds on the master branch would otherwise get deployed automatically, so we don&rsquo;t want those going out while a branch is being tested. We also don&rsquo;t want another developer to accidentally deploy something while the branch is out.</p>
-
-<p>The last step is to make sure that the branch we&rsquo;re deploying contains the latest commit on master that has made it into production. Once a commit on master has been deployed to production, it should never be “removed” from production by deploying a branch that doesn’t have that commit in it yet.</p>
-
-<p>We use the GitHub API to verify this requirement. An endpoint on the github.com application exposes the SHA1 that is currently running in production. We submit this to the GitHub compare API to obtain the &ldquo;merge base&rdquo;, or the common ancestor, of master and the production SHA1. We can then compare this to the branch that we&rsquo;re attempting to deploy to check that the branch is caught up. By using the common ancestor of master and production, code that only exists on a branch can be removed from production, and changes that have landed on master but haven&rsquo;t been deployed yet won&rsquo;t require branches to merge them in before deploying.</p>
-
-<p>If it turns out the branch is behind, master gets merged into it automatically. We do this using the new :sparkles:Merging API:sparkles: that we&rsquo;re making available today. This merge starts a new CI build like any other push-style event, which starts a deploy when it passes.</p>
-
-<p>At this point the code actually gets deployed to our servers. We usually deploy to all servers for consistency, but a subset of servers can be specified if necessary. This subset can be by functional role — front-end, file server, worker, search, etc. — or we can specify an individual machine by name, e.g, &lsquo;fe7&rsquo;.</p>
-
-<h2>Watch it in action</h2>
-
-<p>What now? It depends on the situation, but as a rule of thumb, small to moderate changes should be observed running correctly in production for at least 15 minutes before they can be considered reasonably stable. During this time we monitor exceptions, performance, tweets, and do any extra verification that might be required. If non-critical tweaks need to be made, changes can be pushed to the branch and will be deployed automatically. In the event that something bad happens, rolling back to master only takes 30 seconds.</p>
-
-<h2>All done!</h2>
-
-<p>If everything goes well, it&rsquo;s time to merge the changes. At GitHub, we use Pull Requests for almost all of our development, so merging typically happens through the pull request page. We detect when the branch gets merged into master and unlock the application. The next deployer can now step up and ship something awesome.</p>
-
-<h1>How do we do it?</h1>
-
-<p>Most of the magic is handled by an internal deployment service called Heaven. At its core, Heaven is a catalog of Capistrano recipes wrapped up in a Sinatra application with a JSON API. Many of our applications are deployed using generic recipes, but more complicated apps can define their own to specify additional deployment steps. Wiring it up to Janky, along with clever use of post-receive hooks and the GitHub API, lets us hack on the niceties over time. Hubot is the central interface to both Janky and Heaven, giving everyone in Campfire great visibility into what’s happening all of the time. As of this writing, 75 individual applications are deployed by Heaven.</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1277,6 +1199,63 @@ overall maintainability. More importantly, we&rsquo;ve freed a lot of our resour
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/why-we-dropped-swagger-and-i-slash-o-docs/">Why We Dropped Swagger and I/O Docs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T13:49:24-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/02/07/why-we-dropped-iodocs-and-swagger.html">Why We Dropped Swagger And I/O Docs</a></h2>
+
+<p>As we started investing in <a href="/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">our new strategy</a> at <a href="http://wiredcraft.com">my previous company</a>, we looked around for solutions to document APIs. It may not be the sexiest part of the project, but documentation is the first step to designing a good API. And I mean <strong>first</strong> as in &ldquo;before you even start writing tests&rdquo; (yes, you should be writing tests first too).</p>
+
+<p>We originally went with a simple Wiki page on Github, which served us just fine in the past. But it quickly became clear that it wasn&rsquo;t going to cut it. We started thinking about what good documentations is. We&rsquo;re fans of the single page approach that the <a href="http://backbonejs.com">Backbone.js documentation</a> illustrates well and clearly remembered <a href="http://developer.github.com/">Github</a> and <a href="https://stripe.com/docs">Stripe</a> as easy and well organized resources. Some Googling later, we were contemplating Wordnik&rsquo;s <a href="http://developers.helloreverb.com/swagger/">Swagger</a> and Mashery&rsquo;s <a href="http://www.mashery.com/product/io-docs">I/O Docs</a>. We later settled for I/O Docs as it is built with node.js and was more straightforward to set up (for us at least).</p>
+
+<p>Once again, we hit a wall with this approach:</p>
+
+<ol>
+<li><p> <strong>No proper support for JSON body</strong>: we don&rsquo;t do much with parameters and mostly send JSON objects in the body of our requests, <a href="http://blog.apigee.com/detail/restful_api_design_nouns_are_good_verbs_are_bad">using HTTP verbs for the different types of operations</a> we perform on our collections and models in the backend. Swagger and I/O Docs fall short of support for it, letting you simply dump your JSON in a field: not ideal.</p></li>
+<li><p> <strong>You&rsquo;re querying the actual API</strong>: to be fair, this is an intentional feature. Now some of you may find it interesting that your documentation allows users to easily run calls against your API. That&rsquo;s what <a href="http://www.flickr.com/services/api/explore/flickr.activity.userComments">Flickr does with their API explorer</a>, and we used to think it was pretty neat. But once we started using it, we saw the risks of exposing so casually API calls that can impact your platform (especially with <a href="http://devo.ps">devo.ps</a> which deals with your actual infrastructure). I guess you could set up a testing API for that very purpose, but that&rsquo;s quite a bit of added complexity (and <a href="http://blogoscoped.com/archive/2005-08-24-n14.html">we&rsquo;re lazy</a>).</p></li>
+</ol>
+
+
+<p>And that&rsquo;s how we ended up putting together <a href="https://github.com/devo-%20ps/carte">Carte</a>, a very lightweight Jekyll-based solution: drop a new post for each API call, following some loose format and specifying a few bits of meta data in the YAML header (type of the method, path…) and you&rsquo;re good to go.</p>
+
+<p><a href="http://devo-ps.github.com/carte"><img src="/images/posts/carte-screenshot.png" alt="Screenshot of Carte" /></a></p>
+
+<p>We&rsquo;re real suckers for Jekyll. We&rsquo;ve actually used it to build quite a few static clients for our APIs. One of the advantages of this approach is that we can bundle our documentation with our codebase by simply pushing it on the
+<code>gh-pages</code> branch, and it pops up as a Github page. That&rsquo;s tremendously important for us as it make it very easy for developers to keep the documentation and the code in synch.</p>
+
+<p>Carte is intentionally crude: <a href="https://github.com/devo-ps/carte">have a look at the README and hack at will</a>. Drop us a shout at <a href="https://twitter.com/devo_ps">@devo_ps</a> if you need help or want to suggest a feature.</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1298,10 +1277,6 @@ overall maintainability. More importantly, we&rsquo;ve freed a lot of our resour
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/">Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline</a>
       </li>
     
@@ -1315,6 +1290,10 @@ overall maintainability. More importantly, we&rsquo;ve freed a lot of our resour
     
       <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a>
       </li>
     
   </ul>

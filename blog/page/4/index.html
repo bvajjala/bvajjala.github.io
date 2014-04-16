@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Why We Dropped Swagger And I/O Docs As we started investing in our new strategy at my previous company, we looked around for solutions to document &hellip;">
+  <meta name="description" content="Best Practices: It&rsquo;s Always Or Never ( And Preferably Always) It&rsquo;s Monday morning. The development team needs a box and you&rsquo;re &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,63 +65,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/03/why-we-dropped-swagger-and-i-slash-o-docs/">Why We Dropped Swagger and I/O Docs</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-03T13:49:24-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2013/02/07/why-we-dropped-iodocs-and-swagger.html">Why We Dropped Swagger And I/O Docs</a></h2>
-
-<p>As we started investing in <a href="/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">our new strategy</a> at <a href="http://wiredcraft.com">my previous company</a>, we looked around for solutions to document APIs. It may not be the sexiest part of the project, but documentation is the first step to designing a good API. And I mean <strong>first</strong> as in &ldquo;before you even start writing tests&rdquo; (yes, you should be writing tests first too).</p>
-
-<p>We originally went with a simple Wiki page on Github, which served us just fine in the past. But it quickly became clear that it wasn&rsquo;t going to cut it. We started thinking about what good documentations is. We&rsquo;re fans of the single page approach that the <a href="http://backbonejs.com">Backbone.js documentation</a> illustrates well and clearly remembered <a href="http://developer.github.com/">Github</a> and <a href="https://stripe.com/docs">Stripe</a> as easy and well organized resources. Some Googling later, we were contemplating Wordnik&rsquo;s <a href="http://developers.helloreverb.com/swagger/">Swagger</a> and Mashery&rsquo;s <a href="http://www.mashery.com/product/io-docs">I/O Docs</a>. We later settled for I/O Docs as it is built with node.js and was more straightforward to set up (for us at least).</p>
-
-<p>Once again, we hit a wall with this approach:</p>
-
-<ol>
-<li><p> <strong>No proper support for JSON body</strong>: we don&rsquo;t do much with parameters and mostly send JSON objects in the body of our requests, <a href="http://blog.apigee.com/detail/restful_api_design_nouns_are_good_verbs_are_bad">using HTTP verbs for the different types of operations</a> we perform on our collections and models in the backend. Swagger and I/O Docs fall short of support for it, letting you simply dump your JSON in a field: not ideal.</p></li>
-<li><p> <strong>You&rsquo;re querying the actual API</strong>: to be fair, this is an intentional feature. Now some of you may find it interesting that your documentation allows users to easily run calls against your API. That&rsquo;s what <a href="http://www.flickr.com/services/api/explore/flickr.activity.userComments">Flickr does with their API explorer</a>, and we used to think it was pretty neat. But once we started using it, we saw the risks of exposing so casually API calls that can impact your platform (especially with <a href="http://devo.ps">devo.ps</a> which deals with your actual infrastructure). I guess you could set up a testing API for that very purpose, but that&rsquo;s quite a bit of added complexity (and <a href="http://blogoscoped.com/archive/2005-08-24-n14.html">we&rsquo;re lazy</a>).</p></li>
-</ol>
-
-
-<p>And that&rsquo;s how we ended up putting together <a href="https://github.com/devo-%20ps/carte">Carte</a>, a very lightweight Jekyll-based solution: drop a new post for each API call, following some loose format and specifying a few bits of meta data in the YAML header (type of the method, path…) and you&rsquo;re good to go.</p>
-
-<p><a href="http://devo-ps.github.com/carte"><img src="/images/posts/carte-screenshot.png" alt="Screenshot of Carte" /></a></p>
-
-<p>We&rsquo;re real suckers for Jekyll. We&rsquo;ve actually used it to build quite a few static clients for our APIs. One of the advantages of this approach is that we can bundle our documentation with our codebase by simply pushing it on the
-<code>gh-pages</code> branch, and it pops up as a Github page. That&rsquo;s tremendously important for us as it make it very easy for developers to keep the documentation and the code in synch.</p>
-
-<p>Carte is intentionally crude: <a href="https://github.com/devo-ps/carte">have a look at the README and hack at will</a>. Drop us a shout at <a href="https://twitter.com/devo_ps">@devo_ps</a> if you need help or want to suggest a feature.</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1613,6 +1556,49 @@ quality of our throughput.</p>
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/">Creating Immutable Servers With Chef and docker.io</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-07T18:18:00-04:00" pubdate data-updated="true">Sep 7<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Building applications in a <a href="http://docker.io">docker.io</a> Dockerfile is relatively simple,  but sometimes you want to just install the application exactly as you would normally via already built chef cookbooks.   Turns out this is actually pretty simple.</p>
+
+<p>The first thing you&rsquo;ll need to do is build a container with chef-client and berkshelf installed.   You can grab the one I&rsquo;ve built by running <code>docker pull paulczar/chef-solo</code> or build one youself from a <code>Dockerfile</code> that looks a little something like the following&hellip;</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -1634,10 +1620,6 @@ quality of our throughput.</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/">Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline</a>
       </li>
     
@@ -1651,6 +1633,10 @@ quality of our throughput.</p>
     
       <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a>
       </li>
     
   </ul>

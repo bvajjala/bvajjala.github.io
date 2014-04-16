@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="In the previous post I showed how to replace chained if-else statements in Groovy with one concise switch. It was done for the special case of if- &hellip;">
+  <meta name="description" content="Every generation of software developers needs its own fad. For my generation it was Agile, for generation before it was OOP, and before that it was &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,101 +65,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/06/08/functional-groovy-switch-statement/">Functional Groovy Switch Statement</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-08T08:00:00-04:00" pubdate data-updated="true">Jun 8<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In the previous <a href="/2011/06/01/reversing-groovy-switch-statement">post</a> I showed how to replace chained if-else statements in Groovy with one concise switch. It was done for the special case of if-stement where every branch was evaluated using the same condition function. Today I want to make a generalization of that technique by allowing to use different conditionals.</p>
-
-<p>Suppose your code looks like this:</p>
-
-<pre><code>if (param % 2 == 0) {
-    'even'
-} else if (param % 3 == 0) {
-    'threeven'
-} else if (0 &lt; param) {
-    'positive'
-} else {
-    'negative'
-}
-</code></pre>
-
-<p>As long as every condition operates on the same parameter, you can replace the entire chain with a switch. In this scenario <code>param</code> becomes a switch parameter and conditions become <code>case</code> parameters of Closure type. The only thing we need to do is to override <code>Closure.isCase()</code> method as I described in the previous post. The safest way to do it is to create a category class:</p>
-
-<pre><code>class CaseCategory {
-    static boolean isCase(Closure casePredicate, Object switchParameter) {
-        casePredicate.call switchParameter
-    }
-}
-</code></pre>
-
-<p>Now we can replace if-statement with the following switch:</p>
-
-<pre><code>use (CaseCategory) {
-    switch (param) {
-        case { it % 2 == 0 } : return 'even'
-        case { it % 3 == 0 } : return 'threeven'
-        case { 0 &lt; it }      : return 'positive'
-        default              : return 'negative'
-    }
-}
-</code></pre>
-
-<p>We can actually go further and extract in-line closures:</p>
-
-<pre><code>def even = {
-    it % 2 == 0
-}
-def threeven = {
-    it % 3 == 0
-}
-def positive = {
-    0 &lt; it
-}
-</code></pre>
-
-<p>After which the code becomes even more readable:</p>
-
-<pre><code>use (CaseCategory) {
-    switch (param) {
-        case even     : return 'even'
-        case threeven : return 'threeven'
-        case positive : return 'positive'
-        default       : return 'negative'
-    }
-}
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1748,6 +1653,66 @@ All you need to do in your maven build is select 1 check-box:</p>
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/02/06/svn-bash-completion/">SVN Bash_completion - Subversion Productivity Boost</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-06T16:01:00-05:00" pubdate data-updated="true">Feb 6<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/subversion.jpg" title="'Subversion Logo'" >Remembering all the svn switches / CLI options, not necessary, well unless you are using some nifty GUI tool you will definitely need this one.</p>
+
+<p>Just google &ldquo;Subversoin bash completion&rdquo; and you will find yourself <a href="http://worksintheory.org/files/misc/bash_completion_svn">here</a></p>
+
+<p>so grab is, source it and use it:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>apt-get install bash-completion
+</span><span class='line'>wget http://worksintheory.org/files/misc/bash_completion_svn -O /etc/bash_completion.d/subversion
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You are good to go.</p>
+
+<p><strong>Please note:</strong>
+Installing the bash_completion deb package adds a bunch of bash completion helpers see full list by running:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>dpkg -L bash-completion
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>All the magic however is in this short file:
+/etc/profile.d/bash_completion.sh and anything you place under <em>/etc/bash_completion.d/</em> will automatically be sourced upon login &hellip;</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/11/">&larr; Older</a>
@@ -1769,10 +1734,6 @@ All you need to do in your maven build is select 1 check-box:</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/04/04/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/">A case study on using 100% cloud based Resources with Automated Software Delivery</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/03/25/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/">Continuous Delivery Implementation : Laying the Foundations of a Continuous Delivery Pipeline</a>
       </li>
     
@@ -1786,6 +1747,10 @@ All you need to do in your maven build is select 1 check-box:</p>
     
       <li class="post">
         <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a>
       </li>
     
   </ul>
