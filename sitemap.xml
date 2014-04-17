@@ -197,12 +197,6 @@
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
-        <loc>
-            http://bvajjala.github.io/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
         <loc>http://bvajjala.github.io/blog/2013/09/25/vagrant-docker-and-ansible-wtf/</loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
@@ -566,12 +560,6 @@
     </url>
     <url>
         <loc>
-            http://bvajjala.github.io/projects/docker/2013-10-20-managing-docker-services-with-this-one-easy-trick.html
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
             http://bvajjala.github.io/projects/docker/continuous-delivery-with-docker-and-jenkins-part-i.html
         </loc>
         <lastmod>2014-04-17T12:27:03-04:00</lastmod>
@@ -583,8 +571,20 @@
         <lastmod>2014-04-17T12:26:59-04:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://bvajjala.github.io/projects/docker/creating-immutable-servers-with-chef-and-docker-dot-io.html
+        </loc>
+        <lastmod>2014-04-17T13:22:00-04:00</lastmod>
+    </url>
+    <url>
         <loc>http://bvajjala.github.io/projects/docker/</loc>
-        <lastmod>2014-04-17T12:22:51-04:00</lastmod>
+        <lastmod>2014-04-17T13:21:30-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/docker/managing-docker-services-with-this-one-easy-trick.html
+        </loc>
+        <lastmod>2014-04-17T13:21:41-04:00</lastmod>
     </url>
     <url>
         <loc>http://bvajjala.github.io/projects/</loc>

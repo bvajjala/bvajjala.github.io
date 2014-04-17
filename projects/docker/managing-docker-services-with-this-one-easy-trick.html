@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="I have been having a lot of internal debate about the idea of running more than one service in a docker container. A Docker container is built to run &hellip;">
+  <meta name="description" content="Managing Docker Services With This One Easy Trick I have been having a lot of internal debate about the idea of running more than one service in a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://bvajjala.github.io/projects/docker/2013-10-20-managing-docker-services-with-this-one-easy-trick.html">
+  <link rel="canonical" href="http://bvajjala.github.io/projects/docker/managing-docker-services-with-this-one-easy-trick.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
@@ -69,34 +69,14 @@
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">Managing Docker Services With This One Easy Trick</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-20T15:46:00-04:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
-        
-      </p>
+    <h1 class="entry-title">Managing Docker Services With This One Easy Trick</h1>
     
   </header>
-
-
-<div class="entry-content"><p>I have been having a lot of internal debate about the idea of running more than one service in a docker container.   A Docker container is built to run a single process in the foreground and to live for only as long as that process is running.  This is great in a utopian world where servers are immutable and sysadmins drink tiki drinks on the beach,  however it doesn&rsquo;t always translate well to the real world.</p>
+  
+  <p>I have been having a lot of internal debate about the idea of running more than one service in a docker container.   A Docker container is built to run a single process in the foreground and to live for only as long as that process is running.  This is great in a utopian world where servers are immutable and sysadmins drink tiki drinks on the beach,  however it doesn&rsquo;t always translate well to the real world.</p>
 
 <p>Examples where you might want to be able to run multiple servers span from the simple use case of running <code>sshd</code> as well as your application to running a web app such as <code>wordpress</code> where you might want both <code>apache</code> and <code>mysql</code> running in the same container.</p>
 
@@ -267,43 +247,14 @@
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo find . -uid 0   -exec rm -rfv {} \;</span></code></pre></td></tr></table></div></figure>
 
-</div>
 
-
-  <footer>
-    <p class="meta">
+  
+    <footer>
       
-  
-
-<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
-
       
-
-
-
-
-
-
-
-
+        <div class="sharing">
   
-
-
-<time datetime="2013-10-20T15:46:00-04:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/docker/'>Docker</a>, <a class='category' href='/blog/categories/runit/'>runit</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/projects/docker/2013-10-20-managing-docker-services-with-this-one-easy-trick.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/projects/docker/2013-10-20-managing-docker-services-with-this-one-easy-trick.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/projects/docker/managing-docker-services-with-this-one-easy-trick.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/projects/docker/managing-docker-services-with-this-one-easy-trick.html" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -313,12 +264,9 @@
   
 </div>
 
-    
-    <p class="meta">
       
-      
-    </p>
-  </footer>
+    </footer>
+  
 </article>
 
 

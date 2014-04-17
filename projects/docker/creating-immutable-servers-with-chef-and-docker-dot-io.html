@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Building applications in a docker.io Dockerfile is relatively simple, but sometimes you want to just install the application exactly as you would &hellip;">
+  <meta name="description" content="Creating Immutable Servers With Chef and docker.io Building applications in a docker.io Dockerfile is relatively simple, but sometimes you want to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://bvajjala.github.io/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io">
+  <link rel="canonical" href="http://bvajjala.github.io/projects/docker/creating-immutable-servers-with-chef-and-docker-dot-io.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
@@ -69,34 +69,14 @@
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">Creating Immutable Servers With Chef and docker.io</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-07T18:18:00-04:00" pubdate data-updated="true">Sep 7<span>th</span>, 2013</time>
-        
-      </p>
+    <h1 class="entry-title">Creating Immutable Servers With Chef and docker.io</h1>
     
   </header>
-
-
-<div class="entry-content"><p>Building applications in a <a href="http://docker.io">docker.io</a> Dockerfile is relatively simple,  but sometimes you want to just install the application exactly as you would normally via already built chef cookbooks.   Turns out this is actually pretty simple.</p>
+  
+  <p>Building applications in a <a href="http://docker.io">docker.io</a> Dockerfile is relatively simple,  but sometimes you want to just install the application exactly as you would normally via already built chef cookbooks.   Turns out this is actually pretty simple.</p>
 
 <p>The first thing you&rsquo;ll need to do is build a container with chef-client and berkshelf installed.   You can grab the one I&rsquo;ve built by running <code>docker pull paulczar/chef-solo</code> or build one youself from a <code>Dockerfile</code> that looks a little something like the following&hellip;</p>
 
@@ -227,43 +207,14 @@
 <p>It will add the local files ( <code>solo.rb</code>, <code>solo.json</code>, <code>Berksfile</code> ) to /chef in the server and then call berkshelf to download the cookbooks and chef-solo to install your application.   Finally it will give <code>nginx</code> a directive to run in the foreground so that we don&rsquo;t have to do any sneaky prcess control to get it to work with the way <code>docker.io</code> runs processes.</p>
 
 <p>To run the resultant <code>docker.io</code> container you simply need to run <code>$ docker run -d -p 80 demo/kibana3</code></p>
-</div>
 
-
-  <footer>
-    <p class="meta">
+  
+    <footer>
       
-  
-
-<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
-
       
-
-
-
-
-
-
-
-
+        <div class="sharing">
   
-
-
-<time datetime="2013-09-07T18:18:00-04:00" pubdate data-updated="true">Sep 7<span>th</span>, 2013</time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/chef/'>Chef</a>, <a class='category' href='/blog/categories/docker/'>Docker</a>, <a class='category' href='/blog/categories/berkshelf/'>berkshelf</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/projects/docker/creating-immutable-servers-with-chef-and-docker-dot-io.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/projects/docker/creating-immutable-servers-with-chef-and-docker-dot-io.html" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -273,16 +224,9 @@
   
 </div>
 
-    
-    <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/08/16/cheffile-and-librarian-locks/" title="Previous Post: Cheffile &amp; 'librarian locks'">&laquo; Cheffile &amp; 'librarian locks'</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2013/09/25/vagrant-docker-and-ansible-wtf/" title="Next Post: Vagrant, Docker and Ansible, WTF?">Vagrant, Docker and Ansible, WTF? &raquo;</a>
-      
-    </p>
-  </footer>
+    </footer>
+  
 </article>
 
 
