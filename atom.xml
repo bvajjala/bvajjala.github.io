@@ -4,7 +4,7 @@
   <title><![CDATA[Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-17T15:44:21-04:00</updated>
+  <updated>2014-04-17T18:29:20-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -32,17 +32,17 @@
 
 <h3>Balaji Vajjala</h3>
 
-<h5>TaskRabbit</h5>
+<h5>Principal DevOps Consultant/Solution Architect</h5>
 
-<h5>02/17/2014</h5>
+<h5>04/17/2014</h5>
 
 </div>
 
 <aside class='notes'>
 
-<p>Hi, my name is Balaji Vajjala and I&rsquo;m the Chief Architect and Technical Cofounder of TaskRabbit. TaskRabbit is a marketplace where neighbors help neighbors get things done.</p>
+<p>Hi, my name is Balaji Vajjala and I&rsquo;m the Chief Architet and DevOps Solution Architect.</p>
 
-<p>At TaskRabbit we are using Redis and Resque to do all of our background processing. We&rsquo;ve also gone one step further to use these tools to create an asynchronous message bus system that we call Resque Bus.</p>
+<p>I have been developing software in the financial and Telecom industry since Mid 90&rsquo;s. Passionate about technology, I have delivered a diverse project portfolio initially as a software developer and subsequently as a leader of development organisations.</p>
 
 </aside>
 
@@ -50,21 +50,20 @@
 
 <section class='slide'><div class='content'>
 
-<h3>Redis</h3>
+<h3>DevOps</h3>
 
 <ul>
-<li>Key/Value Store</li>
-<li>Atomic Operations</li>
+<li>Continuous Deployment</li>
+<li>Continuous Delivery</li>
+<li>Continuous Integration</li>
 </ul>
 
-
-<p><img src="http://bvajjala.github.io/images/posts/resque-bus-presentation/redis-logo.jpeg" alt="Redis Logo" /></p>
 
 </div>
 
 <aside class='notes'>
 
-<p>I don&rsquo;t have to tell you guys about Redis, but for our purposes the main point is that we can store stuff in it and the operations are atomic.</p>
+<p>I don&rsquo;t have to tell you guys about DevOps, but for our purposes the main point is that we can do more stuff using the DevOps principles and Deliver software ina Agile Fashion.</p>
 
 </aside>
 

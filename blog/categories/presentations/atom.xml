@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Presentations | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/presentations/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-17T18:29:20-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[my first presentation]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/04/17/my-first-presentation/"/>
+    <updated>2014-04-17T15:41:59-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/04/17/my-first-presentation</id>
+    <content type="html"><![CDATA[<p>{% slide %}</p>
+
+<h2>Resque Bus</h2>
+
+<h3>Balaji Vajjala</h3>
+
+<h5>Principal DevOps Consultant/Solution Architect</h5>
+
+<h5>04/17/2014</h5>
+
+<p>{% notes %}</p>
+
+<p>Hi, my name is Balaji Vajjala and I&rsquo;m the Chief Architet and DevOps Solution Architect.</p>
+
+<p>I have been developing software in the financial and Telecom industry since Mid 90&rsquo;s. Passionate about technology, I have delivered a diverse project portfolio initially as a software developer and subsequently as a leader of development organisations.</p>
+
+<p>{% slide %}</p>
+
+<h3>DevOps</h3>
+
+<ul>
+<li>Continuous Deployment</li>
+<li>Continuous Delivery</li>
+<li>Continuous Integration</li>
+</ul>
+
+
+<p>{% notes %}</p>
+
+<p>I don&rsquo;t have to tell you guys about DevOps, but for our purposes the main point is that we can do more stuff using the DevOps principles and Deliver software ina Agile Fashion.</p>
+
+<p>{% slide %}</p>
+
+<h2>Thanks!</h2>
+]]></content>
+  </entry>
+  
+</feed>
