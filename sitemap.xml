@@ -13,10 +13,6 @@
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
-        <loc>http://bvajjala.github.io/blog/2010/02/24/pycon-recommend-hudson-ci/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
         <loc>http://bvajjala.github.io/blog/2010/03/01/Start-tomcat-in-build-process/</loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
@@ -24,10 +20,6 @@
         <loc>
             http://bvajjala.github.io/blog/2010/08/17/Job-configuration-change-in-Hudson-1.372/
         </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/blog/2010/08/18/mac-os-xi-eleven/</loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
@@ -69,27 +61,7 @@
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
-        <loc>http://bvajjala.github.io/blog/2011/02/22/something-i-coded-up-for-fun/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
         <loc>http://bvajjala.github.io/blog/2011/03/07/maven-deployment-linker-plug-in/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2011/03/15/a-can-of-condensed-chef-documentation/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2011/03/16/a-brief-chef-tutorial-from-concentrate/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/blog/2011/04/07/searching-chef-server/</loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
@@ -113,17 +85,7 @@
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
-        <loc>
-            http://bvajjala.github.io/blog/2011/06/16/full-stack-chef-installers-for-el5-and-el6/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
         <loc>http://bvajjala.github.io/blog/2011/06/20/learning-programming/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/blog/2011/07/06/bitcoin-wallet-for-android/</loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
@@ -131,33 +93,7 @@
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
-        <loc>http://bvajjala.github.io/blog/2011/07/25/some-random-udpates/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
         <loc>http://bvajjala.github.io/blog/2011/07/27/configuration-management-strategies/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2011/11/27/announcing-ribbot-com-build-your-own-reddithacker-news-style-discussion-forum/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/blog/2011/11/29/migration-to-octopress/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/blog/2011/12/30/cfengine-puppet-and-chef-part-1/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/blog/2011/12/30/cfengine-puppet-and-chef-part-2/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/blog/2011/12/30/cfengine-puppet-and-chef-part-3/</loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
@@ -165,53 +101,7 @@
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
-        <loc>http://bvajjala.github.io/blog/2012/03/29/bypassing-the-google-feed-api-cache/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/blog/2012/04/07/a-new-blog/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/blog/2012/04/10/the-hackday-manifesto/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2012/04/12/add-terms-and-conditions-validation-to-omniauth-identity/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/blog/2012/04/19/tech-on-my-radar/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2012/04/29/what-i-miss-about-hackdays-dot-dot-dot/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2012/05/08/opencodecamp-where-the-best-of-hackdays-and-barcamps-come-together/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2012/06/04/on-phonegap-slash-cordova-and-cross-platform-mobile-development/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
         <loc>http://bvajjala.github.io/blog/2012/07/03/Speeding-Up-NuGet-Server/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2012/07/24/devops-4-developers-at-jenkins-conference-hertzliya/
-        </loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
@@ -245,10 +135,6 @@
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
-        <loc>http://bvajjala.github.io/blog/2013/01/20/writing-a-chef-cookbook/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
         <loc>http://bvajjala.github.io/blog/2013/02/02/ruby-gems-are-not-safe-to-use/</loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
@@ -256,20 +142,6 @@
         <loc>
             http://bvajjala.github.io/blog/2013/02/05/how-to-run-apt-get-update-before-puppet/
         </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2013/02/24/introduction-2-opscode-chef-slash-or-chef-for-newbiees-slash/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/blog/2013/02/24/adding-facbook-comments-to-octopress/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/blog/2013/02/24/why-octopress/</loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
@@ -321,15 +193,7 @@
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
-        <loc>http://bvajjala.github.io/blog/2013/07/30/putting-the-web-into-webapi/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
         <loc>http://bvajjala.github.io/blog/2013/08/16/cheffile-and-librarian-locks/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/blog/2013/08/21/the-joy-and-pain-of-using-jekyll/</loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
@@ -444,24 +308,6 @@
     </url>
     <url>
         <loc>
-            http://bvajjala.github.io/blog/2014/02/17/using-docker-to-run-ruby-rspec-ci-in-jenkins/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-i/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2014/02/21/continuous-delivery-with-docker-and-jenkins-part-ii/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
             http://bvajjala.github.io/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/
         </loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
@@ -481,30 +327,6 @@
     <url>
         <loc>
             http://bvajjala.github.io/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/
-        </loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/
         </loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
@@ -550,13 +372,61 @@
     </url>
     <url>
         <loc>
-            http://bvajjala.github.io/projects/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/
+            http://bvajjala.github.io/projects/aws/creating-a-secure-deployment-pipeline-in-amazon-web-services/
         </loc>
-        <lastmod>2014-04-16T11:02:14-04:00</lastmod>
+        <lastmod>2014-04-16T13:56:59-04:00</lastmod>
     </url>
     <url>
-        <loc>http://bvajjala.github.io/projects/automating-infrastructures-testing/</loc>
-        <lastmod>2014-04-16T10:25:29-04:00</lastmod>
+        <loc>http://bvajjala.github.io/projects/aws/how-we-use-aws-opsworks/</loc>
+        <lastmod>2014-04-16T14:25:28-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/chef/a-brief-chef-tutorial-from-concentrate.html
+        </loc>
+        <lastmod>2014-04-17T11:01:19-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/chef/a-can-of-condensed-chef-documentation.html
+        </loc>
+        <lastmod>2014-04-17T11:01:19-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/chef/cfengine-puppet-and-chef-part-1.html</loc>
+        <lastmod>2014-04-17T11:01:19-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/chef/cfengine-puppet-and-chef-part-2.html</loc>
+        <lastmod>2014-04-17T11:01:19-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/chef/cfengine-puppet-and-chef-part-3.html</loc>
+        <lastmod>2014-04-17T11:01:19-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/chef/full-stack-chef-installers-for-el5-and-el6.html
+        </loc>
+        <lastmod>2014-04-17T11:01:19-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/chef/</loc>
+        <lastmod>2014-04-17T11:10:52-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/chef/introduction-2-opscode-chef-slash-or-chef-for-newbiees-slash.html
+        </loc>
+        <lastmod>2014-04-17T11:01:19-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/chef/searching-chef-server.html</loc>
+        <lastmod>2014-04-17T11:01:19-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/chef/writing-a-chef-cookbook.html</loc>
+        <lastmod>2014-04-17T11:01:19-04:00</lastmod>
     </url>
     <url>
         <loc>http://bvajjala.github.io/projects/ci/</loc>
@@ -568,574 +438,120 @@
     </url>
     <url>
         <loc>
-            http://bvajjala.github.io/projects/continuous-delivery-how-to-deliver-software-to-users-at-the-click-of-a-butto/
+            http://bvajjala.github.io/projects/continuous-delivery/a-case-study-on-using-100-percent-cloud-based-resources-with-automated-software-delivery/
+        </loc>
+        <lastmod>2014-04-16T11:02:14-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/continuous-delivery/automating-infrastructures-testing/
+        </loc>
+        <lastmod>2014-04-16T10:25:29-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/continuous-delivery/continuous-delivery-how-to-deliver-software-to-users-at-the-click-of-a-butto/
         </loc>
         <lastmod>2014-04-16T11:07:47-04:00</lastmod>
     </url>
     <url>
         <loc>
-            http://bvajjala.github.io/projects/continuous-delivery-implementation-getting-started-with-aws/
+            http://bvajjala.github.io/projects/continuous-delivery/continuous-delivery-implementation-getting-started-with-aws/
         </loc>
         <lastmod>2014-04-16T12:27:56-04:00</lastmod>
     </url>
     <url>
         <loc>
-            http://bvajjala.github.io/projects/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/
+            http://bvajjala.github.io/projects/continuous-delivery/continuous-delivery-implementation-laying-the-foundations-of-a-continuous-delivery-pipeline/
         </loc>
         <lastmod>2014-04-16T12:48:54-04:00</lastmod>
     </url>
     <url>
         <loc>
-            http://bvajjala.github.io/projects/continuous-delivery-patterns-and-antipatterns/
+            http://bvajjala.github.io/projects/continuous-delivery/continuous-delivery-patterns-and-antipatterns/
         </loc>
         <lastmod>2014-04-16T13:40:06-04:00</lastmod>
     </url>
     <url>
-        <loc>http://bvajjala.github.io/projects/continuous-delivery-tools-list/</loc>
+        <loc>
+            http://bvajjala.github.io/projects/continuous-delivery/continuous-delivery-tools-list/
+        </loc>
         <lastmod>2014-04-16T11:42:42-04:00</lastmod>
     </url>
     <url>
         <loc>
-            http://bvajjala.github.io/projects/creating-a-secure-deployment-pipeline-in-amazon-web-services/
-        </loc>
-        <lastmod>2014-04-16T13:56:59-04:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://bvajjala.github.io/projects/devops-pipeline/application-monitoring-past.html
+            http://bvajjala.github.io/projects/continuous-delivery/devops-pipeline/application-monitoring-past.html
         </loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
-        <loc>http://bvajjala.github.io/projects/devops-pipeline/cd-toolchain.html</loc>
+        <loc>
+            http://bvajjala.github.io/projects/continuous-delivery/devops-pipeline/cd-toolchain.html
+        </loc>
         <lastmod>2014-04-15T18:51:10-04:00</lastmod>
     </url>
     <url>
         <loc>
-            http://bvajjala.github.io/projects/devops-pipeline/continuous-delivery-a-maturity-assessment-model.html
+            http://bvajjala.github.io/projects/continuous-delivery/devops-pipeline/continuous-delivery-a-maturity-assessment-model.html
         </loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
         <loc>
-            http://bvajjala.github.io/projects/devops-pipeline/iaas-making-a-case-for-infrastructure-as-a-service.html
+            http://bvajjala.github.io/projects/continuous-delivery/devops-pipeline/iaas-making-a-case-for-infrastructure-as-a-service.html
         </loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
-        <loc>http://bvajjala.github.io/projects/devops-pipeline/</loc>
+        <loc>http://bvajjala.github.io/projects/continuous-delivery/devops-pipeline/</loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
         <loc>
-            http://bvajjala.github.io/projects/devops-pipeline/lifecycle-of-a-continuous-delivery-pipeline.html
+            http://bvajjala.github.io/projects/continuous-delivery/devops-pipeline/lifecycle-of-a-continuous-delivery-pipeline.html
         </loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
         <loc>
-            http://bvajjala.github.io/projects/devops-pipeline/paas-and-continuous-delivery-my-12-month-journey.html
+            http://bvajjala.github.io/projects/continuous-delivery/devops-pipeline/paas-and-continuous-delivery-my-12-month-journey.html
         </loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/00.00.html</loc>
-        <lastmod>2014-04-09T15:44:48-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.00.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.00.walkthrough.java.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.01.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.01.setup.java.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.02.heuristic.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.02.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.03.appcode.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.03.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.04.config.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.04.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.05.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.05.test.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.06.database.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.06.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.07.build.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.07.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.08.deployment.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.08.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.09.infrastructure.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.09.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.10.ci.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.10.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.11.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.11.static.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.12.feedback.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/01.13.pipeline.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/01/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/02/02.00.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/02/02.01.define.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/02/02.01.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/02/02.02.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/02/02.02.patterns.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/02/02.03.doctests.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/02/02.03.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/02/02.04.docenv.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/02/02.05.docbuild.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/02/02.06.docdeploy.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/02/02.07.docpipeline.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/02/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/03.00.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/03.01.unit.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/03.02.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/03.03.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/03.04.infr.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/03.04.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/03.05.deployment.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/03.05.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/03.06.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/03.07.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/03.08.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/03.09.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/03.10.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/03.11.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/03.12.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/04.01.cfn.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/04.02.puppet.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/04.03.ant.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/04.04.maven.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/04.05.db.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/04.06.upgrade.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/04.07.cap.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/04.08.depend.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/03/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/04/04.00.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/04/04.01.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/04/04.02.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/04/04.03.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/04/04.04.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/04/04.05.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/04/04.06.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/04/04.07.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/04/04.08.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/04/04.09.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/04/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/05/05.00.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/05/05.01.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/05/05.01.version.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/05/05.02.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/05/05.02.system.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/05/05.03.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/05/05.04.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/05/05.05.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/05/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/06.00.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/06.01.arch.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/06.01.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/06.02.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/06.02.plugins.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/06.03.env.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/06.03.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/06.04.build.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/06.04.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/06.05.deploy.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/06.05.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/06.06.ondemand.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/06.07.scheduled.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/06.08.continuous.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/06.09.feedback.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/06.10.pipeline.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/06/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/07/07.00.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/07/07.01.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/07/07.02.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/07/07.03.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/07/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/08/08.00.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/08/08.01.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/08/08.02.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/08/08.03.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/08/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/09/09.01.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/09/09.04.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/09/09.05.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/09/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/10/10.00.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/10/10.01.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/10/11.00.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/10/11.commands.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/10/11.tools.html</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/10/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/devopsincloud/</loc>
-        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/how-we-use-aws-opsworks/</loc>
-        <lastmod>2014-04-16T14:25:28-04:00</lastmod>
-    </url>
-    <url>
-        <loc>http://bvajjala.github.io/projects/</loc>
+        <loc>http://bvajjala.github.io/projects/continuous-delivery/</loc>
         <lastmod>2014-04-16T14:12:39-04:00</lastmod>
     </url>
     <url>
+        <loc>http://bvajjala.github.io/projects/</loc>
+        <lastmod>2014-04-17T12:02:29-04:00</lastmod>
+    </url>
+    <url>
         <loc>http://bvajjala.github.io/projects/md-resrc/markdown/</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/AWS/2014-03-25-autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/AWS/2014-03-25-autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/AWS/2014-03-25-autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/AWS/2014-03-25-autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4.html
+        </loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>
@@ -1176,6 +592,540 @@
     </url>
     <url>
         <loc>http://bvajjala.github.io/projects/tutorials/cdincloud/</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/00.00.html</loc>
+        <lastmod>2014-04-09T15:44:48-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.00.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.00.walkthrough.java.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.01.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.01.setup.java.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.02.heuristic.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.02.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.03.appcode.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.03.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.04.config.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.04.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.05.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.05.test.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.06.database.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.06.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.07.build.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.07.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.08.deployment.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.08.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.09.infrastructure.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.09.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.10.ci.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.10.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.11.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.11.static.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.12.feedback.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/01/01.13.pipeline.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/01/</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/02/02.00.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/02/02.01.define.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/02/02.01.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/02/02.02.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/02/02.02.patterns.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/02/02.03.doctests.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/02/02.03.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/02/02.04.docenv.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/02/02.05.docbuild.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/02/02.06.docdeploy.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/02/02.07.docpipeline.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/02/</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/03.00.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/03.01.unit.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/03.02.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/03.03.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/03.04.infr.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/03.04.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/03/03.05.deployment.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/03.05.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/03.06.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/03.07.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/03.08.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/03.09.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/03.10.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/03.11.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/03.12.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/04.01.cfn.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/04.02.puppet.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/04.03.ant.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/04.04.maven.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/04.05.db.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/03/04.06.upgrade.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/04.07.cap.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/04.08.depend.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/03/</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/04/04.00.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/04/04.01.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/04/04.02.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/04/04.03.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/04/04.04.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/04/04.05.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/04/04.06.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/04/04.07.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/04/04.08.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/04/04.09.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/04/</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/05/05.00.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/05/05.01.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/05/05.01.version.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/05/05.02.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/05/05.02.system.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/05/05.03.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/05/05.04.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/05/05.05.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/05/</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/06/06.00.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/06/06.01.arch.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/06/06.01.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/06/06.02.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/06/06.02.plugins.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/06/06.03.env.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/06/06.03.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/06/06.04.build.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/06/06.04.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/06/06.05.deploy.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/06/06.05.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/06/06.06.ondemand.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/06/06.07.scheduled.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/06/06.08.continuous.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/06/06.09.feedback.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://bvajjala.github.io/projects/tutorials/devopsincloud/06/06.10.pipeline.html
+        </loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/06/</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/07/07.00.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/07/07.01.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/07/07.02.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/07/07.03.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/07/</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/08/08.00.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/08/08.01.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/08/08.02.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/08/08.03.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/08/</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/09/09.01.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/09/09.04.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/09/09.05.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/09/</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/10/10.00.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/10/10.01.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/10/11.00.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/10/11.commands.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/10/11.tools.html</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/10/</loc>
+        <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/tutorials/devopsincloud/</loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
     </url>
     <url>

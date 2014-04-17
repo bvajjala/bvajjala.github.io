@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>application monitoring - past - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Application Monitoring - Past Application Monitoring &ndash; Past, Present And Future In addition to working on PaaS and Continuous Delivery &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/projects/continuous-delivery/devops-pipeline/application-monitoring-past.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about/home">Home</a></li> 
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/projects">Projects</a></li>
+  <li><a href="/about/resume">About Me</a></li>
+  <li><a href="/about/consulting">Consulting</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Application Monitoring - Past</h1>
+    
+  </header>
+  
+  <p>Application Monitoring &ndash; Past, Present And Future</p>
+
+<p>In addition to working on PaaS and Continuous Delivery initiatives during 2013, I also had the opportunity to learn a lot about Application Performance Monitoring (APM) tools.  Because I see PaaS and CD as enabling technologies for DevOps it was natural that I also look at shared tooling such as APM and log aggregation.</p>
+
+
+<div id="attachment_2403" style="width: 310px" class="wp-caption aligncenter"><a href="http://i1.wp.com/thoughtforge.net/wp-content/uploads/2014/03/Past-Present-and-Future.jpg" rel="lightbox-0"><img class="size-medium wp-image-2403" alt="Figure 1: Past, present and future." src="http://i1.wp.com/thoughtforge.net/wp-content/uploads/2014/03/Past-Present-and-Future.jpg?resize=300,202" data-recalc-dims="1" /></a><p class="wp-caption-text">Figure 1: Past, present and future.</p></div>
+
+
+<p><strong>Application Monitoring in the Past </strong></p>
+
+
+<p>In the past, infrastructure monitoring was used as a proxy for the health of an application.  Application health was measured in terms of CPU and memory utilisation, disk and network IO or some other infrastructure metric.  Some form of translation between the behaviour of the infrastructure and the user experience took place to allow the operations team to understand when the user experience may be adversely affected by symptoms within the infrastructure.</p>
+
+
+<p>Things changed that meant this approach to application monitoring has become a thing of the past.  Applications leverage their infrastructure in very different ways.  For example, look at the CPU and memory utilisation profile of a reactive (or event based) system against that of a synchronous request-response system.  In one, high CPU utilisation is considered normal while in the other it may signal that the system is overloaded.</p>
+
+
+<p>Applications have become increasingly distributed so a user experience may be dictated by the performance of a number of application services residing on different OS, using different language runtimes and storage solutions etc.  Environments are no longer static and systems are capable of dynamically provisioning and un-provisioning nodes to a cluster.  In summary, things just got complicated.</p>
+
+
+<p>The increased proliferation of technologies, and the distribution and scale of today’s systems means that it has become increasingly difficult to predict system health by measuring the symptoms.  We’ve got to actually talk to the patient!</p>
+
+
+<p><strong>Application Monitoring in the Present</strong></p>
+
+
+<p><strong></strong>I’ve looked at a lot of the APM vendors currently operating in the marketplace and have been really impressed with how application monitoring has evolved to where it is today.  In my opinion, the significant features of todays APM offerings are:</p>
+
+
+<ul>
+<li>Distributed transaction tracing</li>
+<li>Application topology detection</li>
+<li>Automatic entry and exit detection</li>
+<li>Lossless or aggregated metric collection</li>
+<li>Adaptive alerting thresholds</li>
+<li>Auto-scaling notifications</li>
+</ul>
+
+
+<p><span style="text-decoration: underline;">Distributed Transaction Tracing</span></p>
+
+
+<p>Way back in April 2010, Google published a paper on “Dapper, a Large-Scale Distributed Systems Tracing Infrastructure”.  The subject matter is not new but people tend to listen more attentively when Google speaks.  Dapper facilitates tracing service calls that traverse a graph of distributed servers or containers. Figure 2 shows a distributed trace for a web request as captured by Zipkin, Twitters distributed tracing system.</p>
+
+
+<div id="attachment_2404" style="width: 310px" class="wp-caption aligncenter"><a href="http://i1.wp.com/thoughtforge.net/wp-content/uploads/2014/03/Zipkin-Screenshot.png" rel="lightbox-1"><img class="size-medium wp-image-2404" alt="Figure 2: Zipkin screenshot." src="http://i1.wp.com/thoughtforge.net/wp-content/uploads/2014/03/Zipkin-Screenshot.png?resize=300,116" data-recalc-dims="1" /></a><p class="wp-caption-text">Figure 2: Zipkin screenshot.</p></div>
+
+
+<p>As systems become more distributed the ability to visualise distributed call graphs is immeasurable.  From the graph above I can see the touch points involved in a particular request, the latency contributed by each of these touch points and the concurrency of service invocations.</p>
+
+
+<p><span style="text-decoration: underline;">Application Topology Discovery</span></p>
+
+
+<p>The collection of distributed transaction tracing data has another nice property or side effect; that is the ability to dynamically build the application topology based on the way in which services communicate with one another.  Figure 3 shows an example of such a visualisation as presented by AppDynamics.</p>
+
+
+<div id="attachment_2405" style="width: 310px" class="wp-caption aligncenter"><a href="http://i0.wp.com/thoughtforge.net/wp-content/uploads/2014/03/AppDynamics-Application-Topology-Screenshot.jpg" rel="lightbox-2"><img class="size-medium wp-image-2405" alt="Figure 3: AppDynamics application topology representation." src="http://i0.wp.com/thoughtforge.net/wp-content/uploads/2014/03/AppDynamics-Application-Topology-Screenshot.jpg?resize=300,199" data-recalc-dims="1" /></a><p class="wp-caption-text">Figure 3: AppDynamics application topology representation.</p></div>
+
+
+<p>This “Flow Map” is able to present a considerable amount of information in a single view.  With this type of view (note: not necessarily this particular view) I’m able to see any of the following:</p>
+
+
+<ul>
+<li>The services involved in responding to a request.</li>
+<li>The latency within those services.</li>
+<li>The latency between those services.</li>
+<li>Variation in latency within service clusters.</li>
+</ul>
+
+
+<p>Comparing how this view evolves over time I might also be able to see:</p>
+
+
+<ul>
+<li>New service instances servicing requests.</li>
+<li>Service instances not servicing requests.</li>
+</ul>
+
+
+<p><span style="text-decoration: underline;">Automatic Entry and Exit Detection</span></p>
+
+
+<p>Distributed tracing has a notion of entry and exit detection.  This is the ability to start and stop a transaction trace.  The easiest way to think about this is to think about a single method trace.  If I want to trace a method it is reasonable for me to expect that I must specify the fully qualified path to this method to allow the tracing tool to instrument the code (either at compile time or runtime).  If this method is well known such as the JMS listener onMessage(…) method I would expect the tracing tool to do this automatically.  The trace would start on method entry and stop on method exit.  Expand this to consider distributed tracing and we have automatic entry and exit detection.</p>
+
+
+<p>Turns out that identifying what to trace has quite a big overhead in a heterogeneous environment and so this automatic detection takes a significant burden off your development and operations teams.  If you also consider a dynamic system with releases every day, week or month it does not take long to incur considerable spend just updating your monitoring tools.</p>
+
+
+<p>You also want to be able to define the entry and exit detection manually though for situations where the entry and exit points are not well known.</p>
+
+
+<p><span style="text-decoration: underline;">Lossless or Aggregated Metric Collection</span></p>
+
+
+<p>There is still a debate over collecting and retaining all available metrics as opposed to sampling and/or aggregating metrics.  The trade-offs are quite obvious.</p>
+
+
+<p>When sampling and/or aggregating:</p>
+
+
+<ul>
+<li>The infrastructure requirements for network and storage are reduced.</li>
+<li>Heuristics are executed on the system being observed so there may be an increased compute (CPU and memory) overhead.</li>
+<li>When aggregating, segmentation of data is limited.</li>
+<li>Data is lost and so rare events may not be recorded.</li>
+</ul>
+
+
+<p>The point on segmentation of data is worth expanding upon.  Lets consider a user making a request from their browser to a backend service.  The request is tagged on the web server with a unique identifier.  The APM agent then tags this request with the user identifier, browser, location etc.  Each of these tags allows the tracing data to be viewed along a different dimension.  If we want aggregation to result in reduced bandwidth utilisation we must aggregate on the client which in turn increases the compute overhead on the client.  To limit this, you limit the amount of segmentation of the metrics data.</p>
+
+
+<p>Limiting the segmentation of data is ok if we are creating operational dashboards from this data but becomes limiting when creating business dashboards.  I’m not in any way saying this is a bad thing but that it is a trade off.</p>
+
+
+<p>When collecting all available metrics:</p>
+
+
+<ul>
+<li>The infrastructure requirements for network and storage are increased.</li>
+<li>Overhead on the system being observed is limited to the overhead imposed by transporting the data.</li>
+<li>All data is captured and available for extensive analytics external to the system being observed.</li>
+<li>All data is captured so even rare event are recorded.</li>
+</ul>
+
+
+<p><span style="text-decoration: underline;">Adaptive Thresholds</span></p>
+
+
+<p>We spoke about how automatic entry and exit detection reduces the operational overhead (or TCO in sales speak) of owning and managing a monitoring solution.  One of the other duties that go along with deploying monitoring solutions is setting the high and low water marks for alerting.  This can be arduous when the system topology or behaviour is changing rapidly.</p>
+
+
+<p>Some of today’s solutions attempt to take the overhead of setting thresholds away by using heuristics on historical data.  The success or otherwise of this approach is therefore based on both the quality of the heuristics and data.  It could be argued that it is always better for a human to set these levels as they can have better knowledge of the system and its behaviours.  It can also be argued that in reality humans are time poor and often just set watermarks to so arbitrary level that “seams reasonable”.</p>
+
+
+<p>Personally, I would like to be able to set the baseline watermarks using heuristics and manually adjust where necessary.  With this approach I don’t have arbitrary settings that “seem reasonable” but I’m also facilitated in changing watermarks when I have more insight than the heuristics and data could possible have.</p>
+
+
+<p><span style="text-decoration: underline;">Auto-Scaling Trigger</span></p>
+
+
+<p>I’ve seen auto scaling become increasingly prevalent in both public and private cloud environments (see <a title="IaaS: Making a Case for Infrastructure as a Service" href="../../2171/making-a-case-for-iaas/index.html" target="_blank">IaaS: Making a Case for Infrastructure as a Service</a>).  Ordinarily auto scaling is triggered by infrastructure metrics like CPU and memory.</p>
+
+
+<div id="attachment_2406" style="width: 310px" class="wp-caption aligncenter"><a href="http://i2.wp.com/thoughtforge.net/wp-content/uploads/2014/03/Benefits-of-Autoscaling.png" rel="lightbox-3"><img class="size-medium wp-image-2406" alt="Figure 4: The benefits of auto-scaling." src="http://i2.wp.com/thoughtforge.net/wp-content/uploads/2014/03/Benefits-of-Autoscaling.png?resize=300,142" data-recalc-dims="1" /></a><p class="wp-caption-text">Figure 4: The benefits of auto-scaling.</p></div>
+
+
+<p>How much better would it be to base scaling triggers on the response time or throughput of the service rather than the behaviour of the infrastructure it resides upon.  It is certainly a lot more intuitive if I am setting watermarks manually.  If I tell you that at the 99<sup>th</sup> percentile a user receives a response in 100ms then that is quite meaningful without any knowledge of the system.  If I tell you that the CPU is at 55% then it is a lot less meaningful.  The CPU might be burning cycles in an event loop providing good, adequate or poor response times to the user.</p>
+
+
+<p><strong>Application Monitoring in the Future</strong></p>
+
+
+<p>The main thing that I would like to see in APM tools in the future is that they incorporate log aggregation capabilities.</p>
+
+
+<p><span style="text-decoration: underline;">Log Aggregation</span></p>
+
+
+<p>If you have implemented APM and log aggregation tooling you’ll know that the infrastructure required by both is remarkably similar.   There is typically an agent responsible for streaming data to some form of intermediary.  There is then some for of analytics platform as well as a portal that allows you to manage all that goodness.  Why or why can’t they be the same thing (I fear someone will actually answer this!)?</p>
+
+
+<p>Here is a challenge to APM vendors:  I often hear Splunk being proposed as a solution for distributed tracing and application monitoring.  I’d like to see you get into the log aggregation space because I don’t want to deploy two similar infrastructures that allow me to export runtime data from my applications.</p>
+
+
+  
+    <footer>
+      
+      
+    </footer>
+  
+</article>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/">A Deep Dive into AWS Reserved Instances</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/">6 reasons why large enterprises should move to Amazon Web Services</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/">CI and Test Automation utilizing OpenStack</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

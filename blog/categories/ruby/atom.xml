@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Ruby | Balaji Vajjala's Blog]]></title>
+  <title><![CDATA[Category: ruby | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-17T10:29:53-04:00</updated>
+  <updated>2014-04-17T12:28:04-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,66 +14,31 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Using Docker To Run Ruby Rspec CI In Jenkins]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/02/17/using-docker-to-run-ruby-rspec-ci-in-jenkins/"/>
-    <updated>2014-02-17T17:01:40-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/02/17/using-docker-to-run-ruby-rspec-ci-in-jenkins</id>
-    <content type="html"><![CDATA[<p>In this post, I am going to give a step-by-step introduction into how you can do continuous integration testing with Docker. I will be running the rspec test suite of the CloudFoundry project&rsquo;s Cloud Controller component, although the same process can be applied to any Ruby project. I will show how to build Docker images to easily run repeatable tests and how to set-up Jenkins to do it for you in an automated manner.</p>
+    <title type="html"><![CDATA[install mysql2 gem file :: Solved]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/03/11/install-mysql2-gem-file-solved/"/>
+    <updated>2013-03-11T22:26:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/03/11/install-mysql2-gem-file-solved</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/ruby_logo2.jpg" title="&lsquo;Ruby Logo&rsquo;" ></p>
 
-<h1>Continuous Integration Using Docker</h1>
+<h2><strong>Problem</strong> </h2>
 
-<p>The goal of this post is to show Jenkins running a project’s test-suite using Docker. This will occur following every code check-in or every N minutes or whenever it is needed.</p>
+<p>can&rsquo;t install mysql2 gem :(
+See the full error below &hellip; (or in &ldquo;Read on&rdquo; link) what solved the issue was:
+installing the two missing dependencies <em>&ldquo;mysql-client libmysqlclient-dev&rdquo;</em>
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;sudo apt-get install mysql-client libmysqlclient-dev&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>Why use Docker to do this? Having a clean environment to run tests is one of the ten commandments of running tests. With Docker&rsquo;s Dockerfile, you can specify a series of steps to create the full stack of the test environment you need. Docker can follow the steps to pre-build the test environment, then stash that environment for disposable re-use. Since a running Docker image, or [LXC] &ldquo;container&rdquo;, is ephemeral, you can blow it away and re-create it very quickly. Perfect for continuous integration!</p>
+<!-- more -->
 
-<!--more-->
-
-
-<p>My Docker usage will be two-step. First, I will create the Docker image. This will have all the basics required by any test run from this project. I am basing my assumptions on system requirements from the current state of the project.</p>
-
-<p>It will not have everything installed, because I cannot predict what a developer will do during a day of hacking on code. They may change code dependencies (gem dependencies in this case) and so I cannot install those dependencies until the time I run that version of the code.</p>
-
-<p>The second step will be to take my built Docker image and run it every time a new version of the project’s code is created. I do not have access to create a GitHub code commit hook, which would tell Jenkins to run the tests on each code check-in, so instead I will run it periodically.</p>
-
-<p>Since I can re-use the Docker image for all my subsequent test runs, I will be creating my Docker-based test environment (step 1) far less frequently than running my tests (step 2).</p>
-
-<p>I can use Jenkins to perform both these tasks. In one Jenkins job, run maybe once a day, it can recreate the base Docker image and push it to a local Docker repository. In a second Jenkins job, which is run each time a developer commits code, I can run the Docker image, which will pull it from the local Docker repository.</p>
-
-<h2>Guinea Pig</h2>
-
-<p>I am going run the test suite of Cloud Foundry&rsquo;s Cloud Controller. This is a core component of the Cloud Foundry project and one of the most complex pieces. The test suite is very large, so it takes more time to run than a developer would have patience for, which for me is about 2 hours. This makes it ideal for continuous testing in the background to confirm that nobody has checked in code that breaks the test suite.</p>
-
-<h2>CI Docker Image</h2>
-
-<p>My continuous-integration Docker image has 3 parts&hellip;</p>
-
-<p>1) Specify a base image</p>
-
-<p>I am going to use the &ldquo;ubuntu&rdquo; image from <a href="http://index.docker.io.">http://index.docker.io.</a>
-2) Install dependencies</p>
-
-<p>Dependencies will be installed via apt-get, wget, rbenv, rubygems and Ruby&rsquo;s bundler.
-3) Specify the command that &ldquo;docker run&rdquo; executes when this Docker image is used</p>
-
-<p>I want to ensure I have the latest code (via &ldquo;git pull&rdquo;) and that we install any code-level dependencies (via &ldquo;bundle install&rdquo;). Finally, it should run the test suite.</p>
-
-<p>The exit code of the test suite will be returned by &ldquo;docker run&rdquo; and Jenkins will use this to determine if the tests passed or failed. If the test run fails Jenkins will inform relevant people via email, if we configure it to do so.</p>
-
-<p>Dockerfile</p>
-
-<p>A Dockerfile is a cross between assembler and a bash script. There are certain action keywords that each non-whitespace non-comment line starts with. I like to uppercase these, so they stand out, but uppercasing these is not mandatory. The remainder of each line is the content used by that action keyword.</p>
-
-<p>For instance, &ldquo;FROM&rdquo; is used to specify the base image, so &ldquo;FROM ubuntu&rdquo; specifies that I am using the &ldquo;ubuntu&rdquo; base image.</p>
-
-<p>&ldquo;RUN&rdquo; is used to run a shell command and is commonly used to install dependencies.</p>
-
-<p>&ldquo;ENV&rdquo; can set environment variables, which can be used in subsequent actions, but also persists to the &ldquo;CMD&rdquo; action.</p>
-
-<p>&ldquo;CMD&rdquo; is called when &ldquo;docker run&rdquo; is run against your created image. &ldquo;CMD&rdquo; is ignored during the image building.</p>
-
-<p>Here is my Dockerfile (gist here)&hellip;</p>
-
-<h1>docker image for running CC test suite</h1>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -135,381 +100,167 @@
 <span class='line-number'>58</span>
 <span class='line-number'>59</span>
 <span class='line-number'>60</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>gem install mysql
+</span><span class='line'>Fetching: mysql-2.9.1.gem <span class="o">(</span>100%<span class="o">)</span>
+</span><span class='line'>Building native extensions.  This could take a <span class="k">while</span>&amp;hellip;
+</span><span class='line'>ERROR:  Error installing mysql:&lt;/p&gt;
 </span><span class='line'>
-</span><span class='line'>&lt;p>FROM ubuntu&lt;/p>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;ERROR: Failed to build gem native extension.
 </span><span class='line'>
-</span><span class='line'>&lt;p>RUN apt-get -y install wget
-</span><span class='line'>RUN apt-get -y install git&lt;/p>
+</span><span class='line'>/home/hagzag/.rvm/rubies/ruby-2.0.0-p0/bin/ruby extconf.rb
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
 </span><span class='line'>
-</span><span class='line'>&lt;h1>install Ruby 1.9.3-p484&lt;/h1>
+</span><span class='line'>&lt;p&gt;checking <span class="k">for </span>mysql_query<span class="o">()</span>&amp;hellip; -lmysqlclient
+</span><span class='line'>checking <span class="k">for </span>main<span class="o">()</span> in -lm&amp;hellip; yes
+</span><span class='line'>checking <span class="k">for </span>mysql_query<span class="o">()</span>&amp;hellip; -lmysqlclient
+</span><span class='line'>checking <span class="k">for </span>main<span class="o">()</span> in -lz&amp;hellip; yes
+</span><span class='line'>checking <span class="k">for </span>mysql_query<span class="o">()</span>&amp;hellip; -lmysqlclient
+</span><span class='line'>checking <span class="k">for </span>main<span class="o">()</span> in -lsocket&amp;hellip; no
+</span><span class='line'>checking <span class="k">for </span>mysql_query<span class="o">()</span>&amp;hellip; -lmysqlclient
+</span><span class='line'>checking <span class="k">for </span>main<span class="o">()</span> in -lnsl&amp;hellip; yes
+</span><span class='line'>checking <span class="k">for </span>mysql_query<span class="o">()</span>&amp;hellip; -lmysqlclient
+</span><span class='line'>checking <span class="k">for </span>main<span class="o">()</span> in -lmygcc&amp;hellip; no
+</span><span class='line'>checking <span class="k">for </span>mysql_query<span class="o">()</span>&amp;hellip; -lmysqlclient
+</span><span class='line'>&lt;strong&gt;&lt;em&gt; extconf.rb failed &lt;/em&gt;&lt;/strong&gt;
+</span><span class='line'>Could not create Makefile due to some reason, probably lack of necessary
+</span><span class='line'>libraries and/or headers.  Check the mkmf.log file <span class="k">for </span>more details.  You may
+</span><span class='line'>need configuration options.&lt;/p&gt;
 </span><span class='line'>
-</span><span class='line'>&lt;p>RUN apt-get -y install build-essential zlib1g-dev libreadline-dev libssl-dev libcurl4-openssl-dev
-</span><span class='line'>RUN git clone &lt;a href="https://github.com/sstephenson/rbenv.git">https://github.com/sstephenson/rbenv.git&lt;/a> ~/.rbenv
-</span><span class='line'>RUN git clone &lt;a href="https://github.com/sstephenson/ruby-build.git">https://github.com/sstephenson/ruby-build.git&lt;/a> ~/.rbenv/plugins/ruby-build
-</span><span class='line'>RUN echo &lsquo;export PATH=&ldquo;$HOME/.rbenv/bin:$PATH&rdquo;&rsquo; >> ~/.bash_profile
-</span><span class='line'>RUN echo &lsquo;eval &ldquo;$(rbenv init &ndash;)&rdquo;&rsquo; >> ~/.bash_profile
-</span><span class='line'>ENV PATH /.rbenv/bin:/.rbenv/shims:$PATH
-</span><span class='line'>RUN echo PATH=$PATH
-</span><span class='line'>RUN rbenv init &ndash;
-</span><span class='line'>RUN rbenv install 1.9.3-p484 &amp;&amp; rbenv global 1.9.3-p484&lt;/p>
+</span><span class='line'>&lt;p&gt;Provided configuration options:&lt;/p&gt;
 </span><span class='line'>
-</span><span class='line'>&lt;h1>never install a ruby gem docs&lt;/h1>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;--with-opt-dir
+</span><span class='line'>--without-opt-dir
+</span><span class='line'>--with-opt-include
+</span><span class='line'>--without-opt-include<span class="o">=</span><span class="k">${</span><span class="nv">opt</span><span class="p">-dir</span><span class="k">}</span>/include
+</span><span class='line'>--with-opt-lib
+</span><span class='line'>--without-opt-lib<span class="o">=</span><span class="k">${</span><span class="nv">opt</span><span class="p">-dir</span><span class="k">}</span>/lib
+</span><span class='line'>--with-make-prog
+</span><span class='line'>--without-make-prog
+</span><span class='line'>--srcdir<span class="o">=</span>.
+</span><span class='line'>--curdir
+</span><span class='line'>--ruby<span class="o">=</span>/home/hagzag/.rvm/rubies/ruby-2.0.0-p0/bin/ruby
+</span><span class='line'>--with-mysql-config
+</span><span class='line'>--without-mysql-config
+</span><span class='line'>--with-mysql-dir
+</span><span class='line'>--without-mysql-dir
+</span><span class='line'>--with-mysql-include
+</span><span class='line'>--without-mysql-include<span class="o">=</span><span class="k">${</span><span class="nv">mysql</span><span class="p">-dir</span><span class="k">}</span>/include
+</span><span class='line'>--with-mysql-lib
+</span><span class='line'>--without-mysql-lib<span class="o">=</span><span class="k">${</span><span class="nv">mysql</span><span class="p">-dir</span><span class="k">}</span>/
+</span><span class='line'>--with-mysqlclientlib
+</span><span class='line'>--without-mysqlclientlib
+</span><span class='line'>--with-mlib
+</span><span class='line'>--without-mlib
+</span><span class='line'>--with-mysqlclientlib
+</span><span class='line'>--without-mysqlclientlib
+</span><span class='line'>--with-zlib
+</span><span class='line'>--without-zlib
+</span><span class='line'>--with-mysqlclientlib
+</span><span class='line'>--without-mysqlclientlib
+</span><span class='line'>--with-socketlib
+</span><span class='line'>--without-socketlib
+</span><span class='line'>--with-mysqlclientlib
+</span><span class='line'>--without-mysqlclientlib
+</span><span class='line'>--with-nsllib
+</span><span class='line'>--without-nsllib
+</span><span class='line'>--with-mysqlclientlib
+</span><span class='line'>--without-mysqlclientlib
+</span><span class='line'>--with-mygcclib
+</span><span class='line'>--without-mygcclib
+</span><span class='line'>--with-mysqlclientlib
+</span><span class='line'>--without-mysqlclientlib
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
 </span><span class='line'>
-</span><span class='line'>&lt;p>RUN echo &ldquo;gem: &mdash;no-rdoc &mdash;no-ri&rdquo; >> ~/.gemrc&lt;/p>
+</span><span class='line'>&lt;p&gt;Gem files will remain installed in /home/hagzag/.rvm/gems/ruby-2.0.0-p0@TimeTrackerManager/gems/mysql-2.9.1 <span class="k">for </span>inspection.
+</span><span class='line'>Results logged to /home/hagzag/.rvm/gems/ruby-2.0.0-p0@TimeTrackerManager/gems/mysql-2.9.1/ext/mysql_api/gem_make.out&lt;/p&gt;
 </span><span class='line'>
-</span><span class='line'>&lt;h1>Install bundler and the &ldquo;bundle&rdquo; shim&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>RUN gem install bundler &amp;&amp; rbenv rehash&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Checkout the cloud_controller_ng code&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>RUN git clone -b master git://github.com/cloudfoundry/cloud_controller_ng.git /cloud_controller_ng&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>mysql gem requires these&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>RUN apt-get -y install libmysqld-dev libmysqlclient-dev mysql-client&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>pg gem requires this&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>RUN apt-get -y install libpq-dev&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>sqlite gem requires this&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>RUN apt-get -y install libsqlite3-dev&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Optimization: Pre-run bundle install.&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>It may be that some gems are installed that never get cleaned up,&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>but this will make the subsequent CMD runs faster&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>RUN cd /cloud_controller_ng &amp;&amp; bundle install&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Command to run at &ldquo;docker run &hellip;&rdquo;&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>CMD if [ -z $BRANCH ]; then BRANCH=master; fi; \
-</span><span class='line'>cd /cloud_controller_ng \
-</span><span class='line'>&amp;&amp; git checkout $BRANCH \
-</span><span class='line'>&amp;&amp; git pull \
-</span><span class='line'>&amp;&amp; git submodule init &amp;&amp; git submodule update \
-</span><span class='line'>&amp;&amp; bundle install \
-</span><span class='line'>&amp;&amp; bundle exec rspec spec</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How to run apt-get update before Puppet]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/02/05/how-to-run-apt-get-update-before-puppet/"/>
+    <updated>2013-02-05T14:56:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/02/05/how-to-run-apt-get-update-before-puppet</id>
+    <content type="html"><![CDATA[<p>One of the problems I keep running into with Puppet is that the packages I&rsquo;m trying to install are very new and I need to run <code>apt-get update</code> to update the repositories. Because Puppet does not run scripts it gets rather annoying to get the update to run before you install any packages.</p>
 
-<p>The above installs Ruby 1.9.3 at a specific patch-level and any known system-level dependencies that may be needed by gems. If a developer added gems that required additional system dependencies, then those would need to be added to the Dockerfile and the Docker image would need to be rebuilt. This happens rarely, but for this reason it would be desirable to have developers own this Dockerfile and put it alongside the code and check it in with the code. This would then be updated in-step and could trigger a re-build, via Jenkins, of the Docker image.</p>
+<p>I found a lot of solutions around the web but this one seems to work best for me.</p>
 
-<h2>Installed Gems Optimization</h2>
+<script src="https://gist.github.com/cbetta/4714469.js"></script>
 
-<p>Earlier I said that I cannot install code dependencies (gem dependencies), since they may change from one version of the code to the next, but you may have noticed that I have pre-installed them anyway, via &ldquo;bundle install&rdquo;.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby gems are still not safe to use]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/02/02/ruby-gems-are-not-safe-to-use/"/>
+    <updated>2013-02-02T13:24:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/02/02/ruby-gems-are-not-safe-to-use</id>
+    <content type="html"><![CDATA[<p>In the light of the recent <a href="http://rubygems.org">Rubygems.org</a> security compromise the community has been looking at ways to make Rubygems.org and Ruby gems in general more secure. The project is still ongoing and feel free to help them out on #rubygems on Freenode, but here is a highlight of what I think are some of the main issues.</p>
 
-<p>As an optimization, I assume that most of the gems will rarely change. I will still install them just prior to running the tests, via another &ldquo;bundle install&rdquo;, so some will become redundant over time. But since most, if not all, will already be there, the &ldquo;bundle install&rdquo; at test run time will be fast.</p>
+<p>Some of the issues highlighted here are taken from <a href="http://www.youtube.com/watch?v=z-5bO0Q1J9s">Ben Smith&rsquo;s enlightening (but scary) talk at Aloha Ruby Conference</a>.</p>
 
-<p>Luckily, I am using Jenkins to build the Docker image, probably once a night, so any installed gems that become redundant will not be around for long.</p>
+<h2>Disclaimer</h2>
 
-<p>You may think this adds an extra variable in the test run, so this can be skipped for purity at the cost of longer time for each test run.</p>
+<p>I am not a security expert. I am just a Ruby developer and a gem author that is worried about the current state of the Ruby gems ecosystem. I also am worried that the next negative news around Ruby will involve the problems described below.</p>
 
-<h2>Docker With Jenkins</h2>
+<h2>What are Ruby gems and what is Rubygems.org?</h2>
 
-<p>Very little was needed to getting Docker working with Jenkins. I just needed to ensure that the unix user &ldquo;jenkins&rdquo; belonged to the &ldquo;docker&rdquo; group.</p>
+<p>For those not familiar, <a href="http://rubygems.org">Rubygems.org</a> is the most popular repository of &ldquo;gems&rdquo; for the <a href="http://rubylang.org">Ruby language</a>. Gems are libraries made up out of Ruby (and optionally C) code and can be uploaded by anyone who registered for an account. Rubygems.org currently hosts 50,685 gems which have been downloaded 1,259,533,358 times since July 2009. Ruby gems are not only hosted on Rubygems.org, anyone can run their own repository but Rubygems.org is definitely the most used one.</p>
 
-<p>Docker runs as the &ldquo;root&rdquo; user and the &ldquo;docker&rdquo; group. When the docker daemon starts up it creates a unix socket owned by the &ldquo;root&rdquo; user and the &ldquo;docker&rdquo; group. Therefore, the docker command-line client needs to be run via &ldquo;root&rdquo; user or someone in the &ldquo;docker&rdquo; group.
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ ls -l /var/run/docker.sock
-</span><span class='line'>srw-rw&mdash;&mdash; 1 root docker 0 Dec 27 09:45 /var/run/docker.sock&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<h2>Current state</h2>
 
-<p>Simply add the jenkins user to the docker group to be able to create and run Docker images without sudo.</p>
+<p>Some parts of the current infrastructure are worrying.</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>$ sudo usermod -a -G docker jenkins&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<ul>
+<li><p><strong>Hard to tell if gems were changed on the repo.</strong> It took the Rubygems.org volunteers more than 24 hours to verify every gem&rsquo;s checksum against external mirrors.</p></li>
+<li><p><strong>Impossible to tell if gems were uploaded by gem owner.</strong> It is currently very hard to know if a gem was actually uploaded by it&rsquo;s owner. Developer machines can be compromised and a users API credentials for Rubygems.org are kept unencrypted in <code>~/gem/credentials</code>.</p></li>
+<li><p><strong>Gem owner isn&rsquo;t notified of new gem uploads.</strong> When a gem developer&rsquo;s credentials are compromised a new version of the gem can be uploaded without the gem owner ever knowing.</p></li>
+<li><p><strong>Impossible to notify a gem user of compromised gems.</strong> When a gem developer&rsquo;s credentials are compromised it is hard to notify anyone who uses any of the gems published by the developer of the situation.</p></li>
+<li><p><strong>Gems can run code on install.</strong> This is probably the most interesting attack vector in the foreseeable future. It seems this feature was relatively unintentional as it involves tying into the fact that Ruby gems can contain C code. Running code on install will mean that gems can steal the unencrypted Rubygems.org credentials which can then be used to modify the compromised user&rsquo;s gems and spread the malicious code further.</p></li>
+</ul>
 
-<p>Please consider any security concerns with doing this. I am doing this in a trusted environment.</p>
 
-<h2>Local Docker Registry</h2>
+<h2>Proposals for change</h2>
 
-<p>Docker images can get quite large, so it is useful to have a local version of the Docker registry on the same network, or same machine, as you are running Docker. I am going to be running it on the same machine that I am running Jenkins on.</p>
+<ul>
+<li><p><strong>Notify gem owners of newly published gems.</strong> Adding a simple email notification to the gem owner will at least allow for easier detection of compromised gems. Sadly at this point the gem is already compromised and possibly already spread over any mirrors and downloaded by users.</p></li>
+<li><p><strong>Secure developer&rsquo;s Rubygems.org credentials.</strong> This is pretty simple. My ssh key has a passphrase on it and so should my Rubygems.org credentials. Stealing a rubygems.org API key is easy, using one that requires a passphrase a lot harder.</p></li>
+<li><p><strong>Stop running code on gem install.</strong> I totally see the need for having C extensions in a Ruby gems, and those extensions need to be compiled, but we seriously need to find a way to compile C code without allowing for the arbitrary execution of code on install of a gem.</p></li>
+<li><p><strong>Automatically mirror gems and checksums.</strong>  A system involving the automatic mirroring of gems and their checksums to other servers would definitely have made the verification of gems a lot easier in the last few days.</p></li>
+<li><p><strong>Force signing of gems.</strong> Yes, <a href="http://docs.rubygems.org/read/chapter/21">you can sign your gems</a> but almost nobody does (and neither do I). Additionally it&rsquo;s a pain to force the usage of signed keys on the gem user&rsquo;s side, not to mention the futility as most gems aren&rsquo;t signed. Signing is the way to go though and work on this has started. It&rsquo;s a difficult topic though and work is being done to make it as painless as possible for users and developers.</p></li>
+<li><p><strong>Notify gem users of unsigned/insecure gems.</strong> The rubygem binary (together with tools like <a href="http://gembundler.com/">Bundler</a>) should be updated to allow for verification of signatures which will allow it to notify gem users of unsigned or compromised gems.</p></li>
+</ul>
 
-<p>I do not have to worry about the volatility of where I put the repository, as the built Docker images are disposable. As long as I put my Dockerfile somewhere safe (GitHub?), then I can recreate the Docker image anywhere at any time.</p>
 
-<p>Luckily the Docker registry is very simple to setup. It is just a Docker image itself, found on the <a href="http://index.docker.io">http://index.docker.io</a> Docker registry. Yes, things start getting very &ldquo;Inception&rdquo; quickly.
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>$ docker run -p 5000:5000 samalba/docker-registry&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<h2>How can I help?</h2>
 
-<p>Note, if you do not belong to the &ldquo;docker&rdquo; group, you will have to run this as sudo. I added myself to the “docker” group as follows&hellip;
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>$ sudo usermod -a -G docker phil&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<ul>
+<li><strong>Code:</strong> <a href="https://github.com/rubygems">rubygems</a>, <a href="https://github.com/rubygems-trust">rubygems-trust</a>(fork for implementing a signed approach)</li>
+<li><strong>Discussion:</strong> #rubygems and #rubygems-trust on Freenode</li>
+</ul>
 
-<p>The &ldquo;-p 5000:5000&rdquo; specifies that the docker-registry process should listen on the port 5000 internally in the Docker container and Docker should map that to port 5000 on the host machine.</p>
 
-<p>We can check it is running by using the &ldquo;docker ps&rdquo; command&hellip;</p>
+<h2>Did I miss anything?</h2>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ docker ps
-</span><span class='line'>CONTAINER ID   IMAGE                            COMMAND                CREATED             STATUS              PORTS                    NAMES
-</span><span class='line'>81bbfc81f7f9   samalba/docker-registry:latest   /bin/sh -c cd /docke   48 seconds ago      Up&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h2>Jenkins Job: Build The Docker Image</h2>
-
-<p>Creating a Docker image is quite simple. It requires 3 commands: &ldquo;build&rdquo;, &ldquo;tag&rdquo; and &ldquo;push&rdquo;.</p>
-
-<p>&ldquo;docker build&rdquo;, if successful, will output &ldquo;Successfully built &rdquo;, where &ldquo;&rdquo; is a hex string. You can then use this build-id to &ldquo;docker tag&rdquo; the image with a human-readable name. You then use this image name to &ldquo;docker push&rdquo; it to a Docker registry.</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>docker build &lt;directory containing Dockerfile>
-</span><span class='line'>docker tag &lt;built-id> &lt;image-name>
-</span><span class='line'>docker push &lt;registry-address>:&lt;image-name>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Automating this involves extracting the &ldquo;&rdquo; from the &ldquo;docker build&rdquo; output, so I created a small bash script called build_and_push.sh to help with this and manage the whole process of building the Docker image and getting it into the local repository.</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>/bin/env bash&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Builds the docker image and pushs to&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>repository (local by default)&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Usage:&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>build_and_push &lt;directory of Dockerfile> &lt;resultant docker image name>&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>DOCKERFILE_DIRECTORY=$1
-</span><span class='line'>DOCKER_IMAGE_NAME=$2&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>if [ &ldquo;$DOCKER_REPO_SERVER&rdquo; = &ldquo;&rdquo; ]; then
-</span><span class='line'>  DOCKER_REPO_SERVER=localhost:5000
-</span><span class='line'>fi
-</span><span class='line'>DOCKER_REPO_NAME=$DOCKER_REPO_SERVER/$DOCKER_IMAGE_NAME&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Build docker image&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>rm -f docker-built-id
-</span><span class='line'>docker build $DOCKERFILE_DIRECTORY \
-</span><span class='line'>  | perl -pe &lsquo;/Successfully built (\S+)/ &amp;&amp; &lt;code>echo -n $1 &gt; docker-built-id&lt;/code>&rsquo;
-</span><span class='line'>if [ ! -f docker-built-id ]; then
-</span><span class='line'>  echo &ldquo;No docker-built-id file found&rdquo;
-</span><span class='line'>  exit 1
-</span><span class='line'>fi
-</span><span class='line'>DOCKER_BUILD_ID=&lt;code>cat docker-built-id&lt;/code>
-</span><span class='line'>rm -f docker-built-id&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Publish built docker image to repo&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>docker tag $DOCKER_BUILD_ID $DOCKER_REPO_NAME
-</span><span class='line'>docker push $DOCKER_REPO_NAME&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Using this script and my Dockerfile, I now have everything I need to create my first of two Jenkins jobs.</p>
-
-<p>Note, that for simplicity, I have put the Dockerfile and build_and_push.sh script in 2 public gists, which are downloaded at the time of running the Jenkins job.</p>
-
-<p>Name:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cloud_controller_ng rspec docker build&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Build / Execute shell:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>DOCKERFILE_DIRECTORY=docker&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Fetch Dockerfile&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>mkdir -p $DOCKERFILE_DIRECTORY
-</span><span class='line'>wget &lt;a href="https://gist.github.com/philwhln/8195797/raw/Dockerfile">https://gist.github.com/philwhln/8195797/raw/Dockerfile&lt;/a> &mdash;directory-prefix=$DOCKERFILE_DIRECTORY&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Fetch build_and_push script&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>wget &lt;a href="https://gist.github.com/philwhln/8196116/raw/build_and_push.sh">https://gist.github.com/philwhln/8196116/raw/build_and_push.sh&lt;/a>
-</span><span class='line'>chmod +x build_and_push.sh&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Build the Docker image&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>DOCKER_REPO_SERVER=localhost:5000 ./build_and_push.sh $DOCKERFILE_DIRECTORY cloud_controller_ng_rspec</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Build Triggers / Build periodically / Schedule :
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>15 3 * * *</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>This will be run every day at 3:15am, so the next day tests will be run with a fresh docker image.</p>
-
-<h2>Jenkins Job: Run The Docker Image</h2>
-
-<p>Now that we have a Docker image primed and ready to run our Jenkins job, we just need to run it.</p>
-
-<p>Name:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cloud_controller_ng rspec docker run&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Build / Execute shell:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>docker run localhost:5000/cloud_controller_ng_rspec&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div>
-The command is quite simple. &ldquo;docker run&rdquo; will checkout the latest &ldquo;cloudcontrollerng_rspec&rdquo; Docker image from our local Docker repository and run it. At this point the &ldquo;CMD&rdquo;, found in the Dockerfile, will be run.</p>
-
-<p>To recap, that line looks like this&hellip;
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Command to run at &ldquo;docker run &hellip;&rdquo;&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>CMD if [ -z $BRANCH ]; then BRANCH=master; fi; \&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>cd /cloud_controller_ng \
-</span><span class='line'>&amp;&amp; git checkout $BRANCH \
-</span><span class='line'>&amp;&amp; git pull \
-</span><span class='line'>&amp;&amp; git submodule init &amp;&amp; git submodule update \
-</span><span class='line'>&amp;&amp; bundle install \
-</span><span class='line'>&amp;&amp; bundle exec rspec spec
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div>
-We checkout the appropriate $BRANCH of cloudcontrollerng.git, if specified (left to the reader to add in Jenkins). It then does a &ldquo;git pull&rdquo; to ensure it has the latest code, then initializes the git submodules, which our project does have.</p>
-
-<p>Then we see the Ruby specific commands, &ldquo;bundle install&rdquo; and finally &ldquo;bundle exec rspec spec&rdquo; to run our test suite.</p>
-
-<p>If you are interested, here is roughly what you will see in the console output of the Jenkins job.</p>
-
-<p>And finally we see&hellip;
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Finished in 121 minutes 1 second
-</span><span class='line'>7638 examples, 62 failures, 3 pending&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div>
-&ldquo;docker run&rdquo; returns exit code of 1 (failure), since several tests failed. This causes Jenkins to report to use that the tests are failing.</p>
-
-<p>We can see that this took just over 2 hours to run. Not something that most developers would have much patience for.</p>
-
-<h2>Conclusion</h2>
-
-<p>Since I am using a Dockerfile to specify my test environment, I can be sure that if you follow these steps you will be running the same test suite in an identical environment. It also means that if I hit a problem, I (or anyone else) can replicate it, because I have specified the full stack of my environment. In minutes you can be running it too.</p>
-
-<p>This is a big win for DevOps. Developers can create an initial environment in a Dockerfile, check it into git and the Operations team can then collaborate on it. The Operations team may even send a pull request to the Developers that says, &ldquo;Hey, our production environment does not look like that. Try this instead&hellip;&rdquo;. The updated Dockerfile is then checked out by Jenkins, which builds the new test environment and subsequent test runs are run on a more production-like environment.</p>
+<p>Please let me know and I&rsquo;ll add it to the list.</p>
 ]]></content>
   </entry>
   

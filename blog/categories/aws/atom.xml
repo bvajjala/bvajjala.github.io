@@ -4,7 +4,7 @@
   <title><![CDATA[Category: AWS | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/aws/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-17T10:29:53-04:00</updated>
+  <updated>2014-04-17T12:28:04-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -12,647 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/"/>
-    <updated>2014-03-25T11:23:17-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4</id>
-    <content type="html"><![CDATA[<h3>Autoscaling for LAMP on AWS | Choosing an instance type: Part 4</h3>
-
-<p>As mentioned in <a href="../autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/index.html" title="Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 1">part 1 of this
-series</a> (Creating
-a LAMP Stack AMI), a common concern among most customers is to choose
-the right instance type.</p>
-
-<p>It is important to do the capacity planning. Before you choose instance
-type ask yourself the following three questions:</p>
-
-<ol>
-<li><p>Is the application Memory intensive CPU intensive or Network
-intensive? For this question to be meaningful put a monitoring
-system in place and collect the data for a few weeks of real usage.</p></li>
-<li><p>What is the expected request count at peak hours?</p></li>
-<li><p>What is the minimum number of instances you want to run in
-non-business hours?</p></li>
-</ol>
-
-
-<p><a href="https://docs.google.com/a/flux7.com/spreadsheet/ccc?key=0AkmUqlScRGp8dGJTNndjY0VjTURid3FTV2dNMEljOUE#gid=0">https://docs.google.com/a/flux7.com/spreadsheet/ccc?key=0AkmUqlScRGp8dGJTNndjY0VjTURid3FTV2dNMEljOUE#gid=0</a></p>
-
-<p>Make sure to run at least 2 servers for high availability.  During times
-of fewer loads, choose two m1.small instances for non-business hours
-like weekends. This would optimize cost instead of using 2 large
-instances for the same request.</p>
-
-<p>Different instance types have different capacity levels. If the
-application is memory intensive choose and use m1. class. If the
-application is CPU intensive then choose and use c1. class.</p>
-
-<p>Network bandwidth varies between different instance types. If the
-application requires more bandwidth (ex: video streaming applications)
-choose higher instance types irrespective of Memory or CPU to get better
-bandwidth.</p>
-
-<p>To know more about each instance types visit the following link.</p>
-
-<p><a href="http://aws.amazon.com/ec2/instance-types/">http://aws.amazon.com/ec2/instance-types/</a></p>
-
-<p>Start with micro/small instance for any workload. Do the Load run
-starting with the minimum number of users and increase the load
-gradually. Also scale the servers vertically or horizontally gradually
-until it reaches the maximum capacity. This would give a clearer picture
-of the number of instances required to serve the maximum or minimum
-load. Closely watch the CloudWatch graphs to understand usage statistics
-better.</p>
-
-<p>An interesting question at this juncture could be as follows: Can 4
-m1.medium instances be preferred to 2 large instances? Yes of course.
-However, network bandwidth varies from one instance type to other. Given
-that, it is wise to choose 2 large instances instead of 4 m1.medium
-instances as it is easier to handle lesser number of instances.</p>
-
-<p>(Note: DB server health needs to be checked when a load test is run.
-Increasing the app servers count may not improve the performance all the
-time. If DB queries are the bottleneck, chances are high for a bad
-performance. Consider scaling up the DB server capacity as well.)</p>
-
-<p>Based on the instance type identified from the load run, tune the PHP
-memory settings and Apache prefork MPM client connections.</p>
-
-<p>Check out the following links to know more about fine tuning Apache and
-PHP</p>
-
-<p><a href="http://www.hosting.com/support/linux/tuning-the-apache-prefork-mpm/">http://www.hosting.com/support/linux/tuning-the-apache-prefork-mpm/</a></p>
-
-<p><a href="http://icreatestuff.co.uk/blog/article/apache-performance-tuning">http://icreatestuff.co.uk/blog/article/apache-performance-tuning</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/"/>
-    <updated>2014-03-25T11:23:14-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3</id>
-    <content type="html"><![CDATA[<h3>Autoscaling for LAMP on AWS | Load Test the Environment: Part 3</h3>
-
-<p>In part 3 of the Autoscaling for LAMP on AWS series,</p>
-
-<p>After setting up your application autoscaling, it’s important to load
-run the application in order to understand the minimum and maximum
-number of instances required for each application.</p>
-
-<p><a href="../autoscaling-for-lamp-on-aws-setting-up-austoscaling-groups-part-2/index.html" title="Autoscaling for LAMP on AWS | Setting Up Austoscaling Groups : Part 2">Read Part 2 to learn more about setting up autoscaling
-groups.</a></p>
-
-<p>First, fire the load run. For this article we’ve used HP LoadRunner
-because it provides more detailed results than others, but there are
-also other load runner tools to choose from. Be sure to run the load
-from multiple IP addresses or else the ELB may not distribute it equally
-across all instances. HP LoadRunner helps you use multiple nodes in
-order to generate the load.</p>
-
-<p>Update the Auto Scaling Group’s minimum and maximum instance counts.\</p>
-
-<p><img src="https://lh5.googleusercontent.com/nXhTs4kEqjzxfAy8aGdgqLvC_yKninSiyM3pClGWhemLXPWFjr_6Y5NU8xnf2j7twuJgVx2TO4tvs8fjm2K1c8y6C23NN8lacgef-JEH4621AXZITbYAAKRF4w" alt="" /></p>
-
-<p>For the this article, we’ve set the minimum and maximum instance counts
-at 2 and 8 respectively.</p>
-
-<p>Now change your Auto Scaling Policies. A scaling policy specifies
-whether to scale the auto scaling group up or down, and by how much.
-Here we’ve chosen 2 instances for Scale Up and Scale Down policies.
-These policies automatically increase or decrease the instances
-according to your defined conditions in order to maintain performance
-and minimize cost.</p>
-
-<p><img src="https://lh3.googleusercontent.com/3G9JdQa1GNjF_2fWOrZ10y-cpc3m8_6gtTH2Y046OK3LoiaMYGx0Nm_N4LsBcBhhRhA3cxr7D1sMlCv90ewW9rZ8QCr8amOHqivVcZZmML7Bx-XMIeM7wdN1Nw" alt="" /></p>
-
-<p>Next, <strong>increase the load</strong> gradually with LoadRunner. Once the CPU
-reaches 75% of the instances, Autoscaling will trigger the scale up
-policy to launch 2 more instances.</p>
-
-<p>Now <strong>decrease the load</strong> gradually and the CPU instances load should
-come down to less than 45%. Autoscaling will then trigger the scale down
-policy and delete the additional instances that were launched.</p>
-
-<p>Consider a scenario in which a 2,000-concurrent-request count is reached
-during peak hours and 500 users are reached during non-peak hours. For
-best load run results, try the following.</p>
-
-<p>Capture load test results and CloudWatch metrics for each of the
-following scenarios:</p>
-
-<p>​1. Start the load test with 500 users. Set the minimum instance count
-to 2 if you choose large or medium types, and set the maximum instance
-count to 4.</p>
-
-<p>​2. Increase the load to 1,000 users. Set the minimum and maximum
-instance counts to 2 and 6 respectively.</p>
-
-<p>​3. Increase the load to 2,000 users. Set the minimum and maximum
-instance counts to 4 and 10 respectively.</p>
-
-<p>​4. Increase the load to 3,000 users. Set the minimum and maximum
-instance counts to 6 and 12 respectively.</p>
-
-<p>Analyze the results for each scenario and note which gives better
-throughput and response times. Also check the DB metrics.</p>
-
-<p>Now it will be easy to choose the best instance type and max/min
-instance counts..</p>
-
-<p><strong>Shutdown Autoscaling</strong></p>
-
-<p>Update the autoscale group to resize the instance count to 0. This will
-terminate all instances launched within the lamp-asg autoscale group.</p>
-
-<p><em>Watch out for the final part of this series tomorrow on how to choose
-an instance type. </em></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/"/>
-    <updated>2014-03-25T11:23:10-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2</id>
-    <content type="html"><![CDATA[<h3>Autoscaling for LAMP on AWS | Setting Up Austoscaling Groups : Part 2</h3>
-
-<p>In part 2 of the Autoscaling LAMP in AWS series, let’s discuss how to
-create autoscaling launch configuration, autoscaling groups and how to
-verify the setup autoscaling.</p>
-
-<h2><strong>Autoscale Implementation</strong> </h2>
-
-<p>Autoscale configuration is now available in console. AWS command lines
-are no longer needed for implementation.</p>
-
-<p>Complete the following steps as detailed in <a href="../autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/index.html" title="Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 1">Part
-1</a>of
-this series in order to set up autoscaling :</p>
-
-<ul>
-<li><p>Configure AMI to launch the Instances.</p></li>
-<li><p>Configure Instance type to launch the instances. (Example:
-m1.small,m1.large).</p></li>
-<li><p>Configure KeyPair Name to access the machines.</p></li>
-<li><p>Configure Security Group to allow the Instances to communicate with
-other components.</p></li>
-<li><p>Keep the ELB name readily available.</p></li>
-<li><p>Keep your availability zones ready. (Example: us-east-1a,
-us-east-1b).</p></li>
-<li><p>Set the minimum number of instances for Maximum and Desired
-Capacity. (Start with zero).</p></li>
-<li><p>Set Health Check Type. (ELB).</p></li>
-<li><p>Set Region.</p></li>
-<li><p>Change Capacity Cooldown time.</p></li>
-<li><p>Adjust for scale up and scale down.</p></li>
-</ul>
-
-
-<h2><strong>1. Create the Autoscaling Launch Config</strong> </h2>
-
-<p>Log in to the AWS console and navigate to Services-> EC2-> Launch
-Configuration.</p>
-
-<p><img src="https://lh5.googleusercontent.com/-E7LhgP_GnMeKXQHtHPieeiqZBbrD3TauY5FHvA90y2hvnWMoncO5gEJASGmYd_v1HjDIzIr949-gjX7N2DlCtzCyO5iwZnUd481qEyiHKVkxhH40xDL3xiTzQ" alt="" /></p>
-
-<p>Click on “Create Autoscaling Group”.\</p>
-
-<p><img src="https://lh6.googleusercontent.com/8MJM4YJXpOnamUnIZdfPkHZDJJ_iyVXg1qj373NTmPKZbihu4C2nqYcm2zvCacxycBN1OjzxbpANVSI7W4t7a8LYo15FbooKxx0UlXXkpJwuWxSNX7ZfSYm-PA" alt="" /></p>
-
-<p>On the next screen, click on “Create Launch Configuration”.\</p>
-
-<p><img src="https://lh6.googleusercontent.com/8h6Tn5ncvwmpG6qqI5vqulA_qoG6ijs4wtOOWA6nDwuCUCF1_OpD1VSWhlJDimgNNyhp_dmEsVx4DNJkls043s_CbBJ3HK0VUsSUphYjNeM3Qnlx1clgXZ5jAA" alt="" /></p>
-
-<p>Create a new launch configuration. The name of the launch configuration
-must be unique within the scope of the client’s AWS account.</p>
-
-<p><strong>Choose AMI:</strong> Go to My AMIs and select the LAMP AMI created.\</p>
-
-<p><img src="https://lh4.googleusercontent.com/SJXQcn4aWSm83eKHuKKZHJomaUvLwJShg8w5M1Q6wEXXNiUv61JNoiaKMYlaacP4TYT8kTvJju2vDKK23RReWFLgLxRGb68xaSuMbHzjQ0H74evkNtINH_T_xQ" alt="" /></p>
-
-<p><strong>Choose Instance Type:</strong> We’ve selected a micro instance for our
-example.\</p>
-
-<p><img src="https://lh3.googleusercontent.com/e7lh5P4VR8i9qJ5QgxUK1PBN6in9HQNpU0cjznY6Giemq8RZrF2wBEfmlL_cCS_cDUBKKUHkmU__YC6YPiNncXXhbXMq9BRE3tLSbDewJR8MZ8upoWi0OwIp2w" alt="" /></p>
-
-<p><strong>Configure Details:</strong> Give a name for the Launch Configuration\</p>
-
-<p><img src="https://lh4.googleusercontent.com/kP646CGpnJLDO-44macZIU6A4FMSeLpu8kSq6hpFIstb_heGHWMCRwtn5EpOw8YZdvCANbd-5Pur5SNw_OaWg7432_WdQ1Rbi9QUsR6FMUIo71Y6REwKA5wJ2w" alt="" /></p>
-
-<p><strong>Add Storage:</strong> Keep the values on default.</p>
-
-<p><strong>Configure the Security Group:</strong>Select the Security group to launch the
-autoscaling instances. Review the details and create the Launch
-Configuration.\</p>
-
-<p><img src="https://lh5.googleusercontent.com/rd0tjYvJyMzG0irkmsj9LZSXrxigf93tfOhOLUtcrQ-c1Pk2XXsOF7ksRbu4BY_6PvPfMWqC9bF4NZcy1aNLBOfUd91vjV9shjfA9IRAA5MNSJXb6sPuVa8gHA" alt="" /></p>
-
-<p>In the next window, select “KeyPair” to access the instances.</p>
-
-<h2><strong>2. Create the Auto Scaling Group</strong> </h2>
-
-<p>Create a new Auto Scaling group with a specified name and other
-attributes. When you make the creation request, the Auto Scaling group
-is ready for use in other calls.</p>
-
-<p>Navigate to EC2-> Auto Scaling Groups-> Create Autoscaling Group.</p>
-
-<p>Select the existing Launch Configuration (lamp-launch-1) and go to “Next
-Step”.\</p>
-
-<p><img src="https://lh4.googleusercontent.com/N9-2P0wrXtd1IKWO58H1i7s6MRx0w_toDG5wjmtvsw0v5wUamXz6oIC88g-YYqnP5H9OTobjDc_X9Hf1shLrn_5tTO4HLuHHUomu8qE8OYv3oLEDp02urv0U4g" alt="" /></p>
-
-<p><strong>Configure Autoscaling Group Details:</strong></p>
-
-<p>Give a name to the Auto Scaling Group.</p>
-
-<p>Group Size: Start with zero instances in order to avoid the immediate
-creation of instances. The exact number of required instances can be set
-after these steps are completed, but just set cost optimization values
-to 0 for now.</p>
-
-<p><strong>Availability Zones:</strong></p>
-
-<p>Choose 2 availability zones in order to maintain high availability.</p>
-
-<p>In “Advanced Details” choose the values as shown below.\</p>
-
-<p><img src="https://lh3.googleusercontent.com/YL14QA7srKzFlnQLXuXtIxo0wrB51aDQuOj8fR5YXDYErg2usKCEaKJ57fKN6UahjFP0KFOTkr_y8odlPVWqDh2z3OMwy_iUCRJ5ubiQ4EsOTTNSLKbz8IU2UQ" alt="" /></p>
-
-<p><strong>Configure Scaling Policies:</strong> Keep minimum and maximum instances count
-to zero.</p>
-
-<p><strong>Increase Group Size:</strong> Keep the name at default.</p>
-
-<p><strong>Execute Policy:</strong> Click on “Add new alarm”.\</p>
-
-<p><img src="https://lh3.googleusercontent.com/ysaxf1OR2wazrUt1lvdkYI-YRoVdijKoJD4m6DDlGOHld-LO_mtz24-kOmvyTHybJPIEK_VOKV_UC5ybIwwt9jKtJhZ_3N3J1B_4e5P1iAyIsynEpODx6S4gKQ" alt="" /></p>
-
-<p>A popup window will appear for creating a “Cloud Watch Alarm”.\</p>
-
-<p><img src="https://lh3.googleusercontent.com/eqvhUKlpyNKv7vWQiAI95g5oUQxp9KpqQJ0WCEJjFNfCfn-PIBtaYEPf7k8T2BrlCxN8EoF6utdR5c67tMMk-K0CW-upVZIKR1jOTumOoiwic5fEvZndn8_aEA" alt="" /></p>
-
-<p>For this example, we chose CPU Load average as the autoscaling trigger.
-Whenever the average CPU load of app servers goes beyond 75% for 5
-minutes, autoscaling will trigger the auto-scale-up-policy to launch the
-1 instance and attach to load balancer. The application here is CPU
-intensive and requires more computing power, so we chose the CPU Load
-Average as the autoscale triggering event.</p>
-
-<p>You can choose any Cloudwatch metric to trigger the autoscaling policy.
-For example, Disk read/writes, Network In/Out, ELB request count, ELB
-latency, etc.</p>
-
-<p><strong>Decrease Group size:</strong>\</p>
-
-<p><img src="https://lh3.googleusercontent.com/wxwMuiWm-72K4zGTx-oT56LdXvjhQXNQZPLg_HXPMb89ey5CEtmOV76euYKqLwbYKm88kOAlmSrW6xfRImjIefcQ7LVFOcUIRoyZ5t3xF_JffVy7R96Ypk8lMg" alt="" /></p>
-
-<p><strong>Configure Notifications:</strong> If you’ve already created notifications,
-select one to receive the notifications of Autoscaling events, else skip
-this step for now.</p>
-
-<p>Review the details and click on “Create Autoscaling Group”.</p>
-
-<p>Auto Scaling evaluates the health of each Amazon EC2 instance in the
-Auto Scaling Group and automatically replaces unhealthy instances in
-order to keep the Auto Scaling Group size fixed. That ensures that the
-application is getting the expected compute capacity.</p>
-
-<p>In this example, we’ve chosen to scale down the environment when the
-average CPU load lowers to 40% for 5 minutes.</p>
-
-<h2><strong>Verify Autoscaling</strong> </h2>
-
-<p>After completing the previous steps, it’s time to test autoscaling.</p>
-
-<p>​1. Update the Autoscaling group minimum and maximum instances count to
-2 and 4. You can change these later to fit your specific requirements.</p>
-
-<p>Navigate to EC2-> Auto Scaling Group- > lamp-asg-1.</p>
-
-<p>Right click on “lamp-asg-1” and select “Edit”.</p>
-
-<p>In the “Details” tab, update Desired Min and Max values to 1, and then
-save.\</p>
-
-<p><img src="https://lh5.googleusercontent.com/hxxgnuVeJGgoMHPJvsr5oTeghIkuhJv4_hX0U1YtdjpO57N84IN4KmuSk4cO9cYeTH7JiSD9EMVAXCwS8z5v0-lZ3Gf4jW67oGNflBhgr10tiUVHbn9lpjE8oQ" alt="" /></p>
-
-<p>Now, navigate to Services->EC2->Instances.</p>
-
-<p>You can see that a new instance has been launched and attached to ELB.\</p>
-
-<p><img src="https://lh3.googleusercontent.com/GPJHyEzUrO4LtbxCSzT6rHiz_RLPIIkmeIS--__XDuzFiW2dLSZwZhSwkvHG2KvW5CJ6Kx8DpvjEXo8Xgbw7Q8HBa6cfNUu2Mf6XAM6jpx-8LVKxEUMNeXCVHA" alt="" /></p>
-
-<p>\</p>
-
-<p><img src="https://lh3.googleusercontent.com/9_cNWARusMs6T9rypbPZWakid_pmJpMwBWLXuPhwaRlpiXLU5XFjQDGzBAYbPTtjSiupY8tELI5s8ROwgZtKCvfKhxVsagLXYoKCl_MnWqvnqrOGAoqj-wHGOg" alt="" /></p>
-
-<p>If your health check is configured properly, the instance status will
-turn into “In Service” rather quickly. Always have a minimum of 2
-instances running in order to maintain high availability.</p>
-
-<p>​2. How to Update Launch Configuration: It’s not possible to update the
-existing Launch configuration, so you’ll have to create a new Launch
-configuration and edit the Autoscaling Group to use that new
-configuration.</p>
-
-<p><img src="https://lh5.googleusercontent.com/_bDZv08DtcohHQkG5s0e2_0rd3VnkzImL-87T5wfku5cmvL69tgMhMwKc71Vo-zgVbVImT-HaD0f_fo7dcv5F0JmkbXZGpllnhldKILcPVdgYR7nKZ0qaRniwQ" alt="" /></p>
-
-<p>Now, start the application load run and find out the minimum and maximum
-instances required for your application to handle the load. Then update
-the AutoScaling Group to meet your needs.</p>
-
-<p>Watch out for  Part 3 of this series to understand <a href="../autoscaling-for-lamp-on-aws-load-test-the-environment-part-3/index.html" title="Autoscaling for LAMP on AWS | Load Test the Environment: Part 3">how to load run an
-application</a>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/"/>
-    <updated>2014-03-25T11:23:04-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1</id>
-    <content type="html"><![CDATA[<h3>Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 1</h3>
-
-<p>This is part 1 of the Autoscaling for LAMP in AWS series. The
-step-by-step guide would walk you through</p>
-
-<p><a href="index.html" title="Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 1">Part 1: Creating a LAMP Stack
-AMI</a></p>
-
-<p><a href="../autoscaling-for-lamp-on-aws-setting-up-austoscaling-groups-part-2/index.html" title="Autoscaling for LAMP on AWS | Setting Up Austoscaling Groups : Part 2">Part 2: Setting up Autoscaling
-Groups. </a></p>
-
-<p><a href="../autoscaling-for-lamp-on-aws-load-test-the-environment-part-3/index.html" title="Autoscaling for LAMP on AWS | Load Test the Environment: Part 3">Part 3: Load Test the
-environment</a></p>
-
-<p><a href="../autoscaling-for-lamp-on-aws-choosing-an-instance-type-part-4/index.html" title="Autoscaling for LAMP on AWS | Choosing an instance type: Part 4">Part 4: Choose instance
-type</a></p>
-
-<p>First, let’s discuss how to prepare the AMI, create an ELB and RDS,
-verify the application and terminate the instance.</p>
-
-<h2><strong>Prepare AMI</strong> </h2>
-
-<p>In Autoscaling, create an AMI with all required packages installed. This
-AMI will be used as a template to launch instances in autoscaling. For
-LAMP Stack, you should install and fine tune the latest versions of
-Apache and PHP.</p>
-
-<p>​1. Log in to AWS console.</p>
-
-<p>​2. Navigate to EC2 services. Make sure to switch to the desired region
-before launching instances.</p>
-
-<p>​3. Click on “Launch instance”.</p>
-
-<p><img src="https://lh4.googleusercontent.com/hRoQeC1-aimLHiAt0ptacAxdMqlX8w0N19bEmMo8vm31e0n3-PRzWJLd6gg5TUn2FgokMj6n9y72S6gE_XKS0jNx9tHGv5kqD9TKz5qM0vYhu9TIF5FBAG6C-Q" alt="" /></p>
-
-<p>​4. Select your favorite <strong>Linux AMI</strong> in Classic Wizard.</p>
-
-<p><img src="https://lh6.googleusercontent.com/aWfL4g9PfAqaFTg3uI0Ntv52hSxUyPCNKN5Sf8Y4R5zYyjGOmHeA2zi6pGk59F9NiNJa16n27rSk111xlUJUt24oCLPdQfBZMr0k5yhCZpQ6B_ibxzU9hQRKeA" alt="" /></p>
-
-<p>For this article we used CentOS 6.3 from the community AMIs, but
-OpenSuse and Ubuntu are also good choices.</p>
-
-<p>​5. Launch a <strong>micro</strong> instance from the selected AMI with the desired
-<strong>Security group</strong> and <strong>Key pair</strong>. Remember, this instance is only for
-creating an AMI and will be terminated once <strong>LAMP Stack</strong> is installed
-on it.</p>
-
-<p><img src="https://lh3.googleusercontent.com/_U5YNCpt3CelshRRvlBG8CLKp8tYd64u1lwFWqqZcN48v3UjL9GBOfHoxL3EXJ9pXOk3tNz0Ig049xbwJa4gIsNvr4Z869PFqwkSfBDkJ8GK1PU9olC7ktBn7w" alt="" /></p>
-
-<p>​6. Now log in to the instance and perform the <strong>PHP</strong> and Apache
-installation steps. For this article, we used <strong>Cygwin</strong> to connect the
-<strong>Linux</strong> servers. Make sure you open port 22 to allow <strong>SSH</strong> access
-using security groups.</p>
-
-<p><img src="https://lh4.googleusercontent.com/Al62wHOtPAxqNRUh_kr47FmQqMSycjLKMJ9zSz47OfIWUVDENcSi6ypdoBaiABQ9Rlr33kid0Be8a-1KuyLDYhFbea4Fw4rdJKxGSoDfbQZP6iClUbDTnUmFGA" alt="" /></p>
-
-<p>We modified the “default” security group to open the SSH port. We
-recommend that you not completely open port 22 for SSH, but rather allow
-incoming requests to SSH from your specific IP address. In our case the
-IP address was 49.206.166.12.</p>
-
-<p><code>
-$ ssh –I LAMP_AMI.pem root@ec2-54-254-37-17.ap-southeast-1.compute.amazonaws.commailto:root@ec2-54-254-37-17.ap-southeast-1.compute.amazonaws.com
-mailto:root@ec2-54-254-37-17.ap-southeast-1.compute.amazonaws.com
-$ yum install httpd.x86_64 httpd-devel.x86_64 mod_ssl.x86_64 php.x86_64 php-common.x86_64 php-devel.x86_64 php-gd.x86_64 php-mbstring.x86_64 php-mysql.x86_64 php-pdo.x86_64 php-soap.x86_64 php-xml.x86_64 php-xmlrpc.x86_64 php-pecl-apc-devel.x86_64 php-pecl-memcache.x86_64 -y
-</code></p>
-
-<p>Once you’ve successfully executed these commands, Apache and PHP will
-install. Note that the commands we’ve used are specific to CentOS 6.3.
-Choosing a different OS or a different CentOS may cause these commands
-to fail to execute. T<strong>he php modules listed above are required for
-WordPress setup and they may vary depending upon your requirements.</strong></p>
-
-<p>Now update the PHP and Apache configurations for your Instance types and
-for the expected load on application. We used t1.Micro for this article.
-Keep in mind that a production system’s instance types need to be chosen
-very carefully, and that the software must be tuned to those particular
-types.</p>
-
-<p><strong><em>Read more on selecting instance types in <a href="../autoscaling-for-lamp-on-aws-choosing-an-instance-type-part-4/index.html" title="Autoscaling for LAMP on AWS | Choosing an instance type: Part 4">Part 4 of this
-series.</a></em></strong></p>
-
-<p>Install Postfix to send email notification for the script used in the
-next step.</p>
-
-<p><code>
-$ yum install postfix  
-$ chkconfig –level 2345 postfix on
-$ chkconfig –level 2345 httpd off
-</code></p>
-
-<p>​7. Now all of the required packages are installed and fine-tuned.</p>
-
-<p>So, how does one deploy the code into AMI?</p>
-
-<p>The method described here automates the deployment. One cron job will be
-included in AMI, and it will download and deploy the latest available S3
-code. That means that code updates will deploy to S3 every time, but not
-to instances. Every time a new instance is up, the instance will
-automatically download updates from the S3 bucket and deploy them.</p>
-
-<p>What follows is a script scheduled for machine boot-up. It requires
-updating based on specific user configurations and file paths.</p>
-
-<p>```</p>
-
-<h1>!/bin/bash</h1>
-
-<p>S3_URL= “<a href="http://s3-ap-southeast-1.amazonaws.com/lamp-deploy/wordpress.zip%E2%80%9D">http://s3-ap-southeast-1.amazonaws.com/lamp-deploy/wordpress.zip%E2%80%9D</a> #Change the following paths as per your requirement.
-DOCUMENT_ROOT=</var/www/html>
-TEMP_LOC=</tmp>
-APACHE_RESTART=<code>/etc/init.d/httpd restart</code></p>
-
-<h1>Get the instance ID from AWS metadata.</h1>
-
-<p>INSTANCE_ID=<code>curl http://169.254.169.254/latest/meta-data/instance-id</code></p>
-
-<h3>download the latest code from s3 and deploy</h3>
-
-<p>cd /tmp
-wget $S3_URL
-if [ $? –ne 0 ]
-then
-pkill -9 httpd
-mail –s “Code Download Failed from S3##$INSTANCE_ID”  <a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#116;&#x65;&#x73;&#116;&#x40;&#116;&#x65;&#x73;&#x74;&#46;&#99;&#x6f;&#x6d;">&#x74;&#x65;&#115;&#x74;&#64;&#x74;&#x65;&#x73;&#x74;&#46;&#x63;&#111;&#x6d;</a> #Provide valid email ID here”
-exit 1
-fi
-unzip wordpress.zip
-rm –rf  &lt;/var/www/html/<em>>
-cp –r wordpress/</em> $DOCUMENT_ROOT
-chmod 775 –R $DOCUMENT_ROOT
-chown –R apache.root $DOCUMENT_ROOT
-$APACHE_RESTART
-if [ $? –ne 0 ]
-then
-pkill -9 httpd
-mail –s “Apache startup Failed- $INSTANCE_ID”  <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#116;&#101;&#115;&#x74;&#x40;&#x74;&#101;&#115;&#x74;&#x2e;&#x63;&#111;&#109;">&#x74;&#101;&#115;&#x74;&#x40;&#x74;&#101;&#x73;&#x74;&#46;&#99;&#x6f;&#x6d;</a> #Provide valid email ID here”
-exit 1
-fi</p>
-
-<h2>script ends here</h2>
-
-<p>```</p>
-
-<p>Put this bash script into a file in /opt/ directory:</p>
-
-<p><code>
-$vim /opt/auto-deploy.sh
-$chmod +x /opt/auto-deploy.sh
-</code></p>
-
-<p>Open the Crontab and add this script to start at machine boot up:</p>
-
-<p><code>
-$ crontab –e
-</code></p>
-
-<p>Add the following script:</p>
-
-<p><img src="https://lh4.googleusercontent.com/ZiqV0hI1ocrhmDqqLubt01OQdBcmJZqWhNciW6sbPfEz2Iwr99cxoNK4U5actZ6Vqdqat8asF-IwxjJQrVKiutlBZq6A74t9sp1wA0ezqCDbSR09YOjTQrJblX_8VShJfMA" alt="" /></p>
-
-<p>Save your changes and deploy the code by running the script to test
-whether or not the application is working as expected. This step is
-mandatory before creating an AMI. If you find any issues with the code
-or PHP/Apache settings, be sure to fix them before creating an AMI.</p>
-
-<p>Bundle and Upload the Code to S3</p>
-
-<ol>
-<li><p>Update the code with RDS DB configuration parameters.</p></li>
-<li><p>Now zip the working copy of the code and upload it to the S3
-location. The S3 location should match the location in the script,
-and also match the zip file name.</p></li>
-<li><p>Upload the zip file to the S3 bucket that matches the script. You
-can upload the zip file by using the console or any third party tool
-like Cloudberry.</p></li>
-<li><p>Grant read permissions to download the code from S3 to app servers.</p></li>
-</ol>
-
-
-<h2><strong>Create the ELB</strong> </h2>
-
-<p>Go to Services-> EC2 &ndash;> Load Balancers and select “<strong>Create Load
-Balancer</strong>”.</p>
-
-<p><img src="https://lh5.googleusercontent.com/w-ZRahemXgWVTJcIwpwJYfdXgp7kcmUs23IYzjgdEpwUuYiCkoLJg2dnLs0-5fe8U0UFG1_3qyaNggPesGGHGUq1PwQH5MMo-QowBXfuhGSNthk65DDg5Oc1OA" alt="" /></p>
-
-<p><img src="https://lh5.googleusercontent.com/JU0AmjRaIgFbWa8mdGz2qTlbYTU7wKWiOa93uUVuu-RDO5PPfEVhV1ggUBZ95rr5_z637SffLdwYgHb5srqZlj9GfcL-or3aG3xWsqb9Sd4kJ24LKZ8_84d_YA" alt="" /></p>
-
-<p>Keep Healthy/Unhealthy threshold limits to 4 because that’s proven to be
-an ideal value. Also make sure index.html is available in the Document
-root. ELB looks for the index.html as a health check and removes the
-instance from the load balancer if it doesn’t get the 200 response.
-Create the required security groups and key pair for the autoscaling
-instances.</p>
-
-<h2><strong>Create RDS</strong> </h2>
-
-<p>​1. Go to Services &ndash;> RDS and select the <strong>MySQL</strong> engine.</p>
-
-<p><img src="https://lh5.googleusercontent.com/dgMcoX4gkePTWwEYT8soz9RdvW3iMPmmlVlnkgczHmwIDpfmh39BhRUmWRBEdbR0f6FMJi3LtaSW6z_sRhBmk_WYLfls0bv8VQ8r9PFPl52WOX0B12-vCLKBEQ" alt="" /></p>
-
-<p>​2. Select instance types, provide the details for all required fields
-and launch the instance. The RDS configuration details chosen for this
-article can be seen below.</p>
-
-<p>How should you select the DB instance type? There are many monitoring
-tools available for monitoring MySQL performance. If AWS RDS is used for
-MySQL, then it’s important to consider CloudWatch metrics. Since it’s
-not possible to install agents in RDS, you can rely upon CloudWatch
-metrics.</p>
-
-<p>By default, CloudWatch contains all required RDS monitoring metrics. Be
-sure to monitor the memory, CPU, DB connections and network I/O before
-you scale up the server.</p>
-
-<p>Ideally, m1.small RDS can handle up to 75 concurrent connections easily.
-but that depends upon the DB queries and the code.</p>
-
-<p>​3. After launching RDS, open the 3306 port to the app servers group.</p>
-
-<p>​4. Import the DB and try connecting to the application. Then use
-standard MySQL commands to import the dump.</p>
-
-<p><strong>Example:</strong> mysql –h rds-endpoint –u user –ppasswwd databasename &lt;
-dump.sql</p>
-
-<h2><strong>Verify the Application</strong> </h2>
-
-<p>At this point, it’s mandatory that you thoroughly verify the
-application. Make sure to check Login/logout, upload/download and any
-other relevant verifications. Create an AMI only after making sure that
-the application is working as expected. Fix any issues before proceeding
-to the next step.</p>
-
-<h3><strong>Create an AMI</strong></h3>
-
-<p>​1. Delete the command history:</p>
-
-<p><code>
-$ history -c
-</code></p>
-
-<p>Delete the deployed code and logs files and make things as clean as
-possible.</p>
-
-<p>​2. Create an AMI using the micro instance that you’ve configured.</p>
-
-<p>Go to AWS Console->Services->EC2, right click on the instance, and
-select “Create Image” (EBS AMI).</p>
-
-<p><img src="https://lh4.googleusercontent.com/pR5iFmQYgO6FygwUB1SNh52dtHhrTr4TDk_G9fd6wlh1ds3V5gnbvhqYdn4yPOPRuQ7JZXwO54xuguOEoczq9yhVx1gsuHuZbVmCRgVFbida6ciJxv0EhNhwdQ" alt="" /></p>
-
-<p>Name the AMI using a date as the naming convention. <strong>Do not</strong> select
-“<strong>No reboot</strong>”. Instead, allow it to reboot while creating the AMI. The
-reboot will give you a consistent snapshot of EBS.</p>
-
-<p><img src="https://lh5.googleusercontent.com/5vWSfAF_enz-JCR8PlW-hDts2pvtUSI8yRFYkx8H27K0UdRCntJjTgcHGODGJpiGkXfFpe-XGva-EZUFF5gEDRcPcw5o8xc_8n1ueqYQaK8hpY9WolFLUdrHRw" alt="" /></p>
-
-<p>In a few minutes an AMI will be created and made available.</p>
-
-<p>Keep the root partition as minimal as possible because that helps to
-prevent bugs. You don’t need large space for root partition in autoscale
-because these instances keep rotating.</p>
-
-<h2><strong>Terminate the Instance</strong> </h2>
-
-<p>Finally, terminate the instance by right clicking on the instance and
-selecting “Terminate”. Keep the ELB and RDS running.</p>
-
-<p><strong><em>Watch out for Part 2, same time tomorrow, on how to setup autoscaling
-groups!</em></strong></p>
-
-<p><strong>Update</strong>: Check part 2 on how to setup autoscaling groups
-<a href="../autoscaling-for-lamp-on-aws-setting-up-austoscaling-groups-part-2/index.html" title="Autoscaling for LAMP on AWS | Setting Up Austoscaling Groups : Part 2">here</a>.</p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[A Deep Dive into AWS Reserved Instances]]></title>
@@ -748,6 +107,160 @@ reservations and while offering reservations at a relatively low price.</p>
 <p>The most common reason to use reservations is price, but there are also
 other considerations. The final decision should be based on capacity
 analysis from a business perspective.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[6 reasons why large enterprises should move to Amazon Web Services]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/"/>
+    <updated>2014-03-25T09:13:48-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services</id>
+    <content type="html"><![CDATA[<h2>6 reasons why large enterprises should move to Amazon Web Services</h2>
+
+<h3>6 reasons why large enterprises should move to Amazon Web Services</h3>
+
+<p>Amazon has changed the face of the world of startups with its cloud services. Now it’s possible for two men in a garage to set up large
+computer clusters for zero capital cost.</p>
+
+<p><a href="https://twitter.com/share?text=Amazon+has+its+sights+set+on+enterprise,+which+they+will+conquer+slowly+but+surely.+&amp;via=OurLabs&amp;related=Flux7Labs&amp;url=http://wp.me/p4sEOD-o6">Amazon has its sights set on enterprise, which they will conquer slowly
+but
+surely.</a></p>
+
+<p>At Our Labs, one of our specialties is cloud migration for enterprise
+clients, and we’ve received considerable feedback about both their
+concerns and delights. In this post I’ll explain why I strongly believe
+large enterprises should consider moving to the cloud.</p>
+
+<h2><strong>Agility and Responsiveness</strong> </h2>
+
+<p>Let’s face it, if a startup is a speedboat, then a large enterprise is
+the Titanic. While startups can pivot any time there’s danger and large
+enterprises turn more slowly, there are icebergs that can sink either.
+Disasters happen to everyone, but a large enterprise has significantly
+more skin in the game, and the old model of waiting a month before
+buying a new rack just doesn’t cut it anymore. By shifting to the cloud,
+large enterprises can bring up new servers in minutes, which means
+shorter downtimes, rapid experimentation, more innovation, increased
+global reach, improved demand-surge handling and more successful
+short-lived-but-resource-intensive projects.</p>
+
+<h2><strong>Innovation</strong> </h2>
+
+<p>Business is a cutthroat world in which we must always strive to
+out-innovate our competitors. This article is about the cloud in
+general, but I want to explain why it’s also Amazon focused. Amazon has
+been blazing the cloud-computing trail longer than anyone, which is
+reflected by its 80% market share, and is clearly ahead of its
+competitors. For example, check out Gartner’s analysis of different
+cloud providers in the chart below and you’ll see Amazon in a corner of
+their own. In fact, Amazon so dominated the competition that Gartner had
+to artificially lower the scale. Amazon is innovating at such a rapid
+pace in providing new services and broadening its customer base that
+competitors are struggling to keep pace.</p>
+
+<p>The effect of this innovation is obvious to developers. Do you want to
+provide Active Directory integration with Amazon? You can do that. Do
+you want to save on data costs by using the Bittorrent protocol for
+content distribution? You can do that. Do you want to put heavy compute
+behind your mobile games? You can do that. Do you want to ramp up your
+clients quickly with remote workstations? You can do that, too. With
+Amazon Web Services you can do all of that and more. I’m a
+certified<a href="file:///C:/Users/Vishnu/Documents/Our/SMM/Blog/WhyEnterprisemustAmazon_(REVISED_CLEAN">[1]</a>.docx#_msocom_1) 
+AWS instructor, yet I learn something new about AWS every day as Amazon
+constantly releases new features. The advantage of moving your business
+to the cloud is that you can let your developers focus on your company’s
+area of expertise while leaving the boilerplate to Amazon.</p>
+
+<p>\</p>
+
+<p> <img src="https://lh3.googleusercontent.com/GmdBmLBmcGW9TIBqUCVkf403uIIf9arZ6-brIjBOt8tus6n_7YaKdOW3kcQqSIUbKnQd9vthqX1nyHHGouT8xbmDF3-xkpXUbJV0UJLpguSzg7EKB6QuaqR92uw_og" alt="" /></p>
+
+<h2><strong>A Data Center That Hosts A Top Website</strong> </h2>
+
+<p>One thing we mustn’t forget is what the AWS cloud really is—a product of
+years of innovation by one of the largest e-commerce websites in the
+world. Its data centers are distributed globally in numerous parts of
+the world, with multiple, independently-operating data centers in each
+region that provide different failure domains while being close enough
+together to provide cheap communication. And that’s just the compute
+side of the equation. Amazon also shares its global content distribution
+network, its DNS servers. it compiles traffic data from across the globe
+to find the best route for your network traffic. There are only a
+handful of companies today with that kind of global reach, and they,
+too, are developing cloud capabilities. But unless you’re in that elite
+club, you won’t be able to create a data center that can compete with
+AWS. So by using a cloud solution, rather than an in-house solution,
+you’ll clearly benefit in terms of better performance, better fault
+tolerance, and better disaster recovery.</p>
+
+<h2><strong>Security</strong> </h2>
+
+<p>Security is the biggest concern about cloud computing for most
+enterprises, but Amazon holds many of the most important certifications,
+including PCI, HIPAA, Sarbanes-Oxley, and ISO. Since it has so much at
+stake, it maintains separation of logical and physical access to data in
+order to limit the impact of disgruntled employees. While I certainly
+understand someone hesitating to entrust one’s most valuable information
+with a third party, it’s certainly debatable whether on-premise storage
+is more secure than cloud storage.</p>
+
+<h2><strong>In-house Expertise Not Required</strong> </h2>
+
+<p>Anyone that’s had to hire people knows that good employees are worth
+their weight in platinum. Moving to the cloud allows you to offload much
+of your data-center maintenance onto Amazon. Let it do what it’s best at
+while you focus on what you’re best at.</p>
+
+<p>As we know, you often have to pay dearly to hire someone outside of your
+area of expertise. For example, say you’re a director of IT at a company
+like Schlumberger. Your company is great at what it does and has strong
+brand value in its area of expertise. Do you think you can possibly
+poach someone like <a href="http://mvdirona.com/jrh/work/">James Hamilton</a> for
+your company? No, you can’t. With core expertise in data centers, Amazon
+will likely offer a more intriguing challenge and a deeper sense of
+mission to the kind of people you’ll want to hire for your team. And we
+all know that employee engagement is not about the money, but rather
+about being involved in a greater mission.</p>
+
+<h2><strong>Lower Costs</strong> </h2>
+
+<p>While I’m convinced that moving to the cloud will lower your costs, I
+acknowledge that getting there requires a lot of expertise and hard
+work. Additionally you may very easily find yourself comparing apples
+and oranges. Yet cloud solutions are cheaper than on-premise solutions
+when played right. First, when you pay for a machine on AWS you’re also
+paying for Amazon’s years of expertise in setting up resilient data
+centers, something that’s not true for in-house departments lacking core
+IT expertise. Second, there’s great potential for saving money by
+scaling to your variable demand needs instead of designing for max
+capacity. That’s why Netflix, even though it comprises one-third of the
+Internet in terms of data volume, has gone “all in” on AWS, or they’d
+have to provision enough machines to handle 9PM Friday traffic.
+Alternatively you can have an expected area of needing high demand, as
+say for a chip company close to tapeout, a movie studio needing to
+render for a year
+(<a href="http://gigaom.com/2014/03/02/the-oscars-how-american-hustles-fx-team-made-2013-boston-look-like-1980s-new-york/">http://gigaom.com/2014/03/02/the-oscars-how-american-hustles-fx-team-made-2013-boston-look-like-1980s-new-york/</a>),
+or a game company handling launch day demand
+(<a href="http://www.respawn.com/news/lets-talk-about-the-xbox-live-cloud/">http://www.respawn.com/news/lets-talk-about-the-xbox-live-cloud/</a>).</p>
+
+<h2><strong>Conclusion</strong> </h2>
+
+<p>If you’re a large enterprise and on the fence about whether or not to
+move to the cloud, we highly recommend trying it out. Try it on a
+contained project, rather than one that’s on a critical path, something
+that fits well within the cloud’s capabilities. After implementation, do
+a post-mortem and analyze the results in terms of cost and
+time-to-market. What is the expectation as you build in-house
+expertise<strong>.</strong> The results may well surprise you.</p>
+
+<h2><strong>Let’s Talk</strong> </h2>
+
+<p>Our Research Labs has helped Fortune 100 and Fortune 500 companies move
+successfully to AWS. We’d love to hear any questions, comments or
+concerns you may have, so feel free to contact us anytime during weekly
+<a href="http://ohours.org/aatersuleman">office hours</a> to discuss your specific
+needs or situation. We offer this service free of charge with no
+obligation or strings attached.</p>
 ]]></content>
   </entry>
   

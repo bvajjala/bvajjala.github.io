@@ -1,0 +1,691 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>continuous delivery patterns & antipatterns - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Continuous Delivery Patterns & Antipatterns With Continuous Delivery (CD), teams continuously deliver new versions of software to production by &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/projects/continuous-delivery/continuous-delivery-patterns-and-antipatterns">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about/home">Home</a></li> 
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/projects">Projects</a></li>
+  <li><a href="/about/resume">About Me</a></li>
+  <li><a href="/about/consulting">Consulting</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Continuous Delivery Patterns & Antipatterns</h1>
+    
+  </header>
+  
+  <p>With Continuous Delivery (CD), teams continuously deliver new  versions of software to production by decreasing the cycle time between an idea and usable software through the automation of the entire delivery system: build, deployment, test, and release. CD is enabled through the Deployment Pipeline, which encompasses a collection of patterns described in this Refcard.</p>
+
+<p>CD is concerned with “…how all the moving parts fit together: configuration management, automated testing, continuous integration and deployment, data management, environment management, and release management.” (1)</p>
+
+<h1>THE DEPLOYMENT PIPELINE</h1>
+
+<p>The purpose of the deployment pipeline is threefold:</p>
+
+<ul>
+<li>Visibility: All aspects of the delivery system &ndash; building, deploying, testing, and releasing – are visible to all team members promoting collaboration.</li>
+<li>Feedback: Team members learn of problems as soon as they occur so that issues are fixed as soon as possible.</li>
+<li>Continually Deploy: Through a fully automated process, you can deploy and release any version of the software to any environment. (1)</li>
+</ul>
+
+
+<p>In the Deployment Pipeline diagram above, all of the patterns are shown in context. There are some patterns that span multiple stages of the pipeline, so I chose the stage where it’s most predominately used.</p>
+
+<h2>BENEFITS</h2>
+
+<ul>
+<li><p>Empowering Teams: Because the deployment pipeline is a pull system, testers, developers, operations, and others can self service the application version into an environment of their choice.</p></li>
+<li><p>Reducing Errors: Ensuring the correct version, configuration, database schema, etc. are applied the same way every time through automation.</p></li>
+<li><p>Lowering Stress: Through push-button releases to production and Rehearsing Deployments, a release becomes commonplace without the typical stress.</p></li>
+<li><p>Deployment Flexibility: Instantiate a new environment or configuration by making a few changes to the automated delivery system.</p></li>
+<li><p>Practice makes Perfect: Through the deployment pipeline, the final deployment into production is being rehearsed every single time the software is deployed to any target environments. (1)</p></li>
+</ul>
+
+
+<h1>CONFIGURATION MANAGEMENT</h1>
+
+<p>Configuration Management is “the process by which all artifacts relevant to your project, and the relationships between them, are stored, retrieved, uniquely identified, and modified”. (1) <em>Note: Each pattern is cited with a number in parentheses that corresponds to the source in the References section.</em></p>
+
+<h2>Configurable Third-Party Software (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Evaluate and use third-party software that can be easily configured, deployed, and automated.</li>
+<li><strong>Anti-Patterns</strong> Procuring software that cannot be externally configured. Software without an API or command-line interface that forces teams to use the GUI only.</li>
+</ul>
+
+
+<h2>Configuration Catalog (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong>  Maintain a catalog of all options for each application, how to change these options and storage locations for each application. Automatically create this catalog as part of the build process.</li>
+<li><strong>Anti-Patterns</strong> Configuration options are not documented. The catalog of applications and other assets is “tribal knowledge”.</li>
+</ul>
+
+
+<h2>Mainline (3)</h2>
+
+<ul>
+<li><strong>Pattern</strong>  Minimize merging and keep the number of active code lines manageable by developing on a mainline.</li>
+<li><strong>Anti-Patterns</strong> Multiple branches per project.</li>
+</ul>
+
+
+<h2>Merge Daily (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Changes committed to the mainline are applied to each branch on at least a daily basis.</li>
+<li><strong>Anti-Patterns</strong>   Merging every iteration once a week or less often than once a day.</li>
+</ul>
+
+
+<h2>Protected Configuration (5) ,(1)</h2>
+
+<ul>
+<li><strong>Pattern</strong>Store configuration information in secure remotely accessible locations such as a database, directory, or registry.</li>
+<li><strong>Anti-Patterns</strong>   Open text passwords and/or single machine or share.</li>
+</ul>
+
+
+<h2>Repository (3) , (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong>All source files &ndash; executable code, configuration, host environment, and data &ndash; are committed to a version-control repository.</li>
+<li><strong>Anti-Patterns</strong>   Some files are checked in, others, such as environment configuration or data changes, are not. Binaries – that can be recreated through the build and deployment process – are checked in.</li>
+</ul>
+
+
+<h2>Short-Lived Branches (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong>Branches must be short lived – ideally less than a few days and never more than an iteration.</li>
+<li><strong>Anti-Patterns</strong>   Branches that last more than an iteration. Branches by product feature that live past a release.</li>
+</ul>
+
+
+<h2>Single Command Environment (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong>Check out the project’s version-control repository and run a single command to build and deploy the application to any accessible environment, including the local development.</li>
+<li><strong>Anti-Patterns</strong>   Forcing the developer to define and configure environment variables. Making the developer install numerous tools in order for the build/deployment to work.</li>
+</ul>
+
+
+<h2>Single Path to Production (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong>Configuration management of the entire system &ndash; source, configuration, environment and data. Any change can be tied back to a single revision in the version-control system.</li>
+<li><strong>Anti-Patterns</strong>   Parts of system are not versioned. Inability to get back to a previously configured software system.</li>
+</ul>
+
+
+<h1>CONTINUOUS INTEGRATION (CI)</h1>
+
+<h2>Build Threshold (5)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Fail a build when a project rule is violated – such as architectural breaches, slow tests, and coding standard violations.</li>
+<li><strong>Anti-Patterns</strong>   Manual code reviews. Learning of code quality issues later in the development cycle.</li>
+</ul>
+
+
+<h2>Commit Often (6)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Each team member checks in regularly to trunk &ndash; at least once a day but preferably after each task to trigger the CI system.</li>
+<li><strong>Anti-Patterns</strong>   Source files are committed less frequently than daily due to the number of changes from the developer.</li>
+</ul>
+
+
+<h2>Continuous Feedback (6)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Send automated feedback from CI system to all Cross-Functional Team members.</li>
+<li><strong>Anti-Patterns</strong>   Notifications are not sent; notifications are ignored; CI system spams everyone with information they cannot use.</li>
+</ul>
+
+
+<h2>Continuous Integration (6)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Building and testing software with every change committed to a project’s version control repository.</li>
+<li><strong>Anti-Patterns</strong>   Scheduled builds, nightly builds, building periodically, building exclusively on developer’s machines, not building at all.</li>
+</ul>
+
+
+<h2>Stop the Line (5) , (1) , (4), (12)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Fix software delivery errors as soon as they occur; stop the line. No one checks in on a broken build as the fix becomes the highest priority.</li>
+<li><strong>Anti-Patterns</strong>   Builds stay broken for long periods of time, thus preventing developers from checking out functioning code.</li>
+</ul>
+
+
+<h2>Independent Build (6)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Write build scripts that are decoupled from IDEs. These build scripts are executed by a CI system so that software is built at every change</li>
+<li><strong>Anti-Patterns</strong>   Automated build relies on IDE settings. Builds are unable to be run from the command line.</li>
+</ul>
+
+
+<h2>Visible Dashboards</h2>
+
+<ul>
+<li><strong>Pattern</strong> Provide large visible displays that aggregate information from your delivery system to provide high-quality feedback to the Cross-Functional Team in real time.</li>
+<li><strong>Anti-Patterns</strong>   Email-only alerts or not publicizing the feedback to the entire team.</li>
+</ul>
+
+
+<h1>TESTING</h1>
+
+<h2>Automate Tests</h2>
+
+<ul>
+<li><strong>Pattern</strong> Automate the verification and validation of software to include unit, component, capacity, functional, and deployment tests</li>
+<li><strong>Anti-Patterns</strong>   Manual testing of units, components, deployment, and other types of tests.</li>
+</ul>
+
+
+<blockquote><ul>
+<li>Unit- Automating tests without any dependencies.</li>
+<li>Component- Automating tests with dependencies to other components and heavyweight dependencies such as the database or file system.</li>
+<li>Deployment- Automating tests to verify the deployment and configuration were successful. Sometimes referred to as a “smoke tests”.</li>
+<li>Functional- Automating tests to verify the behavior of the software from a user’s perspective.</li>
+<li>Capacity- Automating load and performance testing in near- production conditions.</li>
+</ul>
+</blockquote>
+
+<h2>Isolate Test Data (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Use transactions for database-dependent tests (e.g., component tests) and roll back the transaction when done. Use a small subset of data to effectively test behavior</li>
+<li><strong>Anti-Patterns</strong>   Using a copy of production data for Commit Stage tests. Running tests against a shared database.</li>
+</ul>
+
+
+<h2>Parallel Tests (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Run multiple tests in parallel across hardware instances to decrease the time in running tests.</li>
+<li><strong>Anti-Patterns</strong>   Running tests on one machine or instance. Running dependent tests that cannot be run in parallel.</li>
+</ul>
+
+
+<h2>Stub Systems (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Use stubs to simulate external systems to reduce deployment complexity.</li>
+<li><strong>Anti-Patterns</strong>   Manually installing and configuring interdependent systems for Commit Stage build and deployment.</li>
+</ul>
+
+
+<h1>DEPLOYMENT PIPELINE</h1>
+
+<h2>Deployment Pipeline (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong> A deployment pipeline is an automated implementation of your application’s build, deploy, test, and release process.</li>
+<li><strong>Anti-Patterns</strong>   Deployments require human intervention (other than approval or clicking a button). Deployments are not production ready.</li>
+</ul>
+
+
+<h2>Value-Stream Map (4) ##</h2>
+
+<ul>
+<li><strong>Pattern</strong> Create a map illustrating the process from check in to the version-control system to the software release to identify process bottlenecks.</li>
+<li><strong>Anti-Patterns</strong>   Separately defined processes and views of the checkin to release process.</li>
+</ul>
+
+
+<h1>BUILD AND DEPLOYMENT SCRIPTING</h1>
+
+<h2>Dependency Management (5)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Centralize all dependent libraries to reduce bloat, classpath problems, and repetition of the same dependent libraries and transitive dependencies from project to project.</li>
+<li><strong>Anti-Patterns</strong>   Multiple copies of the same binary dependencies in each and every project. Redefining the same information for each project. Classpath hell!</li>
+</ul>
+
+
+<h2>Common Language (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong> As a team, agree upon a common scripting language &ndash; such as Perl, Ruby, or Python &ndash; so that any team member can apply changes to the Single Delivery System</li>
+<li><strong>Anti-Patterns</strong>   Each team uses a different language making it difficult for anyone to modify the delivery system reducing cross-functional team effectiveness.</li>
+</ul>
+
+
+<h2>Externalize Configuration (5)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Changes between environments are captured as configuration information. All variable values are externalized from the application configuration into build/deployment-time properties</li>
+<li><strong>Anti-Patterns</strong>   Hardcoding values inside the source code or per target environment.</li>
+</ul>
+
+
+<h2>Fail Fast (6)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Fail the build as soon as possible. Design scripts so that processes that commonly fail run first. These processes should be run as part of the Commit Stage.</li>
+<li><strong>Anti-Patterns</strong>   Common build mistakes are not uncovered until late in the deployment process.</li>
+</ul>
+
+
+<h2>Fast Builds (6)</h2>
+
+<ul>
+<li><strong>Pattern</strong> The Commit Build provides feedback on common build problems as quickly as possible &ndash; usually in under 10 minutes.</li>
+<li><strong>Anti-Patterns</strong>   Throwing everything into the commit stage process, such as running every type of automated static analysis tool or running load tests such that feedback is delayed.</li>
+</ul>
+
+
+<h2>Scripted Deployment (5)</h2>
+
+<ul>
+<li><strong>Pattern</strong> All deployment processes are written in a script, checked in to the version-control system, and run as part of the Single Delivery System.</li>
+<li><strong>Anti-Patterns</strong>   Deployment documentation is used instead of automation.Manual deployments or partially manual deployments. Using GUI to perform a deployment.</li>
+</ul>
+
+
+<h2>Unified Deployment (5)</h2>
+
+<ul>
+<li><strong>Pattern</strong> The same deployment script is used for each deployment. The Protected Configuration – per environment &ndash; is variable but managed.</li>
+<li><strong>Anti-Patterns</strong>   Different deployment script for each target environment or even for a specific machine. Manual configuration after deployment for each target environment.</li>
+</ul>
+
+
+<h1>DEPLOYING AND RELEASING APPLICATIONS</h1>
+
+<h2>Binary Integrity (5)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Build your binaries once, while deploying the binaries to multiple target environments, as necessary.</li>
+<li><strong>Anti-Patterns</strong>   Software is built in every stage of the deployment pipeline.</li>
+</ul>
+
+
+<h2>Canary Release</h2>
+
+<ul>
+<li><strong>Pattern</strong> Release software to production for a small subset of users (e.g. , 10%) to get feedback prior to a complete rollout.</li>
+<li><strong>Anti-Patterns</strong>   Software is released to all users at once.</li>
+</ul>
+
+
+<h2>Blue-Green Deployments (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong>  Deploy software to a non-production environment (call it blue) while production continues to run. Once it’s deployed and “warmed up”, switch production (green) to non-production and blue to green simultaneously.&ndash; <strong>Anti-Patterns</strong>   Production is taken down while the new release is applied to production instance(s).</li>
+</ul>
+
+
+<h2>Dark Launching (11)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Launch a new application or features when it affects the least amount of users.</li>
+<li><strong>Anti-Patterns</strong>   Software is deployed regardless of number of active users.</li>
+</ul>
+
+
+<h2>Rollback Release (5)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Provide an automated single command rollback of changes after an unsuccessful deployment.</li>
+<li><strong>Anti-Patterns</strong>   Manually undoing changes applied in a recent deployment. Shutting down production instances while changes are undone.</li>
+</ul>
+
+
+<h2>Self-Service Deployment (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Any Cross-Functional Team member selects the version and environment to deploy the latest working software.</li>
+<li><strong>Anti-Patterns</strong>   Deployments released to team are at specified intervals by the “Build Team”. Testing can only be performed in a shared state without isolation from others.</li>
+</ul>
+
+
+<h1>INFRASTRUCTURE AND ENVIRONMENTS</h1>
+
+<h2>Automate Provisioning (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Automate the process of configuring your environment to include networks, external services, and infrastructure.</li>
+<li><strong>Anti-Patterns</strong>   Configured instances are “works of art” requiring team members to perform partially or fully manual steps to provision them.</li>
+</ul>
+
+
+<h2>Behavior-Driven Monitoring (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Automate tests to verify the behavior of the infrastructure. Continually run these tests to provide near real-time alerting.</li>
+<li><strong>Anti-Patterns</strong>   No real-time alerting or monitoring. System configuration is written without tests.</li>
+</ul>
+
+
+<h2>Immune Systems</h2>
+
+<ul>
+<li><strong>Pattern</strong> Deploy software one instance at a time while conducting Behavior-Driven Monitoring. If an error is detected during the incremental deployment, a Rollback Release is initiated to revert changes.</li>
+<li><strong>Anti-Patterns</strong>   Non-incremental deployments without monitoring.</li>
+</ul>
+
+
+<h2>Lockdown Environments (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Lock down shared environments from unauthorized external and internal usage, including operations staff. All changes are versioned and applied through automation.</li>
+<li><strong>Anti-Patterns</strong>   The “Wild West”: any authorized user can access shared environments and apply manual configuration changes, putting the environment in an unknown state leading to deployment errors.</li>
+</ul>
+
+
+<h2>Production-Like Environments (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Target environments are as similar to production as possible.</li>
+<li><strong>Anti-Patterns</strong>   Environments are “production like” only weeks or days before a release. Environments are manually configured and controlled.</li>
+</ul>
+
+
+<h2>Transient Environments</h2>
+
+<ul>
+<li><strong>Pattern</strong> Utilizing the Automate Provisioning, Scripted Deployment and Scripted Database patterns, any environment should be capable of terminating and launching at will.</li>
+<li><strong>Anti-Patterns</strong>   Environments are fixed to “DEV, QA” or other pre-determined environments.</li>
+</ul>
+
+
+<h1>DATA</h1>
+
+<h2>Database Sandbox (7)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Create a lightweight version of your database – using the Isolate Test Data pattern. Each developer uses this lightweight DML to populate his local database sandboxes to expedite test execution.</li>
+<li><strong>Anti-Patterns</strong>   Shared database. Developers and testers are unable to make data changes without it potentially adversely affecting other team members immediately.</li>
+</ul>
+
+
+<h2>Decouple Database (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Ensure your application is backward and forward compatible with your database so you can deploy each independently</li>
+<li><strong>Anti-Patterns</strong>   Application code data are not capable of being deployed separately.</li>
+</ul>
+
+
+<h2>Database Upgrade (7)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Use scripts to apply incremental changes in each target environment to a database schema and data.</li>
+<li><strong>Anti-Patterns</strong>   Manually applying database and data changes in each target environment.</li>
+</ul>
+
+
+<h2>Scripted Database (7)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Script all database actions as part of the build process.</li>
+<li><strong>Anti-Patterns</strong>   Using data export/import to apply data changes. Manually applying schema and data changes to the database.</li>
+</ul>
+
+
+<h1>INCREMENTAL DEVELOPMENT</h1>
+
+<h2>Branch by Abstraction (2)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Instead of using version-control branches, create an abstraction layer that handles both an old and new implementation. Remove the old implementation.</li>
+<li><strong>Anti-Patterns</strong>   Branching using the version-control system leading to branch proliferation and difficult merging. Feature branching.</li>
+</ul>
+
+
+<h2>Toggle Features (10)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Deploy new features or services to production but limit access dynamically for testing purposes.</li>
+<li><strong>Anti-Patterns</strong>   Waiting until a feature is fully complete before committing the source code.</li>
+</ul>
+
+
+<h1>COLLABORATION</h1>
+
+<h2>Delivery Retrospective (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong> For each iteration, hold a retrospective meeting where everybody on the Cross-Functional Team discusses how to improve the delivery process for the next iteration.</li>
+<li><strong>Anti-Patterns</strong>   Waiting until an error occurs during a deployment for Dev and Ops to collaborate. Having Dev and Ops work separately.</li>
+</ul>
+
+
+<h2>Cross-Functional Teams (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Everybody is responsible for the delivery process. Any person on the Cross-Functional Team can modify any part of the delivery system.</li>
+<li><p><strong>Anti-Patterns</strong>   Siloed teams: Development, Testing, and Operations have their own scripts and processes and are not part of the same team.</p>
+
+<p>Amazon.com has an interesting take on this approach. They call it “You build it, you run it”. Developers take the software they’ve written all the way to production.</p></li>
+</ul>
+
+
+<h2>Root-Cause Analysis (1)</h2>
+
+<ul>
+<li><strong>Pattern</strong> Learn the root cause of a delivery problem by asking “why” of each answer and symptom until discovering the root cause.</li>
+<li><strong>Anti-Patterns</strong>   Accepting the symptom as the root cause of the problem.</li>
+</ul>
+
+
+<h1>TOOLS</h1>
+
+<p>This is meant to be an illustrative list, not an exhaustive list, to give you an idea of the types of tools and some of the vendors that help to enable effective Continuous Delivery. The Java, .NET and Ruby platforms are represented. The tools that span categories have been assigned to the most appropriate category or duplicated when necessary.</p>
+
+<ul>
+<li><strong>Configuration Management</strong> Subversion (SVN), git, Perforce,               PassPack, PasswordSafe, ESCAPE, ConfigGen</li>
+<li><strong>Continuous Integration</strong>   Bamboo, Jenkins, AntHill Pro, Go, TeamCity, TFS 2010, Electric Commander
+
+<ul>
+<li><strong>Supporting tools:</strong> Doxygen, Grand, GraphViz, JavaDoc, NDoc, SchemaSpy, UmlGraph, CheckStyle, Clover, Cobertura, FindBugs,FxCop, JavaNCSS, JDepend, PMD, Sonar, Simian</li>
+</ul>
+</li>
+<li><strong>Testing</strong> Twist , AntUnit, Cucumber, DbUnit, webrat, easyb, Fitnesse, JMeter, JUnit, NBehave, SoapUI, Selenium, RSpec, SauceLabs</li>
+<li><strong>Deployment Pipeline</strong> Go, AntHill Pro</li>
+<li><strong>Build and Deployment Scripting</strong> Ant, AntContrib, NAnt, MSBuild, Buildr, Gant, Gradle, make, Maven, Rake, Java Secure Channel, ControlTier, Altiris, Capistrano, Fabric, Func</li>
+<li><strong>Infrastructure and Environments</strong> AWS EC2, AWS S3, Windows Azure, Google App Engine, AWS Elastic Beanstalk, Heroku, Capistrano, Cobbler, BMC Bladelogic, CFEngine, IBM Tivoli Provisioning Manager, Puppet, Chef, Bcfg2, AWS Cloud Formation, Windows Azure AppFabric, rPath, JEOS, BoxGrinder, CLIP, Eucalyptus, AppLogic, CloudKick, CloudWatch, Nagios, Zabbix, Zenoss</li>
+<li><strong>Data</strong> Hibernate, MySQL, Liquibase, Oracle, PostgreSQL, SQL Server, SimpleDB, SQL Azure, Ant, MongoDB, dbdeploy</li>
+<li><strong>Components and Dependencies</strong> Ivy, Archiva, Nexus, Artifactory, Bundler</li>
+<li><strong>Collaboration</strong> Mingle, Greenhopper, JIRA</li>
+</ul>
+
+
+<h1>REFERENCES</h1>
+
+<ol>
+<li><p>Jez Humble and David Farley, “Continuous Delivery: Reliable Software Releases through Build, Test, and Deployment Automation”, Addison Wesley Professional, 2010</p></li>
+<li><p>Paul Hammant and www.continuousdelivery.com</p></li>
+<li><p>Stephen P. Berczuk and Brad Appleton, “Software Configuration Management Patterns.”, Addison Wesley Professional, 2003</p></li>
+<li><p>Mary and Tom Poppendieck, “Leading Lean Software Development”, Addison Wesley, 2009</p></li>
+<li><p>Paul M. Duvall, “Continuous integration. Patterns and Antipatterns”, DZone refcard #84, 2010 <a href="http://bit.ly/l8rfVS">http://bit.ly/l8rfVS</a></p></li>
+<li><p>Paul M. Duvall, “Continuous integration. Improving Software Quality and Reducing Risk”, Addison Wesley, 2007</p></li>
+<li><p>Scott W. Ambler and Pramodkumar J. Saladage, “Refactoring Databases. Evolutionary Database Design”, Addison Wesley, 2006.</p></li>
+<li><p>Paul M. Duvall, IBM developerWorks series “Automation for the people” <a href="http://ibm.co/iwwvPX">http://ibm.co/iwwvPX</a></p></li>
+<li><p>IMVU: <a href="http://bit.ly/jhqP5f">http://bit.ly/jhqP5f</a></p></li>
+<li><p>Martin Fowler and Facebook: <a href="http://on.fb.me/miBrOM">http://on.fb.me/miBrOM</a></p></li>
+<li><p>Facebook Engineering: <a href="http://on.fb.me/miBrOM">http://on.fb.me/miBrOM</a></p></li>
+<li><p>Paul Julius, Enterprise Continuous Integration Maturity Model, <a href="http://bit.ly/m7h5vC">http://bit.ly/m7h5vC</a></p></li>
+</ol>
+
+
+  
+    <footer>
+      
+      
+    </footer>
+  
+</article>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/">A Deep Dive into AWS Reserved Instances</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/">6 reasons why large enterprises should move to Amazon Web Services</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/">CI and Test Automation utilizing OpenStack</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

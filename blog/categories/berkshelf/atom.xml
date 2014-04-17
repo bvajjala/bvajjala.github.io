@@ -4,7 +4,7 @@
   <title><![CDATA[Category: berkshelf | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/berkshelf/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-17T10:29:53-04:00</updated>
+  <updated>2014-04-17T12:28:04-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -32,7 +32,7 @@
 <h1>DOCKER-VERSION 0.5.3</h1>
 
 <p>FROM ubuntu:12.10
-MAINTAINER Paul Czarkowski &ldquo;<a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#x70;&#x61;&#117;&#108;&#x40;&#112;&#x61;&#x75;&#x6c;&#x63;&#122;&#46;&#x6e;&#x65;&#x74;">&#112;&#97;&#x75;&#108;&#64;&#112;&#97;&#117;&#108;&#x63;&#x7a;&#x2e;&#x6e;&#x65;&#x74;</a>&rdquo;</p>
+MAINTAINER Paul Czarkowski &ldquo;<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#112;&#x61;&#117;&#108;&#64;&#112;&#97;&#x75;&#x6c;&#99;&#x7a;&#46;&#110;&#101;&#116;">&#x70;&#x61;&#117;&#x6c;&#x40;&#x70;&#97;&#117;&#108;&#x63;&#x7a;&#x2e;&#110;&#x65;&#116;</a>&rdquo;</p>
 
 <p>RUN apt-get -y update
 RUN apt-get -y install curl build-essential libxml2-dev libxslt-dev git
@@ -102,7 +102,7 @@ cookbook &lsquo;nginx&rsquo; , github: &lsquo;opscode-cookbooks/nginx&rsquo;
 <h1>DOCKER-VERSION 0.5.3</h1>
 
 <p>FROM paulczar/chef-client
-MAINTAINER Paul Czarkowski &ldquo;<a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#x70;&#x61;&#117;&#108;&#x40;&#112;&#97;&#117;&#x6c;&#99;&#122;&#x2e;&#110;&#101;&#x74;">&#x70;&#x61;&#x75;&#108;&#64;&#112;&#x61;&#x75;&#x6c;&#x63;&#x7a;&#x2e;&#110;&#x65;&#x74;</a>&rdquo;</p>
+MAINTAINER Paul Czarkowski &ldquo;<a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#112;&#97;&#x75;&#108;&#x40;&#x70;&#97;&#117;&#108;&#x63;&#x7a;&#46;&#x6e;&#101;&#x74;">&#x70;&#97;&#x75;&#108;&#64;&#112;&#97;&#x75;&#108;&#x63;&#122;&#46;&#110;&#x65;&#x74;</a>&rdquo;</p>
 
 <p>RUN apt-get -y update
 ADD . /chef

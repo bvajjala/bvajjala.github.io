@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Lesson 4 - Implemnting Continuous Integration pipeline in AWS - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Lesson 4 - Implemnting Continuous Integration Pipeline in AWS Lesson 4 &ndash; Implemnting Continuous Integration pipeline in AWS Learning &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/projects/tutorials/devopsincloud/04">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="no-sidebar"  class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about/home">Home</a></li> 
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/projects">Projects</a></li>
+  <li><a href="/about/resume">About Me</a></li>
+  <li><a href="/about/consulting">Consulting</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Lesson 4 - Implemnting Continuous Integration Pipeline in AWS</h1>
+    
+  </header>
+  
+  <ul>
+<li><a href="04.00.html">Lesson 4 &ndash; Implemnting Continuous Integration pipeline in AWS</a>
+
+<ul>
+<li>Learning Objectives</li>
+</ul>
+</li>
+<li><a href="04.01.cfn.html">4.1 Create a CloudFormation template</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>CloudFormation</li>
+<li>EXERCISE: Create and run a CloudFormation template</li>
+<li>EXERCISE: Launch CloudFormation stack based on template</li>
+</ul>
+</li>
+<li><a href="04.01.html">4.1 Continuous Integration Infrastructure Architecture</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>Review the CI Architecture</li>
+</ul>
+</li>
+<li><a href="04.02.html">4.2 Install Jenkins Plugin</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>Install a Jenkins plugin</li>
+</ul>
+</li>
+<li><a href="04.02.puppet.html">4.2 Integrate Puppet with CloudFormation</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>CloudFormation w/ Puppet</li>
+<li>Puppet Resources</li>
+<li>EXERCISE: Create and run a CloudFormation template</li>
+<li>EXERCISE: Launch CloudFormation stack based on template</li>
+</ul>
+</li>
+<li><a href="04.03.ant.html">4.3 Script a build in Ant</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>EXERCISE: Run Ant build</li>
+<li>EXERCISE: Create a Rake build script (OPTIONAL)</li>
+</ul>
+</li>
+<li><a href="04.03.html">4.3 Configure a scripted environment job</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>Create a Jenkins job that builds a new environment</li>
+</ul>
+</li>
+<li><a href="04.04.html">4.4 Configure a scripted build job</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>Create a scripted build job in Jenkins</li>
+</ul>
+</li>
+<li><a href="04.04.maven.html">4.4 Script a build in Maven</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>EXERCISE: Run a Maven build</li>
+</ul>
+</li>
+<li><a href="04.05.db.html">4.5 Script a database</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>EXERCISE: Run scripted database files</li>
+<li>EXERCISE: Scripted Database (OPTIONAL)</li>
+<li>Scripted Databases</li>
+</ul>
+</li>
+<li><a href="04.05.html">4.5 Configure a scripted deployment job</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>Create a scripted deployment job in Jenkins</li>
+</ul>
+</li>
+<li><a href="04.06.html">4.6 Configure and run on-demand jobs</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>Create an on-demand job in Jenkins</li>
+</ul>
+</li>
+<li><a href="04.06.upgrade.html">4.6 Script the upgrade and downgrade of a database</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>Use this for subheaders</li>
+<li>Apply database changes (OPTIONAL)</li>
+</ul>
+</li>
+<li><a href="04.07.cap.html">4.7 Script a deployment</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>EXERCISE: Modify Capistrano script.</li>
+<li>EXERCISE: Modify Capistrano Script (OPTIONAL: Ruby)</li>
+</ul>
+</li>
+<li><a href="04.07.html">4.7 Configure and run scheduled jobs</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>View a scheduled job Jenkins configuration</li>
+</ul>
+</li>
+<li><a href="04.08.depend.html">4.8 Set up and utilize a dependency-management repository</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>EXERCISE: Dependency Management using Jenkins an S3</li>
+</ul>
+</li>
+<li><a href="04.08.html">4.8 Configure and run continuous jobs</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>View the build schedule for a continuous job</li>
+</ul>
+</li>
+<li><a href="04.09.html">4.9 Create continuous feedback mechanisms</a>
+
+<ul>
+<li>Learning Objectives</li>
+<li>Configure email notifications in Jenkins</li>
+</ul>
+</li>
+</ul>
+
+
+  
+    <footer>
+      
+      
+    </footer>
+  
+</article>
+
+
+</div>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

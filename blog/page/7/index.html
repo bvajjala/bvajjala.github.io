@@ -9,9 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="A talk I gave @ Jenkins Conferencee in Hertzliya.
-See presentation on prezi: See other great content &amp; presentations @ this link
-">
+  <meta name="description" content="Michael Feathers wrote a blog about Open-Closed Principle, where he described simple technique that measures the closure of the code. I created a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,7 +76,7 @@ See presentation on prezi: See other great content &amp; presentations @ this li
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012/07/24/devops-4-developers-at-jenkins-conference-hertzliya/">DevOps 4 Developers @ Jenkins Conference Hertzliya</a></h1>
+      <h1 class="entry-title"><a href="/blog/2011/01/29/counting-modifications-in-git/">Counting Modifications in Git Repository</a></h1>
     
     
       <p class="meta">
@@ -94,22 +92,28 @@ See presentation on prezi: See other great content &amp; presentations @ this li
   
 
 
-<time datetime="2012-07-24T17:46:00-04:00" pubdate data-updated="true">Jul 24<span>th</span>, 2012</time>
+<time datetime="2011-01-29T07:00:00-05:00" pubdate data-updated="true">Jan 29<span>th</span>, 2011</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>A talk I gave @ <a href="http://blog.cloudbees.com/2012/07/jenkins-user-conference-in-herzliya.html">Jenkins Conferencee</a> in Hertzliya.
-See presentation on prezi:</p>
+  <div class="entry-content"><p>Michael Feathers wrote a <a href="http://michaelfeathers.typepad.com/michael_feathers_blog/2011/01/measuring-the-closure-of-code.html">blog</a> about Open-Closed Principle, where he described simple technique that measures the closure of the code. I created a Groovy <a href="https://github.com/ndpar/utilities/blob/master/git-files-modified.groovy">script</a> which implements this algorithm for Git repositories. If you run it from the root of your Git project, it produces a CSV file with the statistics of how many times the files have been modified.</p>
 
-<div markdown="1" align="center">
-    <iframe src="http://prezi.com/embed/u4zb3h6s5vql/?bgcolor=ffffff&amp;lock_to_path=0&amp;autoplay=no&amp;autohide_ctrls=0&amp;features=undefined&amp;disabled_features=undefined" width="650" height="500" frameBorder="0"></iframe>
-</div>
+<p>As an example, here is the top 10 files from <a href="https://github.com/rabbitmq/rabbitmq-server">rabbitmq-server</a> repository</p>
 
-
-<p>See other great content &amp; presentations @ <a href="http://www.cloudbees.com/jenkins-user-conference-2012-israel-abstracts.cb">this link</a></p>
+<pre><code>845  src/rabbit_amqqueue_process.erl
+711  src/rabbit_channel.erl
+650  src/rabbit_tests.erl
+588  src/rabbit_variable_queue.erl
+457  src/rabbit_amqqueue.erl
+448  src/rabbit_mnesia.erl
+405  src/rabbit.erl
+395  src/rabbit_reader.erl
+360  src/rabbit_msg_store.erl
+356  src/rabbit_exchange.erl
+</code></pre>
 </div>
   
   
@@ -122,7 +126,7 @@ See presentation on prezi:</p>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012/07/03/Speeding-Up-NuGet-Server/">Speeding Up NuGet.Server</a></h1>
+      <h1 class="entry-title"><a href="/blog/2011/01/24/git-maven/">Maven and Git</a></h1>
     
     
       <p class="meta">
@@ -138,486 +142,664 @@ See presentation on prezi:</p>
   
 
 
-<time datetime="2012-07-03T00:00:00-04:00" pubdate data-updated="true"></time>
+<time datetime="2011-01-24T07:00:00-05:00" pubdate data-updated="true">Jan 24<span>th</span>, 2011</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p><em>(Get the source code at <a href="https://github.com/themotleyfool/NuGet">https://github.com/themotleyfool/NuGet</a>)</em></p>
+  <div class="entry-content"><p>More and more Maven projects are switching from Subversion to Git, and the majority of those projects make the same mistake: They configure <em>scm</em> section of POM to point to remote repository, the same way they did it in Subversion</p>
 
-<p>Last time I wrote about creating a LINQ provider for Lucene.Net, and today I&rsquo;ll talk about integrating that provider
-with NuGet. The existing server part of the NuGet codebase is a drop-in replacement for using local file-system based
-feeds. I wanted to try to preserve that turnkey advantage but improve the performance of various queries.</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;scm&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;url&gt;</span>http://github.com/SpringSource/spring-batch<span class="nt">&lt;/url&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;connection&gt;</span>scm:git:git://github.com/SpringSource/spring-batch.git<span class="nt">&lt;/connection&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;developerConnection&gt;</span>scm:git:ssh://git@github.com/SpringSource/spring-batch.git<span class="nt">&lt;/developerConnection&gt;</span>
+</span><span class='line'><span class="nt">&lt;/scm&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>In order to make sure that my improvements were up to snuff, I set up a private mirror of all packages on <a href="http://nuget.org/">nuget.org</a>,
-which turned out to be 44,193 packages at the time, for a total size of over 20 gigs.</p>
 
-<p>If you try hitting ~/api/v2/Packages on stock NuGet.Server, you&rsquo;ll find that your request just spins and spins. And spins. In fact
-it took so long that I gave up waiting for the application to initialize. In the background, the server is finding all <code>*.nupkg</code>
-files in ~/Packages and calculating a hash of the contents. Needless to say, it can take a while to run a checksum algorithm on 20gb
-of data.</p>
+<p>By doing this they lose the main benefit of Git. They become dependent on the remote machine. And when their release depends on the remote machine, that&rsquo;s what happens: They need to release the project but the remote machine is down</p>
 
-<p>Switching over to my custom lucene branch, the first time the site is started, it scans the Packages folder and finds all packages
-that haven&rsquo;t been indexed by Lucene. The site homepage helpfully tells you the current status, such as &ldquo;Indexing 2113 of 44193 new packages.&rdquo;
-An ajax timer refreshes the info every few seconds so progress can be easily tracked.</p>
+<p><img class="center" src="/images/posts/github-down.jpg"></p>
 
-<p>The packages don&rsquo;t begin to appear in the feed until they&rsquo;ve all been indexed. So this isn&rsquo;t much better than stock NuGet.Server.</p>
+<p>The right way of configuring Git in Maven is following</p>
 
-<h2>Incremental Indexing</h2>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;scm&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;url&gt;</span>scm:git:file://.<span class="nt">&lt;/url&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;connection&gt;</span>scm:git:file://.<span class="nt">&lt;/connection&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;developerConnection&gt;</span>scm:git:file://.<span class="nt">&lt;/developerConnection&gt;</span>
+</span><span class='line'><span class="nt">&lt;/scm&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>The real improvements are appreciated after the initial index is built.</p>
 
-<pre><code>[celdredge@localhost]$ appcmd recycle apppool nuget
-"nuget" successfully recycled
+<p>This configuration is universal, and it separates two orthogonal concerns: releases and remote copies.</p>
 
-[celdredge@localhost]$ time wget -O /dev/null http://localhost/api/v2/Packages
+<h3>Resources</h3>
 
-(snip)
+<ul>
+<li><a href="http://ascii.io/a/3459">Screencast</a> that shows how to work with Git in Maven projects.</li>
+</ul>
 
-real    0m3.230s
-user    0m0.062s
-sys     0m0.125s
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/09/12/JBoss-Selenium-Maven-Hudson-M2-Extra-Steps-Files-Found-Trigger-Plugins-Playing-Well-Together/">JBoss, Selenium, Maven, Hudson, M2 Extra Steps & Files Found Trigger Plugins Playing Well Together</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-09-12T18:09:00-04:00" pubdate data-updated="true">Sep 12<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>JBoss, Selenium, Maven, Hudson, <a href="http://wiki.hudson-ci.org/display/HUDSON/M2+Extra+Steps+Plugin">M2 Extra Steps</a> &amp; <a href="http://wiki.hudson-ci.org/display/HUDSON/Files+Found+Trigger">Files Found Trigger</a> plugins &ndash; how do all these work together in a continuous build + Integration test life-cycle ?</p>
+
+<p><strong>The Story &ndash; The Use Case</strong>:</p>
+
+<p>We have two projects with two war artifacts which need to be deployed to a JBoss Application Server, whilst both webapps share a common base configuration, although the release life-cycle of each war have no correlation to the other.</p>
+
+<p>In production both application servers are running &amp; serving one another thus, Integration test should cover both JBoss instances &amp; test their web services.</p>
+
+<p>We are using selenium tests for both webapps and they need to run straight after a continuous build of each of the servers mentioned above. That said a change in project A or in project B should trigger the Integration tests job, whilst if either project A or project B are running the integration test plugin shouldn&rsquo;t run (at least until both projects / one of them is complete).</p>
+
+<p><strong>The &ldquo;work around&rdquo; &ndash; forcing the &ldquo;native Hudson&rdquo; configuration</strong> (which we didn&rsquo;t go with naturally):</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2010/09/12/JBoss-Selenium-Maven-Hudson-M2-Extra-Steps-Files-Found-Trigger-Plugins-Playing-Well-Together/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/09/07/hudson-pinned-slash-pinning-plugins/">Hudson - Pinned/pinning Plugins</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-09-07T19:14:00-04:00" pubdate data-updated="true">Sep 7<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/hudson_logo.png" title="'Hudson Logo'" >If you wish to &ldquo;hang on&rdquo; to a certain plugin which shipps with hudson.war just unpin it in the Manage Hudson >> Manage Plugins page &ndash; this option is availabe sine <a href="http://www.hudson-ci.org/download/war/1.374/hudson.war">1.374 release</a> (and you can alwasy grab the latest @: <a href="http://www.hudson-ci.org/latest/hudson.war">latest</a>)</p>
+
+<p>See full explanation below quoted from <a href="http://wiki.hudson-ci.org">hudson wiki</a>:</p>
+
+<p>The notion of <strong>pinned plugins</strong> applies to plugins that are bundled with Hudson, such as the Subversion plugin.</p>
+
+<p>Normally, when you upgrade/downgrade Hudson, its built-in plugins overwrite whatever versions of the plugins you currently have in $HUDSON_HOME. This ensures that you use the consistent version of those plugins. However, this behavior also means that those plugins can be never manually updated, as every time you start Hudson they&rsquo;ll be replaced by the bundled versions.</p>
+
+<p>So when you manually update those bundled plugins, Hudson will mark those plugins as pinned to the particular version. Pinned plugins will never be overwritten by the bundled plugins during Hudson boot up. However, by definition, with pinned plugins you lose the benefit of automatic upgrade when you upgrade Hudson.</p>
+
+<p>So the plugin manager in Hudson allows you to explicitly unpin plugins. On file system, Hudson creates an empty file called $HUDSON_HOME/plugins/plugin.hpi.pinned to indicate the pinning. This file can be manually created/deleted to control the pinning behavior.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/09/01/remove-the-all-view-in-hudson-plus-view-enhancement-plugins/">Remove the All View in Hudson + View Enhancement Plugins</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-09-01T19:22:00-04:00" pubdate data-updated="true">Sep 1<span>st</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/hudson_logo.png" title="'Hudson Logo'" >I had tow motivations of getting rid of the All view</p>
+
+<ol>
+<li>The <em><strong>All view</strong></em> is quite annoying don&rsquo;t you think? After using Hudson for a while you have tens/hundreds of jobs lined up in a huge list &ndash; who needs that right.</li>
+<li>I wanted a &ldquo;<em><strong>hidden jobs section</strong></em>&rdquo; &ndash; Jobs no one but myself (and who ever needs access to it) can see.</li>
+</ol>
+
+
+<p>In order to get rid of it (the <em><strong>All view</strong>)****</em>simply:
+ </div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2010/09/01/remove-the-all-view-in-hudson-plus-view-enhancement-plugins/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/08/27/The-hudson-plugins-you-cant-live-without/">The Hudson Plug-ins You Can&#8217;t Live Without</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-27T09:18:00-04:00" pubdate data-updated="true">Aug 27<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/hudson_logo.png" title="'Hudson Logo'" >This post was originally posted &amp; active @: <a href="http://www.tikalk.com/node/4994">http://www.tikalk.com</a>
+As a big fan of hudson-ci I would like to take a note of the most commonly used hudson plug-ins (at least by me) needed in order to maintain a good build environment.
+This list was collected as part of my experience in the last couple of years. I am sure your may differ then mine mine :).</p>
+
+<p><strong>Setenv plug-in</strong></p>
+
+<p>The <a href="http://wiki.hudson-ci.org/display/HUDSON/Setenv+plug-in">The Setenv plug-in</a> lets you set environment variables for a job upon build execution. During migration from CruiseControl I found this plug-in extremely useful, for I could provide the imported script the exact environment it had on the CC machine without the need to change a thing in the build&rsquo;s logic / parameters, this also applied to the following recommended plug-in:</p>
+
+<p><strong>Parameterized Trigger plug-in</strong></p>
+
+<p>The <a href="http://wiki.hudson-ci.org/display/HUDSON/Parameterized+Trigger+plug-in">Parameterized Trigger</a> plug-in lets you add parameters to your build jobs that users enter when they trigger a build. This a very useful plug-in for release or deployment automation, for example, where you want to enter the version number (or label) you want to release or deploy. The biggest feature of this plug-in is the default value so even automatic / SCM triggers get a default value to execute silently.</p>
+
+<p><strong>The <a href="http://wiki.hudson-ci.org/display/HUDSON/Cygpath+plug-in">Cygpath plug-in</a></strong></p>
+
+<p><img class="left" src="/assets/images/small_cygwin-logo.jpg" title="'Cygpath plug-in'" > for a *nix oriented guy as myself, this was a great help, all our &ldquo;special&rdquo; shell script do not have to be re-written when we are running builds on Windows nodes &ndash; and yest we have too &hellip; :)</p>
+
+<p>The Cygpath gave me the opportunity to share tools between linux and windows machines this gave us the ability to maintain one tool repository for all our slave regardless of their architecture.</p>
+
+<p>And did I forget to say all you need it to enable this and automatically every batch executed on a windows slave will automatically use Cygwin ? from Cygpath wiki:</p>
+
+<ul>
+<li><p>You install Cygwin on all the Windows slaves</p></li>
+<li><p>Jobs on Hudson that assume Unix environment can now run on all the slaves (including Windows ones)</p></li>
+<li><p>In the system configuration, you use Unix paths for all your tools.</p></li>
+</ul>
+
+
+<p><strong>Promoted Builds plug-in</strong></p>
+
+<p><img class="left" src="/assets/images/promotion.png" title="'Promotion'" >Definitely the #1 plug-in on the list here &ndash; this plug-in enables you to do almost anything you can do in a certain Job but run it as a promotion task &ndash; if you wish to promote you build to your QA team for testing, or if you want to tag it in SVN or Deploy your artifacts to a maven repository, this is the plug-in you &ldquo;cannot live without&rdquo;. Without this plug-in you will need to configure a separate job or Bach Task (see <a href="http://wiki.hudson-ci.org/display/HUDSON/Batch+Task+plug-in">batch tasks plug-in</a> for more details) for every task you want to perform on your build &ndash; which makes managing Hudson job a nightmare &hellip;</p>
+
+<p><strong>Clover plug-in</strong></p>
+
+<p><img class="left" src="/assets/images/logo-clover.png" title="'Clover logo'" >
+<a href="http://www.atlassian.com/software/clover/">Clover</a> is a non-free code coverage tool which is the commercial alternative to Cobertura Emma etc, the Hudson <a href="http://wiki.hudson-ci.org/display/HUDSON/Clover+plug-in">Clover</a> plug-in is an amazing add on which integrates Clover reports and Historical reports into the build flow, which I found extremely helpful. Try configuring Clover to generate historical reports and then publish them to some third-party web server for viewing &ndash; this has made Clover integration a breeze, the challenge is even bigger with a distributed build environment which Hudson &amp; Clover plug-in have overcome.</p>
+
+<p><img src="/assets/images/CloverSS_0.png" alt="" /></p>
+
+<p>If you don&rsquo;t have Clover, as mentioned above &ndash; the <a href="http://wiki.hudson-ci.org/display/HUDSON/Cobertura+plug-in">Cobertura</a> and <a href="http://wiki.hudson-ci.org/display/HUDSON/Emma+plug-in">Emma</a> plug-ins are great too which will also integrate with:</p>
+
+<p><strong>Sonar plug-in</strong></p>
+
+<p><img class="left" src="/assets/images/sonar_0.png" title="'Sonar logo'" >
+Although I am only &ldquo;P.O.C ing&rdquo; Sonar+Hudson+Clover, The <a href="http://wiki.hudson-ci.org/display/HUDSON/Sonar+plug-in">Sonar</a> plug-in made it trivial to integrate hudson projects with Sonar. <a href="http://sonar.codehaus.org/">Sonar</a> is a powerful open source code quality metrics reporting tool, which displays code quality metrics for multiple projects in a variety of ways on a centralized web location.</p>
+
+<p>For Maven based builds you do not even need to change a line of code in order to get sonar to work which made this module a <a href="http://search.twitter.com/search?q=%232">#2</a> on my &ldquo;can&rsquo;t live without plug-ins&rdquo;.</p>
+
+<p><strong>Sectioned View plug-in<a href="http://wiki.hudson-ci.org/display/HUDSON/Setenv+plug-in"><br/>
+</a></strong></p>
+
+<p><a href="http://wiki.hudson-ci.org/display/HUDSON/Sectioned+View+plug-in">Sectioned view</a> gives you the ability to create a &ldquo;Dashboard view&rdquo; for your job(s) / project(s) &ndash; it is quite feature rich if you take a look at it&rsquo;s configuration and it is very simple to comprehend. A great example is taken from the plug-ins wiki page see:</p>
+
+<p><img src="/assets/images/sectioned.png" alt="Section view scrrenshot" /></p>
+
+<p><strong>Nested Views plug-in</strong></p>
+
+<p><a href="http://wiki.hudson-ci.org/display/HUDSON/Nested+View+plug-in">Nested view</a>s another View type which allows grouping job views into multiple levels instead of one big list of tabs &ndash; this is quite useful and the only disadvantage is you can have both a view and jobs in the same page it&rsquo;s either a nested view or a list of views &ndash; but I presume it will sure be included.</p>
+
+<p><strong>Shelve Project plug-in</strong></p>
+
+<p>If you ever wanted to Hide a jo you are working on and you also would like to prevent it from being triggered by mistake this is the plug-in for you. I often find my self setting up a job and it becomes a work in progress so hiding it to a later time is a great help &ndash; this plug-in does just that.</p>
+
+<p><strong>Bugzilla &amp; Jira plug-ins</strong> (&amp; there or others I presume)</p>
+
+<p><img class="left" src="/assets/images/bugzilla.png" title="'Bugzilla logo'" >Well the fact I need both in the same Hudson cluster and I can still have them work side by side was really important. In order for this plug-in to serve you well your CM team has to some extra work on your SCM side, that done you got yourself a link directly into your bug tracking system &ndash; the latest versions, query <a href="http://wiki.hudson-ci.org/display/HUDSON/Bugzilla+plug-in">Bugzilla</a> &amp; <a href="http://wiki.hudson-ci.org/display/HUDSON/JIRA+plug-in">Jira</a> and can display the Bug details.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/08/17/Job-configuration-change-in-Hudson-1.372/">Job Configuration Change in Hudson 1.372</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-17T09:11:00-04:00" pubdate data-updated="true">Aug 17<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/hudson_logo.png" title="'Hudson Logo'" >Yesterday I upgraded hudson to the greatest an latest which was a seamless upgrade.</p>
+
+<p>A very obvious change in the Job configuration form was added instead of &ldquo;<strong>Tie Build to a node</strong>&rdquo;:
+<img src="/assets/images/old-slave-daialog_0.png" title="'old_slave_selection_dialog'" ></p>
+
+<p>There is now <strong>&ldquo;Restrict where this project can be run&rdquo;</strong>:</p>
+
+<p><img src="/assets/images/new-slave-daialog_0.png" title="'new__slave_selection_dialog'" ></p>
+
+<p>The disadvantage in this feature is if you want to a build to a node you need to know its name / node group name prior to the actual configuration. The Advantage of this feature is you can be more specific in where you want you build to run and with a large number of slaves this is quite important, <strong>Please note</strong>: &ldquo;old&rdquo; jobs aren&rsquo;t affected of this change.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/03/01/Start-tomcat-in-build-process/">Starting Tomcat as Part of the Build Process With HUDSON-CI</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-03-01T09:11:00-05:00" pubdate data-updated="true">Mar 1<span>st</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/hudson_logo.png" title="'Hudson Logo'" >In one of my previous projects I needed to deploy 2 Tomcat servers as part of the build process, this could be done by profiling the parent project with a Deploy life cycle although we wanted to avoid errors due to miss use &ndash; therefore leave this task for a continues integration server &ndash; you guessed right &ndash; HUDSON.</p>
+
+<p>My test consisted on completing two build life cycles of <em><strong>mvn clean install</strong> </em>then collect three wars, deploy into a remote Tomcat webapps dir, set some spring.properties and start both Tomcats.</p>
+
+<p>So this task seemed quite simple for Hudson to be able to execute, my recipe was:</p>
+
+<ol>
+<li>A parametrized build &ndash; which will set the remote tomcat home &amp; remote db variables (passed in spring.properties within wars) [<a href="#figure1">see example scrrenshot below</a>]</li>
+<li>A hudson slave instance (so I will build directly on the remote host)</li>
+<li><a href="http://wiki.hudson-ci.org//display/HUDSON/M2+Extra+Steps+Plugin">The m2 extras steps plugin</a></li>
+</ol>
+
+
+<p>After running the build about half a dozen times I learned that Hudson is killing those Tomcats as soon as the build is successful &ndash; this seemed odd.</p>
+
+<p>The build consisted of deploying 3 war files into webapps dir, taking tomcat down, overriding spring.properties files in each war and then start two tomcats instances so new setting are effective.</p>
+
+<p>On the remote machine during build time, <em>netstat</em> showed that services are up and running, in addition to Hudson&rsquo;s build log wchich showed all wars were copied and all spring.properties files are in place &ndash; so what could be the issue here?</p>
+
+<p>At some point it occurred to me &ndash; and seemed almost natural that these services should be killed, because they are forked / sub processes of Hudson, and therefore will not continue &ldquo;living&rdquo; once there parent process is dead.</p>
+
+<p>So still how do you solve this?</p>
+
+<p>The solution was to pass an argument to Hudson called BUILD_ID with a default value of dontkillme which solved the issue.</p>
+
+<p>you can read about this &ndash; it will probably save you some time if your in the same situation see: <a href="http://issues.hudson-ci.org/browse/HUDSON-2729?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel">HUDSON-2729</a></p>
+
+<p><em>Although according to the above link</em>:</p>
+
+<pre><code>"This is fixed in 1.283.
+
+The side effect of this is that if someone has been intentionally spawning
+processes, those will be killed, too. This is based on environment variables, so
+to work around this, you can spawn processes with one of the environment
+variables different from what Hudson sets. For example,
+BUILD_ID=dontKillMe catalina.sh start
+will start Tomcat in such a way that it'll escape the killing."
 </code></pre>
 
-<p>This means that you don&rsquo;t have to worry much about IIS shutting down the application during idle times. The index gets loaded and ready to go
-in a matter of seconds. Vast improvement over stock NuGet.Server.</p>
+<p>I am running on 1.338 and this is still an issue &ndash; but, I was performing the build via slave, which might complicate the issue. For it is not only a sub process of Hudson, but a &ldquo;sub-process of a sub-process&rdquo; &ndash; now, if you recall I am running a parametrized build so I set the BUILD_ID=dontkillme as a default parameter to this build, and I solved this issue.</p>
 
-<p>While that happens, a background thread scans the Packages folder to see what might have changed while the application was stopped. New, modified
-and deleted packages are synchronized with the Lucene index. The sycnhronization process takes about 25 seconds to scan 44,193 package files
-split into 6,180 folders and calculate the differences with the Lucene index. That&rsquo;s pretty fast.</p>
+<p><strong>Hope you find this useful</strong></p>
 
-<p>After the application finishes this initial scan, a FileSystemWatcher monitors the Packages folder to synchronize any changes in real time.
-This allows the index to stay in sync when new packages appear, even if they are copied into the folder instead of using <code>nuget push</code>.</p>
+<p>Parametrized build example:</p>
 
-<h2>Superfast Search</h2>
+<p><img src="/assets/images/Screenshot-1.png" alt="Hudson CI parameters" /></p>
+</div>
+  
+  
 
-<p>All sorts of complex queries are possible, and they execute in very reasonable time. I used <a href="http://www.linqpad.net/">LINQPad</a> to
-construct various test queries, like this one that finds packages whose id contain lucene but do not start with lucene:</p>
 
-<pre><code>from p in Packages
-where p.Id.Contains("Lucene")
-where !p.Id.StartsWith("Lucene")
-where p.IsLatestVersion
-orderby p.Id descending
-select p
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/01/06/Ant-early-release/">Apprentelly Ant-1.80RC1 Has Been Release on the 12th of January 2010</a></h1>
+    
+    
+      <p class="meta">
+        
 
-Query successful (00:00.136)
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-01-06T09:11:00-05:00" pubdate data-updated="true">Jan 6<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Apparently without us noticing it is the 12th of January already and Ant 1.80RC1 has been released :)</p>
+
+<p><img src="/assets/images/ant-180RC1.PNG" alt="Ant - 1.80RC1" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/10/22/parsing-files-using-groovy-regex/">Parsing Files Using Groovy Regex</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-10-22T08:00:00-04:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In my previous <a href="/2009/09/25/groovy-regular-expressions/">post</a> I mentioned several ways of defining regular expressions in Groovy. Here I want to show how we can use Groovy regex to find the data in the files.</p>
+
+<h2>Parsing properties file (simplified)<sup>1</sup></h2>
+
+<p><em>Data:</em> each line in the file has the same structure; the entire line can be matched by single regex.</p>
+
+<p><em>Task:</em> transform each line to the object.</p>
+
+<p><em>Solution:</em> construct regex with capturing parentheses, apply it to each line, extract captured data.</p>
+
+<p><em>Demonstrates:</em> <code>File.eachLine</code> method, matrix syntax of <em>Matcher</em> object.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">properties</span> <span class="o">=</span> <span class="o">[:]</span>
+</span><span class='line'><span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="s1">&#39;path/to/some.properties&#39;</span><span class="o">).</span><span class="na">eachLine</span> <span class="o">{</span> <span class="n">line</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">((</span><span class="n">matcher</span> <span class="o">=</span> <span class="n">line</span> <span class="o">=~</span> <span class="s">/^([^#=].*?)=(.+)$/</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">properties</span><span class="o">[</span><span class="n">matcher</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">1</span><span class="o">]]</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">2</span><span class="o">]</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="n">println</span> <span class="n">properties</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Parsing CSV files (simplified)<sup>2</sup></h2>
+
+<p><em>Data:</em> each line in the file has the same structure; the line consists of the blocks separated by some character sequence.</p>
+
+<p><em>Task:</em> transform each line to the list of objects.</p>
+
+<p><em>Solution:</em> construct regex with capturing parentheses, parse each line with the regex in a loop extracting captured data.</p>
+
+<p><em>Demonstrates:</em> <code>~//</code> <em>Pattern</em> defenition, <code>Matcher.group</code> method, <code>\G</code> regex meta-sequence.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">regex</span> <span class="o">=</span> <span class="o">~</span><span class="s">/\G(?:^|,)(?:&quot;([^&quot;]*+)&quot;|([^&quot;,]*+))/</span>
+</span><span class='line'><span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="s1">&#39;path/to/file.csv&#39;</span><span class="o">).</span><span class="na">eachLine</span> <span class="o">{</span> <span class="n">line</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="kt">def</span> <span class="n">fields</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>    <span class="kt">def</span> <span class="n">matcher</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">line</span><span class="o">)</span>
+</span><span class='line'>    <span class="k">while</span> <span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">find</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">fields</span> <span class="o">&lt;&lt;</span> <span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span> <span class="o">?:</span> <span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="mi">2</span><span class="o">))</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">println</span> <span class="n">fields</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Finding snapshot dependencies in the POM (simplified)<sup>3</sup></h2>
+
+<p><em>Data:</em> file contains blocks with known boundaries (possibly spanning multiple lines).</p>
+
+<p><em>Task:</em> extract the blocks satisfying some criteria.</p>
+
+<p><em>Solution:</em> read the entire file into the string, construct regex with capturing parentheses, apply the regex to the string in a loop.</p>
+
+<p><em>Demonstrates:</em> <code>File.text</code> property, list syntaxt of <em>Matcher</em> object, named capture, global <code>\x</code> regex modifier, local <code>\s</code> regex modifier.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">pom</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s1">&#39;path/to/pom.xml&#39;</span><span class="o">).</span><span class="na">text</span>
+</span><span class='line'><span class="kt">def</span> <span class="n">matcher</span> <span class="o">=</span> <span class="n">pom</span> <span class="o">=~</span> <span class="s">$/(?x)</span>
+</span><span class='line'><span class="s">    &lt;dependency&gt;                          \s*</span>
+</span><span class='line'><span class="s">      &lt;groupId&gt;([^&lt;]+)&lt;/groupId&gt;          \s*</span>
+</span><span class='line'><span class="s">      &lt;artifactId&gt;([^&lt;]+)&lt;/artifactId&gt;    \s*</span>
+</span><span class='line'><span class="s">      &lt;version&gt;(.+?-SNAPSHOT)&lt;/version&gt;   (?s:.*?)</span>
+</span><span class='line'><span class="s">    &lt;/dependency&gt;</span>
+</span><span class='line'><span class="s">/$</span>
+</span><span class='line'><span class="n">matcher</span><span class="o">.</span><span class="na">each</span> <span class="o">{</span> <span class="n">matched</span><span class="o">,</span> <span class="n">groupId</span><span class="o">,</span> <span class="n">artifactId</span><span class="o">,</span> <span class="n">version</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="n">println</span> <span class="s2">&quot;$groupId:$artifactId:$version&quot;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Finding stacktraces in the log</h2>
+
+<p><em>Data:</em> file contains entries each of which starts with the same pattern and can span multiple lines. Typical example is log4j log files:</p>
+
+<pre><code>2009-10-16 15:32:12,157 DEBUG [com.ndpar.web.RequestProcessor] Loading user
+2009-10-16 15:32:13,258 ERROR [com.ndpar.web.UserController] id to load is required for loading
+java.lang.IllegalArgumentException: id to load is required for loading
+     at org.hibernate.event.LoadEvent.(LoadEvent.java:74)
+     at org.hibernate.event.LoadEvent.(LoadEvent.java:56)
+     at org.hibernate.impl.SessionImpl.get(SessionImpl.java:839)
+     at org.hibernate.impl.SessionImpl.get(SessionImpl.java:835)
+     at org.springframework.orm.hibernate3.HibernateTemplate$1.doInHibernate(HibernateTemplate.java:531)
+     at org.springframework.orm.hibernate3.HibernateTemplate.doExecute(HibernateTemplate.java:419)
+     at org.springframework.orm.hibernate3.HibernateTemplate.executeWithNativeSession(HibernateTemplate.java:374)
+     at org.springframework.orm.hibernate3.HibernateTemplate.get(HibernateTemplate.java:525)
+     at org.springframework.orm.hibernate3.HibernateTemplate.get(HibernateTemplate.java:519)
+     at com.ndpar.dao.UserManager.getUser(UserManager.java:90)
+     ... 62 more
+2009-10-16 15:32:14,659 DEBUG [com.ndpar.jms.MessageListener] Received message:
+     ... multi-line message ...
+2009-10-16 15:32:15,169 INFO  [com.ndpar.dao.UserManager] User: ...
 </code></pre>
 
-<p>136ms is pretty respectable, IMO.</p>
+<p><em>Task:</em> find entries satisfying some criteria.</p>
 
-<p>Another advantage to using Lucene is how queries are analyzed. Term queries will match various word forms, so a query like <tt>build</tt> will
-match packages that use any words like build, builds, building, built, etc. It is also possible to search for phrase queries, such as
-<tt>&ldquo;glue them back together&rdquo;</tt>. That query matches only one package that contains the exact phrase, whereas on nuget.org you&rsquo;ll get
-all kinds of results.</p>
+<p><em>Solution:</em> read the entire file into the string<sup>4</sup>, construct regex with capturing parentheses and lookahead, split the string into entries, loop through the result and apply criteria to each entry.</p>
 
-<h2>Other Features</h2>
+<p><em>Demonstrates:</em> regex interpolation, combined global regex modifiers <code>\s</code> and <code>\m</code>.</p>
 
-<p>The <a href="https://github.com/NuGet/NuGetGallery/wiki/Tab-Completion-API-Endpoints">Tab Completion API Endpoints</a> introduced in NuGet 2.0 have
-been implemented, bringing fast results to users of the Package Manager Console.</p>
-
-<h2>Conclusion</h2>
-
-<p>It has taken a substantial amount of time and effort to implement Lucene.Net.Linq and integrate it with NuGet.Server, but the results
-have proven to be worth the investment.</p>
-
-<p>Lucene.Net.Linq has become a fairly mature, though still nascent, project now available on <a href="http://nuget.org/packages/Lucene.Net.Linq">nuget.org</a>. There are a few other
-OSS projects that attempt to do what it does, but I think it is already one of the best.</p>
-
-<p>Binaries of NuGet.Server + Lucene can be downloaded from <a href="https://github.com/themotleyfool/NuGet/downloads">https://github.com/themotleyfool/NuGet/downloads</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/06/04/on-phonegap-slash-cordova-and-cross-platform-mobile-development/">On PhoneGap/Cordova and Cross Platform Mobile Development</a></h1>
-    
-    
-      <p class="meta">
-        
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">log</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s1">&#39;path/to/your.log&#39;</span><span class="o">).</span><span class="na">text</span>
+</span><span class='line'><span class="kt">def</span> <span class="n">logLineStart</span> <span class="o">=</span> <span class="s">/^\d{4}-\d{2}-\d{2}/</span>
+</span><span class='line'><span class="kt">def</span> <span class="n">splitter</span> <span class="o">=</span> <span class="n">log</span> <span class="o">=~</span> <span class="s">$/(?xms)</span>
+</span><span class='line'><span class="s">    (    ${logLineStart}   .*?)</span>
+</span><span class='line'><span class="s">    (?=  ${logLineStart} | \Z)</span>
+</span><span class='line'><span class="s">/$</span>
+</span><span class='line'><span class="n">splitter</span><span class="o">.</span><span class="na">each</span> <span class="o">{</span> <span class="n">matched</span><span class="o">,</span> <span class="n">entry</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">entry</span> <span class="o">=~</span> <span class="s">/(?m)^(?:\t| {8})at/</span><span class="o">)</span> <span class="n">println</span> <span class="n">entry</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-04T12:34:00-04:00" pubdate data-updated="true">Jun 4<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>So last weekend I was at <a href="http://overtheair.org/">Over The Air 2012</a> &ndash; on of my favorite regular Hack days &ndash; and for the first time I decided to actually try and make a &ldquo;native&rdquo; mobile app.</p>
-
-<p>Seeing as I don&rsquo;t want to have to redo the app for every platform I decided to try out one of the more famous cross platform development frameworks: <a href="http://phonegap.com/">PhoneGap</a>.</p>
-
-<p>Here are some of the things I discovered during the weekend:</p>
+<h3>Resources</h3>
 
 <ul>
-<li>PhoneGap isn&rsquo;t really a framework. It&rsquo;s really nothing more than a wrapper around a local HTML page with an extra JS library to access native features like the camera, local storage, etc.</li>
-<li>Although <a href="http://jquerymobile.com/">jQuery Mobile</a> looks very nice, it seems to emulate iOS, making it look out of place on any Android or Windows device.</li>
-<li>PhoneGap in combination with jQuery Mobile allows you to very quickly make a static native app, but as soon as you want to add any dynamics it seems to become quite hard. You will need some kind of JS MVC to tie it all together.</li>
-<li>I had a play with <a href="http://knockoutjs.com/">KnockoutJS</a> &ndash; which we already use at <a href="http://emberads.com">EmberAds</a> &ndash; but it had its issues:
-
-<ul>
-<li>Good tutorials on how to integrate with jQuery Mobile were missing, and I was encountering rendering issues.</li>
-<li>It&rsquo;s not really a MVC, and tying it to template partials seemed harder than it should.</li>
-<li>Automatic storage of models to local storage/server was missing.</li>
-</ul>
-</li>
+<li>Groovy <a href="http://groovy.codehaus.org/Regular+Expressions">regexes</a></li>
+<li>Groovy <a href="http://groovy.codehaus.org/Groovy+CLI">one-liners</a></li>
+<li>Using <a href="http://mrhaki.blogspot.com/2009/10/groovy-goodness-using-replaceall.html">String.replaceAll</a> method</li>
 </ul>
 
 
-<p>So although I&rsquo;m happy with the work we did on the first version of our app it clearly will need a rewrite in time to be viable. Here&rsquo;s some of the research I&rsquo;ve done so far:</p>
+<h3>Footnotes</h3>
 
-<ul>
-<li>I will probably replace Knockout with <a href="http://backbonejs.org/">BackboneJS</a> which seems to be more flexible and actually support storing to server and/or local storage.</li>
-<li>Alternatively I might look at <a href="http://docs.sencha.com/touch/2-0/">Sensa Touch 2.0</a> which seems to be more than just a UI framework but actually also include a full MVC framework.</li>
-<li>I found some tutorial describing how to integrate PhoneGap, jQuery Mobile, and Backbone, <a href="https://github.com/ccoenraets/backbone-directory/tree/master/jquerymobile">including a bootstrapped app</a> that integrates them all in a way I might be able to re-use.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/05/08/opencodecamp-where-the-best-of-hackdays-and-barcamps-come-together/">OpenCodeCamp - Where the Best of HackDays and BarCamps Come Together</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-05-08T12:18:00-04:00" pubdate data-updated="true">May 8<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>tl;dr</h3>
-
-<p>I want to run a new kind of event: <strong>OpenCodeCamp</strong> (working title). OpenCodeCamp should be an event that promotes knowledge sharing and skills swapping amongst developers of any age or level of experience. It should be free of commercialism, competition, sexism, racism, age-ism and accessible to developers of any seniority.</p>
-
-<p>Read the full post and leave a comment if you want to get involved.</p>
+<ol>
+<li>This example is for demonstration purposes only. In real program you would just use <code>Properties.load</code> method.</li>
+<li>The regex is simplified. If you want the real one, take a look at Jeffrey Friedl&rsquo;s <a href="http://regex.info/listing.cgi?ed=3&amp;p=401">example</a>.</li>
+<li>Again, in reality you would find snapshots using <code>mvn dependency:resolve | grep SNAPSHOT</code> command.</li>
+<li>This approach won&rsquo;t work for big files. Take a look at this <a href="http://github.com/ndpar/utilities/blob/master/stacktraces.groovy">script</a> for practical solution.</li>
+</ol>
 
 </div>
   
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/05/08/opencodecamp-where-the-best-of-hackdays-and-barcamps-come-together/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/04/29/what-i-miss-about-hackdays-dot-dot-dot/">What I Miss About HackDays</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-29T17:49:00-04:00" pubdate data-updated="true">Apr 29<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&rsquo;ve been attending HackDays since 2007 when I travelled to Alexandra Palace for the first <a href="http://upcoming.yahoo.com/event/173371/LONDON/London/Yahoo-BBC-Hackday-2007/Alexandra-Palace/">HackDay organised by Yahoo and the BBC</a>. I was a n00b at that time (some might say I still am, #shakesfist) and I had no idea what to build. At the time I was trying to learn how to use web frameworks and at the HackDay I got my first exposures to APIs, Django, Rails, OpenID and much more. I don&rsquo;t think I made anything that weekend, but damn did I learn a lot!</p>
-
-<p>Since then we&rsquo;ve come a long way; HackDays are no longer just organised by big organisations. There&rsquo;s pretty much one happening every weekend (sometimes more), and they are more often than not focussed around a topic. I attended at least 20 HackDays since, and I even helped organise <a href="http://www.hackcamp.org.uk/">not 1 but 2 HackCamps</a> with <a href="http://geeksoflondon.com">GeeksOfLondon</a>.</p>
-
-<p>But lately I&rsquo;ve been noticing a little trend. I was at <a href="http://www.gamehack.co.uk/">GameHack</a> yesterday and I had come to have a fun weekend to play with some APIs, maybe play with some WebGL libraries, and get an idea of how game development works. I am not a game developer and don&rsquo;t intend to be one, but I always enjoy learning new things.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/04/29/what-i-miss-about-hackdays-dot-dot-dot/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/04/19/tech-on-my-radar/">Tech on My Radar</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-19T23:19:00-04:00" pubdate data-updated="true">Apr 19<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Here are just some interesting gems and other software that have caught my attention recently:</p>
-
-<ul>
-<li><a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a> makes it easy to use zshell as a replacement for bash on OS X. It is very easy to install and comes with a whole bunch of useful plugins. I&rsquo;ve only really dived half into it but already feel like it&rsquo;s been making my console better. I personally love how it shows the Git branch I&rsquo;m working on at the moment.</li>
-<li><a href="http://en.wikipedia.org/wiki/Bloom_filter">Bloom Filters</a> are a very cool way of doing a quick and space efficient lookup if an item exists in a set. It&rsquo;s used by databases and caches, and Google uses it for their Save Browsing service. There&rsquo;s some cool <a href="https://github.com/igrigorik/bloomfilter-rb">ruby gems</a> that make it easy to use them and I already have an idea where to deploy them next.</li>
-<li><a href="http://zachholman.com/talk/how-github-uses-github-to-build-github">How Github uses Github</a> is pretty much how we use Github at EmberAds. The more we do it the more I see the benefits especially:
-
-<ul>
-<li>We work asynchronously</li>
-<li>We use the hell out of Campfire</li>
-<li>Master is always deployable</li>
-<li>Pull Requests are our code reviews, requests for comments, and discussion boards.</li>
-<li>Other apps have great features like prioritising stuff. But honestly, we have barely touched BaseCamp in weeks.</li>
-</ul>
-</li>
-<li><a href="https://github.com/EmberAds/cuuid">Fast UUID generation</a> is something we needed at EmberAds seeing as we use UUIDs everywhere and most of the Ruby gems were rather slow.    <a href="http://caius.name">Caius</a> cooked up a Ruby gem that uses a native C library which in our simple benchmarks spit out UUIDs about 6x faster.</li>
-<li>On that note, <a href="https://github.com/EmberAds/acts_as_uuid">acts_as_uuid</a> is what we use to store UUIDs on our models in Postgres.</li>
-<li><a href="https://github.com/ondrejbartas/rake-progressbar">Rake progressbar</a> makes it easier for me to understand if I can go and make a brew or not when some of my rake tasks are running.</li>
-<li>And finally, static site generators like <a href="http://nanoc.stoneship.org/">Nanoc</a>, <a href="https://github.com/mojombo/jekyll">Jekyll</a>, and <a href="http://octopress.org/">Octopress</a> (used on this site) have been really catching my eye lately. Mainly because of the security and scaling implications. I&rsquo;ve been working on a blog post on this, mainly to inspire regular bloggers that you don&rsquo;t need a big server and a massive database to render a Wordpress site that will load slow as hell regardless.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/04/12/add-terms-and-conditions-validation-to-omniauth-identity/">Add Terms & Conditions Validation to Omniauth Identity</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-12T00:32:00-04:00" pubdate data-updated="true">Apr 12<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><div class="entry-content"><p><a href="https://github.com/intridea/omniauth-identity">Omniauth Identity</a> is a great identity provide that shipped with Omniauth 1.0 it can be a bit simple at times. I wanted to add a simple terms and conditions check on signup to my registration form and this is what I came up with.</p>
-
-<p>For this example I assume you already have a Omniauth Identity setup much like explained in <a href="http://railscasts.com/episodes/304-omniauth-identity">this Railscast</a>.</p>
-
-<h2>Step 1 - app/views/identities/new.html.erb</h2>
-
-<p>Add a checkbox to your form.</p>
-
-<div><script src='https://gist.github.com/2368233.js'></script>
-<noscript><pre><code>&lt;div class=&quot;field&quot;&gt;
-  &lt;%= label_tag :conditions %&gt;&lt;br&gt;
-  &lt;%= check_box_tag :conditions %&gt;
-&lt;/div&gt;</code></pre></noscript></div>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/04/12/add-terms-and-conditions-validation-to-omniauth-identity/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/04/10/the-hackday-manifesto/">The Hack Day Manifesto</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-10T15:30:00-04:00" pubdate data-updated="true">Apr 10<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>One of my friends, <a href="http://artisanofcode.com/">Dan</a>, started a document called <a href="http://hackdaymanifesto.com/">&ldquo;The Hack Day Manifesto&rdquo;</a> on the #GeeksOfLondon IRC channel a few days back. With the help of our community we managed to update it to a full document and it&rsquo;s now live.</p>
-
-<p>It&rsquo;s a must read if you ever plan to run a hack day or hackathon.</p>
-
-<p>It&rsquo;s already signed by quite a few hackday organisers including the GeeksOfLondon team and you can add your own name by simply <a href="https://github.com/hackdaymanifesto/hackdaymanifesto.github.com/">forking</a>, adding your name, and making a pull request.</p>
-
-<p><img class="center" src="/images/blog/2012/thehackdaymanifesto.png"></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/04/07/a-new-blog/">A New Blog</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-07T15:17:00-04:00" pubdate data-updated="true">Apr 7<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>It has been a while since I last blogged, and to be fair I&rsquo;ve been kinda busy, but I also was frustrated with my old blog. It was bloated and heavy to load, all mainly due to Wordpress and Site5&rsquo;s shared hosting. Wordpress started as a nice blogging platform but lately it has been pissing me off (more on this), and I realised that running a whole PHP script for pages that barely ever change is stupid.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/04/07/a-new-blog/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/03/29/bypassing-the-google-feed-api-cache/">Bypassing the Google Feed API Cache</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-03-29T23:22:00-04:00" pubdate data-updated="true">Mar 29<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="center" src="/images/posts/google_feed_api_meme.png"></p>
-
-<p>I noticed recently that the download count of the packages in my <a href="https://github.com/kmees/Octopress-NuGet-Aside">NuGet Aside</a> didn&rsquo;t update properly. As I <a href="/blog/2012/02/29/nuget-aside-for-octopress/">mentioned earlier</a>, I use the <a href="https://developers.google.com/feed/">Google Feed API</a> to get the data from the NuGet Gallery feed of an author. This indicrection is needed because the NuGet Gallery API doesn&rsquo;t support the <strong>jsonp</strong> response type (yet). Anyway, the problem is that Google caches the feeds heavily and only adds new entries but doesn&rsquo;t update existing ones. This means that the packages keep their download count of the first request.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/03/29/bypassing-the-google-feed-api-cache/">Read on &rarr;</a>
-    </footer>
   
 
 
@@ -644,23 +826,23 @@ OSS projects that attempt to do what it does, but I think it is already one of t
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/">Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/">A Deep Dive into AWS Reserved Instances</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/">6 reasons why large enterprises should move to Amazon Web Services</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/">CI and Test Automation utilizing OpenStack</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a>
       </li>
     
   </ul>

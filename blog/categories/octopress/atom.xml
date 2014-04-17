@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-17T10:29:53-04:00</updated>
+  <updated>2014-04-17T12:28:04-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -12,57 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Why Octopress ?]]></title>
-    <link href="http://bvajjala.github.io/blog/2013/02/24/why-octopress/"/>
-    <updated>2013-02-24T09:11:00-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2013/02/24/why-octopress</id>
-    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/octopress.png" title="&lsquo;Octopress Logo&rsquo;" >
-Yes I am a Hacker wannabe [Octopress slogen is &ldquo;A blogging framewrok for hackers&rdquo; &hellip; ].</p>
-
-<p>Now seriously, i&rsquo;ve been down the road with many blog / CMS engines, <a href="http://ww.drupal.org">Drupal</a>, <a href="http://wordpress.org/">Wordpress</a> and all I really wanted was
-a note-pad with no fancy WYSIWYG editor with a bazillion plug-ins which will enable me to embed images / videos or a simple syntax highlighter.</p>
-
-<p>So I found <a href="http://octopress.org/">Octopress</a> which is just frekin' simple to use + it&rsquo;s cheap [hosting on Github Pages]</p>
-
-<blockquote><p>Octopress is a framework designed by Brandon Mathis for Jekyll, the blog aware static site generator powering Github Pages. To start blogging with Jekyll, you have to write your own HTML templates, CSS, Javascripts and set up your configuration. But with Octopress All of that is already taken care of. Simply clone or fork Octopress, install dependencies and the theme, and you’re set.</p></blockquote>
-
-<ul>
-<li>Social links preloaded, Facebook, Twitter, disqus &amp; other are built-in</li>
-<li>Syntax high-lighting built-in</li>
-<li>there are more good reasons <a href="http://octopress.org/docs/">here</a> <a href="https://github.com/imathis/octopress/wiki/3rd-party-plugins">and here</a></li>
-</ul>
-
-
-<p>The only problem was / is migrating all the stuff I have on-line so that is still a work in progress &hellip;
-&ndash;>So I guess I&rsquo;ll have to see if this ones sticks!&lt;&ndash;</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Bypassing the Google Feed API Cache]]></title>
-    <link href="http://bvajjala.github.io/blog/2012/03/29/bypassing-the-google-feed-api-cache/"/>
-    <updated>2012-03-29T23:22:00-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2012/03/29/bypassing-the-google-feed-api-cache</id>
-    <content type="html"><![CDATA[<p><img class="center" src="/images/posts/google_feed_api_meme.png"></p>
-
-<p>I noticed recently that the download count of the packages in my <a href="https://github.com/kmees/Octopress-NuGet-Aside">NuGet Aside</a> didn&rsquo;t update properly. As I <a href="/blog/2012/02/29/nuget-aside-for-octopress/">mentioned earlier</a>, I use the <a href="https://developers.google.com/feed/">Google Feed API</a> to get the data from the NuGet Gallery feed of an author. This indicrection is needed because the NuGet Gallery API doesn&rsquo;t support the <strong>jsonp</strong> response type (yet). Anyway, the problem is that Google caches the feeds heavily and only adds new entries but doesn&rsquo;t update existing ones. This means that the packages keep their download count of the first request.</p>
-
-<!--more-->
-
-
-<p>After some experiments, I concluded that the caching behavior is solely based on the feed URL and modifying the URL in a way that it &lsquo;looks&rsquo; different but still returns the same data circumvents the cache. I created a salt function that returns a large number based on the current time which I just append to the URL as an additional query parameter (that gets ignored by the API).
-<code>javascript
-function salt() {
-  var now = new Date();
-  var saltDate = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-  return saltDate.getTime();
-}
-</code>
-As you may notice, the function returns the same number throughout the whole day. This way, the feed can still be cached but the data gets updated every day which is a good compromise !</p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[NuGet Aside for Octopress]]></title>

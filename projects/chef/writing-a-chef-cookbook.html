@@ -1,0 +1,551 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Writing a Chef Cookbook, or writing your first cookbook - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Writing a Chef Cookbook, or Writing Your First Cookbook In continuation to a Chef Introduction session we had last week on meetup, I thought a blog &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/projects/chef/writing-a-chef-cookbook.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about/home">Home</a></li> 
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/projects">Projects</a></li>
+  <li><a href="/about/resume">About Me</a></li>
+  <li><a href="/about/consulting">Consulting</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Writing a Chef Cookbook, or Writing Your First Cookbook</h1>
+    
+  </header>
+  
+  <p><img class="left" src="/assets/images/Opscode_chef_logo.png" title="'Chef Logo'" > In continuation to a Chef Introduction session we had <a href="http://meetup.tikalk.com/events/98888802/">last week on meetup</a>, I thought a blog post was called for in order to emphasize the process of writing a recipe. And/Or working with chef in general as a buy product of that.</p>
+
+<p>I will be using the basic &ldquo;ntp&rdquo; example Opscode uses on their wiki, but in order to understand the components of a recipe I will stretch it a bit further in order to show the true power of Attributes and Templates.</p>
+
+<p>At the end of this post [or now if you really insist] you can clone <a href="https://github.com/tikalk/chef-intro-repo">https://github.com/tikalk/chef-intro-repo</a> and see the ntp recipe alongside other stuff which was presented in the meetup.</p>
+
+<!-- more -->
+
+
+<p><strong>Prequisets:</strong></p>
+
+<ol>
+<li>A Chef server [see: <a href="http://www.tikalk.com/alm/blog/installing-chef-server">http://www.tikalk.com/alm/blog/installing-chef-server</a> if you want and set one up &hellip;]</li>
+<li>Configured Knife workstation</li>
+</ol>
+
+
+<p><strong>Step 1: Install the service you want to recipe &hellip; </strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>    yum install ntp
+</span><span class='line'>    rpm -ql ntp
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Identify:</p>
+
+<ul>
+<li><strong>package name</strong> you wish to install</li>
+<li>Files which are <strong>template</strong> candidates [which chef will need to populate with your data]</li>
+</ul>
+
+
+<p>I found the following:</p>
+
+<ul>
+<li>service name &ldquo;ntpd&rdquo; [ init file name: /etc/rc.d/init.d/ntpd ]</li>
+<li>configuration file our tempalte candidate &ldquo;/etc/ntp.conf&rdquo; [ also found via rpm -ql ]</li>
+</ul>
+
+
+<p><strong>Step 2: Setup a git repository [clone opscode&rsquo;s &ldquo;template&rdquo; repository]</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>    git clone git://github.com/opscode/chef-repo.git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Step 3: Create a cookbook  [named ntp]</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>    <span class="nb">cd</span> ~/chef-repo
+</span><span class='line'>    knife cookbook create ntp
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The knife command above will create the foloowing structure [under cookbooks directory]:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>    attributes/
+</span><span class='line'>    definitions/
+</span><span class='line'>    files/
+</span><span class='line'>    libraries/
+</span><span class='line'>    metadata.rb
+</span><span class='line'>    providers/
+</span><span class='line'>    README.rdoc
+</span><span class='line'>    recipes/
+</span><span class='line'>    resources/
+</span><span class='line'>    templates/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We <strong>won&rsquo;t</strong> be using all of these in this tutorial &hellip; highlighted are the ones we are going to use (at this stage)</p>
+
+<p><strong>Step 4: Create the recipe</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>    vim  cookbooks/ntp/recipes/default.rb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add the following ruby code [<a href="https://github.com/tikalk/chef-intro-repo/blob/d7a67f6a17f5a9308561c9350054223ed9d1f845/cookbooks/ntp/recipes/default.rb">link</a>]:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">package</span> <span class="s2">&quot;ntp&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">action</span> <span class="o">[</span><span class="ss">:install</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">template</span> <span class="s2">&quot;/etc/ntp.conf&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">source</span> <span class="s2">&quot;ntp.conf.erb&quot;</span>
+</span><span class='line'>    <span class="n">variables</span><span class="p">(</span> <span class="ss">:ntp_server</span> <span class="o">=&gt;</span> <span class="s2">&quot;time.nist.gov&quot;</span> <span class="p">)</span>
+</span><span class='line'>    <span class="n">notifies</span> <span class="ss">:restart</span><span class="p">,</span> <span class="s2">&quot;service[ntpd]&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">service</span> <span class="s2">&quot;ntpd&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">action</span> <span class="o">[</span><span class="ss">:enable</span><span class="p">,</span><span class="ss">:start</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The first block of code will use chefs built-in packadge installer providor to use the os&rsquo;s package manager (in our case yum/rpm) and use the service name &ldquo;ntp&rdquo; the one we located whilst installing the package in step1 above.</p>
+
+<p><strong>Step 5: Create a template</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>vim cookbooks/ntp/templates/default/ntp.conf.erb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Unlike files which are placed by chef &ldquo;as is&rdquo; files under templates folder ending with <strong>erb</strong> are interpolated and created on the <strong>node </strong>during a chef-client run.</p>
+
+<p>The content of the file [<a href="https://github.com/tikalk/chef-intro-repo/blob/d7a67f6a17f5a9308561c9350054223ed9d1f845/cookbooks/ntp/templates/default/ntp.conf.erb">link</a>]:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">restrict</span> <span class="n">default</span> <span class="n">kod</span> <span class="n">nomodify</span> <span class="n">notrap</span> <span class="n">nopeer</span> <span class="n">noquery</span>
+</span><span class='line'><span class="n">restrict</span> <span class="o">-</span><span class="mi">6</span> <span class="n">default</span> <span class="n">kod</span> <span class="n">nomodify</span> <span class="n">notrap</span> <span class="n">nopeer</span> <span class="n">noquery</span>
+</span><span class='line'><span class="n">restrict</span> <span class="mi">127</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span>
+</span><span class='line'><span class="n">restrict</span> <span class="o">-</span><span class="mi">6</span> <span class="o">::</span><span class="mi">1</span>
+</span><span class='line'><span class="n">server</span> <span class="o">&lt;%=</span> <span class="vi">@ntp_server</span> <span class="o">%&gt;</span>
+</span><span class='line'><span class="n">server</span>  <span class="mi">127</span><span class="o">.</span><span class="mi">127</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span>     <span class="c1"># local clock</span>
+</span><span class='line'>    <span class="n">driftfile</span> <span class="sr">/var/</span><span class="n">lib</span><span class="o">/</span><span class="n">ntp</span><span class="o">/</span><span class="n">drift</span>
+</span><span class='line'>    <span class="n">keys</span> <span class="sr">/etc/n</span><span class="n">tp</span><span class="o">/</span><span class="n">keys</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this simple use case line #7 from  cookbooks/ntp/recipes/default.rb will be the one setting the ntp_server parameter for the tempalte file in line #5 of the template above.</p>
+
+<p>At this stage you could create a <strong>role </strong>add this recipe to a<strong>run_list </strong>and it will just work &hellip; until you try to apply this recipe on <strong>ubuntu </strong>for example, there you will find an issue with the service name &hellip; and whilst were at it , let&rsquo;s add support for more than one ntp server [in case the single one we added is down :(].</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>    apt-get install ntp
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Will reveal the issue I just mentioned and</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>
+</span><span class='line'>dpkg -L ntp
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>will give us the list of files [ /etc/ntp.conf ] and service name [ ntp ] => notice in this case there is no &ldquo;d&rdquo; at the end.</p>
+
+<p><strong>Step 6: Improovment #1 &ndash; adding service name resolution to our recipe</strong></p>
+
+<p>Add an attributes file:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>    vim  cookbooks/ntp/attributes/default.rb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With the following content:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>    <span class="k">case</span> <span class="n">platform</span>
+</span><span class='line'>    <span class="k">when</span> <span class="s2">&quot;redhat&quot;</span><span class="p">,</span><span class="s2">&quot;centos&quot;</span><span class="p">,</span><span class="s2">&quot;fedora&quot;</span><span class="p">,</span><span class="s2">&quot;scientific&quot;</span>
+</span><span class='line'>      <span class="n">default</span><span class="o">[</span><span class="ss">:ntp</span><span class="o">][</span><span class="ss">:service</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;ntpd&quot;</span>
+</span><span class='line'>    <span class="k">when</span> <span class="s2">&quot;ubuntu&quot;</span><span class="p">,</span><span class="s2">&quot;debian&quot;</span>
+</span><span class='line'>      <span class="n">default</span><span class="o">[</span><span class="ss">:ntp</span><span class="o">][</span><span class="ss">:service</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;ntp&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="n">default</span><span class="o">[</span><span class="ss">:ntp</span><span class="o">][</span><span class="ss">:service</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;ntpd&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This case statement will help our recipe in the service name resolution for redhat / centos &amp; other rpm based distros &ldquo;<strong>ntpd</strong>&rdquo; for ubutnu / debian use &ldquo;<strong>ntp</strong>&rdquo;.</p>
+
+<p>Let&rsquo;s tell our recipe to respect this attribute &hellip;:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>    <span class="n">package</span> <span class="s2">&quot;ntp&quot;</span> <span class="k">do</span>
+</span><span class='line'>        <span class="n">action</span> <span class="o">[</span><span class="ss">:install</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">service</span> <span class="n">node</span><span class="o">[</span><span class="ss">:ntp</span><span class="o">][</span><span class="ss">:service</span><span class="o">]</span> <span class="k">do</span>
+</span><span class='line'>        <span class="n">service_name</span> <span class="n">node</span><span class="o">[</span><span class="ss">:ntp</span><span class="o">][</span><span class="ss">:service</span><span class="o">]</span>
+</span><span class='line'>        <span class="n">action</span> <span class="o">[</span><span class="ss">:enable</span><span class="p">,</span><span class="ss">:start</span><span class="p">,</span><span class="ss">:restart</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">template</span> <span class="s2">&quot;/etc/ntp.conf&quot;</span> <span class="k">do</span>
+</span><span class='line'>        <span class="n">source</span> <span class="s2">&quot;ntp.conf.erb&quot;</span>
+</span><span class='line'>        <span class="n">owner</span> <span class="s2">&quot;root&quot;</span>
+</span><span class='line'>        <span class="n">group</span> <span class="s2">&quot;root&quot;</span>
+</span><span class='line'>        <span class="n">mode</span> <span class="mo">0644</span>
+</span><span class='line'>        <span class="n">notifies</span> <span class="ss">:restart</span><span class="p">,</span> <span class="n">resources</span><span class="p">(</span><span class="ss">:service</span> <span class="o">=&gt;</span> <span class="n">node</span><span class="o">[</span><span class="ss">:ntp</span><span class="o">][</span><span class="ss">:service</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The diff is in line #7 &amp; line #12 which now uses the node:[ntp][:service] attribute we defined in the <em><strong>attributes.rb</strong></em> file above.</p>
+
+<p><strong>Step 7: Add support for more than 1 ntp server</strong></p>
+
+<p>In cookbooks/ntp/attributes/default.rb file add the following array:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>    <span class="n">default</span><span class="o">[</span><span class="ss">:ntp</span><span class="o">][</span><span class="ss">:servers</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;0.pool.ntp.org&quot;</span><span class="p">,</span> <span class="s2">&quot;1.pool.ntp.org&quot;</span><span class="p">,</span> <span class="s2">&quot;2.pool.ntp.org&quot;</span><span class="p">,</span> <span class="s2">&quot;3.pool.ntp.org&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And in our template file let&rsquo;s add support for more than one line of ntp server:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>    <span class="c1"># Generated by Chef for &lt;%= node[:fqdn] %&gt; </span>
+</span><span class='line'>    <span class="c1"># node[:fqdn] = ohai data collected on node !</span>
+</span><span class='line'>    <span class="c1"># Local modifications will be overwritten.</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">restrict</span> <span class="o">-</span><span class="mi">6</span> <span class="o">::</span><span class="mi">1</span>
+</span><span class='line'>    <span class="c1">#server &lt;%= @ntp_server %&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">&lt;</span><span class="sx">% node[:ntp][:servers].each </span><span class="k">do</span> <span class="o">|</span><span class="n">ntpsrv</span><span class="o">|</span> <span class="o">-</span><span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">      server &lt;%= ntpsrv %&gt;</span> <span class="n">iburst</span>
+</span><span class='line'>      <span class="n">restrict</span> <span class="o">&lt;%=</span> <span class="n">ntpsrv</span> <span class="sx">%&gt; nomodify notrap noquery</span>
+</span><span class='line'><span class="sx">    &lt;% end -%&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">restrict</span> <span class="n">default</span> <span class="n">kod</span> <span class="n">nomodify</span> <span class="n">notrap</span> <span class="n">nopeer</span> <span class="n">noquery</span>
+</span><span class='line'>    <span class="n">restrict</span> <span class="o">-</span><span class="mi">6</span> <span class="n">default</span> <span class="n">kod</span> <span class="n">nomodify</span> <span class="n">notrap</span> <span class="n">nopeer</span> <span class="n">noquery</span>
+</span><span class='line'>    <span class="n">restrict</span> <span class="mi">127</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">server</span>  <span class="mi">127</span><span class="o">.</span><span class="mi">127</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span>     <span class="c1"># local clock</span>
+</span><span class='line'>    <span class="n">driftfile</span> <span class="sr">/var/</span><span class="n">lib</span><span class="o">/</span><span class="n">ntp</span><span class="o">/</span><span class="n">drift</span>
+</span><span class='line'>    <span class="n">keys</span> <span class="sr">/etc/n</span><span class="n">tp</span><span class="o">/</span><span class="n">keys</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see I marked out linet #5 which is our old ntp decleration</p>
+
+<p>and added lines# 7-10:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>    <span class="o">&lt;</span><span class="sx">% node[:ntp][:servers].each </span><span class="k">do</span> <span class="o">|</span><span class="n">ntpsrv</span><span class="o">|</span> <span class="o">-</span><span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">      server &lt;%= ntpsrv %&gt;</span> <span class="n">iburst</span>
+</span><span class='line'>      <span class="n">restrict</span> <span class="o">&lt;%=</span> <span class="n">ntpsrv</span> <span class="sx">%&gt; nomodify notrap noquery</span>
+</span><span class='line'><span class="sx">    &lt;% end -%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>chef will itterate over the array and inject the vlaues in our case whilst using defaults we will recieve the following:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>      server 0.pool.ntp.org iburst
+</span><span class='line'>     restrict 0.pool.ntp.org nomodify notrap noquery
+</span><span class='line'>      server 1.pool.ntp.org iburst
+</span><span class='line'>     restrict 1.pool.ntp.org nomodify notrap noquery
+</span><span class='line'>      server 2.pool.ntp.org iburst
+</span><span class='line'>     restrict 2.pool.ntp.org nomodify notrap noquery
+</span><span class='line'>      server 3.pool.ntp.org iburst
+</span><span class='line'>     restrict 3.pool.ntp.org nomodify notrap noquery
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&rsquo;s it all is left is to upload this cookbook to your chef server and add it to one of your nodes and you are good to go.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>    knife cookbook upload ntp
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(you might want to bump the version up just so it becomes a habbit &ndash; edit the <em><strong>metadata.rb</strong></em> file under the recipies directory).</p>
+
+<p>Coming up [hopefully in the next few days] a test environment for chef cookbooks &ndash; I will be taking this example and present how to setup an environment for testing combining Chef-Solo (in case you don&rsquo;t have a chef server), <a href="http://www.vagrantup.com/">Vergrant </a>&amp; <a href="https://www.google.co.il/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;ved=0CDAQFjAA&amp;url=https%3A%2F%2Fwww.virtualbox.org%2F&amp;ei=cdf7UIK1NKTd4QTwp4CQBQ&amp;usg=AFQjCNHpshI_45ZdaFl7Mvf-glSeroKujQ&amp;sig2=470cYUQ3VveKdRKuE-2TYw&amp;bvm=bv.41248874,d.bGE">VirtualBox</a></p>
+
+<p>Fell free to comment / remark :)</p>
+
+  
+    <footer>
+      
+      
+        <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/projects/chef/writing-a-chef-cookbook.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/projects/chef/writing-a-chef-cookbook.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      
+    </footer>
+  
+</article>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/">A Deep Dive into AWS Reserved Instances</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/">6 reasons why large enterprises should move to Amazon Web Services</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/">CI and Test Automation utilizing OpenStack</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

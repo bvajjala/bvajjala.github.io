@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>DevOps in the cloud Tutorial - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="DevOps in the Cloud Tutorial Lesson 1 &ndash; Walkthrough of Pipeline Components Learning Objectives By the end of this lesson you will be able to: &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/projects/tutorials/devopsincloud">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="no-sidebar"  class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about/home">Home</a></li> 
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/projects">Projects</a></li>
+  <li><a href="/about/resume">About Me</a></li>
+  <li><a href="/about/consulting">Consulting</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">DevOps in the Cloud Tutorial</h1>
+    
+  </header>
+  
+  <h1><a href="01/index.html">Lesson 1 &ndash; Walkthrough of Pipeline Components</a></h1>
+
+<h2>Learning Objectives</h2>
+
+<p>By the end of this lesson you will be able to:</p>
+
+<ul>
+<li>Check in changes to application code.</li>
+<li>Make simple configuration changes.</li>
+<li>Change an existing automated test.</li>
+<li>Make scripted changes to the database.</li>
+<li>Make a change to a simple build script.</li>
+<li>Make a change to a deployment script.</li>
+<li>Make a change to the infrastructure scripts.</li>
+<li>Run Jenkins Continuous Integration server jobs.</li>
+<li>View and run jobs within a deployment pipeline.</li>
+<li>View static analysis reports.</li>
+<li>View feedback from a dashboard.</li>
+</ul>
+
+
+<h1><a href="02/index.html">Lesson 2 &ndash; Definitions, Practices, patterns and tools for implementing Continuous Delivery in the Cloud</a></h1>
+
+<h2>Learning Objectives</h2>
+
+<p>By the end of this lesson you will be able to:</p>
+
+<ul>
+<li>Define Continuous Delivery, DevOps, Continuous Deployment and the Cloud.</li>
+<li>Identify Practices, patterns and tools for implementing Continuous Delivery in the Cloud.</li>
+<li>Create a ‘spaghetti diagram’ and a ‘value-stream map’.</li>
+</ul>
+
+
+<h1><a href="03/index.html">Lesson 3 &ndash; Primer/Inrotduction to Amazon Web Services</a></h1>
+
+<h2>Learning Objectives</h2>
+
+<p>By the end of this lesson you will be able to:</p>
+
+<ul>
+<li>Create an Amazon Web Services (AWS) account and access services.</li>
+<li>Use basic features of the AWS Management Console.</li>
+<li>Define security groups.</li>
+<li>Use basic features of the Elastic Compute Cloud (EC2).</li>
+<li>Use basic features of Elastic Load Balancing (ELB).</li>
+<li>Employ Auto Scaling.</li>
+<li>Use Amazon CloudWatch to monitor resources.</li>
+<li>Use Amazon Route 53 to manage a domain.</li>
+<li>Use Amazon Simple Storage Service (S3) to store objects.</li>
+<li>Identify the basic features of AWS CloudFormation for automating infrastructures.</li>
+<li>Identify the basic features of AWS Elastic Beanstalk.</li>
+<li>Identify the purpose other available AWS services.</li>
+</ul>
+
+
+<h1><a href="04/index.html">Lesson 4 &ndash; Implemnting Continuous Integration pipeline in AWS</a></h1>
+
+<h2>Learning Objectives</h2>
+
+<p>By the end of this lesson you will be able to:</p>
+
+<ul>
+<li>Set up your development environment.</li>
+<li>Install and configure Jenkins plug-ins.</li>
+<li>Configure a scripted environment job.</li>
+<li>Configure a scripted build job.</li>
+<li>Configure a scripted deployment job.</li>
+<li>Configure and run on-demand jobs.</li>
+<li>Configure and run scheduled jobs.</li>
+<li>Configure and run continuous jobs.</li>
+<li>Create continuous feedback mechanisms.</li>
+</ul>
+
+
+<h1><a href="05/index.html">Lesson 5 &ndash; Implementing Infrastructure Automation in AWS</a></h1>
+
+<h2>Learning Objectives</h2>
+
+<p>By the end of this lesson you will be able to:</p>
+
+<ul>
+<li>Create a CloudFormation template.</li>
+<li>Integrate Puppet with CloudFormation.</li>
+<li>Create a transient environment.</li>
+<li>Lock down environments.</li>
+<li>Create a ‘Chaos Monkey’.</li>
+</ul>
+
+
+<h1><a href="06/index.html">Lesson 6 &ndash; Building and Deploying Software</a></h1>
+
+<h2>Learning Objectives</h2>
+
+<p>By the end of this lesson you will be able to:</p>
+
+<ul>
+<li>Script a build.</li>
+<li>Script a deployment.</li>
+<li>Set up and utilize a dependency-management repository.</li>
+<li>Deploy to target environments.</li>
+<li>Perform a self-service deployment.</li>
+</ul>
+
+
+<h1><a href="07/index.html">Lesson 7 &ndash; Configuration Management</a></h1>
+
+<h2>Learning Objectives</h2>
+
+<p>By the end of this lesson you will be able to:</p>
+
+<ul>
+<li>Work from the canonical version.</li>
+<li>Version system configurations and other artifacts.</li>
+<li>Setup a dynamic configuration management database.</li>
+</ul>
+
+
+<h1><a href="08/index.html">Lesson 8 &ndash; Database</a></h1>
+
+<h2>Learning Objectives</h2>
+
+<p>By the end of this lesson you will be able to:</p>
+
+<ul>
+<li>Script a database.</li>
+<li>Script the upgrade and downgrade of a database.</li>
+<li>Use a database sandbox.</li>
+</ul>
+
+
+<h1><a href="09/index.html">Lesson 9 &ndash; Testing</a></h1>
+
+<h2>Learning Objectives</h2>
+
+<p>By the end of this lesson you will be able to:</p>
+
+<ul>
+<li>View and run unit tests.</li>
+</ul>
+
+
+<h1><a href="10/index.html">Lesson 10 &ndash; Delivery Pipeline</a></h1>
+
+<h2>Learning Objectives</h2>
+
+<p>By the end of this lesson you will be able to:</p>
+
+<ul>
+<li>Create a delivery pipeline with dependent jobs.</li>
+</ul>
+
+
+  
+    <footer>
+      
+      
+    </footer>
+  
+</article>
+
+
+</div>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

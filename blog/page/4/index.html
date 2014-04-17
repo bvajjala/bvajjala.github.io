@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="I have been having a lot of internal debate about the idea of running more than one service in a docker container. A Docker container is built to run &hellip;">
+  <meta name="description" content="At DevOps Days Austin @mattray did an Openspace session on Omnibus which is a toolset based around the concept of installing an app and all of it& &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,1152 +76,6 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick/">Managing Docker Services With This One Easy Trick</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-20T15:46:00-04:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have been having a lot of internal debate about the idea of running more than one service in a docker container.   A Docker container is built to run a single process in the foreground and to live for only as long as that process is running.  This is great in a utopian world where servers are immutable and sysadmins drink tiki drinks on the beach,  however it doesn&rsquo;t always translate well to the real world.</p>
-
-<p>Examples where you might want to be able to run multiple servers span from the simple use case of running <code>sshd</code> as well as your application to running a web app such as <code>wordpress</code> where you might want both <code>apache</code> and <code>mysql</code> running in the same container.</p>
-
-<p>Wrapping your applications in a supervisor daemon such as <code>runit</code> seems like a perfect fit for this.  All you need to do is install <code>runit</code> as part of your <code>dockerfile</code> and then create appropriate service directories for the apps you want to run in the container.    I was doing some testing of this when I realized a quirk of <code>runit</code> which I could exploit for evil.</p>
-
-<p>To start or stop a service with <code>runit</code> is simply a matter of creating or deleting a symlink in a service directory,   so in theory if you could expose that directory to the server hosting the container you could exploit that to start and stop services from outside of the container.  <code>Docker</code> volume mapping allows exactly this!</p>
-
-<p>Below you will find examples of running three services (logstash,elasticsearch,kibana) that make up the <code>logstash</code> suite.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/25/vagrant-docker-and-ansible-wtf/">Vagrant, Docker and Ansible, WTF?</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-25T08:00:00-04:00" pubdate data-updated="true">Sep 25<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2013/09/25/vagrant-docker-and-ansible-wtf.html">Vagrant, Docker and Ansible. WTF?</a></h2>
-
-<p>Given that we&rsquo;re building a SaaS that helps our client managing their infrastructure, our team is pretty familiar with leveraging VMs and configuration management tools. We&rsquo;ve actually been heavy users of Vagrant and <a href="http://devo.ps/blog/2013/07/03/ansible-simply-kicks-ass.html">Ansible</a> for
-the past year, and it&rsquo;s helped us tremendously normalize our development process.</p>
-
-<p>As our platform grew in complexity, some additional needs emerged:</p>
-
-<ul>
-<li><strong>Containerization</strong>; we needed to be able to safely execute custom, and potentially harmful, code.</li>
-<li><strong>Weight</strong>; as we added more sub-systems to devo.ps, having full blown VMs proved to be hard to juggle with when testing and developing.</li>
-</ul>
-
-
-<p>And that&rsquo;s why we ended up adding Docker to our development workflow. We were already familiar with it (as it powers some parts of the devo.ps infrastructure) and knew there would be obvious wins. In practice, we are shipping Docker containers in a main Vagrant image and drive some of the customization and upgrade with Ansible.</p>
-
-<p>We&rsquo;ll probably write something about this approach in the coming weeks, but given the amount of confusion there is around what these technologies are, and how they&rsquo;re used, we thought we&rsquo;d give you a quick tour on how to use them together.</p>
-
-<p>Let&rsquo;s get started.</p>
-
-<h2>Vagrant</h2>
-
-<p>You&rsquo;ve probably heard about <a href="http://www.vagrantup.com/">Vagrant</a>; a healthy number of people have been writing about it in the past 6 months. For those of you who haven&rsquo;t, think of it as a VM without the GUI. At its core, Vagrant is a simple wrapper around Virtualbox/VMware.</p>
-
-<p>A few interesting features:</p>
-
-<ul>
-<li><strong>Boatloads of existing images</strong>, just check <a href="http://www.vagrantbox.es/">Vagrantbox.es</a> for example.</li>
-<li><strong>Snapshot and package your current machine</strong> to a Vagrant box file (and, consequently, share it back).</li>
-<li><strong>Ability to fine tune settings of the VM</strong>, including things like RAM, CPU, APIC…</li>
-<li><strong>Vagrantfiles</strong>. This allows you to setup your box on init: installing packages, modifying configuration, moving code around…</li>
-<li><strong>Integration with CM tools</strong> like Puppet, Chef and Ansible.</li>
-</ul>
-
-
-<p>Let&rsquo;s get it running on your machine:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>1. First, [download Vagrant](http://downloads.vagrantup.com/) 
-</span><span class='line'>     and [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
-</span><span class='line'>  2. Second, let's download an image, spin it up and SSH in:
-</span><span class='line'>   $ vagrant init precise64 http://files.vagrantup.com/precise64.box
-</span><span class='line'>   $ vagrant up
-</span><span class='line'>   $ vagrant ssh
-</span><span class='line'>  3. There's no 3.
-</span><span class='line'>  4. There's a 4 if you want to access your (soon to be) deployed app; 
-</span><span class='line'>  5. you will need to dig around the Vagrant documentation to 
-</span><span class='line'>     [perform port forwarding](http://docs.vagrantup.com/v2/networking/forwarded_ports.html), 
-</span><span class='line'>     [proper networking](http://docs.vagrantup.com/v2/networking/private_network.html) 
-</span><span class='line'>     and update manually your `Vagrantfile`.</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Docker</h2>
-
-<p><a href="http://docker.io">Docker</a> is a Linux container, written in <a href="http://golang.org">Go</a> (yay!) and based on <a href="http://en.wikipedia.org/wiki/LXC">lxc</a> (self-described as &ldquo;chroot on steroids&rdquo;) and <a href="http://en.wikipedia.org/wiki/Aufs">AUFS</a>. Instead of providing a full VM, like you get with Vagrant, Docker provides you lightweight containers, that share the same kernel and allow to safely execute independent
-processes.</p>
-
-<p>Docker is attractive for many reasons:</p>
-
-<ul>
-<li><strong>Lightweight</strong>; images are much lighter than full VMs, and spinning off a new instance is lightning fast (in the range of seconds instead of minutes).</li>
-<li><strong>Version control of the images</strong>, which makes it much more convenient to handle builds.</li>
-<li><strong>Lots of images</strong> (again), just have a look at <a href="https://index.docker.io">the docker public index of images</a>.</li>
-</ul>
-
-
-<p>Let&rsquo;s set up a Docker container on your Vagrant machine:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>1. SSH in Vagrant if you're not in already:
-</span><span class='line'>    
-</span><span class='line'>     $ vagrant ssh
-</span><span class='line'>
-</span><span class='line'>  2. Install Docker, 
-</span><span class='line'>  [as explained on the official website](http://http://docs.docker.io/en/latest/installation/ubuntulinux/#ubuntu-precise-12-04-lts-64-bit):
-</span><span class='line'>    
-</span><span class='line'>     $ sudo apt-get update
-</span><span class='line'>     $ sudo apt-get install linux-image-generic-lts-raring linux-headers-generic-lts-raring
-</span><span class='line'>     $ sudo reboot
-</span><span class='line'>     $ sudo sh -c "curl https://get.docker.io/gpg | apt-key add -"
-</span><span class='line'>     $ sudo sh -c "echo deb http://get.docker.io/ubuntu docker main &gt; /etc/apt/sources.list.d/docker.list"
-</span><span class='line'>     $ sudo apt-get update
-</span><span class='line'>     $ sudo apt-get install lxc-docker
-</span><span class='line'>
-</span><span class='line'>  3. Verify it worked by trying to build your first container:
-</span><span class='line'>    
-</span><span class='line'>     $ sudo docker run -i -t ubuntu /bin/bash
-</span><span class='line'>
-</span><span class='line'>  4. Great, but we'll need more than a vanilla Linux. To add our dependencies, for example to run a Node.js + MongoDB app, we're gonna start by creating a `Dockerfile`:
-</span><span class='line'>    
-</span><span class='line'>     FROM ubuntu
-</span><span class='line'>     MAINTAINER My Self me@example.com
-</span><span class='line'>     
-</span><span class='line'>     # Fetch Nodejs from the official repo (binary .. no hassle to build, etc.)
-</span><span class='line'>     ADD http://nodejs.org/dist/v0.10.19/node-v0.10.19-linux-x64.tar.gz /opt/
-</span><span class='line'>     
-</span><span class='line'>     # Untar and add to the PATH
-</span><span class='line'>     RUN cd /opt &amp;&amp; tar xzf node-v0.10.19-linux-x64.tar.gz
-</span><span class='line'>     RUN ln -s /opt/node-v0.10.19-linux-x64 /opt/node
-</span><span class='line'>     RUN echo "export PATH=/opt/node/bin:$PATH" &gt;&gt; /etc/profile
-</span><span class='line'>     
-</span><span class='line'>     # A little cheat for upstart ;)
-</span><span class='line'>     RUN dpkg-divert --local --rename --add /sbin/initctl
-</span><span class='line'>     RUN ln -s /bin/true /sbin/initctl
-</span><span class='line'>     
-</span><span class='line'>     # Update apt sources list to fetch mongodb and a few key packages
-</span><span class='line'>     RUN echo "deb http://archive.ubuntu.com/ubuntu precise universe" &gt;&gt; /etc/apt/sources.list
-</span><span class='line'>     RUN apt-get update
-</span><span class='line'>     RUN apt-get install -y python git
-</span><span class='line'>     RUN apt-get install -y mongodb
-</span><span class='line'>     
-</span><span class='line'>     # Finally - we wanna be able to SSH in
-</span><span class='line'>     RUN apt-get install -y openssh-server
-</span><span class='line'>     RUN mkdir /var/run/sshd
-</span><span class='line'>     
-</span><span class='line'>     # And we want our SSH key to be added
-</span><span class='line'>     RUN mkdir /root/.ssh &amp;&amp; chmod 700 /root/.ssh
-</span><span class='line'>     ADD id_rsa.pub /root/.ssh/authorized_keys
-</span><span class='line'>     RUN chmod 400 /root/.ssh/authorized_keys &amp;&amp; chown root. /root/.ssh/authorized_keys
-</span><span class='line'>     
-</span><span class='line'>     # Expose a bunch of ports .. 22 for SSH and 3000 for our node app
-</span><span class='line'>     EXPOSE 22 3000
-</span><span class='line'>     
-</span><span class='line'>     ENTRYPOINT ["/usr/sbin/sshd", "-D"]
-</span><span class='line'>
-</span><span class='line'>  5. Let's build our image now:
-</span><span class='line'>    
-</span><span class='line'>     $ sudo docker build .
-</span><span class='line'>     
-</span><span class='line'>     # Missing file id_rsa.pub ... hahaha ! You need an ssh key for your vagrant user
-</span><span class='line'>     $ ssh-keygen
-</span><span class='line'>     $ cp -a /home/vagrant/.ssh/id_rsa.pub .
-</span><span class='line'>     
-</span><span class='line'>     # Try again
-</span><span class='line'>     $ sudo docker build .
-</span><span class='line'>     
-</span><span class='line'>     # Great Success! High Five!
-</span><span class='line'>
-</span><span class='line'>  6. Now, let's spin off a container with that setup and log into it (`$MY_NEW_IMAGE_ID` is the last id the build process returned to you):
-</span><span class='line'>    
-</span><span class='line'>     $ sudo docker run -p 40022:22 -p 80:3000 -d $MY_NEW_IMAGE_ID
-</span><span class='line'>     $ ssh root@localhost -p 40022</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You now have a Docker container, inside a Vagrant box (<em>Inception</em> style),
-ready to run a Node.js app.</p>
-
-<h2>Ansible</h2>
-
-<p><a href="http://ansible.cc">Ansible</a> is an orchestration and configuration management tool written in Python. If you want to learn more about Ansible (and you should…), <a href="/blog/2013/07/03/ansible-simply-kicks-ass.html">we wrote about it a few weeks ago</a>.</p>
-
-<p>Let&rsquo;s get to work. We&rsquo;re now gonna deploy an app in our container:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>1. [Install Ansible](/blog/2013/07/03/ansible-simply-kicks-ass.html), as we showed you in our previous post.
-</span><span class='line'>
-</span><span class='line'>  2. Prepare your inventory file (`host`):
-</span><span class='line'>    
-</span><span class='line'>     app ansible_ssh_host=127.0.0.1 ansible_ssh_port=40022
-</span><span class='line'>
-</span><span class='line'>  3. Create a simple playbook to deploy our app (`deploy.yml`):
-</span><span class='line'>    
-</span><span class='line'>     ---
-</span><span class='line'>     - hosts: app
-</span><span class='line'>       user: root
-</span><span class='line'>       tasks:
-</span><span class='line'>         # Fetch the code from github
-</span><span class='line'>         - name: Ensure we got the App code
-</span><span class='line'>           git:
-</span><span class='line'>             repo=git://github.com/madhums/node-express-mongoose-demo.git
-</span><span class='line'>             dest=/opt/node-express-mongoose-demo
-</span><span class='line'>         
-</span><span class='line'>         # NPM may or may not succeed, if you give it time, care, etc. it eventually works
-</span><span class='line'>         - name: Ensure the npm dependencies are installed
-</span><span class='line'>           command:
-</span><span class='line'>             chdir=/opt/node-express-mongoose-demo
-</span><span class='line'>             /opt/node/bin/npm install
-</span><span class='line'>           ignore_errors: yes
-</span><span class='line'>           
-</span><span class='line'>         # We will assume no changes in the default sample - or we should consider templates instead
-</span><span class='line'>         - name: Ensure the config files of the app
-</span><span class='line'>           command:
-</span><span class='line'>             creates=/opt/node-express-mongoose-demo/config/$item.js
-</span><span class='line'>             cp /opt/node-express-mongoose-demo/config/$item.example.js /opt/node-express-mongoose-demo/config/$item.js
-</span><span class='line'>           with_items:
-</span><span class='line'>             - config
-</span><span class='line'>             - imager
-</span><span class='line'>             
-</span><span class='line'>         # `initctl` is now linking to `true` and we have no access to services
-</span><span class='line'>         # Need to fake the start
-</span><span class='line'>         - name: Ensure mongodb data folders
-</span><span class='line'>           file:
-</span><span class='line'>             state=directory
-</span><span class='line'>             dest=$item
-</span><span class='line'>             owner=mongodb
-</span><span class='line'>             group=mongodb
-</span><span class='line'>           with_items:
-</span><span class='line'>             - /var/lib/mongodb
-</span><span class='line'>             - /var/log/mongodb
-</span><span class='line'>             
-</span><span class='line'>         # Super cheat combo !
-</span><span class='line'>         - name: Ensure mongodb is running
-</span><span class='line'>           shell:
-</span><span class='line'>             LC_ALL='C' /sbin/start-stop-daemon --background --start --quiet --chuid mongodb --exec  /usr/bin/mongod -- --config /etc/mongodb.conf
-</span><span class='line'>         
-</span><span class='line'>         # Cheating some more !
-</span><span class='line'>         - name: Ensure the App is running
-</span><span class='line'>           shell:
-</span><span class='line'>             chdir=/opt/node-express-mongoose-demo
-</span><span class='line'>             /opt/node/bin/npm start &amp;
-</span><span class='line'>
-</span><span class='line'>  4. Run that baby:
-</span><span class='line'>    
-</span><span class='line'>     $ ansible-playbook -i host deploy.yml
-</span><span class='line'>
-</span><span class='line'>  5. We're done, point your browser at `http://localhost:80` - assuming you have performed the redirection mentioned in the initial setup of your vagrant box.</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That&rsquo;s it. You&rsquo;ve just deployed your app on Docker (in Vagrant).</p>
-
-<h2>Let&rsquo;s wrap it up</h2>
-
-<p>So we just saw (roughly) how these tools can be used, and how they can be
-complementary:</p>
-
-<ol>
-<li> Vagrant will provide you with a full VM, including the OS. It&rsquo;s great at providing you a Linux environment for example when you&rsquo;re on MacOS.</li>
-<li> Docker is a lightweight VM of some sort. It will allow you to build contained architectures faster and cheaper than with Vagrant.</li>
-<li> Ansible is what you&rsquo;ll use to orchestrate and fine-tune things. That&rsquo;s what you want to structure your deployment and orchestration strategy.</li>
-</ol>
-
-
-<p>It takes a bit of reading to get more familiar with these tools, and we&rsquo;ll likely follow up on this post in the next few weeks. However, especially as a small team, this kind of technology allows you to automate and commoditize huge parts of your development and ops workflows. We strongly encourage you to make that investment. It has helped us tremendously increase the pace and
-quality of our throughput.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/">Creating Immutable Servers With Chef and docker.io</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-07T18:18:00-04:00" pubdate data-updated="true">Sep 7<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Building applications in a <a href="http://docker.io">docker.io</a> Dockerfile is relatively simple,  but sometimes you want to just install the application exactly as you would normally via already built chef cookbooks.   Turns out this is actually pretty simple.</p>
-
-<p>The first thing you&rsquo;ll need to do is build a container with chef-client and berkshelf installed.   You can grab the one I&rsquo;ve built by running <code>docker pull paulczar/chef-solo</code> or build one youself from a <code>Dockerfile</code> that looks a little something like the following&hellip;</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/21/the-joy-and-pain-of-using-jekyll/">The Joy and Pain of Using Jekyll</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-21T22:48:00-04:00" pubdate data-updated="true">Aug 21<span>st</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&rsquo;ve been tempted to write a bit about Static Site Generators (SSGs) for a while now, mainly because I love them. I&rsquo;ve been using (Jekyll)[<a href="http://jekyllrb.com/">http://jekyllrb.com/</a>] for various projects for a while now and I love it. The simplified hosting, higher security, and general hackability are just a few pros that make it worth it.</p>
-
-<p>But they have also pained me, and after reading <a href="http://screamingatmyscreen.com/2013/8/the-joy-and-pain-of-using-a-static-site-generator-for-private-and-client-work/">&ldquo;The joy and pain of using a static site generator for private and client work&rdquo;</a> I thought I&rsquo;d add in my own few observations from a Jekyll perspective.</p>
-
-<h2>The joys</h2>
-
-<p>Why would I talk about Jekyll specifically? It has a lot of pros that make it
-one of the most popular SSGs out there, and hence worth dicussing. Here are just a few:</p>
-
-<ul>
-<li>It&rsquo;s extremely simple, has no predefined structure, just write HTML or Markdown and go</li>
-<li>No server side code is a big pro to me, easier deployment, easier security, simpler hosting.</li>
-<li>It&rsquo;s the default recommended SSG for <a href="http://pages.github.com/">Github Pages</a>, allowing you to use them as free hosting!</li>
-<li>Github even compiles Jekyll for you server side meaning you can use <a href="http://github.com">Github.com</a> to edit your site.</li>
-</ul>
-
-
-<h2>Pain points</h2>
-
-<p>Sadly not all is perfect and here are some of my main observations of working on a few Jekyll sites in small teams.</p>
-
-<h3>Forget about I18n</h3>
-
-<p>Most of you might not ever need any internationalisation but the day a client turns around to you and asks &ldquo;Can we translate this one page to Spanish?&rdquo; you will hate yourself for using Jekyll. Internationalisation is not standard supported and therefore a royal pain in the *** to do nice.</p>
-
-<p>Not to mention that you can&rsquo;t serve the same content in different languages under the same URL depending on the user&rsquo;s cookie or locale. Forget about it, ain&rsquo;t gonna happen.</p>
-
-<h3>No plugins on Github</h3>
-
-<p>There are a lot of plugins for Jekyll and they&rsquo;re awesome. There&rsquo;s even a few for I18n, though I never tried them. Sadly non of them are supported by Github. Sure, you can compile your code client side, then push the compiled code (including the plugin generated code) to the server. This stops you from quickly pushing any mayor changes without using a laptop.</p>
-
-<h3>No predefined structure</h3>
-
-<p>Jekyll is ridiculously simple. I think all you need is a config file and some HTML or Markdown and <strong>boom</strong> your site is there.  But when your site extends beyond a few files you quickly start adding some folders: images go into <code>/images/</code>, stylesheets into <code>/stylesheets/</code>, etc. But what about pages? Use <code>foo.html</code> or <code>foo/index.html</code>? Store the images for that pages in <code>/images/foo/</code> or <code>/foo/images/</code>?</p>
-
-<p>All of these decisions are easily made, but it does mean you need to explain every new decision to your colleagues, and it increases the technical debt when bringing onboard new developers.</p>
-
-<h3>Markdown is limited</h3>
-
-<p>I love Markdown but sometimes it can be such a pain. Especially when you want to go outside of the standard &ldquo;headers, paragraphs, links&rdquo; it can just be upsetting. Getting HTML inside Markdown to work in Jekyll used to (and probably still) require switching to a different Markdown parser, which wasn&rsquo;t supported on Github, etc.</p>
-
-<p>To be honest this is a bit of a pet peeve with Markdown, not Jekyll. Often all I want to do is just add a class to something, either a header or a link. I often wished Markdown supported something like this:</p>
-
-<script src="https://gist.github.com/cbetta/48c07f2bd1e1915aefa6.js"></script>
-
-
-<h2>Suggestions</h2>
-
-<p>In short, I think a few suggestions for the further improvements of Jekyll, Github Pages, and Markdown are at hand:</p>
-
-<ol>
-<li>Standard I18n support in Jekyll would be nice</li>
-<li>Support for some default &ldquo;safe&rdquo; plugins on Github would be amazing</li>
-<li>A generator to generate a &ldquo;default&rdquo; site structure would be nice and could help promote best practices.</li>
-<li>Markdown should support some basic classes and indexes, allowing easier application of CSS and JS.</li>
-</ol>
-
-
-<p>Alternatively I highly recommend using <a href="http://middlemanapp.com/">Middleman</a>, another SSG that seems to solve some of the pain points described above.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/16/cheffile-and-librarian-locks/">Cheffile &amp; &#8216;Librarian Locks&#8217;</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-16T00:56:00-04:00" pubdate data-updated="true">Aug 16<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/librarian.png" title="'librarian chef'" >
-If you don&rsquo;t know what librarian is &ndash; get to know it :) (it makes life much easier)[<a href="http://rubydoc.info/gems/librarian-chef">http://rubydoc.info/gems/librarian-chef</a>] than way back when &hellip;</p>
-
-<p>The most annoying thing happend to me earlier this evening, I was working on a cookbook [A chef cookbook &hellip;, I don&rsquo;t actually do the cooking at home :)], and running librarian install yielded the following error:</p>
-
-<pre><code>"Cheffile and Cheffile.lock are out of sync!"
-</code></pre>
-
-<p>So like a good boy I remoced the Cheffile.lock and ran it again resulting with the same damn error message &hellip; arrrrrr !</p>
-
-<p>So after examening my Cheffile over and over I noticed I have listed a dependency from two different location somthing like the followin [ clieng url&rsquo;s omitted from snippet ]:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'> <span class="c">#!/usr/bin/env ruby</span>
-</span><span class='line'>  <span class="c">#^syntax detection</span>
-</span><span class='line'>  site <span class="s2">&quot;http://shelf.clients_domain.corp:8080&quot;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;simple_proxy&#39;</span>, :git <span class="o">=</span>&gt; <span class="s1">&#39;git://clients_domain.corp/hagzag/simple_proxy.git&#39;</span>, :ref <span class="o">=</span>&gt; <span class="s1">&#39;master&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;nw-abap&#39;</span>,     :git <span class="o">=</span>&gt; <span class="s1">&#39;git://clients_domain.corp/hagzag/nw-abap.git&#39;</span>, :ref <span class="o">=</span>&gt; <span class="s1">&#39;master&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;sapinst&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c"># for lvm volume creation do this once ...</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;lvm&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;sap-lvm&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>,      :site <span class="o">=</span>&gt; <span class="s1">&#39;http://community.opscode.com/api/v1&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  cookbook <span class="s1">&#39;nfs&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you look a line numbers 11 &amp; 14 you will see I am specifying the smae cookbook from tow different sources &hellip;, this is a good thing, your dependecny mechanisem / tool isn&rsquo;t making decitions for you [ unlike Maven for exmaple &hellip; ].</p>
-
-<p>So in order to avoid this error and to comtinue working I had to remove one if the lines and I was good to go.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'> ...
-</span><span class='line'>  <span class="c">#cookbook &#39;line&#39;,      :site =&gt; &#39;http://community.opscode.com/api/v1&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  cookbook <span class="s1">&#39;nfs&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Another fraction on my time line &hellip;</p>
-
-<p>Enjoy.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/07/30/putting-the-web-into-webapi/">Putting the Web Into WebApi</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-30T22:05:00-04:00" pubdate data-updated="true">Jul 30<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>The .net api developers, the WebApi framework offers a compelling alternative
-to asp.net mvc for slinging json or (gasp) xml over http. One great feature
-you get out of the box is content negotiation, where WebApi will look at
-request headers to decide which format to use when processing a request
-body or sending back a response.</p>
-
-<p>WebApi also includes the concept of an ApiExplorer, a built in service that
-knows about all the routes, templates and parameters an application is
-configured to handle. It even supports attaching human friendly documentation.</p>
-
-<p>With these built in perks, WebApi gets you 95% of the way there. What it
-doesn&rsquo;t do out of the box, unfortunately, is something that it says right
-on the box. It doesn&rsquo;t do web.</p>
-
-<h2>HTTP, ReST and the Web</h2>
-
-<p>There&rsquo;s been a growing buzz around the idea that writing an application
-that speaks json does not give you something that can be called ReST.
-To get to ReST nirvana your api needs to speak with hypermedia, giving
-the client, in addition to data, links and forms that can do stuff with
-the data.</p>
-
-<p>If you aren&rsquo;t familiar with this distinction, here are some resources
-that sell the concept well:</p>
-
-<ul>
-<li><a href="http://martinfowler.com/articles/richardsonMaturityModel.html">Richardson Maturity Model</a></li>
-<li><a href="http://www.infoq.com/presentations/web-api-html">Building Hypermedia APIs with HTML</a> (talk by Jon Moore)</li>
-<li><a href="https://speakerdeck.com/stilkov">Many slides by Stefan Tilkov</a></li>
-<li><a href="https://speakerdeck.com/ammeep/exist-in-the-web-not-on-it">Exist In the Web &ndash; Not on it</a> by Amy Palamountain</li>
-</ul>
-
-
-<h2>Microdata</h2>
-
-<p>Jon Moore&rsquo;s work is particularly intriguing because he shows what
-you can already do with <a href="http://en.wikipedia.org/wiki/Microdata_(HTML">Microdata</a>).</p>
-
-<p>Microdata boils down to 3 attributes that you stick on elements in your
-html5 markup, and they&rsquo;re all you need to give a computer semantic
-data. You can nest properties into a scope, describe the type of data
-being represented, and even nest scopes with scopes recursively.</p>
-
-<p>Jon&rsquo;s talks show how a web client that speaks Microdata can already start
-on sites like <a href="http://ebay.com/">ebay.com</a> and find and manipulate resources
-without knowing anything ahead of time about what resources are there and
-what URLs are used to access them.</p>
-
-<h2>WebApi + Microdata</h2>
-
-<p>On the one hand we have a .net framework for writing HTTP apis that
-has pluggable support for different mime types. On the other hand we
-have html5 and Microdata. Think they could be friends?</p>
-
-<p>I&rsquo;m excited to announce HtmlMicrodataFormatter,
-a new open source (APL) project available
-on <a href="">nuget.org</a>
-and hosted on <a href="">GitHub</a>.</p>
-
-<p>When you install this package into your WebApi project, it adds two
-features.</p>
-
-<p>First, if you enter the URL for one of your api methods into a web
-browser, you get (relatively) nice, human friendly html5 back instead
-of the wall of xml you would otherwise be greeted with.</p>
-
-<p>Second, and perhaps more importantly, if you browse to ~/api,
-you will be greeted by an html5 page that includes links and
-forms for all the routes that are registered with ApiExplorer.</p>
-
-<p>If your routes are not templated, you can fill in the inputs
-and submit forms to test them out right in the browser. If your
-routes are templated, you can still use the forms in the browser,
-but you&rsquo;ll need to do some extra work to fill in the template
-and update the form action in javascript before the form is
-submitted. A future post will cover how this can be done.</p>
-
-<p>Turn on xml documentation for your project, rebuild, and now
-all the documentation comments you attach to your controllers
-and actions appear on the forms.</p>
-
-<h2>Why it Matters</h2>
-
-<p>Obviously, getting a free browser based form generated for
-each action can be a productivity boon for developers who
-are tired of writing</p>
-
-<pre><code>curl -X DELETE -H 'Accept: application/json' http://localhost:49497/api/users/fred'
-</code></pre>
-
-<p>But it&rsquo;s more than that. Make your client project use html5
-and instead of hard-coding URLs for each thing the client
-wants to do, it enters at /api, finds the form it wants,
-fills it in and submits it. The Microdata attributes in
-the response, along with links and forms, give the client
-the pieces it needs to drive state, just like Roy T. Fielding
-intended when ReST was first described.</p>
-
-<p>Have third party clients that consume your api? Now you
-don&rsquo;t have to give them a separate document or website
-that describes (out of band) how to use your api. Just
-link them to yourwebsite/api, and they can read the
-documentation and discover what they can do without
-guessing or following brittle conventions.</p>
-
-<p>Putting the web into WebApi removes the tight coupling
-between client and server. Now you can change your routes,
-rename parameters, add parameters, and the client will
-automatically see those changes reflected in the forms
-and links they see when they enter your api. No more <code>/api/v1/users</code>
-through <code>/api/v23/users</code>. No more api version headers.</p>
-
-<h2>Next Steps</h2>
-
-<p>HtmlMicrodataFormatter is pretty young and there are
-many ideas left to flesh out. For example, making it easy to add
-links and forms to the output of controller actions,
-or improving how xml documentation is collected and
-converted to html, or making it easier to link from
-resources to related resources with appropriate rel
-attributes, or, or, or…</p>
-
-<p>I hope you like HtmlMicrodataFormatter, and if you
-do, maybe get involved and help improve it by
-submitting feedback, bugs, enhancements or pull
-requests to the GitHub project.</p>
-
-<p>Similar to Jon Moore&rsquo;s python based microdata
-client, work has started on a .net dynamic
-client which I hope to share soon.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/07/13/install-xcode-cli-tools-via-script/">Install Xcode CLI Tools via Script</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-13T22:24:00-04:00" pubdate data-updated="true">Jul 13<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/xcode_cli.png" title="'Xcode CLI Tools'" >
-Well just got a mac from my new project <a href="http://www.facebook.com/photo.php?fbid=10151661183017850&amp;l=69918509f3">FB Status</a>&hellip; &ndash; couldn&rsquo;t resist it :)</p>
-
-<p>One of the tasks was to setup an environment, and learn what a mac is :), a few days later I&rsquo;m in love but still I need a way to destroy an recover
-my environment.
-I have a few plans like bash_it / oh_my_zsh &amp; others, but until then I put togter a few scripts [ more to come ], the first of them is this one installing Xcode CLI Tools on Mac OSX Mountain Lion.</p>
-
-<p>Install or (un-install) with the following simple command:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'> sudo bash &lt; &lt;<span class="o">(</span>curl -L https://raw.github.com/hagzag/xcode-cli-install/master/install.sh<span class="o">)</span>
-</span><span class='line'>  sudo bash &lt; &lt;<span class="o">(</span>curl -L https://raw.github.com/hagzag/xcode-cli-install/master/uninstall.sh<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The essence &hellip; see the rest on <a href="https://github.com/hagzag/xcode-cli-install">Github</a></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>detect_osx_version<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nv">result</span><span class="o">=</span><span class="sb">`</span>sw_vers -productVersion<span class="sb">`</span>
-</span><span class='line'>  ...
-</span><span class='line'>  <span class="nv">osxversion</span><span class="o">=</span><span class="s2">&quot;10.8&quot;</span>
-</span><span class='line'>  <span class="nv">osxvername</span><span class="o">=</span><span class="s2">&quot;Mountain Lion&quot;</span>
-</span><span class='line'>  <span class="nv">cltools</span><span class="o">=</span>xcode462_cltools_10_86938259a.dmg
-</span><span class='line'>  <span class="nv">mountpath</span><span class="o">=</span><span class="s2">&quot;/Volumes/Command Line Tools (Mountain Lion)&quot;</span>
-</span><span class='line'>  <span class="nv">mpkg</span><span class="o">=</span><span class="s2">&quot;Command Line Tools (Mountain Lion).mpkg&quot;</span>
-</span><span class='line'>  <span class="nv">pkg_url</span><span class="o">=</span><span class="s2">&quot;https://www.dropbox.com/s/hw45wvjxrkrl59x/xcode462_cltools_10_86938259a.dmg&quot;</span>
-</span><span class='line'>  <span class="nv">pkgmd5</span><span class="o">=</span><span class="s2">&quot;90c5db99a589c269efa542ff0272fc28&quot;</span>
-</span><span class='line'>  ...
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>download_tools <span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> -f /tmp/<span class="nv">$cltools</span> <span class="o">]</span>; <span class="k">then</span>
-</span><span class='line'><span class="k">    if</span> <span class="o">[</span> <span class="sb">`</span>md5 -q /tmp/<span class="nv">$cltools</span><span class="sb">`</span> <span class="o">=</span> <span class="s2">&quot;${pkgmd5}&quot;</span> <span class="o">]</span>; <span class="k">then</span>
-</span><span class='line'><span class="k">      </span><span class="nb">echo</span> -e <span class="s2">&quot;$info $cltools already downloaded to /tmp/$cltools.&quot;</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'><span class="k">       </span>rm -f /tmp/<span class="nv">$cltools</span>
-</span><span class='line'>    <span class="k">fi</span>
-</span><span class='line'><span class="k">  else</span>
-</span><span class='line'><span class="k">    </span><span class="nb">cd</span> /tmp <span class="o">&amp;&amp;</span> wget <span class="nv">$pkg_url</span> -O ./<span class="nv">$cltools</span>
-</span><span class='line'>  <span class="k">fi</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>install_tools<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="c"># Mount the Command Line Tools dmg</span>
-</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Mounting Command Line Tools...&quot;</span>
-</span><span class='line'>  hdiutil mount -nobrowse /tmp/<span class="nv">$cltools</span>
-</span><span class='line'>  <span class="c"># Run the Command Line Tools Installer</span>
-</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Installing Command Line Tools...&quot;</span>
-</span><span class='line'>  installer -pkg <span class="s2">&quot;$mountpath/$mpkg&quot;</span> -target <span class="s2">&quot;/Volumes/Macintosh HD&quot;</span>
-</span><span class='line'>  <span class="c"># Unmount the Command Line Tools dmg</span>
-</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Unmounting Command Line Tools...&quot;</span>
-</span><span class='line'>  hdiutil unmount <span class="s2">&quot;$mountpath&quot;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nv">gcc_bin</span><span class="o">=</span><span class="sb">`</span>which gcc<span class="sb">`</span>
-</span><span class='line'>  gcc --version &amp;&gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> -e <span class="s2">&quot;$info gcc found in $gcc_bin&quot;</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img class="right" src="/assets/images/DropBox_logo.png" title="'DropBox logo'" ></p>
-
-<p>I took the liberty (not sure it&rsquo;s mine to take &hellip; but still), locating Xcode CLI tools for both mountain lion (10.8) and Lion (10.7) on <a href="http://www.dropbox.com">DropBox</a>, ecause Apple (like Oracle and other Giants) won&rsquo;t let you download without a userid / pass which is quite irretating &hellip;</p>
-
-<p>As Always hope you guy&rsquo;s enjoy this.
-HP</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/07/08/juc-video-net-ci-slash-cd-with-jenkins/">JUC Video - .Net CI/CD With Jenkins</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-08T22:37:00-04:00" pubdate data-updated="true">Jul 8<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>The guy&rsquo;s from <a href="http://www.jfrog.com/">Jfrog</a> were kind enough to put this session on youtube &ndash; here it is enjoy</p>
-
-<iframe width="640" height="360" src="//www.youtube.com/embed/C5-98Fln1jg" frameborder="0" allowfullscreen></iframe>
-
-
-<p>comments are welcome !
-HP</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/06/16/using-jenkins-cli-as-job-gen/">Using Jenkins-cli as Job Gen</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-16T01:06:00-04:00" pubdate data-updated="true">Jun 16<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/jenkins140x140.jpg" title="'Jenkins logo small'" >
-Well a common use case for doing stuff with Jenkins jobs / configuration [ for example: enabling jobs, disabling jobs, executing jobs etc] is to use Jenkins-cli.jar which is included in your jenkins distribution.</p>
-
-<p>In a large company where branches are branched on a daily basis and you need a build for each branch, job creation could become a bottleneck [ so could branch creation &ndash; but that a different topic :) ].</p>
-
-<p>So my use case was to create a Job Generator which would take an existing job from branch 1.0 and create a job ( &amp; the ranch but as I said different topic ) for branch 2.0 with the corresponding name, so as I mentioned thank god for Jenkins in general, Jenkins-cli and in addition to that a shell script, <a href="http://www.gnu.org/software/sed/">sed</a>, <a href="http://xmlstar.sourceforge.net/">xmlstarlet</a> and again jenkins job parameters.</p>
-
-<p>I needed a script which would export the job configuration to an xml file, search and replace for the SCM url, create the job so lets see how its done:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>execJenkinsCli<span class="o">(){</span> <span class="c"># excute jenkins-cli jar </span>
-</span><span class='line'>        <span class="nv">jenkins_clinet_jar</span><span class="o">=</span>./jenkins-cli.jar
-</span><span class='line'>        <span class="c"># download only if it&amp;#39;s newwer than the local version [ curl -z ], the cli jar should be ofthe smae jenkins version ...</span>
-</span><span class='line'>        curl -s -z ./jenkins-cli.jar <span class="k">${</span><span class="nv">JENKINS_URL</span><span class="k">}</span>/jnlpJars/jenkins-cli.jar -o <span class="k">${</span><span class="nv">jenkins_clinet_jar</span><span class="k">}</span> <span class="o">||</span> <span class="o">{</span> <span class="nb">echo</span> &amp;quot;Echo  cannot obtain jenkins-cli.jar exiting&amp;quot;; <span class="nb">exit </span>2;<span class="o">}</span>
-</span><span class='line'>        <span class="nv">cli_cmd</span><span class="o">=</span><span class="nv">$1</span>
-</span><span class='line'>        <span class="nv">cmd_params</span><span class="o">=</span><span class="nv">$2</span>
-</span><span class='line'>        <span class="nv">cmd_prefix</span><span class="o">=</span>&amp;quot;<span class="k">${</span><span class="nv">JAVA_CMD</span><span class="k">}</span> -jar <span class="k">${</span><span class="nv">jenkins_clinet_jar</span><span class="k">}</span> -s <span class="k">${</span><span class="nv">JENKINS_URL</span><span class="k">}</span>&amp;quot;
-</span><span class='line'>
-</span><span class='line'>        <span class="k">${</span><span class="nv">cmd_prefix</span><span class="k">}</span> who-am-i | grep &amp;#39;Authenticated as: anonymous&amp;#39; &amp;amp;&amp;gt;/dev/null &amp;amp;&amp;amp; <span class="nv">anon</span><span class="o">=</span>0
-</span><span class='line'>        <span class="c">#anon=$?</span>
-</span><span class='line'>        <span class="k">if</span> <span class="o">[</span> &amp;quot;<span class="nv">$anon</span>&amp;quot; !<span class="o">=</span> &amp;quot;0&amp;quot; <span class="o">]</span>; <span class="k">then</span>
-</span><span class='line'>                <span class="c">#printf &amp;quot;[ $FUNCNAME ] using jenkins-cli with private key auth&amp;quot;</span>
-</span><span class='line'>                <span class="nb">exec</span> <span class="k">${</span><span class="nv">cmd_prefix</span><span class="k">}</span> <span class="k">${</span><span class="nv">cli_cmd</span><span class="k">}</span> <span class="k">${</span><span class="nv">cmd_params</span><span class="k">}</span>
-</span><span class='line'>        <span class="k">elif</span> <span class="o">[</span> &amp;quot;x&amp;quot; <span class="o">=</span> &amp;quot;x<span class="k">${</span><span class="nv">JENKINS_USER</span><span class="k">}</span>&amp;quot; <span class="o">]</span> <span class="o">||</span> <span class="o">[</span> &amp;quot;x&amp;quot;  <span class="o">=</span> &amp;quot;x<span class="k">${</span><span class="nv">JENKINS_PASS</span><span class="k">}</span>&amp;quot; <span class="o">]</span>; <span class="k">then</span>
-</span><span class='line'><span class="k">                </span><span class="nb">printf</span> &amp;quot;<span class="o">[</span> <span class="nv">$FUNCNAME</span> <span class="o">]</span> cannot determin jenkins credentials<span class="se">\n</span>&amp;quot;;
-</span><span class='line'>                <span class="nb">exit </span>3;
-</span><span class='line'>        <span class="k">else</span>
-</span><span class='line'><span class="k">                </span><span class="nb">exec</span> <span class="k">${</span><span class="nv">cmd_prefix</span><span class="k">}</span> <span class="k">${</span><span class="nv">cli_cmd</span><span class="k">}</span> <span class="k">${</span><span class="nv">cmd_params</span><span class="k">}</span> --username <span class="k">${</span><span class="nv">JENKINS_USER</span><span class="k">}</span> --password <span class="k">${</span><span class="nv">JENKINS_PASS</span><span class="k">}</span>
-</span><span class='line'>        <span class="k">fi</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>execJenkinsCli get-job <span class="k">${</span><span class="nv">tmpl_job_name</span><span class="k">}</span>  | <span class="se">\</span>
-</span><span class='line'>  <span class="k">${</span><span class="nv">XML</span><span class="k">}</span> ed -O -S -P -u &amp;#39;//project/scm/locations/hudson.scm.SubversionSCM_-ModuleLocation/remote&amp;#39; -v <span class="k">${</span><span class="nv">scm_url</span><span class="k">}</span> | <span class="se">\</span>
-</span><span class='line'>  execJenkinsCli create-job <span class="k">${</span><span class="nv">new_job_name</span><span class="k">}</span>
-</span><span class='line'>
-</span><span class='line'>  execJenkinsCli <span class="nb">enable</span>-job <span class="k">${</span><span class="nv">new_job_name</span><span class="k">}</span> <span class="c"># our template is usually disabled, thus the cloned one is too ...</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The full jobGen wrapper script can be <a href="https://gist.github.com/hagzag/9b0d9d74d1920e248959">found here</a></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/06/16/using-jenkins-cli-as-job-gen/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
       <h1 class="entry-title"><a href="/blog/2013/05/06/logstash-plus-opscode-omnibus/">Logstash + Opscode Omnibus</a></h1>
     
     
@@ -1262,6 +116,536 @@ Well a common use case for doing stuff with Jenkins jobs / configuration [ for e
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/05/05/Git-Internals/">Git Internals</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-05T22:00:00-04:00" pubdate data-updated="true">May 5<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I found this information very supporting during my personal jorney into learning git, the internals IMO shows the mind shift one has to do when using Git after using any other SCM tool.</p>
+
+<p><script async class="speakerdeck-embed" data-id="9c9899c096f1013054d24e4027241f59" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script></p>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/05/05/Setup-git-on-ubutnu-12-04/">Setup Git, Gitweb With Git-http-backend / Smart Http on Ubuntu 12.04</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-05T21:00:00-04:00" pubdate data-updated="true">May 5<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/Git_Apache.png" title="'Git Logo'" >Setting up git over http (Smart HTTP in perticular) has it&#39;s caveats I will try to emphesize them as I go along.</p>
+
+<p>Final Goal is to run git over http using git-http-backend (a.k.a smart http) in apposed to using webdav which is also called the dumb-method, webdav was never designed to work with git for the reason that it cannot compress object whilst transporting data between the client and the server hosting git [ there is no real git client &ndash; git server so i am not referring to it a such].</p>
+
+<p><strong><u>Versions used in this setup</u>:</strong></p>
+
+<ul>
+<li>Ubutnu version <em>12.04-LTS</em></li>
+<li>Git version <em>1.7.9.5</em></li>
+<li>Apache2 version <em>2.2.22</em></li>
+</ul>
+
+
+<p><strong><u>1. Install prequirests</u>:</strong></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/05/05/Setup-git-on-ubutnu-12-04/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/16/performing-backup-with-git/">Performing Backup With Git</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-16T16:30:00-04:00" pubdate data-updated="true">Apr 16<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/git_logo.jpg" title="'Git Logo'" >~4 years ago I wrote a script which will sync my drupal files directory between two servers [ I used rsync for that ], the problem with rsync was that it fetches a checsum of every file and direcroty over SSH which was very slow, and the critical issue was I have no history of the data &ndash; and if I am maintaining multipule syncs whats the point in rsync.</p>
+
+<p>I looked @ svn at the time which was extreemly slow with binaries [ zip, tars etc ], Git and the git protocol in specific did the full sync [ ~1GB ] in under 45 minuets &ndash; over the Internet which was quite good IMO.</p>
+
+<p>I was talking with a collegue on such a solution the other day and I thought why not share this. So for purely educational puposes I put thist scripup as a Gist @:&nbsp;<a href="https://gist.github.com/hagzag/5396510">https://gist.github.com/hagzag/5396510</a>&nbsp;[ or part of the repository @:&nbsp;<a href="https://github.com/hagzag/files_repo/blob/master/syncFiles.sh">https://github.com/hagzag/files_repo/blob/master/syncFiles.sh</a>, but i am not sure it will survive there]&nbsp;&nbsp;and an acompenying repository called &quot;<a href="https://github.com/hagzag/files_repo">files_repo</a>&quot;.</p>
+
+<p>As you will see in the readme I am not sure it will do much for you but if you are consdering on using it read the following:</p>
+
+<ul>
+<li>create a repository [ e.g. on GitHub ]</li>
+<li>set the FILES_DIR parameter [ or default to /opt/data ]</li>
+<li>set the MY_GIT_REPO parameter [ or default to /opt/git-repo ]</li>
+<li>set my GIT_REMOTE parameter with the full git url of you repository [I didn&#39;t check this via https &hellip; ]</li>
+</ul>
+
+
+<p>Run the script, this is really custom to my use case, but shows another awsome aspect of git.</p>
+
+<p>Originally posted @: <a href="http://www.tikalk.com/alm/performing-backup-git">my Blog on tikalk.com</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/">Vagrant+Puppet+FPM=Amazeballs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-07T18:23:00-04:00" pubdate data-updated="true">Apr 7<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Lately I&rsquo;ve been doing a lot of prototyping with <a href="http://www.vagrantup.com/">Vagrant</a>, specifically for a couple of distinct activities:&ndash;</p>
+
+<ul>
+<li>building puppet modules using <a href="https://github.com/elasticdog/puppet-sandbox">the excellent puppet sandbox</a> project</li>
+<li>and building RPM packages with <a href="https://github.com/jordansissel/fpm">FPM</a>.</li>
+</ul>
+
+
+<p>I realized I was spending a bunch of time flipping back and forth between Vagrant environments and I had no quick way to utilize RPMs built with FPM inside my puppet modules.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/11/install-mysql2-gem-file-solved/">Install Mysql2 Gem File :: Solved</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-11T22:26:00-04:00" pubdate data-updated="true">Mar 11<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/ruby_logo2.jpg" title="'Ruby Logo'" ></p>
+
+<h2><strong>Problem</strong> </h2>
+
+<p>can&rsquo;t install mysql2 gem :(
+See the full error below &hellip; (or in &ldquo;Read on&rdquo; link) what solved the issue was:
+installing the two missing dependencies <em>&ldquo;mysql-client libmysqlclient-dev&rdquo;</em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install mysql-client libmysqlclient-dev
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/03/11/install-mysql2-gem-file-solved/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/09/simple-zookeeper-cluster/">Simple Zookeeper Cluster</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-09T07:00:00-05:00" pubdate data-updated="true">Mar 9<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Sometimes I need to run <a href="http://zookeeper.apache.org">ZooKeeper</a> ensemble on my development box to test my application on the production-like environment. I found that recreating the whole ensemble from scratch is much faster than cleaning it up using ZooKeeper CLI tool. To automate this process I created a bash script which I want to share in this blog post. I hard-coded all the paths in the script using my regular conventions. You might need to change them to yours — it should be fairly straightforward.</p>
+
+<p>Before you can use the script, you need to install ZooKeeper on your box. That&rsquo;s what I did on my machine</p>
+
+<pre><code>$ cd /opt
+$ sudo mkdir zookeeper
+$ sudo chown -R andrey:admin zookeeper
+$ cd zookeeper
+$ wget http://apache.mirror.rafal.ca/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz
+$ tar xf zookeeper-3.4.5.tar.gz
+$ rm zookeeper-3.4.5.tar.gz
+$ ln -s zookeeper-3.4.5 zookeeper
+</code></pre>
+
+<p>In the end you should have a ZooKeeper installed in <em>/opt/zookeeper/zookeeper</em> directory.</p>
+
+<p>Now download, chmod, and run the <a href="https://gist.github.com/ndpar/5105486">script</a>. It will create the following files</p>
+
+<pre><code>/opt/zookeeper/zookeeper/cluster
+├── server1
+│   ├── conf
+│   │   ├── log4j.properties
+│   │   └── zoo.cfg
+│   ├── data
+│   │   └── myid
+│   └── logs
+├── server2
+│   ├── conf
+│   │   ├── log4j.properties
+│   │   └── zoo.cfg
+│   ├── data
+│   │   └── myid
+│   └── logs
+├── server3
+│   ├── conf
+│   │   ├── log4j.properties
+│   │   └── zoo.cfg
+│   ├── data
+│   │   └── myid
+│   └── logs
+├── start.sh
+└── stop.sh
+</code></pre>
+
+<p>This is the minimum configuration for 3-node ensemble (cluster), which is recommended for production. To start the cluster, run the following command</p>
+
+<pre><code>$ cd /opt/zookeeper/zookeeper
+$ cluster/start.sh
+</code></pre>
+
+<p>Check the log files to see if the cluster is successfully started</p>
+
+<pre><code>$ tail -f cluster/server{1,2,3}/logs/zookeeper.out
+</code></pre>
+
+<p>When the cluster is up and running, you can test your application. After you are done, shutdown the cluster using the following command</p>
+
+<pre><code>$ cluster/stop.sh
+$ ps -ef | grep java
+</code></pre>
+
+<p>To recreate a clean cluster, just run the script again</p>
+
+<pre><code>$ ./zookeeper-init-ensemble.sh
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/24/Git-Productivity-enhancements/">Git Productivity Enhancements</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-24T13:11:00-05:00" pubdate data-updated="true">Feb 24<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/git_logo.jpg" title="'Git Logo'" >If I haven&rsquo;t told you yet, Git is awesome and yes I do most og the work from the command-line, so in order to make my life easier I did two things:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>apt-get install bash-completion
+</span><span class='line'>wget https://raw.github.com/git/git/master/contrib/completion/git-completion.bash -O /etc/bash_completion.d/git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Upon next login (or execute <em>source /etc/bash_completion.d/git</em>) right away and you have all the bash completion you need for git at your finger tips.</p>
+
+<p>Another awesome script to make your life easier with git is <a href="https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh">git-prompt.sh</a> which you can also include in your bash profile like so:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>wget https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>then add a line to ~/.profile sourcing it upon login shell, see header of git-prompt.sh for more details.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/05/how-to-run-apt-get-update-before-puppet/">How to Run Apt-get Update Before Puppet</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-05T14:56:00-05:00" pubdate data-updated="true">Feb 5<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>One of the problems I keep running into with Puppet is that the packages I&rsquo;m trying to install are very new and I need to run <code>apt-get update</code> to update the repositories. Because Puppet does not run scripts it gets rather annoying to get the update to run before you install any packages.</p>
+
+<p>I found a lot of solutions around the web but this one seems to work best for me.</p>
+
+<script src="https://gist.github.com/cbetta/4714469.js"></script>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/02/ruby-gems-are-not-safe-to-use/">Ruby Gems Are Still Not Safe to Use</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-02T13:24:00-05:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In the light of the recent <a href="http://rubygems.org">Rubygems.org</a> security compromise the community has been looking at ways to make Rubygems.org and Ruby gems in general more secure. The project is still ongoing and feel free to help them out on #rubygems on Freenode, but here is a highlight of what I think are some of the main issues.</p>
+
+<p>Some of the issues highlighted here are taken from <a href="http://www.youtube.com/watch?v=z-5bO0Q1J9s">Ben Smith&rsquo;s enlightening (but scary) talk at Aloha Ruby Conference</a>.</p>
+
+<h2>Disclaimer</h2>
+
+<p>I am not a security expert. I am just a Ruby developer and a gem author that is worried about the current state of the Ruby gems ecosystem. I also am worried that the next negative news around Ruby will involve the problems described below.</p>
+
+<h2>What are Ruby gems and what is Rubygems.org?</h2>
+
+<p>For those not familiar, <a href="http://rubygems.org">Rubygems.org</a> is the most popular repository of &ldquo;gems&rdquo; for the <a href="http://rubylang.org">Ruby language</a>. Gems are libraries made up out of Ruby (and optionally C) code and can be uploaded by anyone who registered for an account. Rubygems.org currently hosts 50,685 gems which have been downloaded 1,259,533,358 times since July 2009. Ruby gems are not only hosted on Rubygems.org, anyone can run their own repository but Rubygems.org is definitely the most used one.</p>
+
+<h2>Current state</h2>
+
+<p>Some parts of the current infrastructure are worrying.</p>
+
+<ul>
+<li><p><strong>Hard to tell if gems were changed on the repo.</strong> It took the Rubygems.org volunteers more than 24 hours to verify every gem&rsquo;s checksum against external mirrors.</p></li>
+<li><p><strong>Impossible to tell if gems were uploaded by gem owner.</strong> It is currently very hard to know if a gem was actually uploaded by it&rsquo;s owner. Developer machines can be compromised and a users API credentials for Rubygems.org are kept unencrypted in <code>~/gem/credentials</code>.</p></li>
+<li><p><strong>Gem owner isn&rsquo;t notified of new gem uploads.</strong> When a gem developer&rsquo;s credentials are compromised a new version of the gem can be uploaded without the gem owner ever knowing.</p></li>
+<li><p><strong>Impossible to notify a gem user of compromised gems.</strong> When a gem developer&rsquo;s credentials are compromised it is hard to notify anyone who uses any of the gems published by the developer of the situation.</p></li>
+<li><p><strong>Gems can run code on install.</strong> This is probably the most interesting attack vector in the foreseeable future. It seems this feature was relatively unintentional as it involves tying into the fact that Ruby gems can contain C code. Running code on install will mean that gems can steal the unencrypted Rubygems.org credentials which can then be used to modify the compromised user&rsquo;s gems and spread the malicious code further.</p></li>
+</ul>
+
+
+<h2>Proposals for change</h2>
+
+<ul>
+<li><p><strong>Notify gem owners of newly published gems.</strong> Adding a simple email notification to the gem owner will at least allow for easier detection of compromised gems. Sadly at this point the gem is already compromised and possibly already spread over any mirrors and downloaded by users.</p></li>
+<li><p><strong>Secure developer&rsquo;s Rubygems.org credentials.</strong> This is pretty simple. My ssh key has a passphrase on it and so should my Rubygems.org credentials. Stealing a rubygems.org API key is easy, using one that requires a passphrase a lot harder.</p></li>
+<li><p><strong>Stop running code on gem install.</strong> I totally see the need for having C extensions in a Ruby gems, and those extensions need to be compiled, but we seriously need to find a way to compile C code without allowing for the arbitrary execution of code on install of a gem.</p></li>
+<li><p><strong>Automatically mirror gems and checksums.</strong>  A system involving the automatic mirroring of gems and their checksums to other servers would definitely have made the verification of gems a lot easier in the last few days.</p></li>
+<li><p><strong>Force signing of gems.</strong> Yes, <a href="http://docs.rubygems.org/read/chapter/21">you can sign your gems</a> but almost nobody does (and neither do I). Additionally it&rsquo;s a pain to force the usage of signed keys on the gem user&rsquo;s side, not to mention the futility as most gems aren&rsquo;t signed. Signing is the way to go though and work on this has started. It&rsquo;s a difficult topic though and work is being done to make it as painless as possible for users and developers.</p></li>
+<li><p><strong>Notify gem users of unsigned/insecure gems.</strong> The rubygem binary (together with tools like <a href="http://gembundler.com/">Bundler</a>) should be updated to allow for verification of signatures which will allow it to notify gem users of unsigned or compromised gems.</p></li>
+</ul>
+
+
+<h2>How can I help?</h2>
+
+<ul>
+<li><strong>Code:</strong> <a href="https://github.com/rubygems">rubygems</a>, <a href="https://github.com/rubygems-trust">rubygems-trust</a>(fork for implementing a signed approach)</li>
+<li><strong>Discussion:</strong> #rubygems and #rubygems-trust on Freenode</li>
+</ul>
+
+
+<h2>Did I miss anything?</h2>
+
+<p>Please let me know and I&rsquo;ll add it to the list.</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -1283,23 +667,23 @@ Well a common use case for doing stuff with Jenkins jobs / configuration [ for e
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/">Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/">A Deep Dive into AWS Reserved Instances</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/">6 reasons why large enterprises should move to Amazon Web Services</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/">CI and Test Automation utilizing OpenStack</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a>
       </li>
     
   </ul>

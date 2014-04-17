@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="101 On DevOps And How We Plan On Helping Here&rsquo;s what usually happens: on one side the development team wants to push new features as fast as &hellip;">
+  <meta name="description" content="Originally posted on Tikal Knolwedge&rsquo;s webiste @ this link Deploy reveal.js slideshow on github-pages was ridiculously easy. Cloned reveal.js &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -70,974 +70,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/03/101-on-devops-and-how-we-plan-on-helping/">101 on DevOps and How We Plan on Helping</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-03T13:54:32-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2012/10/23/101-on-development-and-operations.html">101 On DevOps And How We Plan On Helping</a></h2>
-
-<p>Here&rsquo;s what usually happens: on one side the development team wants to push new features as fast as possible to production, while on the other side, operations are trying to keep things stable. Both teams are evaluated on
-criteria that are often directly conflicting. The stronger team win one argument… Until the next crisis. And we&rsquo;re not even talking about other teams, they too have conflicting agendas to throw in the mix.</p>
-
-<p>There&rsquo;s no silver bullet for getting evryone to play nicely. That being said, having Dev and Ops on the path of cooperation is not impossible. <a href="http://en.wikipedia.org/wiki/Devops">DevOps</a> is exactly this; fostering a culture of best practices and collaboration between these teams.</p>
-
-<p>In a very similar fashion to what happened with the agile movement, a lot of tools and approaches emerged that can help: methodologies (SCRUMs, kanban…), tools for configuration management (Chef, Puppet), orchestration, automation, logging… But at the core lies the need for nurturing a specific culture.</p>
-
-<p>Operations teams have been slower to adopt these methodologies compared to development teams. The average system administrator spend more time working in FIFO, putting up fires, rather than making long term investments in automation or setting up best practices. Moreover, operations teams are usually faced with a logic of budget cuts and cost &ldquo;optimizations&rdquo;, compared to the larger R&amp;D budget development teams seem to enjoy.</p>
-
-<p>Even when conditions (and resources) are favorable to the growth of a proper culture, recruiting the right profiles can prove very challenging. We&rsquo;re here talking about people with a wide range of skills, on-hands experience and
-strong collaboration and organizational skills. All of this take time. Best practices are forged through years of experience.</p>
-
-<p>That is why we&rsquo;re building <a href="http://devo.ps">devo.ps</a>. We&rsquo;re trying to lower the barriers of entry to this field and help professionals scale themselves in their role. We&rsquo;re a motivated team of engineers who have worked on both sides of the fence, with small to very large code bases and infrastructures. We hope to untangle the mess that often is infrastructure and application management, letting technical teams focus on the higher value tasks of the job.</p>
-
-<ul>
-<li><a href="http://devo.ps/about.html">About</a></li>
-<li><a href="http://devo.ps/blog.html">Blog</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/03/farewell-to-regular-web-development-approaches/">Farewell to Regular Web Development Approaches</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-03T13:52:12-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">Farewell to Regular Web Development Approaches</a></h2>
-
-<p>At my <a href="http://wiredcraft.com">previous company</a>, we built Web applications for medium to large organizations, often in the humanitarian and non-profit space, facing original problems revolving around data. Things like building the
-<a href="http://wiredcraft.com/work/southern-sudan-referendum/index.html">voting infrastructure for the Southern Sudan Referendum</a> helped us diversify our technical chops. But until a year ago, we were still mostly building regular Web applications; the user requests a page that we build and serve back.</p>
-
-<p><strong>Until we started falling in love with APIs and static clients.</strong></p>
-
-<p>It&rsquo;s not that we fundamentally disliked the previous approach. We just reached a point where we felt our goals weren&rsquo;t best served by this model. With lots of dynamic data, complex visualizations and a set of &ldquo;static&rdquo; interfaces, the traditional way was hindering our development speed and our ability to experiment. And so we got busy, experimenting at first with smaller parts of our projects (blog, help section, download pages…). We realized our use of complex pieces of softwares like content management systems had seriously biased our approach to problem solving. <strong>The CMS had become a boilerplate, an unchallenged dependency.</strong></p>
-
-<p>We&rsquo;ve gradually adopted a pattern of building front-ends as static clients (may they be Web, mobile or 3rd party integrations) combined with, usually, one RESTful JSON API in the backend. And it works marvelously, thanks in part
-to some awesome tech much smarter people figured out for us:</p>
-
-<ul>
-<li><a href="http://marionettejs.com">Marionette</a> and <a href="http://backbonejs.org">Backbone.js</a>, <a href="http://github.com/component/component">Component</a> (a personal favorite) and <a href="http://github.com/mojombo/jekyll">Jekyll</a> allow us to build static HTML5 + JS + CSS clients for Web and mobile,</li>
-<li><a href="http://nodejs.org">node.js</a> and <a href="http://github.com/devo-ps/carcass">carcass</a> (alpha quality at this stage) in the backend for our APIs.</li>
-</ul>
-
-
-<p>Most of what we build at devo.ps is stemming from this accelerated recovery and follow usually that order:</p>
-
-<ol>
-<li> We start by defining our API interface through user stories and methods,</li>
-<li> Both backend and front-end teams are getting cranking on implementing and solving the challenges specific to their part,</li>
-</ol>
-
-
-<p>A lot of things happen in parallel and changes on one side rarely impact the other: we can make drastic changes in the UI without any change on the backend. And there were a lot of unexpected gains too, in security, speed and
-overall maintainability. More importantly, we&rsquo;ve freed a lot of our resources to focus on building compelling user experiences instead of fighting a large piece of software to do what we want it to do.</p>
-
-<p>If you haven&rsquo;t tried building things that way yet, give it a try honestly (when relevant); it may be a larger initial investment in some cases but you&rsquo;ll come out on top at almost every level.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/03/why-we-dropped-swagger-and-i-slash-o-docs/">Why We Dropped Swagger and I/O Docs</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-03T13:49:24-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2013/02/07/why-we-dropped-iodocs-and-swagger.html">Why We Dropped Swagger And I/O Docs</a></h2>
-
-<p>As we started investing in <a href="/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">our new strategy</a> at <a href="http://wiredcraft.com">my previous company</a>, we looked around for solutions to document APIs. It may not be the sexiest part of the project, but documentation is the first step to designing a good API. And I mean <strong>first</strong> as in &ldquo;before you even start writing tests&rdquo; (yes, you should be writing tests first too).</p>
-
-<p>We originally went with a simple Wiki page on Github, which served us just fine in the past. But it quickly became clear that it wasn&rsquo;t going to cut it. We started thinking about what good documentations is. We&rsquo;re fans of the single page approach that the <a href="http://backbonejs.com">Backbone.js documentation</a> illustrates well and clearly remembered <a href="http://developer.github.com/">Github</a> and <a href="https://stripe.com/docs">Stripe</a> as easy and well organized resources. Some Googling later, we were contemplating Wordnik&rsquo;s <a href="http://developers.helloreverb.com/swagger/">Swagger</a> and Mashery&rsquo;s <a href="http://www.mashery.com/product/io-docs">I/O Docs</a>. We later settled for I/O Docs as it is built with node.js and was more straightforward to set up (for us at least).</p>
-
-<p>Once again, we hit a wall with this approach:</p>
-
-<ol>
-<li><p> <strong>No proper support for JSON body</strong>: we don&rsquo;t do much with parameters and mostly send JSON objects in the body of our requests, <a href="http://blog.apigee.com/detail/restful_api_design_nouns_are_good_verbs_are_bad">using HTTP verbs for the different types of operations</a> we perform on our collections and models in the backend. Swagger and I/O Docs fall short of support for it, letting you simply dump your JSON in a field: not ideal.</p></li>
-<li><p> <strong>You&rsquo;re querying the actual API</strong>: to be fair, this is an intentional feature. Now some of you may find it interesting that your documentation allows users to easily run calls against your API. That&rsquo;s what <a href="http://www.flickr.com/services/api/explore/flickr.activity.userComments">Flickr does with their API explorer</a>, and we used to think it was pretty neat. But once we started using it, we saw the risks of exposing so casually API calls that can impact your platform (especially with <a href="http://devo.ps">devo.ps</a> which deals with your actual infrastructure). I guess you could set up a testing API for that very purpose, but that&rsquo;s quite a bit of added complexity (and <a href="http://blogoscoped.com/archive/2005-08-24-n14.html">we&rsquo;re lazy</a>).</p></li>
-</ol>
-
-
-<p>And that&rsquo;s how we ended up putting together <a href="https://github.com/devo-%20ps/carte">Carte</a>, a very lightweight Jekyll-based solution: drop a new post for each API call, following some loose format and specifying a few bits of meta data in the YAML header (type of the method, path…) and you&rsquo;re good to go.</p>
-
-<p><a href="http://devo-ps.github.com/carte"><img src="/images/posts/carte-screenshot.png" alt="Screenshot of Carte" /></a></p>
-
-<p>We&rsquo;re real suckers for Jekyll. We&rsquo;ve actually used it to build quite a few static clients for our APIs. One of the advantages of this approach is that we can bundle our documentation with our codebase by simply pushing it on the
-<code>gh-pages</code> branch, and it pops up as a Github page. That&rsquo;s tremendously important for us as it make it very easy for developers to keep the documentation and the code in synch.</p>
-
-<p>Carte is intentionally crude: <a href="https://github.com/devo-ps/carte">have a look at the README and hack at will</a>. Drop us a shout at <a href="https://twitter.com/devo_ps">@devo_ps</a> if you need help or want to suggest a feature.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/03/best-practices-its-always-or-never/">Best Practices: It&#8217;s Always or Never</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-03T13:45:48-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2013/02/11/best-practices-it-s-always-or-never.html">Best Practices: It&rsquo;s Always Or Never ( And Preferably Always)</a></h2>
-
-<p><img src="http://farm3.staticflickr.com/2584/4103140420_b98ee1ac62_z.jpg" alt="Messy cables" /></p>
-
-<p>It&rsquo;s Monday morning. The development team needs a box and you&rsquo;re already contemplating the gazillion other urgent tasks that need to be done on the existing infrastructure. _Just that one time_TM, you&rsquo;re going to forget about your own rules. You&rsquo;re just gonna spawn an instance, set up the few services needed and be done with it. You&rsquo;ll drop some of the usual time suckers: backup strategy, access rules, init scripts, documentation… You can&rsquo;t just do the whole of it AND handle the rest of your day-to-day responsibilities. After all, it&rsquo;s just a development server and you&rsquo;ll probably fold it in a couple weeks, or you&rsquo;ll clean it up once your plate is a tad less full.</p>
-
-<p>A few weeks later, the box is still there and your backlog is far from looking less crowded. The development team just rolled out their production application on the same box. <strong>And things start crashing… badly.</strong></p>
-
-<p>After a couple of not so courteous emails from the dev team mentioning repetitive crashes, you log in the box and the fun starts. You can&rsquo;t figure out what services have been deployed, or how exactly they were installed. You can&rsquo;t restore the database because you don&rsquo;t know where the bloody backups are. You waste time to find out that CouchDB wasn&rsquo;t started at boot. All of this while receiving emails of &ldquo;encouragement&rdquo; from your colleagues.</p>
-
-<p>Just because of that &ldquo;one time&rdquo;. Except that it&rsquo;s never just that one time.</p>
-
-<h3>Best practices are not freaking optional</h3>
-
-<p>I hear you: coming up with these best practices and sticking to it <strong>systematically</strong> is hard. It&rsquo;s high investment. But based on our common experience, it&rsquo;s one you can&rsquo;t afford not making. The &ldquo;quick and dirty that
-one time&rdquo; approach will ultimately fail you.</p>
-
-<p>A few things you should never consider skipping:</p>
-
-<ul>
-<li><p><strong>Document the hell out of everything as you go</strong>. You probably won&rsquo;t have time to get it done once you shipped it, and you probably won&rsquo;t remember what you did or why you did it in a few weeks from now. Your colleagues will probably appreciate too.</p></li>
-<li><p><strong>Off-site backups for everything</strong>. Don&rsquo;t even think of keeping your backups on the same physical box. Disks fail (a lot) and storage like S3/Glacier is dirt cheap. Find out a way to backup your code and data and stick to it.</p></li>
-<li><p><strong>Full setup and reliable sources</strong>. Avoid random AWS AMIs or RPM repositories. And when settings things up, go through the whole shebang: init script, dedicated running user, environment variables and such are not optional. Some of us also think that you shouldn&rsquo;t use rc.local for your Web services ever again.</p></li>
-</ul>
-
-
-<h3>Infrastructure As Code And Automation</h3>
-
-<p>Obviously, given what we&rsquo;re working on at <a href="http://devo.ps">devo.ps</a>, we&rsquo;re pretty strong adopters of infrastructure as code and automation. What tools to use is a much larger discussion. Go have a look at the comments on <a href="http://news.ycombinator.com/item?id=5197389">the
-announcement of the new version of Chef</a> to get an idea of what&rsquo;s
-out there.</p>
-
-<p>Ultimately these are just opinions, but behind them are concepts worth investing in. Capturing the work you do on your infrastructure in repeatable and testable code, and automating as much as you can helps removing yourself
-from the equation. Doing so is helping you to reduce the human factor and free yourself of the repetitive boilerplate while you focus on the challenging tasks that only a creative brain can tackle.</p>
-
-<p>Not building upon best practices is simply not an option. By doing so, you fail at investing in the foundation for a more robust infrastructure, and more importantly it is depriving you from scaling yourself.</p>
-
-<p><em><a href="http://www.flickr.com/photos/comedynose/4103140420/">Picture from comedy_nose</a></em></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/03/troubleshooting-5minutes-on-a-yet-unknown-box/">Troubleshooting 5minutes on a Yet Unknown Box</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-03T13:34:05-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2013/03/06/troubleshooting-5minutes-on-a-yet-unknown-box.html">First 5 Minutes Troubleshooting A Server</a></h2>
-
-<p>Back when our team was dealing with operations, optimization and scalability at <a href="http://wiredcraft.com">our previous company</a>, we had our fair share of troubleshooting poorly performing applications and infrastructures of various sizes, often large (think CNN or the World Bank). Tight deadlines, &ldquo;exotic&rdquo; technical stacks and lack of information usually made for memorable experiences.</p>
-
-<p>The cause of the issues was rarely obvious: here are a few things we usually got started with.</p>
-
-<h3>Get some context</h3>
-
-<p>Don&rsquo;t rush on the servers just yet, you need to figure out how much is already known about the server and the specifics of the issues. You don&rsquo;t want to waste your time (trouble) shooting in the dark.</p>
-
-<p>A few &ldquo;must have&rdquo;:</p>
-
-<ul>
-<li>What exactly are the symptoms of the issue? Unresponsiveness? Errors?</li>
-<li>When did the problem start being noticed?</li>
-<li>Is it reproducible?</li>
-<li>Any pattern (e.g. happens every hour)?</li>
-<li>What were the latest changes on the platform (code, servers, stack)?</li>
-<li>Does it affect a specific user segment (logged in, logged out, geographically located…)?</li>
-<li>Is there any documentation for the architecture (physical and logical)?</li>
-<li><strong>Is there a monitoring platform?</strong> Munin, Zabbix, Nagios, <a href="http://newrelic.com/">New Relic</a>… Anything will do.</li>
-<li><strong>Any (centralized) logs?</strong>. Loggly, Airbrake, Graylog…</li>
-</ul>
-
-
-<p>The last two ones are the most convenient sources of information, but don&rsquo;t expect too much: they&rsquo;re also the ones usually painfully absent. Tough luck, make a note to get this corrected and move on.</p>
-
-<h3>Who&rsquo;s there?</h3>
-
-<pre><code>$ w
-$ last
-</code></pre>
-
-<p>Not critical, but you&rsquo;d rather not be troubleshooting a platform others are playing with. One cook in the kitchen is enough.</p>
-
-<h3>What was previously done?</h3>
-
-<pre><code>$ history
-</code></pre>
-
-<p>Always a good thing to look at; combined with the knowledge of who was on the box earlier on. Be responsible by all means, being admin shouldn&rsquo;t allow you to break ones privacy.</p>
-
-<p>A quick mental note for later, you may want to update the environment variable <code>HISTTIMEFORMAT</code> to keep track of the time those commands were ran. Nothing is more frustrating than investigating an outdated list of commands…</p>
-
-<h3>What is running?</h3>
-
-<pre><code>$ pstree -a
-$ ps aux
-</code></pre>
-
-<p>While <code>ps aux</code> tends to be pretty verbose, <code>pstree -a</code> gives you a nice condensed view of what is running and who called what.</p>
-
-<h3>Listening services</h3>
-
-<pre><code>$ netstat -ntlp
-$ netstat -nulp
-$ netstat -nxlp
-</code></pre>
-
-<p>I tend to prefer running them separately, mainly because I don&rsquo;t like looking at all the services at the same time. <code>netstat -nalp</code> will do to though. Even then, I&rsquo;d ommit the <code>numeric</code> option (IPs are more readable IMHO).</p>
-
-<p>Identify the running services and whether they&rsquo;re expected to be running or not. Look for the various listening ports. You can always match the PID of the process with the output of <code>ps aux</code>; this can be quite useful especially when you end up with 2 or 3 Java or Erlang processes running concurrently.</p>
-
-<p>We usual prefer to have more or less specialized boxes, with a low number of services running on each one of them. If you see 3 dozens of listening ports you probably should make a mental note of investigating this further and see
-what can be cleaned up or reorganized.</p>
-
-<h3>CPU and RAM</h3>
-
-<pre><code>$ free -m
-$ uptime
-$ top
-$ htop
-</code></pre>
-
-<p>This should answer a few questions:</p>
-
-<ul>
-<li>Any free RAM? Is it swapping?</li>
-<li>Is there still some CPU left? How many CPU cores are available on the server? Is one of them overloaded?</li>
-<li>What is causing the most load on the box? What is the load average?</li>
-</ul>
-
-
-<h3>Hardware</h3>
-
-<pre><code>$ lspci
-$ dmidecode
-$ ethtool
-</code></pre>
-
-<p>There are still a lot of bare-metal servers out there, this should help with;</p>
-
-<ul>
-<li>Identifying the RAID card (with BBU?), the CPU, the available memory slots. This may give you some hints on potential issues and/or performance improvements.</li>
-<li>Is your NIC properly set? Are you running in half-duplex? In 10MBps? Any TX/RX errors?</li>
-</ul>
-
-
-<h3>IO Performances</h3>
-
-<pre><code>$ iostat -kx 2
-$ vmstat 2 10
-$ mpstat 2 10
-$ dstat --top-io --top-bio
-</code></pre>
-
-<p>Very useful commands to analyze the overall performances of your backend;</p>
-
-<ul>
-<li>Checking the disk usage: has the box a filesystem/disk with 100% disk usage?</li>
-<li>Is the swap currently in use (si/so)?</li>
-<li>What is using the CPU: system? User? Stolen (VM)?</li>
-<li><code>dstat</code> is my all-time favorite. What is using the IO? Is MySQL sucking up the resources? Is it your PHP processes?</li>
-</ul>
-
-
-<h3>Mount points and filesystems</h3>
-
-<pre><code>$ mount
-$ cat /etc/fstab
-$ vgs
-$ pvs
-$ lvs
-$ df -h
-$ lsof +D / /* beware not to kill your box */
-</code></pre>
-
-<ul>
-<li>How many filesystems are mounted?</li>
-<li>Is there a dedicated filesystem for some of the services? (MySQL by any chance..?)</li>
-<li>What are the filesystem mount options: noatime? default? Have some filesystem been re-mounted as read-only?</li>
-<li>Do you have any disk space left?</li>
-<li>Is there any big (deleted) files that haven&rsquo;t been flushed yet?</li>
-<li>Do you have room to extend a partition if disk space is an issue?</li>
-</ul>
-
-
-<h3>Kernel, interrupts and network usage</h3>
-
-<pre><code>$ sysctl -a | grep ...
-$ cat /proc/interrupts
-$ cat /proc/net/ip_conntrack /* may take some time on busy servers */
-$ netstat
-$ ss -s
-</code></pre>
-
-<ul>
-<li>Are your IRQ properly balanced across the CPU? Or is one of the core overloaded because of network interrupts, raid card, …?</li>
-<li>How much is swappinness set to? 60 is good enough for workstations, but when it come to servers this is generally a bad idea: you do not want your server to swap… ever. Otherwise your swapping process will be locked while data is read/written to the disk.</li>
-<li>Is <code>conntrack_max</code> set to a high enough number to handle your traffic?</li>
-<li>How long do you maintain TCP connections in the various states (<code>TIME_WAIT</code>, …)?</li>
-<li><code>netstat</code> can be a bit slow to display all the existing connections, you may want to use <code>ss</code> instead to get a summary.</li>
-</ul>
-
-
-<p>Have a look at <a href="http://www.lognormal.com/blog/2012/09/27/linux-tcpip-tuning/">Linux TCP tuning</a> for some more pointer as to how to tune your network stack.</p>
-
-<h3>System logs and kernel messages</h3>
-
-<pre><code>$ dmesg
-$ less /var/log/messages
-$ less /var/log/secure
-$ less /var/log/auth
-</code></pre>
-
-<ul>
-<li>Look for any error or warning messages; is it spitting issues about the number of connections in your conntrack being too high?</li>
-<li>Do you see any hardware error, or filesystem error?</li>
-<li>Can you correlate the time from those events with the information provided beforehand?</li>
-</ul>
-
-
-<h3>Cronjobs</h3>
-
-<pre><code>$ ls /etc/cron* + cat
-$ for user in $(cat /etc/passwd | cut -f1 -d:); do crontab -l -u $user; done
-</code></pre>
-
-<ul>
-<li>Is there any cron job that is running too often?</li>
-<li>Is there some user&rsquo;s cron that is &ldquo;hidden&rdquo; to the common eyes?</li>
-<li>Was there a backup of some sort running at the time of the issue?</li>
-</ul>
-
-
-<h3>Application logs</h3>
-
-<p>There is a lot to analyze here, but it&rsquo;s unlikely you&rsquo;ll have time to be exhaustive at first. Focus on the obvious ones, for example in the case of a LAMP stack:</p>
-
-<ul>
-<li><strong>Apache &amp; Nginx</strong>; chase down access and error logs, look for <code>5xx</code> errors, look for possible <code>limit_zone</code> errors.</li>
-<li><strong>MySQL</strong>; look for errors in the <code>mysql.log</code>, trace of corrupted tables, innodb repair process in progress. Looks for slow logs and define if there is disk/index/query issues.</li>
-<li><strong>PHP-FPM</strong>; if you have php-slow logs on, dig in and try to find errors (php, mysql, memcache, …). If not, set it on.</li>
-<li><strong>Varnish</strong>; in <code>varnishlog</code> and <code>varnishstat</code>, check your hit/miss ratio. Are you missing some rules in your config that let end-users hit your backend instead?</li>
-<li><strong>HA-Proxy</strong>; what is your backend status? Are your health-checks successful? Do you hit your max queue size on the frontend or your backends?</li>
-</ul>
-
-
-<h3>Conclusion</h3>
-
-<p>After these first 5 minutes (give or take 10 minutes) you should have a better
-understanding of:</p>
-
-<ul>
-<li>What is running.</li>
-<li>Whether the issue seems to be related to IO/hardware/networking or configuration (bad code, kernel tuning, …).</li>
-<li>Whether there&rsquo;s a pattern you recognize: for example a bad use of the DB indexes, or too many apache workers.</li>
-</ul>
-
-
-<p>You may even have found the actual root cause. If not, you should be in a good place to start digging further, with the knowledge that you&rsquo;ve covered the obvious.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/03/zookeeper-vs-doozer-vs-etcd/">ZooKeeper vs. Doozer vs. Etcd</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-03T13:18:39-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2013/09/11/zookeeper-vs-doozer-vs-etcd.html">ZooKeeper vs. Doozer vs. Etcd</a></h2>
-
-<p>While <a href="http://devo.ps">devo.ps</a> is fast approaching a public release, the team has been dealing with an increasingly complex infrastructure. We more recently faced an interesting issue; how do you share configuration across a cluster of servers? More importantly, how do you do so in a resilient, secure, easily deployable and speedy fashion?</p>
-
-<p>That&rsquo;s what got us to evaluate some of the options available out there;
-ZooKeeper, Doozer and etcd. These tools all solve similar sets of problems but their approach differ quite significantly. Since we spent some time evaluating them, we thought we&rsquo;d share our findings.</p>
-
-<h3>ZooKeeper, the old dog</h3>
-
-<p><a href="http://zookeeper.apache.org/">ZooKeeper</a> is the most well known (and oldest) project we&rsquo;ve looked into. It&rsquo;s used by a few big players (Rackspace, Yahoo, eBay, <a href="https://news.ycombinator.com/item?id=6367979">Youtube</a>) and is pretty mature.</p>
-
-<p>It was created by Yahoo to deal with distributed systems applications. I strongly recommend you <a href="http://developer.yahoo.com/blogs/hadoop/apache-zookeeper-making-417.html">read the &ldquo;making of&rdquo;</a> if you&rsquo;re interested in understanding where Yahoo came from when they wrote it.</p>
-
-<p>It stores variables in a structure similar to a file system, an approach that both Doozer and etcd still follow. With ZooKeeper, you maintain a cluster of servers communicating with each other that share the state of the distributed configuration data. Each cluster elects one &ldquo;leader&rdquo; and clients can connect to any of the servers within the cluster to retrieve the data. Zookeeper uses its own algorithm to handle distributed storage.</p>
-
-<ul>
-<li><p><strong>Pros</strong>:</p>
-
-<ul>
-<li><strong>Mature technology</strong>; it is used by some big players (eBay, Yahoo et al).</li>
-<li><strong>Feature-rich</strong>; lots of client bindings, tools, API…</li>
-</ul>
-</li>
-<li><p><strong>Cons</strong>:</p>
-
-<ul>
-<li><strong>Complex</strong>; ZooKeeper is not for the faint of heart. It is pretty heavy and will require you to maintain a fairly large stack.</li>
-<li><strong>It&#8217;s… Java</strong>; not that we especially hate Java, but it is on the heavy side and introduce a lot of dependencies. We wanted to keep our machines as lean as possible and usually shy away from dependency heavy technologies.</li>
-<li><strong>Apache…</strong>; we have mixed feelings about the Apache Foundation. <a href="http://www.infoworld.com/d/open-source-software/has-apache-lost-its-way-225267">&ldquo;Has Apache Lost Its Way?&rdquo;</a> summarizes it pretty well.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Doozer, kinda dead</h3>
-
-<p><a href="https://github.com/ha/doozerd">Doozer</a> was developed by Heroku a few years
-ago. It&rsquo;s written in Go (yay!), which means it compiles into a single binary
-that runs without dependencies. On a side-note, if you&rsquo;re writing code to
-manage infrastructure, you should spend some time <a href="http://golang.org/">learning
-Go</a>.</p>
-
-<p>Doozer got some initial excitement from the developer community but seems to
-have stalled more recently, with many forks being sporadically maintained and
-no active core development.</p>
-
-<p>It is composed of <a href="https://github.com/ha/doozerd">a daemon</a> and <a href="https://github.com/ha/doozer">a
-client</a>. Once you have at least one Doozer
-server up, you can add any number of servers and have clients get and set data
-by talking to any of the servers within that cluster.</p>
-
-<p>It was one of the first practical implementations (as far as I know) of the
-<a href="http://en.wikipedia.org/wiki/Paxos_(computer_science">Paxos algorithm</a>). This
-means operations can be slow when compared to dealing with a straight database
-since cluster-wide consensus needs to be reached before committing any
-operation.</p>
-
-<p>Doozer was a step in the right direction. It is simple to use and setup.
-However, after using it for a while we started noticing that a lot of its
-parts felt unfinished. Moreover, it wasn&rsquo;t answering some of our needs very
-well (encryption and ACL).</p>
-
-<ul>
-<li><p><strong>Pros</strong>:</p>
-
-<ul>
-<li><strong>Easy to deploy, setup and use</strong> (Go, yay!)</li>
-<li><strong>It works</strong>; lots of people have actually used it in production.</li>
-</ul>
-</li>
-<li><p><strong>Cons</strong>:</p>
-
-<ul>
-<li><strong>Pretty much dead</strong>: the core project hasn&rsquo;t been active in a while (1 commit since May) and is pretty fragmented (150 forks…).</li>
-<li><strong>Security</strong>; no encryption and a fairly simple secure-word based authentication.</li>
-<li><strong>No ACL</strong>; and we badly needed this.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>etcd</h3>
-
-<p>After experiencing the shortcomings of Doozer, we stumbled upon a new
-distributed configuration storage called
-<a href="https://github.com/coreos/etcd">etcd</a>. It was first released by the
-<a href="http://coreos.com">CoreOS</a> team a month ago.</p>
-
-<p>Etcd and Doozer look pretty similar, at least on the surface. The most obvious
-technical difference is that ectd uses the <a href="http://en.wikipedia.org/wiki/Raft_%28computer_science%29">Raft
-algorithm</a> instead
-of Paxos. Raft is designed to be <a href="https://ramcloud.stanford.edu/wiki/%0Adownload/attachments/11370504/raft.pdf">simpler</a> and
-<a href="http://kellabyte.com/2013/05/09/an-alternative-to-paxos-the-raft-%0Aconsensus-algorithm/">easier</a> to implement than Paxos.</p>
-
-<p>Etcd&rsquo;s architecture is similar to Doozer&rsquo;s. It does, however, store data
-persistently (writes log and snapshots), which was of value to us for some
-edge cases. It also has a better take on security, with CA&rsquo;s, certs and
-private keys. While setting it up is not straightforward, it adds conveniency
-and safety of mind.</p>
-
-<p>Beyond the fact that it answered some of our more advanced needs, we were
-seduced (and impressed) by the development pace of the project.</p>
-
-<ul>
-<li><p><strong>Pros</strong>:</p>
-
-<ul>
-<li><strong>Easy to deploy, setup and use</strong> (yay Go and yay HTTP interfaces!).</li>
-<li><strong>Data persistence</strong>.</li>
-<li><strong>Secure</strong>: encryption and authentication by private keys.</li>
-<li><strong>Good documentation</strong> (if a little bit obscure at times).</li>
-<li>Planned ACL implementation.</li>
-</ul>
-</li>
-<li><p><strong>Cons</strong>:</p>
-
-<ul>
-<li>(Very) <strong>young project</strong>; interfaces are still moving pretty quickly.</li>
-<li>Still not a perfect match, especially in the way that data is spread.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>The DIY approach (yeah, right..?)</h3>
-
-<p>It is only fair that technical teams may rely on their understanding of their
-infrastructure and coding skills to get <em>something that just works™</em> in place.
-We haven&rsquo;t seriously considered this approach as we felt that getting security
-and distributed state sharing right was going to be a bigger endeavor than we
-could afford (the backlog is full enough for now).</p>
-
-<h3>Conclusion</h3>
-
-<p>In the end, we decided to give etcd a try. So far it seems to work well for
-our needs and the very active development pace seems to validate our choice.
-It has proven resilient and will likely hold well until we have the resources
-to either customize its data propagation approach, or build our own solution
-that will answer some needs it is not likely to answer (we&rsquo;ve already looked
-into doing so with ZeroMQ and Go).</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/01/devops-tools-and-utilities/">DevOps Tools and Utilities</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-01T13:13:05-05:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>DevOps Tool chain</h1>
-
-<p>A list of utilities to support configuration management tools. This was produced by the panelists of the Configuration Mgmt Workflow panel at LOPSA-EAST in 2013. One of the attendees also took notes: <a href="http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel">http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel</a></p>
-
-<h2>Individual level: IDE / syntax highlighting etc</h2>
-
-<h2>Puppet:</h2>
-
-<ul>
-<li>vim &ndash; <a href="https://github.com/rodjek/vim-puppet">https://github.com/rodjek/vim-puppet</a></li>
-<li>TextMate &amp; sublime text 2 &ndash; <a href="https://github.com/masterzen/puppet-textmate-bundle">https://github.com/masterzen/puppet-textmate-bundle</a></li>
-<li>gepetto (<a href="http://cloudsmith.github.io/geppetto/">http://cloudsmith.github.io/geppetto/</a>),</li>
-<li>emacs</li>
-</ul>
-
-
-<h2>Chef:</h2>
-
-<ul>
-<li>vim,</li>
-<li>TextMate,</li>
-<li>Sublime Text: <a href="http://www.youtube.com/watch?v=4VtDj_ar1Xg">http://www.youtube.com/watch?v=4VtDj_ar1Xg</a> (video), <a href="https://github.com/cabeca/SublimeChef">https://github.com/cabeca/SublimeChef</a> (GitHub)</li>
-<li>Emacs: chef-mode <a href="https://github.com/mpasternacki/chef-mode">https://github.com/mpasternacki/chef-mode</a></li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>vim &ndash; <a href="https://github.com/neilhwatson/vim_cf3">https://github.com/neilhwatson/vim_cf3</a></li>
-<li>emacs &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/cfengine.el">https://github.com/cfengine/core/blob/master/contrib/cfengine.el</a></li>
-<li>kate &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml">https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml</a></li>
-<li>eclipse &ndash; <a href="https://cfengine.com/eclipse-cfengine-editor">https://cfengine.com/eclipse-cfengine-editor</a></li>
-<li>Sublime Text &ndash; <a href="https://github.com/kebori/sublime-cfengine3">https://github.com/kebori/sublime-cfengine3</a></li>
-</ul>
-
-
-<h2>Local Testing</h2>
-
-<ul>
-<li>Vagrant &ndash;</li>
-<li>VMware</li>
-<li>OpenStack</li>
-<li>Cloud?</li>
-<li>All of the above?</li>
-</ul>
-
-
-<h2>Revision Control : Which tool? Which workflow?</h2>
-
-<ul>
-<li>Github Flow &ndash; <a href="http://scottchacon.com/2011/08/31/github-flow.html">http://scottchacon.com/2011/08/31/github-flow.html</a></li>
-<li>git-flow &ndash; <a href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a></li>
-<li>Git Dynamic Environments &ndash;</li>
-<li><ul>
-<li><a href="https://puppetlabs.com/blog/git-workflow-and-puppet-environments/">https://puppetlabs.com/blog/git-workflow-and-puppet-environments/</a> ,</li>
-</ul>
-</li>
-<li><ul>
-<li><a href="https://github.com/adrienthebo/puppet-git-hooks">https://github.com/adrienthebo/puppet-git-hooks</a></li>
-</ul>
-</li>
-</ul>
-
-
-<h2>Commit hooks</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>erb,</li>
-<li>pp parser,</li>
-<li>yaml, <a href="https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit">https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>fc pre-commit: <a href="https://github.com/gregf/chef-git-hooks">https://github.com/gregf/chef-git-hooks</a></li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>Subversion: <a href="http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html">http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html</a></li>
-<li>Git: <a href="https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit">https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit</a></li>
-</ul>
-
-
-<h2>Style / Lint tools</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>puppet-lint &ndash; <a href="http://puppet-lint.com/,">http://puppet-lint.com/,</a></li>
-<li>puppet-cleaner &ndash; <a href="https://github.com/santana/puppet-cleaner,">https://github.com/santana/puppet-cleaner,</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>tailor,</li>
-<li>foodcritic</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>cf-promises (with GCC-style warnings)</li>
-</ul>
-
-
-<h2>Testing manifests / recipes</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>rspec-puppet,</li>
-<li>?cucumber-puppet (discontiued)?</li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>chefspec,</li>
-<li>minitest-handler,</li>
-<li>rspec-chef,</li>
-<li>cucumber-chef,</li>
-<li>test-kitchen</li>
-</ul>
-
-
-<h2>Marshalling / Assembling Code &amp; Dependencies</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>librarian-puppet &ndash; <a href="https://github.com/rodjek/librarian-puppet">https://github.com/rodjek/librarian-puppet</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>berkshelf,</li>
-<li>librarian</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>cf-sketch &ndash; <a href="https://github.com/cfengine/design-center/wiki/Design-Center-Tools">https://github.com/cfengine/design-center/wiki/Design-Center-Tools</a></li>
-</ul>
-
-
-<h2>Continuous Integration</h2>
-
-<ul>
-<li>Jenkins CI</li>
-<li>Travis CI</li>
-<li>Atlassian Bamboo?</li>
-<li>TeamCity?</li>
-</ul>
-
-
-<h2>Orchestration</h2>
-
-<h3>Puppet:</h3>
-
-<ul>
-<li>MCollective</li>
-</ul>
-
-
-<h3>Chef :</h3>
-
-<ul>
-<li>has “knife ssh” and Pushy support coming for push jobs</li>
-</ul>
-
-
-<h2>Canary testing &amp; Prod vs QA vs test environments (not prod vs QA app code)</h2>
-
-<h3>Puppet</h3>
-
-<ul>
-<li>serverspec <a href="http://serverspec.org/">http://serverspec.org/</a></li>
-<li>rspec-system <a href="https://github.com/puppetlabs/rspec-system">https://github.com/puppetlabs/rspec-system</a></li>
-<li>nagios checks/ plugins</li>
-</ul>
-
-
-<h3>Chef</h3>
-
-<ul>
-<li>has knife-flip from Etsy, flips nodes into a test environment</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>Remote context class matching using remoteclassesmatching (Enterprise)</li>
-</ul>
-
-
-<h2>Provisioning VM&rsquo;s in the cloud?</h2>
-
-<h3>Chef:</h3>
-
-<ul>
-<li>knife ec2 server create&hellip;</li>
-<li>spiceweasel somefile.yml</li>
-<li>knife openstack&hellip;</li>
-<li>knife server create&hellip;</li>
-</ul>
-
-
-<p>Clouds include Azure, Openstack, Rackspace, etc. EC2 OpsWorks (although some limitations since it’s an older version)</p>
-
-<h2>Puppet:</h2>
-
-<ul>
-<li>puppet node_aws create / puppet node_vmware create</li>
-<li>Puppet RAL for AWS, OpenStack, CloudStack:
-  ec2_instance { “instance_name”: type => t1.large, az => ‘USWest’, ensure => present, …. }</li>
-<li>Razor (bare metal)</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li><a href="https://github.com/cfengine/design-center/tree/master/sketches/cloud">https://github.com/cfengine/design-center/tree/master/sketches/cloud</a></li>
-</ul>
-
-
-<h3>Chef</h3>
-
-<ul>
-<li>Crowbar has Chef server integrated, although I don’t know that much about it.</li>
-<li>Joyent also has a Chef “dataset” that they support.</li>
-</ul>
-
-
-<h2>Team Workflow</h2>
-
-<h3>Puppet: &ndash;?</h3>
-
-<h3>Chef:</h3>
-
-<ul>
-<li>knife-spork (has handlers to notify people)</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1278,6 +310,893 @@ s3fs dev_tools /mnt/dev_tools/
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick/">Managing Docker Services With This One Easy Trick</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-20T15:46:00-04:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have been having a lot of internal debate about the idea of running more than one service in a docker container.   A Docker container is built to run a single process in the foreground and to live for only as long as that process is running.  This is great in a utopian world where servers are immutable and sysadmins drink tiki drinks on the beach,  however it doesn&rsquo;t always translate well to the real world.</p>
+
+<p>Examples where you might want to be able to run multiple servers span from the simple use case of running <code>sshd</code> as well as your application to running a web app such as <code>wordpress</code> where you might want both <code>apache</code> and <code>mysql</code> running in the same container.</p>
+
+<p>Wrapping your applications in a supervisor daemon such as <code>runit</code> seems like a perfect fit for this.  All you need to do is install <code>runit</code> as part of your <code>dockerfile</code> and then create appropriate service directories for the apps you want to run in the container.    I was doing some testing of this when I realized a quirk of <code>runit</code> which I could exploit for evil.</p>
+
+<p>To start or stop a service with <code>runit</code> is simply a matter of creating or deleting a symlink in a service directory,   so in theory if you could expose that directory to the server hosting the container you could exploit that to start and stop services from outside of the container.  <code>Docker</code> volume mapping allows exactly this!</p>
+
+<p>Below you will find examples of running three services (logstash,elasticsearch,kibana) that make up the <code>logstash</code> suite.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/25/vagrant-docker-and-ansible-wtf/">Vagrant, Docker and Ansible, WTF?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-25T08:00:00-04:00" pubdate data-updated="true">Sep 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/09/25/vagrant-docker-and-ansible-wtf.html">Vagrant, Docker and Ansible. WTF?</a></h2>
+
+<p>Given that we&rsquo;re building a SaaS that helps our client managing their infrastructure, our team is pretty familiar with leveraging VMs and configuration management tools. We&rsquo;ve actually been heavy users of Vagrant and <a href="http://devo.ps/blog/2013/07/03/ansible-simply-kicks-ass.html">Ansible</a> for
+the past year, and it&rsquo;s helped us tremendously normalize our development process.</p>
+
+<p>As our platform grew in complexity, some additional needs emerged:</p>
+
+<ul>
+<li><strong>Containerization</strong>; we needed to be able to safely execute custom, and potentially harmful, code.</li>
+<li><strong>Weight</strong>; as we added more sub-systems to devo.ps, having full blown VMs proved to be hard to juggle with when testing and developing.</li>
+</ul>
+
+
+<p>And that&rsquo;s why we ended up adding Docker to our development workflow. We were already familiar with it (as it powers some parts of the devo.ps infrastructure) and knew there would be obvious wins. In practice, we are shipping Docker containers in a main Vagrant image and drive some of the customization and upgrade with Ansible.</p>
+
+<p>We&rsquo;ll probably write something about this approach in the coming weeks, but given the amount of confusion there is around what these technologies are, and how they&rsquo;re used, we thought we&rsquo;d give you a quick tour on how to use them together.</p>
+
+<p>Let&rsquo;s get started.</p>
+
+<h2>Vagrant</h2>
+
+<p>You&rsquo;ve probably heard about <a href="http://www.vagrantup.com/">Vagrant</a>; a healthy number of people have been writing about it in the past 6 months. For those of you who haven&rsquo;t, think of it as a VM without the GUI. At its core, Vagrant is a simple wrapper around Virtualbox/VMware.</p>
+
+<p>A few interesting features:</p>
+
+<ul>
+<li><strong>Boatloads of existing images</strong>, just check <a href="http://www.vagrantbox.es/">Vagrantbox.es</a> for example.</li>
+<li><strong>Snapshot and package your current machine</strong> to a Vagrant box file (and, consequently, share it back).</li>
+<li><strong>Ability to fine tune settings of the VM</strong>, including things like RAM, CPU, APIC…</li>
+<li><strong>Vagrantfiles</strong>. This allows you to setup your box on init: installing packages, modifying configuration, moving code around…</li>
+<li><strong>Integration with CM tools</strong> like Puppet, Chef and Ansible.</li>
+</ul>
+
+
+<p>Let&rsquo;s get it running on your machine:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>1. First, [download Vagrant](http://downloads.vagrantup.com/) 
+</span><span class='line'>     and [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
+</span><span class='line'>  2. Second, let's download an image, spin it up and SSH in:
+</span><span class='line'>   $ vagrant init precise64 http://files.vagrantup.com/precise64.box
+</span><span class='line'>   $ vagrant up
+</span><span class='line'>   $ vagrant ssh
+</span><span class='line'>  3. There's no 3.
+</span><span class='line'>  4. There's a 4 if you want to access your (soon to be) deployed app; 
+</span><span class='line'>  5. you will need to dig around the Vagrant documentation to 
+</span><span class='line'>     [perform port forwarding](http://docs.vagrantup.com/v2/networking/forwarded_ports.html), 
+</span><span class='line'>     [proper networking](http://docs.vagrantup.com/v2/networking/private_network.html) 
+</span><span class='line'>     and update manually your `Vagrantfile`.</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Docker</h2>
+
+<p><a href="http://docker.io">Docker</a> is a Linux container, written in <a href="http://golang.org">Go</a> (yay!) and based on <a href="http://en.wikipedia.org/wiki/LXC">lxc</a> (self-described as &ldquo;chroot on steroids&rdquo;) and <a href="http://en.wikipedia.org/wiki/Aufs">AUFS</a>. Instead of providing a full VM, like you get with Vagrant, Docker provides you lightweight containers, that share the same kernel and allow to safely execute independent
+processes.</p>
+
+<p>Docker is attractive for many reasons:</p>
+
+<ul>
+<li><strong>Lightweight</strong>; images are much lighter than full VMs, and spinning off a new instance is lightning fast (in the range of seconds instead of minutes).</li>
+<li><strong>Version control of the images</strong>, which makes it much more convenient to handle builds.</li>
+<li><strong>Lots of images</strong> (again), just have a look at <a href="https://index.docker.io">the docker public index of images</a>.</li>
+</ul>
+
+
+<p>Let&rsquo;s set up a Docker container on your Vagrant machine:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>1. SSH in Vagrant if you're not in already:
+</span><span class='line'>    
+</span><span class='line'>     $ vagrant ssh
+</span><span class='line'>
+</span><span class='line'>  2. Install Docker, 
+</span><span class='line'>  [as explained on the official website](http://http://docs.docker.io/en/latest/installation/ubuntulinux/#ubuntu-precise-12-04-lts-64-bit):
+</span><span class='line'>    
+</span><span class='line'>     $ sudo apt-get update
+</span><span class='line'>     $ sudo apt-get install linux-image-generic-lts-raring linux-headers-generic-lts-raring
+</span><span class='line'>     $ sudo reboot
+</span><span class='line'>     $ sudo sh -c "curl https://get.docker.io/gpg | apt-key add -"
+</span><span class='line'>     $ sudo sh -c "echo deb http://get.docker.io/ubuntu docker main &gt; /etc/apt/sources.list.d/docker.list"
+</span><span class='line'>     $ sudo apt-get update
+</span><span class='line'>     $ sudo apt-get install lxc-docker
+</span><span class='line'>
+</span><span class='line'>  3. Verify it worked by trying to build your first container:
+</span><span class='line'>    
+</span><span class='line'>     $ sudo docker run -i -t ubuntu /bin/bash
+</span><span class='line'>
+</span><span class='line'>  4. Great, but we'll need more than a vanilla Linux. To add our dependencies, for example to run a Node.js + MongoDB app, we're gonna start by creating a `Dockerfile`:
+</span><span class='line'>    
+</span><span class='line'>     FROM ubuntu
+</span><span class='line'>     MAINTAINER My Self me@example.com
+</span><span class='line'>     
+</span><span class='line'>     # Fetch Nodejs from the official repo (binary .. no hassle to build, etc.)
+</span><span class='line'>     ADD http://nodejs.org/dist/v0.10.19/node-v0.10.19-linux-x64.tar.gz /opt/
+</span><span class='line'>     
+</span><span class='line'>     # Untar and add to the PATH
+</span><span class='line'>     RUN cd /opt &amp;&amp; tar xzf node-v0.10.19-linux-x64.tar.gz
+</span><span class='line'>     RUN ln -s /opt/node-v0.10.19-linux-x64 /opt/node
+</span><span class='line'>     RUN echo "export PATH=/opt/node/bin:$PATH" &gt;&gt; /etc/profile
+</span><span class='line'>     
+</span><span class='line'>     # A little cheat for upstart ;)
+</span><span class='line'>     RUN dpkg-divert --local --rename --add /sbin/initctl
+</span><span class='line'>     RUN ln -s /bin/true /sbin/initctl
+</span><span class='line'>     
+</span><span class='line'>     # Update apt sources list to fetch mongodb and a few key packages
+</span><span class='line'>     RUN echo "deb http://archive.ubuntu.com/ubuntu precise universe" &gt;&gt; /etc/apt/sources.list
+</span><span class='line'>     RUN apt-get update
+</span><span class='line'>     RUN apt-get install -y python git
+</span><span class='line'>     RUN apt-get install -y mongodb
+</span><span class='line'>     
+</span><span class='line'>     # Finally - we wanna be able to SSH in
+</span><span class='line'>     RUN apt-get install -y openssh-server
+</span><span class='line'>     RUN mkdir /var/run/sshd
+</span><span class='line'>     
+</span><span class='line'>     # And we want our SSH key to be added
+</span><span class='line'>     RUN mkdir /root/.ssh &amp;&amp; chmod 700 /root/.ssh
+</span><span class='line'>     ADD id_rsa.pub /root/.ssh/authorized_keys
+</span><span class='line'>     RUN chmod 400 /root/.ssh/authorized_keys &amp;&amp; chown root. /root/.ssh/authorized_keys
+</span><span class='line'>     
+</span><span class='line'>     # Expose a bunch of ports .. 22 for SSH and 3000 for our node app
+</span><span class='line'>     EXPOSE 22 3000
+</span><span class='line'>     
+</span><span class='line'>     ENTRYPOINT ["/usr/sbin/sshd", "-D"]
+</span><span class='line'>
+</span><span class='line'>  5. Let's build our image now:
+</span><span class='line'>    
+</span><span class='line'>     $ sudo docker build .
+</span><span class='line'>     
+</span><span class='line'>     # Missing file id_rsa.pub ... hahaha ! You need an ssh key for your vagrant user
+</span><span class='line'>     $ ssh-keygen
+</span><span class='line'>     $ cp -a /home/vagrant/.ssh/id_rsa.pub .
+</span><span class='line'>     
+</span><span class='line'>     # Try again
+</span><span class='line'>     $ sudo docker build .
+</span><span class='line'>     
+</span><span class='line'>     # Great Success! High Five!
+</span><span class='line'>
+</span><span class='line'>  6. Now, let's spin off a container with that setup and log into it (`$MY_NEW_IMAGE_ID` is the last id the build process returned to you):
+</span><span class='line'>    
+</span><span class='line'>     $ sudo docker run -p 40022:22 -p 80:3000 -d $MY_NEW_IMAGE_ID
+</span><span class='line'>     $ ssh root@localhost -p 40022</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You now have a Docker container, inside a Vagrant box (<em>Inception</em> style),
+ready to run a Node.js app.</p>
+
+<h2>Ansible</h2>
+
+<p><a href="http://ansible.cc">Ansible</a> is an orchestration and configuration management tool written in Python. If you want to learn more about Ansible (and you should…), <a href="/blog/2013/07/03/ansible-simply-kicks-ass.html">we wrote about it a few weeks ago</a>.</p>
+
+<p>Let&rsquo;s get to work. We&rsquo;re now gonna deploy an app in our container:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>1. [Install Ansible](/blog/2013/07/03/ansible-simply-kicks-ass.html), as we showed you in our previous post.
+</span><span class='line'>
+</span><span class='line'>  2. Prepare your inventory file (`host`):
+</span><span class='line'>    
+</span><span class='line'>     app ansible_ssh_host=127.0.0.1 ansible_ssh_port=40022
+</span><span class='line'>
+</span><span class='line'>  3. Create a simple playbook to deploy our app (`deploy.yml`):
+</span><span class='line'>    
+</span><span class='line'>     ---
+</span><span class='line'>     - hosts: app
+</span><span class='line'>       user: root
+</span><span class='line'>       tasks:
+</span><span class='line'>         # Fetch the code from github
+</span><span class='line'>         - name: Ensure we got the App code
+</span><span class='line'>           git:
+</span><span class='line'>             repo=git://github.com/madhums/node-express-mongoose-demo.git
+</span><span class='line'>             dest=/opt/node-express-mongoose-demo
+</span><span class='line'>         
+</span><span class='line'>         # NPM may or may not succeed, if you give it time, care, etc. it eventually works
+</span><span class='line'>         - name: Ensure the npm dependencies are installed
+</span><span class='line'>           command:
+</span><span class='line'>             chdir=/opt/node-express-mongoose-demo
+</span><span class='line'>             /opt/node/bin/npm install
+</span><span class='line'>           ignore_errors: yes
+</span><span class='line'>           
+</span><span class='line'>         # We will assume no changes in the default sample - or we should consider templates instead
+</span><span class='line'>         - name: Ensure the config files of the app
+</span><span class='line'>           command:
+</span><span class='line'>             creates=/opt/node-express-mongoose-demo/config/$item.js
+</span><span class='line'>             cp /opt/node-express-mongoose-demo/config/$item.example.js /opt/node-express-mongoose-demo/config/$item.js
+</span><span class='line'>           with_items:
+</span><span class='line'>             - config
+</span><span class='line'>             - imager
+</span><span class='line'>             
+</span><span class='line'>         # `initctl` is now linking to `true` and we have no access to services
+</span><span class='line'>         # Need to fake the start
+</span><span class='line'>         - name: Ensure mongodb data folders
+</span><span class='line'>           file:
+</span><span class='line'>             state=directory
+</span><span class='line'>             dest=$item
+</span><span class='line'>             owner=mongodb
+</span><span class='line'>             group=mongodb
+</span><span class='line'>           with_items:
+</span><span class='line'>             - /var/lib/mongodb
+</span><span class='line'>             - /var/log/mongodb
+</span><span class='line'>             
+</span><span class='line'>         # Super cheat combo !
+</span><span class='line'>         - name: Ensure mongodb is running
+</span><span class='line'>           shell:
+</span><span class='line'>             LC_ALL='C' /sbin/start-stop-daemon --background --start --quiet --chuid mongodb --exec  /usr/bin/mongod -- --config /etc/mongodb.conf
+</span><span class='line'>         
+</span><span class='line'>         # Cheating some more !
+</span><span class='line'>         - name: Ensure the App is running
+</span><span class='line'>           shell:
+</span><span class='line'>             chdir=/opt/node-express-mongoose-demo
+</span><span class='line'>             /opt/node/bin/npm start &amp;
+</span><span class='line'>
+</span><span class='line'>  4. Run that baby:
+</span><span class='line'>    
+</span><span class='line'>     $ ansible-playbook -i host deploy.yml
+</span><span class='line'>
+</span><span class='line'>  5. We're done, point your browser at `http://localhost:80` - assuming you have performed the redirection mentioned in the initial setup of your vagrant box.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&rsquo;s it. You&rsquo;ve just deployed your app on Docker (in Vagrant).</p>
+
+<h2>Let&rsquo;s wrap it up</h2>
+
+<p>So we just saw (roughly) how these tools can be used, and how they can be
+complementary:</p>
+
+<ol>
+<li> Vagrant will provide you with a full VM, including the OS. It&rsquo;s great at providing you a Linux environment for example when you&rsquo;re on MacOS.</li>
+<li> Docker is a lightweight VM of some sort. It will allow you to build contained architectures faster and cheaper than with Vagrant.</li>
+<li> Ansible is what you&rsquo;ll use to orchestrate and fine-tune things. That&rsquo;s what you want to structure your deployment and orchestration strategy.</li>
+</ol>
+
+
+<p>It takes a bit of reading to get more familiar with these tools, and we&rsquo;ll likely follow up on this post in the next few weeks. However, especially as a small team, this kind of technology allows you to automate and commoditize huge parts of your development and ops workflows. We strongly encourage you to make that investment. It has helped us tremendously increase the pace and
+quality of our throughput.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/">Creating Immutable Servers With Chef and docker.io</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-07T18:18:00-04:00" pubdate data-updated="true">Sep 7<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Building applications in a <a href="http://docker.io">docker.io</a> Dockerfile is relatively simple,  but sometimes you want to just install the application exactly as you would normally via already built chef cookbooks.   Turns out this is actually pretty simple.</p>
+
+<p>The first thing you&rsquo;ll need to do is build a container with chef-client and berkshelf installed.   You can grab the one I&rsquo;ve built by running <code>docker pull paulczar/chef-solo</code> or build one youself from a <code>Dockerfile</code> that looks a little something like the following&hellip;</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/16/cheffile-and-librarian-locks/">Cheffile &amp; &#8216;Librarian Locks&#8217;</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-16T00:56:00-04:00" pubdate data-updated="true">Aug 16<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/librarian.png" title="'librarian chef'" >
+If you don&rsquo;t know what librarian is &ndash; get to know it :) (it makes life much easier)[<a href="http://rubydoc.info/gems/librarian-chef">http://rubydoc.info/gems/librarian-chef</a>] than way back when &hellip;</p>
+
+<p>The most annoying thing happend to me earlier this evening, I was working on a cookbook [A chef cookbook &hellip;, I don&rsquo;t actually do the cooking at home :)], and running librarian install yielded the following error:</p>
+
+<pre><code>"Cheffile and Cheffile.lock are out of sync!"
+</code></pre>
+
+<p>So like a good boy I remoced the Cheffile.lock and ran it again resulting with the same damn error message &hellip; arrrrrr !</p>
+
+<p>So after examening my Cheffile over and over I noticed I have listed a dependency from two different location somthing like the followin [ clieng url&rsquo;s omitted from snippet ]:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> <span class="c">#!/usr/bin/env ruby</span>
+</span><span class='line'>  <span class="c">#^syntax detection</span>
+</span><span class='line'>  site <span class="s2">&quot;http://shelf.clients_domain.corp:8080&quot;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;simple_proxy&#39;</span>, :git <span class="o">=</span>&gt; <span class="s1">&#39;git://clients_domain.corp/hagzag/simple_proxy.git&#39;</span>, :ref <span class="o">=</span>&gt; <span class="s1">&#39;master&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;nw-abap&#39;</span>,     :git <span class="o">=</span>&gt; <span class="s1">&#39;git://clients_domain.corp/hagzag/nw-abap.git&#39;</span>, :ref <span class="o">=</span>&gt; <span class="s1">&#39;master&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;sapinst&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># for lvm volume creation do this once ...</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;lvm&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;sap-lvm&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>,      :site <span class="o">=</span>&gt; <span class="s1">&#39;http://community.opscode.com/api/v1&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  cookbook <span class="s1">&#39;nfs&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you look a line numbers 11 &amp; 14 you will see I am specifying the smae cookbook from tow different sources &hellip;, this is a good thing, your dependecny mechanisem / tool isn&rsquo;t making decitions for you [ unlike Maven for exmaple &hellip; ].</p>
+
+<p>So in order to avoid this error and to comtinue working I had to remove one if the lines and I was good to go.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> ...
+</span><span class='line'>  <span class="c">#cookbook &#39;line&#39;,      :site =&gt; &#39;http://community.opscode.com/api/v1&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  cookbook <span class="s1">&#39;nfs&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Another fraction on my time line &hellip;</p>
+
+<p>Enjoy.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/13/install-xcode-cli-tools-via-script/">Install Xcode CLI Tools via Script</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-13T22:24:00-04:00" pubdate data-updated="true">Jul 13<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/xcode_cli.png" title="'Xcode CLI Tools'" >
+Well just got a mac from my new project <a href="http://www.facebook.com/photo.php?fbid=10151661183017850&amp;l=69918509f3">FB Status</a>&hellip; &ndash; couldn&rsquo;t resist it :)</p>
+
+<p>One of the tasks was to setup an environment, and learn what a mac is :), a few days later I&rsquo;m in love but still I need a way to destroy an recover
+my environment.
+I have a few plans like bash_it / oh_my_zsh &amp; others, but until then I put togter a few scripts [ more to come ], the first of them is this one installing Xcode CLI Tools on Mac OSX Mountain Lion.</p>
+
+<p>Install or (un-install) with the following simple command:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> sudo bash &lt; &lt;<span class="o">(</span>curl -L https://raw.github.com/hagzag/xcode-cli-install/master/install.sh<span class="o">)</span>
+</span><span class='line'>  sudo bash &lt; &lt;<span class="o">(</span>curl -L https://raw.github.com/hagzag/xcode-cli-install/master/uninstall.sh<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The essence &hellip; see the rest on <a href="https://github.com/hagzag/xcode-cli-install">Github</a></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>detect_osx_version<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="nv">result</span><span class="o">=</span><span class="sb">`</span>sw_vers -productVersion<span class="sb">`</span>
+</span><span class='line'>  ...
+</span><span class='line'>  <span class="nv">osxversion</span><span class="o">=</span><span class="s2">&quot;10.8&quot;</span>
+</span><span class='line'>  <span class="nv">osxvername</span><span class="o">=</span><span class="s2">&quot;Mountain Lion&quot;</span>
+</span><span class='line'>  <span class="nv">cltools</span><span class="o">=</span>xcode462_cltools_10_86938259a.dmg
+</span><span class='line'>  <span class="nv">mountpath</span><span class="o">=</span><span class="s2">&quot;/Volumes/Command Line Tools (Mountain Lion)&quot;</span>
+</span><span class='line'>  <span class="nv">mpkg</span><span class="o">=</span><span class="s2">&quot;Command Line Tools (Mountain Lion).mpkg&quot;</span>
+</span><span class='line'>  <span class="nv">pkg_url</span><span class="o">=</span><span class="s2">&quot;https://www.dropbox.com/s/hw45wvjxrkrl59x/xcode462_cltools_10_86938259a.dmg&quot;</span>
+</span><span class='line'>  <span class="nv">pkgmd5</span><span class="o">=</span><span class="s2">&quot;90c5db99a589c269efa542ff0272fc28&quot;</span>
+</span><span class='line'>  ...
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>download_tools <span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> -f /tmp/<span class="nv">$cltools</span> <span class="o">]</span>; <span class="k">then</span>
+</span><span class='line'><span class="k">    if</span> <span class="o">[</span> <span class="sb">`</span>md5 -q /tmp/<span class="nv">$cltools</span><span class="sb">`</span> <span class="o">=</span> <span class="s2">&quot;${pkgmd5}&quot;</span> <span class="o">]</span>; <span class="k">then</span>
+</span><span class='line'><span class="k">      </span><span class="nb">echo</span> -e <span class="s2">&quot;$info $cltools already downloaded to /tmp/$cltools.&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'><span class="k">       </span>rm -f /tmp/<span class="nv">$cltools</span>
+</span><span class='line'>    <span class="k">fi</span>
+</span><span class='line'><span class="k">  else</span>
+</span><span class='line'><span class="k">    </span><span class="nb">cd</span> /tmp <span class="o">&amp;&amp;</span> wget <span class="nv">$pkg_url</span> -O ./<span class="nv">$cltools</span>
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>install_tools<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="c"># Mount the Command Line Tools dmg</span>
+</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Mounting Command Line Tools...&quot;</span>
+</span><span class='line'>  hdiutil mount -nobrowse /tmp/<span class="nv">$cltools</span>
+</span><span class='line'>  <span class="c"># Run the Command Line Tools Installer</span>
+</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Installing Command Line Tools...&quot;</span>
+</span><span class='line'>  installer -pkg <span class="s2">&quot;$mountpath/$mpkg&quot;</span> -target <span class="s2">&quot;/Volumes/Macintosh HD&quot;</span>
+</span><span class='line'>  <span class="c"># Unmount the Command Line Tools dmg</span>
+</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Unmounting Command Line Tools...&quot;</span>
+</span><span class='line'>  hdiutil unmount <span class="s2">&quot;$mountpath&quot;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">gcc_bin</span><span class="o">=</span><span class="sb">`</span>which gcc<span class="sb">`</span>
+</span><span class='line'>  gcc --version &amp;&gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> -e <span class="s2">&quot;$info gcc found in $gcc_bin&quot;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="right" src="/assets/images/DropBox_logo.png" title="'DropBox logo'" ></p>
+
+<p>I took the liberty (not sure it&rsquo;s mine to take &hellip; but still), locating Xcode CLI tools for both mountain lion (10.8) and Lion (10.7) on <a href="http://www.dropbox.com">DropBox</a>, ecause Apple (like Oracle and other Giants) won&rsquo;t let you download without a userid / pass which is quite irretating &hellip;</p>
+
+<p>As Always hope you guy&rsquo;s enjoy this.
+HP</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/08/juc-video-net-ci-slash-cd-with-jenkins/">JUC Video - .Net CI/CD With Jenkins</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-08T22:37:00-04:00" pubdate data-updated="true">Jul 8<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The guy&rsquo;s from <a href="http://www.jfrog.com/">Jfrog</a> were kind enough to put this session on youtube &ndash; here it is enjoy</p>
+
+<iframe width="640" height="360" src="//www.youtube.com/embed/C5-98Fln1jg" frameborder="0" allowfullscreen></iframe>
+
+
+<p>comments are welcome !
+HP</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/06/16/using-jenkins-cli-as-job-gen/">Using Jenkins-cli as Job Gen</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-16T01:06:00-04:00" pubdate data-updated="true">Jun 16<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/jenkins140x140.jpg" title="'Jenkins logo small'" >
+Well a common use case for doing stuff with Jenkins jobs / configuration [ for example: enabling jobs, disabling jobs, executing jobs etc] is to use Jenkins-cli.jar which is included in your jenkins distribution.</p>
+
+<p>In a large company where branches are branched on a daily basis and you need a build for each branch, job creation could become a bottleneck [ so could branch creation &ndash; but that a different topic :) ].</p>
+
+<p>So my use case was to create a Job Generator which would take an existing job from branch 1.0 and create a job ( &amp; the ranch but as I said different topic ) for branch 2.0 with the corresponding name, so as I mentioned thank god for Jenkins in general, Jenkins-cli and in addition to that a shell script, <a href="http://www.gnu.org/software/sed/">sed</a>, <a href="http://xmlstar.sourceforge.net/">xmlstarlet</a> and again jenkins job parameters.</p>
+
+<p>I needed a script which would export the job configuration to an xml file, search and replace for the SCM url, create the job so lets see how its done:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>execJenkinsCli<span class="o">(){</span> <span class="c"># excute jenkins-cli jar </span>
+</span><span class='line'>        <span class="nv">jenkins_clinet_jar</span><span class="o">=</span>./jenkins-cli.jar
+</span><span class='line'>        <span class="c"># download only if it&amp;#39;s newwer than the local version [ curl -z ], the cli jar should be ofthe smae jenkins version ...</span>
+</span><span class='line'>        curl -s -z ./jenkins-cli.jar <span class="k">${</span><span class="nv">JENKINS_URL</span><span class="k">}</span>/jnlpJars/jenkins-cli.jar -o <span class="k">${</span><span class="nv">jenkins_clinet_jar</span><span class="k">}</span> <span class="o">||</span> <span class="o">{</span> <span class="nb">echo</span> &amp;quot;Echo  cannot obtain jenkins-cli.jar exiting&amp;quot;; <span class="nb">exit </span>2;<span class="o">}</span>
+</span><span class='line'>        <span class="nv">cli_cmd</span><span class="o">=</span><span class="nv">$1</span>
+</span><span class='line'>        <span class="nv">cmd_params</span><span class="o">=</span><span class="nv">$2</span>
+</span><span class='line'>        <span class="nv">cmd_prefix</span><span class="o">=</span>&amp;quot;<span class="k">${</span><span class="nv">JAVA_CMD</span><span class="k">}</span> -jar <span class="k">${</span><span class="nv">jenkins_clinet_jar</span><span class="k">}</span> -s <span class="k">${</span><span class="nv">JENKINS_URL</span><span class="k">}</span>&amp;quot;
+</span><span class='line'>
+</span><span class='line'>        <span class="k">${</span><span class="nv">cmd_prefix</span><span class="k">}</span> who-am-i | grep &amp;#39;Authenticated as: anonymous&amp;#39; &amp;amp;&amp;gt;/dev/null &amp;amp;&amp;amp; <span class="nv">anon</span><span class="o">=</span>0
+</span><span class='line'>        <span class="c">#anon=$?</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">[</span> &amp;quot;<span class="nv">$anon</span>&amp;quot; !<span class="o">=</span> &amp;quot;0&amp;quot; <span class="o">]</span>; <span class="k">then</span>
+</span><span class='line'>                <span class="c">#printf &amp;quot;[ $FUNCNAME ] using jenkins-cli with private key auth&amp;quot;</span>
+</span><span class='line'>                <span class="nb">exec</span> <span class="k">${</span><span class="nv">cmd_prefix</span><span class="k">}</span> <span class="k">${</span><span class="nv">cli_cmd</span><span class="k">}</span> <span class="k">${</span><span class="nv">cmd_params</span><span class="k">}</span>
+</span><span class='line'>        <span class="k">elif</span> <span class="o">[</span> &amp;quot;x&amp;quot; <span class="o">=</span> &amp;quot;x<span class="k">${</span><span class="nv">JENKINS_USER</span><span class="k">}</span>&amp;quot; <span class="o">]</span> <span class="o">||</span> <span class="o">[</span> &amp;quot;x&amp;quot;  <span class="o">=</span> &amp;quot;x<span class="k">${</span><span class="nv">JENKINS_PASS</span><span class="k">}</span>&amp;quot; <span class="o">]</span>; <span class="k">then</span>
+</span><span class='line'><span class="k">                </span><span class="nb">printf</span> &amp;quot;<span class="o">[</span> <span class="nv">$FUNCNAME</span> <span class="o">]</span> cannot determin jenkins credentials<span class="se">\n</span>&amp;quot;;
+</span><span class='line'>                <span class="nb">exit </span>3;
+</span><span class='line'>        <span class="k">else</span>
+</span><span class='line'><span class="k">                </span><span class="nb">exec</span> <span class="k">${</span><span class="nv">cmd_prefix</span><span class="k">}</span> <span class="k">${</span><span class="nv">cli_cmd</span><span class="k">}</span> <span class="k">${</span><span class="nv">cmd_params</span><span class="k">}</span> --username <span class="k">${</span><span class="nv">JENKINS_USER</span><span class="k">}</span> --password <span class="k">${</span><span class="nv">JENKINS_PASS</span><span class="k">}</span>
+</span><span class='line'>        <span class="k">fi</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>execJenkinsCli get-job <span class="k">${</span><span class="nv">tmpl_job_name</span><span class="k">}</span>  | <span class="se">\</span>
+</span><span class='line'>  <span class="k">${</span><span class="nv">XML</span><span class="k">}</span> ed -O -S -P -u &amp;#39;//project/scm/locations/hudson.scm.SubversionSCM_-ModuleLocation/remote&amp;#39; -v <span class="k">${</span><span class="nv">scm_url</span><span class="k">}</span> | <span class="se">\</span>
+</span><span class='line'>  execJenkinsCli create-job <span class="k">${</span><span class="nv">new_job_name</span><span class="k">}</span>
+</span><span class='line'>
+</span><span class='line'>  execJenkinsCli <span class="nb">enable</span>-job <span class="k">${</span><span class="nv">new_job_name</span><span class="k">}</span> <span class="c"># our template is usually disabled, thus the cloned one is too ...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The full jobGen wrapper script can be <a href="https://gist.github.com/hagzag/9b0d9d74d1920e248959">found here</a></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/06/16/using-jenkins-cli-as-job-gen/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1299,23 +1218,23 @@ s3fs dev_tools /mnt/dev_tools/
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/">Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/">A Deep Dive into AWS Reserved Instances</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/">6 reasons why large enterprises should move to Amazon Web Services</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/">CI and Test Automation utilizing OpenStack</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a>
       </li>
     
   </ul>

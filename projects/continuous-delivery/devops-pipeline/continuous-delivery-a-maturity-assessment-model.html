@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>continuous delivery- a maturity assessment model - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Continuous Delivery- a Maturity Assessment Model Continuous Delivery: A Maturity Assessment Model ThoughtWorks recently published a paper that &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/projects/continuous-delivery/devops-pipeline/continuous-delivery-a-maturity-assessment-model.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about/home">Home</a></li> 
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/projects">Projects</a></li>
+  <li><a href="/about/resume">About Me</a></li>
+  <li><a href="/about/consulting">Consulting</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Continuous Delivery- a Maturity Assessment Model</h1>
+    
+  </header>
+  
+  <p>Continuous Delivery: A Maturity Assessment Model</p>
+
+<p><a href="http://www.thoughtworks.com/" target="_blank">ThoughtWorks</a> recently published a paper that proposed a <a href="http://info.thoughtworks.com/Continuous-Delivery-Maturity-Model.html" target="_blank">maturity assessment model for continuous delivery</a>. Technology led companies continue to eat the lunch of traditional companies who are struggling to innovate at the same pace as their younger and more dynamic counterparts. Companies such as Netflix, Amazon, Google and Apple strive to reduce the cycle time from concept to reality so are able to give their customers what they want before any of their lumbering competitors.</p>
+
+
+<div id="attachment_2054" style="width: 148px" class="wp-caption alignright"><a href="http://i1.wp.com/thoughtforge.net/wp-content/uploads/2013/03/old-man.jpg" rel="lightbox-0"><img class="size-medium wp-image-2054 " title="Old Man" alt="Old Man" src="http://i1.wp.com/thoughtforge.net/wp-content/uploads/2013/03/old-man.jpg?resize=138,300" data-recalc-dims="1" /></a><p class="wp-caption-text">Old men Borders, Blockbuster&#8230;your days are numbered!!</p></div>
+
+
+<p>Even more galling, they share how they are achieving these short cycle times knowing that the incumbents simply don&#8217;t have it in their DNA to behave in this way. Going even further, they (<a href="http://techblog.netflix.com/" target="_blank">Netflix</a> in particular) even open source the software that enables them to do what they do&#8230;I can just imagine their smug little faces as they say &#8216;<em>follow that old man!</em>&#8216; The &#8216;old man&#8217; just doesn&#8217;t understand that it is not enough to be technology enabled because today &#8216;<em>the custom software that you create will increasingly be part of your competitive edge</em>&#8216;.</p>
+
+
+<p>These old men are set in their ways. They find comfort in the routine that they have become used to over the years. They don&#8217;t even understand what the kids these days are talking about! You&#8217;ll still call around for tea because you feel a little guilty about leaving them behind.  You&#8217;ll listen to their stories about how it used to take ages to release to production; how making a schema change was not something to be taken lightly.  You&#8217;ll do this because you feel sorry for them.</p>
+
+
+<p>I often use the terms technology led and technology enabled to describe companies who are either driven by their technology or simply enabled.  The Forrester paper describes this as an IT-as-a leader or IT-as-a-service model.  They concluded that &#8216;<em>a business technology model where the business and IT/engineering work in partnership to deliver new services from conception through to production stands the best chance of matching the needs of business leaders with the reality of service delivery capacity as it exists today.</em>&#8216;  Common sense really so why do so many companies still miss the point.  Maybe the grey matter is not quite what it used to be. Don&#8217;t forget your pills grandad!</p>
+
+
+<p>Forrester went on to say that &#8216;<em>While a business technology partnership model is best suited for matching service delivery capability to expectations, shops that engage in continuous delivery go beyond joint decision-making. They take an economic approach to managing their product portfolio services &#8211; one that&#8217;s based on data gathered from direct customer engagement.&#8217;</em>. That&#8217;s what it means to be truly technology led.</p>
+
+
+<p>Forrester also make the point that reduced cycle time from inception to production is facilitated by agile and lean, continuous integration and DevOps. It&#8217;s no coincidence that these relate to organisational change that spans the entire life-cycle. So if you aspire to be technology led your entire organisation must change focus, not just your technology organisation!</p>
+
+
+<p>&#8216;<em>Many of the advanced development shops we&#8217;ve spoken with point out that an elastic self-provisioned deployment environment is a critical component of modern service architecture&#8230;</em>&#8216;.  In my opinion this is what is primarily driving the interest in IAAS and PAAS with companies leaning to centralised provision of PAAS to enforce some governance.  What they need to be careful of is that they don&#8217;t create the same ceremony around their PAAS that was associated with other historically centralised services such as testing, database administration, infrastructure, security and architecture.  Time will tell if the lessons have been learned!</p>
+
+
+<p>The Forrester paper highlighted a couple of things the respondents felt slowed their software releases. The first, interestingly, was a &#8216;<em>lack of slack time for continuous improvement&#8217;</em>.  When will you learn people, that the expensive, highly educated and highly motivated team that you felt compelled to build is not a bloody field mule.  You won&#8217;t get results by working it harder.  Back off and let them find better ways to do things.  Because there are only so many hours in a day you are not going to scale by having them working longer hours!</p>
+
+
+<p>Five stages of continuous delivery maturity were identified and presented in a table along with the characteristics evident at each stage.  It&#8217;s well worth a read and if continuous deployment is what you aspire to then it&#8217;s not an unreasonable roadmap, though I don&#8217;t believe there is a one size fits all solution.</p>
+
+
+<p>The first stage is titled &#8216;<em>An Initial Level of Continuous Deployment Capability Constrains Innovation with Software Services</em>&#8216;.  Setting aside the characteristics that focus on automated testing and automation in general one thing stood out for me.  That was that &#8216;<em>Developers, testers, operations and management have goals that bring them into conflict&#8217;</em>.  Unfortunately, this is a characteristic that I have seen and experience all to often.</p>
+
+
+<p>The second stage is titled &#8216;<em>A Managed Level of Continuous Deployment Capability Introduces an Adaptive Delivery Process</em>&#8216;. Software releases are moving toward using change management processes and delivering time boxed releases with the aid of a pinch of automation. The time box requires &#8216;<em>an identified product owner who can examine functionality and quality tradeoffs and maintain customer support for the service while it&#8217;s being developed&#8217;</em>. Personally I would have gone further and require a product owner that is empowered and capable of making mature evidence based decisions and not one who kicks the mule because the furrow was not ploughed in a straight line.</p>
+
+
+<p>Stage three is titled &#8216;<em>A Defined Level of Continuous Deployment Capability Builds Quality Into The Release Process</em>&#8216;. This is what I refer to as <strong>Continuous Integration</strong>. Commit tests are run against trunk and development is predominantly trunk based.  Build failures are addressed with urgency and deployment into integrated environments is automated.  Solid database refactoring and versioning practices are followed and changes are automated.  Testers primarily focus on exploratory testing and quality assurance as opposed to regression testing and quality control.</p>
+
+
+<p>Stage four is titled &#8216;<em>A Quantitatively Managed Continuous Deployment Capability enables Release On Demand</em>&#8216;. This is what I refer to as <strong>Continuous Delivery</strong>. A new release can be deployed at the discretion of the product owner because trunk is always deployable and verified for correctness. Not only is the software doing what you expect it to do but what you expect is what the product owner expects also. This is achieved through a combination of ATDD and TDD as well as extensive automation of every deployment task. Teams take responsibility for the full feature life-cycle meaning that for a feature to be done it must be functioning in production.</p>
+
+
+<p>Finally, stage five is titled &#8216;<em>An Optimising Level of Continuous Deployment Allows Software Developers to Drive Business Value</em>&#8216;.  This is what I refer to as <strong>Continuous Deployment</strong>. This requires cross functional teams that self-organise and assume responsibility for the quality of service throughout inception, development and production. Testing techniques such as A/B testing produce data to inform decisions as teams produce a continuous stream of incremental improvement.  Feature toggles, branch by abstraction and parallel production environments allow teams to experiment early and often, and quickly reject failed experiments.  Tools such as the <a href="http://techblog.netflix.com/2011/07/netflix-simian-army.html" target="_blank">Netflix Simian Army</a> may even be used to verify non functional characteristics of the service in production.  These are lofty ambitions indeed.</p>
+
+
+<p>All in all, very insightful as you would expect from Forrester and ThoughtWorks.</p>
+
+
+  
+    <footer>
+      
+      
+    </footer>
+  
+</article>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/">A Deep Dive into AWS Reserved Instances</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/">6 reasons why large enterprises should move to Amazon Web Services</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/">CI and Test Automation utilizing OpenStack</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
