@@ -5,11 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4 - Balaji Vajjala's Blog</title>
+  <title>tutorials - Balaji Vajjala's Blog</title>
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4 Mar 25th, 2014 Autoscaling for LAMP on AWS | Choosing an instance type: Part 4 As &hellip;">
+  <meta name="description" content="Tutorials Apr 15th, 2014 Part1
+Part2
+Part3
+Part4 Apr 15th, 2014 Tweet About Me A little something about me. Recent Posts Jenkins Job Builder and How &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +21,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://bvajjala.github.io/projects/tutorials/aws/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4.html">
+  <link rel="canonical" href="http://bvajjala.github.io/projects/tutorials/aws">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
@@ -72,7 +75,7 @@
 <article role="article">
   
   <header>
-    <h1 class="entry-title">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</h1>
+    <h1 class="entry-title">Tutorials</h1>
     <p class="meta">
 
 
@@ -85,79 +88,16 @@
   
 
 
-<time datetime="2014-03-25T11:23:17-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time></p>
+<time datetime="2014-04-15T17:17:00-04:00" pubdate data-updated="true">Apr 15<span>th</span>, 2014</time></p>
   </header>
   
-  <h3>Autoscaling for LAMP on AWS | Choosing an instance type: Part 4</h3>
-
-<p>As mentioned in <a href="../autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/index.html" title="Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 1">part 1 of this
-series</a> (Creating
-a LAMP Stack AMI), a common concern among most customers is to choose
-the right instance type.</p>
-
-<p>It is important to do the capacity planning. Before you choose instance
-type ask yourself the following three questions:</p>
-
-<ol>
-<li><p>Is the application Memory intensive CPU intensive or Network
-intensive? For this question to be meaningful put a monitoring
-system in place and collect the data for a few weeks of real usage.</p></li>
-<li><p>What is the expected request count at peak hours?</p></li>
-<li><p>What is the minimum number of instances you want to run in
-non-business hours?</p></li>
+  <ol>
+<li><a href="autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1">Part1</a></li>
+<li><a href="autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2">Part2</a></li>
+<li><a href="autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3">Part3</a></li>
+<li><a href="autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4">Part4</a></li>
 </ol>
 
-
-<p><a href="https://docs.google.com/a/flux7.com/spreadsheet/ccc?key=0AkmUqlScRGp8dGJTNndjY0VjTURid3FTV2dNMEljOUE#gid=0">https://docs.google.com/a/flux7.com/spreadsheet/ccc?key=0AkmUqlScRGp8dGJTNndjY0VjTURid3FTV2dNMEljOUE#gid=0</a></p>
-
-<p>Make sure to run at least 2 servers for high availability.  During times
-of fewer loads, choose two m1.small instances for non-business hours
-like weekends. This would optimize cost instead of using 2 large
-instances for the same request.</p>
-
-<p>Different instance types have different capacity levels. If the
-application is memory intensive choose and use m1. class. If the
-application is CPU intensive then choose and use c1. class.</p>
-
-<p>Network bandwidth varies between different instance types. If the
-application requires more bandwidth (ex: video streaming applications)
-choose higher instance types irrespective of Memory or CPU to get better
-bandwidth.</p>
-
-<p>To know more about each instance types visit the following link.</p>
-
-<p><a href="http://aws.amazon.com/ec2/instance-types/">http://aws.amazon.com/ec2/instance-types/</a></p>
-
-<p>Start with micro/small instance for any workload. Do the Load run
-starting with the minimum number of users and increase the load
-gradually. Also scale the servers vertically or horizontally gradually
-until it reaches the maximum capacity. This would give a clearer picture
-of the number of instances required to serve the maximum or minimum
-load. Closely watch the CloudWatch graphs to understand usage statistics
-better.</p>
-
-<p>An interesting question at this juncture could be as follows: Can 4
-m1.medium instances be preferred to 2 large instances? Yes of course.
-However, network bandwidth varies from one instance type to other. Given
-that, it is wise to choose 2 large instances instead of 4 m1.medium
-instances as it is easier to handle lesser number of instances.</p>
-
-<p>(Note: DB server health needs to be checked when a load test is run.
-Increasing the app servers count may not improve the performance all the
-time. If DB queries are the bottleneck, chances are high for a bad
-performance. Consider scaling up the DB server capacity as well.)</p>
-
-<p>Based on the instance type identified from the load run, tune the PHP
-memory settings and Apache prefork MPM client connections.</p>
-
-<p>Check out the following links to know more about fine tuning Apache and
-PHP</p>
-
-<p><a href="http://www.hosting.com/support/linux/tuning-the-apache-prefork-mpm/">http://www.hosting.com/support/linux/tuning-the-apache-prefork-mpm/</a></p>
-
-<p><a href="http://icreatestuff.co.uk/blog/article/apache-performance-tuning">http://icreatestuff.co.uk/blog/article/apache-performance-tuning</a></p>
-
-<p><a href="autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1">Part1</a></p>
 
   
     <footer>
@@ -175,21 +115,13 @@ PHP</p>
   
 
 
-<time datetime="2014-03-25T11:23:17-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
+<time datetime="2014-04-15T17:17:00-04:00" pubdate data-updated="true">Apr 15<span>th</span>, 2014</time>
         
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/aws/'>AWS</a>
-  
-</span>
-
-
       </p>
       
         <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/projects/tutorials/aws/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/projects/tutorials/aws/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/projects/tutorials/aws/index.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/projects/tutorials/aws/index.html" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
