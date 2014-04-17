@@ -371,14 +371,64 @@
         <lastmod>2014-04-15T18:34:07-04:00</lastmod>
     </url>
     <url>
-        <loc>
-            http://bvajjala.github.io/projects/aws/creating-a-secure-deployment-pipeline-in-amazon-web-services/
-        </loc>
-        <lastmod>2014-04-16T13:56:59-04:00</lastmod>
+        <loc>http://bvajjala.github.io/projects/12factorApp/admin-processes.html</loc>
+        <lastmod>2014-04-17T12:22:51-04:00</lastmod>
     </url>
     <url>
-        <loc>http://bvajjala.github.io/projects/aws/how-we-use-aws-opsworks/</loc>
-        <lastmod>2014-04-16T14:25:28-04:00</lastmod>
+        <loc>http://bvajjala.github.io/projects/12factorApp/backing-services.html</loc>
+        <lastmod>2014-04-17T12:16:18-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/12factorApp/build-release-run.html</loc>
+        <lastmod>2014-04-17T12:22:36-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/12factorApp/codebase.html</loc>
+        <lastmod>2014-04-17T12:22:36-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/12factorApp/concurrency.html</loc>
+        <lastmod>2014-04-17T12:22:36-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/12factorApp/config.html</loc>
+        <lastmod>2014-04-17T12:22:36-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/12factorApp/dependencies.html</loc>
+        <lastmod>2014-04-17T12:22:36-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/12factorApp/dev-prod-parity.html</loc>
+        <lastmod>2014-04-17T12:22:36-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/12factorApp/disposability.html</loc>
+        <lastmod>2014-04-17T12:22:36-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/12factorApp/</loc>
+        <lastmod>2014-04-17T12:22:36-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/12factorApp/intro.html</loc>
+        <lastmod>2014-04-17T12:23:28-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/12factorApp/logs.html</loc>
+        <lastmod>2014-04-17T12:22:36-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/12factorApp/port-binding.html</loc>
+        <lastmod>2014-04-17T12:22:36-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/12factorApp/processes.html</loc>
+        <lastmod>2014-04-17T12:22:36-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/12factorApp/toc.html</loc>
+        <lastmod>2014-04-17T12:22:36-04:00</lastmod>
     </url>
     <url>
         <loc>
@@ -480,6 +530,12 @@
     </url>
     <url>
         <loc>
+            http://bvajjala.github.io/projects/continuous-delivery/creating-a-secure-deployment-pipeline-in-amazon-web-services/
+        </loc>
+        <lastmod>2014-04-16T13:56:59-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
             http://bvajjala.github.io/projects/continuous-delivery/devops-pipeline/application-monitoring-past.html
         </loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
@@ -517,6 +573,10 @@
             http://bvajjala.github.io/projects/continuous-delivery/devops-pipeline/paas-and-continuous-delivery-my-12-month-journey.html
         </loc>
         <lastmod>2014-04-15T18:34:06-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://bvajjala.github.io/projects/continuous-delivery/how-we-use-aws-opsworks/</loc>
+        <lastmod>2014-04-16T14:25:28-04:00</lastmod>
     </url>
     <url>
         <loc>http://bvajjala.github.io/projects/continuous-delivery/</loc>
