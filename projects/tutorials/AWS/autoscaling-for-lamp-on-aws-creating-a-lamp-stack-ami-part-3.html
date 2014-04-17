@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4 - Balaji Vajjala's Blog</title>
+  <title>Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3 - Balaji Vajjala's Blog</title>
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Autoscaling for LAMP on AWS | Choosing an instance type: Part 4 As mentioned in part 1 of this
-series (Creating
-a LAMP Stack AMI), a common concern &hellip;">
+  <meta name="description" content="Autoscaling for LAMP on AWS | Load Test the Environment: Part 3 In part 3 of the Autoscaling for LAMP on AWS series, After setting up your &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@ a LAMP Stack AMI), a common concern &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://bvajjala.github.io/projects/tutorials/AWS/2014-03-25-autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4.html">
+  <link rel="canonical" href="http://bvajjala.github.io/projects/tutorials/aws/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
@@ -75,7 +73,7 @@ a LAMP Stack AMI), a common concern &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</h1>
+      <h1 class="entry-title">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</h1>
     
     
       <p class="meta">
@@ -91,81 +89,88 @@ a LAMP Stack AMI), a common concern &hellip;">
   
 
 
-<time datetime="2014-03-25T11:23:17-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
+<time datetime="2014-03-25T11:23:14-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h3>Autoscaling for LAMP on AWS | Choosing an instance type: Part 4</h3>
+<div class="entry-content"><h3>Autoscaling for LAMP on AWS | Load Test the Environment: Part 3</h3>
 
-<p>As mentioned in <a href="../autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/index.html" title="Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 1">part 1 of this
-series</a> (Creating
-a LAMP Stack AMI), a common concern among most customers is to choose
-the right instance type.</p>
+<p>In part 3 of the Autoscaling for LAMP on AWS series,</p>
 
-<p>It is important to do the capacity planning. Before you choose instance
-type ask yourself the following three questions:</p>
+<p>After setting up your application autoscaling, it’s important to load
+run the application in order to understand the minimum and maximum
+number of instances required for each application.</p>
 
-<ol>
-<li><p>Is the application Memory intensive CPU intensive or Network
-intensive? For this question to be meaningful put a monitoring
-system in place and collect the data for a few weeks of real usage.</p></li>
-<li><p>What is the expected request count at peak hours?</p></li>
-<li><p>What is the minimum number of instances you want to run in
-non-business hours?</p></li>
-</ol>
+<p><a href="../autoscaling-for-lamp-on-aws-setting-up-austoscaling-groups-part-2/index.html" title="Autoscaling for LAMP on AWS | Setting Up Austoscaling Groups : Part 2">Read Part 2 to learn more about setting up autoscaling
+groups.</a></p>
 
+<p>First, fire the load run. For this article we’ve used HP LoadRunner
+because it provides more detailed results than others, but there are
+also other load runner tools to choose from. Be sure to run the load
+from multiple IP addresses or else the ELB may not distribute it equally
+across all instances. HP LoadRunner helps you use multiple nodes in
+order to generate the load.</p>
 
-<p><a href="https://docs.google.com/a/flux7.com/spreadsheet/ccc?key=0AkmUqlScRGp8dGJTNndjY0VjTURid3FTV2dNMEljOUE#gid=0">https://docs.google.com/a/flux7.com/spreadsheet/ccc?key=0AkmUqlScRGp8dGJTNndjY0VjTURid3FTV2dNMEljOUE#gid=0</a></p>
+<p>Update the Auto Scaling Group’s minimum and maximum instance counts.\</p>
 
-<p>Make sure to run at least 2 servers for high availability.  During times
-of fewer loads, choose two m1.small instances for non-business hours
-like weekends. This would optimize cost instead of using 2 large
-instances for the same request.</p>
+<p><img src="https://lh5.googleusercontent.com/nXhTs4kEqjzxfAy8aGdgqLvC_yKninSiyM3pClGWhemLXPWFjr_6Y5NU8xnf2j7twuJgVx2TO4tvs8fjm2K1c8y6C23NN8lacgef-JEH4621AXZITbYAAKRF4w" alt="" /></p>
 
-<p>Different instance types have different capacity levels. If the
-application is memory intensive choose and use m1. class. If the
-application is CPU intensive then choose and use c1. class.</p>
+<p>For the this article, we’ve set the minimum and maximum instance counts
+at 2 and 8 respectively.</p>
 
-<p>Network bandwidth varies between different instance types. If the
-application requires more bandwidth (ex: video streaming applications)
-choose higher instance types irrespective of Memory or CPU to get better
-bandwidth.</p>
+<p>Now change your Auto Scaling Policies. A scaling policy specifies
+whether to scale the auto scaling group up or down, and by how much.
+Here we’ve chosen 2 instances for Scale Up and Scale Down policies.
+These policies automatically increase or decrease the instances
+according to your defined conditions in order to maintain performance
+and minimize cost.</p>
 
-<p>To know more about each instance types visit the following link.</p>
+<p><img src="https://lh3.googleusercontent.com/3G9JdQa1GNjF_2fWOrZ10y-cpc3m8_6gtTH2Y046OK3LoiaMYGx0Nm_N4LsBcBhhRhA3cxr7D1sMlCv90ewW9rZ8QCr8amOHqivVcZZmML7Bx-XMIeM7wdN1Nw" alt="" /></p>
 
-<p><a href="http://aws.amazon.com/ec2/instance-types/">http://aws.amazon.com/ec2/instance-types/</a></p>
+<p>Next, <strong>increase the load</strong> gradually with LoadRunner. Once the CPU
+reaches 75% of the instances, Autoscaling will trigger the scale up
+policy to launch 2 more instances.</p>
 
-<p>Start with micro/small instance for any workload. Do the Load run
-starting with the minimum number of users and increase the load
-gradually. Also scale the servers vertically or horizontally gradually
-until it reaches the maximum capacity. This would give a clearer picture
-of the number of instances required to serve the maximum or minimum
-load. Closely watch the CloudWatch graphs to understand usage statistics
-better.</p>
+<p>Now <strong>decrease the load</strong> gradually and the CPU instances load should
+come down to less than 45%. Autoscaling will then trigger the scale down
+policy and delete the additional instances that were launched.</p>
 
-<p>An interesting question at this juncture could be as follows: Can 4
-m1.medium instances be preferred to 2 large instances? Yes of course.
-However, network bandwidth varies from one instance type to other. Given
-that, it is wise to choose 2 large instances instead of 4 m1.medium
-instances as it is easier to handle lesser number of instances.</p>
+<p>Consider a scenario in which a 2,000-concurrent-request count is reached
+during peak hours and 500 users are reached during non-peak hours. For
+best load run results, try the following.</p>
 
-<p>(Note: DB server health needs to be checked when a load test is run.
-Increasing the app servers count may not improve the performance all the
-time. If DB queries are the bottleneck, chances are high for a bad
-performance. Consider scaling up the DB server capacity as well.)</p>
+<p>Capture load test results and CloudWatch metrics for each of the
+following scenarios:</p>
 
-<p>Based on the instance type identified from the load run, tune the PHP
-memory settings and Apache prefork MPM client connections.</p>
+<p>​1. Start the load test with 500 users. Set the minimum instance count
+to 2 if you choose large or medium types, and set the maximum instance
+count to 4.</p>
 
-<p>Check out the following links to know more about fine tuning Apache and
-PHP</p>
+<p>​2. Increase the load to 1,000 users. Set the minimum and maximum
+instance counts to 2 and 6 respectively.</p>
 
-<p><a href="http://www.hosting.com/support/linux/tuning-the-apache-prefork-mpm/">http://www.hosting.com/support/linux/tuning-the-apache-prefork-mpm/</a></p>
+<p>​3. Increase the load to 2,000 users. Set the minimum and maximum
+instance counts to 4 and 10 respectively.</p>
 
-<p><a href="http://icreatestuff.co.uk/blog/article/apache-performance-tuning">http://icreatestuff.co.uk/blog/article/apache-performance-tuning</a></p>
+<p>​4. Increase the load to 3,000 users. Set the minimum and maximum
+instance counts to 6 and 12 respectively.</p>
+
+<p>Analyze the results for each scenario and note which gives better
+throughput and response times. Also check the DB metrics.</p>
+
+<p>Now it will be easy to choose the best instance type and max/min
+instance counts..</p>
+
+<p><strong>Shutdown Autoscaling</strong></p>
+
+<p>Update the autoscale group to resize the instance count to 0. This will
+terminate all instances launched within the lamp-asg autoscale group.</p>
+
+<p><em>Watch out for the final part of this series tomorrow on how to choose
+an instance type. </em></p>
 </div>
 
 
@@ -188,7 +193,7 @@ PHP</p>
   
 
 
-<time datetime="2014-03-25T11:23:17-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
+<time datetime="2014-03-25T11:23:14-04:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
       
 
 <span class="categories">
@@ -202,7 +207,7 @@ PHP</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/projects/tutorials/AWS/2014-03-25-autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/projects/tutorials/AWS/2014-03-25-autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/projects/tutorials/aws/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/projects/tutorials/aws/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3.html" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
