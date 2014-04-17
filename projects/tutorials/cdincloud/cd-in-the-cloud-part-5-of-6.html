@@ -1,0 +1,433 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Tutorial : Continuous Delivery in the Cloud Part 5 of 6 - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Tutorial : Continuous Delivery in the Cloud Part 5 of 6 Inpart 1 of this series, I introduced theContinuous Delivery (CD) pipeline for theManatee &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/projects/tutorials/cdincloud/cd-in-the-cloud-part-5-of-6.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about/home">Home</a></li> 
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/projects">Projects</a></li>
+  <li><a href="/about/resume">About Me</a></li>
+  <li><a href="/about/consulting">Consulting</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Tutorial : Continuous Delivery in the Cloud Part 5 of 6</h1>
+    
+  </header>
+  
+  <p>In<a href="http://www.stelligent.com/wp-admin/continuous-delivery-in-the-cloud-case-study-for-the-sea-to-shore-alliance-introduction-part-1-of-6">part 1 of this series</a>, I introduced the<a href="http://refcardz.dzone.com/refcardz/continuous-delivery-patterns">Continuous Delivery</a> (CD) pipeline for the<a href="http://manatees.mapntracker.com/wildtracks/">Manatee Tracking application</a>. In<a href="../continuous-delivery-in-the-cloud-cd-pipeline-part-2-of-6/index.html">part 2</a> I went over how we use this CD pipeline to deliver software from checkin to production. In <a href="../continuous-delivery-in-the-cloud-cloudformation-part-3-of-6/index.html">part 3</a>, we focused on how CloudFormation is used to script the virtual AWS components that create the Manatee infrastructure. A list of topics for each of the articles is summarized below:</p>
+
+<p><a href="../continuous-delivery-in-the-cloud-case-study-for-the-sea-to-shore-alliance-introduction-part-1-of-6/index.html">Part 1: Introduction</a>
+– Introduction to continuous delivery in the cloud and the rest of the articles;
+ <a href="../continuous-delivery-in-the-cloud-cd-pipeline-part-2-of-6/index.html">Part 2: CD Pipeline</a>
+– In-depth look at the CD Pipeline;
+ <a href="../continuous-delivery-in-the-cloud-cloudformation-part-3-of-6/index.html">Part 3: CloudFormation</a>
+– Scripted virtual resource provisioning;
+ Part 4: Dynamic Configuration –  What you’re reading now;
+ <a href="../continuous-delivery-in-the-cloud-deployment-automation-part-5-of-6/index.html">Part 5: Deployment Automation</a>
+– Scripted deployment orchestration;
+ <a href="../continuous-delivery-in-the-cloud-infrastructure-automation-part-6-of-6/index.html">Part 6: Infrastructure Automation</a>
+– Scripted environment provisioning (Infrastructure Automation)</p>
+
+<p>In this part of the series, I am going to explain how we dynamically generate our configuration and avoid property files whenever possible. Instead of using property files, we store and retrieve configuration on the fly – as part of the CD pipeline – without predefining these values in a static file (i.e. a properties file) ahead of time. We do this using two methods: AWS <a href="http://aws.amazon.com/simpledb/">SimpleDB</a> and <a href="http://aws.amazon.com/cloudformation/">CloudFormation</a>.</p>
+
+<p>SimpleDB is a highly available non-relational data storage service that only stores strings in key value pairs. CloudFormation, as discussed in <a href="../continuous-delivery-in-the-cloud-cloudformation-part-3-of-6/index.html">Part 3</a>
+of the series, is a scripting language for allocating and configuring AWS virtual resources.</p>
+
+<p><strong>Using SimpleDB</strong></p>
+
+<p>Throughout the CD pipeline, we often need to manage state across multiple Jenkins jobs. To do this, we use SimpleDB. As the pipeline executes, values that will be needed by subsequent jobs get stored in SimpleDB as properties. When the properties are needed we use a simple Ruby script script to return the key/value pair from SimpleDB and then use it as part of the job. The values being stored and retrieved range from IP addresses and domain names to AMI (Machine Images) IDs.</p>
+
+<p>So what makes this dynamic? As Jenkins jobs or CloudFormation templates are run, we often end up with properties that need to be used elsewhere. Instead of hard coding all of the values to be used in a property file, we create, store and retrieve them as the pipeline executes.</p>
+
+<p>Below is the <strong>CreateTargetEnvironment</strong> Jenkins job script that creates a new target environment from a CloudFormation script <code>production.template</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>if [ $deployToProduction ] == true 
+</span><span class='line'>then 
+</span><span class='line'>SSH_KEY=production 
+</span><span class='line'>else SSH_KEY=development 
+</span><span class='line'>fi
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Create Cloudformaton Stack
+</span><span class='line'> ruby /usr/share/tomcat6/scripts/aws/create_stack.rb ${STACK_NAME} ${WORKSPACE}/production.template ${HOST} ${JENKINSIP} ${SSH_KEY} ${SGID} ${SNS_TOPIC}
+</span><span class='line'>
+</span><span class='line'># Load SimpleDB Domain with Key/Value Pairs
+</span><span class='line'> ruby /usr/share/tomcat6/scripts/aws/load_domain.rb ${STACK_NAME}
+</span><span class='line'>
+</span><span class='line'># Pull and store variables from SimpleDB
+</span><span class='line'> host=`ruby /usr/share/tomcat6/scripts/aws/showback_domain.rb ${STACK_NAME} InstanceIPAddress`
+</span><span class='line'>
+</span><span class='line'># Run Acceptance Tests
+</span><span class='line'> cucumber features/production.feature host=${host} user=ec2-user key=/usr/share/tomcat6/.ssh/id_rsa</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Referenced above in the <strong>CreateTargetEnvironment</strong> code snippet. This is the <strong>load_domain.rb</strong> script that iterates over a file and sends key/value pairs to SimpleDB.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> require 'rubygems' 
+</span><span class='line'> require 'aws-sdk' 
+</span><span class='line'> load File.expand_path('../../config/aws.config', __FILE__)
+</span><span class='line'> 
+</span><span class='line'>
+</span><span class='line'>stackname=ARGV[0]
+</span><span class='line'>
+</span><span class='line'>file = File.open(“/tmp/properties”, “r”)
+</span><span class='line'>
+</span><span class='line'>sdb = AWS::SimpleDB.new
+</span><span class='line'>
+</span><span class='line'>AWS::SimpleDB.consistent_reads do
+</span><span class='line'>   domain = sdb.domains[“stacks”]
+</span><span class='line'>   item = domain.items[“#{stackname}”]
+</span><span class='line'>
+</span><span class='line'>  file.each_line do|line|
+</span><span class='line'>     key,value = line.split ‘=’
+</span><span class='line'>     item.attributes.set(
+</span><span class='line'>       “#{key}” =&gt; “#{value}”)
+</span><span class='line'>   end
+</span><span class='line'> end</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Referenced above in the <strong>CreateTargetEnvironment</strong> code snippet. This is the <strong>showback_domain.rb</strong> script which connects to SimpleDB and returns a key/value pair.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> load File.expand_path('../../config/aws.config', __FILE__)
+</span><span class='line'>
+</span><span class='line'>item_name=ARGV[0]
+</span><span class='line'> key=ARGV[1]
+</span><span class='line'>
+</span><span class='line'>sdb = AWS::SimpleDB.new
+</span><span class='line'>
+</span><span class='line'>AWS::SimpleDB.consistent_reads do
+</span><span class='line'>   domain = sdb.domains[“stacks”]
+</span><span class='line'>   item = domain.items[“#{item_name}”]
+</span><span class='line'>
+</span><span class='line'>  item.attributes.each_value do |name, value|
+</span><span class='line'>     if name == “#{key}”
+</span><span class='line'>       puts “#{value}”.chomp
+</span><span class='line'>     end
+</span><span class='line'>   end
+</span><span class='line'> end</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the above in the <strong>CreateTargetEnvironment</strong> code snippet, we store the outputs of the CloudFormation stack in a temporary file. We then iterate over the file with the <strong>load_domain.rb</strong> script and store the key/value pairs in SimpleDB.</p>
+
+<p>Following this, we make a call to SimpleDB with the <strong>showback_domain.rb</strong> script and return the instance IP address (created in the CloudFormation template) and store it in the <code>host</code> variable. <code>host</code> is then used by cucumber to ssh into the target instance and run the acceptance tests.</p>
+
+<p><strong>Using CloudFormation</strong></p>
+
+<p>In our CloudFormation templates we allocate multiple AWS resources. Every time we run the template, a different resource is being used. For example, in our <code>jenkins.template</code> we create a new <a href="http://aws.amazon.com/iam/">IAM</a> user. Every time we run the template a different IAM user with different credentials is created. We need a way to reference these resources. This is where CloudFormation comes in. You can reference resources within other resources throughout the script. You can define a reference to another resource using the <a href="http://www.stelligent.com/docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-ref.html">Ref</a>
+function in CloudFormation. Using Ref, you can dynamically refer to values of other resources such as an IP Address, domain name, etc.</p>
+
+<p>In the script we are creating an IAM user, referencing the IAM user to create <a href="https://portal.aws.amazon.com/gp/aws/securityCredentials">AWS Access keys</a> and then storing them in an environment variable.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> "CfnUser" : {
+</span><span class='line'>   "Type" : "AWS::IAM::User",
+</span><span class='line'>   "Properties" : {
+</span><span class='line'>     "Path": "/",
+</span><span class='line'>     "Policies": [{
+</span><span class='line'>       "PolicyName": "root",
+</span><span class='line'>       "PolicyDocument": {
+</span><span class='line'>         "Statement":[{
+</span><span class='line'>           "Effect":"Allow",
+</span><span class='line'>           "Action":"*",
+</span><span class='line'>           "Resource":"*"
+</span><span class='line'>         }
+</span><span class='line'>       ]}
+</span><span class='line'>     }]
+</span><span class='line'>   }
+</span><span class='line'> },`
+</span><span class='line'>
+</span><span class='line'>“HostKeys” : {
+</span><span class='line'>   “Type” : “AWS::IAM::AccessKey”,
+</span><span class='line'>   “Properties” : {
+</span><span class='line'>     “UserName” : { “Ref”: “CfnUser” }
+</span><span class='line'>   }
+</span><span class='line'> },
+</span><span class='line'>
+</span><span class='line'>“# Add AWS Credentials to Tomcatn”,
+</span><span class='line'> “echo ”AWS_ACCESS_KEY=“, {”Ref" : “HostKeys” }, “” &gt;&gt; /etc/sysconfig/tomcat6n",
+</span><span class='line'> “echo ”AWS_SECRET_ACCESS_KEY=“, {”Fn::GetAtt“:
+</span><span class='line'>[”HostKeys“,”SecretAccessKey“]},”" &gt;&gt; /etc/sysconfig/tomcat6n",</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can then use these access keys in other scripts by referencing the <code>$AWS_ACCESS_KEY</code> and <code>$AWS_SECRET_ACCESS_KEY</code> environment variables.</p>
+
+<p><strong>How is this different from typical configuration management?</strong></p>
+
+<p>Typically in many organizations, there’s a big property with hard coded key/value pairs that gets passed into the pipeline. The pipeline executes using the given parameters and cannot scale or change without a user modifying the property file. They are unable to scale or adapt because all of the properties are hard coded, if the property file hard codes the IP to an EC2 instance and it goes down for whatever reason, their pipeline doesn’t work until someone fixes the property file. There are more effective ways of doing this when using the cloud. The cloud is provides on-demand resources that will constantly be changing. These resources will have different IP addresses, domain names, etc associated with them every time.</p>
+
+<p>With dynamic configuration, there are no property files, every property is generated as part of the pipeline.</p>
+
+<p>With this dynamic approach, the pipeline values change with every run. As new cloud resources are allocated, the pipeline is able to adjust itself and automatically without the need for users to constantly modify property files. This leads to less time spent debugging those cumbersome property file management issues that plague most companies.</p>
+
+<p>In the next part of our series – which is all about Deployment Automation – we’ll go through scripting and testing your deployment using industry-standard tools. In this next article, you’ll see how to orchestrate deployment sequences and configuration using Capistrano.</p>
+
+  
+    <footer>
+      
+      
+        <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/projects/tutorials/cdincloud/cd-in-the-cloud-part-5-of-6.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/projects/tutorials/cdincloud/cd-in-the-cloud-part-5-of-6.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      
+    </footer>
+  
+</article>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/">Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/">A Deep Dive into AWS Reserved Instances</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

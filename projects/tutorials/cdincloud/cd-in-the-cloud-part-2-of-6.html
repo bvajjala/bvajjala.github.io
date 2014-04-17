@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Tutorial : Continuous Delivery in the Cloud Part 2 of 6 - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Tutorial : Continuous Delivery in the Cloud Part 2 of 6 In part 1 of this series, I introduced the Continuous Delivery (CD) pipeline for the Manatee &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/projects/tutorials/cdincloud/cd-in-the-cloud-part-2-of-6.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about/home">Home</a></li> 
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/projects">Projects</a></li>
+  <li><a href="/about/resume">About Me</a></li>
+  <li><a href="/about/consulting">Consulting</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Tutorial : Continuous Delivery in the Cloud Part 2 of 6</h1>
+    
+  </header>
+  
+  <p>In <a href="../continuous-delivery-in-the-cloud-case-study-for-the-sea-to-shore-alliance-introduction-part-1-of-6/index.html" title="Continuous Delivery in the Cloud: Part 1 of 6">part 1 of this series</a>, I introduced the <a href="http://refcardz.dzone.com/refcardz/continuous-delivery-patterns" title="Continuous Delivery patterns">Continuous Delivery</a> (CD) pipeline for the <a href="http://manatees.mapntracker.com/wildtracks/" title="Manatee Tracking Application">Manatee Tracking application</a> and how we use this pipeline to deliver software from checkin to production. In this article I will take an in-depth look at the CD pipeline. A list of topics for each of the articles is summarized below.</p>
+
+<p><a href="../continuous-delivery-in-the-cloud-case-study-for-the-sea-to-shore-alliance-introduction-part-1-of-6/index.html" title="Continuous Delivery in the Cloud case study">Part 1: Introduction</a> – Introduction to continuous delivery in the cloud and the rest of the articles;
+ Part 2: CD Pipeline – What you’re reading now;
+ <a href="../continuous-delivery-in-the-cloud-cloudformation-part-3-of-6/index.html">Part 3: CloudFormation</a> – Scripted virtual resource provisioning;
+ <a href="../continuous-delivery-in-the-cloud-dynamic-configuration-part-4-of-6/index.html">Part 4: Dynamic Configuration</a> – “Property file less” infrastructure;
+ <a href="../continuous-delivery-in-the-cloud-deployment-automation-part-5-of-6/index.html">Part 5: Deployment Automation</a>
+– Scripted deployment orchestration;
+ <a href="../continuous-delivery-in-the-cloud-infrastructure-automation-part-6-of-6/index.html">Part 6: Infrastructure Automation</a> – Scripted environment provisioning (Infrastructure Automation)</p>
+
+<p>The CD pipeline consists of five <a href="http://jenkins-ci.org/" title="Jenkins Continuous Integration">Jenkins</a> jobs. These jobs are configured to run one after the other. If any one of the jobs fail, the pipeline fails and that release  candidate cannot be released to production. The five Jenkins jobs are listed below (further details of these jobs are provided later in the article).</p>
+
+<ol>
+<li>A job that set the variables used throughout the pipeline (<strong>SetupVariables</strong>)</li>
+<li>Build job (<strong>Build</strong>)</li>
+<li>Production database update job (<strong>StoreLatestProductionData</strong>)</li>
+<li>Target environment creation job (<strong>CreateTargetEnvironment</strong>)</li>
+<li>A deployment job (<strong>DeployManateeApplication</strong>) which enables a    one-click deployment into production.</li>
+</ol>
+
+
+<p><img src="https://lh6.googleusercontent.com/Cp4ASyJBjWLEz8F6oR_HzllPqDE9FY8mQgiwplHGX9FJflA1lF_WqaVQTxIwXFumUH8PbuQtrkyVy-XxRTS3zDhUOXWntmu1lW1D3YnibpRu51K7pfDW" alt="" /></p>
+
+<p>We used Jenkins plugins to add additional features to the core Jenkins configuration. You can extend the standard Jenkins setup by using <a href="http://www.stelligent.com/continuous-delivery-in-the-cloud-cd-pipeline-part-2-of-6/Jenkins%20plugins" title="Jenkins plugins">Jenkins plugins</a>. A list of the plugins we use for the Sea to Shore Alliance Continuous Delivery configuration are listed below.</p>
+
+<ul>
+<li><strong>Grails</strong>: <a href="http://updates.jenkins-ci.org/download/plugins/grails/1.5/grails.hpi">http://updates.jenkins-ci.org/download/plugins/grails/1.5/grails.hpi</a>****</li>
+<li><strong>Groovy</strong>: <a href="http://updates.jenkins-ci.org/download/plugins/groovy/1.12/groovy.hpi">http://updates.jenkins-ci.org/download/plugins/groovy/1.12/groovy.hpi</a>****</li>
+<li><strong>Subversion</strong>: <a href="http://updates.jenkins-ci.org/download/plugins/subversion/1.40/subversion.hpi">http://updates.jenkins-ci.org/download/plugins/subversion/1.40/subversion.hpi</a>****</li>
+<li><strong>Paramterized Trigger</strong>: <a href="http://updates.jenkins-ci.org/download/plugins/parameterized-trigger/2.15/parameterized-trigger.hpi">http://updates.jenkins-ci.org/download/plugins/parameterized-trigger/2.15/parameterized-trigger.hpi</a>****</li>
+<li><strong>Copy Artifact</strong>: <a href="http://updates.jenkins-ci.org/download/plugins/copyartifact/1.21/copyartifact.hpi">http://updates.jenkins-ci.org/download/plugins/copyartifact/1.21/copyartifact.hpi</a>****</li>
+<li><strong>Build Pipeline</strong>: <a href="http://updates.jenkins-ci.org/download/plugins/build-pipeline-plugin/1.2.3/build-pipeline-plugin.hpi">http://updates.jenkins-ci.org/download/plugins/build-pipeline-plugin/1.2.3/build-pipeline-plugin.hpi</a>****</li>
+<li><strong>Ant</strong>: <a href="http://updates.jenkins-ci.org/download/plugins/ant/1.1/ant.hpi">http://updates.jenkins-ci.org/download/plugins/ant/1.1/ant.hpi</a>****</li>
+<li><strong>S3</strong>: <a href="http://updates.jenkins-ci.org/download/plugins/s3/0.2.0/s3.hpi">http://updates.jenkins-ci.org/download/plugins/s3/0.2.0/s3.hpi</a></li>
+</ul>
+
+
+<p>The parameterized trigger, build pipeline and <a href="http://aws.amazon.com/s3/" title="Amazon Simple Storage Service">S3</a> plugins are used for moving the application through the pipeline jobs. The Ant, Groovy, and Grails plugins are used for running the build for the application code. Subversion for polling and checking out from version control.</p>
+
+<p>Below, I describe each of the jobs that make up the CD pipeline in greater detail.</p>
+
+<p><strong>SetupVariables</strong>: Jenkins job used for entering in necessary property values which are propagated along the rest of the pipeline.</p>
+
+<p><strong>Parameter</strong>: <strong>STACK_NAME</strong></p>
+
+<p> <strong>Type</strong>: String</p>
+
+<p> <strong>Where</strong>: Used in both <strong>CreateTargetEnvironment</strong> and <strong>DeployManateeApplication</strong> jobs</p>
+
+<p> <strong>Purpose</strong>: Defines the <a href="http://aws.amazon.com/cloudformation/" title="AWS CloudFormation">CloudFormation</a> Stack name and <a href="http://aws.amazon.com/simpledb/" title="SimpleDB NoSQL">SimpleDB</a> property domain associated with the CloudFormation stack.</p>
+
+<p><strong>Parameter</strong>: <strong>HOST</strong></p>
+
+<p> <strong>Type</strong>: String</p>
+
+<p> <strong>Where</strong>: Used in both <strong>CreateTargetEnvironment</strong> and <strong>DeployManateeApplication</strong> jobs</p>
+
+<p> <strong>Purpose</strong>: Defines the CNAME of the domain created in the <strong>CreateTargetEnvironment</strong> job. The <strong>DeployManateeApplication</strong> job uses it when it dynamically creates configuration files. For instance, in test.oneclickdeployment.com, test would be the HOST</p>
+
+<p><strong>Parameter</strong>: <strong>PRODUCTION_IP*
+ </strong>Type<strong>: String
+ </strong>Where<strong>: Used in the </strong>StoreProductionData<strong> job
+ </strong>Purpose**: Sets the production IP for the job so that it can SSH into the existing production environment and run a database script that exports the data and uploads it to S3.</p>
+
+<p><strong>Parameter</strong>: <strong>deployToProduction</strong>
+ <strong>Type</strong>: Boolean
+ <strong>Where</strong>: Used in both <strong>CreateTargetEnvironment</strong> and
+<strong>DeployManateeApplication</strong> jobs
+ <strong>Purpose</strong>: Determines whether to use the development or production SSH keypair.</p>
+
+<p>In order for the parameters to propagate through the pipeline, we pass the current build parameters using the parametrized build trigger plugin</p>
+
+<p><strong>Build</strong>: Compiles the Manatee application’s Grails source code and creates a WAR file.</p>
+
+<p>To do this, we utilize a Jenkins grails plugin and run grails targets such as <code>compile</code> and <code>prod war</code>. Next, we archive the grails migrations for use in the <strong>DeployManateeApplication</strong> job and then the job pushes the Manatee WAR up to S3 which is used as an artifact repository.</p>
+
+<p>Lastly, using the trigger parametrized build plugin, we trigger the <strong>StoreProductionData</strong> job with the current build parameters.</p>
+
+<p><strong>StoreProductionData</strong>: This job performs a pg dump (PostgreSQL dump) of the production database and then stores it up in S3 for the environment creation job to use when building up the environment. Below is a snippet from this job.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ssh -i /usr/share/tomcat6/development.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ec2-user@${PRODUCTION_IP} ruby /home/ec2-user/database_update.rb</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On the target environments created using the CD pipeline, a database script is stored. The script goes into the PostgreSQL database and runs a pg_dump. It then pushes the pg_dump SQL file to S3 to be used when creating the target environment.</p>
+
+<p>After the SQL file is stored successfully, the <strong>CreateTargetEnvironment</strong> job is triggered.</p>
+
+<p><strong>CreateTargetEnvironment</strong>: Creates a new target environment using a CloudFormation template to create all the <a href="https://aws.amazon.com/" title="Amazon Web Services">AWS</a> resources and calls puppet to provision the environment itself from a base operating system to a fully working target environment ready for deployment. Below is a snippet from this job.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>if [ $deployToProduction ] then SSH_KEY=development else SSH_KEY=production fi
+</span><span class='line'>
+</span><span class='line'># Create Cloudformaton Stack
+</span><span class='line'> ruby ${WORKSPACE}/config/aws/create_stack.rb ${STACK_NAME} ${WORKSPACE}/infrastructure/manatees/production.template ${HOST} ${JENKINSIP} ${SSH_KEY} ${SGID} ${SNS_TOPIC}
+</span><span class='line'>
+</span><span class='line'># Load SimpleDB Domain with Key/Value Pairs
+</span><span class='line'> ruby ${WORKSPACE}/config/aws/load_domain.rb ${STACK_NAME}
+</span><span class='line'>
+</span><span class='line'># Pull and store variables from SimpleDB
+</span><span class='line'> host=`ruby ${WORKSPACE}/config/aws/showback_domain.rb
+</span><span class='line'>${STACK_NAME} InstanceIPAddress`
+</span><span class='line'>
+</span><span class='line'># Run Acceptance Tests
+</span><span class='line'> cucumber ${WORKSPACE}/infrastructure/manatees/features/production.feature host=${host} user=ec2-user key=/usr/share/tomcat6/.ssh/id_rsa
+</span><span class='line'>
+</span><span class='line'># Publish notifications to SNS
+</span><span class='line'> sns-publish –topic-arn $SNS_TOPIC –subject “New Environment Ready” –message “Your new environment is ready. IP Address: $host. 
+</span><span class='line'> 
+</span><span class='line'>An example command to ssh into the box would be: 
+</span><span class='line'>
+</span><span class='line'>ssh -i development.pem ec2-user@$host This instance was created by $JENKINS_DOMAIN” –aws-credential-file /usr/share/tomcat6/aws_access
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Once the environment is created, a set of <a href="http://cukes.info" title="Cucumber Acceptance-Test Driven Development">Cucumber</a> tests is run to ensure it’s in the correct working state. If any test fails, the entire pipeline fails and the developer is notified something went wrong. Otherwise if it passes, the <strong>DeployManateeApplication</strong> job is kicked off and an AWS <a href="http://aws.amazon.com/sns/" title="Amazin Simple Notification Service">SNS</a> email notification with information to access the new instance is sent to the developer.</p>
+
+<p><strong>DeployManateeApplication</strong>: Runs a <a href="https://github.com/capistrano/capistrano" title="Capistrano">Capistrano</a> script which uses steps in order to coordinate the deployment. A snippet from this job is displayed below.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>if [ !$deployToProduction ]
+</span><span class='line'> then
+</span><span class='line'>   SSH_KEY=/usr/share/tomcat6/development.pem
+</span><span class='line'> else
+</span><span class='line'>   SSH_KEY=/usr/share/tomcat6/production.pem 
+</span><span class='line'> fi
+</span><span class='line'>
+</span><span class='line'>#/usr/share/tomcat6/.ssh/id_rsa
+</span><span class='line'>
+</span><span class='line'>cap deploy:setup stack=${STACK_NAME} key=${SSH_KEY}
+</span><span class='line'>
+</span><span class='line'>sed -i “s@manatee0@${HOST}@”
+</span><span class='line'>${WORKSPACE}/deployment/features/deployment.feature
+</span><span class='line'>
+</span><span class='line'>host=`ruby ${WORKSPACE}/config/aws/showback_domain.rb ${STACK_NAME} InstanceIPAddress`
+</span><span class='line'> cucumber deployment/features/deployment.feature host=${host} user=ec2-user key=${SSH_KEY} artifact=
+</span><span class='line'>
+</span><span class='line'>sns-publish –topic-arn $SNS_TOPIC –subject “Manatee Application Deployed” –message “Your Manatee Application has been deployed successfully. 
+</span><span class='line'>You can view it by going to 
+</span><span class='line'>http://$host/wildtracks This instance was deployed to by $JENKINS_DOMAIN” –aws-credential-file/usr/share/tomcat6/aws_access</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This deployment job is the final piece of the delivery pipeline, it pulls together all of the pieces created in the previous jobs to successfully deliver working software.</p>
+
+<p>During the deployment, the Capistrano script SSH’s into the target server, deploys the new war and updated configuration changes and restarts all services. Then the Cucumber tests are run to ensure the application is available and running successfully. Assuming the tests pass, an AWS SNS email gets dispatched to the developer with information on how to access their new development application</p>
+
+<p>We use Jenkins as the orchestrator of the pipeline. Jenkins executes a set of scripts and passes around parameters as it runs each job. Because of the role Jenkins plays, we want to make sure it’s treated the same way as application – meaning versioning and testing all of our changes to the system. For example, if a developer modifies the create environment job configuration, we want to have the ability to revert back if necessary. Due to this requirement we version the Jenkins configuration. The jobs, plugins and main configuration. To do this, a script is executed each hour using <code>cron.hourly</code> that checks for new jobs or updated configuration and commits them up to version control.</p>
+
+<p>The CD pipeline that we have built for the Manatee application enables any change in the application, infrastructure, database or configuration to move through to production seamlessly using automation. This allows any new features, security fixes, etc. to be fully tested as it gets delivered to production at the click of a button.</p>
+
+<p>In the next part of our series – which is all about using <a href="http://aws.amazon.com/cloudformation/" title="AWS CloudFormation">CloudFormation</a> – we’ll go through a CloudFormation template used to automate the creation of a Jenkins environment. In this next article, you’ll see how CloudFormation procures AWS resources and provisions our Jenkins CD Pipeline environment.</p>
+
+  
+    <footer>
+      
+      
+        <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/projects/tutorials/cdincloud/cd-in-the-cloud-part-2-of-6.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/projects/tutorials/cdincloud/cd-in-the-cloud-part-2-of-6.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      
+    </footer>
+  
+</article>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-4/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 4</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-3/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-2/">Autoscaling for LAMP on AWS |Creating a LAMP Stack AMI : Part 2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/autoscaling-for-lamp-on-aws-creating-a-lamp-stack-ami-part-1/">Autoscaling for LAMP on AWS : Creating a LAMP Stack AMI : Part 1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/">A Deep Dive into AWS Reserved Instances</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
