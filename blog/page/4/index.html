@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="One of the problems I keep running into with Puppet is that the packages I&rsquo;m trying to install are very new and I need to run apt-get update to &hellip;">
+  <meta name="description" content="If I haven&rsquo;t told you yet, Git is awesome and yes I do most og the work from the command-line, so in order to make my life easier I did two &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +72,60 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/24/Git-Productivity-enhancements/">Git Productivity Enhancements</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-24T13:11:00-05:00" pubdate data-updated="true">Feb 24<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/git_logo.jpg" title="'Git Logo'" >If I haven&rsquo;t told you yet, Git is awesome and yes I do most og the work from the command-line, so in order to make my life easier I did two things:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>apt-get install bash-completion
+</span><span class='line'>wget https://raw.github.com/git/git/master/contrib/completion/git-completion.bash -O /etc/bash_completion.d/git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Upon next login (or execute <em>source /etc/bash_completion.d/git</em>) right away and you have all the bash completion you need for git at your finger tips.</p>
+
+<p>Another awesome script to make your life easier with git is <a href="https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh">git-prompt.sh</a> which you can also include in your bash profile like so:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>wget https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>then add a line to ~/.profile sourcing it upon login shell, see header of git-prompt.sh for more details.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -996,123 +1050,6 @@ at this point we started to look at binary package management.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/03/Speeding-Up-NuGet-Server/">Speeding Up NuGet.Server</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-03T00:00:00-04:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><em>(Get the source code at <a href="https://github.com/themotleyfool/NuGet">https://github.com/themotleyfool/NuGet</a>)</em></p>
-
-<p>Last time I wrote about creating a LINQ provider for Lucene.Net, and today I&rsquo;ll talk about integrating that provider
-with NuGet. The existing server part of the NuGet codebase is a drop-in replacement for using local file-system based
-feeds. I wanted to try to preserve that turnkey advantage but improve the performance of various queries.</p>
-
-<p>In order to make sure that my improvements were up to snuff, I set up a private mirror of all packages on <a href="http://nuget.org/">nuget.org</a>,
-which turned out to be 44,193 packages at the time, for a total size of over 20 gigs.</p>
-
-<p>If you try hitting ~/api/v2/Packages on stock NuGet.Server, you&rsquo;ll find that your request just spins and spins. And spins. In fact
-it took so long that I gave up waiting for the application to initialize. In the background, the server is finding all <code>*.nupkg</code>
-files in ~/Packages and calculating a hash of the contents. Needless to say, it can take a while to run a checksum algorithm on 20gb
-of data.</p>
-
-<p>Switching over to my custom lucene branch, the first time the site is started, it scans the Packages folder and finds all packages
-that haven&rsquo;t been indexed by Lucene. The site homepage helpfully tells you the current status, such as &ldquo;Indexing 2113 of 44193 new packages.&rdquo;
-An ajax timer refreshes the info every few seconds so progress can be easily tracked.</p>
-
-<p>The packages don&rsquo;t begin to appear in the feed until they&rsquo;ve all been indexed. So this isn&rsquo;t much better than stock NuGet.Server.</p>
-
-<h2>Incremental Indexing</h2>
-
-<p>The real improvements are appreciated after the initial index is built.</p>
-
-<pre><code>[celdredge@localhost]$ appcmd recycle apppool nuget
-"nuget" successfully recycled
-
-[celdredge@localhost]$ time wget -O /dev/null http://localhost/api/v2/Packages
-
-(snip)
-
-real    0m3.230s
-user    0m0.062s
-sys     0m0.125s
-</code></pre>
-
-<p>This means that you don&rsquo;t have to worry much about IIS shutting down the application during idle times. The index gets loaded and ready to go
-in a matter of seconds. Vast improvement over stock NuGet.Server.</p>
-
-<p>While that happens, a background thread scans the Packages folder to see what might have changed while the application was stopped. New, modified
-and deleted packages are synchronized with the Lucene index. The sycnhronization process takes about 25 seconds to scan 44,193 package files
-split into 6,180 folders and calculate the differences with the Lucene index. That&rsquo;s pretty fast.</p>
-
-<p>After the application finishes this initial scan, a FileSystemWatcher monitors the Packages folder to synchronize any changes in real time.
-This allows the index to stay in sync when new packages appear, even if they are copied into the folder instead of using <code>nuget push</code>.</p>
-
-<h2>Superfast Search</h2>
-
-<p>All sorts of complex queries are possible, and they execute in very reasonable time. I used <a href="http://www.linqpad.net/">LINQPad</a> to
-construct various test queries, like this one that finds packages whose id contain lucene but do not start with lucene:</p>
-
-<pre><code>from p in Packages
-where p.Id.Contains("Lucene")
-where !p.Id.StartsWith("Lucene")
-where p.IsLatestVersion
-orderby p.Id descending
-select p
-
-Query successful (00:00.136)
-</code></pre>
-
-<p>136ms is pretty respectable, IMO.</p>
-
-<p>Another advantage to using Lucene is how queries are analyzed. Term queries will match various word forms, so a query like <tt>build</tt> will
-match packages that use any words like build, builds, building, built, etc. It is also possible to search for phrase queries, such as
-<tt>&ldquo;glue them back together&rdquo;</tt>. That query matches only one package that contains the exact phrase, whereas on nuget.org you&rsquo;ll get
-all kinds of results.</p>
-
-<h2>Other Features</h2>
-
-<p>The <a href="https://github.com/NuGet/NuGetGallery/wiki/Tab-Completion-API-Endpoints">Tab Completion API Endpoints</a> introduced in NuGet 2.0 have
-been implemented, bringing fast results to users of the Package Manager Console.</p>
-
-<h2>Conclusion</h2>
-
-<p>It has taken a substantial amount of time and effort to implement Lucene.Net.Linq and integrate it with NuGet.Server, but the results
-have proven to be worth the investment.</p>
-
-<p>Lucene.Net.Linq has become a fairly mature, though still nascent, project now available on <a href="http://nuget.org/packages/Lucene.Net.Linq">nuget.org</a>. There are a few other
-OSS projects that attempt to do what it does, but I think it is already one of the best.</p>
-
-<p>Binaries of NuGet.Server + Lucene can be downloaded from <a href="https://github.com/themotleyfool/NuGet/downloads">https://github.com/themotleyfool/NuGet/downloads</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -1134,6 +1071,10 @@ OSS projects that attempt to do what it does, but I think it is already one of t
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
       </li>
     
@@ -1147,10 +1088,6 @@ OSS projects that attempt to do what it does, but I think it is already one of t
     
       <li class="post">
         <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing A RESTful API That Doesn&#8217;t Suck</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
       </li>
     
   </ul>

@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Why We Dropped Swagger And I/O Docs As we started investing in our new strategy at my previous company, we looked around for solutions to document &hellip;">
+  <meta name="description" content="Farewell to Regular Web Development Approaches At my previous company, we built Web applications for medium to large organizations, often in the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +72,71 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/farewell-to-regular-web-development-approaches/">Farewell to Regular Web Development Approaches</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T13:52:12-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">Farewell to Regular Web Development Approaches</a></h2>
+
+<p>At my <a href="http://wiredcraft.com">previous company</a>, we built Web applications for medium to large organizations, often in the humanitarian and non-profit space, facing original problems revolving around data. Things like building the
+<a href="http://wiredcraft.com/work/southern-sudan-referendum/index.html">voting infrastructure for the Southern Sudan Referendum</a> helped us diversify our technical chops. But until a year ago, we were still mostly building regular Web applications; the user requests a page that we build and serve back.</p>
+
+<p><strong>Until we started falling in love with APIs and static clients.</strong></p>
+
+<p>It&rsquo;s not that we fundamentally disliked the previous approach. We just reached a point where we felt our goals weren&rsquo;t best served by this model. With lots of dynamic data, complex visualizations and a set of &ldquo;static&rdquo; interfaces, the traditional way was hindering our development speed and our ability to experiment. And so we got busy, experimenting at first with smaller parts of our projects (blog, help section, download pages…). We realized our use of complex pieces of softwares like content management systems had seriously biased our approach to problem solving. <strong>The CMS had become a boilerplate, an unchallenged dependency.</strong></p>
+
+<p>We&rsquo;ve gradually adopted a pattern of building front-ends as static clients (may they be Web, mobile or 3rd party integrations) combined with, usually, one RESTful JSON API in the backend. And it works marvelously, thanks in part
+to some awesome tech much smarter people figured out for us:</p>
+
+<ul>
+<li><a href="http://marionettejs.com">Marionette</a> and <a href="http://backbonejs.org">Backbone.js</a>, <a href="http://github.com/component/component">Component</a> (a personal favorite) and <a href="http://github.com/mojombo/jekyll">Jekyll</a> allow us to build static HTML5 + JS + CSS clients for Web and mobile,</li>
+<li><a href="http://nodejs.org">node.js</a> and <a href="http://github.com/devo-ps/carcass">carcass</a> (alpha quality at this stage) in the backend for our APIs.</li>
+</ul>
+
+
+<p>Most of what we build at devo.ps is stemming from this accelerated recovery and follow usually that order:</p>
+
+<ol>
+<li> We start by defining our API interface through user stories and methods,</li>
+<li> Both backend and front-end teams are getting cranking on implementing and solving the challenges specific to their part,</li>
+</ol>
+
+
+<p>A lot of things happen in parallel and changes on one side rarely impact the other: we can make drastic changes in the UI without any change on the backend. And there were a lot of unexpected gains too, in security, speed and
+overall maintainability. More importantly, we&rsquo;ve freed a lot of our resources to focus on building compelling user experiences instead of fighting a large piece of software to do what we want it to do.</p>
+
+<p>If you haven&rsquo;t tried building things that way yet, give it a try honestly (when relevant); it may be a larger initial investment in some cases but you&rsquo;ll come out on top at almost every level.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1373,144 +1438,6 @@ If you don&rsquo;t know what librarian is &ndash; get to know it :) (it makes li
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/07/13/install-xcode-cli-tools-via-script/">Install Xcode CLI Tools via Script</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-13T22:24:00-04:00" pubdate data-updated="true">Jul 13<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/xcode_cli.png" title="'Xcode CLI Tools'" >
-Well just got a mac from my new project <a href="http://www.facebook.com/photo.php?fbid=10151661183017850&amp;l=69918509f3">FB Status</a>&hellip; &ndash; couldn&rsquo;t resist it :)</p>
-
-<p>One of the tasks was to setup an environment, and learn what a mac is :), a few days later I&rsquo;m in love but still I need a way to destroy an recover
-my environment.
-I have a few plans like bash_it / oh_my_zsh &amp; others, but until then I put togter a few scripts [ more to come ], the first of them is this one installing Xcode CLI Tools on Mac OSX Mountain Lion.</p>
-
-<p>Install or (un-install) with the following simple command:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'> sudo bash &lt; &lt;<span class="o">(</span>curl -L https://raw.github.com/hagzag/xcode-cli-install/master/install.sh<span class="o">)</span>
-</span><span class='line'>  sudo bash &lt; &lt;<span class="o">(</span>curl -L https://raw.github.com/hagzag/xcode-cli-install/master/uninstall.sh<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The essence &hellip; see the rest on <a href="https://github.com/hagzag/xcode-cli-install">Github</a></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>detect_osx_version<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nv">result</span><span class="o">=</span><span class="sb">`</span>sw_vers -productVersion<span class="sb">`</span>
-</span><span class='line'>  ...
-</span><span class='line'>  <span class="nv">osxversion</span><span class="o">=</span><span class="s2">&quot;10.8&quot;</span>
-</span><span class='line'>  <span class="nv">osxvername</span><span class="o">=</span><span class="s2">&quot;Mountain Lion&quot;</span>
-</span><span class='line'>  <span class="nv">cltools</span><span class="o">=</span>xcode462_cltools_10_86938259a.dmg
-</span><span class='line'>  <span class="nv">mountpath</span><span class="o">=</span><span class="s2">&quot;/Volumes/Command Line Tools (Mountain Lion)&quot;</span>
-</span><span class='line'>  <span class="nv">mpkg</span><span class="o">=</span><span class="s2">&quot;Command Line Tools (Mountain Lion).mpkg&quot;</span>
-</span><span class='line'>  <span class="nv">pkg_url</span><span class="o">=</span><span class="s2">&quot;https://www.dropbox.com/s/hw45wvjxrkrl59x/xcode462_cltools_10_86938259a.dmg&quot;</span>
-</span><span class='line'>  <span class="nv">pkgmd5</span><span class="o">=</span><span class="s2">&quot;90c5db99a589c269efa542ff0272fc28&quot;</span>
-</span><span class='line'>  ...
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>download_tools <span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> -f /tmp/<span class="nv">$cltools</span> <span class="o">]</span>; <span class="k">then</span>
-</span><span class='line'><span class="k">    if</span> <span class="o">[</span> <span class="sb">`</span>md5 -q /tmp/<span class="nv">$cltools</span><span class="sb">`</span> <span class="o">=</span> <span class="s2">&quot;${pkgmd5}&quot;</span> <span class="o">]</span>; <span class="k">then</span>
-</span><span class='line'><span class="k">      </span><span class="nb">echo</span> -e <span class="s2">&quot;$info $cltools already downloaded to /tmp/$cltools.&quot;</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'><span class="k">       </span>rm -f /tmp/<span class="nv">$cltools</span>
-</span><span class='line'>    <span class="k">fi</span>
-</span><span class='line'><span class="k">  else</span>
-</span><span class='line'><span class="k">    </span><span class="nb">cd</span> /tmp <span class="o">&amp;&amp;</span> wget <span class="nv">$pkg_url</span> -O ./<span class="nv">$cltools</span>
-</span><span class='line'>  <span class="k">fi</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>install_tools<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="c"># Mount the Command Line Tools dmg</span>
-</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Mounting Command Line Tools...&quot;</span>
-</span><span class='line'>  hdiutil mount -nobrowse /tmp/<span class="nv">$cltools</span>
-</span><span class='line'>  <span class="c"># Run the Command Line Tools Installer</span>
-</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Installing Command Line Tools...&quot;</span>
-</span><span class='line'>  installer -pkg <span class="s2">&quot;$mountpath/$mpkg&quot;</span> -target <span class="s2">&quot;/Volumes/Macintosh HD&quot;</span>
-</span><span class='line'>  <span class="c"># Unmount the Command Line Tools dmg</span>
-</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Unmounting Command Line Tools...&quot;</span>
-</span><span class='line'>  hdiutil unmount <span class="s2">&quot;$mountpath&quot;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nv">gcc_bin</span><span class="o">=</span><span class="sb">`</span>which gcc<span class="sb">`</span>
-</span><span class='line'>  gcc --version &amp;&gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> -e <span class="s2">&quot;$info gcc found in $gcc_bin&quot;</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img class="right" src="/assets/images/DropBox_logo.png" title="'DropBox logo'" ></p>
-
-<p>I took the liberty (not sure it&rsquo;s mine to take &hellip; but still), locating Xcode CLI tools for both mountain lion (10.8) and Lion (10.7) on <a href="http://www.dropbox.com">DropBox</a>, ecause Apple (like Oracle and other Giants) won&rsquo;t let you download without a userid / pass which is quite irretating &hellip;</p>
-
-<p>As Always hope you guy&rsquo;s enjoy this.
-HP</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1532,6 +1459,10 @@ HP</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
       </li>
     
@@ -1545,10 +1476,6 @@ HP</p>
     
       <li class="post">
         <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing A RESTful API That Doesn&#8217;t Suck</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
       </li>
     
   </ul>

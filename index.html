@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="What is jenkins job builder Jenkins job builder is extreme good tool to manage your jenkins CI jobs, it takes simple description from YAML files, and &hellip;">
+  <meta name="description" content="View the Presentation Or view the slide sheet below Resque Bus Balaji Vajjala TaskRabbit 02/17/2014 Hi, my name is Balaji Vajjala and I&rsquo;m the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +72,96 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/04/17/my-first-presentation/">My First Presentation</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-17T15:41:59-04:00" pubdate data-updated="true">Apr 17<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="/blog/2014/04/17/my-first-presentation/slides"><h2>View the Presentation</h2></a></p>
+
+<h5>Or view the slide sheet below</h5>
+
+
+<hr />
+
+
+<section class='slide'><div class='content'>
+
+<h2>Resque Bus</h2>
+
+<h3>Balaji Vajjala</h3>
+
+<h5>TaskRabbit</h5>
+
+<h5>02/17/2014</h5>
+
+</div>
+
+<aside class='notes'>
+
+<p>Hi, my name is Balaji Vajjala and I&rsquo;m the Chief Architect and Technical Cofounder of TaskRabbit. TaskRabbit is a marketplace where neighbors help neighbors get things done.</p>
+
+<p>At TaskRabbit we are using Redis and Resque to do all of our background processing. We&rsquo;ve also gone one step further to use these tools to create an asynchronous message bus system that we call Resque Bus.</p>
+
+</aside>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h3>Redis</h3>
+
+<ul>
+<li>Key/Value Store</li>
+<li>Atomic Operations</li>
+</ul>
+
+
+<p><img src="/images/posts/resque-bus-presentation/redis-logo.jpeg" alt="Redis Logo" /></p>
+
+</div>
+
+<aside class='notes'>
+
+<p>I don&rsquo;t have to tell you guys about Redis, but for our purposes the main point is that we can store stuff in it and the operations are atomic.</p>
+
+</aside>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h2>Thanks!</h2>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1244,71 +1334,6 @@ module.exports = function(obj){
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/03/farewell-to-regular-web-development-approaches/">Farewell to Regular Web Development Approaches</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-03T13:52:12-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">Farewell to Regular Web Development Approaches</a></h2>
-
-<p>At my <a href="http://wiredcraft.com">previous company</a>, we built Web applications for medium to large organizations, often in the humanitarian and non-profit space, facing original problems revolving around data. Things like building the
-<a href="http://wiredcraft.com/work/southern-sudan-referendum/index.html">voting infrastructure for the Southern Sudan Referendum</a> helped us diversify our technical chops. But until a year ago, we were still mostly building regular Web applications; the user requests a page that we build and serve back.</p>
-
-<p><strong>Until we started falling in love with APIs and static clients.</strong></p>
-
-<p>It&rsquo;s not that we fundamentally disliked the previous approach. We just reached a point where we felt our goals weren&rsquo;t best served by this model. With lots of dynamic data, complex visualizations and a set of &ldquo;static&rdquo; interfaces, the traditional way was hindering our development speed and our ability to experiment. And so we got busy, experimenting at first with smaller parts of our projects (blog, help section, download pages…). We realized our use of complex pieces of softwares like content management systems had seriously biased our approach to problem solving. <strong>The CMS had become a boilerplate, an unchallenged dependency.</strong></p>
-
-<p>We&rsquo;ve gradually adopted a pattern of building front-ends as static clients (may they be Web, mobile or 3rd party integrations) combined with, usually, one RESTful JSON API in the backend. And it works marvelously, thanks in part
-to some awesome tech much smarter people figured out for us:</p>
-
-<ul>
-<li><a href="http://marionettejs.com">Marionette</a> and <a href="http://backbonejs.org">Backbone.js</a>, <a href="http://github.com/component/component">Component</a> (a personal favorite) and <a href="http://github.com/mojombo/jekyll">Jekyll</a> allow us to build static HTML5 + JS + CSS clients for Web and mobile,</li>
-<li><a href="http://nodejs.org">node.js</a> and <a href="http://github.com/devo-ps/carcass">carcass</a> (alpha quality at this stage) in the backend for our APIs.</li>
-</ul>
-
-
-<p>Most of what we build at devo.ps is stemming from this accelerated recovery and follow usually that order:</p>
-
-<ol>
-<li> We start by defining our API interface through user stories and methods,</li>
-<li> Both backend and front-end teams are getting cranking on implementing and solving the challenges specific to their part,</li>
-</ol>
-
-
-<p>A lot of things happen in parallel and changes on one side rarely impact the other: we can make drastic changes in the UI without any change on the backend. And there were a lot of unexpected gains too, in security, speed and
-overall maintainability. More importantly, we&rsquo;ve freed a lot of our resources to focus on building compelling user experiences instead of fighting a large piece of software to do what we want it to do.</p>
-
-<p>If you haven&rsquo;t tried building things that way yet, give it a try honestly (when relevant); it may be a larger initial investment in some cases but you&rsquo;ll come out on top at almost every level.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1328,6 +1353,10 @@ overall maintainability. More importantly, we&rsquo;ve freed a lot of our resour
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
       </li>
     
@@ -1341,10 +1370,6 @@ overall maintainability. More importantly, we&rsquo;ve freed a lot of our resour
     
       <li class="post">
         <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing A RESTful API That Doesn&#8217;t Suck</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
       </li>
     
   </ul>

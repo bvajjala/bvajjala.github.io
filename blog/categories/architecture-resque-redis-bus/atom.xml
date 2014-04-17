@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: architecture resque redis bus | Balaji Vajjala's Blog]]></title>
+  <link href="http://bvajjala.github.io/blog/categories/architecture-resque-redis-bus/atom.xml" rel="self"/>
+  <link href="http://bvajjala.github.io/"/>
+  <updated>2014-04-17T15:44:21-04:00</updated>
+  <id>http://bvajjala.github.io/</id>
+  <author>
+    <name><![CDATA[Balaji Vajjala]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[my first presentation]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/04/17/my-first-presentation/"/>
+    <updated>2014-04-17T15:41:59-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/04/17/my-first-presentation</id>
+    <content type="html"><![CDATA[<p>{% slide %}</p>
+
+<h2>Resque Bus</h2>
+
+<h3>Balaji Vajjala</h3>
+
+<h5>TaskRabbit</h5>
+
+<h5>02/17/2014</h5>
+
+<p>{% notes %}</p>
+
+<p>Hi, my name is Balaji Vajjala and I&rsquo;m the Chief Architect and Technical Cofounder of TaskRabbit. TaskRabbit is a marketplace where neighbors help neighbors get things done.</p>
+
+<p>At TaskRabbit we are using Redis and Resque to do all of our background processing. We&rsquo;ve also gone one step further to use these tools to create an asynchronous message bus system that we call Resque Bus.</p>
+
+<p>{% slide %}</p>
+
+<h3>Redis</h3>
+
+<ul>
+<li>Key/Value Store</li>
+<li>Atomic Operations</li>
+</ul>
+
+
+<p><img src="/images/posts/resque-bus-presentation/redis-logo.jpeg" alt="Redis Logo" /></p>
+
+<p>{% notes %}</p>
+
+<p>I don&rsquo;t have to tell you guys about Redis, but for our purposes the main point is that we can store stuff in it and the operations are atomic.</p>
+
+<p>{% slide %}</p>
+
+<h2>Thanks!</h2>
+]]></content>
+  </entry>
+  
+</feed>

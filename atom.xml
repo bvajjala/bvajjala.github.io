@@ -4,7 +4,7 @@
   <title><![CDATA[Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-17T15:36:44-04:00</updated>
+  <updated>2014-04-17T15:44:21-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -12,6 +12,69 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[my first presentation]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/04/17/my-first-presentation/"/>
+    <updated>2014-04-17T15:41:59-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/04/17/my-first-presentation</id>
+    <content type="html"><![CDATA[<p><a href="http://bvajjala.github.io/blog/2014/04/17/my-first-presentation/slides"><h2>View the Presentation</h2></a></p>
+
+<h5>Or view the slide sheet below</h5>
+
+
+<hr />
+
+
+<section class='slide'><div class='content'>
+
+<h2>Resque Bus</h2>
+
+<h3>Balaji Vajjala</h3>
+
+<h5>TaskRabbit</h5>
+
+<h5>02/17/2014</h5>
+
+</div>
+
+<aside class='notes'>
+
+<p>Hi, my name is Balaji Vajjala and I&rsquo;m the Chief Architect and Technical Cofounder of TaskRabbit. TaskRabbit is a marketplace where neighbors help neighbors get things done.</p>
+
+<p>At TaskRabbit we are using Redis and Resque to do all of our background processing. We&rsquo;ve also gone one step further to use these tools to create an asynchronous message bus system that we call Resque Bus.</p>
+
+</aside>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h3>Redis</h3>
+
+<ul>
+<li>Key/Value Store</li>
+<li>Atomic Operations</li>
+</ul>
+
+
+<p><img src="http://bvajjala.github.io/images/posts/resque-bus-presentation/redis-logo.jpeg" alt="Redis Logo" /></p>
+
+</div>
+
+<aside class='notes'>
+
+<p>I don&rsquo;t have to tell you guys about Redis, but for our purposes the main point is that we can store stuff in it and the operations are atomic.</p>
+
+</aside>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h2>Thanks!</h2>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Jenkins Job Builder and How to Extned it]]></title>
@@ -2249,117 +2312,6 @@ If you don&rsquo;t know what librarian is &ndash; get to know it :) (it makes li
 <p>Another fraction on my time line &hellip;</p>
 
 <p>Enjoy.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Install Xcode CLI Tools via Script]]></title>
-    <link href="http://bvajjala.github.io/blog/2013/07/13/install-xcode-cli-tools-via-script/"/>
-    <updated>2013-07-13T22:24:00-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2013/07/13/install-xcode-cli-tools-via-script</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://bvajjala.github.io/assets/images/xcode_cli.png" title="'Xcode CLI Tools'" >
-Well just got a mac from my new project <a href="http://www.facebook.com/photo.php?fbid=10151661183017850&amp;l=69918509f3">FB Status</a>&hellip; &ndash; couldn&rsquo;t resist it :)</p>
-
-<p>One of the tasks was to setup an environment, and learn what a mac is :), a few days later I&rsquo;m in love but still I need a way to destroy an recover
-my environment.
-I have a few plans like bash_it / oh_my_zsh &amp; others, but until then I put togter a few scripts [ more to come ], the first of them is this one installing Xcode CLI Tools on Mac OSX Mountain Lion.</p>
-
-<p>Install or (un-install) with the following simple command:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'> sudo bash &lt; &lt;<span class="o">(</span>curl -L https://raw.github.com/hagzag/xcode-cli-install/master/install.sh<span class="o">)</span>
-</span><span class='line'>  sudo bash &lt; &lt;<span class="o">(</span>curl -L https://raw.github.com/hagzag/xcode-cli-install/master/uninstall.sh<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The essence &hellip; see the rest on <a href="https://github.com/hagzag/xcode-cli-install">Github</a></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>detect_osx_version<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nv">result</span><span class="o">=</span><span class="sb">`</span>sw_vers -productVersion<span class="sb">`</span>
-</span><span class='line'>  ...
-</span><span class='line'>  <span class="nv">osxversion</span><span class="o">=</span><span class="s2">&quot;10.8&quot;</span>
-</span><span class='line'>  <span class="nv">osxvername</span><span class="o">=</span><span class="s2">&quot;Mountain Lion&quot;</span>
-</span><span class='line'>  <span class="nv">cltools</span><span class="o">=</span>xcode462_cltools_10_86938259a.dmg
-</span><span class='line'>  <span class="nv">mountpath</span><span class="o">=</span><span class="s2">&quot;/Volumes/Command Line Tools (Mountain Lion)&quot;</span>
-</span><span class='line'>  <span class="nv">mpkg</span><span class="o">=</span><span class="s2">&quot;Command Line Tools (Mountain Lion).mpkg&quot;</span>
-</span><span class='line'>  <span class="nv">pkg_url</span><span class="o">=</span><span class="s2">&quot;https://www.dropbox.com/s/hw45wvjxrkrl59x/xcode462_cltools_10_86938259a.dmg&quot;</span>
-</span><span class='line'>  <span class="nv">pkgmd5</span><span class="o">=</span><span class="s2">&quot;90c5db99a589c269efa542ff0272fc28&quot;</span>
-</span><span class='line'>  ...
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>download_tools <span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> -f /tmp/<span class="nv">$cltools</span> <span class="o">]</span>; <span class="k">then</span>
-</span><span class='line'><span class="k">    if</span> <span class="o">[</span> <span class="sb">`</span>md5 -q /tmp/<span class="nv">$cltools</span><span class="sb">`</span> <span class="o">=</span> <span class="s2">&quot;${pkgmd5}&quot;</span> <span class="o">]</span>; <span class="k">then</span>
-</span><span class='line'><span class="k">      </span><span class="nb">echo</span> -e <span class="s2">&quot;$info $cltools already downloaded to /tmp/$cltools.&quot;</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'><span class="k">       </span>rm -f /tmp/<span class="nv">$cltools</span>
-</span><span class='line'>    <span class="k">fi</span>
-</span><span class='line'><span class="k">  else</span>
-</span><span class='line'><span class="k">    </span><span class="nb">cd</span> /tmp <span class="o">&amp;&amp;</span> wget <span class="nv">$pkg_url</span> -O ./<span class="nv">$cltools</span>
-</span><span class='line'>  <span class="k">fi</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>install_tools<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="c"># Mount the Command Line Tools dmg</span>
-</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Mounting Command Line Tools...&quot;</span>
-</span><span class='line'>  hdiutil mount -nobrowse /tmp/<span class="nv">$cltools</span>
-</span><span class='line'>  <span class="c"># Run the Command Line Tools Installer</span>
-</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Installing Command Line Tools...&quot;</span>
-</span><span class='line'>  installer -pkg <span class="s2">&quot;$mountpath/$mpkg&quot;</span> -target <span class="s2">&quot;/Volumes/Macintosh HD&quot;</span>
-</span><span class='line'>  <span class="c"># Unmount the Command Line Tools dmg</span>
-</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;$info Unmounting Command Line Tools...&quot;</span>
-</span><span class='line'>  hdiutil unmount <span class="s2">&quot;$mountpath&quot;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nv">gcc_bin</span><span class="o">=</span><span class="sb">`</span>which gcc<span class="sb">`</span>
-</span><span class='line'>  gcc --version &amp;&gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> -e <span class="s2">&quot;$info gcc found in $gcc_bin&quot;</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img class="right" src="http://bvajjala.github.io/assets/images/DropBox_logo.png" title="'DropBox logo'" ></p>
-
-<p>I took the liberty (not sure it&rsquo;s mine to take &hellip; but still), locating Xcode CLI tools for both mountain lion (10.8) and Lion (10.7) on <a href="http://www.dropbox.com">DropBox</a>, ecause Apple (like Oracle and other Giants) won&rsquo;t let you download without a userid / pass which is quite irretating &hellip;</p>
-
-<p>As Always hope you guy&rsquo;s enjoy this.
-HP</p>
 ]]></content>
   </entry>
   
