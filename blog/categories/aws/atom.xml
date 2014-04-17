@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: AWS | Balaji Vajjala's Blog]]></title>
+  <title><![CDATA[Category: aws | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/aws/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-17T12:52:01-04:00</updated>
+  <updated>2014-04-17T13:18:26-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,253 +14,43 @@
 
   
   <entry>
-    <title type="html"><![CDATA[A Deep Dive into AWS Reserved Instances]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/"/>
-    <updated>2014-03-25T09:35:27-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances</id>
-    <content type="html"><![CDATA[<h3>A Deep Dive into AWS Reserved Instances</h3>
+    <title type="html"><![CDATA[S3 - Mounting s3 buckets with S3fs]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/10/20/mounting-s3-buckets-with-f3fs/"/>
+    <updated>2013-10-20T20:32:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/10/20/mounting-s3-buckets-with-f3fs</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/amazon-s3.png" title="&lsquo;S3 logo&rsquo;" >A <code>cheap</code> solution on Amazon s3 for uploading files to s3 via SSH</p>
 
-<p>One of our primary goals at Flux7 Labs is to help our clients reduce
-their AWS costs. In fact, our product VyScale is based entirely on cost
-optimization using Spot instances. We inform our clients when it makes
-economic sense for them to buy instance reservations because
-reservations for periods of unexpected minimum usage can be beneficial.
-Reserved instances function exactly like on-demand instances, except
-that you pay an upfront fee to gain cheaper hourly rates.</p>
+<p>I needed to upload files from my Corporate environment in a <code>push mode</code> meaning I do not open any &ldquo;special&rdquo; ports in my environemnt in order to enable users to put files on S3.
+I am curentelly testing to see how robust this solution really is but basically what I found myself doing is install s3fs (<a href="https://code.google.com/p/s3fs/">link to project page</a>) like so:</p>
 
-<h3>Reserved Instance Pricing</h3>
-
-<p>There are several levels of reservations. Higher ones allow you to pay
-more up front in order to achieve a lower hourly cost. The table below
-shows the rates for various types of reserved and on-demand instances
-for m1.large instances.</p>
-
-<hr />
-
-<pre><code>           Upfront   Hourly in cents
+<pre><code>wget http://s3fs.googlecode.com/files/s3fs-1.73.tar.gz
+tar xvzf s3fs-1.73.tar.gz
+cd s3fs-1.73
+./configure --prefix=/usr
+make &amp;&amp; make install
 </code></pre>
 
-<p>  On-demand    0         24
-  Light Util   243       13.6
-  Med Util     554       8.4
-  Heavy Util   676       5.6</p>
+<p>I was installing this for Suse but for Amazon linux/redhat etc you might find a package see: <a href="http://rpmfind.net/linux/rpm2html/search.php?query=fuse-s3fs">here</a>.</p>
 
-<hr />
+<p>Once the package is installed you can use <code>s3fs</code></p>
 
-<p>At some levels of utilization it makes sense to purchase reservations,
-rather than to rely solely upon on-demand instances. By factoring in
-upfront costs, we can determine which levels warrant purchasing
-reservations. What’s surprising is that those levels are fairly low,
-especially in the case of light reservations. Even at 30% utilization,
-light-reservation costs start to break even with those of on-demand
-instances. The following graph shows equivalent hourly costs for
-reservations at various utilization levels</p>
+<pre><code>s3fs BUCKET:[PATH] MOUNTPOINT [OPTION]...
 
-<p><a href="../../../wp-content/uploads/AWS-reserved-instances-1.png"><img src="../../../wp-content/uploads/AWS-reserved-instances-1.png" alt="Hourl rates of reserved
-instances" /></a></p>
+s3fs dev_tools /mnt/dev_tools/ 
+</code></pre>
 
-<p>To better understand these numbers in terms of total cost, as opposed to
-incremental cost, the figure below shows total annual expenditures at
-various levels. For a 100% utilization of an instance, one can reduce
-costs to almost half of Amazon’s standard pricing for reserved
-instances, and that’s without any of the bulk discounts made available
-to high-volume AWS customers. At lower levels, reservations cost almost
-twice as much as those at higher levels. However, keep in mind that, as
-a fraction of overall cost, the amount is still not very high. So, in
-cases where growth is expected, it can make sense to purchase
-reservations early.</p>
+<p>Worth noting you do not need to specify the s3 url, you only specify the bucket name !</p>
 
-<p><a href="../../../wp-content/uploads/AWS-reserved-instances-2.png"><img src="../../../wp-content/uploads/AWS-reserved-instances-2.png" alt="Annual rates of reserved
-instances" /></a></p>
+<p>The same thing / very similir in <code>/etc/fstab</code> will look like so:</p>
 
-<h3>Do You Have A Reservation?</h3>
+<pre><code>s3fs#dev_tools /mnt/dev_tools fuse allow_other,user=youruser 0 0
+</code></pre>
 
-<p>Another thing to know about Amazon’s policy is that you receive a
-guaranteed instance when you buy a reservation, whereas there is no such
-guarantee for on-demand instances. When trying to acquire an on-demand
-instance, AWS may return an error message stating that capacity is not
-available for that instance type. On the other hand, once you purchase a
-reservation Amazon guarantees that the instance will be made available
-to you at the moment you request it. If you’re using an autoscaling
-solution it can make sense to make light utilization reservations to
-handle your excess capacity, even if it costs more to guarantee uptime
-to your customers. With Amazon’s guarantee it’s no wonder that Netflix
-runs almost exclusively on reservations. As a matter of policy,
-Netflix’s use of on-demand instances indicates that more reservations
-need to be purchased.</p>
+<p>The mount opts are <strong>extreemly important</strong> &ndash; without the <code>allow_other</code> flag the user cannot write to the directory.</p>
 
-<p>One thing to note is that Amazon always uses reservations first, so you
-can’t keep unused light reservations as backups while using on-demand
-instances for capacity.</p>
+<p>This is really awesome &ndash; we now jsut need to make sure the connectivity is reliable / fast enough and this will become very usefull.</p>
 
-<h3>How Amazon Handles Unused Reservations</h3>
-
-<p>Spot instances are one of the best uses of unutilized reserved capacity
-with AWS. They come with no guarantee of availability, and can be taken
-away from you at Amazon’s discretion at any time in order to fulfill
-other customers’ needs. Spot prices hover around 15% of the on-demand
-price, which allows Amazon to make a decent return on unused
-reservations and while offering reservations at a relatively low price.</p>
-
-<h3>Conclusion</h3>
-
-<p>The most common reason to use reservations is price, but there are also
-other considerations. The final decision should be based on capacity
-analysis from a business perspective.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[6 reasons why large enterprises should move to Amazon Web Services]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/"/>
-    <updated>2014-03-25T09:13:48-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services</id>
-    <content type="html"><![CDATA[<h2>6 reasons why large enterprises should move to Amazon Web Services</h2>
-
-<h3>6 reasons why large enterprises should move to Amazon Web Services</h3>
-
-<p>Amazon has changed the face of the world of startups with its cloud services. Now it’s possible for two men in a garage to set up large
-computer clusters for zero capital cost.</p>
-
-<p><a href="https://twitter.com/share?text=Amazon+has+its+sights+set+on+enterprise,+which+they+will+conquer+slowly+but+surely.+&amp;via=OurLabs&amp;related=Flux7Labs&amp;url=http://wp.me/p4sEOD-o6">Amazon has its sights set on enterprise, which they will conquer slowly
-but
-surely.</a></p>
-
-<p>At Our Labs, one of our specialties is cloud migration for enterprise
-clients, and we’ve received considerable feedback about both their
-concerns and delights. In this post I’ll explain why I strongly believe
-large enterprises should consider moving to the cloud.</p>
-
-<h2><strong>Agility and Responsiveness</strong> </h2>
-
-<p>Let’s face it, if a startup is a speedboat, then a large enterprise is
-the Titanic. While startups can pivot any time there’s danger and large
-enterprises turn more slowly, there are icebergs that can sink either.
-Disasters happen to everyone, but a large enterprise has significantly
-more skin in the game, and the old model of waiting a month before
-buying a new rack just doesn’t cut it anymore. By shifting to the cloud,
-large enterprises can bring up new servers in minutes, which means
-shorter downtimes, rapid experimentation, more innovation, increased
-global reach, improved demand-surge handling and more successful
-short-lived-but-resource-intensive projects.</p>
-
-<h2><strong>Innovation</strong> </h2>
-
-<p>Business is a cutthroat world in which we must always strive to
-out-innovate our competitors. This article is about the cloud in
-general, but I want to explain why it’s also Amazon focused. Amazon has
-been blazing the cloud-computing trail longer than anyone, which is
-reflected by its 80% market share, and is clearly ahead of its
-competitors. For example, check out Gartner’s analysis of different
-cloud providers in the chart below and you’ll see Amazon in a corner of
-their own. In fact, Amazon so dominated the competition that Gartner had
-to artificially lower the scale. Amazon is innovating at such a rapid
-pace in providing new services and broadening its customer base that
-competitors are struggling to keep pace.</p>
-
-<p>The effect of this innovation is obvious to developers. Do you want to
-provide Active Directory integration with Amazon? You can do that. Do
-you want to save on data costs by using the Bittorrent protocol for
-content distribution? You can do that. Do you want to put heavy compute
-behind your mobile games? You can do that. Do you want to ramp up your
-clients quickly with remote workstations? You can do that, too. With
-Amazon Web Services you can do all of that and more. I’m a
-certified<a href="file:///C:/Users/Vishnu/Documents/Our/SMM/Blog/WhyEnterprisemustAmazon_(REVISED_CLEAN">[1]</a>.docx#_msocom_1) 
-AWS instructor, yet I learn something new about AWS every day as Amazon
-constantly releases new features. The advantage of moving your business
-to the cloud is that you can let your developers focus on your company’s
-area of expertise while leaving the boilerplate to Amazon.</p>
-
-<p>\</p>
-
-<p> <img src="https://lh3.googleusercontent.com/GmdBmLBmcGW9TIBqUCVkf403uIIf9arZ6-brIjBOt8tus6n_7YaKdOW3kcQqSIUbKnQd9vthqX1nyHHGouT8xbmDF3-xkpXUbJV0UJLpguSzg7EKB6QuaqR92uw_og" alt="" /></p>
-
-<h2><strong>A Data Center That Hosts A Top Website</strong> </h2>
-
-<p>One thing we mustn’t forget is what the AWS cloud really is—a product of
-years of innovation by one of the largest e-commerce websites in the
-world. Its data centers are distributed globally in numerous parts of
-the world, with multiple, independently-operating data centers in each
-region that provide different failure domains while being close enough
-together to provide cheap communication. And that’s just the compute
-side of the equation. Amazon also shares its global content distribution
-network, its DNS servers. it compiles traffic data from across the globe
-to find the best route for your network traffic. There are only a
-handful of companies today with that kind of global reach, and they,
-too, are developing cloud capabilities. But unless you’re in that elite
-club, you won’t be able to create a data center that can compete with
-AWS. So by using a cloud solution, rather than an in-house solution,
-you’ll clearly benefit in terms of better performance, better fault
-tolerance, and better disaster recovery.</p>
-
-<h2><strong>Security</strong> </h2>
-
-<p>Security is the biggest concern about cloud computing for most
-enterprises, but Amazon holds many of the most important certifications,
-including PCI, HIPAA, Sarbanes-Oxley, and ISO. Since it has so much at
-stake, it maintains separation of logical and physical access to data in
-order to limit the impact of disgruntled employees. While I certainly
-understand someone hesitating to entrust one’s most valuable information
-with a third party, it’s certainly debatable whether on-premise storage
-is more secure than cloud storage.</p>
-
-<h2><strong>In-house Expertise Not Required</strong> </h2>
-
-<p>Anyone that’s had to hire people knows that good employees are worth
-their weight in platinum. Moving to the cloud allows you to offload much
-of your data-center maintenance onto Amazon. Let it do what it’s best at
-while you focus on what you’re best at.</p>
-
-<p>As we know, you often have to pay dearly to hire someone outside of your
-area of expertise. For example, say you’re a director of IT at a company
-like Schlumberger. Your company is great at what it does and has strong
-brand value in its area of expertise. Do you think you can possibly
-poach someone like <a href="http://mvdirona.com/jrh/work/">James Hamilton</a> for
-your company? No, you can’t. With core expertise in data centers, Amazon
-will likely offer a more intriguing challenge and a deeper sense of
-mission to the kind of people you’ll want to hire for your team. And we
-all know that employee engagement is not about the money, but rather
-about being involved in a greater mission.</p>
-
-<h2><strong>Lower Costs</strong> </h2>
-
-<p>While I’m convinced that moving to the cloud will lower your costs, I
-acknowledge that getting there requires a lot of expertise and hard
-work. Additionally you may very easily find yourself comparing apples
-and oranges. Yet cloud solutions are cheaper than on-premise solutions
-when played right. First, when you pay for a machine on AWS you’re also
-paying for Amazon’s years of expertise in setting up resilient data
-centers, something that’s not true for in-house departments lacking core
-IT expertise. Second, there’s great potential for saving money by
-scaling to your variable demand needs instead of designing for max
-capacity. That’s why Netflix, even though it comprises one-third of the
-Internet in terms of data volume, has gone “all in” on AWS, or they’d
-have to provision enough machines to handle 9PM Friday traffic.
-Alternatively you can have an expected area of needing high demand, as
-say for a chip company close to tapeout, a movie studio needing to
-render for a year
-(<a href="http://gigaom.com/2014/03/02/the-oscars-how-american-hustles-fx-team-made-2013-boston-look-like-1980s-new-york/">http://gigaom.com/2014/03/02/the-oscars-how-american-hustles-fx-team-made-2013-boston-look-like-1980s-new-york/</a>),
-or a game company handling launch day demand
-(<a href="http://www.respawn.com/news/lets-talk-about-the-xbox-live-cloud/">http://www.respawn.com/news/lets-talk-about-the-xbox-live-cloud/</a>).</p>
-
-<h2><strong>Conclusion</strong> </h2>
-
-<p>If you’re a large enterprise and on the fence about whether or not to
-move to the cloud, we highly recommend trying it out. Try it on a
-contained project, rather than one that’s on a critical path, something
-that fits well within the cloud’s capabilities. After implementation, do
-a post-mortem and analyze the results in terms of cost and
-time-to-market. What is the expectation as you build in-house
-expertise<strong>.</strong> The results may well surprise you.</p>
-
-<h2><strong>Let’s Talk</strong> </h2>
-
-<p>Our Research Labs has helped Fortune 100 and Fortune 500 companies move
-successfully to AWS. We’d love to hear any questions, comments or
-concerns you may have, so feel free to contact us anytime during weekly
-<a href="http://ohours.org/aatersuleman">office hours</a> to discuss your specific
-needs or situation. We offer this service free of charge with no
-obligation or strings attached.</p>
+<p>As always hope you find this useful.</p>
 ]]></content>
   </entry>
   

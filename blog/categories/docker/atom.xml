@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Docker | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/docker/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-17T12:52:01-04:00</updated>
+  <updated>2014-04-17T13:18:26-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -12,302 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[6 reasons why large enterprises should move to Amazon Web Services]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/"/>
-    <updated>2014-03-25T09:13:48-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services</id>
-    <content type="html"><![CDATA[<h2>6 reasons why large enterprises should move to Amazon Web Services</h2>
-
-<h3>6 reasons why large enterprises should move to Amazon Web Services</h3>
-
-<p>Amazon has changed the face of the world of startups with its cloud services. Now it’s possible for two men in a garage to set up large
-computer clusters for zero capital cost.</p>
-
-<p><a href="https://twitter.com/share?text=Amazon+has+its+sights+set+on+enterprise,+which+they+will+conquer+slowly+but+surely.+&amp;via=OurLabs&amp;related=Flux7Labs&amp;url=http://wp.me/p4sEOD-o6">Amazon has its sights set on enterprise, which they will conquer slowly
-but
-surely.</a></p>
-
-<p>At Our Labs, one of our specialties is cloud migration for enterprise
-clients, and we’ve received considerable feedback about both their
-concerns and delights. In this post I’ll explain why I strongly believe
-large enterprises should consider moving to the cloud.</p>
-
-<h2><strong>Agility and Responsiveness</strong> </h2>
-
-<p>Let’s face it, if a startup is a speedboat, then a large enterprise is
-the Titanic. While startups can pivot any time there’s danger and large
-enterprises turn more slowly, there are icebergs that can sink either.
-Disasters happen to everyone, but a large enterprise has significantly
-more skin in the game, and the old model of waiting a month before
-buying a new rack just doesn’t cut it anymore. By shifting to the cloud,
-large enterprises can bring up new servers in minutes, which means
-shorter downtimes, rapid experimentation, more innovation, increased
-global reach, improved demand-surge handling and more successful
-short-lived-but-resource-intensive projects.</p>
-
-<h2><strong>Innovation</strong> </h2>
-
-<p>Business is a cutthroat world in which we must always strive to
-out-innovate our competitors. This article is about the cloud in
-general, but I want to explain why it’s also Amazon focused. Amazon has
-been blazing the cloud-computing trail longer than anyone, which is
-reflected by its 80% market share, and is clearly ahead of its
-competitors. For example, check out Gartner’s analysis of different
-cloud providers in the chart below and you’ll see Amazon in a corner of
-their own. In fact, Amazon so dominated the competition that Gartner had
-to artificially lower the scale. Amazon is innovating at such a rapid
-pace in providing new services and broadening its customer base that
-competitors are struggling to keep pace.</p>
-
-<p>The effect of this innovation is obvious to developers. Do you want to
-provide Active Directory integration with Amazon? You can do that. Do
-you want to save on data costs by using the Bittorrent protocol for
-content distribution? You can do that. Do you want to put heavy compute
-behind your mobile games? You can do that. Do you want to ramp up your
-clients quickly with remote workstations? You can do that, too. With
-Amazon Web Services you can do all of that and more. I’m a
-certified<a href="file:///C:/Users/Vishnu/Documents/Our/SMM/Blog/WhyEnterprisemustAmazon_(REVISED_CLEAN">[1]</a>.docx#_msocom_1) 
-AWS instructor, yet I learn something new about AWS every day as Amazon
-constantly releases new features. The advantage of moving your business
-to the cloud is that you can let your developers focus on your company’s
-area of expertise while leaving the boilerplate to Amazon.</p>
-
-<p>\</p>
-
-<p> <img src="https://lh3.googleusercontent.com/GmdBmLBmcGW9TIBqUCVkf403uIIf9arZ6-brIjBOt8tus6n_7YaKdOW3kcQqSIUbKnQd9vthqX1nyHHGouT8xbmDF3-xkpXUbJV0UJLpguSzg7EKB6QuaqR92uw_og" alt="" /></p>
-
-<h2><strong>A Data Center That Hosts A Top Website</strong> </h2>
-
-<p>One thing we mustn’t forget is what the AWS cloud really is—a product of
-years of innovation by one of the largest e-commerce websites in the
-world. Its data centers are distributed globally in numerous parts of
-the world, with multiple, independently-operating data centers in each
-region that provide different failure domains while being close enough
-together to provide cheap communication. And that’s just the compute
-side of the equation. Amazon also shares its global content distribution
-network, its DNS servers. it compiles traffic data from across the globe
-to find the best route for your network traffic. There are only a
-handful of companies today with that kind of global reach, and they,
-too, are developing cloud capabilities. But unless you’re in that elite
-club, you won’t be able to create a data center that can compete with
-AWS. So by using a cloud solution, rather than an in-house solution,
-you’ll clearly benefit in terms of better performance, better fault
-tolerance, and better disaster recovery.</p>
-
-<h2><strong>Security</strong> </h2>
-
-<p>Security is the biggest concern about cloud computing for most
-enterprises, but Amazon holds many of the most important certifications,
-including PCI, HIPAA, Sarbanes-Oxley, and ISO. Since it has so much at
-stake, it maintains separation of logical and physical access to data in
-order to limit the impact of disgruntled employees. While I certainly
-understand someone hesitating to entrust one’s most valuable information
-with a third party, it’s certainly debatable whether on-premise storage
-is more secure than cloud storage.</p>
-
-<h2><strong>In-house Expertise Not Required</strong> </h2>
-
-<p>Anyone that’s had to hire people knows that good employees are worth
-their weight in platinum. Moving to the cloud allows you to offload much
-of your data-center maintenance onto Amazon. Let it do what it’s best at
-while you focus on what you’re best at.</p>
-
-<p>As we know, you often have to pay dearly to hire someone outside of your
-area of expertise. For example, say you’re a director of IT at a company
-like Schlumberger. Your company is great at what it does and has strong
-brand value in its area of expertise. Do you think you can possibly
-poach someone like <a href="http://mvdirona.com/jrh/work/">James Hamilton</a> for
-your company? No, you can’t. With core expertise in data centers, Amazon
-will likely offer a more intriguing challenge and a deeper sense of
-mission to the kind of people you’ll want to hire for your team. And we
-all know that employee engagement is not about the money, but rather
-about being involved in a greater mission.</p>
-
-<h2><strong>Lower Costs</strong> </h2>
-
-<p>While I’m convinced that moving to the cloud will lower your costs, I
-acknowledge that getting there requires a lot of expertise and hard
-work. Additionally you may very easily find yourself comparing apples
-and oranges. Yet cloud solutions are cheaper than on-premise solutions
-when played right. First, when you pay for a machine on AWS you’re also
-paying for Amazon’s years of expertise in setting up resilient data
-centers, something that’s not true for in-house departments lacking core
-IT expertise. Second, there’s great potential for saving money by
-scaling to your variable demand needs instead of designing for max
-capacity. That’s why Netflix, even though it comprises one-third of the
-Internet in terms of data volume, has gone “all in” on AWS, or they’d
-have to provision enough machines to handle 9PM Friday traffic.
-Alternatively you can have an expected area of needing high demand, as
-say for a chip company close to tapeout, a movie studio needing to
-render for a year
-(<a href="http://gigaom.com/2014/03/02/the-oscars-how-american-hustles-fx-team-made-2013-boston-look-like-1980s-new-york/">http://gigaom.com/2014/03/02/the-oscars-how-american-hustles-fx-team-made-2013-boston-look-like-1980s-new-york/</a>),
-or a game company handling launch day demand
-(<a href="http://www.respawn.com/news/lets-talk-about-the-xbox-live-cloud/">http://www.respawn.com/news/lets-talk-about-the-xbox-live-cloud/</a>).</p>
-
-<h2><strong>Conclusion</strong> </h2>
-
-<p>If you’re a large enterprise and on the fence about whether or not to
-move to the cloud, we highly recommend trying it out. Try it on a
-contained project, rather than one that’s on a critical path, something
-that fits well within the cloud’s capabilities. After implementation, do
-a post-mortem and analyze the results in terms of cost and
-time-to-market. What is the expectation as you build in-house
-expertise<strong>.</strong> The results may well surprise you.</p>
-
-<h2><strong>Let’s Talk</strong> </h2>
-
-<p>Our Research Labs has helped Fortune 100 and Fortune 500 companies move
-successfully to AWS. We’d love to hear any questions, comments or
-concerns you may have, so feel free to contact us anytime during weekly
-<a href="http://ohours.org/aatersuleman">office hours</a> to discuss your specific
-needs or situation. We offer this service free of charge with no
-obligation or strings attached.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Managing docker services with this one easy trick]]></title>
-    <link href="http://bvajjala.github.io/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick/"/>
-    <updated>2013-10-20T15:46:00-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2013/10/20/managing-docker-services-with-this-one-easy-trick</id>
-    <content type="html"><![CDATA[<p>I have been having a lot of internal debate about the idea of running more than one service in a docker container.   A Docker container is built to run a single process in the foreground and to live for only as long as that process is running.  This is great in a utopian world where servers are immutable and sysadmins drink tiki drinks on the beach,  however it doesn&rsquo;t always translate well to the real world.</p>
-
-<p>Examples where you might want to be able to run multiple servers span from the simple use case of running <code>sshd</code> as well as your application to running a web app such as <code>wordpress</code> where you might want both <code>apache</code> and <code>mysql</code> running in the same container.</p>
-
-<p>Wrapping your applications in a supervisor daemon such as <code>runit</code> seems like a perfect fit for this.  All you need to do is install <code>runit</code> as part of your <code>dockerfile</code> and then create appropriate service directories for the apps you want to run in the container.    I was doing some testing of this when I realized a quirk of <code>runit</code> which I could exploit for evil.</p>
-
-<p>To start or stop a service with <code>runit</code> is simply a matter of creating or deleting a symlink in a service directory,   so in theory if you could expose that directory to the server hosting the container you could exploit that to start and stop services from outside of the container.  <code>Docker</code> volume mapping allows exactly this!</p>
-
-<p>Below you will find examples of running three services (logstash,elasticsearch,kibana) that make up the <code>logstash</code> suite.</p>
-
-<!--more-->
-
-
-<h2>Start by cloning the demo git repository and run demo.sh</h2>
-
-<p><code>
-$ git clone https://github.com/paulczar/docker-runit-demo.git
-$ cd docker-runit-demo
-$ ./demo.sh
-</code></p>
-
-<h3>demo.sh script</h3>
-
-<h4>Step 1:  Build the container</h4>
-
-<p>The script uses the below <code>Dockerfile</code> to build the base container that we&rsquo;ll be running.</p>
-
-<p>```</p>
-
-<h1>Installs runit for service management</h1>
-
-<p>#</p>
-
-<h1>Author: Paul Czarkowski</h1>
-
-<h1>Date: 10/20/2013</h1>
-
-<p>FROM paulczar/jre7
-MAINTAINER Paul Czarkowski &ldquo;<a href="&#109;&#97;&#x69;&#108;&#116;&#111;&#58;&#112;&#97;&#x75;&#x6c;&#x40;&#x70;&#x61;&#x75;&#108;&#99;&#122;&#46;&#x6e;&#101;&#x74;">&#x70;&#97;&#117;&#x6c;&#64;&#x70;&#97;&#117;&#108;&#99;&#122;&#x2e;&#110;&#x65;&#x74;</a>&rdquo;</p>
-
-<p>RUN apt-get update</p>
-
-<p>RUN apt-get -y install curl wget git nginx
-RUN apt-get -y install runit || echo</p>
-
-<p>CMD [&ldquo;/usr/sbin/runsvdir-start&rdquo;]</p>
-
-<p>```</p>
-
-<h4>Step 2: Install the applications</h4>
-
-<p>This will take a few minutes the first time as it needs to download <code>logstash</code>, <code>kibana</code>, and <code>elasticsearch</code> and stage them in a local <code>./opt</code>directory.</p>
-
-<h4>Step 3: Start the Docker container</h4>
-
-<p>Starts the <code>Docker</code> container with the following command:</p>
-
-<p><code>
-docker run -d -p 8080:80 -p 5014:514 -p 9200:9200 \
-  -v $BASE/opt:/opt \
-  -v $BASE/sv:/etc/sv \
-  -v $BASE/init:/etc/init \
-  -v $BASE/service:/etc/service \
-  demo/runit
-</code></p>
-
-<p>The container should be up and running</p>
-
-<p><code>
-$ docker ps
-ID                  IMAGE               COMMAND                CREATED             STATUS              PORTS
-eb495ad92ba0        demo/runit:latest   /usr/sbin/runsvdir-s   4 seconds ago       Up 3 seconds        5014-&gt;514, 8080-&gt;80, 9200-&gt;9200   
-</code></p>
-
-<p>However there aren&rsquo;t any services running!</p>
-
-<p><code>
-$ curl localhost:8080
-curl: (56) Recv failure: Connection reset by peer
-$ curl localhost:9200
-curl: (56) Recv failure: Connection reset by peer
-</code></p>
-
-<p>We can start the services with the following commands</p>
-
-<p><code>
-$ cd service
-$ ln -s ../sv/elasticsearch
-$ ln -s ../sv/logstash
-$ ln -s ../sv/kibana
-cd ..
-</code></p>
-
-<p>We can now see the services are running, test the ports and send some data to logstash.</p>
-
-<p><code>
-$ curl localhost:8080      
-&lt;!DOCTYPE html&gt;&lt;!--[if IE 8]&gt;&lt;html class="no-js lt-ie9" lang="en"&gt;&lt;![endif]--&gt;&lt;!--[if gt IE 8]&gt;&lt;!--&gt;&lt;html class="no-js" lang="en"&gt;
-...
-curl localhost:9200
-{
-  "ok" : true,
-  "status" : 200,
-...
-$tail -100 /var/log/syslog | nc localhost 5014
-</code></p>
-
-<p>Stop a service ?</p>
-
-<p><code>
-$ rm service/elasticsearch
-$ rm service/logstash
-$ rm service/kibana
-</code></p>
-
-<h2>Bonus Round: Logs!</h2>
-
-<p>The beautify of doing this is that we&rsquo;re actually logging the application output to a mounted volume.   This means we now have access to their logs from the host machine.</p>
-
-<p><code>
-$ tail opt/logstash/logs/current
-$ tail opt/elasticsearch-0.90.5/logs/current
-$ tail opt/kibana/logs/access.log
-</code></p>
-
-<h2>Cleanup</h2>
-
-<p>Unfortunately any files created inside the docker instance are owned by root ( an artifact of docker daemon running as root ).   If you&rsquo;re in The following script will clean out any such files after you&rsquo;ve stopped the docker container.</p>
-
-<p>It will delete any files/dirs inside your current directory that are owned by root.  Obviously it can be very dangerous to run &hellip; so be careful where you run it from!</p>
-
-<p><code>
-$ sudo find . -uid 0   -exec rm -rfv {} \;
-</code></p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Vagrant, Docker and Ansible, WTF?]]></title>
@@ -505,7 +209,7 @@ processes.</p>
 </span><span class='line'>&lt;li>&lt;p>Great, but we&rsquo;ll need more than a vanilla Linux. To add our dependencies, for example to run a Node.js + MongoDB app, we&rsquo;re gonna start by creating a &lt;code>Dockerfile&lt;/code>:&lt;/p>
 </span><span class='line'>
 </span><span class='line'>&lt;p>FROM ubuntu
-</span><span class='line'>MAINTAINER My Self &lt;a href="&#109;&#x61;&#105;&#x6c;&#116;&#x6f;&#58;&#x6d;&#x65;&#x40;&#x65;&#x78;&#x61;&#109;&#x70;&#108;&#101;&#46;&#99;&#x6f;&#109;">&#x6d;&#x65;&#x40;&#x65;&#x78;&#x61;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#111;&#109;&lt;/a>&lt;/p>
+</span><span class='line'>MAINTAINER My Self &lt;a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#x6d;&#101;&#x40;&#x65;&#x78;&#97;&#109;&#112;&#x6c;&#x65;&#x2e;&#x63;&#111;&#109;">&#x6d;&#x65;&#64;&#x65;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#46;&#x63;&#x6f;&#x6d;&lt;/a>&lt;/p>
 </span><span class='line'>
 </span><span class='line'>&lt;h1>Fetch Nodejs from the official repo (binary .. no hassle to build, etc.)&lt;/h1>
 </span><span class='line'>
@@ -818,7 +522,7 @@ quality of our throughput.</p>
 <h1>DOCKER-VERSION 0.5.3</h1>
 
 <p>FROM ubuntu:12.10
-MAINTAINER Paul Czarkowski &ldquo;<a href="&#109;&#97;&#105;&#108;&#x74;&#x6f;&#x3a;&#112;&#97;&#117;&#108;&#64;&#112;&#97;&#x75;&#x6c;&#99;&#122;&#46;&#x6e;&#101;&#x74;">&#x70;&#x61;&#117;&#x6c;&#x40;&#x70;&#x61;&#117;&#x6c;&#99;&#122;&#x2e;&#110;&#x65;&#x74;</a>&rdquo;</p>
+MAINTAINER Paul Czarkowski &ldquo;<a href="&#109;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#x70;&#x61;&#117;&#x6c;&#64;&#x70;&#97;&#117;&#108;&#x63;&#x7a;&#x2e;&#x6e;&#x65;&#x74;">&#112;&#97;&#117;&#x6c;&#x40;&#x70;&#97;&#117;&#108;&#99;&#122;&#46;&#x6e;&#101;&#x74;</a>&rdquo;</p>
 
 <p>RUN apt-get -y update
 RUN apt-get -y install curl build-essential libxml2-dev libxslt-dev git
@@ -888,7 +592,7 @@ cookbook &lsquo;nginx&rsquo; , github: &lsquo;opscode-cookbooks/nginx&rsquo;
 <h1>DOCKER-VERSION 0.5.3</h1>
 
 <p>FROM paulczar/chef-client
-MAINTAINER Paul Czarkowski &ldquo;<a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#111;&#x3a;&#x70;&#x61;&#117;&#108;&#x40;&#112;&#x61;&#x75;&#x6c;&#99;&#122;&#x2e;&#110;&#101;&#116;">&#x70;&#97;&#x75;&#x6c;&#64;&#x70;&#x61;&#x75;&#108;&#x63;&#122;&#x2e;&#110;&#101;&#x74;</a>&rdquo;</p>
+MAINTAINER Paul Czarkowski &ldquo;<a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#x70;&#97;&#x75;&#108;&#64;&#112;&#97;&#x75;&#x6c;&#99;&#x7a;&#46;&#x6e;&#101;&#x74;">&#112;&#97;&#x75;&#108;&#x40;&#x70;&#97;&#x75;&#108;&#x63;&#x7a;&#46;&#x6e;&#101;&#116;</a>&rdquo;</p>
 
 <p>RUN apt-get -y update
 ADD . /chef

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Ci | Balaji Vajjala's Blog]]></title>
+  <title><![CDATA[Category: CI | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/ci/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-17T12:52:01-04:00</updated>
+  <updated>2014-04-17T13:18:26-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,11 +14,287 @@
 
   
   <entry>
-    <title type="html"><![CDATA[CI and Test Automation utilizing OpenStack]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/"/>
-    <updated>2014-03-14T09:54:08-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/14/ci-and-test-automation-utilizing-openstack</id>
-    <content type="html"><![CDATA[
+    <title type="html"><![CDATA[Jenkins Job Builder and How to Extned it]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/"/>
+    <updated>2014-02-22T08:57:36-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it</id>
+    <content type="html"><![CDATA[<h1>What is jenkins job builder</h1>
+
+<p>Jenkins job builder is extreme good tool to manage your jenkins CI jobs, it takes simple description from YAML files, and use them to configure jenkins.</p>
+
+<pre><code>#set free style job
+#job-template.yml
+- job:
+    name: testjob
+    project-type: freestyle
+    defaults: global
+    disabled: false
+    display-name: 'Fancy job name'
+    concurrent: true
+    quiet-period: 5
+    workspace: /srv/build-area/job-name
+    block-downstream: false
+    block-upstream: false
+</code></pre>
+
+<p>Then put your jenkins access into jenkins.ini file</p>
+
+<pre><code>[jenkins]
+user=USERNAME
+password=USER_TOKEN
+url=JENKINS_URL
+ignore_cache=IGNORE_CACHE_FLAG
+</code></pre>
+
+<p>Based on the job configuration above, you just need to type command</p>
+
+<pre><code>$ jenkins-jobs --conf jenkins.ini update job-template.yaml 
+</code></pre>
+
+<p>Then your job <em>testjob</em> is created in your jenkins server.</p>
+
+<p>The project is created by <a href="https://wiki.openstack.org/wiki/InfraTeam">openstack-infrastructure team</a>, it is used to manage the openstack environment, fairly good.</p>
+
+<h1>How it works</h1>
+
+<p>There is no magic behind it, <em>jenkins-jobs</em> just convert the <em>job-template.yaml</em> to jenkins XML request file, and use jenkins remote API to send create request.</p>
+
+<p>Try to do below to understand this.</p>
+
+<pre><code>$ jenkins-jobs test job-template.yaml -o .
+</code></pre>
+
+<p>Then xml file <em>testjob</em> is created, see</p>
+
+<pre><code>&lt;?xml version="1.0" ?&gt;
+&lt;project&gt;
+  &lt;actions/&gt;
+  &lt;description&gt;
+
+&amp;lt;!-- Managed by Jenkins Job Builder --&amp;gt;&lt;/description&gt;
+  &lt;keepDependencies&gt;false&lt;/keepDependencies&gt;
+  &lt;disabled&gt;false&lt;/disabled&gt;
+  &lt;displayName&gt;Fancy job name&lt;/displayName&gt;
+  &lt;blockBuildWhenDownstreamBuilding&gt;false&lt;/blockBuildWhenDownstreamBuilding&gt;
+  &lt;blockBuildWhenUpstreamBuilding&gt;false&lt;/blockBuildWhenUpstreamBuilding&gt;
+  &lt;concurrentBuild&gt;true&lt;/concurrentBuild&gt;
+  &lt;customWorkspace&gt;/srv/build-area/job-name&lt;/customWorkspace&gt;
+  &lt;quietPeriod&gt;5&lt;/quietPeriod&gt;
+  &lt;canRoam&gt;true&lt;/canRoam&gt;
+  &lt;properties/&gt;
+  &lt;scm class="hudson.scm.NullSCM"/&gt;
+  &lt;builders/&gt;
+  &lt;publishers/&gt;
+  &lt;buildWrappers/&gt;
+&lt;/project&gt;
+</code></pre>
+
+<p>Now you can use curl command to send the request (testjob) directly !!</p>
+
+<pre><code>$ curl --user USER:PASS -H "Content-Type: text/xml" -s --data "@testjob" "http://jenkins-server/createItem?name=testjob"
+</code></pre>
+
+<h2>How to recreate your jenkins job</h2>
+
+<p>Looks great, finally you need think about how to re-create your jenkins job, it is also simple, just download the config.xml</p>
+
+<pre><code>$ curl --user USER:PASS http://jenkins-server/testjob/config.xml
+</code></pre>
+
+<p>Or open the configuration page in broswer *<a href="http://jenkins-server/testjob/configure*">http://jenkins-server/testjob/configure*</a> and map from YAML file.</p>
+
+<p>You need to read <a href="http://ci.openstack.org/jenkins-job-builder/configuration.html">jenkins job builder&rsquo;s guideline</a> to know the map, generate it had level Macro like <a href="https://wiki.openstack.org/wiki/InfraTeam">builders</a>, which is connected to the <a href="https://github.com/openstack-infra/jenkins-job-builder/blob/master/jenkins_jobs/modules/builders.py">real python builders module</a> to do transformation from YAML to XML.</p>
+
+<p>What you stated in YAML file like</p>
+
+<pre><code>-job:
+  name: test_job
+  builders:
+- shell: "make test"
+</code></pre>
+
+<p>it will be converted to</p>
+
+<pre><code>&lt;builders&gt;
+&lt;hudson.tasks.Shell&gt;
+  &lt;command&gt;make test&lt;/command&gt;&lt;/hudson.tasks.Shell&gt;
+&lt;/builders&gt;
+</code></pre>
+
+<h2>How to extend</h2>
+
+<p>Greatly to see jenkins job builder already had lots of default modules to support your normal jenkins jobs, but there is exceptions like some none popular jenkins plugins or your own plugins.</p>
+
+<p>Then it is time to extend the module, the existing document: Extending is not clear enough, I will use example to show how it works, code is in <a href="https://github.com/bv2012/jenkins-buddy">github jenkins-buddy</a> project</p>
+
+<p><a href="https://wiki.jenkins-ci.org/display/JENKINS/ArtifactDeployer+Plugin">ArtifactDeployer</a> Plugin is used as example, this plugin is the popular plugin to deploy the artifacts to other folder.</p>
+
+<p>Artifact Deploy Plugin</p>
+
+<p><img src="../downloads/code/artifactdeploy.png" alt="" /></p>
+
+<p>And I want to have .YAML like below</p>
+
+<pre><code>*#artifactdeploy.yaml*
+- job:
+name: test-job
+publishers:
+  - artifactdeployer: 
+  includes: 'buddy-*.tar.gz'
+  remote: '/project/buddy'
+</code></pre>
+
+<h2>write codes to transform</h2>
+
+<p>Now I need to download the existing jobs to see how XML looks like, using curl above, I got it like</p>
+
+<pre><code>&lt;publishers&gt;
+   ...  
+  &lt;org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher plugin="artifactdeployer@0.27"&gt;
+&lt;entries&gt;
+  &lt;org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry&gt;
+&lt;includes&gt;buddy-*.tar.gz&lt;/includes&gt;
+&lt;basedir&gt;&lt;/basedir&gt;
+&lt;excludes&gt;&lt;/excludes&gt;
+&lt;remote&gt;/project/buddy&lt;/remote&gt;
+&lt;flatten&gt;false&lt;/flatten&gt;
+&lt;deleteRemote&gt;false&lt;/deleteRemote&gt;
+&lt;deleteRemoteArtifacts&gt;false&lt;/deleteRemoteArtifacts&gt;
+&lt;deleteRemoteArtifactsByScript&gt;false&lt;/deleteRemoteArtifactsByScript&gt;
+&lt;failNoFilesDeploy&gt;false&lt;/failNoFilesDeploy&gt;
+  &lt;/org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry&gt;
+&lt;/entries&gt;
+&lt;deployEvenBuildFail&gt;false&lt;/deployEvenBuildFail&gt;
+  &lt;/org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher&gt;
+..
+&lt;/publishers&gt; 
+</code></pre>
+
+<p>It belongs the section publishers So I write the jenkins_buddy/modules/publishers.py module to add one function artifactdeployer:</p>
+
+<pre><code>def artifactdeployer(parser, xml_parent, data):
+    logger = logging.getLogger("%s:artifactdeployer" % __name__)
+    artifactdeployer = XML.SubElement(xml_parent, 'org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerPublisher')
+    entries = XML.SubElement(artifactdeployer, 'entries')
+    entry = XML.SubElement(entries, 'org.jenkinsci.plugins.artifactdeployer.ArtifactDeployerEntry')
+    print data
+    XML.SubElement(entry, 'includes').text = data['includes']
+    XML.SubElement(entry, 'remote').text = data['remote']
+</code></pre>
+
+<p>It is the core part handling convert.</p>
+
+<h3>Hook into jenkins-job builder</h3>
+
+<p>Now you need hook this script into jenkins-jobs builder, thank for the entry_points in python, it can be used for this.</p>
+
+<p>Create the plugin related script and structure, add new entry_point in setup.py</p>
+
+<pre><code>#setup.py in jenkins-buddy
+entry_points={
+    'jenkins_jobs.publishers': [
+    'artifactdeployer=jenkins_buddy.modules.publishers:artifactdeployer',
+    ],
+}
+</code></pre>
+
+<p>it tells jenkins-jobs if you meet new keyword artifactdeployer in publishers, please let me jenkins_buddy.modules.publishers:artifactdeployer to handle.</p>
+
+<h3>Verify it</h3>
+
+<p>Build the pip package local and install it</p>
+
+<pre><code>$ python setup.py sdist
+$ pip install dist/jenkins-buddy-0.0.5.zip
+</code></pre>
+
+<p>And verify the new job, Bingo, it works.</p>
+
+<pre><code>$ jenkins-jobs test artifactdeploy.yaml -o . 
+</code></pre>
+
+<h3>###Make it more complete by checking jenkins plugin java code</h3>
+
+<p>Maybe you noticed, it is hack solution, since I skipped some parameter converting and guess what the XML will look like, if you want to make it more complete, we need to check the java codes directly.</p>
+
+<p>src/main/java/org/jenkinsci/plugins/artifactdeployer/ArtifactDeployerPublisher.java is the class we need to take care.</p>
+
+<pre><code>@DataBoundConstructor
+public ArtifactDeployerPublisher(List&lt;ArtifactDeployerEntry&gt; deployedArtifact, boolean deployEvenBuildFail) {
+    this.entries = deployedArtifact;
+    this.deployEvenBuildFail = deployEvenBuildFail;
+    if (this.entries == null)
+    this.entries = Collections.emptyList();
+}
+</code></pre>
+
+<p>It is directly mapping from XML into internal data, if you need know more, learn how to develop jenkins plugin.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Deploy/Release Workflow from GitHub]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/02/04/deploy-slash-release-workflow-from-github/"/>
+    <updated>2014-02-04T09:50:50-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/02/04/deploy-slash-release-workflow-from-github</id>
+    <content type="html"><![CDATA[<h1>## Workflow : Deploying/Release Apps from Development to Production  ##</h1>
+
+<p>Deploying is a big part of the lives of most of our Engineering employees. We don&rsquo;t have a release manager and there are no set weekly deploys. Developers and designers are responsible for shipping new stuff themselves as soon as it&rsquo;s ready. This means that deploying needs to be as smooth and safe a process as possible.</p>
+
+<p>The best system we&rsquo;ve found so far to provide this flexibility is to have people deploy branches. Changes never get merged to master until they have been verified to work in production from a branch. This means that master is always stable; a safe point that we can roll back to if there&rsquo;s a problem.</p>
+
+<p>The basic workflow goes like this:</p>
+
+<ul>
+<li>Push changes to a branch in GitHub</li>
+<li>Wait for the build to pass on our CI server (Jenkins)</li>
+<li>Tell Hubot to deploy it</li>
+<li>Verify that the changes work and fix any problems that come up</li>
+<li>Merge the branch into master
+Not too long ago, however, this system wasn&rsquo;t very smart. A branch could accidentally be deployed before the build finished, or even if the build failed. Employees could mistakenly deploy over each other. As the company has grown, we&rsquo;ve needed to add some checks and balances to help us prevent these kinds of mistakes.</li>
+</ul>
+
+
+<h2>Safety First</h2>
+
+<p>The first thing we do now, when someone tries to deploy, is make a call to <a href="https://github.com/github/janky">Janky</a> to determine whether the current CI build is green. If it hasn&rsquo;t finished yet or has failed, we&rsquo;ll tell the deployer to fix the situation and try again.</p>
+
+<p>Next we check whether the application is currently &ldquo;locked&rdquo;. The lock indicates that a particular branch is being deployed in production and that no other deploys of the application should proceed for the moment. Successful builds on the master branch would otherwise get deployed automatically, so we don&rsquo;t want those going out while a branch is being tested. We also don&rsquo;t want another developer to accidentally deploy something while the branch is out.</p>
+
+<p>The last step is to make sure that the branch we&rsquo;re deploying contains the latest commit on master that has made it into production. Once a commit on master has been deployed to production, it should never be “removed” from production by deploying a branch that doesn’t have that commit in it yet.</p>
+
+<p>We use the GitHub API to verify this requirement. An endpoint on the github.com application exposes the SHA1 that is currently running in production. We submit this to the GitHub compare API to obtain the &ldquo;merge base&rdquo;, or the common ancestor, of master and the production SHA1. We can then compare this to the branch that we&rsquo;re attempting to deploy to check that the branch is caught up. By using the common ancestor of master and production, code that only exists on a branch can be removed from production, and changes that have landed on master but haven&rsquo;t been deployed yet won&rsquo;t require branches to merge them in before deploying.</p>
+
+<p>If it turns out the branch is behind, master gets merged into it automatically. We do this using the new :sparkles:Merging API:sparkles: that we&rsquo;re making available today. This merge starts a new CI build like any other push-style event, which starts a deploy when it passes.</p>
+
+<p>At this point the code actually gets deployed to our servers. We usually deploy to all servers for consistency, but a subset of servers can be specified if necessary. This subset can be by functional role — front-end, file server, worker, search, etc. — or we can specify an individual machine by name, e.g, &lsquo;fe7&rsquo;.</p>
+
+<h2>Watch it in action</h2>
+
+<p>What now? It depends on the situation, but as a rule of thumb, small to moderate changes should be observed running correctly in production for at least 15 minutes before they can be considered reasonably stable. During this time we monitor exceptions, performance, tweets, and do any extra verification that might be required. If non-critical tweaks need to be made, changes can be pushed to the branch and will be deployed automatically. In the event that something bad happens, rolling back to master only takes 30 seconds.</p>
+
+<h2>All done!</h2>
+
+<p>If everything goes well, it&rsquo;s time to merge the changes. At GitHub, we use Pull Requests for almost all of our development, so merging typically happens through the pull request page. We detect when the branch gets merged into master and unlock the application. The next deployer can now step up and ship something awesome.</p>
+
+<h1>How do we do it?</h1>
+
+<p>Most of the magic is handled by an internal deployment service called Heaven. At its core, Heaven is a catalog of Capistrano recipes wrapped up in a Sinatra application with a JSON API. Many of our applications are deployed using generic recipes, but more complicated apps can define their own to specify additional deployment steps. Wiring it up to Janky, along with clever use of post-receive hooks and the GitHub API, lets us hack on the niceties over time. Hubot is the central interface to both Janky and Heaven, giving everyone in Campfire great visibility into what’s happening all of the time. As of this writing, 75 individual applications are deployed by Heaven.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JUC video - .Net CI/CD with Jenkins]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/07/08/juc-video-net-ci-slash-cd-with-jenkins/"/>
+    <updated>2013-07-08T22:37:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/07/08/juc-video-net-ci-slash-cd-with-jenkins</id>
+    <content type="html"><![CDATA[<p>The guy&rsquo;s from <a href="http://www.jfrog.com/">Jfrog</a> were kind enough to put this session on youtube &ndash; here it is enjoy</p>
+
+<iframe width="640" height="360" src="//www.youtube.com/embed/C5-98Fln1jg" frameborder="0" allowfullscreen></iframe>
+
+
+<p>comments are welcome !
+HP</p>
 ]]></content>
   </entry>
   

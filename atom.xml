@@ -4,7 +4,7 @@
   <title><![CDATA[Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-17T12:52:01-04:00</updated>
+  <updated>2014-04-17T13:18:26-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -12,266 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[A Deep Dive into AWS Reserved Instances]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/"/>
-    <updated>2014-03-25T09:35:27-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances</id>
-    <content type="html"><![CDATA[<h3>A Deep Dive into AWS Reserved Instances</h3>
-
-<p>One of our primary goals at Flux7 Labs is to help our clients reduce
-their AWS costs. In fact, our product VyScale is based entirely on cost
-optimization using Spot instances. We inform our clients when it makes
-economic sense for them to buy instance reservations because
-reservations for periods of unexpected minimum usage can be beneficial.
-Reserved instances function exactly like on-demand instances, except
-that you pay an upfront fee to gain cheaper hourly rates.</p>
-
-<h3>Reserved Instance Pricing</h3>
-
-<p>There are several levels of reservations. Higher ones allow you to pay
-more up front in order to achieve a lower hourly cost. The table below
-shows the rates for various types of reserved and on-demand instances
-for m1.large instances.</p>
-
-<hr />
-
-<pre><code>           Upfront   Hourly in cents
-</code></pre>
-
-<p>  On-demand    0         24
-  Light Util   243       13.6
-  Med Util     554       8.4
-  Heavy Util   676       5.6</p>
-
-<hr />
-
-<p>At some levels of utilization it makes sense to purchase reservations,
-rather than to rely solely upon on-demand instances. By factoring in
-upfront costs, we can determine which levels warrant purchasing
-reservations. What’s surprising is that those levels are fairly low,
-especially in the case of light reservations. Even at 30% utilization,
-light-reservation costs start to break even with those of on-demand
-instances. The following graph shows equivalent hourly costs for
-reservations at various utilization levels</p>
-
-<p><a href="../../../wp-content/uploads/AWS-reserved-instances-1.png"><img src="../../../wp-content/uploads/AWS-reserved-instances-1.png" alt="Hourl rates of reserved
-instances" /></a></p>
-
-<p>To better understand these numbers in terms of total cost, as opposed to
-incremental cost, the figure below shows total annual expenditures at
-various levels. For a 100% utilization of an instance, one can reduce
-costs to almost half of Amazon’s standard pricing for reserved
-instances, and that’s without any of the bulk discounts made available
-to high-volume AWS customers. At lower levels, reservations cost almost
-twice as much as those at higher levels. However, keep in mind that, as
-a fraction of overall cost, the amount is still not very high. So, in
-cases where growth is expected, it can make sense to purchase
-reservations early.</p>
-
-<p><a href="../../../wp-content/uploads/AWS-reserved-instances-2.png"><img src="../../../wp-content/uploads/AWS-reserved-instances-2.png" alt="Annual rates of reserved
-instances" /></a></p>
-
-<h3>Do You Have A Reservation?</h3>
-
-<p>Another thing to know about Amazon’s policy is that you receive a
-guaranteed instance when you buy a reservation, whereas there is no such
-guarantee for on-demand instances. When trying to acquire an on-demand
-instance, AWS may return an error message stating that capacity is not
-available for that instance type. On the other hand, once you purchase a
-reservation Amazon guarantees that the instance will be made available
-to you at the moment you request it. If you’re using an autoscaling
-solution it can make sense to make light utilization reservations to
-handle your excess capacity, even if it costs more to guarantee uptime
-to your customers. With Amazon’s guarantee it’s no wonder that Netflix
-runs almost exclusively on reservations. As a matter of policy,
-Netflix’s use of on-demand instances indicates that more reservations
-need to be purchased.</p>
-
-<p>One thing to note is that Amazon always uses reservations first, so you
-can’t keep unused light reservations as backups while using on-demand
-instances for capacity.</p>
-
-<h3>How Amazon Handles Unused Reservations</h3>
-
-<p>Spot instances are one of the best uses of unutilized reserved capacity
-with AWS. They come with no guarantee of availability, and can be taken
-away from you at Amazon’s discretion at any time in order to fulfill
-other customers’ needs. Spot prices hover around 15% of the on-demand
-price, which allows Amazon to make a decent return on unused
-reservations and while offering reservations at a relatively low price.</p>
-
-<h3>Conclusion</h3>
-
-<p>The most common reason to use reservations is price, but there are also
-other considerations. The final decision should be based on capacity
-analysis from a business perspective.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[6 reasons why large enterprises should move to Amazon Web Services]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/"/>
-    <updated>2014-03-25T09:13:48-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services</id>
-    <content type="html"><![CDATA[<h2>6 reasons why large enterprises should move to Amazon Web Services</h2>
-
-<h3>6 reasons why large enterprises should move to Amazon Web Services</h3>
-
-<p>Amazon has changed the face of the world of startups with its cloud services. Now it’s possible for two men in a garage to set up large
-computer clusters for zero capital cost.</p>
-
-<p><a href="https://twitter.com/share?text=Amazon+has+its+sights+set+on+enterprise,+which+they+will+conquer+slowly+but+surely.+&amp;via=OurLabs&amp;related=Flux7Labs&amp;url=http://wp.me/p4sEOD-o6">Amazon has its sights set on enterprise, which they will conquer slowly
-but
-surely.</a></p>
-
-<p>At Our Labs, one of our specialties is cloud migration for enterprise
-clients, and we’ve received considerable feedback about both their
-concerns and delights. In this post I’ll explain why I strongly believe
-large enterprises should consider moving to the cloud.</p>
-
-<h2><strong>Agility and Responsiveness</strong> </h2>
-
-<p>Let’s face it, if a startup is a speedboat, then a large enterprise is
-the Titanic. While startups can pivot any time there’s danger and large
-enterprises turn more slowly, there are icebergs that can sink either.
-Disasters happen to everyone, but a large enterprise has significantly
-more skin in the game, and the old model of waiting a month before
-buying a new rack just doesn’t cut it anymore. By shifting to the cloud,
-large enterprises can bring up new servers in minutes, which means
-shorter downtimes, rapid experimentation, more innovation, increased
-global reach, improved demand-surge handling and more successful
-short-lived-but-resource-intensive projects.</p>
-
-<h2><strong>Innovation</strong> </h2>
-
-<p>Business is a cutthroat world in which we must always strive to
-out-innovate our competitors. This article is about the cloud in
-general, but I want to explain why it’s also Amazon focused. Amazon has
-been blazing the cloud-computing trail longer than anyone, which is
-reflected by its 80% market share, and is clearly ahead of its
-competitors. For example, check out Gartner’s analysis of different
-cloud providers in the chart below and you’ll see Amazon in a corner of
-their own. In fact, Amazon so dominated the competition that Gartner had
-to artificially lower the scale. Amazon is innovating at such a rapid
-pace in providing new services and broadening its customer base that
-competitors are struggling to keep pace.</p>
-
-<p>The effect of this innovation is obvious to developers. Do you want to
-provide Active Directory integration with Amazon? You can do that. Do
-you want to save on data costs by using the Bittorrent protocol for
-content distribution? You can do that. Do you want to put heavy compute
-behind your mobile games? You can do that. Do you want to ramp up your
-clients quickly with remote workstations? You can do that, too. With
-Amazon Web Services you can do all of that and more. I’m a
-certified<a href="file:///C:/Users/Vishnu/Documents/Our/SMM/Blog/WhyEnterprisemustAmazon_(REVISED_CLEAN">[1]</a>.docx#_msocom_1) 
-AWS instructor, yet I learn something new about AWS every day as Amazon
-constantly releases new features. The advantage of moving your business
-to the cloud is that you can let your developers focus on your company’s
-area of expertise while leaving the boilerplate to Amazon.</p>
-
-<p>\</p>
-
-<p> <img src="https://lh3.googleusercontent.com/GmdBmLBmcGW9TIBqUCVkf403uIIf9arZ6-brIjBOt8tus6n_7YaKdOW3kcQqSIUbKnQd9vthqX1nyHHGouT8xbmDF3-xkpXUbJV0UJLpguSzg7EKB6QuaqR92uw_og" alt="" /></p>
-
-<h2><strong>A Data Center That Hosts A Top Website</strong> </h2>
-
-<p>One thing we mustn’t forget is what the AWS cloud really is—a product of
-years of innovation by one of the largest e-commerce websites in the
-world. Its data centers are distributed globally in numerous parts of
-the world, with multiple, independently-operating data centers in each
-region that provide different failure domains while being close enough
-together to provide cheap communication. And that’s just the compute
-side of the equation. Amazon also shares its global content distribution
-network, its DNS servers. it compiles traffic data from across the globe
-to find the best route for your network traffic. There are only a
-handful of companies today with that kind of global reach, and they,
-too, are developing cloud capabilities. But unless you’re in that elite
-club, you won’t be able to create a data center that can compete with
-AWS. So by using a cloud solution, rather than an in-house solution,
-you’ll clearly benefit in terms of better performance, better fault
-tolerance, and better disaster recovery.</p>
-
-<h2><strong>Security</strong> </h2>
-
-<p>Security is the biggest concern about cloud computing for most
-enterprises, but Amazon holds many of the most important certifications,
-including PCI, HIPAA, Sarbanes-Oxley, and ISO. Since it has so much at
-stake, it maintains separation of logical and physical access to data in
-order to limit the impact of disgruntled employees. While I certainly
-understand someone hesitating to entrust one’s most valuable information
-with a third party, it’s certainly debatable whether on-premise storage
-is more secure than cloud storage.</p>
-
-<h2><strong>In-house Expertise Not Required</strong> </h2>
-
-<p>Anyone that’s had to hire people knows that good employees are worth
-their weight in platinum. Moving to the cloud allows you to offload much
-of your data-center maintenance onto Amazon. Let it do what it’s best at
-while you focus on what you’re best at.</p>
-
-<p>As we know, you often have to pay dearly to hire someone outside of your
-area of expertise. For example, say you’re a director of IT at a company
-like Schlumberger. Your company is great at what it does and has strong
-brand value in its area of expertise. Do you think you can possibly
-poach someone like <a href="http://mvdirona.com/jrh/work/">James Hamilton</a> for
-your company? No, you can’t. With core expertise in data centers, Amazon
-will likely offer a more intriguing challenge and a deeper sense of
-mission to the kind of people you’ll want to hire for your team. And we
-all know that employee engagement is not about the money, but rather
-about being involved in a greater mission.</p>
-
-<h2><strong>Lower Costs</strong> </h2>
-
-<p>While I’m convinced that moving to the cloud will lower your costs, I
-acknowledge that getting there requires a lot of expertise and hard
-work. Additionally you may very easily find yourself comparing apples
-and oranges. Yet cloud solutions are cheaper than on-premise solutions
-when played right. First, when you pay for a machine on AWS you’re also
-paying for Amazon’s years of expertise in setting up resilient data
-centers, something that’s not true for in-house departments lacking core
-IT expertise. Second, there’s great potential for saving money by
-scaling to your variable demand needs instead of designing for max
-capacity. That’s why Netflix, even though it comprises one-third of the
-Internet in terms of data volume, has gone “all in” on AWS, or they’d
-have to provision enough machines to handle 9PM Friday traffic.
-Alternatively you can have an expected area of needing high demand, as
-say for a chip company close to tapeout, a movie studio needing to
-render for a year
-(<a href="http://gigaom.com/2014/03/02/the-oscars-how-american-hustles-fx-team-made-2013-boston-look-like-1980s-new-york/">http://gigaom.com/2014/03/02/the-oscars-how-american-hustles-fx-team-made-2013-boston-look-like-1980s-new-york/</a>),
-or a game company handling launch day demand
-(<a href="http://www.respawn.com/news/lets-talk-about-the-xbox-live-cloud/">http://www.respawn.com/news/lets-talk-about-the-xbox-live-cloud/</a>).</p>
-
-<h2><strong>Conclusion</strong> </h2>
-
-<p>If you’re a large enterprise and on the fence about whether or not to
-move to the cloud, we highly recommend trying it out. Try it on a
-contained project, rather than one that’s on a critical path, something
-that fits well within the cloud’s capabilities. After implementation, do
-a post-mortem and analyze the results in terms of cost and
-time-to-market. What is the expectation as you build in-house
-expertise<strong>.</strong> The results may well surprise you.</p>
-
-<h2><strong>Let’s Talk</strong> </h2>
-
-<p>Our Research Labs has helped Fortune 100 and Fortune 500 companies move
-successfully to AWS. We’d love to hear any questions, comments or
-concerns you may have, so feel free to contact us anytime during weekly
-<a href="http://ohours.org/aatersuleman">office hours</a> to discuss your specific
-needs or situation. We offer this service free of charge with no
-obligation or strings attached.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[CI and Test Automation utilizing OpenStack]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/"/>
-    <updated>2014-03-14T09:54:08-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/03/14/ci-and-test-automation-utilizing-openstack</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Jenkins Job Builder and How to Extned it]]></title>
@@ -788,203 +528,6 @@ Not too long ago, however, this system wasn&rsquo;t very smart. A branch could a
 <h1>How do we do it?</h1>
 
 <p>Most of the magic is handled by an internal deployment service called Heaven. At its core, Heaven is a catalog of Capistrano recipes wrapped up in a Sinatra application with a JSON API. Many of our applications are deployed using generic recipes, but more complicated apps can define their own to specify additional deployment steps. Wiring it up to Janky, along with clever use of post-receive hooks and the GitHub API, lets us hack on the niceties over time. Hubot is the central interface to both Janky and Heaven, giving everyone in Campfire great visibility into what’s happening all of the time. As of this writing, 75 individual applications are deployed by Heaven.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[OpenStack : Git Gerrit and Jenkins Workflow]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow/"/>
-    <updated>2014-02-03T14:54:23-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/02/03/openstack-git-gerrit-and-jenkins-workflow</id>
-    <content type="html"><![CDATA[<h1>Gerrit Workflow</h1>
-
-<p><img src="http://bvajjala.github.io/downloads/code/GerritGitJenkinsWorkflow.png" title="Git Gerrit Jenkins Workflow" alt="Alt text in case picture load fails" /></p>
-
-<h2>Git Account Setup</h2>
-
-<p>You&rsquo;ll need a <a href="https://login.launchpad.net">Launchpad account</a>, since this is how the Web interface for the Gerrit Code Review system will identify you. This is also useful for automatically crediting bug fixes to you when you address them with your code commits.</p>
-
-<p>If you haven&rsquo;t already, <a href="https://www.openstack.org/join/">join The OpenStack Foundation</a> (it&rsquo;s free and required for all code contributors). Among other privileges, this also allows you to vote in elections and run for elected positions within The OpenStack Project. When signing up for Foundation Membership, make sure to give the same E-mail address you&rsquo;ll use for code contributions, since this will need to match your preferred E-mail address in Gerrit.</p>
-
-<p>Visit <a href="https://review.openstack.org/">https://review.openstack.org/</a> and click the Sign In link at the top-right corner of the page. Log in with your Launchpad ID.</p>
-
-<p>Because Gerrit uses Launchpad OpenID single sign-on, you won&rsquo;t need a separate password for Gerrit, and once you log in to one of Launchpad, Gerrit, or Jenkins, you won&rsquo;t have to enter your password for the others.</p>
-
-<p>You&rsquo;ll also want to upload an SSH key while you&rsquo;re at it, so that you&rsquo;ll be able to commit changes for review later.</p>
-
-<p>Ensure that you have run these steps to let git know about your email address:</p>
-
-<figure class='code'><figcaption><span>Git Config </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git config --global user.name "Firstname Lastname"
-</span><span class='line'>git config --global user.email "your_email@youremail.com"</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To check your git configuration:</p>
-
-<figure class='code'><figcaption><span>Git Config </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git config --list</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Git Review Installation</h2>
-
-<p>We recommend using the &ldquo;git-review&rdquo; tool which is a git subcommand that handles all the details of working with Gerrit, the code review system used in OpenStack development. Before you start work, make sure you have git-review installed on your system.</p>
-
-<p>On Ubuntu, MacOSx, or most other Unix-like systems, it is as simple as:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>pip install git-review</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On Ubuntu Precise (12.04) and later, git-review is included in the distribution, so install it as any other package:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get install git-review</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On Fedora 16 and later, git-review is included into the distribution, so install it as any other package:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install git-review</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On Fedora 15 and earlier you have to install pip (its package name is <code>python-pip</code>), then install git-review using pip in a conventional way.</p>
-
-<p>On Red Hat Enterprise Linux, you must first enable the EPEL repository, then install it as any other package:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install git-review</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On openSUSE 12.2 and later, git-review is included in the distribution under the name python-git-review, so install it as any other package:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>zypper in python-git-review</span></code></pre></td></tr></table></div></figure>
-
-
-<p>All of git-review&rsquo;s interactions with gerrit are sequences of normal git commands. If you want to know more about what it&rsquo;s doing, just add -v to the options and it will print out all of the commands it&rsquo;s running.</p>
-
-<h2>Project Setup</h2>
-
-<p>Clone a project in the usual way, for example:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://git.openstack.org/openstack/nova.git</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You may want to ask git-review to configure your project to know about Gerrit at this point. If you don&rsquo;t, it will do so the first time you submit a change for review, but you probably want to do this ahead of time so the Gerrit Change-Id commit hook gets installed. To do so (again, using Nova as an example):</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd nova
-</span><span class='line'>git review -s</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Git-review checks that you can log in to gerrit with your ssh key. It assumes that your gerrit/launchpad user name is the same as the current running user. If that doesn&rsquo;t work, it asks for your gerrit/launchpad user name. If you don&rsquo;t remember the user name go to the settings page on gerrit to check it out (it&rsquo;s not your email address).</p>
-
-<p>Note that you can verify the SSH host keys for review.openstack.org here: <a href="https://review.openstack.org/#/settings/ssh-keys">https://review.openstack.org/#/settings/ssh-keys</a></p>
-
-<p>If you get the error &ldquo;We don&rsquo;t know where your gerrit is.&rdquo;, you will need to add a new git remote. The url should be in the error message. Copy that and create the new remote.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git remote add gerrit ssh://&lt;username>@review.openstack.org:29418/openstack/nova.git</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In the project directory, you have a <code>.git</code> hidden directory and a <code>.gitreview</code> hidden file. You can see them with:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ls -la</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>1.4 Normal Workflow</h2>
-
-<p>Once your local repository is set up as above, you must use the following workflow.</p>
-
-<p>Make sure you have the latest upstream changes:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git remote update
-</span><span class='line'>git checkout master
-</span><span class='line'>git pull --ff-only origin master</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Create a topic branch to hold your work and switch to it. If you are working on a blueprint, name your topic branch bp/BLUEPRINT where BLUEPRINT is the name of a blueprint in launchpad (for example, &ldquo;bp/authentication&rdquo;). The general convention when working on bugs is to name the branch bug/BUG-NUMBER (for example, &ldquo;bug/1234567&rdquo;). Otherwise, give it a meaningful name because it will show up as the topic for your change in Gerrit.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git checkout -b TOPIC-BRANCH</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To generate documentation artifacts, navigate to the directory where the pom.xml file is located for the project and run the following command:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mvn clean generate-sources</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>1.4.1 Committing Changes</h3>
-
-<p>Git commit messages should start with a short 50 character or less summary in a single paragraph. The following paragraph(s) should explain the change in more detail.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>If your changes addresses a blueprint or a bug, be sure to mention them in the commit message using the following syntax:
-</span><span class='line'>
-</span><span class='line'>Implements: blueprint BLUEPRINT
-</span><span class='line'>Closes-Bug: ####### (Partial-Bug or Related-Bug are options)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>For example:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Adds keystone support
-</span><span class='line'>
-</span><span class='line'>...Long multiline description of the change...
-</span><span class='line'>
-</span><span class='line'>Implements: blueprint authentication
-</span><span class='line'>Closes-Bug: #123456
-</span><span class='line'>Change-Id: I4946a16d27f712ae2adf8441ce78e6c0bb0bb657</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Note that in most cases the Change-Id line should be automatically added by a Gerrit commit hook that you will want to install. See Project Setup for details on configuring your project for Gerrit. If you already made the commit and the Change-Id was not added, do the Gerrit setup step and run:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git commit --amend</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The commit hook will automatically add the Change-Id when you finish amending the commit message, even if you don&rsquo;t actually make any changes.</p>
-
-<p>Make your changes, commit them, and submit them for review:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git commit -a
-</span><span class='line'>git review</span></code></pre></td></tr></table></div></figure>
-
-
-<p><em>Caution: Do not check in changes on your master branch. Doing so will cause merge commits when you pull new upstream changes, and merge commits will not be accepted by Gerrit.</em></p>
-
-<p>Prior to checking in make sure that you run &ldquo;<a href="http://testrun.org/tox/latest/">tox</a>&rdquo;.</p>
-
-<h3>1.4.2 Review</h3>
-
-<h3>1.4.3 Work in Progress</h3>
-
-<h3>1.4.4 Long-lived Topic Branches</h3>
-
-<h3>1.4.5 Updating a Change</h3>
-
-<h3>1.4.6 Add dependency</h3>
 ]]></content>
   </entry>
   
@@ -1615,35 +1158,6 @@ module.exports = function(obj){
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[101 On DevOps And How We Plan On Helping]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/02/03/101-on-devops-and-how-we-plan-on-helping/"/>
-    <updated>2014-02-03T13:54:32-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/02/03/101-on-devops-and-how-we-plan-on-helping</id>
-    <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2012/10/23/101-on-development-and-operations.html">101 On DevOps And How We Plan On Helping</a></h2>
-
-<p>Here&rsquo;s what usually happens: on one side the development team wants to push new features as fast as possible to production, while on the other side, operations are trying to keep things stable. Both teams are evaluated on
-criteria that are often directly conflicting. The stronger team win one argument… Until the next crisis. And we&rsquo;re not even talking about other teams, they too have conflicting agendas to throw in the mix.</p>
-
-<p>There&rsquo;s no silver bullet for getting evryone to play nicely. That being said, having Dev and Ops on the path of cooperation is not impossible. <a href="http://en.wikipedia.org/wiki/Devops">DevOps</a> is exactly this; fostering a culture of best practices and collaboration between these teams.</p>
-
-<p>In a very similar fashion to what happened with the agile movement, a lot of tools and approaches emerged that can help: methodologies (SCRUMs, kanban…), tools for configuration management (Chef, Puppet), orchestration, automation, logging… But at the core lies the need for nurturing a specific culture.</p>
-
-<p>Operations teams have been slower to adopt these methodologies compared to development teams. The average system administrator spend more time working in FIFO, putting up fires, rather than making long term investments in automation or setting up best practices. Moreover, operations teams are usually faced with a logic of budget cuts and cost &ldquo;optimizations&rdquo;, compared to the larger R&amp;D budget development teams seem to enjoy.</p>
-
-<p>Even when conditions (and resources) are favorable to the growth of a proper culture, recruiting the right profiles can prove very challenging. We&rsquo;re here talking about people with a wide range of skills, on-hands experience and
-strong collaboration and organizational skills. All of this take time. Best practices are forged through years of experience.</p>
-
-<p>That is why we&rsquo;re building <a href="http://devo.ps">devo.ps</a>. We&rsquo;re trying to lower the barriers of entry to this field and help professionals scale themselves in their role. We&rsquo;re a motivated team of engineers who have worked on both sides of the fence, with small to very large code bases and infrastructures. We hope to untangle the mess that often is infrastructure and application management, letting technical teams focus on the higher value tasks of the job.</p>
-
-<ul>
-<li><a href="http://devo.ps/about.html">About</a></li>
-<li><a href="http://devo.ps/blog.html">Blog</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
     <title type="html"><![CDATA[Farewell to Regular Web Development Approaches]]></title>
     <link href="http://bvajjala.github.io/blog/2014/02/03/farewell-to-regular-web-development-approaches/"/>
     <updated>2014-02-03T13:52:12-05:00</updated>
@@ -2125,271 +1639,755 @@ into doing so with ZeroMQ and Go).</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[DevOps Tools and Utilities]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/02/01/devops-tools-and-utilities/"/>
-    <updated>2014-02-01T13:13:05-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/02/01/devops-tools-and-utilities</id>
-    <content type="html"><![CDATA[<h1>DevOps Tool chain</h1>
+    <title type="html"><![CDATA[Deploy reveal.js slideshow on github-pages]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/11/05/deploy-reveal-dot-js-slideshow-on-github-pages/"/>
+    <updated>2013-11-05T21:03:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/11/05/deploy-reveal-dot-js-slideshow-on-github-pages</id>
+    <content type="html"><![CDATA[<p>Originally posted on <a href="http://www.tikalk.com">Tikal Knolwedge&rsquo;s webiste</a> @ this <a href="http://www.tikalk.com/alm/deploy-revealjs-slideshow-github-pages">link</a><br></p>
 
-<p>A list of utilities to support configuration management tools. This was produced by the panelists of the Configuration Mgmt Workflow panel at LOPSA-EAST in 2013. One of the attendees also took notes: <a href="http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel">http://verticalsysadmin.com/blog/uncategorized/highlights-from-lopsa-east-2013-configuration-management-workflows-panel</a></p>
+<p><img class="left" src="http://bvajjala.github.io/assets/images/gh-pages.png" title="'gh-pages'" >Deploy <a href="https://github.com/hakimel/reveal.js/">reveal.js slideshow</a> on github-pages was ridiculously easy.</p>
 
-<h2>Individual level: IDE / syntax highlighting etc</h2>
+<p>Cloned reveal.js master branch to my local machine:</p>
 
-<h2>Puppet:</h2>
+<pre><code>git clone git@github.com:hakimel/reveal.js.git
+</code></pre>
 
-<ul>
-<li>vim &ndash; <a href="https://github.com/rodjek/vim-puppet">https://github.com/rodjek/vim-puppet</a></li>
-<li>TextMate &amp; sublime text 2 &ndash; <a href="https://github.com/masterzen/puppet-textmate-bundle">https://github.com/masterzen/puppet-textmate-bundle</a></li>
-<li>gepetto (<a href="http://cloudsmith.github.io/geppetto/">http://cloudsmith.github.io/geppetto/</a>),</li>
-<li>emacs</li>
-</ul>
+<p>Remove the history &ndash; of you want to preserve history ( <strong>git remote rm origin</strong> and add your new remote)</p>
 
+<pre><code>rm -Rf .git 
+</code></pre>
 
-<h2>Chef:</h2>
+<p>Add your new remote (you need to create a repository first)</p>
 
-<ul>
-<li>vim,</li>
-<li>TextMate,</li>
-<li>Sublime Text: <a href="http://www.youtube.com/watch?v=4VtDj_ar1Xg">http://www.youtube.com/watch?v=4VtDj_ar1Xg</a> (video), <a href="https://github.com/cabeca/SublimeChef">https://github.com/cabeca/SublimeChef</a> (GitHub)</li>
-<li>Emacs: chef-mode <a href="https://github.com/mpasternacki/chef-mode">https://github.com/mpasternacki/chef-mode</a></li>
-</ul>
+<pre><code>git remote add origin git@github.com:tikalk-cookbooks/chef_workshop_presentation.git
+</code></pre>
 
+<p>You know the rest &hellip;</p>
 
-<h3>CFEngine:</h3>
+<pre><code>git add .
+git commit -m "Initial commit"
+git push origin master
+</code></pre>
 
-<ul>
-<li>vim &ndash; <a href="https://github.com/neilhwatson/vim_cf3">https://github.com/neilhwatson/vim_cf3</a></li>
-<li>emacs &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/cfengine.el">https://github.com/cfengine/core/blob/master/contrib/cfengine.el</a></li>
-<li>kate &ndash; <a href="https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml">https://github.com/cfengine/core/blob/master/contrib/katepart-cfengine.highlight.xml</a></li>
-<li>eclipse &ndash; <a href="https://cfengine.com/eclipse-cfengine-editor">https://cfengine.com/eclipse-cfengine-editor</a></li>
-<li>Sublime Text &ndash; <a href="https://github.com/kebori/sublime-cfengine3">https://github.com/kebori/sublime-cfengine3</a></li>
-</ul>
+<p>In order to push master to github pages you should create a branch names <em><strong>gh-pages</strong></em> and it&nbsp;<strong>must</strong> be named that, the commit &amp; push to this branch and about 2 minuets later you can browse to your presentation on gh-pages.</p>
 
+<p><em><strong>Create a branch</strong></em>:</p>
 
-<h2>Local Testing</h2>
+<pre><code>git branch hg-pages
+git push origin gh-pages&lt;/pre&gt;
+</code></pre>
 
-<ul>
-<li>Vagrant &ndash;</li>
-<li>VMware</li>
-<li>OpenStack</li>
-<li>Cloud?</li>
-<li>All of the above?</li>
-</ul>
+<p>updating this &quot;site&quot; can be done by editing the stuff you want on the &quot;master&quot; branch, then merge     those changes in the gh-pages branch and finally push those changes to the remote gh-pages which will automatically deploy youe reveal.js presentaion.</p>
 
+<p>the merge sould look somthing like:</p>
 
-<h2>Revision Control : Which tool? Which workflow?</h2>
+<pre><code>hagzag-Lap-hagzag:chef_workshop_presentaion(master) $ git checkout gh-pages&amp;nbsp;
 
-<ul>
-<li>Github Flow &ndash; <a href="http://scottchacon.com/2011/08/31/github-flow.html">http://scottchacon.com/2011/08/31/github-flow.html</a></li>
-<li>git-flow &ndash; <a href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a></li>
-<li>Git Dynamic Environments &ndash;</li>
-<li><ul>
-<li><a href="https://puppetlabs.com/blog/git-workflow-and-puppet-environments/">https://puppetlabs.com/blog/git-workflow-and-puppet-environments/</a> ,</li>
-</ul>
-</li>
-<li><ul>
-<li><a href="https://github.com/adrienthebo/puppet-git-hooks">https://github.com/adrienthebo/puppet-git-hooks</a></li>
-</ul>
-</li>
-</ul>
+hagzag-Lap-hagzag:chef_workshop_presentaion(gh-pages) $ git merge master&amp;nbsp;
+Updating 0f4f1e1..fb0d73d
 
+Fast-forward
 
-<h2>Commit hooks</h2>
+css/custom.css | &amp;nbsp; 4 ++++
 
-<h3>Puppet:</h3>
+index.html &amp;nbsp; &amp;nbsp; | 104 +++++++++++++++++++++++++++++++++++++++++++++++++-----------    --------------------------------------------
 
-<ul>
-<li>erb,</li>
-<li>pp parser,</li>
-<li>yaml, <a href="https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit">https://github.com/puppetlabs/puppetlabs-training-bootstrap/blob/master/modules/fundamentals/files/pre-commit</a></li>
-</ul>
+2 files changed, 53 insertions(+), 55 deletions(-)
 
+create mode 100644 css/custom.css
 
-<h3>Chef:</h3>
+git push origin gh-pages
+</code></pre>
 
-<ul>
-<li>fc pre-commit: <a href="https://github.com/gregf/chef-git-hooks">https://github.com/gregf/chef-git-hooks</a></li>
-</ul>
+<p>the url is built from the followng pattern:</p>
 
+<pre><code>[github_username].github.io/[repo_name]
+</code></pre>
 
-<h3>CFEngine:</h3>
+<p>in this case:</p>
 
-<ul>
-<li>Subversion: <a href="http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html">http://worrbase.com/2012/07/11/cfengine-svn-pre-commit.html</a></li>
-<li>Git: <a href="https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit">https://github.com/cfengine/design-center/tree/master/tools/git-pre-commit</a></li>
-</ul>
+<p><a href="http://tikalk-cookbooks.github.io/chef_workshop_presentation/#/">http://tikalk-cookbooks.github.io/chef_workshop_presentation/</a></p>
+
+<p>Hope you find this useful !</p>
+
+<p>HP</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Manage Data Bags in Solo mode]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/10/27/manage-data-bags-in-solo-mode/"/>
+    <updated>2013-10-27T15:08:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/10/27/manage-data-bags-in-solo-mode</id>
+    <content type="html"><![CDATA[<p><img class="left" src="http://bvajjala.github.io/assets/images/Opscode_chef_logo.png" title="'Chef Logo'" > For the past ~6 monthes or so I have been working solely with <a href="http://docs.opscode.com/chef_solo.html">chef-solo</a>.
+There are quite a few helpers for solo out there such as:</p>
+
+<ol>
+<li>soloist &ndash; <a href="https://github.com/mkocher/soloist">https://github.com/mkocher/soloist</a></li>
+<li>knife-solo &ndash; <a href="https://github.com/matschaffer/knife-solo">https://github.com/matschaffer/knife-solo</a>
+&amp; a few more.</li>
+</ol>
 
 
-<h2>Style / Lint tools</h2>
+<p>What kept annoying me for some time is I couldn&rsquo;t manage databas with knife whilst working in solo mode &hellip; ARRRRRRGH!!!</p>
 
-<h3>Puppet:</h3>
+<p>It looked somthing like:</p>
 
-<ul>
-<li>puppet-lint &ndash; <a href="http://puppet-lint.com/,">http://puppet-lint.com/,</a></li>
-<li>puppet-cleaner &ndash; <a href="https://github.com/santana/puppet-cleaner,">https://github.com/santana/puppet-cleaner,</a></li>
-</ul>
+<pre><code>[oper@sandbox chef_repo]$ knife data bag create admins
+ERROR: The object you are looking for could not be found
+Response: &lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL /data was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.2.15 (CentOS) Server at : Port 80&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;
+</code></pre>
 
+<p>Then came <a href="https://github.com/thbishop/knife-solo_data_bag">knife-solo_data_bag</a> I am quite embaressed to say ;) I haven&rsquo;t found this sooner.
+Now with a totally bogus knife.rb file I can generate / edit / manager databags with knife-solo &amp; knife-solo_data_bag.</p>
 
-<h3>Chef:</h3>
+<p>Again, hope you find this useful, I know I do ;)</p>
 
-<ul>
-<li>tailor,</li>
-<li>foodcritic</li>
-</ul>
+<p>HP</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[S3 - Mounting s3 buckets with S3fs]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/10/20/mounting-s3-buckets-with-f3fs/"/>
+    <updated>2013-10-20T20:32:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/10/20/mounting-s3-buckets-with-f3fs</id>
+    <content type="html"><![CDATA[<p><img class="left" src="http://bvajjala.github.io/assets/images/amazon-s3.png" title="'S3 logo'" >A <code>cheap</code> solution on Amazon s3 for uploading files to s3 via SSH</p>
 
+<p>I needed to upload files from my Corporate environment in a <code>push mode</code> meaning I do not open any &ldquo;special&rdquo; ports in my environemnt in order to enable users to put files on S3.
+I am curentelly testing to see how robust this solution really is but basically what I found myself doing is install s3fs (<a href="https://code.google.com/p/s3fs/">link to project page</a>) like so:</p>
 
-<h3>CFEngine:</h3>
+<pre><code>wget http://s3fs.googlecode.com/files/s3fs-1.73.tar.gz
+tar xvzf s3fs-1.73.tar.gz
+cd s3fs-1.73
+./configure --prefix=/usr
+make &amp;&amp; make install
+</code></pre>
 
-<ul>
-<li>cf-promises (with GCC-style warnings)</li>
-</ul>
+<p>I was installing this for Suse but for Amazon linux/redhat etc you might find a package see: <a href="http://rpmfind.net/linux/rpm2html/search.php?query=fuse-s3fs">here</a>.</p>
 
+<p>Once the package is installed you can use <code>s3fs</code></p>
 
-<h2>Testing manifests / recipes</h2>
+<pre><code>s3fs BUCKET:[PATH] MOUNTPOINT [OPTION]...
 
-<h3>Puppet:</h3>
+s3fs dev_tools /mnt/dev_tools/ 
+</code></pre>
 
-<ul>
-<li>rspec-puppet,</li>
-<li>?cucumber-puppet (discontiued)?</li>
-</ul>
+<p>Worth noting you do not need to specify the s3 url, you only specify the bucket name !</p>
 
+<p>The same thing / very similir in <code>/etc/fstab</code> will look like so:</p>
 
-<h3>Chef:</h3>
+<pre><code>s3fs#dev_tools /mnt/dev_tools fuse allow_other,user=youruser 0 0
+</code></pre>
 
-<ul>
-<li>chefspec,</li>
-<li>minitest-handler,</li>
-<li>rspec-chef,</li>
-<li>cucumber-chef,</li>
-<li>test-kitchen</li>
-</ul>
+<p>The mount opts are <strong>extreemly important</strong> &ndash; without the <code>allow_other</code> flag the user cannot write to the directory.</p>
 
+<p>This is really awesome &ndash; we now jsut need to make sure the connectivity is reliable / fast enough and this will become very usefull.</p>
 
-<h2>Marshalling / Assembling Code &amp; Dependencies</h2>
+<p>As always hope you find this useful.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Vagrant, Docker and Ansible, WTF?]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/09/25/vagrant-docker-and-ansible-wtf/"/>
+    <updated>2013-09-25T08:00:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/09/25/vagrant-docker-and-ansible-wtf</id>
+    <content type="html"><![CDATA[<h2><a href="http://bvajjala.github.io/blog/2013/09/25/vagrant-docker-and-ansible-wtf.html">Vagrant, Docker and Ansible. WTF?</a></h2>
 
-<h3>Puppet:</h3>
+<p>Given that we&rsquo;re building a SaaS that helps our client managing their infrastructure, our team is pretty familiar with leveraging VMs and configuration management tools. We&rsquo;ve actually been heavy users of Vagrant and <a href="http://devo.ps/blog/2013/07/03/ansible-simply-kicks-ass.html">Ansible</a> for
+the past year, and it&rsquo;s helped us tremendously normalize our development process.</p>
 
-<ul>
-<li>librarian-puppet &ndash; <a href="https://github.com/rodjek/librarian-puppet">https://github.com/rodjek/librarian-puppet</a></li>
-</ul>
-
-
-<h3>Chef:</h3>
-
-<ul>
-<li>berkshelf,</li>
-<li>librarian</li>
-</ul>
-
-
-<h3>CFEngine:</h3>
-
-<ul>
-<li>cf-sketch &ndash; <a href="https://github.com/cfengine/design-center/wiki/Design-Center-Tools">https://github.com/cfengine/design-center/wiki/Design-Center-Tools</a></li>
-</ul>
-
-
-<h2>Continuous Integration</h2>
-
-<ul>
-<li>Jenkins CI</li>
-<li>Travis CI</li>
-<li>Atlassian Bamboo?</li>
-<li>TeamCity?</li>
-</ul>
-
-
-<h2>Orchestration</h2>
-
-<h3>Puppet:</h3>
+<p>As our platform grew in complexity, some additional needs emerged:</p>
 
 <ul>
-<li>MCollective</li>
+<li><strong>Containerization</strong>; we needed to be able to safely execute custom, and potentially harmful, code.</li>
+<li><strong>Weight</strong>; as we added more sub-systems to devo.ps, having full blown VMs proved to be hard to juggle with when testing and developing.</li>
 </ul>
 
 
-<h3>Chef :</h3>
+<p>And that&rsquo;s why we ended up adding Docker to our development workflow. We were already familiar with it (as it powers some parts of the devo.ps infrastructure) and knew there would be obvious wins. In practice, we are shipping Docker containers in a main Vagrant image and drive some of the customization and upgrade with Ansible.</p>
+
+<p>We&rsquo;ll probably write something about this approach in the coming weeks, but given the amount of confusion there is around what these technologies are, and how they&rsquo;re used, we thought we&rsquo;d give you a quick tour on how to use them together.</p>
+
+<p>Let&rsquo;s get started.</p>
+
+<h2>Vagrant</h2>
+
+<p>You&rsquo;ve probably heard about <a href="http://www.vagrantup.com/">Vagrant</a>; a healthy number of people have been writing about it in the past 6 months. For those of you who haven&rsquo;t, think of it as a VM without the GUI. At its core, Vagrant is a simple wrapper around Virtualbox/VMware.</p>
+
+<p>A few interesting features:</p>
 
 <ul>
-<li>has “knife ssh” and Pushy support coming for push jobs</li>
+<li><strong>Boatloads of existing images</strong>, just check <a href="http://www.vagrantbox.es/">Vagrantbox.es</a> for example.</li>
+<li><strong>Snapshot and package your current machine</strong> to a Vagrant box file (and, consequently, share it back).</li>
+<li><strong>Ability to fine tune settings of the VM</strong>, including things like RAM, CPU, APIC…</li>
+<li><strong>Vagrantfiles</strong>. This allows you to setup your box on init: installing packages, modifying configuration, moving code around…</li>
+<li><strong>Integration with CM tools</strong> like Puppet, Chef and Ansible.</li>
 </ul>
 
 
-<h2>Canary testing &amp; Prod vs QA vs test environments (not prod vs QA app code)</h2>
+<p>Let&rsquo;s get it running on your machine:</p>
 
-<h3>Puppet</h3>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>1. First, [download Vagrant](http://downloads.vagrantup.com/) 
+</span><span class='line'>     and [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
+</span><span class='line'>  2. Second, let's download an image, spin it up and SSH in:
+</span><span class='line'>   $ vagrant init precise64 http://files.vagrantup.com/precise64.box
+</span><span class='line'>   $ vagrant up
+</span><span class='line'>   $ vagrant ssh
+</span><span class='line'>  3. There's no 3.
+</span><span class='line'>  4. There's a 4 if you want to access your (soon to be) deployed app; 
+</span><span class='line'>  5. you will need to dig around the Vagrant documentation to 
+</span><span class='line'>     [perform port forwarding](http://docs.vagrantup.com/v2/networking/forwarded_ports.html), 
+</span><span class='line'>     [proper networking](http://docs.vagrantup.com/v2/networking/private_network.html) 
+</span><span class='line'>     and update manually your `Vagrantfile`.</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Docker</h2>
+
+<p><a href="http://docker.io">Docker</a> is a Linux container, written in <a href="http://golang.org">Go</a> (yay!) and based on <a href="http://en.wikipedia.org/wiki/LXC">lxc</a> (self-described as &ldquo;chroot on steroids&rdquo;) and <a href="http://en.wikipedia.org/wiki/Aufs">AUFS</a>. Instead of providing a full VM, like you get with Vagrant, Docker provides you lightweight containers, that share the same kernel and allow to safely execute independent
+processes.</p>
+
+<p>Docker is attractive for many reasons:</p>
 
 <ul>
-<li>serverspec <a href="http://serverspec.org/">http://serverspec.org/</a></li>
-<li>rspec-system <a href="https://github.com/puppetlabs/rspec-system">https://github.com/puppetlabs/rspec-system</a></li>
-<li>nagios checks/ plugins</li>
+<li><strong>Lightweight</strong>; images are much lighter than full VMs, and spinning off a new instance is lightning fast (in the range of seconds instead of minutes).</li>
+<li><strong>Version control of the images</strong>, which makes it much more convenient to handle builds.</li>
+<li><strong>Lots of images</strong> (again), just have a look at <a href="https://index.docker.io">the docker public index of images</a>.</li>
 </ul>
 
 
-<h3>Chef</h3>
+<p>Let&rsquo;s set up a Docker container on your Vagrant machine:</p>
 
-<ul>
-<li>has knife-flip from Etsy, flips nodes into a test environment</li>
-</ul>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>1. SSH in Vagrant if you're not in already:
+</span><span class='line'>    
+</span><span class='line'>     $ vagrant ssh
+</span><span class='line'>
+</span><span class='line'>  2. Install Docker, 
+</span><span class='line'>  [as explained on the official website](http://http://docs.docker.io/en/latest/installation/ubuntulinux/#ubuntu-precise-12-04-lts-64-bit):
+</span><span class='line'>    
+</span><span class='line'>     $ sudo apt-get update
+</span><span class='line'>     $ sudo apt-get install linux-image-generic-lts-raring linux-headers-generic-lts-raring
+</span><span class='line'>     $ sudo reboot
+</span><span class='line'>     $ sudo sh -c "curl https://get.docker.io/gpg | apt-key add -"
+</span><span class='line'>     $ sudo sh -c "echo deb http://get.docker.io/ubuntu docker main &gt; /etc/apt/sources.list.d/docker.list"
+</span><span class='line'>     $ sudo apt-get update
+</span><span class='line'>     $ sudo apt-get install lxc-docker
+</span><span class='line'>
+</span><span class='line'>  3. Verify it worked by trying to build your first container:
+</span><span class='line'>    
+</span><span class='line'>     $ sudo docker run -i -t ubuntu /bin/bash
+</span><span class='line'>
+</span><span class='line'>  4. Great, but we'll need more than a vanilla Linux. To add our dependencies, for example to run a Node.js + MongoDB app, we're gonna start by creating a `Dockerfile`:
+</span><span class='line'>    
+</span><span class='line'>     FROM ubuntu
+</span><span class='line'>     MAINTAINER My Self me@example.com
+</span><span class='line'>     
+</span><span class='line'>     # Fetch Nodejs from the official repo (binary .. no hassle to build, etc.)
+</span><span class='line'>     ADD http://nodejs.org/dist/v0.10.19/node-v0.10.19-linux-x64.tar.gz /opt/
+</span><span class='line'>     
+</span><span class='line'>     # Untar and add to the PATH
+</span><span class='line'>     RUN cd /opt &amp;&amp; tar xzf node-v0.10.19-linux-x64.tar.gz
+</span><span class='line'>     RUN ln -s /opt/node-v0.10.19-linux-x64 /opt/node
+</span><span class='line'>     RUN echo "export PATH=/opt/node/bin:$PATH" &gt;&gt; /etc/profile
+</span><span class='line'>     
+</span><span class='line'>     # A little cheat for upstart ;)
+</span><span class='line'>     RUN dpkg-divert --local --rename --add /sbin/initctl
+</span><span class='line'>     RUN ln -s /bin/true /sbin/initctl
+</span><span class='line'>     
+</span><span class='line'>     # Update apt sources list to fetch mongodb and a few key packages
+</span><span class='line'>     RUN echo "deb http://archive.ubuntu.com/ubuntu precise universe" &gt;&gt; /etc/apt/sources.list
+</span><span class='line'>     RUN apt-get update
+</span><span class='line'>     RUN apt-get install -y python git
+</span><span class='line'>     RUN apt-get install -y mongodb
+</span><span class='line'>     
+</span><span class='line'>     # Finally - we wanna be able to SSH in
+</span><span class='line'>     RUN apt-get install -y openssh-server
+</span><span class='line'>     RUN mkdir /var/run/sshd
+</span><span class='line'>     
+</span><span class='line'>     # And we want our SSH key to be added
+</span><span class='line'>     RUN mkdir /root/.ssh &amp;&amp; chmod 700 /root/.ssh
+</span><span class='line'>     ADD id_rsa.pub /root/.ssh/authorized_keys
+</span><span class='line'>     RUN chmod 400 /root/.ssh/authorized_keys &amp;&amp; chown root. /root/.ssh/authorized_keys
+</span><span class='line'>     
+</span><span class='line'>     # Expose a bunch of ports .. 22 for SSH and 3000 for our node app
+</span><span class='line'>     EXPOSE 22 3000
+</span><span class='line'>     
+</span><span class='line'>     ENTRYPOINT ["/usr/sbin/sshd", "-D"]
+</span><span class='line'>
+</span><span class='line'>  5. Let's build our image now:
+</span><span class='line'>    
+</span><span class='line'>     $ sudo docker build .
+</span><span class='line'>     
+</span><span class='line'>     # Missing file id_rsa.pub ... hahaha ! You need an ssh key for your vagrant user
+</span><span class='line'>     $ ssh-keygen
+</span><span class='line'>     $ cp -a /home/vagrant/.ssh/id_rsa.pub .
+</span><span class='line'>     
+</span><span class='line'>     # Try again
+</span><span class='line'>     $ sudo docker build .
+</span><span class='line'>     
+</span><span class='line'>     # Great Success! High Five!
+</span><span class='line'>
+</span><span class='line'>  6. Now, let's spin off a container with that setup and log into it (`$MY_NEW_IMAGE_ID` is the last id the build process returned to you):
+</span><span class='line'>    
+</span><span class='line'>     $ sudo docker run -p 40022:22 -p 80:3000 -d $MY_NEW_IMAGE_ID
+</span><span class='line'>     $ ssh root@localhost -p 40022</span></code></pre></td></tr></table></div></figure>
 
 
-<h3>CFEngine:</h3>
+<p>You now have a Docker container, inside a Vagrant box (<em>Inception</em> style),
+ready to run a Node.js app.</p>
 
-<ul>
-<li>Remote context class matching using remoteclassesmatching (Enterprise)</li>
-</ul>
+<h2>Ansible</h2>
+
+<p><a href="http://ansible.cc">Ansible</a> is an orchestration and configuration management tool written in Python. If you want to learn more about Ansible (and you should…), <a href="http://bvajjala.github.io/blog/2013/07/03/ansible-simply-kicks-ass.html">we wrote about it a few weeks ago</a>.</p>
+
+<p>Let&rsquo;s get to work. We&rsquo;re now gonna deploy an app in our container:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>1. [Install Ansible](/blog/2013/07/03/ansible-simply-kicks-ass.html), as we showed you in our previous post.
+</span><span class='line'>
+</span><span class='line'>  2. Prepare your inventory file (`host`):
+</span><span class='line'>    
+</span><span class='line'>     app ansible_ssh_host=127.0.0.1 ansible_ssh_port=40022
+</span><span class='line'>
+</span><span class='line'>  3. Create a simple playbook to deploy our app (`deploy.yml`):
+</span><span class='line'>    
+</span><span class='line'>     ---
+</span><span class='line'>     - hosts: app
+</span><span class='line'>       user: root
+</span><span class='line'>       tasks:
+</span><span class='line'>         # Fetch the code from github
+</span><span class='line'>         - name: Ensure we got the App code
+</span><span class='line'>           git:
+</span><span class='line'>             repo=git://github.com/madhums/node-express-mongoose-demo.git
+</span><span class='line'>             dest=/opt/node-express-mongoose-demo
+</span><span class='line'>         
+</span><span class='line'>         # NPM may or may not succeed, if you give it time, care, etc. it eventually works
+</span><span class='line'>         - name: Ensure the npm dependencies are installed
+</span><span class='line'>           command:
+</span><span class='line'>             chdir=/opt/node-express-mongoose-demo
+</span><span class='line'>             /opt/node/bin/npm install
+</span><span class='line'>           ignore_errors: yes
+</span><span class='line'>           
+</span><span class='line'>         # We will assume no changes in the default sample - or we should consider templates instead
+</span><span class='line'>         - name: Ensure the config files of the app
+</span><span class='line'>           command:
+</span><span class='line'>             creates=/opt/node-express-mongoose-demo/config/$item.js
+</span><span class='line'>             cp /opt/node-express-mongoose-demo/config/$item.example.js /opt/node-express-mongoose-demo/config/$item.js
+</span><span class='line'>           with_items:
+</span><span class='line'>             - config
+</span><span class='line'>             - imager
+</span><span class='line'>             
+</span><span class='line'>         # `initctl` is now linking to `true` and we have no access to services
+</span><span class='line'>         # Need to fake the start
+</span><span class='line'>         - name: Ensure mongodb data folders
+</span><span class='line'>           file:
+</span><span class='line'>             state=directory
+</span><span class='line'>             dest=$item
+</span><span class='line'>             owner=mongodb
+</span><span class='line'>             group=mongodb
+</span><span class='line'>           with_items:
+</span><span class='line'>             - /var/lib/mongodb
+</span><span class='line'>             - /var/log/mongodb
+</span><span class='line'>             
+</span><span class='line'>         # Super cheat combo !
+</span><span class='line'>         - name: Ensure mongodb is running
+</span><span class='line'>           shell:
+</span><span class='line'>             LC_ALL='C' /sbin/start-stop-daemon --background --start --quiet --chuid mongodb --exec  /usr/bin/mongod -- --config /etc/mongodb.conf
+</span><span class='line'>         
+</span><span class='line'>         # Cheating some more !
+</span><span class='line'>         - name: Ensure the App is running
+</span><span class='line'>           shell:
+</span><span class='line'>             chdir=/opt/node-express-mongoose-demo
+</span><span class='line'>             /opt/node/bin/npm start &amp;
+</span><span class='line'>
+</span><span class='line'>  4. Run that baby:
+</span><span class='line'>    
+</span><span class='line'>     $ ansible-playbook -i host deploy.yml
+</span><span class='line'>
+</span><span class='line'>  5. We're done, point your browser at `http://localhost:80` - assuming you have performed the redirection mentioned in the initial setup of your vagrant box.</span></code></pre></td></tr></table></div></figure>
 
 
-<h2>Provisioning VM&rsquo;s in the cloud?</h2>
+<p>That&rsquo;s it. You&rsquo;ve just deployed your app on Docker (in Vagrant).</p>
 
-<h3>Chef:</h3>
+<h2>Let&rsquo;s wrap it up</h2>
 
-<ul>
-<li>knife ec2 server create&hellip;</li>
-<li>spiceweasel somefile.yml</li>
-<li>knife openstack&hellip;</li>
-<li>knife server create&hellip;</li>
-</ul>
+<p>So we just saw (roughly) how these tools can be used, and how they can be
+complementary:</p>
 
-
-<p>Clouds include Azure, Openstack, Rackspace, etc. EC2 OpsWorks (although some limitations since it’s an older version)</p>
-
-<h2>Puppet:</h2>
-
-<ul>
-<li>puppet node_aws create / puppet node_vmware create</li>
-<li>Puppet RAL for AWS, OpenStack, CloudStack:
-  ec2_instance { “instance_name”: type => t1.large, az => ‘USWest’, ensure => present, …. }</li>
-<li>Razor (bare metal)</li>
-</ul>
+<ol>
+<li> Vagrant will provide you with a full VM, including the OS. It&rsquo;s great at providing you a Linux environment for example when you&rsquo;re on MacOS.</li>
+<li> Docker is a lightweight VM of some sort. It will allow you to build contained architectures faster and cheaper than with Vagrant.</li>
+<li> Ansible is what you&rsquo;ll use to orchestrate and fine-tune things. That&rsquo;s what you want to structure your deployment and orchestration strategy.</li>
+</ol>
 
 
-<h3>CFEngine:</h3>
+<p>It takes a bit of reading to get more familiar with these tools, and we&rsquo;ll likely follow up on this post in the next few weeks. However, especially as a small team, this kind of technology allows you to automate and commoditize huge parts of your development and ops workflows. We strongly encourage you to make that investment. It has helped us tremendously increase the pace and
+quality of our throughput.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Creating immutable servers with chef and docker.io]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io/"/>
+    <updated>2013-09-07T18:18:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/09/07/creating-immutable-servers-with-chef-and-docker-dot-io</id>
+    <content type="html"><![CDATA[<p>Building applications in a <a href="http://docker.io">docker.io</a> Dockerfile is relatively simple,  but sometimes you want to just install the application exactly as you would normally via already built chef cookbooks.   Turns out this is actually pretty simple.</p>
 
-<ul>
-<li><a href="https://github.com/cfengine/design-center/tree/master/sketches/cloud">https://github.com/cfengine/design-center/tree/master/sketches/cloud</a></li>
-</ul>
+<p>The first thing you&rsquo;ll need to do is build a container with chef-client and berkshelf installed.   You can grab the one I&rsquo;ve built by running <code>docker pull paulczar/chef-solo</code> or build one youself from a <code>Dockerfile</code> that looks a little something like the following&hellip;</p>
+
+<!--more-->
 
 
-<h3>Chef</h3>
+<h3>Creating a docker.io container with chef and berkshelf</h3>
 
-<ul>
-<li>Crowbar has Chef server integrated, although I don’t know that much about it.</li>
-<li>Joyent also has a Chef “dataset” that they support.</li>
-</ul>
+<figure class='code'><figcaption><span>Dockerfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># DOCKER-VERSION 0.5.3</span>
+</span><span class='line'><span class="no">FROM</span> <span class="ss">ubuntu</span><span class="p">:</span><span class="mi">12</span><span class="o">.</span><span class="mi">10</span>
+</span><span class='line'><span class="no">MAINTAINER</span> <span class="no">Paul</span> <span class="no">Czarkowski</span> <span class="s2">&quot;paul@paulcz.net&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">update</span>
+</span><span class='line'><span class="no">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">curl</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="n">libxml2</span><span class="o">-</span><span class="n">dev</span> <span class="n">libxslt</span><span class="o">-</span><span class="n">dev</span> <span class="n">git</span>
+</span><span class='line'><span class="no">RUN</span> <span class="n">curl</span> <span class="o">-</span><span class="n">L</span> <span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="n">www</span><span class="o">.</span><span class="n">opscode</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">chef</span><span class="o">/</span><span class="n">install</span><span class="o">.</span><span class="n">sh</span> <span class="o">|</span> <span class="n">bash</span>
+</span><span class='line'><span class="no">RUN</span> <span class="n">echo</span> <span class="s2">&quot;gem: --no-ri --no-rdoc&quot;</span> <span class="o">&gt;</span> <span class="o">~</span><span class="sr">/.gemrc</span>
+</span><span class='line'><span class="sr">RUN /o</span><span class="n">pt</span><span class="o">/</span><span class="n">chef</span><span class="o">/</span><span class="n">embedded</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">gem</span> <span class="n">install</span> <span class="n">berkshelf</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<h2>Team Workflow</h2>
+<p><em>you&rsquo;ll notice I&rsquo;m using the embedded chef ruby to install the berkshelf gem,  this is a handy shortcut to avoid messing around with random ruby versions from your distributions packaging.</em></p>
 
-<h3>Puppet: &ndash;?</h3>
+<p>run <code>$ docker build -t paulczar/chef-solo .</code> to build a usable docker container from the above <code>Dockerfile</code>.</p>
 
-<h3>Chef:</h3>
+<h3>Using chef-solo and berkshelf to build an application in a docker.io container</h3>
 
-<ul>
-<li>knife-spork (has handlers to notify people)</li>
-</ul>
+<p>My <a href="https://github.com/paulczar/docker-chef-solo">example application</a> will install <code>Kibana3</code> to your docker container.   I&rsquo;ll step through how it works below.</p>
 
+<h4>Chef-Solo</h4>
+
+<p>To run <code>chef-solo</code> successfully we require two files.   <code>solo.rb</code> to set up file locations, and `solo.json&#8217; to set up the json / run list required for your application.</p>
+
+<figure class='code'><figcaption><span>chef.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">root</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">absolute_path</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">file_cache_path</span> <span class="n">root</span>
+</span><span class='line'><span class="n">cookbook_path</span> <span class="n">root</span> <span class="o">+</span> <span class="s1">&#39;/cookbooks&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>chef.json</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;kibana&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;webserver_listen&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0.0.0&quot;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nt">&quot;run_list&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s2">&quot;recipe[kibana::default]&quot;</span>
+</span><span class='line'>  <span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Berkshelf</h4>
+
+<p>To run <code>berkshelf</code> we need to build a Berksfile which contains a list of all the chef cookbooks required for the applocation.   Berkshelf will download these cookbooks to a local directory which will be usable by chef-solo.</p>
+
+<figure class='code'><figcaption><span>Berksfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">site</span> <span class="ss">:opscode</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cookbook</span> <span class="s1">&#39;build-essential&#39;</span>
+</span><span class='line'><span class="n">cookbook</span> <span class="s1">&#39;apache2&#39;</span>
+</span><span class='line'><span class="n">cookbook</span> <span class="s1">&#39;git&#39;</span>
+</span><span class='line'><span class="n">cookbook</span> <span class="s1">&#39;kibana&#39;</span><span class="p">,</span> <span class="ss">github</span><span class="p">:</span> <span class="s1">&#39;lusis/chef-kibana&#39;</span>
+</span><span class='line'><span class="n">cookbook</span> <span class="s1">&#39;nginx&#39;</span> <span class="p">,</span> <span class="ss">github</span><span class="p">:</span> <span class="s1">&#39;opscode-cookbooks/nginx&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>You can see some of the cookbooks are being pulled from the opscode repository,  whereas others are being pulled directly from github.</em></p>
+
+<h4>Dockerfile</h4>
+
+<p>All that&rsquo;s left now is to create a Dockerfile that will bring it all together.</p>
+
+<figure class='code'><figcaption><span>Dockerfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># DOCKER-VERSION 0.5.3</span>
+</span><span class='line'><span class="no">FROM</span> <span class="n">paulczar</span><span class="o">/</span><span class="n">chef</span><span class="o">-</span><span class="n">client</span>
+</span><span class='line'><span class="no">MAINTAINER</span> <span class="no">Paul</span> <span class="no">Czarkowski</span> <span class="s2">&quot;paul@paulcz.net&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">update</span>
+</span><span class='line'><span class="no">ADD</span> <span class="o">.</span> <span class="sr">/chef</span>
+</span><span class='line'><span class="sr">RUN cd /</span><span class="n">chef</span> <span class="o">&amp;&amp;</span> <span class="sr">/opt/</span><span class="n">chef</span><span class="o">/</span><span class="n">embedded</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">berks</span> <span class="n">install</span> <span class="o">--</span><span class="n">path</span> <span class="sr">/chef/</span><span class="n">cookbooks</span>
+</span><span class='line'><span class="no">RUN</span> <span class="n">chef</span><span class="o">-</span><span class="n">solo</span> <span class="o">-</span><span class="n">c</span> <span class="sr">/chef/so</span><span class="n">lo</span><span class="o">.</span><span class="n">rb</span> <span class="o">-</span><span class="n">j</span> <span class="sr">/chef/so</span><span class="n">lo</span><span class="o">.</span><span class="n">json</span>
+</span><span class='line'><span class="no">RUN</span> <span class="n">echo</span> <span class="s2">&quot;daemon off;&quot;</span> <span class="o">&gt;&gt;</span> <span class="sr">/etc/n</span><span class="n">ginx</span><span class="o">/</span><span class="n">nginx</span><span class="o">.</span><span class="n">conf</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">CMD</span> <span class="o">[</span><span class="s2">&quot;nginx&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Run <code>$ docker build -t demo/kibana3 .</code> to build your application.</p>
+
+<p>It will add the local files ( <code>solo.rb</code>, <code>solo.json</code>, <code>Berksfile</code> ) to /chef in the server and then call berkshelf to download the cookbooks and chef-solo to install your application.   Finally it will give <code>nginx</code> a directive to run in the foreground so that we don&rsquo;t have to do any sneaky prcess control to get it to work with the way <code>docker.io</code> runs processes.</p>
+
+<p>To run the resultant <code>docker.io</code> container you simply need to run <code>$ docker run -d -p 80 demo/kibana3</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Cheffile &amp; 'librarian locks']]></title>
+    <link href="http://bvajjala.github.io/blog/2013/08/16/cheffile-and-librarian-locks/"/>
+    <updated>2013-08-16T00:56:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/08/16/cheffile-and-librarian-locks</id>
+    <content type="html"><![CDATA[<p><img class="left" src="http://bvajjala.github.io/assets/images/librarian.png" title="'librarian chef'" >
+If you don&rsquo;t know what librarian is &ndash; get to know it :) (it makes life much easier)[<a href="http://rubydoc.info/gems/librarian-chef">http://rubydoc.info/gems/librarian-chef</a>] than way back when &hellip;</p>
+
+<p>The most annoying thing happend to me earlier this evening, I was working on a cookbook [A chef cookbook &hellip;, I don&rsquo;t actually do the cooking at home :)], and running librarian install yielded the following error:</p>
+
+<pre><code>"Cheffile and Cheffile.lock are out of sync!"
+</code></pre>
+
+<p>So like a good boy I remoced the Cheffile.lock and ran it again resulting with the same damn error message &hellip; arrrrrr !</p>
+
+<p>So after examening my Cheffile over and over I noticed I have listed a dependency from two different location somthing like the followin [ clieng url&rsquo;s omitted from snippet ]:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> <span class="c">#!/usr/bin/env ruby</span>
+</span><span class='line'>  <span class="c">#^syntax detection</span>
+</span><span class='line'>  site <span class="s2">&quot;http://shelf.clients_domain.corp:8080&quot;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;simple_proxy&#39;</span>, :git <span class="o">=</span>&gt; <span class="s1">&#39;git://clients_domain.corp/hagzag/simple_proxy.git&#39;</span>, :ref <span class="o">=</span>&gt; <span class="s1">&#39;master&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;nw-abap&#39;</span>,     :git <span class="o">=</span>&gt; <span class="s1">&#39;git://clients_domain.corp/hagzag/nw-abap.git&#39;</span>, :ref <span class="o">=</span>&gt; <span class="s1">&#39;master&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;sapinst&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># for lvm volume creation do this once ...</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;lvm&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;sap-lvm&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>,      :site <span class="o">=</span>&gt; <span class="s1">&#39;http://community.opscode.com/api/v1&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  cookbook <span class="s1">&#39;nfs&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you look a line numbers 11 &amp; 14 you will see I am specifying the smae cookbook from tow different sources &hellip;, this is a good thing, your dependecny mechanisem / tool isn&rsquo;t making decitions for you [ unlike Maven for exmaple &hellip; ].</p>
+
+<p>So in order to avoid this error and to comtinue working I had to remove one if the lines and I was good to go.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> ...
+</span><span class='line'>  <span class="c">#cookbook &#39;line&#39;,      :site =&gt; &#39;http://community.opscode.com/api/v1&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  cookbook <span class="s1">&#39;nfs&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Another fraction on my time line &hellip;</p>
+
+<p>Enjoy.</p>
 ]]></content>
   </entry>
   

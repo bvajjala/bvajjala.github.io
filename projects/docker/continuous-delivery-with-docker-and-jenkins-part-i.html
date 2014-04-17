@@ -1,0 +1,353 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Continuous Delivery with Docker and Jenkins - part I - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="Continuous Delivery With Docker and Jenkins - Part I We have been using Docker in our staging environment for nealrt several months now and are &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/projects/docker/continuous-delivery-with-docker-and-jenkins-part-i.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about/home">Home</a></li> 
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/projects">Projects</a></li>
+  <li><a href="/about/resume">About Me</a></li>
+  <li><a href="/about/consulting">Consulting</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Continuous Delivery With Docker and Jenkins - Part I</h1>
+    
+  </header>
+  
+  <p>We have been using Docker in our staging environment for nealrt several months now and are right now planning to make it part of our production setup once the first stable version gets released. We’ll be discussing the staging environment setup today with the promise of following up on the production environment at a later date.</p>
+
+<!--more-->
+
+
+<p>Docker is a utility for creating virtualized Linux containers for shipping self-contained applications. As opposed to a traditional VM which runs a full-blown operating system on top of the host, Docker leverages LinuX Containers (LXC) which run on the same operating system. This results in a more efficient usage of system resource by trading some of the isolation specific to hypervisors. What makes Docker appealing is that applications can be packaged as self-contained containers, shipped around as small data blobs and brought up as fully independent hosts in a matter of seconds. If an Amazon Machine Image (AMI) takes a few minutes to boot, the equivalent Docker images take a few seconds at most (normally ~1s). To find out more about Docker internals, see Docker, The Whole Story.</p>
+
+<p>We have converted our entire staging environment from a handful of AMIs to a single bare metal host running Docker. We have made it more efficient and faster to bring up versions of services which undergo rigorous testing before they get shipped into production.</p>
+
+<p>Whenever a new github branch gets started, Jenkins, our Continuous Integration server, automatically attempts to build a new Docker container from it. If all tests pass, this container becomes available on our office network and we receive a Campfire notification. If tests fail, we leave a Docker image for our engineers to examine. For Service Oriented Architectures (SOA), this approach saves a lot of time when working on features that span multiple services and cannot be isolated to a particular component. The extra confidence that we get from integrating features at a platform level means that we are more effective and don’t need to wait on one another.</p>
+
+<p>We couldn’t find any clear guide on integrating Docker with Jenkins so we’ve decided to contribute one. We have included a Vagrantfile which automates the entire setup except creating Jenkins jobs. We provide an example Sinatra app which includes all the required configuration to get everything working end-to-end, feel free to use it as the starting point for your own setup.</p>
+
+<h2>1. Install VirtualBox, Vagrant &amp; git</h2>
+
+<p>Either install using your package manager or use the official downloads:</p>
+
+<ul>
+<li><a href="https://www.virtualbox.org/">install virtualbox</a></li>
+<li><a href="http://www.vagrantup.com/">install vagrant</a></li>
+<li><a href="http://git-scm.com/downloads">install git</a></li>
+</ul>
+
+
+<h2>2. Create Vagrant VM</h2>
+
+<p>This <a href="https://github.com/bv2012/hi_sinatra-docker/blob/master/Vagrantfile">Vagrantfile</a> will get everything setup for you. Cloning the repository and running vagrant up inside it will create a VM with the latest stable Docker and Jenkins services running side-by-side. Jenkins belongs to the docker group and can run Docker commands directly.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone https://github.com/bv2012/hi_sinatra-docker.git
+</span><span class='line'>cd hi_sinatra-docker
+</span><span class='line'>vagrant up</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>3. Setup Jenkins job</h2>
+
+<p>Find the Jenkins Server running at <a href="http://localhost:8080/,">http://localhost:8080/,</a> install the <a href="https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin">Git plugin</a>.</p>
+
+<p>Once this is successfully installed and Jenkins is restarted, add the following job:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>| Job name               | hi_sinatra                                                    |
+</span><span class='line'>| Job type               | Build a free-style software project                           |
+</span><span class='line'>| Source Code Management | Git                                                           |
+</span><span class='line'>| Repository URL         | https://github.com/bv2012/hi_sinatra-docker.git |
+</span><span class='line'>| Build                  | Execute shell</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is the shell command which you will need to use for the build execution:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>service=$JOB_NAME
+</span><span class='line'>service_port=8000
+</span><span class='line'>branch=$(echo $GIT_BRANCH | cut -d/ -f 2)
+</span><span class='line'>
+</span><span class='line'>docker build -t $service:$branch $WORKSPACE
+</span><span class='line'>
+</span><span class='line'>container_id=$(docker run -d -p $service_port $service:$branch)
+</span><span class='line'>container_port=$(docker inspect $container_id | awk 'BEGIN { FS = "\"" } ; /"'$service_port'":/ { print $4 }')
+</span><span class='line'>
+</span><span class='line'>echo "App running on http://localhost:$container_port"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The above app includes a Dockerfile which builds a Docker image. The first Docker build will take longer (depending on your internet connection), but as Docker caches build steps (pro tip: apart from ADD), subsequent builds will be significantly quicker.</p>
+
+<h2>4. Successful build results in a running Docker container</h2>
+
+<p>Building the project for the first time (truncated output):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Building in workspace /home/jenkins/.jenkins/jobs/hi_sinatra/workspace
+</span><span class='line'>Cloning repository https://github.com/bv2012/hi_sinatra-docker.git
+</span><span class='line'>Commencing build of Revision bbb5383939cf719745c232c67f0dffe99b639d91 (origin/master, origin/HEAD)
+</span><span class='line'>.
+</span><span class='line'>.
+</span><span class='line'>.
+</span><span class='line'>Step 1 : FROM howareyou/ruby_2.0.0-p247
+</span><span class='line'>Pulling repository howareyou/ruby_2.0.0-p247
+</span><span class='line'>.
+</span><span class='line'>.
+</span><span class='line'>.
+</span><span class='line'>Step 9 : RUN cd /var/apps/$SERVICE && bin/test
+</span><span class='line'> ---> Running in bbaaf476e848
+</span><span class='line'>Run options: include {:focus=>true}
+</span><span class='line'>
+</span><span class='line'>All examples were filtered out; ignoring {:focus=>true}
+</span><span class='line'>.
+</span><span class='line'>
+</span><span class='line'>Finished in 0.02125 seconds
+</span><span class='line'>1 example, 0 failures
+</span><span class='line'>.
+</span><span class='line'>.
+</span><span class='line'>App running on http://localhost:49153
+</span><span class='line'>
+</span><span class='line'>Finished: SUCCESS</span></code></pre></td></tr></table></div></figure>
+
+
+<p>While the first build takes 2 mins and 26 secs, the second one takes a mere 5 secs. That is 5 seconds to install all the ruby gems, run all the tests, build a Docker image and start a new Docker container that makes that app version available for further testing (eg. integration tests, stress tests). The resulting app image is a mere 12.29kB. That’s the only new content which needs deploying into production.</p>
+
+<h3>github service hooks</h3>
+
+<p>For integrating github with a Jenkins server not accessible from the outside world, we have found Amazon SQS to be an elegant solution. There is a <a href="https://wiki.jenkins-ci.org/display/JENKINS/GitHub+SQS+Plugin">Github SQS plugin</a> that is installable from within Jenkins, setup is straightforward.</p>
+
+<p>The only gotcha is that the SQS must be setup in the us-east-1 region. We had set it up initially in eu-west-1 and were puzzled as to why it wasn’t working.</p>
+
+<p>&ldquo;How are you?&rdquo; base Docker images
+During our use of Docker, we have used the public Docker images on the <a href="https://index.docker.io/u/howareyou/">public Docker index</a>. The app which we have given as an example makes use of howareyou/ruby_2.0.0-p247 and all its dependencies.</p>
+
+<p>If you have found this tutorial useful, please help us to improve it by adding your contributions to hi_sinatra-docker.</p>
+
+  
+    <footer>
+      
+      
+        <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/projects/docker/continuous-delivery-with-docker-and-jenkins-part-i.html" data-via="BVajjala" data-counturl="http://bvajjala.github.io/projects/docker/continuous-delivery-with-docker-and-jenkins-part-i.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+      
+    </footer>
+  
+</article>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow from GitHub</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing A RESTful API That Doesn't Suck</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

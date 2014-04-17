@@ -9,8 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="
-">
+  <meta name="description" content="(Get the source code at https://github.com/themotleyfool/NuGet) Last time I wrote about creating a LINQ provider for Lucene.Net, and today I&rsquo;ll &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,805 +70,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/15/embrace-big-data/">Embrace Big Data</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-15T07:00:00-05:00" pubdate data-updated="true">Jan 15<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="center" src="/images/posts/BigData.jpg"></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/30/installing-chef-server-on-cnetos-5-dot-8/">Installing Chef Server - on CnetOs 5.8</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-30T01:51:00-05:00" pubdate data-updated="true">Dec 30<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/Opscode_chef_logo.png" title="'Chef Logo'" > Following the Fuse day (#6) and the very poor documentation and the amount of bugs found in the Chef Solo cookbooks for the Chef OSS server, I put together a set of script which will attempt to clear all the clutter around installing a Chef OSS server.</p>
-
-<p>There is a <a href="https://github.com/tikalk/chef-server-install">Git repository on git hub</a> which will install Chef Server on CentOS 5.8 &amp; 6 and I will be adding support for Ubuntu in the near future (its in the works), there is no magic here just a fair amount of trial and error which led me to automate it &ndash; it just was too much time to do manually over and over again &hellip;</p>
-
-<p>During my attempt I was planning on using Chef-Solo to do the work based on <a href="http://wiki.opscode.com/display/chef/Installing+Chef+Server+using+Chef+Solo">this wiki page</a> but there were so many bugs in it which led me to user rble repository.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/30/installing-chef-server-on-cnetos-5-dot-8/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/11/12/some-notes-on-puppet/">Some Notes on Puppet</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-12T16:40:00-05:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&rsquo;ve been playing with <a href="http://puppetlabs.com/">Puppet</a> recently in order to finally teach myself a bit about server management. I decided for Puppet because&hellip; well&hellip; I didn&rsquo;t have time to play with <a href="http://www.opscode.com/chef/">Chef</a> yet.</p>
-
-<p>I can&rsquo;t show any of my code because it contains some stuff I&rsquo;d rather not open up, but here are some of my global notes on Puppet that I wanted to share.</p>
-
-<h2>The good</h2>
-
-<ul>
-<li><strong>It did the job.</strong> I now have a few scripts that I can use to quickly setup a server for Rails, including NGINX, PostgreSQL, Unicorn, Monit, and much more.</li>
-<li><strong>Quick deployment.</strong> I can now deploy a new Rails app to a server within minutes!</li>
-<li><strong><a href="http://docs.puppetlabs.com/learning/">The Learning Puppet series</a></strong> is a good starting point and explains most of the basics</li>
-<li><strong>Low tech.</strong> Running a puppet script really doesn&rsquo;t involve much more than running: <code>puppet apply path/to/puppet/file.pp</code></li>
-</ul>
-
-
-<h2>The bad</h2>
-
-<ul>
-<li><strong>No single server deployment solution.</strong> There doesn&rsquo;t seem to be a best practice on how to use puppet with just one server. I know that the serious people will have to manage many many servers, but I think that they could make Puppet more accessible to newcomers by having a good solid solution for their own server. Many of us learn new things by trying them out for our own hobby projects before using them in big-business contexts. I have resorted to using Capistrano for deployment, but it just feels wrong somehow.</li>
-<li><strong>Not many great modules.</strong> Puppet has a modules system which allows anyone to package their solutions and share them with the community. Sadly most of the modules are old, unmaintained, and often broken. Additionally the modules often don&rsquo;t solve the problems in a way that I&rsquo;d like them to, forcing me to write my own.</li>
-<li><strong>Convoluted language.</strong> Puppet requires Ruby to run, but the DSL is not Ruby, nor is it Javascript, or JSON,or YAML, or anything else that so many developers already know. The architecture for defining classes, types, and modules is convoluted, backwards, and feels very awkward. I think one of the reasons why there aren&rsquo;t many well written modules is very much related to this.</li>
-<li><strong>Compiling from source.</strong> One of the biggest missing features seems to be some good architecture for installing anything that isn&rsquo;t packaged up. I often want to run a different Ruby, Nginx, Apache, PHP version than is in the package repositories. I know this is a hard problem, but again I wish there was some kind of best practice.</li>
-<li><strong>Ordering from hell.</strong> Puppet does not run your actions in order as specified in your <code>.pp</code> file. Instead you can tell it if something has a requirement. In my experience almost everything has a requirement and specifying the orders is becoming a nightmare and a real frustration.</li>
-<li><strong>Missing features.</strong> There are a few features that are still missing. One of the most important ones (in my eyes) is the ability to generate a folder recursively (e.g. <code>mkdir -p path/with/multiple/folders</code>). Instead you are now forced to create every layer as a new statement.</li>
-</ul>
-
-
-<h2>Conclusion</h2>
-
-<p>Puppet will do for now, but I wish it was a bit more opinionated in how it thought it should be used. The language is not pretty and very verbose, and its lack of best practices for single server deployment is a real omission.</p>
-
-<p>Does anyone know how Chef performs in these regards?</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/09/21/ravendb-nuget-review/">RavenDB NuGet Review</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-21T15:25:00-04:00" pubdate data-updated="true">Sep 21<span>st</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://ayende.com/blog">Ayende</a> has been doing a series of posts about how simple and fast RavenDB is, using NuGet
-as an example and pointing out some <a href="http://blog.nuget.org/20120824/nuget-feed-performance-update.html">complex, poorly performing queries</a>
-that have been bogging down nuget.org recently.</p>
-
-<p>Series 1</p>
-
-<ol>
-<li><a href="http://ayende.com/blog/158145/nuget-perf-problems-part-i">NuGet Perf Problems, part I</a></li>
-<li><a href="http://ayende.com/blog/158177/nuget-perf-problem-part-iindash-importing-to-ravendb">Nuget Perf Problem, Part II-Importing To RavenDB</a></li>
-<li><a href="http://ayende.com/blog/158209/nuget-perf-part-iiindash-displaying-the-packages-page">NuGet Perf, Part III-Displaying the Packages page</a></li>
-<li><a href="http://ayende.com/blog/158210/nuget-perf-part-ivndash-modeling-the-packages">NuGet Perf, Part IV-Modeling the packages</a></li>
-<li><a href="http://ayende.com/blog/158211/nugget-perf-part-vndash-searching-packages">NugGet Perf, Part V-Searching Packages</a></li>
-<li><a href="http://ayende.com/blog/158241/nuget-perf-part-vi-aka-how-to-be-the-most-popular-dev-around">NuGet Perf, Part VI AKA how to be the most popular dev around</a></li>
-<li><a href="http://ayende.com/blog/158242/nuget-perf-part-vii-aka-getting-results-is-only-half-the-work">NuGet Perf, Part VII AKA getting results is only half the work</a></li>
-<li><a href="http://ayende.com/blog/158465/nuget-perf-part-viii-correcting-a-mistake-and-doing-aggregations">NuGet Perf, Part VIII: Correcting a mistake and doing aggregations</a></li>
-</ol>
-
-
-<p>Series 2</p>
-
-<ol>
-<li><a href="http://ayende.com/blog/158529/nuget-perf-the-final-part-ndash-load-testing-ndash-setup">NuGet Perf, The Final Part &ndash; Load Testing &ndash; Setup</a></li>
-<li><a href="http://ayende.com/blog/158530/nuget-perf-the-final-part-ndash-load-testing-ndash-the-tests">NuGet Perf, The Final Part &ndash; Load Testing &ndash; The Tests</a></li>
-<li><a href="http://ayende.com/blog/158561/nuget-perf-the-final-part-ndash-loading-testing-ndash-results">NuGet Perf, The Final Part &ndash; Load Testing &ndash; The Results</a></li>
-<li><a href="http://ayende.com/blog/158593/nuget-perf-the-final-part-ndash-load-testing-ndash-results-2">NuGet Perf, The Final Part &ndash; Load Testing &ndash; Results ^ 2</a></li>
-<li><a href="http://ayende.com/blog/158625/nuget-perf-the-final-part-ndash-load-testing-ndash-source-code">NuGet Perf, The Final Part &ndash; Load Testing &ndash; Source Code</a></li>
-</ol>
-
-
-<p>This series piqued my interest given that I&rsquo;ve been working on Lucene.Net.Linq and integrating it with NuGet.Server. I haven&rsquo;t worked
-directly with RavenDB, but I have used some products like Octopus Deploy which uses RavenDB. It seems like a pretty cool product and
-I don&rsquo;t have anything against it. However, there are some problems with the blog series that might lead the casual reader
-to be misled about what has been accomplished, especially with regards to declarations of victory and some misleading
-performance numbers.</p>
-
-<p>I know the blog series is only meant to show off RavenDB and give potential users an idea of what their code might look like,
-but nonetheless some hefty claims are made about performance in comparison to the Entity Framework / SQL Server solution in
-use at <a href="http://nuget.org/">nuget.org</a>. Let&rsquo;s take a look.</p>
-
-<h2>Pick a Schema, Any Schema Will Do</h2>
-
-<p>Of course if you&rsquo;re going to model data in a new persistence layer, it makes perfect sense to simplify or improve the
-way your data is stored and indexed for later retrieval. Ayende points out some problems with the dense, non-semantic
-way some fields are stored in nuget, such as dependency versions and tags. He uses these as examples that illustrate
-how RavenDB can handle nested collections of strings and complex objects.</p>
-
-<p>That&rsquo;s great and all, but if we&rsquo;re redesigning the schema, we&rsquo;ve already changed the rules. Nuget.org is having some
-trouble specifically because of a poorly designed schema that requires too many joins and some other complex hoop-jumping
-to execute some frequently used queries.</p>
-
-<p>Furthermore, regardless of how the data is stored behind the server, NuGet uses an OData API to expose its packages
-to clients. If you change the schema, you have to do it in a way that remains compatible with that client API, or
-the millions of installed instances suddenly stop working.</p>
-
-<h2>Semantic Version Sort vs. Lexical Sort</h2>
-
-<p>One of the primary ways that packages are sorted in NuGet is by version. Unfortunately, the complex nature of
-semantic versions, such as 0.9-alpha or 1.0.5, makes it impossible to sort them correctly using a basic lexical sort.
-For example, 1.0-alpha should get sorted before 1.0, and 1.2 should get sorted before 1.10. With lexical sort
-they do not.</p>
-
-<p>This problem was pointed out in a comment on <a href="http://ayende.com/blog/158210/nuget-perf-part-ivndash-modeling-the-packages">Part IV</a>
-but left unresolved.</p>
-
-<h2>Review</h2>
-
-<p>In using NuGet as an example for RavenDB, the following features are not addressed:</p>
-
-<ol>
-<li>Providing a backwards-compatible OData endpoint</li>
-<li>Sorting correctly by package version</li>
-<li>Storing and retrieving package contents (only package metadata is addressed)</li>
-<li>Adding new packages into the index</li>
-<li>Keeping track of download counters (per-package and total)</li>
-</ol>
-
-
-<p>Without addressing adding new packages and tracking downloads, the data store is effectively read-only,
-meaning that caches never get invalidated and there are no writes to disk. Based on this criteria, is
-it really fair to compare performance benchmarks between this sample and a real, production system?</p>
-
-<h2>The Load Tests</h2>
-
-<p>In the next part of the series, the sample system is put under some load to see what kind of performance
-RavenDB can provide when there are concurrent users. <a href="http://ayende.com/blog/158530/nuget-perf-the-final-part-ndash-load-testing-ndash-the-tests">The Tests</a>
-goes into some detail about the load testing plan.</p>
-
-<p>Reviewing the load test, we have another obvious problem: only a handful of sample queries are being used.
-When the number of search queries is low, say, under 10, the system under load can simply cache the results
-from the previous time the query was executed and return that to the user. Since there isn&rsquo;t any variance
-in which columns are used to sort, what page is retrieved, etc., the system under load doesn&rsquo;t have to think
-very hard at all.</p>
-
-<p>Combine the simplicity of the test plan with the fact that the system under test is not doing any writes at all,
-and you might as well be slinging static html at that point. I guess it does validate, if nothing else, that
-the caching built into RavenDB works.</p>
-
-<p>One indicator that the load test isn&rsquo;t really hitting any critical thresholds is that Pages/Sec grows pretty
-linearly as User Load ramps up. If the system hit such a threshold, one would expect Pages/Sec to peak at
-a certain rate and (ideally) sustain that rate as concurrency continues to grow.</p>
-
-<h2>Summary</h2>
-
-<p>To reiterate, I&rsquo;m not trying to bash RavenDB, which I&rsquo;m sure is an awesome product and probably really would
-perform very effectively under load similar to that experienced by <a href="http://nuget.org/">nuget.org</a>. However,
-casual observers may come away with unrealistic expectations after reading the performance results offered
-up on <a href="http://ayende.com">ayende.com</a>.</p>
-
-<h2>Why Do I Care</h2>
-
-<p>If Ayende had picked virtually any example other than NuGet packages to do a blog series on, I probably would have
-read along and not thought much about any of it. But having worked on NuGet.Server + Lucene.Net.Linq for
-several months earlier this year, the subject matter is near and dear to my heart.</p>
-
-<p>In future posts I&rsquo;ll get into some more compare and contrast on RavenDB vs. <a href="https://github.com/themotleyfool/Lucene.Net.Linq">Lucene.Net.Linq</a>
-and maybe do a load test of my own of our <a href="https://github.com/themotleyfool/NuGet/downloads">custom NuGet.Server builds</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/09/06/how-Angies-Lists-uses-octopus-deploy/">How Angie&#8217;s List Uses Octopus Deploy</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-06T11:23:00-04:00" pubdate data-updated="true">Sep 6<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&rsquo;ve mentioned a few times that my team has been using <a href="http://octopusdeploy.com/">Octopus Deploy</a> in a few of my posts.
-Now I&rsquo;ll describe in more detail some of the ways we&rsquo;ve integrated with Octopus that may help others.</p>
-
-<h2>The Before Times</h2>
-
-<p>Octopus started a beta phase in late 2011, so what were we doing before? Since I started working in an asp.net shop
-in 2006, I&rsquo;ve been surprised by the lack of robust deployment tools for the ecosystem.</p>
-
-<p>The Web Deployment Projects system provided by Microsoft has always seemed like a non-starter for me. When you
-have mature processes like version control, continuous integration, automated testing, and quality assurance,
-how does it make sense to hand the keys over to a developer running Visual Studio to click &ldquo;Deploy&rdquo;
-on their desktop? What guarantee do you have that the code has been checked in, that it builds, that
-the tests pass, that QA signed off?</p>
-
-<p>Even if you only give trusted users permission to deploy, I&rsquo;ve never understood how it makes sense that you
-would need Visual Studio to deploy your projects. I mean, Visual Studio is for development. It isn&rsquo;t even
-needed by a build server to compile your code. But now QA (or whoever is allowed to perform deployments) needs
-to have Visual Studio installed somewhere and checkout the code and build it themselves? So much for automation.
-So much for predictability. So much for repeatability.</p>
-
-<p>So it was with a lack of viable alternatives that I started writing a deployment tool in 2007. The tool was
-named Bazooka (because it &ldquo;shoots&rdquo; software onto servers), and we used it for 5 years. We never released it as
-open source because it made several assumptions particular to us and we didn&rsquo;t take the time to clean it up.</p>
-
-<p>Bazooka was a web application that watched a directory for release candidates to show up as they were
-prepared by our build server. Each release candidate contained a deployment descriptor that had some
-meta data and a list of components that could be deployed to servers that matched certain roles like
-WebServer or AppServer.</p>
-
-<p>Bazooka used xml configuration for everything. The deployment descriptor was xml, the server and environment
-configuration was xml, the permissions were xml, and the log files that recorded what had been deployed where
-were also xml. This made Bazooka pretty slow as deployment logs piled up, but it beat the heck out of
-doing anything more heavy-weight with sql.</p>
-
-<p>Bazooka was, in reality, just a web interface to MSBuild. When you went through the deployment wizard,
-Bazooka simply executed MSBuild in the directory specified by each component with some properties saying
-which server to deploy to, which target to execute, what the environment was, etc.</p>
-
-<p>We could have easily kept improving Bazooka, but we had actual code to write for our business, so Bazooka
-had some weaknesses that we never really addressed. For example, managing servers and environments was
-done by hand-editing the xml files. We didn&rsquo;t build a UI for that. Also, it was pretty tough to answer
-simple questions like, &ldquo;What was the most recent deployment of my project to the staging environment?&rdquo;</p>
-
-<p>But it worked as a fine stand-in for 5 years until someone built something better.</p>
-
-<h2>Octopus Trial</h2>
-
-<p>It was fun playing with Octopus during the beta period and seeing another approach to a web based
-deployment tool. In the beginning there were plenty of things Bazooka had that Octopus didn&rsquo;t (yet),
-but development has been pretty rapid with Octopus delivering frequent releases.</p>
-
-<p>The one time where we asked if using Octopus was right was when Paul Stovell, the creator/developer
-of Octopus Deploy, took a few months to rewrite the persistence layer, converting it from Entity
-Framework to RavenDB. It was the right decision to make and we&rsquo;re happy in the long run, but we
-found ourselves in a lurch waiting for some important features and bugfixes. We came out fine on
-the other side though.</p>
-
-<p>We also found that using a local file-based NuGet feed with Octopus doesn&rsquo;t scale very well, and
-switching to NuGet Server provided no benefit either. This inspired us to create a
-<a href="https://github.com/themotleyfool/NuGet">custom fork</a> of NuGet Server that uses
-<a href="http://incubator.apache.org/lucene.net/">Lucene.Net</a> and
-<a href="https://github.com/themotleyfool/Lucene.Net.Linq">Lucene.Net.Linq</a> to provide a scalable, lightning fast internal feed for Octopus.</p>
-
-<h2>The Switch</h2>
-
-<p>As we integrated some pilot projects with Octopus, we slowly stopped using Bazooka and
-eventually turned off Bazooka integration. Some quick stats of our Octopus configuration today:</p>
-
-<ul>
-<li>48 projects</li>
-<li>18,080 release candidates</li>
-<li>1,405 deployments</li>
-</ul>
-
-
-<p>Octopus has done a decent job managing our high demands. We have experienced some slow page
-loads here and there, but Paul has been very responsive about troubleshooting and optimizing
-these.</p>
-
-<h2>Reusing Deployment Scripts</h2>
-
-<p>Since we already had a highly automated deployment system, we wanted to preserve our exising
-capabilities while finding ways to improve the system.</p>
-
-<p>One problem that Octopus doesn&rsquo;t solve for you is how to share deployment scripts across
-projects. By default, Octopus will execute deployment scripts contained in each project,
-but there isn&rsquo;t a built-in or standard way to reuse common functionality.</p>
-
-<p>One of the first projects we set up in Octopus we named OctopusScripts. This project
-consists of a collection of PowerShell modules that we want to be available everywhere.
-When we deploy the project, the deployment scripts install the modules into a
-standard location where PowerShell will probe for them. Then from other projects,
-we can simply start a script with:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Import-Module SmokeTest</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Reuse Moar</h2>
-
-<p>Moving most of our scripts into PowerShell modules was working great, but we started
-to notice that our Deploy.ps1 scripts still looked awfully repetitious.</p>
-
-<p>All of our web projects follow the same basic deployment recipe:</p>
-
-<ol>
-<li>PreDeploy
-
-<ol>
-<li>Disable machine in load balancer</li>
-<li>Create IIS site and app pool definitions if missing</li>
-<li>Update site host-header bindings as needed</li>
-</ol>
-</li>
-<li>Let Octopus update the document root to point to the new application</li>
-<li>PostDeploy
-
-<ol>
-<li>Execute smoke tests against the server and abort if any URLs return a non-200 response</li>
-<li>Enable machine in load balancer</li>
-</ol>
-</li>
-</ol>
-
-
-<p>Of course we have different configurations and different URLs to use for smoke tests
-for each project. We ended up creating a configuration based, modular script collection
-so that each project simply needs to include a stub:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Import-Module Fool-Octopus
-</span><span class='line'>Invoke-OctopusDeploymentTasks</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The Invoke-OctopusDeploymentTasks function looks at whatever variable and configuration
-are present and figure out which steps to execute. The same scripts are used for Windows
-Service type projects and others too, and they figure out based on conventions if they
-need to run web steps, create services, etc.</p>
-
-<p>If the stub is missing from a project (because why duplicate the stub?) our build scripts
-automatically insert a stub Deploy.ps1, PreDeploy.ps1 and PostDeploy.ps1.</p>
-
-<p>We think we&rsquo;re about as DRY as we can get with regards to our deployment scripts.</p>
-
-<h2>Ad-hoc PowerShell</h2>
-
-<p>One thing we&rsquo;d like to see that hasn&rsquo;t made it into Octopus yet is the concept of ad-hoc
-powershell scripts. Basically, we want to be able to run some arbitrary scripts during a
-deployment, only once. It doesn&rsquo;t need to run once on each machine being deployed to, just
-once and then done. There&rsquo;s a <a href="https://trello.com/card/new-deployment-step-ad-hoc-powershell/4e907de70880ba000079b75c/8">story card</a>
-on Paul&rsquo;s Trello board that we&rsquo;re looking forward to. In the mean time, we&rsquo;ve been emulating
-this behavior by deploying a small package to a dummy server and letting the script run there.</p>
-
-<p>We mostly want this feature to simplify tasks such as sending email/other notifications when
-deployments are beginning or completed. It might also be useful for a green/blue style
-deployment model where the load balancer needs to toggle just once after the servers
-have been updated.</p>
-
-<p>Without the Ad-hoc feature, one of the stumbling points we run into is sometimes forgetting
-to check the &ldquo;Force redeployment&rdquo; checkbox that Octopus leaves unchecked. When we forget,
-some steps get skipped leading to confusing results.</p>
-
-<h2>Looking Ahead</h2>
-
-<p>Because of the level of automation we integrated with Octopus, our business is able to
-deploy software more frequently and more reliably than ever before. In the coming
-months and years, we look forward to seeing improvements in Octopus features that will
-help us with cloud deployments to AWS or Azure. Octopus has definitely filled a gap
-in our deployment capabilities, allowing us to deliver value to our business quickly,
-iteratively and predictably.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/08/20/how-Angies-List-uses-nuget-part-2/">How Angie&#8217;s List Uses NuGet (Part 2)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-20T13:56:00-04:00" pubdate data-updated="true">Aug 20<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="/blog/2012/08/07/how-the-motley-fool-uses-nuget/">Last time</a>
-I talked about how my development team progressed from having all
-of our .net code in a single repository with a single solution to using a more
-modular architecture complete with encapsulated domains.</p>
-
-<p>When we started using this appraoch, we were still limited in a few ways:</p>
-
-<ul>
-<li>Everyone needs to integrate with the newest code</li>
-<li>Difficult to patch an old version of a dependency</li>
-<li>Cascading failures on the build server</li>
-</ul>
-
-
-<p>Even though we broke the ProjectReference rats nest, we still had an
-implicit dependency on various shared code. It all had to be checked out
-and built in the right order.</p>
-
-<h2>Binary Package Management</h2>
-
-<p>The next logical step was to further decouple our shared code by
-packaging it up and publishing those packages. If we could do that,
-we could decide when to upgrade dependencies on a product by product
-basis.</p>
-
-<p>There are two package managers in the .net ecosystem: OpenWrap and NuGet.</p>
-
-<p>When we started shopping around, OpenWrap had been around longer and seemed
-to be a better choice. There&rsquo;s a <a href="http://stackoverflow.com/questions/4256994/openwrap-vs-nuget">comparison of the products</a>
-on stackoverflow.</p>
-
-<p>We worked with OpenWrap for over 6 months and during that time started
-to find some problems around integration with Visual Studio and ReSharper.
-OpenWrap wants to manage dependencies per solution, and we have many cases
-where we want to control dependencies at a per project level. We also
-started to notice that NuGet was getting new versions released on a fairly
-regular schedule, while OpenWrap 2.0 was in unstable beta limbo for over
-a year.</p>
-
-<p>Around the same time we started playing with <a href="http://octopusdeploy.com/">Octopus Deploy</a>
-for deploying our code. Since Octopus uses NuGet packages for deployment, we
-figured it would make sense to standardize on one package management system
-for both deployments and dependency management. It&rsquo;s true that those are
-separate problem spaces, but having less build scripts is always a good thing.</p>
-
-<h2>Thoughts on NuGet</h2>
-
-<h3>Conventions</h3>
-
-<p>NuGet has several conventions that make it easy to create simple packages
-that others can reference. You can share assemblies and content easily,
-and when you want to customize anything there are some powershell extension
-points you can hook into.</p>
-
-<p>One problem we run into is that when building packages, sometimes there&rsquo;s
-a NuGet convention we want to customize or suppress, and often we can&rsquo;t.</p>
-
-<p>For example, if you create a <code>nuspec</code> and place it adjacent to a <code>csproj</code>
-file, NuGet will look at the project and automatically inject metadata
-and content into the package. For some things, you can override this
-behavior with explicit specifications in the nuspec, but the behavior
-can be surprising and confusing.</p>
-
-<h3>Dependency Scoping</h3>
-
-<p>NuGet supports the concept of transitive dependencies&hellip; sort of. If you
-install package A, and A depends on package B, NuGet will go find a version
-of B and install it while installing A. However, NuGet doesn&rsquo;t do any record
-keeping to remember that B is a transitive dependency. To your project, A and
-B appear simply as direct dependencies.</p>
-
-<p>There may be cases where A depends on B at runtime, but consumers of A
-shouldn&rsquo;t need to code against B at design time.</p>
-
-<p>There may be other cases where B is an optional dependency for A, and
-A can be used without it.</p>
-
-<p>Since NuGet doesn&rsquo;t have a concept of scope, it only has one simplistic
-approach to dealing with transitive dependencies: treat them just like
-direct dependencies.</p>
-
-<h3>Upgrade Behavior</h3>
-
-<p>When you ask NuGet to update a specific package, it will first look for
-updates to transitive dependencies that the package depends on. This may
-seem obvious or desirable to some, but personally I find it confusing.
-You can control this behavior with the <code>-IgnoreDependencies</code> flag in
-the Package Management Console, but oddly you don&rsquo;t get that option
-in the command line <code>nuget.exe</code> or from the Visual Studio GUI Package
-Manager.</p>
-
-<h3>Package Feed Performance</h3>
-
-<p>We use continuous integration, and every successful build produces
-&ldquo;release candidate&rdquo; versions of packages. We generate 50 to 100 packages
-a day.</p>
-
-<p>Using the simple NuGet UNC share quickly failed to scale, so next we tried
-NuGet.Server and found that it doesn&rsquo;t perform well either.</p>
-
-<p>NuGet Gallery seemed like overkill with its SQL Server requirement, so
-I started optimizing NuGet.Server. This project ended up taking quite
-a while, but the good news is that the fruits of the labor are now
-open source on GitHub at <a href="https://github.com/themotleyfool/NuGet">https://github.com/themotleyfool/NuGet</a>.</p>
-
-<p>For more information about that project, see my <a href="/blog/2012/07/03/Speeding-Up-NuGet-Server/">previous post</a>.</p>
-
-<h3>Refactoring Applications and Shared Code</h3>
-
-<p>We try to use <a href="http://semver.org/">Semantic Versioning</a> to communicate
-breaking changes in the packages we publish, so sometimes when
-we want to use a refactoring tool like Change Method Signature
-or Use Base Class it would be nice to have application and shared
-code loaded into a single instance of Visual Studio.</p>
-
-<p>We created a tool called <a href="https://github.com/TheMotleyFool/SlimJim">SlimJim</a>
-that generates these Solution files on the fly.</p>
-
-<p>If you create a Solution with application code and shared library code,
-ReSharper will be smart enough to apply refactoring tools across the projects
-even though ProjectReference style references are not being used.</p>
-
-<p>However, Visual Studio won&rsquo;t know the correct order to build projects in,
-and won&rsquo;t automatically copy outputs from shared libraries over to applications.</p>
-
-<p>We extended SlimJim to convert assembly references to project references and back
-to address this limitation.</p>
-
-<h2>Conclusion</h2>
-
-<p>In terms of capability and maturity, we&rsquo;re in a much better place than
-we were a few years ago. However, we still have a ways to go in terms of
-productivity and workflow.</p>
-
-<p>NuGet has helped us move in the right direction and we hope to see
-further enhancements and even contribute some more of our own as we
-develop them.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/08/07/how-Angies-List-uses-nuget/">How Angie&#8217;s List Uses NuGet (Part 1)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-07T14:25:00-04:00" pubdate data-updated="true">Aug 7<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>This post describes how we came to using binary package management. In the next part I&rsquo;ll get into NuGet.</p>
-
-<p>In the beginning, there was one repository and it held all the projects for The Motley Fool, and it was good.
-There were around a dozen asp.net web projects, a smattering of service and console apps, and a bunch of class libraries
-to hold shared code. There was one Solution (sln) to rule them all.</p>
-
-<p>As time went on, we found that there are downsides to the one-giant-solution approach to .net development:</p>
-
-<ul>
-<li><a href="http://www.laputan.org/mud/">Big Ball of Mud</a></li>
-<li>Slow builds</li>
-<li>Tight coupling</li>
-<li>Configuration hell</li>
-<li>Hard to release different applications on different schedules</li>
-</ul>
-
-
-<p>Typically our larger applications would be split into several projects following a typical N-tier layered architecture:</p>
-
-<ul>
-<li>Web</li>
-<li>Service</li>
-<li>Domain</li>
-<li>Data Access</li>
-</ul>
-
-
-<p>Despite our attempts to encapsulate data access and domain logic behind the service project, code ended up leaking out
-to the point where domain projects were using types and methods from unrelated domain projects. Cats and dogs were
-sleeping together.</p>
-
-<p>Around this time Steven Bohlen presented a <a href="http://unhandled-exceptions.com/blog/index.php/2010/11/27/dc-altnet-presentationthats-a-wrap/">talk</a>
-to the Washington DC Alt.NET User Group titled &ldquo;Domain Driven Design Implementation Patterns in .NET&rdquo;. While some of us
-were already familiar with concepts of DDD, this talk lit a spark for us to try fixing our big ball of mud.</p>
-
-<p>In late 2010 we started to make some changes. Instead of having one giant repository, shared code would be split out
-into separate repositories. We also took this opportunity to introduce a new project organization and architecture.</p>
-
-<p>We established one repository to hold utility code, broken into specific class libraries:</p>
-
-<ul>
-<li><tt>Fool.Abstractions</tt> &ndash; similar in spirit to System.Web.Abstractions; adds interfaces and wrappers to various FCL types that lack them</li>
-<li><tt>Fool.Lang</tt> &ndash; similar in spirit to <a href="http://commons.apache.org/lang/">Jakarta Commons Lang</a>; adds general utility classes and methods not found elsewhere</li>
-<li>Other projects that extend 3rd party class libraries to make them easier for us to work with in standardized ways.</li>
-</ul>
-
-
-<p>Then we established another repository to hold Domain Driven, er, Domains. For example, many of our applications and web sites deal with
-stock market data, so one of our business domains is Quotes. In the Quotes Domain we have these projects:</p>
-
-<ul>
-<li><tt>Fool.Quotes</tt> &ndash; contains service interfaces and value types; serves as an API to the domain</li>
-<li><tt>Fool.Quotes.Core</tt> &ndash; contains domain logic, models, and entities; serves as a private implementation</li>
-<li><tt>Fool.Quotes.Web.Api</tt> &ndash; exposes Fool.Quotes interfaces over a RESTful web API</li>
-</ul>
-
-
-<p>The key to keeping our domains distinct and decoupled is to keep Core projects private. While Core is required at runtime,
-it should never be referenced at compile time. To bridge the gap, we use Dependency Injection to provide concrete implementations.</p>
-
-<p>Domains may depend on other domains provided that they consume each other through the API project. That way entities and business logic
-are kept focused on their own concerns and don&rsquo;t leak out to other problem areas where they don&rsquo;t fit.</p>
-
-<h2>Gluing It Together</h2>
-
-<p>Having projects split into different repositories and different solutions meant that we couldn&rsquo;t simply have one mega Solution
-that includes everything. That&rsquo;s by design, so good on us. But this introduces a problem in that we still need to reference code
-from our utility projects and DDD projects in our applications. The first solution we came up with to handle this problem was
-to use the <a href="http://msdn.microsoft.com/en-us/library/wkze6zky.aspx">AssemblyFolders</a> registry to have our libraries
-appear in the <tt>Add Reference</tt> dialog. Then to solve the runtime dependency on our private Core assemblies, we install
-those to the GAC so they can be loaded using reflection by our IoC container.</p>
-
-<p>This approach worked fine, mostly. But we encountered some downsides after using it for a while:</p>
-
-<ul>
-<li>Need to have all library code checked out and built on each development machine</li>
-<li>No built-in way to manage different versions of the same dependency</li>
-<li><a href="http://www.sellsbrothers.com/Posts/Details/12503">GAC considered harmful</a></li>
-<li>Hard to debug build errors and runtime errors</li>
-</ul>
-
-
-<p>Using Continuous Integration means we&rsquo;re producing new builds dozens of times a day, so it isn&rsquo;t practical for us to
-manage different assembly versions for each build. Like most shops, we leave our assembly versions at 1.0.0.0 despite
-injecting actual version information into the AssemblyInformationalVersion attribute.</p>
-
-<p>In order to support parallel development, we needed to find a more flexible way of managing dependencies, and
-at this point we started to look at binary package management.</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1155,6 +355,526 @@ The logic that generates configuration files has to be executed somewhere. This 
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/07/19/Subversion-hot-backup-change-in/">Subversion Hot-backup Change in 1.6.11</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-19T09:11:00-04:00" pubdate data-updated="true">Jul 19<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/subversion.jpg" title="'Subversion Logo'" >An important notice to users of the hot-backup.py utility which ships with subversion.</p>
+
+<p>I found our nightly backup of subversion was failing with the following error:</p>
+
+<pre><code>svnadmin: Can't open file '/pathtorepo/db/fsfs.conf': No such file or directory
+</code></pre>
+
+<p>What was troubling me was:</p>
+
+<ol>
+<li>How come a file is missing in my svn repository &ndash; nothing has changes (As far as I know &hellip; :)</li>
+<li>hot-backup.py script hasen&rsquo;t changed much, how come my version has changed ?</li>
+</ol>
+
+
+<p>So I looked up the subversion&rsquo;s change log: <a href="http://svn.apache.org/repos/asf/subversion/tags/1.6.12/CHANGES">http://svn.apache.org/repos/asf/subversion/tags/1.6.12/CHANGES</a> which is the latest release (1.6.12) and took a look on my svn machine to find which version was installed and I found 1.6.12 was indeed in talled and in 1.6.11 release notes you will find:</p>
+
+<pre><code>* make 'svnadmin hotcopy' copy the fsfs config file (r905303)
+</code></pre>
+
+<p>In addition I took a look at hot-bakup.py change log under: <a href="http://svn.apache.org/viewvc/subversion/trunk/tools/backup/hot-backup.py.in?view=log,">http://svn.apache.org/viewvc/subversion/trunk/tools/backup/hot-backup.py.in?view=log,</a> and found that indeed the fsfs file has be included in the hotbackup script since the 1.6.11 version of the file (see link speified above).</p>
+
+<p>Googeling on the fsfs.conf subject led me to: <a href="http://comments.gmane.org/gmane.comp.version-control.subversion.user/97647">http://comments.gmane.org/gmane.comp.version-control.subversion.user/97647</a> which noted the same exact issue.</p>
+
+<p><strong>How do we solve this issue</strong><strong>?</strong></p>
+
+<ol>
+<li>Create a test repository &ndash; svnadmin create /tmp/svntest which will create the fsfs.conf under /tmp/svntest/db/fsfs.conf</li>
+<li>Copy the fsfs.conf to your svnroot/db directory and walla you have the fsfs.conf (what this file does is a different topic)</li>
+</ol>
+
+
+<p>Please note:</p>
+
+<p>1. The svnadmin upgrade &ndash;<strong>Doesn&rsquo;t add this file so unless you are using an old veriosn of the hot-backup.py script your backups will fail!!!</strong> (beleive me I tried).</p>
+
+<p>2. If you update subverison &ndash; don&rsquo;t forget to run <em>svnadmin upgrade /pathto yourrepo/</em> or you miss all the point of upgrading</p>
+
+<p>So I&rsquo;ve learened that subversion was upgraded (again which doesn&rsquo;t say your repository was upgraded!!!) &ndash; but when? &ndash; considering the fact I am running CentOS &ndash; and I didn&rsquo;t have to compile SVN from source and start checking the subversion binaries Creation / Update time I used RPM to tell me when subverions was installed and there is was:</p>
+
+<pre><code>[root@dev ~]# rpm -qi subversion
+Name        : subversion                   Relocations: (not relocatable)
+Version     : 1.6.12                       Vendor: Dag Apt Repository
+Release     : 0.1.el5.rf                   Build Date: Tue 22 Jun 2010 12:55:11 PM IDT
+Install Date: Mon 19 Jul 2010 12:36:54 AM IDT      Build Host: lisse.hasselt.wieers.com
+Group       : Development/Tools             Source RPM: subversion-1.6.12-0.1.el5.rf.src.rpm
+Size        : 21247326                         License: BSD
+Signature   : DSA/SHA1, Tue 22 Jun 2010 04:46:18 PM IDT, Key ID a20e52146b8d79e6
+Packager    : Dag Wieers 
+</code></pre>
+
+<p>I think the <a href="http://search.twitter.com/search?q=%231">#1</a> lesson learned here is before you upgrade read the release notes, see if it impacts you environment in any way &ndash; then you can upgrade.</p>
+
+<p>Hope you find this useful.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/20/learning-programming/">Learning Programming</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-20T13:46:54-04:00" pubdate data-updated="true">Jun 20<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I was tutoring someone in web app development recently, and the monumental task in front of him really hit me. <strong>He was trying to learn and use nine new languages at the same time</strong>.</p>
+
+<p>In our case it was:</p>
+
+<ul>
+<li><p>Ruby</p></li>
+<li><p>Rails</p></li>
+<li><p>MySQL</p></li>
+<li><p>Bash (command line usage)</p></li>
+<li><p>HTML</p></li>
+<li><p>CSS</p></li>
+<li><p>Javascript</p></li>
+<li><p>JQuery</p></li>
+<li><p>Git</p></li>
+<li><p>(Capistrano, Yaml, nginx, ??)</p></li>
+</ul>
+
+
+<p>Even though some of these aren&rsquo;t true languages in the traditional sense, they appear this way to newcomers since they are each a new syntax to learn.</p>
+
+<p>If you slowly built up these skills over 15 years, they are clearly separate concepts in your mind. But for a newcomer trying to use them, it&rsquo;s not even clear which one is which.</p>
+
+<p>Is that a Ruby method or a Rails method?</p>
+
+<p>Is &ldquo;script/server&rdquo; a shell command or is &ldquo;ls&rdquo; part of rails?</p>
+
+<p>Is this file html, js, or css? (actually a mix of all three)</p>
+
+<p>He made a comment along the lines of &ldquo;wouldn&rsquo;t it be great if you could build an entire web app in one language&rdquo;, and I started thinking about it.</p>
+
+<p>GWT (Google Website Toolkit), ActiveRecord, CoffeeScript, and Heroku are all steps in this direction. You could classify them generally as trying to &ldquo;eliminate a language in the stack&rdquo; or allowing you to do a piece of the stack in a language you already know.</p>
+
+<p>Obviously there is a trade off here between power and simplicity, but I&rsquo;m wondering &ndash; would it be possible or desirable to get an entire web app down to just one language? If not that how few could you use?</p>
+
+<p>Btw, I think there are benefits to seasoned developers here as well. I remember Lars Rasmussen (creator of Google Maps and Wave) mentioned something to this effect at Google IO in 2009, that GWT allowed him to spend his mental CPU cycles at a higher level and be more creative (not having to worry about cross browser css or js). So the benefits of higher abstraction may not only be for newcomers.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/08/functional-groovy-switch-statement/">Functional Groovy Switch Statement</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-08T08:00:00-04:00" pubdate data-updated="true">Jun 8<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In the previous <a href="/2011/06/01/reversing-groovy-switch-statement">post</a> I showed how to replace chained if-else statements in Groovy with one concise switch. It was done for the special case of if-stement where every branch was evaluated using the same condition function. Today I want to make a generalization of that technique by allowing to use different conditionals.</p>
+
+<p>Suppose your code looks like this:</p>
+
+<pre><code>if (param % 2 == 0) {
+    'even'
+} else if (param % 3 == 0) {
+    'threeven'
+} else if (0 &lt; param) {
+    'positive'
+} else {
+    'negative'
+}
+</code></pre>
+
+<p>As long as every condition operates on the same parameter, you can replace the entire chain with a switch. In this scenario <code>param</code> becomes a switch parameter and conditions become <code>case</code> parameters of Closure type. The only thing we need to do is to override <code>Closure.isCase()</code> method as I described in the previous post. The safest way to do it is to create a category class:</p>
+
+<pre><code>class CaseCategory {
+    static boolean isCase(Closure casePredicate, Object switchParameter) {
+        casePredicate.call switchParameter
+    }
+}
+</code></pre>
+
+<p>Now we can replace if-statement with the following switch:</p>
+
+<pre><code>use (CaseCategory) {
+    switch (param) {
+        case { it % 2 == 0 } : return 'even'
+        case { it % 3 == 0 } : return 'threeven'
+        case { 0 &lt; it }      : return 'positive'
+        default              : return 'negative'
+    }
+}
+</code></pre>
+
+<p>We can actually go further and extract in-line closures:</p>
+
+<pre><code>def even = {
+    it % 2 == 0
+}
+def threeven = {
+    it % 3 == 0
+}
+def positive = {
+    0 &lt; it
+}
+</code></pre>
+
+<p>After which the code becomes even more readable:</p>
+
+<pre><code>use (CaseCategory) {
+    switch (param) {
+        case even     : return 'even'
+        case threeven : return 'threeven'
+        case positive : return 'positive'
+        default       : return 'negative'
+    }
+}
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/07/nothing-new-under-sun/">Nothing New Under the Sun</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-07T08:00:00-04:00" pubdate data-updated="true">Jun 7<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Every generation of software developers needs its own fad. For my generation it was Agile, for generation before it was OOP, and before that it was another big thing. Gerald Weinberg, one of the most influential people in our industry, blogged yesterday about this issue. With over 50 years of experience in software development he knows what he is talking about. Read his <a href="http://secretsofconsulting.blogspot.com/2011/06/beyond-agile-programming.html">blog post</a> — he has a very good point.</p>
+
+<p>P.S. I&rsquo;m wondering what will be the next big thing. Will it be Cloud or <a href="/2013/01/15/embrace-big-data/">Big Data</a>?</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/05/multimethods-in-groovy/">Multimethods in Groovy</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-05T08:00:00-04:00" pubdate data-updated="true">Jun 5<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Every time I switch from Groovy to Java I have to remind myself that some things that seem so natural and work as expected in Groovy, don&rsquo;t work in Java. One of such differences is method dispatching. Groovy supports <a href="http://en.wikipedia.org/wiki/Multiple_dispatch">multiple dispatch</a>, while Java does not. Therefore the following <a href="http://www.gigamonkeys.com/book/object-reorientation-generic-functions.html#multimethods">code</a> works differently in Groovy and Java:</p>
+
+<pre><code>public class A {
+    public void foo(A a) { System.out.println("A/A"); }
+    public void foo(B b) { System.out.println("A/B"); }
+}
+public class B extends A {
+    public void foo(A a) { System.out.println("B/A"); }
+    public void foo(B b) { System.out.println("B/B"); }
+}
+public class Main {
+    public static void main(String[] args) {
+        A a = new A();
+        A b = new B();
+        a.foo(a);
+        b.foo(b);
+    }
+}
+
+$ java Main
+A/A
+B/A
+
+$ groovy Main.groovy
+A/A
+B/B
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/01/reversing-groovy-switch-statement/">Reversing Groovy Switch Statement</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-01T08:00:00-04:00" pubdate data-updated="true">Jun 1<span>st</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Recently I&rsquo;ve been working on a Groovy code that had many methods with long multibranch conditionals like this:</p>
+
+<pre><code>def parse(message, options) {
+    if (options.contains('A')) {
+        parseARule message
+    } else if (options.contains(2)) {
+        parseSmallDigitRule message
+    ...
+    } else if (options.contains(something)) {
+        parseSomeRule message
+    } else {
+        parseSomeOtherRule message
+    }
+}
+</code></pre>
+
+<p>Although this code is working, it is hard to see which branch is called under which condition. It would be much better if we could replace this code with something like Lisp <code>cond</code> macro. The best candidate for such a task in Groovy would be a <code>switch</code> statement. If we could only refactor the code above to something like following, it would significantly improve readability:</p>
+
+<pre><code>def parse(message, options) {
+    switch (options) {
+        case 'A' : return parseARule(message)
+        case 2   : return parseSmallDigitRule(message)
+        ...
+        case ... : return parseSomeRule(message)
+        default  : return parseSomeOtherRule(message)
+    }
+}
+</code></pre>
+
+<p>Unfortunately, this code doesn&rsquo;t work out of the box in Groovy, but it works if we do some metaprogramming.</p>
+
+<p>The way <code>switch</code> statement works in Groovy is a bit <a href="http://docs.codehaus.org/display/GROOVY/Logical+Branching#LogicalBranching-switchstatement">different</a> than in Java. Instead of equals() it uses isCase() method to match case-value and switch-value. The default implementation of isCase() method falls back to equals() method, but some classes, including <a href="http://groovy.codehaus.org/groovy-jdk/java/util/Collection.html#isCase(java.lang.Object)">Collection</a>, override this behaviour. That&rsquo;s why in Groovy you can do things like this:</p>
+
+<pre><code>switch (value) {
+    case ['A','E','I','O','U'] : return 'vowel'
+    case 0..9                  : return 'digit'
+    case Date                  : return 'date'
+    default                    : return 'something else'
+}
+</code></pre>
+
+<p>For our purposes we need some sort of reverse <code>switch</code>, where collection is used as a switch-value, and String and Integer are used as a case-value. To do this we need to override default implementation of isCase() method on String and Integer classes. It&rsquo;s not possible in Java, but is very easy in Groovy. You can change method implementation globally by replacing it in corresponding meta class, or locally with the help of categories. Let&rsquo;s create a category that swaps object and subject of isCase() method:</p>
+
+<pre><code>class CaseCategory {
+    static boolean isCase(String string, Collection col) {
+        reverseCase(string, col)
+    }
+    static boolean isCase(Integer integer, Collection col) {
+        reverseCase(integer, col)
+    }
+    // Add more overloaded methods here if needed
+
+    private static boolean reverseCase(left, right) {
+        right.isCase(left)
+    }
+}
+</code></pre>
+
+<p>Now we can use this category to achieve the goal we stated at the beginning of this post:</p>
+
+<pre><code>def parse(message, options) {
+    use (CaseCategory) {
+        switch (options) {
+            case 'A' : return parseARule(message)
+            case 2   : return parseSmallDigitRule(message)
+            ...
+            case ... : return parseSomeRule(message)
+            default  : return parseSomeOtherRule(message)
+        }
+    }
+}
+</code></pre>
+
+<p>If you are comfortable with global method replacement, you can amend String and Integer meta classes. In this case you don&rsquo;t need to wrap <code>switch</code> statement with <code>use</code> keyword.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/05/29/mount-remote-firsvia-ssh/">Mount Remote Dirs via Ssh With Sshfs / Fuse</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-29T09:11:00-04:00" pubdate data-updated="true">May 29<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/OpenSSH.jpg" title="'SSH'" >Well, there is nothing like a simple and easy innovative solutions to save the day -it&rsquo;s been around for quite a while and never really needed it until now &hellip;</p>
+
+<p><em><strong>Use Case</strong></em><strong>:</strong></p>
+
+<p>we moved Subversion from server A to server B and we wanted to bea ble to utilze the same backup scripts we were using so one (not real elegant way) was to mount the remote location via NFS which has its issues, from time to time you will meet stale NFS records and such so that is almost in all cases out of the question.</p>
+
+<p>A neat solution would be to mount over SSH a specific directory run svnhotbackup and close the share, I took this to another level by utilising this over a VDSL connection which worked like a charm, so how do we do this ?</p>
+
+<p>If you are on Ubuntu (<a href="#aptget">see install snippet below</a>):</p>
+
+<pre><code>sudo apt-get install sshfs
+</code></pre>
+
+<p>add fuse to your /etc/modules [edit /etc/modules and add the word fuse on a single line]</p>
+
+<pre><code>vi /etc/modules ...
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2011/05/29/mount-remote-firsvia-ssh/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -1176,23 +896,23 @@ The logic that generates configuration files has to be executed somewhere. This 
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/03/25/a-deep-dive-into-aws-reserved-instances/">A Deep Dive into AWS Reserved Instances</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/25/6-reasons-why-large-enterprises-should-move-to-amazon-web-services/">6 reasons why large enterprises should move to Amazon Web Services</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/14/ci-and-test-automation-utilizing-openstack/">CI and Test Automation utilizing OpenStack</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow from GitHub</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing A RESTful API That Doesn&#8217;t Suck</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a>
       </li>
     
   </ul>
