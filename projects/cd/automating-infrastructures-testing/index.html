@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>continuous delivery: how to deliver software to users at the click of a button - Balaji Vajjala's Blog</title>
+  <title>automating infrastructures: testing - Balaji Vajjala's Blog</title>
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Continuous Delivery: How to deliver software to users at the click of a button">
-  <meta name="keywords" content="Continuous Delivery, Build Automation,Agile Software Delivery">
+  <meta name="description" content="Automating Infrastructures - Testing, Scripting, Versioning, Continuous Delivery, Build Automation, Agile Software Delivery">
+  
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://bvajjala.github.io/projects/continuous-delivery/continuous-delivery-how-to-deliver-software-to-users-at-the-click-of-a-butto">
+  <link rel="canonical" href="http://bvajjala.github.io/projects/cd/automating-infrastructures-testing">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
@@ -72,65 +72,75 @@
 <article role="article">
   
   <header>
-    <h1 class="entry-title">Continuous Delivery: How to Deliver Software to Users at the Click of a Button</h1>
+    <h1 class="entry-title">Automating Infrastructures: Testing</h1>
     
   </header>
   
-  <p>[<img src="../images/tagline_stelligent.gif" alt="Production-ready Software Every
-Day" />]</p>
+  <p>While we often employ a similar process when automating other parts of a
+software delivery system (build, deployment, database, etc.), in this
+article, I’m focusing on automating infrastructures. Typically, we go
+through a 5-step process toward automating environments that will be
+used as part of a <a href="../solutions/continuous-delivery/index.html" title="Continuous Delivery at Stelligent">Continuous Delivery</a>
+pipeline. They are: <strong>document</strong>, <strong>test</strong>, <strong>script</strong>, <strong>version</strong> and
+<strong>continuous</strong>. They are described in more detail below.</p>
 
-<p><a href="http://www.amazon.com/Continuous-Delivery-Deployment-Automation-Addison-Wesley/dp/0321601912/?tag=integratecom-20" title="Continuous Delivery book">Continuous Delivery</a>
-* part of the Martin Fowler Signature Series – was published last month
-and if delivering software to your users quickly and often is important
-to you, you must get this book. <a href="http://www.stelligent.com/products/deployment-framework.php" title="Continuous Delivery as a Service">Continuous Delivery</a>
-is what we provide our clients at <a href="../index.html" title="Stelligent Continuous Delivery">Stelligent</a>
-* delivering complete software systems to users at the push of a button.
-<a href="http://continuousdelivery.com/" title="Jez Humble">Jez Humble</a> and David
-Farley go into great detail in describing everything you need to do to
-create a continuous delivery system. </p>
+<ol>
+<li><strong>Document</strong> – We document the process required to manually install
+all operating system and software components on each OS. The key
+difference with this kind of documentation is that you’re
+documenting in such a way that it can be automated later on. You
+might use a wiki or similar tool to document the environment
+creation process. Before moving on, be sure you’re able to manually
+create the environment using the documented instructions – at least
+once. Some example documentation written in a Confluence wiki is
+shown below.</li>
+<li><strong>Test</strong> – We apply a rigorous acceptance test-driven approach in
+which automated tests are written along with the scripts that
+automate the creation of the infrastructure. Tools that we often use
+are <a href="http://cukes.info/" title="Cucumber">Cucumber</a> and
+<a href="http://auxesis.github.com/cucumber-nagios/" title="Cucumber-Nagios">Cucumber-Nagios</a> and other tools that apply an acceptance test-driven approach to the infrastructure. An example using Cucumber is shown below.</li>
+<li><strong>Script</strong> – We script the entire process using tools like
+<a href="http://www.opscode.com/chef/" title="Chef">Chef</a>,
+<a href="http://puppetlabs.com/" title="Puppet">Puppet</a> and
+<a href="http://aws.amazon.com/cloudformation/" title="CloudFormation">CloudFormation</a>
+so that the process can be repeated and the knowledge required to
+install and configure the components is not isolated to a few key
+individuals. These scripts adhere to the behavior described in the
+automated test(s). A partial example using AWS CloudFormation is
+shown below.</li>
+<li><strong>Version</strong> – Since the entire operating system and related
+components of the infrastructure are scripted, we ensure every
+infrastructure automation script and test is versioned in a
+version-control repository so that no change is ever lost. At this
+point, the documentation in step 1 is no longer used.
+Version-control systems typically used include
+<a href="http://git-scm.com/" title="Git">Git</a>,
+<a href="http://subversion.tigris.org/" title="Subversion">Subversion</a> and
+<a href="http://www.perforce.com/" title="Perforce">Perforce</a> – to name a few.</li>
+<li><strong>Continuous</strong> – Finally, we ensure that the infrastructure can be
+recreated with every change that anyone applies to not just the
+infrastructure, but the entire software system. We use a Continuous
+Integration server to do this. The CI server polls the
+version-control system for changes; once it finds these changes, it
+creates the infrastructure and runs the infrastructure tests. If any
+failure occurs, it stops the creation of the environment and reports
+the error through the CI server, email and other feedback
+mechanisms. Typically, we use tools such as
+<a href="http://jenkins-ci.org/" title="Jenkins">Jenkins</a> and <a href="http://www.urbancode.com/" title="Anthill Pro">Anthill
+Pro</a> to run a “continuous”
+process like this.</li>
+</ol>
 
-<p>This is one of the most important software books published in years. From the beginning and throughout the book, the authors emphasize the importance in
-establishing one delivery team consisting of various experts throughout
-the software lifecycle – developers, DBAs, Systems/Operations, network
-specialists, testers and so on. The overarching pattern the authors
-describe is the <a href="http://www.informit.com/articles/article.aspx?p=1621865" title="Deployment Pipeline">Deployment Pipeline</a>, which is basically a staged process consisting of all of the steps to go from bare/virtual metal to a working system whenever there is a change to source files. Of course, the only way this can be done is through copious amounts of automation. The other key point the authors make is that this automated delivery system – itself – is versioned with every change. Not just the custom source code, but also the operating system(s), tools, configuration and everything necessary to create a
-working software <em>system</em>. It’s the first book I know to describe this
-concept in such great detail and not (really) provide any exceptions to
-the rule. In <a href="http://www.amazon.com/gp/product/0321336380/?tag=integratecom-20" title="Continuous Integration book">Continuous Integration</a>
-(also in Fowler’s series), I made a point of putting ‘everything’ in
-version control (referring to Berczuk and Appleton’s <em>Repository</em>
-pattern), but Humble and Farley made it a core theme of their Deployment
-Pipeline and the overall book.</p>
 
-<p>To sum up the book in a few bullets:</p>
+<p><img src="https://s3.amazonaws.com/stelligent_img/jenkins.jpg" alt="Jenkins" /></p>
 
-<ul>
-<li>The purpose of Continuous Delivery is to <strong>reduce the cycle time
-between an idea and usable software</strong>such that it’s approaching zero</li>
-<li><strong>Automate (almost) everything</strong> necessary to create usable software</li>
-<li><strong>Version complete software systems</strong> (not just source code) for
-every change committed to version control system</li>
-<li>Employ a <strong>Deployment Pipeline</strong>in which the entire system is
-recreated whenever a change is committed to the version-control
-system and provide continuous feedback</li>
-<li>Identify <strong>one delivery team</strong> consisting of various delivery
-experts – build, deploy, provisioning, database, testing, etc. – a
-concept emphasized in the <a href="http://en.wikipedia.org/wiki/DevOps" title="DevOps on Wikipedia">DevOps</a> movement</li>
-</ul>
-
-
-<p>The authors go into great detail in describing each of these themes. So,
-if you want the process of delivering software to any target environment
-– including production – to be a click of a button and something that
-can be accomplished as often as the business requires, get this
-<a href="http://www.amazon.com/Continuous-Delivery-Deployment-Automation-Addison-Wesley/dp/0321601912/?tag=integratecom-20" title="Continuous Delivery book">book</a>.
-When you employ the practices in this book, no longer will you need to
-artificially throttle changes delivered to users for months or even
-years because of the expense and risk required to deliver software.</p>
-
-<p><em>As a note, I plan to extract and describe a combination of patterns
-from this book, the Continuous Integration book, and other patterns we
-use at Stelligent in upcoming blog posts.</em></p>
+<p>We use this approach when automating everything – from builds to
+deployments to creating the database and data. We’ve found that when
+companies are looking to automate their processes, they tend to only
+focus on scripting and not the rest. We find that an effectively
+Continuous Delivery system requires all five steps so that every change
+– application code, configuration, data and infrastructure – is part of
+a single path to production.</p>
 
   
     <footer>
