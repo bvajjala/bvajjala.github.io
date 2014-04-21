@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Code Reuse With Node.js Any project that grows to a decent size will need to re-use parts of its code extensively. That often means, through the &hellip;">
+  <meta name="description" content="Ansible Simply Kicks Ass The devo.ps team has been putting quite a few tools to the test over the years when it comes to managing infrastructures. We &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +72,73 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/ansible-simply-kicks-ass/">Ansible Simply Kicks Ass</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:12:31-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/07/03/ansible-simply-kicks-ass.html">Ansible Simply Kicks Ass</a></h2>
+
+<p>The devo.ps team has been putting quite a few tools to the test over the years when it comes to managing infrastructures. We&rsquo;ve developed some ourselves and have adopted others. While the choice to use one over another is not always as clear-cut as we&rsquo;d like (I&rsquo;d love to rant about monitoring but will leave that for a later post), we&rsquo;ve definitely developed kind of a crush for <a href="https://github.com/ansible/ansible">Ansible</a> in the past 6 months. We went through years of using Puppet, then Chef and more recently Salt Stack, before Ansible gained unanimous adoption among our team.</p>
+
+<p>What makes it awesome? Well, on top of my head:</p>
+
+<ul>
+<li>It&rsquo;s <strong>agent-less</strong> and works by default in <strong>push mode</strong> (that last point is subjective, I know).</li>
+<li>It&rsquo;s <strong>easy to pick up</strong> (honestly, try and explain Chef or Puppet to a developer and see how long that takes you compared to Ansible).</li>
+<li>It&rsquo;s <strong>just Python</strong>. It makes it easier for people like me to contribute (Ruby is not necessarily that mainstream among ops) and also means minimal dependency on install (Python is shipped by default with Linux).</li>
+<li>It&rsquo;s <strong>picking up steam</strong> at an impressive pace (I believe we&rsquo;re at 10 to 15 pull requests a day).</li>
+<li>And it has all of the good stuff: idempotence, roles, playbooks, tasks, handlers, lookups, callback plugins…</li>
+</ul>
+
+
+<p>Now, Ansible is still very much in its infancy and some technologies may not yet be supported. But there are a great deal of teams pushing hard on contributions, including us. In the past few weeks, for example, we&rsquo;ve
+contributed both Digital Ocean and Linode modules. And we have a lot more coming, including some experimentations with Vagrant.</p>
+
+<p>Now, an interesting aspect of Ansible, and one that makes it so simple, is that it comes by default with a tool-belt. Understand that it is shipped with a range of modules that add support for well known technologies: <a href="http://www.ansibleworks.com/docs/modules.html">EC2,
+Rackspace, MySQL, PostgreSQL, rpm, apt,…</a>. This now includes our
+Linode contribution. That means that with the latest version of Ansible you can spin off a new Linode box as easily as:</p>
+
+<pre><code>ansible all -m linode -a "name='my-linode-box' plan=1 datacenter=2 distribution=99 password='p@ssword' "
+</code></pre>
+
+<p>Doing this with Chef would probably mean chasing down a knife plugin for adding Linode support, and would simply require a full Chef stack (say hello to RabbitMQ, Solr, CouchDB and a gazillion smaller dependencies). Getting
+Ansible up and running is as easy as:</p>
+
+<pre><code>pip install ansible
+</code></pre>
+
+<p>Et voila! You gotta appreciate the simple things in life. Especially the life of a sysadmin.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1177,74 +1244,6 @@ Now with a totally bogus knife.rb file I can generate / edit / manager databags 
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/20/mounting-s3-buckets-with-f3fs/">S3 - Mounting S3 Buckets With S3fs</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-20T20:32:00-04:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/amazon-s3.png" title="'S3 logo'" >A <code>cheap</code> solution on Amazon s3 for uploading files to s3 via SSH</p>
-
-<p>I needed to upload files from my Corporate environment in a <code>push mode</code> meaning I do not open any &ldquo;special&rdquo; ports in my environemnt in order to enable users to put files on S3.
-I am curentelly testing to see how robust this solution really is but basically what I found myself doing is install s3fs (<a href="https://code.google.com/p/s3fs/">link to project page</a>) like so:</p>
-
-<pre><code>wget http://s3fs.googlecode.com/files/s3fs-1.73.tar.gz
-tar xvzf s3fs-1.73.tar.gz
-cd s3fs-1.73
-./configure --prefix=/usr
-make &amp;&amp; make install
-</code></pre>
-
-<p>I was installing this for Suse but for Amazon linux/redhat etc you might find a package see: <a href="http://rpmfind.net/linux/rpm2html/search.php?query=fuse-s3fs">here</a>.</p>
-
-<p>Once the package is installed you can use <code>s3fs</code></p>
-
-<pre><code>s3fs BUCKET:[PATH] MOUNTPOINT [OPTION]...
-
-s3fs dev_tools /mnt/dev_tools/ 
-</code></pre>
-
-<p>Worth noting you do not need to specify the s3 url, you only specify the bucket name !</p>
-
-<p>The same thing / very similir in <code>/etc/fstab</code> will look like so:</p>
-
-<pre><code>s3fs#dev_tools /mnt/dev_tools fuse allow_other,user=youruser 0 0
-</code></pre>
-
-<p>The mount opts are <strong>extreemly important</strong> &ndash; without the <code>allow_other</code> flag the user cannot write to the directory.</p>
-
-<p>This is really awesome &ndash; we now jsut need to make sure the connectivity is reliable / fast enough and this will become very usefull.</p>
-
-<p>As always hope you find this useful.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1266,6 +1265,10 @@ s3fs dev_tools /mnt/dev_tools/
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/21/continuous-delivery-pipeline-stages/">Continuous Delivery Pipeline Stages</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/21/implementing-practical-continuous-deployment/">Implementing Practical Continuous Deployment</a>
       </li>
     
@@ -1279,10 +1282,6 @@ s3fs dev_tools /mnt/dev_tools/
     
       <li class="post">
         <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a>
       </li>
     
   </ul>

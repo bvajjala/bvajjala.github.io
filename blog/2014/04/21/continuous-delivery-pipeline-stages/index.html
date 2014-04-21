@@ -1,0 +1,481 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Continuous Delivery Pipeline Stages - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="View the Presentation Or view the slide sheet below Continuous Delivery Pipeline Stages Balaji Vajjala Principal DevOps Consultant/Solution Architect &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2014/04/21/continuous-delivery-pipeline-stages">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="/assets/slides/css/for_blog.css">
+
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about/home">Home</a></li> 
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/projects">Projects</a></li>
+  <li><a href="/about/resume">About Me</a></li>
+  <li><a href="/about/consulting">Consulting</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Continuous Delivery Pipeline Stages</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-21T13:38:33-04:00" pubdate data-updated="true">Apr 21<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><a href="/blog/2014/04/21/continuous-delivery-pipeline-stages/slides"><h2>View the Presentation</h2></a></p>
+
+<h5>Or view the slide sheet below</h5>
+
+
+<hr />
+
+
+<section class='slide'><div class='content'>
+
+<h2>Continuous Delivery Pipeline Stages</h2>
+
+<h3>Balaji Vajjala</h3>
+
+<h5>Principal DevOps Consultant/Solution Architect</h5>
+
+<h5>Feb 2014</h5>
+
+</div>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h3>￼Who Am I?</h3>
+
+<h3>Balaji Vajjala!</h3>
+
+<ul>
+<li>A Full Stack DevOps Engineer/Solution Architect for 10+ years!</li>
+<li>Original company sysadmin!</li>
+<li>Developer for last 4 years!</li>
+<li>Now working out of East Coast</li>
+<li>Not a professional speaker</li>
+</ul>
+
+
+</div>
+
+<aside class='notes'>
+
+<p>Hi, my name is Balaji Vajjala and I&rsquo;m the Chief Architect and DevOps Solution Architect.</p>
+
+<p>I have been developing software in the financial and Telecom industry since Mid 90&rsquo;s.</p>
+
+<p>I am always passionate about technology, and have delivered diverse project portfolios initially as a software developer and subsequently as a leader at various development organisations.</p>
+
+</aside>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h3>Continuous Delivery pipeline stages</h3>
+
+<ol>
+<li>Commit Phase</li>
+<li>Automated Accetance Testing (AAT) Phase</li>
+<li>Exploratory Testing Phase (ET)</li>
+<li>User Acceptance testing Phase (UAT) Phase</li>
+<li>Staging and Pre-Prod Phase</li>
+<li>Production Phase</li>
+</ol>
+
+
+</div>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h3>Commit Phase</h3>
+
+<p><img src="/images/cd-1.1-commit.png" alt="" /></p>
+
+</div>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h3>Commit Phase</h3>
+
+<ol>
+<li>Syntax Check</li>
+<li>Code Metrics</li>
+<li>Compile (For Compiled Languages)</li>
+<li>Auto Merge for Development Branches (when using Git-Flow etc.)</li>
+<li>Unit Tests</li>
+</ol>
+
+
+</div>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h3>Automated Accetance Testing (AAT) Phase</h3>
+
+<p><img src="/images/cd-1.2-aat.png" alt="" /></p>
+
+</div>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h3>Automated Accetance Testing (AAT) Phase</h3>
+
+<ol>
+<li>Integration Tests</li>
+<li>Stubbed &amp; Mocked Endpoints &amp; Data</li>
+<li>BDD Framework tests</li>
+<li>Component tests</li>
+<li>Story-Level tests</li>
+<li>Feature-Level tests</li>
+</ol>
+
+
+</div>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h3>Exploratory Testing Phase Phase</h3>
+
+<p><img src="/images/cd-1.3-ext.png" alt="" /></p>
+
+</div>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h3>Exploratory Testing Phase Phase</h3>
+
+<ol>
+<li>Usability Tests</li>
+<li>Visual (UI) Tests</li>
+</ol>
+
+
+</div>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h3>User Acceptance testing Phase (UAT) Phase</h3>
+
+<p><img src="/images/cd-1.4-uat.png" alt="" /></p>
+
+</div>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h3>User Acceptance testing Phase (UAT) Phase</h3>
+
+<ol>
+<li>SHOWCASES</li>
+<li>FEATURE-LEVEL Testing by the client/customer</li>
+</ol>
+
+
+</div>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h3>Staging and Pre-Prod Phase</h3>
+
+<p><img src="/images/cd-1.5-stage.png" alt="" /></p>
+
+</div>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h3>Staging and Pre-Prod Phase</h3>
+
+<ol>
+<li>Smoke Tests</li>
+<li>Performance tests</li>
+<li>Capacity tests</li>
+<li>Network tests</li>
+<li>Post-Deployment tests</li>
+</ol>
+
+
+</div>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h3>Production Phase</h3>
+
+<p><img src="/images/cd-1.6-prod.png" alt="" /></p>
+
+</div>
+
+</section>
+
+<section class='slide'><div class='content'>
+
+<h3>Production Phase</h3>
+
+<ol>
+<li>Post-Deployment Tests</li>
+<li>Ongoing Live Transaction Tests</li>
+<li>Rollback &amp; Re-Deploy</li>
+<li>Smoke Tests</li>
+</ol>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-21T13:38:33-04:00" pubdate data-updated="true">Apr 21<span>st</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/presentations/'>Presentations</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2014/04/21/continuous-delivery-pipeline-stages/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2014/04/21/continuous-delivery-pipeline-stages/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/04/21/implementing-practical-continuous-deployment/" title="Previous Post: Implementing Practical Continuous Deployment">&laquo; Implementing Practical Continuous Deployment</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/21/continuous-delivery-pipeline-stages/">Continuous Delivery Pipeline Stages</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/21/implementing-practical-continuous-deployment/">Implementing Practical Continuous Deployment</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/21/practical-continuous-deployment/">Practical Continuous Deployment</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

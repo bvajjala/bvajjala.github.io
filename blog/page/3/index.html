@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Vagrant, Docker and Ansible. WTF? Given that we&rsquo;re building a SaaS that helps our client managing their infrastructure, our team is pretty &hellip;">
+  <meta name="description" content="A cheap solution on Amazon s3 for uploading files to s3 via SSH I needed to upload files from my Corporate environment in a push mode meaning I do &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +72,74 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/20/mounting-s3-buckets-with-f3fs/">S3 - Mounting S3 Buckets With S3fs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-20T20:32:00-04:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/amazon-s3.png" title="'S3 logo'" >A <code>cheap</code> solution on Amazon s3 for uploading files to s3 via SSH</p>
+
+<p>I needed to upload files from my Corporate environment in a <code>push mode</code> meaning I do not open any &ldquo;special&rdquo; ports in my environemnt in order to enable users to put files on S3.
+I am curentelly testing to see how robust this solution really is but basically what I found myself doing is install s3fs (<a href="https://code.google.com/p/s3fs/">link to project page</a>) like so:</p>
+
+<pre><code>wget http://s3fs.googlecode.com/files/s3fs-1.73.tar.gz
+tar xvzf s3fs-1.73.tar.gz
+cd s3fs-1.73
+./configure --prefix=/usr
+make &amp;&amp; make install
+</code></pre>
+
+<p>I was installing this for Suse but for Amazon linux/redhat etc you might find a package see: <a href="http://rpmfind.net/linux/rpm2html/search.php?query=fuse-s3fs">here</a>.</p>
+
+<p>Once the package is installed you can use <code>s3fs</code></p>
+
+<pre><code>s3fs BUCKET:[PATH] MOUNTPOINT [OPTION]...
+
+s3fs dev_tools /mnt/dev_tools/ 
+</code></pre>
+
+<p>Worth noting you do not need to specify the s3 url, you only specify the bucket name !</p>
+
+<p>The same thing / very similir in <code>/etc/fstab</code> will look like so:</p>
+
+<pre><code>s3fs#dev_tools /mnt/dev_tools fuse allow_other,user=youruser 0 0
+</code></pre>
+
+<p>The mount opts are <strong>extreemly important</strong> &ndash; without the <code>allow_other</code> flag the user cannot write to the directory.</p>
+
+<p>This is really awesome &ndash; we now jsut need to make sure the connectivity is reliable / fast enough and this will become very usefull.</p>
+
+<p>As always hope you find this useful.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1062,55 +1130,6 @@ Well a common use case for doing stuff with Jenkins jobs / configuration [ for e
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/">Vagrant+Puppet+FPM=Amazeballs</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-07T18:23:00-04:00" pubdate data-updated="true">Apr 7<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Lately I&rsquo;ve been doing a lot of prototyping with <a href="http://www.vagrantup.com/">Vagrant</a>, specifically for a couple of distinct activities:&ndash;</p>
-
-<ul>
-<li>building puppet modules using <a href="https://github.com/elasticdog/puppet-sandbox">the excellent puppet sandbox</a> project</li>
-<li>and building RPM packages with <a href="https://github.com/jordansissel/fpm">FPM</a>.</li>
-</ul>
-
-
-<p>I realized I was spending a bunch of time flipping back and forth between Vagrant environments and I had no quick way to utilize RPMs built with FPM inside my puppet modules.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1132,6 +1151,10 @@ Well a common use case for doing stuff with Jenkins jobs / configuration [ for e
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/21/continuous-delivery-pipeline-stages/">Continuous Delivery Pipeline Stages</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/21/implementing-practical-continuous-deployment/">Implementing Practical Continuous Deployment</a>
       </li>
     
@@ -1145,10 +1168,6 @@ Well a common use case for doing stuff with Jenkins jobs / configuration [ for e
     
       <li class="post">
         <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a>
       </li>
     
   </ul>
