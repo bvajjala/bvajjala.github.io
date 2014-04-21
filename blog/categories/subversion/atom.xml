@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Subversion | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/subversion/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-21T15:00:43-04:00</updated>
+  <updated>2014-04-21T15:07:10-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -101,17 +101,6 @@ Installing the bash_completion deb package adds a bunch of bash completion helpe
 
 <p>All the magic however is in this short file:
 /etc/profile.d/bash_completion.sh and anything you place under <em>/etc/bash_completion.d/</em> will automatically be sourced upon login &hellip;</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Apprentelly Ant-1.80RC1 has been release on the 12th of January 2010]]></title>
-    <link href="http://bvajjala.github.io/blog/2010/01/06/Ant-early-release/"/>
-    <updated>2010-01-06T09:11:00-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2010/01/06/Ant-early-release</id>
-    <content type="html"><![CDATA[<p>Apparently without us noticing it is the 12th of January already and Ant 1.80RC1 has been released :)</p>
-
-<p><img src="/assets/images/ant-180RC1.PNG" alt="Ant - 1.80RC1" /></p>
 ]]></content>
   </entry>
   

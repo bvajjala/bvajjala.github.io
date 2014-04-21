@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Nuget | Balaji Vajjala's Blog]]></title>
+  <title><![CDATA[Category: NuGet | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/nuget/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-21T15:00:43-04:00</updated>
+  <updated>2014-04-21T15:07:10-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,17 +14,16 @@
 
   
   <entry>
-    <title type="html"><![CDATA[JUC video - .Net CI/CD with Jenkins]]></title>
-    <link href="http://bvajjala.github.io/blog/2013/07/08/juc-video-net-ci-slash-cd-with-jenkins/"/>
-    <updated>2013-07-08T22:37:00-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2013/07/08/juc-video-net-ci-slash-cd-with-jenkins</id>
-    <content type="html"><![CDATA[<p>The guy&rsquo;s from <a href="http://www.jfrog.com/">Jfrog</a> were kind enough to put this session on youtube &ndash; here it is enjoy</p>
+    <title type="html"><![CDATA[NuGet Aside for Octopress]]></title>
+    <link href="http://bvajjala.github.io/blog/2012/02/29/nuget-aside-for-octopress/"/>
+    <updated>2012-02-29T15:37:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2012/02/29/nuget-aside-for-octopress</id>
+    <content type="html"><![CDATA[<p>I just finished as aside for <a href="http://www.octopress.org">Octopress</a> that list the
+Top N downloaded packages where you are an author. It also adds a link to your
+NuGet gallery profile if you have one. The style is basically the same as the style of the github aside.</p>
 
-<iframe width="640" height="360" src="//www.youtube.com/embed/C5-98Fln1jg" frameborder="0" allowfullscreen></iframe>
-
-
-<p>comments are welcome !
-HP</p>
+<p>Since there is no official way to publish 3rd party add-ons for Octopress yet, I
+created a <a href="https://github.com/kmees/Octopress-NuGet-Aside">github repository</a> with the required files and setup instructions in the <a href="https://github.com/kmees/Octopress-NuGet-Aside/blob/master/README.md">ReadMe</a>.</p>
 ]]></content>
   </entry>
   

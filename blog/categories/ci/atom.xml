@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CI | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/ci/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-21T15:00:43-04:00</updated>
+  <updated>2014-04-21T15:07:10-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -280,21 +280,6 @@ Not too long ago, however, this system wasn&rsquo;t very smart. A branch could a
 <h1>How do we do it?</h1>
 
 <p>Most of the magic is handled by an internal deployment service called Heaven. At its core, Heaven is a catalog of Capistrano recipes wrapped up in a Sinatra application with a JSON API. Many of our applications are deployed using generic recipes, but more complicated apps can define their own to specify additional deployment steps. Wiring it up to Janky, along with clever use of post-receive hooks and the GitHub API, lets us hack on the niceties over time. Hubot is the central interface to both Janky and Heaven, giving everyone in Campfire great visibility into what’s happening all of the time. As of this writing, 75 individual applications are deployed by Heaven.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[JUC video - .Net CI/CD with Jenkins]]></title>
-    <link href="http://bvajjala.github.io/blog/2013/07/08/juc-video-net-ci-slash-cd-with-jenkins/"/>
-    <updated>2013-07-08T22:37:00-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2013/07/08/juc-video-net-ci-slash-cd-with-jenkins</id>
-    <content type="html"><![CDATA[<p>The guy&rsquo;s from <a href="http://www.jfrog.com/">Jfrog</a> were kind enough to put this session on youtube &ndash; here it is enjoy</p>
-
-<iframe width="640" height="360" src="//www.youtube.com/embed/C5-98Fln1jg" frameborder="0" allowfullscreen></iframe>
-
-
-<p>comments are welcome !
-HP</p>
 ]]></content>
   </entry>
   

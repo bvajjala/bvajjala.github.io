@@ -9,7 +9,9 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Lately I&rsquo;ve been doing a lot of prototyping with Vagrant, specifically for a couple of distinct activities:&ndash; building puppet modules &hellip;">
+  <meta name="description" content="Problem can&rsquo;t install mysql2 gem :(
+See the full error below &hellip; (or in &ldquo;Read on&rdquo; link) what solved the issue was:
+installing &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,55 +74,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/">Vagrant+Puppet+FPM=Amazeballs</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-07T18:23:00-04:00" pubdate data-updated="true">Apr 7<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Lately I&rsquo;ve been doing a lot of prototyping with <a href="http://www.vagrantup.com/">Vagrant</a>, specifically for a couple of distinct activities:&ndash;</p>
-
-<ul>
-<li>building puppet modules using <a href="https://github.com/elasticdog/puppet-sandbox">the excellent puppet sandbox</a> project</li>
-<li>and building RPM packages with <a href="https://github.com/jordansissel/fpm">FPM</a>.</li>
-</ul>
-
-
-<p>I realized I was spending a bunch of time flipping back and forth between Vagrant environments and I had no quick way to utilize RPMs built with FPM inside my puppet modules.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
   
   
     <article>
@@ -459,42 +412,6 @@ $ ps -ef | grep java
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/01/15/embrace-big-data/">Embrace Big Data</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-15T07:00:00-05:00" pubdate data-updated="true">Jan 15<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="center" src="/images/posts/BigData.jpg"></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
       <h1 class="entry-title"><a href="/blog/2012/12/30/installing-chef-server-on-cnetos-5-dot-8/">Installing Chef Server - on CnetOs 5.8</a></h1>
     
     
@@ -745,6 +662,384 @@ several months earlier this year, the subject matter is near and dear to my hear
 
 <p>In future posts I&rsquo;ll get into some more compare and contrast on RavenDB vs. <a href="https://github.com/themotleyfool/Lucene.Net.Linq">Lucene.Net.Linq</a>
 and maybe do a load test of my own of our <a href="https://github.com/themotleyfool/NuGet/downloads">custom NuGet.Server builds</a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/09/06/how-Angies-Lists-uses-octopus-deploy/">How Angie&#8217;s List Uses Octopus Deploy</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-06T11:23:00-04:00" pubdate data-updated="true">Sep 6<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&rsquo;ve mentioned a few times that my team has been using <a href="http://octopusdeploy.com/">Octopus Deploy</a> in a few of my posts.
+Now I&rsquo;ll describe in more detail some of the ways we&rsquo;ve integrated with Octopus that may help others.</p>
+
+<h2>The Before Times</h2>
+
+<p>Octopus started a beta phase in late 2011, so what were we doing before? Since I started working in an asp.net shop
+in 2006, I&rsquo;ve been surprised by the lack of robust deployment tools for the ecosystem.</p>
+
+<p>The Web Deployment Projects system provided by Microsoft has always seemed like a non-starter for me. When you
+have mature processes like version control, continuous integration, automated testing, and quality assurance,
+how does it make sense to hand the keys over to a developer running Visual Studio to click &ldquo;Deploy&rdquo;
+on their desktop? What guarantee do you have that the code has been checked in, that it builds, that
+the tests pass, that QA signed off?</p>
+
+<p>Even if you only give trusted users permission to deploy, I&rsquo;ve never understood how it makes sense that you
+would need Visual Studio to deploy your projects. I mean, Visual Studio is for development. It isn&rsquo;t even
+needed by a build server to compile your code. But now QA (or whoever is allowed to perform deployments) needs
+to have Visual Studio installed somewhere and checkout the code and build it themselves? So much for automation.
+So much for predictability. So much for repeatability.</p>
+
+<p>So it was with a lack of viable alternatives that I started writing a deployment tool in 2007. The tool was
+named Bazooka (because it &ldquo;shoots&rdquo; software onto servers), and we used it for 5 years. We never released it as
+open source because it made several assumptions particular to us and we didn&rsquo;t take the time to clean it up.</p>
+
+<p>Bazooka was a web application that watched a directory for release candidates to show up as they were
+prepared by our build server. Each release candidate contained a deployment descriptor that had some
+meta data and a list of components that could be deployed to servers that matched certain roles like
+WebServer or AppServer.</p>
+
+<p>Bazooka used xml configuration for everything. The deployment descriptor was xml, the server and environment
+configuration was xml, the permissions were xml, and the log files that recorded what had been deployed where
+were also xml. This made Bazooka pretty slow as deployment logs piled up, but it beat the heck out of
+doing anything more heavy-weight with sql.</p>
+
+<p>Bazooka was, in reality, just a web interface to MSBuild. When you went through the deployment wizard,
+Bazooka simply executed MSBuild in the directory specified by each component with some properties saying
+which server to deploy to, which target to execute, what the environment was, etc.</p>
+
+<p>We could have easily kept improving Bazooka, but we had actual code to write for our business, so Bazooka
+had some weaknesses that we never really addressed. For example, managing servers and environments was
+done by hand-editing the xml files. We didn&rsquo;t build a UI for that. Also, it was pretty tough to answer
+simple questions like, &ldquo;What was the most recent deployment of my project to the staging environment?&rdquo;</p>
+
+<p>But it worked as a fine stand-in for 5 years until someone built something better.</p>
+
+<h2>Octopus Trial</h2>
+
+<p>It was fun playing with Octopus during the beta period and seeing another approach to a web based
+deployment tool. In the beginning there were plenty of things Bazooka had that Octopus didn&rsquo;t (yet),
+but development has been pretty rapid with Octopus delivering frequent releases.</p>
+
+<p>The one time where we asked if using Octopus was right was when Paul Stovell, the creator/developer
+of Octopus Deploy, took a few months to rewrite the persistence layer, converting it from Entity
+Framework to RavenDB. It was the right decision to make and we&rsquo;re happy in the long run, but we
+found ourselves in a lurch waiting for some important features and bugfixes. We came out fine on
+the other side though.</p>
+
+<p>We also found that using a local file-based NuGet feed with Octopus doesn&rsquo;t scale very well, and
+switching to NuGet Server provided no benefit either. This inspired us to create a
+<a href="https://github.com/themotleyfool/NuGet">custom fork</a> of NuGet Server that uses
+<a href="http://incubator.apache.org/lucene.net/">Lucene.Net</a> and
+<a href="https://github.com/themotleyfool/Lucene.Net.Linq">Lucene.Net.Linq</a> to provide a scalable, lightning fast internal feed for Octopus.</p>
+
+<h2>The Switch</h2>
+
+<p>As we integrated some pilot projects with Octopus, we slowly stopped using Bazooka and
+eventually turned off Bazooka integration. Some quick stats of our Octopus configuration today:</p>
+
+<ul>
+<li>48 projects</li>
+<li>18,080 release candidates</li>
+<li>1,405 deployments</li>
+</ul>
+
+
+<p>Octopus has done a decent job managing our high demands. We have experienced some slow page
+loads here and there, but Paul has been very responsive about troubleshooting and optimizing
+these.</p>
+
+<h2>Reusing Deployment Scripts</h2>
+
+<p>Since we already had a highly automated deployment system, we wanted to preserve our exising
+capabilities while finding ways to improve the system.</p>
+
+<p>One problem that Octopus doesn&rsquo;t solve for you is how to share deployment scripts across
+projects. By default, Octopus will execute deployment scripts contained in each project,
+but there isn&rsquo;t a built-in or standard way to reuse common functionality.</p>
+
+<p>One of the first projects we set up in Octopus we named OctopusScripts. This project
+consists of a collection of PowerShell modules that we want to be available everywhere.
+When we deploy the project, the deployment scripts install the modules into a
+standard location where PowerShell will probe for them. Then from other projects,
+we can simply start a script with:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Import-Module SmokeTest</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Reuse Moar</h2>
+
+<p>Moving most of our scripts into PowerShell modules was working great, but we started
+to notice that our Deploy.ps1 scripts still looked awfully repetitious.</p>
+
+<p>All of our web projects follow the same basic deployment recipe:</p>
+
+<ol>
+<li>PreDeploy
+
+<ol>
+<li>Disable machine in load balancer</li>
+<li>Create IIS site and app pool definitions if missing</li>
+<li>Update site host-header bindings as needed</li>
+</ol>
+</li>
+<li>Let Octopus update the document root to point to the new application</li>
+<li>PostDeploy
+
+<ol>
+<li>Execute smoke tests against the server and abort if any URLs return a non-200 response</li>
+<li>Enable machine in load balancer</li>
+</ol>
+</li>
+</ol>
+
+
+<p>Of course we have different configurations and different URLs to use for smoke tests
+for each project. We ended up creating a configuration based, modular script collection
+so that each project simply needs to include a stub:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Import-Module Fool-Octopus
+</span><span class='line'>Invoke-OctopusDeploymentTasks</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The Invoke-OctopusDeploymentTasks function looks at whatever variable and configuration
+are present and figure out which steps to execute. The same scripts are used for Windows
+Service type projects and others too, and they figure out based on conventions if they
+need to run web steps, create services, etc.</p>
+
+<p>If the stub is missing from a project (because why duplicate the stub?) our build scripts
+automatically insert a stub Deploy.ps1, PreDeploy.ps1 and PostDeploy.ps1.</p>
+
+<p>We think we&rsquo;re about as DRY as we can get with regards to our deployment scripts.</p>
+
+<h2>Ad-hoc PowerShell</h2>
+
+<p>One thing we&rsquo;d like to see that hasn&rsquo;t made it into Octopus yet is the concept of ad-hoc
+powershell scripts. Basically, we want to be able to run some arbitrary scripts during a
+deployment, only once. It doesn&rsquo;t need to run once on each machine being deployed to, just
+once and then done. There&rsquo;s a <a href="https://trello.com/card/new-deployment-step-ad-hoc-powershell/4e907de70880ba000079b75c/8">story card</a>
+on Paul&rsquo;s Trello board that we&rsquo;re looking forward to. In the mean time, we&rsquo;ve been emulating
+this behavior by deploying a small package to a dummy server and letting the script run there.</p>
+
+<p>We mostly want this feature to simplify tasks such as sending email/other notifications when
+deployments are beginning or completed. It might also be useful for a green/blue style
+deployment model where the load balancer needs to toggle just once after the servers
+have been updated.</p>
+
+<p>Without the Ad-hoc feature, one of the stumbling points we run into is sometimes forgetting
+to check the &ldquo;Force redeployment&rdquo; checkbox that Octopus leaves unchecked. When we forget,
+some steps get skipped leading to confusing results.</p>
+
+<h2>Looking Ahead</h2>
+
+<p>Because of the level of automation we integrated with Octopus, our business is able to
+deploy software more frequently and more reliably than ever before. In the coming
+months and years, we look forward to seeing improvements in Octopus features that will
+help us with cloud deployments to AWS or Azure. Octopus has definitely filled a gap
+in our deployment capabilities, allowing us to deliver value to our business quickly,
+iteratively and predictably.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/20/how-Angies-List-uses-nuget-part-2/">How Angie&#8217;s List Uses NuGet (Part 2)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-20T13:56:00-04:00" pubdate data-updated="true">Aug 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="/blog/2012/08/07/how-the-motley-fool-uses-nuget/">Last time</a>
+I talked about how my development team progressed from having all
+of our .net code in a single repository with a single solution to using a more
+modular architecture complete with encapsulated domains.</p>
+
+<p>When we started using this appraoch, we were still limited in a few ways:</p>
+
+<ul>
+<li>Everyone needs to integrate with the newest code</li>
+<li>Difficult to patch an old version of a dependency</li>
+<li>Cascading failures on the build server</li>
+</ul>
+
+
+<p>Even though we broke the ProjectReference rats nest, we still had an
+implicit dependency on various shared code. It all had to be checked out
+and built in the right order.</p>
+
+<h2>Binary Package Management</h2>
+
+<p>The next logical step was to further decouple our shared code by
+packaging it up and publishing those packages. If we could do that,
+we could decide when to upgrade dependencies on a product by product
+basis.</p>
+
+<p>There are two package managers in the .net ecosystem: OpenWrap and NuGet.</p>
+
+<p>When we started shopping around, OpenWrap had been around longer and seemed
+to be a better choice. There&rsquo;s a <a href="http://stackoverflow.com/questions/4256994/openwrap-vs-nuget">comparison of the products</a>
+on stackoverflow.</p>
+
+<p>We worked with OpenWrap for over 6 months and during that time started
+to find some problems around integration with Visual Studio and ReSharper.
+OpenWrap wants to manage dependencies per solution, and we have many cases
+where we want to control dependencies at a per project level. We also
+started to notice that NuGet was getting new versions released on a fairly
+regular schedule, while OpenWrap 2.0 was in unstable beta limbo for over
+a year.</p>
+
+<p>Around the same time we started playing with <a href="http://octopusdeploy.com/">Octopus Deploy</a>
+for deploying our code. Since Octopus uses NuGet packages for deployment, we
+figured it would make sense to standardize on one package management system
+for both deployments and dependency management. It&rsquo;s true that those are
+separate problem spaces, but having less build scripts is always a good thing.</p>
+
+<h2>Thoughts on NuGet</h2>
+
+<h3>Conventions</h3>
+
+<p>NuGet has several conventions that make it easy to create simple packages
+that others can reference. You can share assemblies and content easily,
+and when you want to customize anything there are some powershell extension
+points you can hook into.</p>
+
+<p>One problem we run into is that when building packages, sometimes there&rsquo;s
+a NuGet convention we want to customize or suppress, and often we can&rsquo;t.</p>
+
+<p>For example, if you create a <code>nuspec</code> and place it adjacent to a <code>csproj</code>
+file, NuGet will look at the project and automatically inject metadata
+and content into the package. For some things, you can override this
+behavior with explicit specifications in the nuspec, but the behavior
+can be surprising and confusing.</p>
+
+<h3>Dependency Scoping</h3>
+
+<p>NuGet supports the concept of transitive dependencies&hellip; sort of. If you
+install package A, and A depends on package B, NuGet will go find a version
+of B and install it while installing A. However, NuGet doesn&rsquo;t do any record
+keeping to remember that B is a transitive dependency. To your project, A and
+B appear simply as direct dependencies.</p>
+
+<p>There may be cases where A depends on B at runtime, but consumers of A
+shouldn&rsquo;t need to code against B at design time.</p>
+
+<p>There may be other cases where B is an optional dependency for A, and
+A can be used without it.</p>
+
+<p>Since NuGet doesn&rsquo;t have a concept of scope, it only has one simplistic
+approach to dealing with transitive dependencies: treat them just like
+direct dependencies.</p>
+
+<h3>Upgrade Behavior</h3>
+
+<p>When you ask NuGet to update a specific package, it will first look for
+updates to transitive dependencies that the package depends on. This may
+seem obvious or desirable to some, but personally I find it confusing.
+You can control this behavior with the <code>-IgnoreDependencies</code> flag in
+the Package Management Console, but oddly you don&rsquo;t get that option
+in the command line <code>nuget.exe</code> or from the Visual Studio GUI Package
+Manager.</p>
+
+<h3>Package Feed Performance</h3>
+
+<p>We use continuous integration, and every successful build produces
+&ldquo;release candidate&rdquo; versions of packages. We generate 50 to 100 packages
+a day.</p>
+
+<p>Using the simple NuGet UNC share quickly failed to scale, so next we tried
+NuGet.Server and found that it doesn&rsquo;t perform well either.</p>
+
+<p>NuGet Gallery seemed like overkill with its SQL Server requirement, so
+I started optimizing NuGet.Server. This project ended up taking quite
+a while, but the good news is that the fruits of the labor are now
+open source on GitHub at <a href="https://github.com/themotleyfool/NuGet">https://github.com/themotleyfool/NuGet</a>.</p>
+
+<p>For more information about that project, see my <a href="/blog/2012/07/03/Speeding-Up-NuGet-Server/">previous post</a>.</p>
+
+<h3>Refactoring Applications and Shared Code</h3>
+
+<p>We try to use <a href="http://semver.org/">Semantic Versioning</a> to communicate
+breaking changes in the packages we publish, so sometimes when
+we want to use a refactoring tool like Change Method Signature
+or Use Base Class it would be nice to have application and shared
+code loaded into a single instance of Visual Studio.</p>
+
+<p>We created a tool called <a href="https://github.com/TheMotleyFool/SlimJim">SlimJim</a>
+that generates these Solution files on the fly.</p>
+
+<p>If you create a Solution with application code and shared library code,
+ReSharper will be smart enough to apply refactoring tools across the projects
+even though ProjectReference style references are not being used.</p>
+
+<p>However, Visual Studio won&rsquo;t know the correct order to build projects in,
+and won&rsquo;t automatically copy outputs from shared libraries over to applications.</p>
+
+<p>We extended SlimJim to convert assembly references to project references and back
+to address this limitation.</p>
+
+<h2>Conclusion</h2>
+
+<p>In terms of capability and maturity, we&rsquo;re in a much better place than
+we were a few years ago. However, we still have a ways to go in terms of
+productivity and workflow.</p>
+
+<p>NuGet has helped us move in the right direction and we hope to see
+further enhancements and even contribute some more of our own as we
+develop them.</p>
 </div>
   
   
