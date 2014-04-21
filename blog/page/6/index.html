@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="This plug-in does something so simple yet very useful instead of archiving artifact it will list the deployments performed at build time to the Maven &hellip;">
+  <meta name="description" content="Well, there is nothing like a simple and easy innovative solutions to save the day -it&rsquo;s been around for quite a while and never really needed &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +72,63 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/05/29/mount-remote-firsvia-ssh/">Mount Remote Dirs via Ssh With Sshfs / Fuse</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-29T09:11:00-04:00" pubdate data-updated="true">May 29<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/OpenSSH.jpg" title="'SSH'" >Well, there is nothing like a simple and easy innovative solutions to save the day -it&rsquo;s been around for quite a while and never really needed it until now &hellip;</p>
+
+<p><em><strong>Use Case</strong></em><strong>:</strong></p>
+
+<p>we moved Subversion from server A to server B and we wanted to bea ble to utilze the same backup scripts we were using so one (not real elegant way) was to mount the remote location via NFS which has its issues, from time to time you will meet stale NFS records and such so that is almost in all cases out of the question.</p>
+
+<p>A neat solution would be to mount over SSH a specific directory run svnhotbackup and close the share, I took this to another level by utilising this over a VDSL connection which worked like a charm, so how do we do this ?</p>
+
+<p>If you are on Ubuntu (<a href="#aptget">see install snippet below</a>):</p>
+
+<pre><code>sudo apt-get install sshfs
+</code></pre>
+
+<p>add fuse to your /etc/modules [edit /etc/modules and add the word fuse on a single line]</p>
+
+<pre><code>vi /etc/modules ...
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2011/05/29/mount-remote-firsvia-ssh/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -1014,51 +1071,6 @@ Although I am only &ldquo;P.O.C ing&rdquo; Sonar+Hudson+Clover, The <a href="htt
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/08/17/Job-configuration-change-in-Hudson-1.372/">Job Configuration Change in Hudson 1.372</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-08-17T09:11:00-04:00" pubdate data-updated="true">Aug 17<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/hudson_logo.png" title="'Hudson Logo'" >Yesterday I upgraded hudson to the greatest an latest which was a seamless upgrade.</p>
-
-<p>A very obvious change in the Job configuration form was added instead of &ldquo;<strong>Tie Build to a node</strong>&rdquo;:
-<img src="/assets/images/old-slave-daialog_0.png" title="'old_slave_selection_dialog'" ></p>
-
-<p>There is now <strong>&ldquo;Restrict where this project can be run&rdquo;</strong>:</p>
-
-<p><img src="/assets/images/new-slave-daialog_0.png" title="'new__slave_selection_dialog'" ></p>
-
-<p>The disadvantage in this feature is if you want to a build to a node you need to know its name / node group name prior to the actual configuration. The Advantage of this feature is you can be more specific in where you want you build to run and with a large number of slaves this is quite important, <strong>Please note</strong>: &ldquo;old&rdquo; jobs aren&rsquo;t affected of this change.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -1080,6 +1092,10 @@ Although I am only &ldquo;P.O.C ing&rdquo; Sonar+Hudson+Clover, The <a href="htt
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/21/practical-continuous-deployment/">Practical Continuous Deployment</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
       </li>
     
@@ -1093,10 +1109,6 @@ Although I am only &ldquo;P.O.C ing&rdquo; Sonar+Hudson+Clover, The <a href="htt
     
       <li class="post">
         <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow from GitHub</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing A RESTful API That Doesn&#8217;t Suck</a>
       </li>
     
   </ul>

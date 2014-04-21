@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="In one of my previous projects I needed to deploy 2 Tomcat servers as part of the build process, this could be done by profiling the parent project &hellip;">
+  <meta name="description" content="Yesterday I upgraded hudson to the greatest an latest which was a seamless upgrade. A very obvious change in the Job configuration form was added &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +72,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/08/17/Job-configuration-change-in-Hudson-1.372/">Job Configuration Change in Hudson 1.372</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-17T09:11:00-04:00" pubdate data-updated="true">Aug 17<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/hudson_logo.png" title="'Hudson Logo'" >Yesterday I upgraded hudson to the greatest an latest which was a seamless upgrade.</p>
+
+<p>A very obvious change in the Job configuration form was added instead of &ldquo;<strong>Tie Build to a node</strong>&rdquo;:
+<img src="/assets/images/old-slave-daialog_0.png" title="'old_slave_selection_dialog'" ></p>
+
+<p>There is now <strong>&ldquo;Restrict where this project can be run&rdquo;</strong>:</p>
+
+<p><img src="/assets/images/new-slave-daialog_0.png" title="'new__slave_selection_dialog'" ></p>
+
+<p>The disadvantage in this feature is if you want to a build to a node you need to know its name / node group name prior to the actual configuration. The Advantage of this feature is you can be more specific in where you want you build to run and with a large number of slaves this is quite important, <strong>Please note</strong>: &ldquo;old&rdquo; jobs aren&rsquo;t affected of this change.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -544,6 +589,10 @@ java.lang.IllegalArgumentException: id to load is required for loading
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/21/practical-continuous-deployment/">Practical Continuous Deployment</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
       </li>
     
@@ -557,10 +606,6 @@ java.lang.IllegalArgumentException: id to load is required for loading
     
       <li class="post">
         <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow from GitHub</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing A RESTful API That Doesn&#8217;t Suck</a>
       </li>
     
   </ul>

@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Well just got a mac from my new project FB Status&hellip; &ndash; couldn&rsquo;t resist it :) One of the tasks was to setup an environment, and &hellip;">
+  <meta name="description" content="If you don&rsquo;t know what librarian is &ndash; get to know it :) (it makes life much easier)[http://rubydoc.info/gems/librarian-chef] than way &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +72,104 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/16/cheffile-and-librarian-locks/">Cheffile &amp; &#8216;Librarian Locks&#8217;</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-16T00:56:00-04:00" pubdate data-updated="true">Aug 16<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/librarian.png" title="'librarian chef'" >
+If you don&rsquo;t know what librarian is &ndash; get to know it :) (it makes life much easier)[<a href="http://rubydoc.info/gems/librarian-chef">http://rubydoc.info/gems/librarian-chef</a>] than way back when &hellip;</p>
+
+<p>The most annoying thing happend to me earlier this evening, I was working on a cookbook [A chef cookbook &hellip;, I don&rsquo;t actually do the cooking at home :)], and running librarian install yielded the following error:</p>
+
+<pre><code>"Cheffile and Cheffile.lock are out of sync!"
+</code></pre>
+
+<p>So like a good boy I remoced the Cheffile.lock and ran it again resulting with the same damn error message &hellip; arrrrrr !</p>
+
+<p>So after examening my Cheffile over and over I noticed I have listed a dependency from two different location somthing like the followin [ clieng url&rsquo;s omitted from snippet ]:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> <span class="c">#!/usr/bin/env ruby</span>
+</span><span class='line'>  <span class="c">#^syntax detection</span>
+</span><span class='line'>  site <span class="s2">&quot;http://shelf.clients_domain.corp:8080&quot;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;simple_proxy&#39;</span>, :git <span class="o">=</span>&gt; <span class="s1">&#39;git://clients_domain.corp/hagzag/simple_proxy.git&#39;</span>, :ref <span class="o">=</span>&gt; <span class="s1">&#39;master&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;nw-abap&#39;</span>,     :git <span class="o">=</span>&gt; <span class="s1">&#39;git://clients_domain.corp/hagzag/nw-abap.git&#39;</span>, :ref <span class="o">=</span>&gt; <span class="s1">&#39;master&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;sapinst&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># for lvm volume creation do this once ...</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;lvm&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;sap-lvm&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>,      :site <span class="o">=</span>&gt; <span class="s1">&#39;http://community.opscode.com/api/v1&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  cookbook <span class="s1">&#39;nfs&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you look a line numbers 11 &amp; 14 you will see I am specifying the smae cookbook from tow different sources &hellip;, this is a good thing, your dependecny mechanisem / tool isn&rsquo;t making decitions for you [ unlike Maven for exmaple &hellip; ].</p>
+
+<p>So in order to avoid this error and to comtinue working I had to remove one if the lines and I was good to go.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> ...
+</span><span class='line'>  <span class="c">#cookbook &#39;line&#39;,      :site =&gt; &#39;http://community.opscode.com/api/v1&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  cookbook <span class="s1">&#39;nfs&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Another fraction on my time line &hellip;</p>
+
+<p>Enjoy.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -655,106 +753,6 @@ installing the two missing dependencies <em>&ldquo;mysql-client libmysqlclient-d
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/03/09/simple-zookeeper-cluster/">Simple Zookeeper Cluster</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-09T07:00:00-05:00" pubdate data-updated="true">Mar 9<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Sometimes I need to run <a href="http://zookeeper.apache.org">ZooKeeper</a> ensemble on my development box to test my application on the production-like environment. I found that recreating the whole ensemble from scratch is much faster than cleaning it up using ZooKeeper CLI tool. To automate this process I created a bash script which I want to share in this blog post. I hard-coded all the paths in the script using my regular conventions. You might need to change them to yours — it should be fairly straightforward.</p>
-
-<p>Before you can use the script, you need to install ZooKeeper on your box. That&rsquo;s what I did on my machine</p>
-
-<pre><code>$ cd /opt
-$ sudo mkdir zookeeper
-$ sudo chown -R andrey:admin zookeeper
-$ cd zookeeper
-$ wget http://apache.mirror.rafal.ca/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz
-$ tar xf zookeeper-3.4.5.tar.gz
-$ rm zookeeper-3.4.5.tar.gz
-$ ln -s zookeeper-3.4.5 zookeeper
-</code></pre>
-
-<p>In the end you should have a ZooKeeper installed in <em>/opt/zookeeper/zookeeper</em> directory.</p>
-
-<p>Now download, chmod, and run the <a href="https://gist.github.com/ndpar/5105486">script</a>. It will create the following files</p>
-
-<pre><code>/opt/zookeeper/zookeeper/cluster
-├── server1
-│   ├── conf
-│   │   ├── log4j.properties
-│   │   └── zoo.cfg
-│   ├── data
-│   │   └── myid
-│   └── logs
-├── server2
-│   ├── conf
-│   │   ├── log4j.properties
-│   │   └── zoo.cfg
-│   ├── data
-│   │   └── myid
-│   └── logs
-├── server3
-│   ├── conf
-│   │   ├── log4j.properties
-│   │   └── zoo.cfg
-│   ├── data
-│   │   └── myid
-│   └── logs
-├── start.sh
-└── stop.sh
-</code></pre>
-
-<p>This is the minimum configuration for 3-node ensemble (cluster), which is recommended for production. To start the cluster, run the following command</p>
-
-<pre><code>$ cd /opt/zookeeper/zookeeper
-$ cluster/start.sh
-</code></pre>
-
-<p>Check the log files to see if the cluster is successfully started</p>
-
-<pre><code>$ tail -f cluster/server{1,2,3}/logs/zookeeper.out
-</code></pre>
-
-<p>When the cluster is up and running, you can test your application. After you are done, shutdown the cluster using the following command</p>
-
-<pre><code>$ cluster/stop.sh
-$ ps -ef | grep java
-</code></pre>
-
-<p>To recreate a clean cluster, just run the script again</p>
-
-<pre><code>$ ./zookeeper-init-ensemble.sh
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -776,6 +774,10 @@ $ ps -ef | grep java
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/21/practical-continuous-deployment/">Practical Continuous Deployment</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
       </li>
     
@@ -789,10 +791,6 @@ $ ps -ef | grep java
     
       <li class="post">
         <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow from GitHub</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing A RESTful API That Doesn&#8217;t Suck</a>
       </li>
     
   </ul>

@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Farewell to Regular Web Development Approaches At my previous company, we built Web applications for medium to large organizations, often in the &hellip;">
+  <meta name="description" content="Automation And Friction I&rsquo;ll admit that the devo.ps team is a lazy bunch; we like to forget about things, especially the hard stuff. Dealing &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +72,86 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/automation-and-friction/">Automation and Friction</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:06:45-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/06/20/automation-and-friction.html">Automation And Friction</a></h2>
+
+<p>I&rsquo;ll admit that the devo.ps team is a lazy bunch; we like to forget about things, especially the hard stuff. Dealing with a complex process invariably leads one of us to vent about how &ldquo;we should automate that stuff&rdquo;. That&rsquo;s what our team does day and night:</p>
+
+<ol>
+<li> Dumb things down, lower barriers of entry, and then…</li>
+<li> <strong>Automate all the things!</strong></li>
+</ol>
+
+
+<p>This has transpired through every layer of our company, from engineering to operations. Recently we&rsquo;ve started pushing on a third point, but first let me rant a bit…</p>
+
+<h3>The ever increasing surface of friction</h3>
+
+<p>The past few years have seen a healthy push on UI and UX. Even developer tools and enterprise software, historically less user-friendly, have started adopting that trend. We now have things like Github. Great.</p>
+
+<p>This trend grew in parallel with the adoption of SaaS. SaaS are the results of teams focused on specific problems, with the user experience often being a key component (not to undervalue good engineering). It&rsquo;s pretty standard for these services to offer an API for integration&rsquo;s sake. <a href="https://getbase.com">Our CRM</a> plays nicely with Dropbox, GMail and a gazillion other services. Again, great.</p>
+
+<p><strong>However, the success of SaaS means the surface of interfaces we&rsquo;re dealing with is constantly stretching. This is far more difficult to overcome than poor UI or UX.</strong> Many of us have witnessed teams struggling to get adoption on a great tool that happen to be one too many. There&rsquo;s not much you can do about it.</p>
+
+<h3>A bot to rule them all…</h3>
+
+<p><img src="http://devo.ps/images/posts/borat.png" alt="Borat is omnipotent" /></p>
+
+<p>Our team has tried a lot of different approaches over the years. We kicked the tires on a lot of products and ended up doing as usual:</p>
+
+<ol>
+<li><p> <strong>Simplify</strong>. For example, we use Github to manage most tasks and discussions, including operations (HR, admin, …), and marketing. We used <a href="http://trello.com/">Trello</a> alongside Github for a while and we loved it. But it silo-ed the discussions. Everything from our employee handbook to tasks for buying snacks for the office are now on Github. It also had an interesting side effect on transparency, but I&rsquo;ll talk about this another time.</p></li>
+<li><p> <strong>Automate</strong>. We automate pretty much everything we can. When you apply to one of our job by email for example, we push the attachments in Dropbox (likely your resume) and create a ticket with the relevant information on Github. <a href="http://zapier.com">Zapier</a> is great for this kind of stuff by the way.</p></li>
+<li><p> <strong>Make it accessible</strong>. That&rsquo;s the most important point for us at this stage. Borat, our <a href="http://hubot.github.com">Hubot</a> chat bot, is hooked up with most of our infrastructure and is able to pass on requests to the services we use as well as some of our automation. If one of us is awake, chances are you can find us on the chat, making it the most ubiquitous interface for our team:</p>
+
+<ul>
+<li>Need to deploy some code on production or modify some configuration on a server? Ask Borat, he&rsquo;ll relay your demands to the <a href="http://devo.ps">devo.ps</a> API.</li>
+<li>Your latest commit broke the build? A new mail came from support? Expect to hear about it from Borat.</li>
+<li>Need to use our time tracker? Just drop a message to the bot when you&rsquo;re starting your task and let him know when you&rsquo;re done.</li>
+<li>Need to call for a SCRUM? Just mention the Github team you want to chat with and Borat will create a separate channel and invite the right people to join.</li>
+<li>Somebody is at the door? Ask the bot to open it for you (you gotta love hacking on Raspberry PI).</li>
+</ul>
+</li>
+</ol>
+
+
+<p>Anybody with access to our bot&rsquo;s repository can add a script to hook him up to a new service. Git push, kill the bot and wait for him to come back to life with new skills. The tedious stuff ends up sooner or later scripted and one sentence away.</p>
+
+<p>Really, try it. It&rsquo;s worth the investment.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1340,104 +1420,6 @@ quality of our throughput.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/16/cheffile-and-librarian-locks/">Cheffile &amp; &#8216;Librarian Locks&#8217;</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-16T00:56:00-04:00" pubdate data-updated="true">Aug 16<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/librarian.png" title="'librarian chef'" >
-If you don&rsquo;t know what librarian is &ndash; get to know it :) (it makes life much easier)[<a href="http://rubydoc.info/gems/librarian-chef">http://rubydoc.info/gems/librarian-chef</a>] than way back when &hellip;</p>
-
-<p>The most annoying thing happend to me earlier this evening, I was working on a cookbook [A chef cookbook &hellip;, I don&rsquo;t actually do the cooking at home :)], and running librarian install yielded the following error:</p>
-
-<pre><code>"Cheffile and Cheffile.lock are out of sync!"
-</code></pre>
-
-<p>So like a good boy I remoced the Cheffile.lock and ran it again resulting with the same damn error message &hellip; arrrrrr !</p>
-
-<p>So after examening my Cheffile over and over I noticed I have listed a dependency from two different location somthing like the followin [ clieng url&rsquo;s omitted from snippet ]:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'> <span class="c">#!/usr/bin/env ruby</span>
-</span><span class='line'>  <span class="c">#^syntax detection</span>
-</span><span class='line'>  site <span class="s2">&quot;http://shelf.clients_domain.corp:8080&quot;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;simple_proxy&#39;</span>, :git <span class="o">=</span>&gt; <span class="s1">&#39;git://clients_domain.corp/hagzag/simple_proxy.git&#39;</span>, :ref <span class="o">=</span>&gt; <span class="s1">&#39;master&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;nw-abap&#39;</span>,     :git <span class="o">=</span>&gt; <span class="s1">&#39;git://clients_domain.corp/hagzag/nw-abap.git&#39;</span>, :ref <span class="o">=</span>&gt; <span class="s1">&#39;master&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;sapinst&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c"># for lvm volume creation do this once ...</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;lvm&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;sap-lvm&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>,      :site <span class="o">=</span>&gt; <span class="s1">&#39;http://community.opscode.com/api/v1&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  cookbook <span class="s1">&#39;nfs&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you look a line numbers 11 &amp; 14 you will see I am specifying the smae cookbook from tow different sources &hellip;, this is a good thing, your dependecny mechanisem / tool isn&rsquo;t making decitions for you [ unlike Maven for exmaple &hellip; ].</p>
-
-<p>So in order to avoid this error and to comtinue working I had to remove one if the lines and I was good to go.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'> ...
-</span><span class='line'>  <span class="c">#cookbook &#39;line&#39;,      :site =&gt; &#39;http://community.opscode.com/api/v1&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  cookbook <span class="s1">&#39;nfs&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
-</span><span class='line'>  cookbook <span class="s1">&#39;line&#39;</span>, :site <span class="o">=</span>&gt; <span class="s1">&#39;http://clients_domain.corp:8080&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Another fraction on my time line &hellip;</p>
-
-<p>Enjoy.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1459,6 +1441,10 @@ If you don&rsquo;t know what librarian is &ndash; get to know it :) (it makes li
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/21/practical-continuous-deployment/">Practical Continuous Deployment</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
       </li>
     
@@ -1472,10 +1458,6 @@ If you don&rsquo;t know what librarian is &ndash; get to know it :) (it makes li
     
       <li class="post">
         <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow from GitHub</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/03/designing-a-restful-api-that-doesnt-suck/">Designing A RESTful API That Doesn&#8217;t Suck</a>
       </li>
     
   </ul>
