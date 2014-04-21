@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Automation And Friction I&rsquo;ll admit that the devo.ps team is a lazy bunch; we like to forget about things, especially the hard stuff. Dealing &hellip;">
+  <meta name="description" content="Code Reuse With Node.js Any project that grows to a decent size will need to re-use parts of its code extensively. That often means, through the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +72,243 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/code-reuse-with-node-dot-js/">Code Reuse With Node.js</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:09:35-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/07/11/code-reuse-with-nodejs.html">Code Reuse With Node.js</a></h2>
+
+<p><img src="http://devo.ps/images/posts/recycle.png" alt="Code recycling" /></p>
+
+<p>Any project that grows to a decent size will need to re-use parts of its code extensively. That often means, through the development cycle, a fair amount of rewrites and refactoring exercises. Elegant code re-use is hard to pull off.</p>
+
+<p>With node.js, which we use quite a bit at <a href="http://devo.ps">devo.ps</a>, the most common ways to do this often rely on prototype or class inheritance. The problem is, as the inheritance chain grows, managing attributes and functions
+can become quite complex.</p>
+
+<p>The truth is, people usually just need the objects. This led us to adopt a certain form of object-based prototyping. We believe it to be leaner and more straightforward in most cases. But before we get there, let&rsquo;s have a look at how people usually approach this issue.</p>
+
+<h2>The &ldquo;Function copy&rdquo;</h2>
+
+<p>Usually in the form of <code>this[key] = that[key]</code>. A quick example:</p>
+
+<pre><code>var objectA = {
+    lorem: 'lorem ipsum'
+};
+var objectB = {};
+
+// Direct copy of a string, but you get the idea
+objectB.lorem = objectA.lorem;
+console.log(objectB); // Will output: { lorem: 'lorem ipsum' }
+</code></pre>
+
+<p>Crude, but it works. Next…</p>
+
+<h2>Object.defineProperties()</h2>
+
+<p>The previous method may work with simple structures, but it won&rsquo;t hold when
+your use cases become more complex. That&rsquo;s when I usually call my buddy
+<code>Object.defineProperties()</code>:</p>
+
+<pre><code>var descriptor = Object.getOwnPropertyDescriptor;
+var defineProp = Object.defineProperty;
+
+var objectA = {};
+var objectB = {};
+var objectC = {};
+
+objectA.__defineGetter__('lorem', function() {
+    return 'lorem ipsum';
+});
+console.log(objectA); // Will output: { lorem: [Getter] }
+
+// Direct copy, which copies the result of the getter.
+objectB.lorem = objectA.lorem;
+console.log(objectB); // Will output: { lorem: 'lorem ipsum' }
+
+// Copying with Object.defineProperty(), and it copies the getter itself.
+defineProp(objectC, 'lorem', descriptor(objectA, 'lorem'));
+console.log(objectC); // Will output: { lorem: [Getter] }
+</code></pre>
+
+<p>I often use a library for that. A couple examples (more or less the same stuff
+with different coding styles):</p>
+
+<ol>
+<li><p> <strong><a href="https://github.com/medikoo/es5-ext">es5-ext</a></strong></p>
+
+<p> var extend = require(&lsquo;es5-ext/lib/Object/extend-properties&rsquo;);</p>
+
+<p> var objectA = {};
+ var objectC = {};</p>
+
+<p> objectA.<strong>defineGetter</strong>(&lsquo;lorem&rsquo;, function() {
+     return &lsquo;lorem ipsum&rsquo;;
+ });</p>
+
+<p> extend(objectC, objectA);
+ console.log(objectC); // Will output: { lorem: [Getter] }</p></li>
+<li><p> <strong><a href="https://github.com/devo-ps/carcass">Carcass</a></strong></p>
+
+<p> var carcass = require(&lsquo;carcass&rsquo;);</p>
+
+<p> var objectA = {};
+ var objectC = {};</p>
+
+<p> objectA.<strong>defineGetter</strong>(&lsquo;lorem&rsquo;, function() {
+     return &lsquo;lorem ipsum&rsquo;;
+ });</p>
+
+<p> carcass.mixable(objectC);
+ objectC.mixin(objectA);
+ console.log(objectC); // Will output: { mixin: [Function: mixin], lorem: [Getter] }</p></li>
+</ol>
+
+
+<p>Slightly better, but not optimal. Now, let&rsquo;s see what we end up doing more and
+more often:</p>
+
+<h2>Prototyping through objects</h2>
+
+<p>The basic idea is that we prepare some functions, wrap them into an object which then becomes a &ldquo;feature&rdquo;. That feature can then be re-used by simply merging it with the targeted structure (object or prototype).</p>
+
+<p>Let&rsquo;s take the example of the <a href="https://github.com/devo-ps/carcass/blob/master/lib/proto/loaderSync.js">loaderSync</a> script in <a href="https://github.com/devo-ps/carcass">Carcass</a>:</p>
+
+<pre><code>module.exports = {
+    source: source,
+    parser: parser,
+    reload: reload,
+    get: get
+};
+
+function get() {
+
+(...)
+</code></pre>
+
+<p>Once you copy the functions to an object, this object becomes a &ldquo;loader&rdquo; that can load a &ldquo;source&rdquo; synchronously with a &ldquo;parser&rdquo;. A &ldquo;source&rdquo; can be a file path and the &ldquo;parser&rdquo; can be simply Node.js&#8217; <code>require</code> function.</p>
+
+<p>Let&rsquo;s now see how to use this with a couple object builders. Once again, I&rsquo;ll borrow an example from Carcass; the <a href="https://github.com/devo-ps/carcass/blob/master/benchmark/proto.loaderSync.js">loaderSync benchmark script</a>. The first builder generates a function and copies the methods from what we&rsquo;ve prepared. The second one copies the methods to the prototype of a builder class:</p>
+
+<pre><code>(...)
+
+function LoaderA(_source) {
+    function loader() {
+        return loader.get();
+    }
+    loader.mixin = mixin;
+    loader.mixin(loaderSync);
+    loader.source(_source);
+    return loader;
+}
+
+(...)
+
+function LoaderC(_source) {
+    if (!(this instanceof LoaderC)) return new LoaderC(_source);
+    this.source(_source);
+}
+LoaderC.prototype.mixin = mixin;
+LoaderC.prototype.mixin(loaderSync);
+
+(...)
+</code></pre>
+
+<p>Here we can see the two approaches. Let&rsquo;s compare them quickly:</p>
+
+<p>FeatureLoader ALoader C</p>
+
+<p><strong>Instantiating</strong>
+<code>var a = LoaderA(...)</code></p>
+
+<p><code>var c = LoaderC(...)</code> or <code>var c = new LoaderC(...)</code></p>
+
+<p><strong>Appearance</strong>
+Generates a function</p>
+
+<p>Builds a typical instance which is an object.</p>
+
+<p><strong>Invoking directly</strong>
+<code>a()</code> or <code>a.get()</code></p>
+
+<p><code>c.get()</code></p>
+
+<p><strong>Invoking as a callback</strong>
+<code>ipsum(a)</code></p>
+
+<p><code>ipsum(c.get.bind(c))</code></p>
+
+<h2><strong>Performance † of instantiating</strong></h2>
+
+<p>100x faster</p>
+
+<p><strong>Performance of invoking</strong>
+<em>idem</em></p>
+
+<p><em>idem</em></p>
+
+<p><strong>†</strong>: (check it yourself by <a href="https://github.com/devo-ps/carcass/blob/master/Makefile">benchmarking Carcass with <code>make bm</code></a>)</p>
+
+<h3>&ldquo;Protos&rdquo; and beyond</h3>
+
+<p>That last approach is gaining traction among our team; we prepare functions for our object builders (which, by the way, we call &ldquo;protos&rdquo;). While we still choose to use prototypes in some occurrences, it is mainly because it is
+faster to get done. For the sake of convenience, we also sometimes rely on functions rather than objects to invoke our &ldquo;protos&rdquo;, however keep in mind that this is a performance trade-off.</p>
+
+<p>I&rsquo;ll wrap this up mentioning one more method we use, admittedly less often: &ldquo;Object alter&rdquo;. The idea is to rely on an &ldquo;alter&rdquo; function designed to change objects passed to it. This is sometimes also called a &ldquo;mixin&rdquo;. An example from <a href="https://github.com/visionmedia/configurable.js">vsionmedia&rsquo;s trove of awesomeness on Github</a>:</p>
+
+<pre><code>(...)
+
+module.exports = function(obj){
+
+    obj.settings = {};
+
+    obj.set = function(name, val){
+        (...)
+    };
+
+    (...)
+
+    return obj;
+};
+</code></pre>
+
+<h3>Resources</h3>
+
+<ul>
+<li><a href="http://killdream.github.io/2011/10/09/understanding-javascript-oop.html">A case for prototypes</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">MDN Object reference</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1008,418 +1245,6 @@ s3fs dev_tools /mnt/dev_tools/
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/25/vagrant-docker-and-ansible-wtf/">Vagrant, Docker and Ansible, WTF?</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-25T08:00:00-04:00" pubdate data-updated="true">Sep 25<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2013/09/25/vagrant-docker-and-ansible-wtf.html">Vagrant, Docker and Ansible. WTF?</a></h2>
-
-<p>Given that we&rsquo;re building a SaaS that helps our client managing their infrastructure, our team is pretty familiar with leveraging VMs and configuration management tools. We&rsquo;ve actually been heavy users of Vagrant and <a href="http://devo.ps/blog/2013/07/03/ansible-simply-kicks-ass.html">Ansible</a> for
-the past year, and it&rsquo;s helped us tremendously normalize our development process.</p>
-
-<p>As our platform grew in complexity, some additional needs emerged:</p>
-
-<ul>
-<li><strong>Containerization</strong>; we needed to be able to safely execute custom, and potentially harmful, code.</li>
-<li><strong>Weight</strong>; as we added more sub-systems to devo.ps, having full blown VMs proved to be hard to juggle with when testing and developing.</li>
-</ul>
-
-
-<p>And that&rsquo;s why we ended up adding Docker to our development workflow. We were already familiar with it (as it powers some parts of the devo.ps infrastructure) and knew there would be obvious wins. In practice, we are shipping Docker containers in a main Vagrant image and drive some of the customization and upgrade with Ansible.</p>
-
-<p>We&rsquo;ll probably write something about this approach in the coming weeks, but given the amount of confusion there is around what these technologies are, and how they&rsquo;re used, we thought we&rsquo;d give you a quick tour on how to use them together.</p>
-
-<p>Let&rsquo;s get started.</p>
-
-<h2>Vagrant</h2>
-
-<p>You&rsquo;ve probably heard about <a href="http://www.vagrantup.com/">Vagrant</a>; a healthy number of people have been writing about it in the past 6 months. For those of you who haven&rsquo;t, think of it as a VM without the GUI. At its core, Vagrant is a simple wrapper around Virtualbox/VMware.</p>
-
-<p>A few interesting features:</p>
-
-<ul>
-<li><strong>Boatloads of existing images</strong>, just check <a href="http://www.vagrantbox.es/">Vagrantbox.es</a> for example.</li>
-<li><strong>Snapshot and package your current machine</strong> to a Vagrant box file (and, consequently, share it back).</li>
-<li><strong>Ability to fine tune settings of the VM</strong>, including things like RAM, CPU, APIC…</li>
-<li><strong>Vagrantfiles</strong>. This allows you to setup your box on init: installing packages, modifying configuration, moving code around…</li>
-<li><strong>Integration with CM tools</strong> like Puppet, Chef and Ansible.</li>
-</ul>
-
-
-<p>Let&rsquo;s get it running on your machine:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>1. First, [download Vagrant](http://downloads.vagrantup.com/) 
-</span><span class='line'>     and [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
-</span><span class='line'>  2. Second, let's download an image, spin it up and SSH in:
-</span><span class='line'>   $ vagrant init precise64 http://files.vagrantup.com/precise64.box
-</span><span class='line'>   $ vagrant up
-</span><span class='line'>   $ vagrant ssh
-</span><span class='line'>  3. There's no 3.
-</span><span class='line'>  4. There's a 4 if you want to access your (soon to be) deployed app; 
-</span><span class='line'>  5. you will need to dig around the Vagrant documentation to 
-</span><span class='line'>     [perform port forwarding](http://docs.vagrantup.com/v2/networking/forwarded_ports.html), 
-</span><span class='line'>     [proper networking](http://docs.vagrantup.com/v2/networking/private_network.html) 
-</span><span class='line'>     and update manually your `Vagrantfile`.</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Docker</h2>
-
-<p><a href="http://docker.io">Docker</a> is a Linux container, written in <a href="http://golang.org">Go</a> (yay!) and based on <a href="http://en.wikipedia.org/wiki/LXC">lxc</a> (self-described as &ldquo;chroot on steroids&rdquo;) and <a href="http://en.wikipedia.org/wiki/Aufs">AUFS</a>. Instead of providing a full VM, like you get with Vagrant, Docker provides you lightweight containers, that share the same kernel and allow to safely execute independent
-processes.</p>
-
-<p>Docker is attractive for many reasons:</p>
-
-<ul>
-<li><strong>Lightweight</strong>; images are much lighter than full VMs, and spinning off a new instance is lightning fast (in the range of seconds instead of minutes).</li>
-<li><strong>Version control of the images</strong>, which makes it much more convenient to handle builds.</li>
-<li><strong>Lots of images</strong> (again), just have a look at <a href="https://index.docker.io">the docker public index of images</a>.</li>
-</ul>
-
-
-<p>Let&rsquo;s set up a Docker container on your Vagrant machine:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>1. SSH in Vagrant if you're not in already:
-</span><span class='line'>    
-</span><span class='line'>     $ vagrant ssh
-</span><span class='line'>
-</span><span class='line'>  2. Install Docker, 
-</span><span class='line'>  [as explained on the official website](http://http://docs.docker.io/en/latest/installation/ubuntulinux/#ubuntu-precise-12-04-lts-64-bit):
-</span><span class='line'>    
-</span><span class='line'>     $ sudo apt-get update
-</span><span class='line'>     $ sudo apt-get install linux-image-generic-lts-raring linux-headers-generic-lts-raring
-</span><span class='line'>     $ sudo reboot
-</span><span class='line'>     $ sudo sh -c "curl https://get.docker.io/gpg | apt-key add -"
-</span><span class='line'>     $ sudo sh -c "echo deb http://get.docker.io/ubuntu docker main &gt; /etc/apt/sources.list.d/docker.list"
-</span><span class='line'>     $ sudo apt-get update
-</span><span class='line'>     $ sudo apt-get install lxc-docker
-</span><span class='line'>
-</span><span class='line'>  3. Verify it worked by trying to build your first container:
-</span><span class='line'>    
-</span><span class='line'>     $ sudo docker run -i -t ubuntu /bin/bash
-</span><span class='line'>
-</span><span class='line'>  4. Great, but we'll need more than a vanilla Linux. To add our dependencies, for example to run a Node.js + MongoDB app, we're gonna start by creating a `Dockerfile`:
-</span><span class='line'>    
-</span><span class='line'>     FROM ubuntu
-</span><span class='line'>     MAINTAINER My Self me@example.com
-</span><span class='line'>     
-</span><span class='line'>     # Fetch Nodejs from the official repo (binary .. no hassle to build, etc.)
-</span><span class='line'>     ADD http://nodejs.org/dist/v0.10.19/node-v0.10.19-linux-x64.tar.gz /opt/
-</span><span class='line'>     
-</span><span class='line'>     # Untar and add to the PATH
-</span><span class='line'>     RUN cd /opt &amp;&amp; tar xzf node-v0.10.19-linux-x64.tar.gz
-</span><span class='line'>     RUN ln -s /opt/node-v0.10.19-linux-x64 /opt/node
-</span><span class='line'>     RUN echo "export PATH=/opt/node/bin:$PATH" &gt;&gt; /etc/profile
-</span><span class='line'>     
-</span><span class='line'>     # A little cheat for upstart ;)
-</span><span class='line'>     RUN dpkg-divert --local --rename --add /sbin/initctl
-</span><span class='line'>     RUN ln -s /bin/true /sbin/initctl
-</span><span class='line'>     
-</span><span class='line'>     # Update apt sources list to fetch mongodb and a few key packages
-</span><span class='line'>     RUN echo "deb http://archive.ubuntu.com/ubuntu precise universe" &gt;&gt; /etc/apt/sources.list
-</span><span class='line'>     RUN apt-get update
-</span><span class='line'>     RUN apt-get install -y python git
-</span><span class='line'>     RUN apt-get install -y mongodb
-</span><span class='line'>     
-</span><span class='line'>     # Finally - we wanna be able to SSH in
-</span><span class='line'>     RUN apt-get install -y openssh-server
-</span><span class='line'>     RUN mkdir /var/run/sshd
-</span><span class='line'>     
-</span><span class='line'>     # And we want our SSH key to be added
-</span><span class='line'>     RUN mkdir /root/.ssh &amp;&amp; chmod 700 /root/.ssh
-</span><span class='line'>     ADD id_rsa.pub /root/.ssh/authorized_keys
-</span><span class='line'>     RUN chmod 400 /root/.ssh/authorized_keys &amp;&amp; chown root. /root/.ssh/authorized_keys
-</span><span class='line'>     
-</span><span class='line'>     # Expose a bunch of ports .. 22 for SSH and 3000 for our node app
-</span><span class='line'>     EXPOSE 22 3000
-</span><span class='line'>     
-</span><span class='line'>     ENTRYPOINT ["/usr/sbin/sshd", "-D"]
-</span><span class='line'>
-</span><span class='line'>  5. Let's build our image now:
-</span><span class='line'>    
-</span><span class='line'>     $ sudo docker build .
-</span><span class='line'>     
-</span><span class='line'>     # Missing file id_rsa.pub ... hahaha ! You need an ssh key for your vagrant user
-</span><span class='line'>     $ ssh-keygen
-</span><span class='line'>     $ cp -a /home/vagrant/.ssh/id_rsa.pub .
-</span><span class='line'>     
-</span><span class='line'>     # Try again
-</span><span class='line'>     $ sudo docker build .
-</span><span class='line'>     
-</span><span class='line'>     # Great Success! High Five!
-</span><span class='line'>
-</span><span class='line'>  6. Now, let's spin off a container with that setup and log into it (`$MY_NEW_IMAGE_ID` is the last id the build process returned to you):
-</span><span class='line'>    
-</span><span class='line'>     $ sudo docker run -p 40022:22 -p 80:3000 -d $MY_NEW_IMAGE_ID
-</span><span class='line'>     $ ssh root@localhost -p 40022</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You now have a Docker container, inside a Vagrant box (<em>Inception</em> style),
-ready to run a Node.js app.</p>
-
-<h2>Ansible</h2>
-
-<p><a href="http://ansible.cc">Ansible</a> is an orchestration and configuration management tool written in Python. If you want to learn more about Ansible (and you should…), <a href="/blog/2013/07/03/ansible-simply-kicks-ass.html">we wrote about it a few weeks ago</a>.</p>
-
-<p>Let&rsquo;s get to work. We&rsquo;re now gonna deploy an app in our container:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>1. [Install Ansible](/blog/2013/07/03/ansible-simply-kicks-ass.html), as we showed you in our previous post.
-</span><span class='line'>
-</span><span class='line'>  2. Prepare your inventory file (`host`):
-</span><span class='line'>    
-</span><span class='line'>     app ansible_ssh_host=127.0.0.1 ansible_ssh_port=40022
-</span><span class='line'>
-</span><span class='line'>  3. Create a simple playbook to deploy our app (`deploy.yml`):
-</span><span class='line'>    
-</span><span class='line'>     ---
-</span><span class='line'>     - hosts: app
-</span><span class='line'>       user: root
-</span><span class='line'>       tasks:
-</span><span class='line'>         # Fetch the code from github
-</span><span class='line'>         - name: Ensure we got the App code
-</span><span class='line'>           git:
-</span><span class='line'>             repo=git://github.com/madhums/node-express-mongoose-demo.git
-</span><span class='line'>             dest=/opt/node-express-mongoose-demo
-</span><span class='line'>         
-</span><span class='line'>         # NPM may or may not succeed, if you give it time, care, etc. it eventually works
-</span><span class='line'>         - name: Ensure the npm dependencies are installed
-</span><span class='line'>           command:
-</span><span class='line'>             chdir=/opt/node-express-mongoose-demo
-</span><span class='line'>             /opt/node/bin/npm install
-</span><span class='line'>           ignore_errors: yes
-</span><span class='line'>           
-</span><span class='line'>         # We will assume no changes in the default sample - or we should consider templates instead
-</span><span class='line'>         - name: Ensure the config files of the app
-</span><span class='line'>           command:
-</span><span class='line'>             creates=/opt/node-express-mongoose-demo/config/$item.js
-</span><span class='line'>             cp /opt/node-express-mongoose-demo/config/$item.example.js /opt/node-express-mongoose-demo/config/$item.js
-</span><span class='line'>           with_items:
-</span><span class='line'>             - config
-</span><span class='line'>             - imager
-</span><span class='line'>             
-</span><span class='line'>         # `initctl` is now linking to `true` and we have no access to services
-</span><span class='line'>         # Need to fake the start
-</span><span class='line'>         - name: Ensure mongodb data folders
-</span><span class='line'>           file:
-</span><span class='line'>             state=directory
-</span><span class='line'>             dest=$item
-</span><span class='line'>             owner=mongodb
-</span><span class='line'>             group=mongodb
-</span><span class='line'>           with_items:
-</span><span class='line'>             - /var/lib/mongodb
-</span><span class='line'>             - /var/log/mongodb
-</span><span class='line'>             
-</span><span class='line'>         # Super cheat combo !
-</span><span class='line'>         - name: Ensure mongodb is running
-</span><span class='line'>           shell:
-</span><span class='line'>             LC_ALL='C' /sbin/start-stop-daemon --background --start --quiet --chuid mongodb --exec  /usr/bin/mongod -- --config /etc/mongodb.conf
-</span><span class='line'>         
-</span><span class='line'>         # Cheating some more !
-</span><span class='line'>         - name: Ensure the App is running
-</span><span class='line'>           shell:
-</span><span class='line'>             chdir=/opt/node-express-mongoose-demo
-</span><span class='line'>             /opt/node/bin/npm start &amp;
-</span><span class='line'>
-</span><span class='line'>  4. Run that baby:
-</span><span class='line'>    
-</span><span class='line'>     $ ansible-playbook -i host deploy.yml
-</span><span class='line'>
-</span><span class='line'>  5. We're done, point your browser at `http://localhost:80` - assuming you have performed the redirection mentioned in the initial setup of your vagrant box.</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That&rsquo;s it. You&rsquo;ve just deployed your app on Docker (in Vagrant).</p>
-
-<h2>Let&rsquo;s wrap it up</h2>
-
-<p>So we just saw (roughly) how these tools can be used, and how they can be
-complementary:</p>
-
-<ol>
-<li> Vagrant will provide you with a full VM, including the OS. It&rsquo;s great at providing you a Linux environment for example when you&rsquo;re on MacOS.</li>
-<li> Docker is a lightweight VM of some sort. It will allow you to build contained architectures faster and cheaper than with Vagrant.</li>
-<li> Ansible is what you&rsquo;ll use to orchestrate and fine-tune things. That&rsquo;s what you want to structure your deployment and orchestration strategy.</li>
-</ol>
-
-
-<p>It takes a bit of reading to get more familiar with these tools, and we&rsquo;ll likely follow up on this post in the next few weeks. However, especially as a small team, this kind of technology allows you to automate and commoditize huge parts of your development and ops workflows. We strongly encourage you to make that investment. It has helped us tremendously increase the pace and
-quality of our throughput.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1441,6 +1266,10 @@ quality of our throughput.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/21/implementing-practical-continuous-deployment/">Implementing Practical Continuous Deployment</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/21/practical-continuous-deployment/">Practical Continuous Deployment</a>
       </li>
     
@@ -1454,10 +1283,6 @@ quality of our throughput.</p>
     
       <li class="post">
         <a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow from GitHub</a>
       </li>
     
   </ul>

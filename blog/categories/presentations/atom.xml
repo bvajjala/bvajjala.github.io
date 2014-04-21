@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Presentations | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/presentations/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-21T11:47:49-04:00</updated>
+  <updated>2014-04-21T12:12:22-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -28,12 +28,6 @@
 
 <h5>Feb 2014</h5>
 
-<p>{% notes %}</p>
-
-<p>Hi, my name is Balaji Vajjala and I&rsquo;m the Chief Architet and DevOps Solution Architect.</p>
-
-<p>I have been developing software in the financial and Telecom industry since Mid 90&rsquo;s. Passionate about technology, I have delivered a diverse project portfolio initially as a software developer and subsequently as a leader of development organisations.</p>
-
 <p>{% slide %}</p>
 
 <h3>￼Who Am I?</h3>
@@ -49,29 +43,32 @@
 </ul>
 
 
+<p>{% notes %}</p>
+
+<p>Hi, my name is Balaji Vajjala and I&rsquo;m the Chief Architect and DevOps Solution Architect.</p>
+
+<p>I have been developing software in the financial and Telecom industry since Mid 90&rsquo;s.</p>
+
+<p>I am always passionate about technology, and have delivered diverse project portfolios initially as a software developer and subsequently as a leader at various development organisations.</p>
+
 <p>{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
 
 <h3>￼￼What I’ve been up to&hellip;</h3>
 
 <ul>
 <li>Last 6 months converting our order systems to high-availability and continuous deployment.</li>
-</ul>
-
-
-<p>{% slide %}
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼What I’ve been up to&hellip;</h3>
+<li>Why 6 months?
 
 <ul>
-<li>Last 6 months converting our order systems to high-availability and continuous deployment.!</li>
-<li>Why 6 months? Because the concept is straightforward, but it’s implications affect a lot of your organisation.</li>
+<li>Because the concept is straightforward, but it’s implications affect a lot of your organisation.</li>
+</ul>
+</li>
 </ul>
 
 
 <p>{% slide %}</p>
 
-<h3>DevOps</h3>
+<h3>What is DevOps?</h3>
 
 <ul>
 <li>Continuous Deployment</li>
@@ -82,7 +79,7 @@
 
 <p>{% notes %}</p>
 
-<p>I don&rsquo;t have to tell you guys about DevOps, but for our purposes the main point is that we can do more stuff using the DevOps principles and Deliver software ina Agile Fashion.</p>
+<p>I don&rsquo;t have to tell you guys about DevOps, but for our purposes the main point is that we can do more stuff using the DevOps principles and Deliver software in a Agile Fashion.</p>
 
 <p>{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
 
@@ -119,7 +116,7 @@
 
 <p>{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
 
-<h3>￼￼Stakeholder benefits</h3>
+<h3>￼￼Why Continuous deployment? Stakeholder benefits</h3>
 
 <ul>
 <li>To customers: You’ll get your requested feature faster!!</li>
@@ -131,7 +128,7 @@
 
 <p>{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
 
-<h3>￼￼So how do you actually do it?</h3>
+<h3>￼￼Continuous deployment: So how do you actually do it?</h3>
 
 <ul>
 <li>Continuous deployment guides tend to focus on the high-level philosophy!</li>
@@ -172,9 +169,13 @@
 <li>This allows tracking the state of a feature from request to deployment.!</li>
 <li>Bug-trackers are a good choice for this.
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Step 2: Work on this feature in a branch</h3></li>
+
+<h3>Step 2: Work on this feature in a branch</h3>
+
+<ul>
 <li>Create a branch for just this feature!</li>
 <li>Name it after the feature request!</li>
 <li>Jira/Stash integration will do this!</li>
@@ -182,56 +183,84 @@
 <li>You need a sane version control system!</li>
 <li>We use git, Mercurial is good too
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Step 3: Automatically test the branch</h3></li>
+
+<h3>￼￼￼￼Step 3: Automatically test the branch</h3>
+
+<ul>
 <li>Run a continuous integration tool that will automatically run tests against the branch.!</li>
 <li>Features may not be merged until all tests are passing.!</li>
 <li>Stash has some features to support this.
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Step 4: Code review</h3></li>
+
+<h3>￼￼￼￼Step 4: Code review</h3>
+
+<ul>
 <li>No code may be merged to the release branch until reviewed by other members of the team.!</li>
 <li>Team members have a responsibility to ensure quality.
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
+
 
 <h3>￼￼￼￼Step 4.1: Stash testing integration</h3>
 
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
 
-<h3>￼￼￼￼Step 5: Merge and release</h3></li>
+<h3>￼￼￼￼Step 5: Merge and release</h3>
+
+<ul>
 <li>Once all reviews and tests are passed them merge to release branch!</li>
 <li>At this point we have a separate Bamboo plan that performs a full release.
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Step 6: Deploy to staging</h3></li>
+
+<h3>￼￼￼￼Step 6: Deploy to staging</h3>
+
+<ul>
 <li>Allows testing of more advanced interactions and against production samples.!</li>
 <li>More testing can occur at this point, including testing by humans.
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Step 7: Release to production</h3></li>
+
+<h3>￼￼￼￼Step 7: Release to production</h3>
+
+<ul>
 <li>Valid staging builds may be promoted up to production.
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Segue: “Continuous downtime”?</h3></li>
+
+<h3>￼￼￼￼Segue: “Continuous downtime”?</h3>
+
+<ul>
 <li>So if you’re doing all these releases, what about uptime?!</li>
 <li>For public-facing service clustering/HA is important.!</li>
 <li>Ideally you should be able to automate cluster configuration as part of the deployment
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
+
 
 <h3>￼￼￼￼Last mile</h3>
 
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
 
-<h3>￼￼￼￼Practical issue</h3></li>
+<h3>￼￼￼￼Practical issue</h3>
+
+<ul>
 <li>How do you actually get releases onto your staging and production servers?!</li>
 <li>AKA “the last-mile problem”
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
@@ -360,7 +389,7 @@ can use a Bamboo agent directly!</li>
 
 <p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
 Balaji Vajjala
-@bvajjala <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x62;&#118;&#x61;&#x6a;&#x6a;&#x61;&#x6c;&#x61;&#x40;&#103;&#x6d;&#97;&#x69;&#x6c;&#46;&#x63;&#x6f;&#x6d;">&#x62;&#118;&#x61;&#x6a;&#106;&#x61;&#108;&#x61;&#64;&#103;&#x6d;&#x61;&#x69;&#108;&#x2e;&#99;&#111;&#109;</a>
+@bvajjala <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#98;&#x76;&#x61;&#x6a;&#106;&#97;&#x6c;&#97;&#64;&#103;&#109;&#97;&#x69;&#x6c;&#46;&#99;&#x6f;&#x6d;">&#x62;&#118;&#x61;&#106;&#106;&#97;&#x6c;&#x61;&#64;&#x67;&#109;&#97;&#105;&#108;&#x2e;&#x63;&#111;&#x6d;</a>
 <a href="http://bvajjala.github.io/">http://bvajjala.github.io/</a></p></li>
 </ul>
 
