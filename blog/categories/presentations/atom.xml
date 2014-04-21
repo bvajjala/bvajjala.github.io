@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Presentations | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/presentations/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-21T12:12:22-04:00</updated>
+  <updated>2014-04-21T12:41:18-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -255,7 +255,8 @@
 
 <h3>￼￼￼￼Last mile</h3>
 
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+<p><a href="/images/presentation-2.1.png"></a>
+￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
 {% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
 
 <h3>￼￼￼￼Practical issue</h3>
@@ -264,118 +265,169 @@
 <li>How do you actually get releases onto your staging and production servers?!</li>
 <li>AKA “the last-mile problem”
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Last mile</h3></li>
+
+<h3>￼￼￼￼Last mile</h3>
+
+<ul>
 <li>Puppet/Chef are not appropriate!</li>
-<li>For simple/single-node applications you
-can use a Bamboo agent directly!</li>
+<li>For simple/single-node applications you can use a Bamboo agent directly!</li>
 <li>For more complex setups use an automation tool
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Last mile</h3></li>
+
+<h3>￼￼￼￼Last mile</h3>
+
+<ul>
 <li>Puppet/Chef are not appropriate!</li>
 <li>.. if timing is critical!</li>
 <li>.. if cross-host coordination required
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Last mile</h3></li>
+
+<h3>￼￼￼￼Last mile</h3>
+
+<ul>
 <li>Roll your own!</li>
 <li>Bamboo SSH plugin + bash scripting!</li>
 <li>Number of existing automation solutions!</li>
 <li>func, capistrano, SaltStack, Ansible, mcollective, Fabric&hellip;
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Last mile</h3></li>
+
+<h3>￼￼￼￼Last mile</h3>
+
+<ul>
 <li>Bamboo agent per-node!</li>
 <li>SSH not required!</li>
 <li>Works for simple (single node) apps! *  Coordination is tricky
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Last mile</h3></li>
+
+<h3>￼￼￼￼Last mile</h3>
+
+<ul>
 <li>Agent-based frameworks!</li>
 <li>Powerful and flexible!</li>
 <li>Can parallelise deployments!</li>
 <li>Requires setup on all nodes!</li>
 <li>If you already have it setup then use it
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Last mile</h3></li>
+
+<h3>￼￼￼￼Last mile</h3>
+
+<ul>
 <li>SSH scripting!</li>
 <li>Requires management of SSH keys on agent!</li>
 <li>Bamboo SSH plugin!</li>
 <li>Scripting (Bash, Python, Ruby, etc.)!</li>
 <li>Automation frameworks (Ansible, SaltStack, Func, Fabric)
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Last mile</h3></li>
+
+<h3>￼￼￼￼Last mile</h3>
+
+<ul>
 <li>Our solution!</li>
 <li>Ansible for automation (explicit support for load-balancer integration)!</li>
 <li>Minimal requirements, SSH+Python!</li>
 <li>Bamboo pulls Ansible directly from their source repository!</li>
 <li>Ansible playbooks checked into git
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Practical issue</h3></li>
+
+<h3>￼￼￼￼Practical issue</h3>
+
+<ul>
 <li>How do you manage what has been released, and to where?!</li>
 <li>How do you control who performs deployments?
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Bamboo deployment environments</h3></li>
-<li>The release build plan can be associated with certain environments!</li>
-<li>Normal ones are dev, staging (QA) and production
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
 
 <h3>￼￼￼￼Bamboo deployment environments</h3>
 
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+<ul>
+<li>The release build plan can be associated with certain environments!</li>
+<li>Normal ones are dev, staging (QA) and production
+￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Bamboo deployment environments</h3></li>
+
+<h3>￼￼￼￼Bamboo deployment environments</h3>
+
+<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
+
+<h3>￼￼￼￼Bamboo deployment environments</h3>
+
+<ul>
 <li>Environment has tasks, like a build plan!</li>
 <li>Tasks perform the actual deployment!</li>
 <li>Environments have permissions, limiting who may perform deployments!</li>
 <li>Generates releases, which are deployed!</li>
 <li>Has some nice integrations&hellip;
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
+
 
 <h3>￼￼￼￼Bamboo deployment release</h3>
 
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
 
 <h3>￼￼￼￼Bamboo deployment JIRA integration</h3>
 
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
 
-<h3>￼￼￼￼Procedural issues</h3></li>
+<h3>￼￼￼￼Procedural issues</h3>
+
+<ul>
 <li>Where’s the oversight in all this?!</li>
 <li>What about SoX, PCI, SEC requirements?!</li>
 <li>Who is allowed to do releases?!</li>
 <li>Who signs off?
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Procedural issues</h3></li>
+
+<h3>￼￼￼￼Procedural issues</h3>
+
+<ul>
 <li>Our solution &ndash; separate the infrastructure!</li>
 <li>Dedicated Bamboo server for business software!</li>
 <li>Dedicated agents for building!</li>
 <li>Separate, dedicated agents for deployment
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
 
-<h3>￼￼￼￼Procedural issues</h3></li>
+
+<h3>￼￼￼￼Procedural issues</h3>
+
+<ul>
 <li>Access controls!</li>
 <li>Build team/admins control the server!</li>
 <li>Business analysts define features!</li>
@@ -383,18 +435,17 @@ can use a Bamboo agent directly!</li>
 <li>Features pushed to staging for BA review!</li>
 <li>BAs can promote releases to production
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
+</ul>
+
 
 <h3>￼￼￼Questions?</h3>
 
 <p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
 Balaji Vajjala
-@bvajjala <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#98;&#x76;&#x61;&#x6a;&#106;&#97;&#x6c;&#97;&#64;&#103;&#109;&#97;&#x69;&#x6c;&#46;&#99;&#x6f;&#x6d;">&#x62;&#118;&#x61;&#106;&#106;&#97;&#x6c;&#x61;&#64;&#x67;&#109;&#97;&#105;&#108;&#x2e;&#x63;&#111;&#x6d;</a>
-<a href="http://bvajjala.github.io/">http://bvajjala.github.io/</a></p></li>
-</ul>
-
-
-<p>{% slide %}￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
+@bvajjala <a href="&#109;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#98;&#118;&#97;&#x6a;&#x6a;&#x61;&#x6c;&#97;&#x40;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#x2e;&#99;&#111;&#109;">&#98;&#x76;&#x61;&#x6a;&#106;&#97;&#x6c;&#x61;&#x40;&#x67;&#109;&#x61;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;</a>
+<a href="http://bvajjala.github.io/">http://bvajjala.github.io/</a>
+￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
 
 <h3>￼￼Thanks!</h3>
 ]]></content>
