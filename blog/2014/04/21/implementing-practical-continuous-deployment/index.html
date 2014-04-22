@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="In February, I had the pleasure of speaking at LocalUser Group about some of our experiences with continuous delivery and deployment here. The &hellip;">
+  <meta name="description" content="In Early part of this year, I had the pleasure of speaking at one of the Local User Group about some of our experiences with continuous delivery and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -99,12 +99,15 @@
 
 
 <div class="entry-content"><p>
-  <span>In February, I had the pleasure of speaking at LocalUser Group about some of our experiences with continuous delivery and deployment here. The slides for this </span><a target="_blank" href="http://bvajjala.github.io/blog/2014/04/21/practical-continuous-deployment/slides/#/">are available online</a><span>, but the talk generated a lot of discussion at the time and I&#8217;d like to recap some of it here.</span>
+  <span>In Early part of this year, I had the pleasure of speaking at one of the Local User Group about some of our experiences with continuous delivery and deployment here. The slides for this </span><a target="_blank" href="http://bvajjala.github.io/blog/2014/04/21/practical-continuous-deployment/slides/#/">are available online</a><span>, but the talk generated a lot of discussion at the time and I&#8217;d like to recap some of it here.</span>
 </p>
 
 
+<!-- more -->
+
+
 <p>
-  To give a bit of context, I work in the business platform team; we&#8217;re responsible for developing the tools that allow the business to interact with the customer. In particular, we develop the order management tools such as HAMS (hosted account management system) and MAC (my.atlassian.com); if you&#8217;ve ever bought or evaluated our products, these are the systems that have been doing the work in the background. As we grow, these systems need to undergo a lot of changes, so we need to speed up our delivery of improvements and features. To do this, we&#8217;re moving to a continuous delivery and deployment model for all of our business tools, which will allow us to get improvements out to our customers (both internal and external) faster.
+  To give a bit of context, I work in the business platform team; we are primarily responsible for developing the tools that allow the business to interact with the customer. In particular, My group develops the order management tools such as HAMS (hosted account management system) and MAC (my.actioncenter.com); if you have ever bought or evaluated our products, these are the systems that have been doing the work in the background. As we grow, these systems need to undergo a lot of changes, so we need to speed up our delivery of improvements and features. To do this, we are moving to a continuous delivery and deployment model for all of our business tools, which will allow us to get improvements out to our customers (both internal and external) faster.
 </p>
 
 
@@ -158,10 +161,10 @@
     We want to move to feature-based releases rather than a weekly &ldquo;whatever happens to be ready&rdquo; release. This is allows faster and finer-grained upgrades, and assists debugging and regression detection by only changing one thing at a time.
   </li>
   <li>
-    The weekly release process was only semi-automated; While we have build tools such as Maven to perform the steps, the actual process of cutting a new release was driven by developers, following instructions on a Confluence page. By automating every step of the process we make it self documenting and repeatable.
+    The weekly release process was only semi-automated; While we have build tools such as Maven to perform the steps, the actual process of cutting a new release was driven by developers, following instructions on a Confluence/Wiki page. By automating every step of the process we make it self documenting and repeatable.
   </li>
   <li>
-    Similarly, the actual process of getting the software onto our servers was semi automated; we had detailed scripts to upgrade servers, but running these required coordination with the sysadmin team, who already had quite enough work to be going on with. By making the deployment to the servers fully automated and driven by Bamboo rather than by humans, we created a repeatable deployment process and freed the sysadmins of busywork.
+    Similarly, the actual process of getting the software onto our servers was semi automated; we had detailed scripts to upgrade servers, but running these required coordination with the sysadmin team, who already had quite enough work to be going on with. By making the deployment to the servers fully automated and driven by Bamboo/Jenkins rather than by humans, we created a repeatable deployment process and freed the sysadmins of busy work.
   </li>
   <li>
     By automating the release and deployment process, we can constantly release ongoing work to staging and QA servers, giving visibility of the state of development.
@@ -170,13 +173,13 @@
 
 
 <p>
-  But these benefits are driven by our internal processes; When advocating for adopting continuous deployment, you&#8217;ll often receive requests for justification from other stakeholders in your company. Continuous deployment bring benefits to them, too:
+  But these benefits are driven by our internal processes; When advocating for adopting continuous deployment, you all often receive requests for justification from other stakeholders in your company. Continuous deployment bring benefits to them, too:
 </p>
 
 
 <ul>
   <li> 
-    <em>To customers</em>: By releasing features when they&#8217;re ready rather than waiting for a fixed upgrade window, customers will get them faster. By releasing constantly to a staging server while developing them, customers have visibility of the changes and can be part of the development process.
+    <em>To customers</em>: By releasing features when they are ready rather than waiting for a fixed upgrade window, customers will get them faster. By releasing constantly to a staging server while developing them, customers have visibility of the changes and can be part of the development process.
   </li>
   <li>
     <em>To management</em>: When we release more often, managers will see the result of work sooner and progress will be visible.
@@ -217,7 +220,7 @@
 
 
 <p>
-  Continuous deployment guides frequently focus on the culture and adoption aspects of it (as indeed this one has so far). What&#8217;s less common to see are practical nuts-and-bolts issues being addressed. For the rest of this post I&#8217;ll attempt to address some of the practical hurdles we had to jump while transitioning to continuous deployment.
+  Continuous deployment guides frequently focus on the culture and adoption aspects of it (as indeed this one has so far). What is less common to see are practical nuts-and-bolts issues being addressed. For the rest of this post I will attempt to address some of the practical hurdles we had to jump while transitioning to continuous deployment.
 </p>
 
 
@@ -226,16 +229,13 @@
 </p>
 
 
-<p>
-  While we&#8217;re using Atlassian tools wherever possible, none of this is necessarily Atlassian specific, however, our tools do have some nice integrations and I&#8217;ll point these out where appropriate.
-</p>
 
 
 <h2>Development workflow</h2>
 
 
 <p>
-  Continuous deployment implies a clearer development process, with your main release branch always being in a releasable state. There are any number of methodologies that allow this and I won&#8217;t cover them all here, but if you want a deep dive into them I would recommend the book <a target="_blank" href="http://continuousdelivery.com/"><span>Continuous Delivery</span> by Jez Humble and David Farley</a>. As mentioned above, the model we follow is &ldquo;release by feature&rdquo;; every distinct change we wish to make results in a separate release, containing only that change. What I&#8217;ll outline briefly here is our current workflow and the tools we&#8217;re using to enable it.
+  Continuous deployment implies a clearer development process, with your main release branch always being in a releasable state. There are any number of methodologies that allow this and I won&#8217;t cover them all here, but if you want a deep dive into them I would recommend the book <a target="_blank" href="http://continuousdelivery.com/"><span>Continuous Delivery</span> by Jez Humble and David Farley</a>. As mentioned above, the model we follow is **release by feature** every distinct change we wish to make results in a separate release, containing only that change. What I will outline briefly here is our current workflow and the tools we are using to enable it.
 </p>
 
 
@@ -243,7 +243,7 @@
 
 
 <p>
-  For every bug, feature request, or other change, we create a unique ticket. If this is part of an ongoing project, we&#8217;ll use a parent epic, and for smaller chunks of work, we&#8217;ll use a sub-task. Obviously all this is best practice anyway, but in our case we use the issue IDs generated to track the change from concept to deployment. This is important as having a single reference point makes it easier to track the state of work, and enables some of the tool integrations I&#8217;ll describe below. As you may have guessed, we use JIRA for this purpose.
+  For every bug, feature request, or other change, we create a unique ticket. If this is part of an ongoing project, we will use a parent epic, and for smaller chunks of work, we will use a sub-task. Obviously all this is best practice anyway, but in our case we use the issue IDs generated to track the change from concept to deployment. This is important as having a single reference point makes it easier to track the state of work, and enables some of the tool integrations I will describe below. As you may have guessed, we use JIRA for this purpose.
 </p>
 
 
@@ -258,7 +258,7 @@
 
 
 <p>
-  We use Git for version control, and Stash to manage our repositories. JIRA has a useful integration point here; from within the tracking issue we created in #1 we can just press a button and Stash will create a branch for us. <a target="_blank" href="https://www.atlassian.com/software/sourcetree/overview">SourceTree</a> also has the ability to pick-up and checkout these new branches. JIRA also has the ability to query Stash and list all branches associated with a given issue in the issue itself, along with number of commits to the branch. This turns your JIRA ticket into a convenient dashboard for the state of your development.
+  We use Git for version control, and GitHub to manage our repositories. JIRA has a useful integration point here; from within the tracking issue we created in #1 we can just press a button and GitHub will create a branch for us. <a target="_blank" href="https://www.atlassian.com/software/sourcetree/overview">SourceTree</a> also has the ability to pick-up and checkout these new branches. JIRA also has the ability to query GitHub and list all branches associated with a given issue in the issue itself, along with number of commits to the branch. This turns your JIRA ticket into a convenient dashboard for the state of your development.
 </p>
 
 
@@ -266,12 +266,12 @@
 
 
 <p>
-  Git allows you to easily make many commits on a branch, and then only merge when ready &ndash; but while working on this branch you should be constantly running your test system. We run our full integration test suite against every commit on all active branches.  We use Bamboo to do this; in particular we use its <a target="_blank" href="http://blogs.atlassian.com/2012/04/bamboofeature-branch-continuous-integration-hg-git/">plan branch</a> feature to automatically create the necessary build configuration.
+  Git allows you to easily make many commits on a branch, and then only merge when ready &ndash; but while working on this branch you should be constantly running your test system. We run our full integration test suite against every commit on all active branches.  We use Bamboo/Jenkins to do this; in particular we use its <a target="_blank" href="http://blogs.atlassian.com/2012/04/bamboofeature-branch-continuous-integration-hg-git/">plan branch</a> feature to automatically create the necessary build configuration.
 </p>
 
 
 <p>
-  Again, there are useful integration points here. One is that, as with the branches and commits, JIRA can display the state of any branch plans associated with tickets, creating an at-a-glance view of the feature development. But a more powerful one (in my opinion) is that Bamboo can also inform Stash of the state of builds for a branch. Why that is so important becomes evident when we come to pull requests in step #4.
+  Again, there are useful integration points here. One is that, as with the branches and commits, JIRA can display the state of any branch plans associated with tickets, creating an at-a-glance view of the feature development. But a more powerful one (in my opinion) is that Bamboo can also inform GitHub of the state of builds for a branch. Why that is so important becomes evident when we come to pull requests in step #4.
 </p>
 
 
@@ -297,7 +297,7 @@
 
 
 <p>
-  On our team we have a &ldquo;no direct merge/commit to master&rdquo; rule  that we enforce through Stash access controls. This means that all merges must come through a pull request. On top of this we define a couple of extra quality rules:
+  On our team we have a &ldquo;no direct merge/commit to master&rdquo; rule  that we enforce through GitHub access controls. This means that all merges must come through a pull request. On top of this we define a couple of extra quality rules:
 </p>
 
 
@@ -312,7 +312,7 @@
 
 
 <p>
-  Both of these are enforced by Stash; in particular, the second one is enforced by the Bamboo to Stash pass/fail notification mentioned in #3.
+  Both of these are enforced by GitHub; in particular, the second one is enforced by the Bamboo to GitHub pass/fail notification mentioned in #3.
 </p>
 
 
@@ -349,7 +349,7 @@
 
 
 <p>
-  While I&#8217;ve pointed out a number of places where Atlassian products integrate together, the spirit of <em><a target="_blank" href="https://www.atlassian.com/company/about/values">open company, no bullshit</a></em> compels me to point out that these integration points are not just available to Atlassian tools. This interoperability is enabled by REST APIs that are <a target="_blank" href="https://developer.atlassian.com/display/DOCS/REST+API+Development">documented online</a>, so it&#8217;s perfectly possible enable these features with a little work, possibly via <a target="_blank" href="http://curl.haxx.se/">curl</a>. For example, if you&#8217;re using <a target="_blank" href="https://www.atlassian.com/software/stash">Stash</a> for Git management but are still using Jenkins for CI, you can still enable the build-status integration mentioned in step #3 but calling out to the Stash <a target="_blank" href="https://developer.atlassian.com/stash/docs/latest/how-tos/updating-build-status-for-commits.html">build status API</a>.
+  While I&#8217;ve pointed out a number of places where Atlassian products integrate together, the spirit of <em><a target="_blank" href="https://www.atlassian.com/company/about/values">open company, no bullshit</a></em> compels me to point out that these integration points are not just available to Atlassian tools. This interoperability is enabled by REST APIs that are <a target="_blank" href="https://developer.atlassian.com/display/DOCS/REST+API+Development">documented online</a>, so it&#8217;s perfectly possible enable these features with a little work, possibly via <a target="_blank" href="http://curl.haxx.se/">curl</a>. For example, if you&#8217;re using <a target="_blank" href="https://www.atlassian.com/software/GitHub">GitHub</a> for Git management but are still using Jenkins for CI, you can still enable the build-status integration mentioned in step #3 but calling out to the GitHub <a target="_blank" href="https://developer.atlassian.com/stash/docs/latest/how-tos/updating-build-status-for-commits.html">build status API</a>.
 </p>
 
 
@@ -517,6 +517,12 @@
 <time datetime="2014-04-21T12:04:18-04:00" pubdate data-updated="true">Apr 21<span>st</span>, 2014</time>
       
 
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cd/'>CD</a>, <a class='category' href='/blog/categories/continuous-deployment/'>Continuous Deployment</a>
+  
+</span>
+
 
     </p>
     
@@ -558,6 +564,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/22/best-practices-of-continuous-integration/">Best Practices of Continuous Integration</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/21/continuous-delivery-pipeline-stages/">Continuous Delivery Pipeline Stages</a>
       </li>
     
@@ -571,10 +581,6 @@
     
       <li class="post">
         <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
       </li>
     
   </ul>

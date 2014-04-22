@@ -4,7 +4,7 @@
   <title><![CDATA[Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-21T15:07:10-04:00</updated>
+  <updated>2014-04-22T12:31:56-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -12,6 +12,129 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Best Practices of Continuous Integration]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/04/22/best-practices-of-continuous-integration/"/>
+    <updated>2014-04-22T10:41:40-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/04/22/best-practices-of-continuous-integration</id>
+    <content type="html"><![CDATA[<h1>What is Continuous Integration</h1>
+
+<p><em>Martin Fowler has the best description of CI</em></p>
+
+<p>  Continuous Integration is a software development practice where members of a team integrate their work frequently, usually each person integrates at least daily &ndash; leading to multiple integrations per day. Each integration is verified by an automated build (including test) to detect integration errors as quickly as possible. Many teams find that this approach leads to significantly reduced integration problems and allows a team to develop cohesive software more rapidly.</p>
+
+<!-- more -->
+
+
+<h1>Best Practices of Continuous Integration</h1>
+
+<h2>1. Maintain a Single Source Repositry</h2>
+
+<ul>
+<li> Use SCM tools like Git, Subversion, Perforce for all Software Projects that need to be orchestarted together to build a product</li>
+<li> Put everything that is required for a build in the SCM system and this should include: test scripts,properties files, database schema, install scripts, and third party libraries.</li>
+<li> Keep your use of  branches to a minimum. Have a <em>mainline</em>: a single branch of the project under developemnt.</li>
+<li><p> Don&rsquo;t add build artifacts/binaries to the SCM system. It only indicates the inability to reliabily recreate builds and absence of any Depndency management Solution.</p>
+
+<p><strong>Tools Used : Git, SVN, Perforce, hg</strong></p></li>
+</ul>
+
+
+<h2>2. Automate the Build</h2>
+
+<ul>
+<li> Automate all phases of Build including Compilation, moving files aound, loading schema into the databases.</li>
+<li><p> Only Build what has changed. Looks for dates of the source and object files and only compile if the source date is later</p>
+
+<p><strong>Tools Used : Ant, Maven</strong></p></li>
+</ul>
+
+
+<h2>3. Make your Build Self-Testing</h2>
+
+<ul>
+<li><p>Use Test-Driven-Development (TDD) approaches to catch bugs in the code-base. These tests needs to be self-testing. For a build to be self-testing the failure of a test should cause the build to fail.</p>
+
+<p><strong>Tools Used : XUnit family, FIT, Selenium,Sahi,Watir, FITnesse</strong></p></li>
+</ul>
+
+
+<h2>4. Everyone Commits to the mainline Every Day</h2>
+
+<ul>
+<li>Integration is primarily about Communication. Diing integration regularly allows the developers to tell others about the changes they have made and allow others to quickly react to the changes. The only prerequiste for a developer committing to the mailibe is that they can correctly build their code. This includes passing the build tests</li>
+<li>Every Developer should commit to the repository every day. The more frequest they commit, the less places they have to look for conflict errors, and more rapidly they can then fix the conflicts</li>
+</ul>
+
+
+<h2>5. Every Commit Should Build the Mainline on an Integration Machine</h2>
+
+<ul>
+<li>Using Daily commits, a team gets frequent tested builds and this means that the <em>mainline</em> is always in <em>Ready-to-Release</em> state.</li>
+<li>Use CI Server. A CI server acts as a monitor to the repository. Every time a commit against the repository finishes the CI server automatically checks out the sources onto the integration machine, initiates a build, and notifies the committer of the result of the build. The committer isn&rsquo;t done until she gets the notification &ndash; usually an email.</li>
+</ul>
+
+
+<p><strong>Tools Used : Jenkins/Hudson, Bamboo, TeamCity</strong></p>
+
+<h2>6. Keep the Build Fast</h2>
+
+<ul>
+<li>Rather than having a monolithic single build which covers all phases of the build: Commit builds, Unit Tests builds, Code Coverage and Analysis, split the build pipeline into two stages. the first stage is the commit build and used as as the main CI cycle. The second-stage build runs when it can, picking up the executable from the latest good commit build for further testing. If this secondary build fails, then this may not have the same &lsquo;stop everything&rsquo; quality, but the team does aim to fix such bugs as rapidly as possible, while keeping the commit build running.</li>
+<li>Keep the <em>commit build</em> times to be less than 10 mins. The <em>commit build</em> is the build that&rsquo;s needed when someone commits to the mainline</li>
+<li>Parallize test stage by running the tests on multiple machines that run half the tests each.</li>
+</ul>
+
+
+<h2>7. Test in a Clone of the Production Environment</h2>
+
+<ul>
+<li>Use virtualization to put together test environments that mimics the Production Environment. Virtualized machines can be saved with all the necessary elements baked into the virtualization. It&rsquo;s then relatively straightforward to install the latest build and run tests. Furthermore this can allow you to run multiple tests on one machine, or simulate multiple machines in a network on a single machine.</li>
+</ul>
+
+
+<h2>8. Make it easy for Anyone to get the latest Executables</h2>
+
+<ul>
+<li> Store all build Executables/Installers in a centralized location, easily accessible to anyone involved with the software project. All Stakeholders should be easily be able to get the latest executable and be able to run it.</li>
+</ul>
+
+
+<h2>9. Everyone can see what&rsquo;s happening</h2>
+
+<ul>
+<li>CI is all about communication. Create a Dashboard or Wiki page where everone can easily see the state of the system and the changes that have been made to it.</li>
+<li>Important thing to communicate is the stae of the mainline build. The Dashboard/Web Site should show if there&rsquo;s a build in progress and what was the last state of the mainline build.</li>
+</ul>
+
+
+<h2>10. Automate Deployment</h2>
+
+<ul>
+<li>To do effective Continuous Integration one needs multiple environments, one to run commit tests, one or more to run secondary tests. Since this involves moving executables between these environments multiple times a day, hence the need for Automation. So it&rsquo;s important to have scripts that will allow you to deploy the application into any environment easily.</li>
+</ul>
+
+
+<h1>Summary</h1>
+
+<ul>
+<li>Look for frequent builds to be triggered by code commits and to not take more than 15 minutes to run.</li>
+<li>Keep builds simple and chain them together if more complexity is required. Simpler and quicker builds encourage more frequent use and are easier to debug when they break.</li>
+<li>Prioritise fixing broken builds over starting new development work.</li>
+<li>Identify failures sooner</li>
+<li>Identify culprit change precisely</li>
+<li>Avoids divide-and-conquer and tribal knowledge</li>
+<li>Lowers compute costs using fine grained dependencies</li>
+<li>Keeps the build green by reducing time to fix breaks</li>
+<li>Accepted enthusiastically by product teams</li>
+<li>Enables teams to ship with fast iteration times</li>
+<li>Chain simple Jenkins jobs rather than trying to do everything in one big job.</li>
+<li>Configure Jenkins as master + slaves.</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Continuous Delivery Pipeline Stages]]></title>
@@ -267,12 +390,15 @@
     <updated>2014-04-21T12:04:18-04:00</updated>
     <id>http://bvajjala.github.io/blog/2014/04/21/implementing-practical-continuous-deployment</id>
     <content type="html"><![CDATA[<p>
-  <span>In February, I had the pleasure of speaking at LocalUser Group about some of our experiences with continuous delivery and deployment here. The slides for this </span><a target="_blank" href="http://bvajjala.github.io/blog/2014/04/21/practical-continuous-deployment/slides/#/">are available online</a><span>, but the talk generated a lot of discussion at the time and I&#8217;d like to recap some of it here.</span>
+  <span>In Early part of this year, I had the pleasure of speaking at one of the Local User Group about some of our experiences with continuous delivery and deployment here. The slides for this </span><a target="_blank" href="http://bvajjala.github.io/blog/2014/04/21/practical-continuous-deployment/slides/#/">are available online</a><span>, but the talk generated a lot of discussion at the time and I&#8217;d like to recap some of it here.</span>
 </p>
 
 
+<!-- more -->
+
+
 <p>
-  To give a bit of context, I work in the business platform team; we&#8217;re responsible for developing the tools that allow the business to interact with the customer. In particular, we develop the order management tools such as HAMS (hosted account management system) and MAC (my.atlassian.com); if you&#8217;ve ever bought or evaluated our products, these are the systems that have been doing the work in the background. As we grow, these systems need to undergo a lot of changes, so we need to speed up our delivery of improvements and features. To do this, we&#8217;re moving to a continuous delivery and deployment model for all of our business tools, which will allow us to get improvements out to our customers (both internal and external) faster.
+  To give a bit of context, I work in the business platform team; we are primarily responsible for developing the tools that allow the business to interact with the customer. In particular, My group develops the order management tools such as HAMS (hosted account management system) and MAC (my.actioncenter.com); if you have ever bought or evaluated our products, these are the systems that have been doing the work in the background. As we grow, these systems need to undergo a lot of changes, so we need to speed up our delivery of improvements and features. To do this, we are moving to a continuous delivery and deployment model for all of our business tools, which will allow us to get improvements out to our customers (both internal and external) faster.
 </p>
 
 
@@ -326,10 +452,10 @@
     We want to move to feature-based releases rather than a weekly &ldquo;whatever happens to be ready&rdquo; release. This is allows faster and finer-grained upgrades, and assists debugging and regression detection by only changing one thing at a time.
   </li>
   <li>
-    The weekly release process was only semi-automated; While we have build tools such as Maven to perform the steps, the actual process of cutting a new release was driven by developers, following instructions on a Confluence page. By automating every step of the process we make it self documenting and repeatable.
+    The weekly release process was only semi-automated; While we have build tools such as Maven to perform the steps, the actual process of cutting a new release was driven by developers, following instructions on a Confluence/Wiki page. By automating every step of the process we make it self documenting and repeatable.
   </li>
   <li>
-    Similarly, the actual process of getting the software onto our servers was semi automated; we had detailed scripts to upgrade servers, but running these required coordination with the sysadmin team, who already had quite enough work to be going on with. By making the deployment to the servers fully automated and driven by Bamboo rather than by humans, we created a repeatable deployment process and freed the sysadmins of busywork.
+    Similarly, the actual process of getting the software onto our servers was semi automated; we had detailed scripts to upgrade servers, but running these required coordination with the sysadmin team, who already had quite enough work to be going on with. By making the deployment to the servers fully automated and driven by Bamboo/Jenkins rather than by humans, we created a repeatable deployment process and freed the sysadmins of busy work.
   </li>
   <li>
     By automating the release and deployment process, we can constantly release ongoing work to staging and QA servers, giving visibility of the state of development.
@@ -338,13 +464,13 @@
 
 
 <p>
-  But these benefits are driven by our internal processes; When advocating for adopting continuous deployment, you&#8217;ll often receive requests for justification from other stakeholders in your company. Continuous deployment bring benefits to them, too:
+  But these benefits are driven by our internal processes; When advocating for adopting continuous deployment, you all often receive requests for justification from other stakeholders in your company. Continuous deployment bring benefits to them, too:
 </p>
 
 
 <ul>
   <li> 
-    <em>To customers</em>: By releasing features when they&#8217;re ready rather than waiting for a fixed upgrade window, customers will get them faster. By releasing constantly to a staging server while developing them, customers have visibility of the changes and can be part of the development process.
+    <em>To customers</em>: By releasing features when they are ready rather than waiting for a fixed upgrade window, customers will get them faster. By releasing constantly to a staging server while developing them, customers have visibility of the changes and can be part of the development process.
   </li>
   <li>
     <em>To management</em>: When we release more often, managers will see the result of work sooner and progress will be visible.
@@ -385,7 +511,7 @@
 
 
 <p>
-  Continuous deployment guides frequently focus on the culture and adoption aspects of it (as indeed this one has so far). What&#8217;s less common to see are practical nuts-and-bolts issues being addressed. For the rest of this post I&#8217;ll attempt to address some of the practical hurdles we had to jump while transitioning to continuous deployment.
+  Continuous deployment guides frequently focus on the culture and adoption aspects of it (as indeed this one has so far). What is less common to see are practical nuts-and-bolts issues being addressed. For the rest of this post I will attempt to address some of the practical hurdles we had to jump while transitioning to continuous deployment.
 </p>
 
 
@@ -394,16 +520,13 @@
 </p>
 
 
-<p>
-  While we&#8217;re using Atlassian tools wherever possible, none of this is necessarily Atlassian specific, however, our tools do have some nice integrations and I&#8217;ll point these out where appropriate.
-</p>
 
 
 <h2>Development workflow</h2>
 
 
 <p>
-  Continuous deployment implies a clearer development process, with your main release branch always being in a releasable state. There are any number of methodologies that allow this and I won&#8217;t cover them all here, but if you want a deep dive into them I would recommend the book <a target="_blank" href="http://continuousdelivery.com/"><span>Continuous Delivery</span> by Jez Humble and David Farley</a>. As mentioned above, the model we follow is &ldquo;release by feature&rdquo;; every distinct change we wish to make results in a separate release, containing only that change. What I&#8217;ll outline briefly here is our current workflow and the tools we&#8217;re using to enable it.
+  Continuous deployment implies a clearer development process, with your main release branch always being in a releasable state. There are any number of methodologies that allow this and I won&#8217;t cover them all here, but if you want a deep dive into them I would recommend the book <a target="_blank" href="http://continuousdelivery.com/"><span>Continuous Delivery</span> by Jez Humble and David Farley</a>. As mentioned above, the model we follow is **release by feature** every distinct change we wish to make results in a separate release, containing only that change. What I will outline briefly here is our current workflow and the tools we are using to enable it.
 </p>
 
 
@@ -411,7 +534,7 @@
 
 
 <p>
-  For every bug, feature request, or other change, we create a unique ticket. If this is part of an ongoing project, we&#8217;ll use a parent epic, and for smaller chunks of work, we&#8217;ll use a sub-task. Obviously all this is best practice anyway, but in our case we use the issue IDs generated to track the change from concept to deployment. This is important as having a single reference point makes it easier to track the state of work, and enables some of the tool integrations I&#8217;ll describe below. As you may have guessed, we use JIRA for this purpose.
+  For every bug, feature request, or other change, we create a unique ticket. If this is part of an ongoing project, we will use a parent epic, and for smaller chunks of work, we will use a sub-task. Obviously all this is best practice anyway, but in our case we use the issue IDs generated to track the change from concept to deployment. This is important as having a single reference point makes it easier to track the state of work, and enables some of the tool integrations I will describe below. As you may have guessed, we use JIRA for this purpose.
 </p>
 
 
@@ -426,7 +549,7 @@
 
 
 <p>
-  We use Git for version control, and Stash to manage our repositories. JIRA has a useful integration point here; from within the tracking issue we created in #1 we can just press a button and Stash will create a branch for us. <a target="_blank" href="https://www.atlassian.com/software/sourcetree/overview">SourceTree</a> also has the ability to pick-up and checkout these new branches. JIRA also has the ability to query Stash and list all branches associated with a given issue in the issue itself, along with number of commits to the branch. This turns your JIRA ticket into a convenient dashboard for the state of your development.
+  We use Git for version control, and GitHub to manage our repositories. JIRA has a useful integration point here; from within the tracking issue we created in #1 we can just press a button and GitHub will create a branch for us. <a target="_blank" href="https://www.atlassian.com/software/sourcetree/overview">SourceTree</a> also has the ability to pick-up and checkout these new branches. JIRA also has the ability to query GitHub and list all branches associated with a given issue in the issue itself, along with number of commits to the branch. This turns your JIRA ticket into a convenient dashboard for the state of your development.
 </p>
 
 
@@ -434,12 +557,12 @@
 
 
 <p>
-  Git allows you to easily make many commits on a branch, and then only merge when ready &ndash; but while working on this branch you should be constantly running your test system. We run our full integration test suite against every commit on all active branches.  We use Bamboo to do this; in particular we use its <a target="_blank" href="http://blogs.atlassian.com/2012/04/bamboofeature-branch-continuous-integration-hg-git/">plan branch</a> feature to automatically create the necessary build configuration.
+  Git allows you to easily make many commits on a branch, and then only merge when ready &ndash; but while working on this branch you should be constantly running your test system. We run our full integration test suite against every commit on all active branches.  We use Bamboo/Jenkins to do this; in particular we use its <a target="_blank" href="http://blogs.atlassian.com/2012/04/bamboofeature-branch-continuous-integration-hg-git/">plan branch</a> feature to automatically create the necessary build configuration.
 </p>
 
 
 <p>
-  Again, there are useful integration points here. One is that, as with the branches and commits, JIRA can display the state of any branch plans associated with tickets, creating an at-a-glance view of the feature development. But a more powerful one (in my opinion) is that Bamboo can also inform Stash of the state of builds for a branch. Why that is so important becomes evident when we come to pull requests in step #4.
+  Again, there are useful integration points here. One is that, as with the branches and commits, JIRA can display the state of any branch plans associated with tickets, creating an at-a-glance view of the feature development. But a more powerful one (in my opinion) is that Bamboo can also inform GitHub of the state of builds for a branch. Why that is so important becomes evident when we come to pull requests in step #4.
 </p>
 
 
@@ -465,7 +588,7 @@
 
 
 <p>
-  On our team we have a &ldquo;no direct merge/commit to master&rdquo; rule  that we enforce through Stash access controls. This means that all merges must come through a pull request. On top of this we define a couple of extra quality rules:
+  On our team we have a &ldquo;no direct merge/commit to master&rdquo; rule  that we enforce through GitHub access controls. This means that all merges must come through a pull request. On top of this we define a couple of extra quality rules:
 </p>
 
 
@@ -480,7 +603,7 @@
 
 
 <p>
-  Both of these are enforced by Stash; in particular, the second one is enforced by the Bamboo to Stash pass/fail notification mentioned in #3.
+  Both of these are enforced by GitHub; in particular, the second one is enforced by the Bamboo to GitHub pass/fail notification mentioned in #3.
 </p>
 
 
@@ -517,7 +640,7 @@
 
 
 <p>
-  While I&#8217;ve pointed out a number of places where Atlassian products integrate together, the spirit of <em><a target="_blank" href="https://www.atlassian.com/company/about/values">open company, no bullshit</a></em> compels me to point out that these integration points are not just available to Atlassian tools. This interoperability is enabled by REST APIs that are <a target="_blank" href="https://developer.atlassian.com/display/DOCS/REST+API+Development">documented online</a>, so it&#8217;s perfectly possible enable these features with a little work, possibly via <a target="_blank" href="http://curl.haxx.se/">curl</a>. For example, if you&#8217;re using <a target="_blank" href="https://www.atlassian.com/software/stash">Stash</a> for Git management but are still using Jenkins for CI, you can still enable the build-status integration mentioned in step #3 but calling out to the Stash <a target="_blank" href="https://developer.atlassian.com/stash/docs/latest/how-tos/updating-build-status-for-commits.html">build status API</a>.
+  While I&#8217;ve pointed out a number of places where Atlassian products integrate together, the spirit of <em><a target="_blank" href="https://www.atlassian.com/company/about/values">open company, no bullshit</a></em> compels me to point out that these integration points are not just available to Atlassian tools. This interoperability is enabled by REST APIs that are <a target="_blank" href="https://developer.atlassian.com/display/DOCS/REST+API+Development">documented online</a>, so it&#8217;s perfectly possible enable these features with a little work, possibly via <a target="_blank" href="http://curl.haxx.se/">curl</a>. For example, if you&#8217;re using <a target="_blank" href="https://www.atlassian.com/software/GitHub">GitHub</a> for Git management but are still using Jenkins for CI, you can still enable the build-status integration mentioned in step #3 but calling out to the GitHub <a target="_blank" href="https://developer.atlassian.com/stash/docs/latest/how-tos/updating-build-status-for-commits.html">build status API</a>.
 </p>
 
 
@@ -1359,7 +1482,7 @@
 
 <p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
 Balaji Vajjala
-@bvajjala <a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#58;&#x62;&#x76;&#97;&#x6a;&#x6a;&#x61;&#x6c;&#x61;&#64;&#x67;&#109;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#x6d;">&#98;&#118;&#97;&#x6a;&#x6a;&#97;&#108;&#97;&#64;&#103;&#109;&#x61;&#x69;&#x6c;&#46;&#x63;&#x6f;&#109;</a>
+@bvajjala <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x62;&#x76;&#97;&#106;&#106;&#x61;&#x6c;&#x61;&#64;&#103;&#x6d;&#x61;&#x69;&#x6c;&#x2e;&#99;&#x6f;&#x6d;">&#x62;&#118;&#x61;&#106;&#106;&#97;&#108;&#x61;&#64;&#103;&#109;&#x61;&#105;&#x6c;&#46;&#99;&#111;&#x6d;</a>
 <a href="http://bvajjala.github.io/">http://bvajjala.github.io/</a>
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
 
@@ -3127,47 +3250,6 @@ git push origin gh-pages
 <p><a href="http://tikalk-cookbooks.github.io/chef_workshop_presentation/#/">http://tikalk-cookbooks.github.io/chef_workshop_presentation/</a></p>
 
 <p>Hope you find this useful !</p>
-
-<p>HP</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Manage Data Bags in Solo mode]]></title>
-    <link href="http://bvajjala.github.io/blog/2013/10/27/manage-data-bags-in-solo-mode/"/>
-    <updated>2013-10-27T15:08:00-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2013/10/27/manage-data-bags-in-solo-mode</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://bvajjala.github.io/assets/images/Opscode_chef_logo.png" title="'Chef Logo'" > For the past ~6 monthes or so I have been working solely with <a href="http://docs.opscode.com/chef_solo.html">chef-solo</a>.
-There are quite a few helpers for solo out there such as:</p>
-
-<ol>
-<li>soloist &ndash; <a href="https://github.com/mkocher/soloist">https://github.com/mkocher/soloist</a></li>
-<li>knife-solo &ndash; <a href="https://github.com/matschaffer/knife-solo">https://github.com/matschaffer/knife-solo</a>
-&amp; a few more.</li>
-</ol>
-
-
-<p>What kept annoying me for some time is I couldn&rsquo;t manage databas with knife whilst working in solo mode &hellip; ARRRRRRGH!!!</p>
-
-<p>It looked somthing like:</p>
-
-<pre><code>[oper@sandbox chef_repo]$ knife data bag create admins
-ERROR: The object you are looking for could not be found
-Response: &lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"&gt;
-&lt;html&gt;&lt;head&gt;
-&lt;title&gt;404 Not Found&lt;/title&gt;
-&lt;/head&gt;&lt;body&gt;
-&lt;h1&gt;Not Found&lt;/h1&gt;
-&lt;p&gt;The requested URL /data was not found on this server.&lt;/p&gt;
-&lt;hr&gt;
-&lt;address&gt;Apache/2.2.15 (CentOS) Server at : Port 80&lt;/address&gt;
-&lt;/body&gt;&lt;/html&gt;
-</code></pre>
-
-<p>Then came <a href="https://github.com/thbishop/knife-solo_data_bag">knife-solo_data_bag</a> I am quite embaressed to say ;) I haven&rsquo;t found this sooner.
-Now with a totally bogus knife.rb file I can generate / edit / manager databags with knife-solo &amp; knife-solo_data_bag.</p>
-
-<p>Again, hope you find this useful, I know I do ;)</p>
 
 <p>HP</p>
 ]]></content>

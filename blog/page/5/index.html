@@ -9,7 +9,9 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="This post describes how we came to using binary package management. In the next part I&rsquo;ll get into NuGet. In the beginning, there was one &hellip;">
+  <meta name="description" content="Last time
+I talked about how my development team progressed from having all
+of our .net code in a single repository with a single solution to using a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +74,178 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/20/how-Angies-List-uses-nuget-part-2/">How Angie&#8217;s List Uses NuGet (Part 2)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-20T13:56:00-04:00" pubdate data-updated="true">Aug 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="/blog/2012/08/07/how-the-motley-fool-uses-nuget/">Last time</a>
+I talked about how my development team progressed from having all
+of our .net code in a single repository with a single solution to using a more
+modular architecture complete with encapsulated domains.</p>
+
+<p>When we started using this appraoch, we were still limited in a few ways:</p>
+
+<ul>
+<li>Everyone needs to integrate with the newest code</li>
+<li>Difficult to patch an old version of a dependency</li>
+<li>Cascading failures on the build server</li>
+</ul>
+
+
+<p>Even though we broke the ProjectReference rats nest, we still had an
+implicit dependency on various shared code. It all had to be checked out
+and built in the right order.</p>
+
+<h2>Binary Package Management</h2>
+
+<p>The next logical step was to further decouple our shared code by
+packaging it up and publishing those packages. If we could do that,
+we could decide when to upgrade dependencies on a product by product
+basis.</p>
+
+<p>There are two package managers in the .net ecosystem: OpenWrap and NuGet.</p>
+
+<p>When we started shopping around, OpenWrap had been around longer and seemed
+to be a better choice. There&rsquo;s a <a href="http://stackoverflow.com/questions/4256994/openwrap-vs-nuget">comparison of the products</a>
+on stackoverflow.</p>
+
+<p>We worked with OpenWrap for over 6 months and during that time started
+to find some problems around integration with Visual Studio and ReSharper.
+OpenWrap wants to manage dependencies per solution, and we have many cases
+where we want to control dependencies at a per project level. We also
+started to notice that NuGet was getting new versions released on a fairly
+regular schedule, while OpenWrap 2.0 was in unstable beta limbo for over
+a year.</p>
+
+<p>Around the same time we started playing with <a href="http://octopusdeploy.com/">Octopus Deploy</a>
+for deploying our code. Since Octopus uses NuGet packages for deployment, we
+figured it would make sense to standardize on one package management system
+for both deployments and dependency management. It&rsquo;s true that those are
+separate problem spaces, but having less build scripts is always a good thing.</p>
+
+<h2>Thoughts on NuGet</h2>
+
+<h3>Conventions</h3>
+
+<p>NuGet has several conventions that make it easy to create simple packages
+that others can reference. You can share assemblies and content easily,
+and when you want to customize anything there are some powershell extension
+points you can hook into.</p>
+
+<p>One problem we run into is that when building packages, sometimes there&rsquo;s
+a NuGet convention we want to customize or suppress, and often we can&rsquo;t.</p>
+
+<p>For example, if you create a <code>nuspec</code> and place it adjacent to a <code>csproj</code>
+file, NuGet will look at the project and automatically inject metadata
+and content into the package. For some things, you can override this
+behavior with explicit specifications in the nuspec, but the behavior
+can be surprising and confusing.</p>
+
+<h3>Dependency Scoping</h3>
+
+<p>NuGet supports the concept of transitive dependencies&hellip; sort of. If you
+install package A, and A depends on package B, NuGet will go find a version
+of B and install it while installing A. However, NuGet doesn&rsquo;t do any record
+keeping to remember that B is a transitive dependency. To your project, A and
+B appear simply as direct dependencies.</p>
+
+<p>There may be cases where A depends on B at runtime, but consumers of A
+shouldn&rsquo;t need to code against B at design time.</p>
+
+<p>There may be other cases where B is an optional dependency for A, and
+A can be used without it.</p>
+
+<p>Since NuGet doesn&rsquo;t have a concept of scope, it only has one simplistic
+approach to dealing with transitive dependencies: treat them just like
+direct dependencies.</p>
+
+<h3>Upgrade Behavior</h3>
+
+<p>When you ask NuGet to update a specific package, it will first look for
+updates to transitive dependencies that the package depends on. This may
+seem obvious or desirable to some, but personally I find it confusing.
+You can control this behavior with the <code>-IgnoreDependencies</code> flag in
+the Package Management Console, but oddly you don&rsquo;t get that option
+in the command line <code>nuget.exe</code> or from the Visual Studio GUI Package
+Manager.</p>
+
+<h3>Package Feed Performance</h3>
+
+<p>We use continuous integration, and every successful build produces
+&ldquo;release candidate&rdquo; versions of packages. We generate 50 to 100 packages
+a day.</p>
+
+<p>Using the simple NuGet UNC share quickly failed to scale, so next we tried
+NuGet.Server and found that it doesn&rsquo;t perform well either.</p>
+
+<p>NuGet Gallery seemed like overkill with its SQL Server requirement, so
+I started optimizing NuGet.Server. This project ended up taking quite
+a while, but the good news is that the fruits of the labor are now
+open source on GitHub at <a href="https://github.com/themotleyfool/NuGet">https://github.com/themotleyfool/NuGet</a>.</p>
+
+<p>For more information about that project, see my <a href="/blog/2012/07/03/Speeding-Up-NuGet-Server/">previous post</a>.</p>
+
+<h3>Refactoring Applications and Shared Code</h3>
+
+<p>We try to use <a href="http://semver.org/">Semantic Versioning</a> to communicate
+breaking changes in the packages we publish, so sometimes when
+we want to use a refactoring tool like Change Method Signature
+or Use Base Class it would be nice to have application and shared
+code loaded into a single instance of Visual Studio.</p>
+
+<p>We created a tool called <a href="https://github.com/TheMotleyFool/SlimJim">SlimJim</a>
+that generates these Solution files on the fly.</p>
+
+<p>If you create a Solution with application code and shared library code,
+ReSharper will be smart enough to apply refactoring tools across the projects
+even though ProjectReference style references are not being used.</p>
+
+<p>However, Visual Studio won&rsquo;t know the correct order to build projects in,
+and won&rsquo;t automatically copy outputs from shared libraries over to applications.</p>
+
+<p>We extended SlimJim to convert assembly references to project references and back
+to address this limitation.</p>
+
+<h2>Conclusion</h2>
+
+<p>In terms of capability and maturity, we&rsquo;re in a much better place than
+we were a few years ago. However, we still have a ways to go in terms of
+productivity and workflow.</p>
+
+<p>NuGet has helped us move in the right direction and we hope to see
+further enhancements and even contribute some more of our own as we
+develop them.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -834,115 +1008,6 @@ B/B
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/06/01/reversing-groovy-switch-statement/">Reversing Groovy Switch Statement</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-01T08:00:00-04:00" pubdate data-updated="true">Jun 1<span>st</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Recently I&rsquo;ve been working on a Groovy code that had many methods with long multibranch conditionals like this:</p>
-
-<pre><code>def parse(message, options) {
-    if (options.contains('A')) {
-        parseARule message
-    } else if (options.contains(2)) {
-        parseSmallDigitRule message
-    ...
-    } else if (options.contains(something)) {
-        parseSomeRule message
-    } else {
-        parseSomeOtherRule message
-    }
-}
-</code></pre>
-
-<p>Although this code is working, it is hard to see which branch is called under which condition. It would be much better if we could replace this code with something like Lisp <code>cond</code> macro. The best candidate for such a task in Groovy would be a <code>switch</code> statement. If we could only refactor the code above to something like following, it would significantly improve readability:</p>
-
-<pre><code>def parse(message, options) {
-    switch (options) {
-        case 'A' : return parseARule(message)
-        case 2   : return parseSmallDigitRule(message)
-        ...
-        case ... : return parseSomeRule(message)
-        default  : return parseSomeOtherRule(message)
-    }
-}
-</code></pre>
-
-<p>Unfortunately, this code doesn&rsquo;t work out of the box in Groovy, but it works if we do some metaprogramming.</p>
-
-<p>The way <code>switch</code> statement works in Groovy is a bit <a href="http://docs.codehaus.org/display/GROOVY/Logical+Branching#LogicalBranching-switchstatement">different</a> than in Java. Instead of equals() it uses isCase() method to match case-value and switch-value. The default implementation of isCase() method falls back to equals() method, but some classes, including <a href="http://groovy.codehaus.org/groovy-jdk/java/util/Collection.html#isCase(java.lang.Object)">Collection</a>, override this behaviour. That&rsquo;s why in Groovy you can do things like this:</p>
-
-<pre><code>switch (value) {
-    case ['A','E','I','O','U'] : return 'vowel'
-    case 0..9                  : return 'digit'
-    case Date                  : return 'date'
-    default                    : return 'something else'
-}
-</code></pre>
-
-<p>For our purposes we need some sort of reverse <code>switch</code>, where collection is used as a switch-value, and String and Integer are used as a case-value. To do this we need to override default implementation of isCase() method on String and Integer classes. It&rsquo;s not possible in Java, but is very easy in Groovy. You can change method implementation globally by replacing it in corresponding meta class, or locally with the help of categories. Let&rsquo;s create a category that swaps object and subject of isCase() method:</p>
-
-<pre><code>class CaseCategory {
-    static boolean isCase(String string, Collection col) {
-        reverseCase(string, col)
-    }
-    static boolean isCase(Integer integer, Collection col) {
-        reverseCase(integer, col)
-    }
-    // Add more overloaded methods here if needed
-
-    private static boolean reverseCase(left, right) {
-        right.isCase(left)
-    }
-}
-</code></pre>
-
-<p>Now we can use this category to achieve the goal we stated at the beginning of this post:</p>
-
-<pre><code>def parse(message, options) {
-    use (CaseCategory) {
-        switch (options) {
-            case 'A' : return parseARule(message)
-            case 2   : return parseSmallDigitRule(message)
-            ...
-            case ... : return parseSomeRule(message)
-            default  : return parseSomeOtherRule(message)
-        }
-    }
-}
-</code></pre>
-
-<p>If you are comfortable with global method replacement, you can amend String and Integer meta classes. In this case you don&rsquo;t need to wrap <code>switch</code> statement with <code>use</code> keyword.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -964,6 +1029,10 @@ B/B
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/22/best-practices-of-continuous-integration/">Best Practices of Continuous Integration</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/21/continuous-delivery-pipeline-stages/">Continuous Delivery Pipeline Stages</a>
       </li>
     
@@ -977,10 +1046,6 @@ B/B
     
       <li class="post">
         <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
       </li>
     
   </ul>

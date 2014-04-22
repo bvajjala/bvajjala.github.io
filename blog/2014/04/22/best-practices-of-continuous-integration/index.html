@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Best Practices of Continuous Integration - Balaji Vajjala's Blog</title>
+  <meta name="author" content="Balaji Vajjala">
+
+  
+  <meta name="description" content="What is Continuous Integration Martin Fowler has the best description of CI Continuous Integration is a software development practice where members &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://bvajjala.github.io/blog/2014/04/22/best-practices-of-continuous-integration">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Balaji Vajjala's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="/assets/slides/css/for_blog.css">
+
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Balaji Vajjala's Blog</a></h1>
+  
+    <h2>A DevOps Blog from Trenches</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:bvajjala.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/about/home">Home</a></li> 
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Categories</a></li>
+  <li><a href="/projects">Projects</a></li>
+  <li><a href="/about/resume">About Me</a></li>
+  <li><a href="/about/consulting">Consulting</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Best Practices of Continuous Integration</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-22T10:41:40-04:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h1>What is Continuous Integration</h1>
+
+<p><em>Martin Fowler has the best description of CI</em></p>
+
+<p>  Continuous Integration is a software development practice where members of a team integrate their work frequently, usually each person integrates at least daily &ndash; leading to multiple integrations per day. Each integration is verified by an automated build (including test) to detect integration errors as quickly as possible. Many teams find that this approach leads to significantly reduced integration problems and allows a team to develop cohesive software more rapidly.</p>
+
+<!-- more -->
+
+
+<h1>Best Practices of Continuous Integration</h1>
+
+<h2>1. Maintain a Single Source Repositry</h2>
+
+<ul>
+<li> Use SCM tools like Git, Subversion, Perforce for all Software Projects that need to be orchestarted together to build a product</li>
+<li> Put everything that is required for a build in the SCM system and this should include: test scripts,properties files, database schema, install scripts, and third party libraries.</li>
+<li> Keep your use of  branches to a minimum. Have a <em>mainline</em>: a single branch of the project under developemnt.</li>
+<li><p> Don&rsquo;t add build artifacts/binaries to the SCM system. It only indicates the inability to reliabily recreate builds and absence of any Depndency management Solution.</p>
+
+<p><strong>Tools Used : Git, SVN, Perforce, hg</strong></p></li>
+</ul>
+
+
+<h2>2. Automate the Build</h2>
+
+<ul>
+<li> Automate all phases of Build including Compilation, moving files aound, loading schema into the databases.</li>
+<li><p> Only Build what has changed. Looks for dates of the source and object files and only compile if the source date is later</p>
+
+<p><strong>Tools Used : Ant, Maven</strong></p></li>
+</ul>
+
+
+<h2>3. Make your Build Self-Testing</h2>
+
+<ul>
+<li><p>Use Test-Driven-Development (TDD) approaches to catch bugs in the code-base. These tests needs to be self-testing. For a build to be self-testing the failure of a test should cause the build to fail.</p>
+
+<p><strong>Tools Used : XUnit family, FIT, Selenium,Sahi,Watir, FITnesse</strong></p></li>
+</ul>
+
+
+<h2>4. Everyone Commits to the mainline Every Day</h2>
+
+<ul>
+<li>Integration is primarily about Communication. Diing integration regularly allows the developers to tell others about the changes they have made and allow others to quickly react to the changes. The only prerequiste for a developer committing to the mailibe is that they can correctly build their code. This includes passing the build tests</li>
+<li>Every Developer should commit to the repository every day. The more frequest they commit, the less places they have to look for conflict errors, and more rapidly they can then fix the conflicts</li>
+</ul>
+
+
+<h2>5. Every Commit Should Build the Mainline on an Integration Machine</h2>
+
+<ul>
+<li>Using Daily commits, a team gets frequent tested builds and this means that the <em>mainline</em> is always in <em>Ready-to-Release</em> state.</li>
+<li>Use CI Server. A CI server acts as a monitor to the repository. Every time a commit against the repository finishes the CI server automatically checks out the sources onto the integration machine, initiates a build, and notifies the committer of the result of the build. The committer isn&rsquo;t done until she gets the notification &ndash; usually an email.</li>
+</ul>
+
+
+<p><strong>Tools Used : Jenkins/Hudson, Bamboo, TeamCity</strong></p>
+
+<h2>6. Keep the Build Fast</h2>
+
+<ul>
+<li>Rather than having a monolithic single build which covers all phases of the build: Commit builds, Unit Tests builds, Code Coverage and Analysis, split the build pipeline into two stages. the first stage is the commit build and used as as the main CI cycle. The second-stage build runs when it can, picking up the executable from the latest good commit build for further testing. If this secondary build fails, then this may not have the same &lsquo;stop everything&rsquo; quality, but the team does aim to fix such bugs as rapidly as possible, while keeping the commit build running.</li>
+<li>Keep the <em>commit build</em> times to be less than 10 mins. The <em>commit build</em> is the build that&rsquo;s needed when someone commits to the mainline</li>
+<li>Parallize test stage by running the tests on multiple machines that run half the tests each.</li>
+</ul>
+
+
+<h2>7. Test in a Clone of the Production Environment</h2>
+
+<ul>
+<li>Use virtualization to put together test environments that mimics the Production Environment. Virtualized machines can be saved with all the necessary elements baked into the virtualization. It&rsquo;s then relatively straightforward to install the latest build and run tests. Furthermore this can allow you to run multiple tests on one machine, or simulate multiple machines in a network on a single machine.</li>
+</ul>
+
+
+<h2>8. Make it easy for Anyone to get the latest Executables</h2>
+
+<ul>
+<li> Store all build Executables/Installers in a centralized location, easily accessible to anyone involved with the software project. All Stakeholders should be easily be able to get the latest executable and be able to run it.</li>
+</ul>
+
+
+<h2>9. Everyone can see what&rsquo;s happening</h2>
+
+<ul>
+<li>CI is all about communication. Create a Dashboard or Wiki page where everone can easily see the state of the system and the changes that have been made to it.</li>
+<li>Important thing to communicate is the stae of the mainline build. The Dashboard/Web Site should show if there&rsquo;s a build in progress and what was the last state of the mainline build.</li>
+</ul>
+
+
+<h2>10. Automate Deployment</h2>
+
+<ul>
+<li>To do effective Continuous Integration one needs multiple environments, one to run commit tests, one or more to run secondary tests. Since this involves moving executables between these environments multiple times a day, hence the need for Automation. So it&rsquo;s important to have scripts that will allow you to deploy the application into any environment easily.</li>
+</ul>
+
+
+<h1>Summary</h1>
+
+<ul>
+<li>Look for frequent builds to be triggered by code commits and to not take more than 15 minutes to run.</li>
+<li>Keep builds simple and chain them together if more complexity is required. Simpler and quicker builds encourage more frequent use and are easier to debug when they break.</li>
+<li>Prioritise fixing broken builds over starting new development work.</li>
+<li>Identify failures sooner</li>
+<li>Identify culprit change precisely</li>
+<li>Avoids divide-and-conquer and tribal knowledge</li>
+<li>Lowers compute costs using fine grained dependencies</li>
+<li>Keeps the build green by reducing time to fix breaks</li>
+<li>Accepted enthusiastically by product teams</li>
+<li>Enables teams to ship with fast iteration times</li>
+<li>Chain simple Jenkins jobs rather than trying to do everything in one big job.</li>
+<li>Configure Jenkins as master + slaves.</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Balaji Vajjala</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-22T10:41:40-04:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ci/'>CI</a>, <a class='category' href='/blog/categories/continuous-integration/'>Continuous Integration</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://bvajjala.github.io/blog/2014/04/22/best-practices-of-continuous-integration/" data-via="BVajjala" data-counturl="http://bvajjala.github.io/blog/2014/04/22/best-practices-of-continuous-integration/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/04/21/continuous-delivery-pipeline-stages/" title="Previous Post: Continuous Delivery Pipeline Stages">&laquo; Continuous Delivery Pipeline Stages</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/22/best-practices-of-continuous-integration/">Best Practices of Continuous Integration</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/21/continuous-delivery-pipeline-stages/">Continuous Delivery Pipeline Stages</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/21/implementing-practical-continuous-deployment/">Implementing Practical Continuous Deployment</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/21/practical-continuous-deployment/">Practical Continuous Deployment</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/bvajjala@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Balaji Vajjala -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

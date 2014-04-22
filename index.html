@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="View the Presentation Or view the slide sheet below Continuous Delivery Pipeline Stages Balaji Vajjala Principal DevOps Consultant/Solution Architect &hellip;">
+  <meta name="description" content="What is Continuous Integration Martin Fowler has the best description of CI Continuous Integration is a software development practice where members &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +72,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/04/22/best-practices-of-continuous-integration/">Best Practices of Continuous Integration</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-22T10:41:40-04:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>What is Continuous Integration</h1>
+
+<p><em>Martin Fowler has the best description of CI</em></p>
+
+<p>  Continuous Integration is a software development practice where members of a team integrate their work frequently, usually each person integrates at least daily &ndash; leading to multiple integrations per day. Each integration is verified by an automated build (including test) to detect integration errors as quickly as possible. Many teams find that this approach leads to significantly reduced integration problems and allows a team to develop cohesive software more rapidly.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/04/22/best-practices-of-continuous-integration/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -377,401 +422,16 @@
 
 
   <div class="entry-content"><p>
-  <span>In February, I had the pleasure of speaking at LocalUser Group about some of our experiences with continuous delivery and deployment here. The slides for this </span><a target="_blank" href="http://bvajjala.github.io/blog/2014/04/21/practical-continuous-deployment/slides/#/">are available online</a><span>, but the talk generated a lot of discussion at the time and I&#8217;d like to recap some of it here.</span>
+  <span>In Early part of this year, I had the pleasure of speaking at one of the Local User Group about some of our experiences with continuous delivery and deployment here. The slides for this </span><a target="_blank" href="http://bvajjala.github.io/blog/2014/04/21/practical-continuous-deployment/slides/#/">are available online</a><span>, but the talk generated a lot of discussion at the time and I&#8217;d like to recap some of it here.</span>
 </p>
-
-
-<p>
-  To give a bit of context, I work in the business platform team; we&#8217;re responsible for developing the tools that allow the business to interact with the customer. In particular, we develop the order management tools such as HAMS (hosted account management system) and MAC (my.atlassian.com); if you&#8217;ve ever bought or evaluated our products, these are the systems that have been doing the work in the background. As we grow, these systems need to undergo a lot of changes, so we need to speed up our delivery of improvements and features. To do this, we&#8217;re moving to a continuous delivery and deployment model for all of our business tools, which will allow us to get improvements out to our customers (both internal and external) faster.
-</p>
-
-
-<h2>Integration vs. deployment vs. delivery</h2>
-
-
-<p>
-  Before we start, I should probably clarify what I mean by <em>continuous integration, delivery, </em>and<em> deployment</em>. The terms are often used interchangeably, but they have different meanings for our purposes:
-</p>
-
-
-<h3>Continuous integration</h3>
-
-
-<p>
-  The process of automatically building and testing your software on a regular basis. How regularly this occurs varies; in the early days of agile this meant daily builds, however, with the rise of CI tools like Bamboo/Jenkins, this can be as often as every commit. In the business systems team we build and run full unit and integration tests of every commit to every branch using Bamboo&#8217;s/Jenkins branch-build feature.
-</p>
-
-
-<h3>Continuous delivery</h3>
-
-
-<p>
-  A logical step forward from continuous integration. If your tests are run constantly, and you trust your tests to provide a guarantee of quality, then it becomes possible to release your software at any point in time. Note that continuous delivery does not always entail actually delivering as your customers may not need or want constant updates. Instead, it represents a philosophy and a commitment to ensuring that your code is always in a release-ready state.
-</p>
-
-
-<h3>Continuous deployment</h3>
-
-
-<p>
-  The ultimate culmination of this process; it&#8217;s the actual delivery of features and fixes to the customer as soon as they are ready. It usually refers to cloud and SaaS, as these are the most amenable to being silently updated in the background. But some desktop software offers this in the form of optional beta and nightly updates such as Mozilla&#8217;s <a target="_blank" href="http://www.mozilla.org/en-US/firefox/channel/#beta">beta and aurora</a> Firefox channels, for example.
-</p>
-
-
-<p>
-  In practice there&#8217;s a continuous spectrum of options between these techniques, ranging from just running tests regularly, to a completely automated deployment pipeline from commit to the customer. The constant theme through all of them, however, is a commitment to constant QA and testing, and a level of test coverage that imparts confidence in the readiness of your software for delivery.
-</p>
-
-
-<h2>So why would you bother?</h2>
-
-
-<p>
-  When bringing up the subject of continuous deployment adoption, there will inevitably (and rightly) be questions about what the benefits of the of the model are. For the business platforms team the main drivers were:
-</p>
-
-
-<ul>
-  <li>
-    We want to move to feature-based releases rather than a weekly &ldquo;whatever happens to be ready&rdquo; release. This is allows faster and finer-grained upgrades, and assists debugging and regression detection by only changing one thing at a time.
-  </li>
-  <li>
-    The weekly release process was only semi-automated; While we have build tools such as Maven to perform the steps, the actual process of cutting a new release was driven by developers, following instructions on a Confluence page. By automating every step of the process we make it self documenting and repeatable.
-  </li>
-  <li>
-    Similarly, the actual process of getting the software onto our servers was semi automated; we had detailed scripts to upgrade servers, but running these required coordination with the sysadmin team, who already had quite enough work to be going on with. By making the deployment to the servers fully automated and driven by Bamboo rather than by humans, we created a repeatable deployment process and freed the sysadmins of busywork.
-  </li>
-  <li>
-    By automating the release and deployment process, we can constantly release ongoing work to staging and QA servers, giving visibility of the state of development.
-  </li>
-</ul>
-
-
-<p>
-  But these benefits are driven by our internal processes; When advocating for adopting continuous deployment, you&#8217;ll often receive requests for justification from other stakeholders in your company. Continuous deployment bring benefits to them, too:
-</p>
-
-
-<ul>
-  <li> 
-    <em>To customers</em>: By releasing features when they&#8217;re ready rather than waiting for a fixed upgrade window, customers will get them faster. By releasing constantly to a staging server while developing them, customers have visibility of the changes and can be part of the development process.
-  </li>
-  <li>
-    <em>To management</em>: When we release more often, managers will see the result of work sooner and progress will be visible.
-  </li>
-  <li>
-    <em>To developers</em>: This removes the weekly/monthly/whatever mad dash to get changes into the release window. If a developer needs a few more hours to make sure a feature is fully working, then the feature will go out a few hours later, not a when the next release window opens.
-  </li>
-  <li>
-    <em>To sysadmins</em>: Not only will sysadmins not have to perform the releases themselves, but the change to small, discrete feature releases will allow easier detection of what changes affected the system adversely.
-  </li>
-</ul>
-
-
-<p>
-  The last point should probably be expanded upon, as it is such a powerful concept. If your release process bundles multiple features together, it becomes much harder to nail down exactly what caused regressions in the system. Consider the following scenario: On a Monday, a release is performed with the changes that were made the previous week. Shortly afterwards, however, the sysadmin team notices a large increase in load on the database server. While triaging the issue they notice the following changes were included:
-</p>
-
-
-<ul>
-  <li>
-    Developer A added a new AJAX endpoint for the order process.
-  </li>
-  <li>
-    Developer B added a column to a table in the database.
-  </li>
-  <li>
-    Developer C upgraded the version of the database driver in the application.
-  </li>
-</ul>
-
-
-<p>
-  Identifying which one is the cause would require investigation, possibly to the point of reverting changes or running <a target="_blank" href="http://git-scm.com/book/en/Git-Tools-Debugging-with-Git">git bisect</a>. However, if each change is released separately, the start of the performance regression can be easily correlated with the release of each feature, especially if your release process <a target="_blank" href="http://codeascraft.com/2010/12/08/track-every-release/">tags each release in your monitoring system</a>.
-</p>
-
-
-<h2>So how do you actually, you know, <em>do it</em>?</h2>
-
-
-<p>
-  Continuous deployment guides frequently focus on the culture and adoption aspects of it (as indeed this one has so far). What&#8217;s less common to see are practical nuts-and-bolts issues being addressed. For the rest of this post I&#8217;ll attempt to address some of the practical hurdles we had to jump while transitioning to continuous deployment.
-</p>
-
-
-<p>
-  It&#8217;s worth noting that everything here should be treated as a starting point rather than a set of rules; Much of what I cover is still actively being changed as we discover new ways of working and new requirements. In particular, the development process is still being actively tweaked as we find out what works best for us. Processes should serve the goals, not the other way around.
-</p>
-
-
-<p>
-  While we&#8217;re using Atlassian tools wherever possible, none of this is necessarily Atlassian specific, however, our tools do have some nice integrations and I&#8217;ll point these out where appropriate.
-</p>
-
-
-<h2>Development workflow</h2>
-
-
-<p>
-  Continuous deployment implies a clearer development process, with your main release branch always being in a releasable state. There are any number of methodologies that allow this and I won&#8217;t cover them all here, but if you want a deep dive into them I would recommend the book <a target="_blank" href="http://continuousdelivery.com/"><span>Continuous Delivery</span> by Jez Humble and David Farley</a>. As mentioned above, the model we follow is &ldquo;release by feature&rdquo;; every distinct change we wish to make results in a separate release, containing only that change. What I&#8217;ll outline briefly here is our current workflow and the tools we&#8217;re using to enable it.
-</p>
-
-
-<h3>#1: Use an issue tracker for everything</h3>
-
-
-<p>
-  For every bug, feature request, or other change, we create a unique ticket. If this is part of an ongoing project, we&#8217;ll use a parent epic, and for smaller chunks of work, we&#8217;ll use a sub-task. Obviously all this is best practice anyway, but in our case we use the issue IDs generated to track the change from concept to deployment. This is important as having a single reference point makes it easier to track the state of work, and enables some of the tool integrations I&#8217;ll describe below. As you may have guessed, we use JIRA for this purpose.
-</p>
-
-
-<h3>
-  #2: Create a separate branch for this work, tagged with the issue number
-</h3>
-
-
-<p>
-  In your version control system, create a branch which contains the issue number and a short description of the change; e.g. &ldquo;BIZPLAT-64951-remove-smtp-logging&rdquo;. It should hopefully go without saying at this point that you should be using a <a target="_blank" href="http://en.wikipedia.org/wiki/Distributed_revision_control#Systems">DVCS</a> for this work. Older version control systems such as Subversion make branching and merging difficult, and without the ability to separate work into streams, keeping the main branch pristine rapidly becomes unwieldy.
-</p>
-
-
-<p>
-  We use Git for version control, and Stash to manage our repositories. JIRA has a useful integration point here; from within the tracking issue we created in #1 we can just press a button and Stash will create a branch for us. <a target="_blank" href="https://www.atlassian.com/software/sourcetree/overview">SourceTree</a> also has the ability to pick-up and checkout these new branches. JIRA also has the ability to query Stash and list all branches associated with a given issue in the issue itself, along with number of commits to the branch. This turns your JIRA ticket into a convenient dashboard for the state of your development.
-</p>
-
-
-<h3>#3: Develop on this branch, and continuously test and integrate it</h3>
-
-
-<p>
-  Git allows you to easily make many commits on a branch, and then only merge when ready &ndash; but while working on this branch you should be constantly running your test system. We run our full integration test suite against every commit on all active branches.  We use Bamboo to do this; in particular we use its <a target="_blank" href="http://blogs.atlassian.com/2012/04/bamboofeature-branch-continuous-integration-hg-git/">plan branch</a> feature to automatically create the necessary build configuration.
-</p>
-
-
-<p>
-  Again, there are useful integration points here. One is that, as with the branches and commits, JIRA can display the state of any branch plans associated with tickets, creating an at-a-glance view of the feature development. But a more powerful one (in my opinion) is that Bamboo can also inform Stash of the state of builds for a branch. Why that is so important becomes evident when we come to pull requests in step #4.
-</p>
-
-
-<h3>#3.1: Optional: Push your changes to a rush box</h3>
-
-
-<p>
-  <a target="_blank" href="http://en.wikipedia.org/wiki/Dailies">Rush boxes</a> are used as staging servers for ongoing work that is not yet ready for QA or staging. This step is particularly useful when you have a customer involved in the development of the feature. By pushing out work in progress to a viewable stage environment you give them visibility of changes and allow them to review.
-</p>
-
-
-<p>
-  A version of this is to do this automatically using the same infrastructure tooling you use to perform your deployments below to also push to the staging server. In extreme cases, you can actually create dedicated staging infrastructure (e.g at AWS) at the same time that you create the feature branch. We haven&#8217;t got to this stage yet, but it&#8217;s definitely on my &ldquo;cool stuff I&#8217;d like to do&rdquo; list.
-</p>
-
-
-<h3>#4: When ready, create a pull request for the branch</h3>
-
-
-<p>
-  Pull requests are the DVCS world&#8217;s version of <a target="_blank" href="http://en.wikipedia.org/wiki/Code_review">code review</a>. Inexperienced developers tend to dislike the idea, but many experienced developers love them, as they provide a safety net when working on critical code and infrastructure.
-</p>
-
-
-<p>
-  On our team we have a &ldquo;no direct merge/commit to master&rdquo; rule  that we enforce through Stash access controls. This means that all merges must come through a pull request. On top of this we define a couple of extra quality rules:
-</p>
-
-
-<ul>
-  <li>
-    All pull requests must have approval from at least one reviewer
-  </li>
-  <li>
-    The Bamboo tests for this branch must pass.
-  </li>
-</ul>
-
-
-<p>
-  Both of these are enforced by Stash; in particular, the second one is enforced by the Bamboo to Stash pass/fail notification mentioned in #3.
-</p>
-
-
-<h3>#5: Merge and release</h3>
-
-
-<p>
-  Once the pull request has passed, the merge to the release branch can be performed. At this point we perform full release of the software; we use a separate dedicated Bamboo build plan for this, which first runs the full test suite before bumping the version and pushing to our build repository.
-</p>
-
-
-<h3>#6: Deploy to staging</h3>
-
-
-<p>
-  For us, this stage is also fully automated. The build of a release version of the software triggers its automatic deployment to our pre-production staging servers. This allows additional QA to be performed on it, and possible review by customers or other interested parties.
-</p>
-
-
-<p>
-  The actual nuts and bolts of how we perform these deployments will be covered below.
-</p>
-
-
-<h3>#7: Promote to production</h3>
-
-
-<p>
-  One of our rules is that we never push builds directly out to production. The binaries that go to production are the exact same ones that have been through QA on our staging servers. Thus we don&#8217;t so much release to production as <em>promote</em> once we&#8217;re happy with the quality. Again, the mechanics of this will be covered in more detail below, but suffice to say that we use Bamboo to manage which builds are deployed to where, and Bamboo communicates this information back to JIRA where it can be displayed against the original feature request.
-</p>
-
-
-<h2>Some full disclosure about integration</h2>
-
-
-<p>
-  While I&#8217;ve pointed out a number of places where Atlassian products integrate together, the spirit of <em><a target="_blank" href="https://www.atlassian.com/company/about/values">open company, no bullshit</a></em> compels me to point out that these integration points are not just available to Atlassian tools. This interoperability is enabled by REST APIs that are <a target="_blank" href="https://developer.atlassian.com/display/DOCS/REST+API+Development">documented online</a>, so it&#8217;s perfectly possible enable these features with a little work, possibly via <a target="_blank" href="http://curl.haxx.se/">curl</a>. For example, if you&#8217;re using <a target="_blank" href="https://www.atlassian.com/software/stash">Stash</a> for Git management but are still using Jenkins for CI, you can still enable the build-status integration mentioned in step #3 but calling out to the Stash <a target="_blank" href="https://developer.atlassian.com/stash/docs/latest/how-tos/updating-build-status-for-commits.html">build status API</a>.
-</p>
-
-
-<p>
-  However, the spirit of keeping marketing off my back and wanting to get paid compels me to point out that this is all a lot easier using our products together. 
-</p>
-
-
-<h2>Segue: Continuous downtime?</h2>
-
-
-<p>
-  It&#8217;s worth noting at this point that with continuous deployment also comes the possibility of continuous downtime. If you&#8217;re releasing infrequently, you can often get away with the occasional outage for upgrades, but if you get to the point where you&#8217;re releasing features several times a day, this quickly becomes unacceptable. Thus continuous deployment goes hand-in-hand with a need for clustering, failover, and other high-availability infrastructure.
-</p>
-
-
-<p>
-  We went through this process, too. Earlier versions of our order systems were running a single instance for a largely historical reason, and prior to moving to the new development model we had been following a weekly release cycle, with the deployment happening on a Monday morning. This infrequency, along with the fact that the deployment happened in Australian business hours, meant that this didn&#8217;t affect customers unduly. Not that we were <em>proud</em> of this downtime, but it was never a sufficient pain point for us to invest the work necessary to turn this into a truly clustered system. But the move to continuous deployment meant we had to address this deficiency, splitting out the stateful parts of the order system (such as batch-processing) and clustering the critical parts.
-</p>
-
-
-<p>
-  One additional point to note when clustering systems is that it&#8217;s important to select components of your network stack that will work with your deployment automation tools. For example, our original HA (high-availability) stack used Apache with <a target="_blank" href="http://httpd.apache.org/docs/2.2/mod/mod_proxy_balancer.html">mod_proxy_balancer</a>. However, while theoretically this can be automated via HTTP calls to the management front-end, in practice it was never built with this in mind and proved unreliable. In the end we moved our critical services behind a <a target="_blank" href="http://haproxy.1wt.eu/">HAProxy</a> cluster, which provides a reliable (albeit Unix-socket based) API for managing cluster members.
-</p>
-
-
-<h2>The last mile problem</h2>
-
-
-<p>
-  Another issue I seldom see addressed is how to actually get the software onto your servers; it&#8217;s assumed that if you&#8217;re doing continuous deployment you already have the &ldquo;deployment&rdquo; part taken care of. But even if this is the case, your existing tools may not necessarily fit with a fully automated deployment pipeline rather than a fixed-window schedule. I refer to this as the <a target="_blank" href="http://en.wikipedia.org/wiki/Last_mile">&lsquo;last mile&#8217;</a> problem. On the business platforms team we had this issue: We had a set of Python tools that had been in use for several years that performed upgrades on our hosts. However they were not end-to-end automated, and had no concept of cross-host coordination; rather than perform a rewrite of these scripts, we decided to look around for newer options.
-</p>
-
-
-<p>
-  One option that may be possible in simple single-server cases is to use your Bamboo agents themselves as the last mile system. By placing an agent on the target servers and binding that to that server&#8217;s deployment environment, you can script the deployment steps as agent tasks.
-</p>
-
-
-<p>
-  When consulting with your sysadmin team, the immediate temptation will probably be to use Puppet or Chef to perform the upgrades, as software configuration management. These didn&#8217;t work for us, however, as they work on the model of <em>eventual convergence</em>; i.e. that they&#8217;ll eventually get to the state that you desire, but not immediately. In a clustered system, however, you usually need events to happen in the correct order and be coordinated across hosts, e.g:
-</p>
-
-
-<ol>
-  <li>Take server A out of the balancer pool</li>
-  <li>Upgrade A</li>
-  <li>Check A is operational</li>
-  <li>Put A back into balancer pool</li>
-  <li>Take B out of the balancer pool</li>
-  <li>And so on&hellip;</li>
-</ol>
-
-
-<p>
-  This is difficult to do with configuration management tools as you need something more directed; luckily a lot of work has been done in this area by the DevOps community over the last few years. Going into a full review of the options would be make this already too-long post longer, but suffice to say that we trialled a few options and eventually settled on <a target="_blank" href="http://www.ansible.com/home">Ansible</a> for automation. The main deciding factor was that it has explicit support for a number of tools we already use including HipChat and Nagios (and look for <a target="_blank" href="http://docs.ansible.com/jira_module.html">JIRA support coming in 1.6</a>), and that it was explicitly designed to perform rolling upgrades across clusters of servers.
-</p>
-
-
-<p>
-  Ansible uses YAML <a target="_blank" href="http://docs.ansible.com/playbooks.html">playbooks</a> to describe sequences of operations to perform across hosts. We maintain these in their own Git repository that we pull as a task in the deployment environment. In total, our deployment environment task list looks like:
-</p>
-
-
-<ul>
-  <li>Download the build artifacts</li>
-  <li>Fetch Ansible from git</li>
-  <li>Fetch Ansible playbooks from git</li>
-  <li>Run the necessary playbook</li>
-</ul>
-
-
-<p>
-  However we use Puppet to the base-line configuration of the hosts, including the filesystem permissions and SSH keys that Ansible uses. Personally I&#8217;ve never understood the Puppet/Chef vs. Ansible/Salt/Rundeck dichotomy; I see them as entirely complementary. For example, I use Ansible to create clusters of AWS servers, place them in the DNS and behind load-balancers, and then bootstrap Puppet on the host to manage the OS-level configuration. Once that&#8217;s complete, Ansible is then used to manage the deployment and upgrade of the application-level software.</p>
-
-
-<h2>Managing deployments</h2>
-
-
-<p>
-  So now you have your release being built and deployed to development, staging, QA, and production environments &ndash; but how do you know which versions of the software are deployed where? How do you arrange the promotion of QA/staging builds up to production? And how do you ensure only certain users can perform these promotions?
-</p>
-
-
-<p>
-  Earlier spikes of the business-platform automated deployments relied on Bamboo&#8217;s child-plans to separate the build and deployment stages of the pipeline and allow setting of permissions. However, this was unwieldy, and it quickly became hard to track what was deployed where. But with the release of Bamboo 5 we rapidly replaced these with the new <a target="_blank" href="https://confluence.atlassian.com/display/BAMBOO/Deployment+projects">deployment environments</a>. These look a lot like standard build plans (and so can use the same task plugins available to the build jobs), but they support concepts necessary for effective deployments. In particular, they support the idea that a single build may be deployed to multiple locations (e.g. QA and staging), and then migrated onto other locations (e.g. production). They also have explicit integration with build plans but have their own permissions separate for the builds.
-</p>
-
-
-<p>
-  There&#8217;s a lot to deployment environments, and going into their features would take too long. However I will note that, like the other stages of the build pipeline, deployment environments have their own integration and feedback points; most notably the original JIRA ticket can display when, for example, a feature has been deployed to the staging environment.
-</p>
-
-
-<h2>Procedural issues</h2>
-
-
-<p>
-  On the subject of management, there are some additional questions you may need to take into account. What these are will depend a lot on your organization, but I&#8217;ll cover a couple of the issues we had to address along the way:
-</p>
-
-
-<h3>Deployment security</h3>
-
-
-<p>
-  Most of our systems share a common Bamboo server with a massive array of build agents that is managed by a dedicated team. Our <em>open company, no bullshit</em> philosophy means that we extend a lot of trust internally, and assume all employees are acting in the best interests of the company. This means that we grant developers quite high privileges to create and administer their own build plans. However the company is growing, and the regulatory bodies ends to take a less stoic view of such things. In particular, the software we produce modifies the company financials, and so must have strict access controls associated with it.
-</p>
-
-
-<p>
-  Although we investigated methods of remaining open but secure, in the end we decided that we should err on the side of strict compliance. To do this we identified all the systems that could be considered as falling under <a target="_blank" href="http://en.wikipedia.org/wiki/Sarbanes%E2%80%93Oxley_Act">SOX</a> scope and placed them into a separate build environment separated from the more liberal policies of the master Bamboo server.
-</p>
-
-
-<h3>Separation of duties</h3>
-
-
-<p>
-  Historically, the business platforms team has done a lot of our own operations. In some ways, we were doing DevOps before the idea came to wider recognition. However, SOX contains some strict rules about separation of duties; in particular the implementers of a software change must have oversight and cannot themselves sign-off on the deployment to production.
-</p>
-
-
-<p>
-  Our solution to this was to hand off the deployment to production to the business analysts. The analysts are almost always involved in the triage and specification of software changes, and are therefore in a good position to judge the readiness of features etc. to be deployed. And the use of automated deployment, in particular Bamboo&#8217;s deployment environments, makes this role available to them rather than just sysadmins.
-</p>
-
-
-<p>
-  In practice, we use the the deployment environment permission system to restrict production deployments to specific group (&ldquo;bizplat-releasers&rdquo;); we can then add and remove members as required.
-</p>
-
-
-<h2>Conclusion</h2>
-
-
-<p>
-  I&#8217;ve covered a lot here, and have only really scratched the surface of the practice of continuous deployment. But I hope this has helped to clarify some of the issues and solutions involved in adopting this powerful model into your organization.
-</p>
-
 
 
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/04/21/implementing-practical-continuous-deployment/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -1496,7 +1156,7 @@
 
 <p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
 Balaji Vajjala
-@bvajjala <a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#58;&#x62;&#x76;&#97;&#x6a;&#x6a;&#x61;&#x6c;&#x61;&#64;&#x67;&#109;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#x6d;">&#98;&#118;&#97;&#x6a;&#x6a;&#97;&#108;&#97;&#64;&#103;&#109;&#x61;&#x69;&#x6c;&#46;&#x63;&#x6f;&#109;</a>
+@bvajjala <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x62;&#x76;&#97;&#106;&#106;&#x61;&#x6c;&#x61;&#64;&#103;&#x6d;&#x61;&#x69;&#x6c;&#x2e;&#99;&#x6f;&#x6d;">&#x62;&#118;&#x61;&#106;&#106;&#97;&#108;&#x61;&#64;&#103;&#109;&#x61;&#105;&#x6c;&#46;&#99;&#111;&#x6d;</a>
 <a href="http://bvajjala.github.io/">http://bvajjala.github.io/</a>
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
 
@@ -2168,224 +1828,6 @@ through:</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye Node-forever</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-03T14:15:10-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2013/06/26/goodbye-node-forever-hello-pm2.html">Goodbye node-forever, hello PM2</a></h2>
-
-<p><img src="http://apps.hemca.com/pm2/pres/pm22.png" alt="pm2 logo" /></p>
-
-<p>It&rsquo;s no secret that the devo.ps team has a crush on Javascript; node.js in the backend, AngularJS for our clients, there isn&rsquo;t much of our stack that isn&rsquo;t at least in part built with it. Our approach of building <a href="http://devo.ps/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">static clients and RESTful JSON APIs</a> means that we run a lot of node.js and I must admit that, despite all of it awesomeness, node.js still is a bit of a
-headache when it comes to running in production. Tooling and best practices (think monitoring, logging, error traces…) are still lacking when compared to some of the more established languages.</p>
-
-<p>So far, we had been relying on the pretty nifty <a href="https://github.com/nodejitsu/forever">node-forever</a>. Great tool, but a few things were missing:</p>
-
-<ul>
-<li>Limited monitoring and logging abilities,</li>
-<li>Poor support for process management configuration,</li>
-<li>No support for clusterization,</li>
-<li>Aging codebase (which meant frequent failures when upgrading Node).</li>
-</ul>
-
-
-<p>This is what led us to write <a href="https://github.com/Unitech/pm2">PM2</a> in the past couple months. We thought we&rsquo;d give you a quick look at it while we&rsquo;re nearing a production ready release.</p>
-
-<h3>So what&rsquo;s in the box?</h3>
-
-<p>First things first, you can install it with <code>npm</code>:</p>
-
-<pre><code>npm install -g pm2
-</code></pre>
-
-<p>Let&rsquo;s open things up with the usual comparison table:</p>
-
-<p>FeatureForeverPM2</p>
-
-<p>Keep Alive</p>
-
-<p>✔</p>
-
-<p>✔</p>
-
-<p>Coffeescript</p>
-
-<p>✔</p>
-
-<p>Log aggregation</p>
-
-<p>✔</p>
-
-<p>API</p>
-
-<p>✔</p>
-
-<p>Terminal monitoring</p>
-
-<p>✔</p>
-
-<p>Clustering</p>
-
-<p>✔</p>
-
-<p>JSON configuration</p>
-
-<p>✔</p>
-
-<p>And now let me geek a tad more about the main features…</p>
-
-<h3>Native clusterization</h3>
-
-<p>Node v0.6 introduced the cluster feature, allowing you to share a socket across multiple networked Node applications. Problem is, it doesn&rsquo;t work out of the box and requires some tweaking to handle master and children processes.</p>
-
-<p>PM2 handles this natively, without any extra code: PM2 itself will act as the master process and wrap your code into a special clustered process, as Nodejs does, to add some global variables to your files.</p>
-
-<p>To start a clustered app using all the CPUs you just need to type something like that:</p>
-
-<pre><code>$ pm2 start app.js -i max
-</code></pre>
-
-<p>Then;</p>
-
-<pre><code>$ pm2 list
-</code></pre>
-
-<p>Which should display something like (ASCII UI FTW);</p>
-
-<p><img src="http://apps.hemca.com/pm2/pres/pm2-list.png" alt="pm2 list" /></p>
-
-<p>As you can see, your app is now forked into multiple processes depending on the number of CPUs available.</p>
-
-<h3>Monitoring <em>a la</em> termcaps-HTOP</h3>
-
-<p>It&rsquo;s nice enough to have an overview of the running processes and their status with the <code>pm2 list</code> command. But what about tracking their resources consumption? Fear not:</p>
-
-<pre><code>$ pm2 monit
-</code></pre>
-
-<p>You should get the CPU usage and memory consumption by process (and cluster).</p>
-
-<p><img src="http://apps.hemca.com/pm2/pres/pm2-monit.png" alt="pm2 monit" /></p>
-
-<p><strong>Disclaimer</strong>: <a href="https://github.com/arunoda/node-usage">node-usage</a> doesn&rsquo;t support MacOS for now (feel free to PR). It works just fine on Linux though.</p>
-
-<p>Now, what about checking on our clusters and GC cleaning of the memory stack?
-Let&rsquo;s consider you already have an HTTP benchmark tool (if not, you should definitely check <a href="https://github.com/wg/wrk">WRK</a>):</p>
-
-<pre><code>$ express bufallo     // Create an express app
-$ cd bufallo
-$ npm install
-$ pm2 start app.js -i max
-$ wrk -c 100 -d 100 http://localhost:3000/
-</code></pre>
-
-<p>In another terminal, launch the monitoring option:</p>
-
-<pre><code>$ pm2 monit
-</code></pre>
-
-<p>W00t!</p>
-
-<h3>Realtime log aggregation</h3>
-
-<p>Now you have to manage multiple clustered processes: one who&rsquo;s crawling data, another who is processing stuff, and so on so forth. That means logs, lots of it. You can still handle it the old fashioned way:</p>
-
-<pre><code>$ tail -f /path/to/log1 /path/to/log2 ...
-</code></pre>
-
-<p>But we&rsquo;re nice, so we wrote the <code>logs</code> feature:</p>
-
-<pre><code>$ pm2 logs
-</code></pre>
-
-<p><img src="http://apps.hemca.com/pm2/pres/pm2-logs.png" alt="pm2 monit" /></p>
-
-<h3>Resurrection</h3>
-
-<p>So things are nice and dandy, your processes are humming and you need to do a hard restart. What now? Well, first, dump things:</p>
-
-<pre><code>$ pm2 dump
-</code></pre>
-
-<p>From there, you should be able to resurrect things from file:</p>
-
-<pre><code>$ pm2 kill     // let's simulate a pm2 stop
-$ pm2 resurect // All my processes are now up and running 
-</code></pre>
-
-<h3>API Health point</h3>
-
-<p>Let&rsquo;s say you want to monitor all the processes managed by PM2, as well as the status of the machine they run on (and maybe even build a nice Angular app to consume this API…):</p>
-
-<pre><code>$ pm2 web
-</code></pre>
-
-<p>Point your browser at <code>http://localhost:9615</code>, aaaaand… done!</p>
-
-<h3>And there&rsquo;s more…</h3>
-
-<ul>
-<li>Full tests,</li>
-<li>Generation of <code>update-rc.d</code> (<code>pm2 startup</code>), though still very alpha,</li>
-<li>Development mode with auto restart on file change (<code>pm2 dev</code>), still very drafty too,</li>
-<li>Log flushing,</li>
-<li>Management of your applications fleet via JSON file,</li>
-<li>Log uncaught exceptions in error logs,</li>
-<li>Log of restart count and time,</li>
-<li>Automated killing of processes exiting too fast.</li>
-</ul>
-
-
-<h3>What&rsquo;s next?</h3>
-
-<p>Well first, you could show your love on Github (we love stars):
-<a href="https://github.com/Unitech/pm2">https://github.com/Unitech/pm2</a>.</p>
-
-<p>We developed PM2 to offer an advanced and complete solution for Node process management. We&rsquo;re looking forward to getting more people helping us getting there: pull requests are more than welcome. A few things already on the
-roadmap that we&rsquo;ll get right at once we have a stable core:</p>
-
-<ul>
-<li>Remote administration/status checking,</li>
-<li>Built-in inter-processes communication channel (message bus),</li>
-<li>V8 GC memory leak detection,</li>
-<li>Web interface,</li>
-<li>Persistent storage for monitoring data,</li>
-<li>Email notifications.</li>
-</ul>
-
-
-<p>Special thanks to <a href="https://github.com/makara">Makara Wang</a> for concepts/tools and <a href="https://github.com/rlidwka">Alex Kocharin</a> for advices and pull requests.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -2405,6 +1847,10 @@ roadmap that we&rsquo;ll get right at once we have a stable core:</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/22/best-practices-of-continuous-integration/">Best Practices of Continuous Integration</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/21/continuous-delivery-pipeline-stages/">Continuous Delivery Pipeline Stages</a>
       </li>
     
@@ -2418,10 +1864,6 @@ roadmap that we&rsquo;ll get right at once we have a stable core:</p>
     
       <li class="post">
         <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
       </li>
     
   </ul>

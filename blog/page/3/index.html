@@ -9,7 +9,8 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="A cheap solution on Amazon s3 for uploading files to s3 via SSH I needed to upload files from my Corporate environment in a push mode meaning I do &hellip;">
+  <meta name="description" content="For the past ~6 monthes or so I have been working solely with chef-solo.
+There are quite a few helpers for solo out there such as: soloist &ndash; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +73,74 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/27/manage-data-bags-in-solo-mode/">Manage Data Bags in Solo Mode</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-27T15:08:00-04:00" pubdate data-updated="true">Oct 27<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/Opscode_chef_logo.png" title="'Chef Logo'" > For the past ~6 monthes or so I have been working solely with <a href="http://docs.opscode.com/chef_solo.html">chef-solo</a>.
+There are quite a few helpers for solo out there such as:</p>
+
+<ol>
+<li>soloist &ndash; <a href="https://github.com/mkocher/soloist">https://github.com/mkocher/soloist</a></li>
+<li>knife-solo &ndash; <a href="https://github.com/matschaffer/knife-solo">https://github.com/matschaffer/knife-solo</a>
+&amp; a few more.</li>
+</ol>
+
+
+<p>What kept annoying me for some time is I couldn&rsquo;t manage databas with knife whilst working in solo mode &hellip; ARRRRRRGH!!!</p>
+
+<p>It looked somthing like:</p>
+
+<pre><code>[oper@sandbox chef_repo]$ knife data bag create admins
+ERROR: The object you are looking for could not be found
+Response: &lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL /data was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.2.15 (CentOS) Server at : Port 80&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;
+</code></pre>
+
+<p>Then came <a href="https://github.com/thbishop/knife-solo_data_bag">knife-solo_data_bag</a> I am quite embaressed to say ;) I haven&rsquo;t found this sooner.
+Now with a totally bogus knife.rb file I can generate / edit / manager databags with knife-solo &amp; knife-solo_data_bag.</p>
+
+<p>Again, hope you find this useful, I know I do ;)</p>
+
+<p>HP</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1088,55 +1157,6 @@ Well a common use case for doing stuff with Jenkins jobs / configuration [ for e
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/">Vagrant+Puppet+FPM=Amazeballs</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-07T18:23:00-04:00" pubdate data-updated="true">Apr 7<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Lately I&rsquo;ve been doing a lot of prototyping with <a href="http://www.vagrantup.com/">Vagrant</a>, specifically for a couple of distinct activities:&ndash;</p>
-
-<ul>
-<li>building puppet modules using <a href="https://github.com/elasticdog/puppet-sandbox">the excellent puppet sandbox</a> project</li>
-<li>and building RPM packages with <a href="https://github.com/jordansissel/fpm">FPM</a>.</li>
-</ul>
-
-
-<p>I realized I was spending a bunch of time flipping back and forth between Vagrant environments and I had no quick way to utilize RPMs built with FPM inside my puppet modules.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/04/07/vagrant-plus-puppet-plus-fpm-equals-amazeballs/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1158,6 +1178,10 @@ Well a common use case for doing stuff with Jenkins jobs / configuration [ for e
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/22/best-practices-of-continuous-integration/">Best Practices of Continuous Integration</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/21/continuous-delivery-pipeline-stages/">Continuous Delivery Pipeline Stages</a>
       </li>
     
@@ -1171,10 +1195,6 @@ Well a common use case for doing stuff with Jenkins jobs / configuration [ for e
     
       <li class="post">
         <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
       </li>
     
   </ul>
