@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Goodbye node-forever, hello PM2 It&rsquo;s no secret that the devo.ps team has a crush on Javascript; node.js in the backend, AngularJS for our &hellip;">
+  <meta name="description" content="I Can Haz Init Script Something went awfully wrong, and a rogue process is eating up all of the resources on one of your servers. You have no other &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +72,114 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/i-can-haz-init-script/">I Can Haz Init Script</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:21:03-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/06/19/I-can-haz-init-script.html">I Can Haz Init Script</a></h2>
+
+<p>Something went awfully wrong, and a rogue process is eating up all of the resources on one of your servers. You have no other choice but to restart it. No big deal, really; this is the age of disposable infrastructure after all. Except when it comes back up, everything starts going awry. Half the stuff supposed to be running is down and it&rsquo;s screwing with the rest of your setup.</p>
+
+<p><img src="/images/posts/y-u-no-guy.png" alt="INIT SCRIPTS, Y U NO LIKE?" /></p>
+
+<p>You don&rsquo;t get to think about them very often, but init scripts are a key piece of a sound, scalable strategy for your infrastructure. It&rsquo;s a <a href="">mandatory best practice</a>. Period. And there are quite a few things in the way of getting them to work properly at scale in production environments. It&rsquo;s a tough world out there.</p>
+
+<h3>What we&rsquo;re dealing with…</h3>
+
+<h4>Packages</h4>
+
+<p>Often enough, you&rsquo;re gonna end up installing a service using the package manager of your distro: <code>yum</code>, <code>apt-get</code>, you name it. These packages usually come with an init script that should get you started.</p>
+
+<p>Sadly, as your architecture grows in complexity, you&rsquo;ll probably run into some walls. Wanna have multiple memcache buckets, or several instances of redis running on the same box? You&rsquo;re out of luck buddy. Time to hack your way
+through:</p>
+
+<ul>
+<li>Redefine your start logic,</li>
+<li>Load one or multiple config files from <code>/etc/defaults</code> or <code>/etc/sysconfig</code>,</li>
+<li>Deal with the PIDs, log and lock files,</li>
+<li>Implement conditional logic to start/stop/restart one or more of the services,</li>
+<li>Realize you&rsquo;ve messed something up,</li>
+<li>Same player shoot again.</li>
+</ul>
+
+
+<p>Honestly: PITA.</p>
+
+<h4>Built from source</h4>
+
+<p>First things first: <strong>you shouldn&rsquo;t be building from source</strong> (unless you really, really need to).</p>
+
+<p>Now if you do, you&rsquo;ll have to be thorough: there may be samples of init scripts in there, but you&rsquo;ll have to dig them out. <code>/contrib</code>, <code>/addons</code>, …it&rsquo;s never in the same place.</p>
+
+<p>And that makes things &ldquo;fun&rdquo; when you&rsquo;re <a href="http://devo.ps/blog/2013/03/06/troubleshooting-5minutes-on-a-yet-unknown-box.html">trying to unscrew things on a box</a>:</p>
+
+<ul>
+<li>You figured out that MySQL is running from <code>/home/user/src/mysql</code>,</li>
+<li>You check if there&rsquo;s an init script: no luck this time…</li>
+<li>You try to understand what exactly launched <code>mysqld_safe</code>,</li>
+<li>You spend a while digging into the bash history smiling at typos,</li>
+<li>You stumble on a <code>run.sh</code> script (uncommented, of course) in the home directory. Funny enough, it seems to be starting everything from MySQL, NGINX and php-fpm to the coffee maker.</li>
+<li>You make a mental note to try and track down the &ldquo;genius&rdquo; who did that mess of a job, and get busy with converting everything to a proper init script.</li>
+</ul>
+
+
+<p>Great.</p>
+
+<h3>Why existing solutions suck</h3>
+
+<p>Well, based on what we&rsquo;ve just seen, you really only have two options:</p>
+
+<ol>
+<li> <strong>DIY</strong>; but if you&rsquo;re good at what you do, you&rsquo;re probably also lazy. You may do it the first couple times, but that&rsquo;s not gonna scale, especially when dealing with the various flavors of init daemons (upstart, systemd…),</li>
+<li> <strong>Use that thing called &ldquo;the Internet&rdquo;</strong>; you read through forum pages, issue queues, gists and if you&rsquo;re lucky you&rsquo;ll find a perfect one (or more likely 10 sucky ones). Kudos to all those of whom shared their work, but you&rsquo;ll probably be back to option 1.</li>
+</ol>
+
+
+<h3>We can do better than this</h3>
+
+<p>You&rsquo;ll find a gazillion websites for pictures of kittens, but as far as I know, there is no authoritative source for init scripts. That&rsquo;s just not right: we have to fix it. A few things I&rsquo;m aiming for:</p>
+
+<ul>
+<li><strong>Scalable</strong>; allow for multiple instances of a service to be started at once from different config files (see the memcache/redis example),</li>
+<li><strong>Secure</strong>; ensure <code>configtest</code> is run before a restart/reload (because, you know, a faulty config file preventing the service to restart is kind of a bummer),</li>
+<li><strong>Smart</strong>; ensuring for example that the cache is aggressively flushed before restarting your database (so that you don&rsquo;t end-up waiting 50 min for the DB to cleanly shutdown).</li>
+</ul>
+
+
+<p><a href="https://github.com/devo-ps/init-scripts">I&rsquo;ve just created a repo</a> where I&rsquo;ll be dumping various init scripts that will hopefully be helpful to others. I&rsquo;d love to get suggestions or help.</p>
+
+<p>And by the way, things are not much better with applications, though we&rsquo;re trying our best to improve things there too with things like <a href="https://github.com/Unitech/pm2">pm2</a> (fresh and shinny, more about it in a later post).</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1291,109 +1399,6 @@ into doing so with ZeroMQ and Go).</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/11/05/deploy-reveal-dot-js-slideshow-on-github-pages/">Deploy reveal.js Slideshow on Github-pages</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-05T21:03:00-05:00" pubdate data-updated="true">Nov 5<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Originally posted on <a href="http://www.tikalk.com">Tikal Knolwedge&rsquo;s webiste</a> @ this <a href="http://www.tikalk.com/alm/deploy-revealjs-slideshow-github-pages">link</a><br></p>
-
-<p><img class="left" src="/assets/images/gh-pages.png" title="'gh-pages'" >Deploy <a href="https://github.com/hakimel/reveal.js/">reveal.js slideshow</a> on github-pages was ridiculously easy.</p>
-
-<p>Cloned reveal.js master branch to my local machine:</p>
-
-<pre><code>git clone git@github.com:hakimel/reveal.js.git
-</code></pre>
-
-<p>Remove the history &ndash; of you want to preserve history ( <strong>git remote rm origin</strong> and add your new remote)</p>
-
-<pre><code>rm -Rf .git 
-</code></pre>
-
-<p>Add your new remote (you need to create a repository first)</p>
-
-<pre><code>git remote add origin git@github.com:tikalk-cookbooks/chef_workshop_presentation.git
-</code></pre>
-
-<p>You know the rest &hellip;</p>
-
-<pre><code>git add .
-git commit -m "Initial commit"
-git push origin master
-</code></pre>
-
-<p>In order to push master to github pages you should create a branch names <em><strong>gh-pages</strong></em> and it&nbsp;<strong>must</strong> be named that, the commit &amp; push to this branch and about 2 minuets later you can browse to your presentation on gh-pages.</p>
-
-<p><em><strong>Create a branch</strong></em>:</p>
-
-<pre><code>git branch hg-pages
-git push origin gh-pages&lt;/pre&gt;
-</code></pre>
-
-<p>updating this &quot;site&quot; can be done by editing the stuff you want on the &quot;master&quot; branch, then merge     those changes in the gh-pages branch and finally push those changes to the remote gh-pages which will automatically deploy youe reveal.js presentaion.</p>
-
-<p>the merge sould look somthing like:</p>
-
-<pre><code>hagzag-Lap-hagzag:chef_workshop_presentaion(master) $ git checkout gh-pages&amp;nbsp;
-
-hagzag-Lap-hagzag:chef_workshop_presentaion(gh-pages) $ git merge master&amp;nbsp;
-Updating 0f4f1e1..fb0d73d
-
-Fast-forward
-
-css/custom.css | &amp;nbsp; 4 ++++
-
-index.html &amp;nbsp; &amp;nbsp; | 104 +++++++++++++++++++++++++++++++++++++++++++++++++-----------    --------------------------------------------
-
-2 files changed, 53 insertions(+), 55 deletions(-)
-
-create mode 100644 css/custom.css
-
-git push origin gh-pages
-</code></pre>
-
-<p>the url is built from the followng pattern:</p>
-
-<pre><code>[github_username].github.io/[repo_name]
-</code></pre>
-
-<p>in this case:</p>
-
-<p><a href="http://tikalk-cookbooks.github.io/chef_workshop_presentation/#/">http://tikalk-cookbooks.github.io/chef_workshop_presentation/</a></p>
-
-<p>Hope you find this useful !</p>
-
-<p>HP</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1415,6 +1420,10 @@ git push origin gh-pages
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/24/all-my-presntations/">All My Presntations</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/22/best-practices-of-continuous-integration/">Best Practices of Continuous Integration</a>
       </li>
     
@@ -1428,10 +1437,6 @@ git push origin gh-pages
     
       <li class="post">
         <a href="/blog/2014/04/21/practical-continuous-deployment/">Practical Continuous Deployment</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
       </li>
     
   </ul>

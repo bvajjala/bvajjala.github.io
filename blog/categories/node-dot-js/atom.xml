@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Node-dot-js | Balaji Vajjala's Blog]]></title>
+  <title><![CDATA[Category: node.js | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/node-dot-js/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-22T14:19:57-04:00</updated>
+  <updated>2014-04-24T11:45:15-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,403 +14,72 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Goodbye node-forever]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/02/03/goodbye-node-forever/"/>
-    <updated>2014-02-03T14:15:10-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/02/03/goodbye-node-forever</id>
-    <content type="html"><![CDATA[<h2><a href="/blog/2013/06/26/goodbye-node-forever-hello-pm2.html">Goodbye node-forever, hello PM2</a></h2>
+    <title type="html"><![CDATA[All My Presntations]]></title>
+    <link href="http://bvajjala.github.io/blog/2014/04/24/all-my-presntations/"/>
+    <updated>2014-04-24T11:43:42-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2014/04/24/all-my-presntations</id>
+    <content type="html"><![CDATA[<p>Today I gave a presentation over Automating and Testing Drupal with Zombie.js at the
+<a href="http://drupaldallas.org/">Drupal Dallas Days Conference</a>. I had a blast putting this
+presentation together and I think just as much fun giving it.  I also used the incredible
+library <a href="http://lab.hakim.se/reveal-js/#/">Reveal.js</a> for the first time which is an
+amazing way to build a presentation.  I hope you enjoy it&hellip;</p>
 
-<p><img src="http://apps.hemca.com/pm2/pres/pm22.png" alt="pm2 logo" /></p>
+<!-- more -->
 
-<p>It&rsquo;s no secret that the devo.ps team has a crush on Javascript; node.js in the backend, AngularJS for our clients, there isn&rsquo;t much of our stack that isn&rsquo;t at least in part built with it. Our approach of building <a href="http://devo.ps/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">static clients and RESTful JSON APIs</a> means that we run a lot of node.js and I must admit that, despite all of it awesomeness, node.js still is a bit of a
-headache when it comes to running in production. Tooling and best practices (think monitoring, logging, error traces…) are still lacking when compared to some of the more established languages.</p>
 
-<p>So far, we had been relying on the pretty nifty <a href="https://github.com/nodejitsu/forever">node-forever</a>. Great tool, but a few things were missing:</p>
+<h2>Presentation Video</h2>
+
+<iframe width="100%" height="450px" src="http://www.youtube.com/embed/gd3L9i7Yb8Y" frameborder="0" allowfullscreen></iframe>
+
+
+<h2>Presentation Slides</h2>
 
 <ul>
-<li>Limited monitoring and logging abilities,</li>
-<li>Poor support for process management configuration,</li>
-<li>No support for clusterization,</li>
-<li>Aging codebase (which meant frequent failures when upgrading Node).</li>
+<li><a href="http://travistidwell.com/drupal-zombie">http://travistidwell.com/drupal-zombie</a></li>
+<li><a href="http://github.com/bvajjala/presentations/drupal-zombie">http://github.com/travist/drupal-zombie</a></li>
 </ul>
 
 
-<p>This is what led us to write <a href="https://github.com/Unitech/pm2">PM2</a> in the past couple months. We thought we&rsquo;d give you a quick look at it while we&rsquo;re nearing a production ready release.</p>
+<iframe width="100%" height="500px" src="http://github.com/bvajjala/presentations/drupal-zombie" frameborder="0" allowfullscreen></iframe>
 
-<h3>So what&rsquo;s in the box?</h3>
 
-<p>First things first, you can install it with <code>npm</code>:</p>
+<h2>Overview</h2>
 
-<pre><code>npm install -g pm2
-</code></pre>
+<h3>The Bite</h3>
 
-<p>Let&rsquo;s open things up with the usual comparison table:</p>
+<p>It all begins with the bite&hellip; Let&rsquo;s say you need to automate something repetitive
+that you always do within the Drupal UI. Or, maybe you would like to write automated
+tests for Drupal, but do not want to mess with the nasty installation and runtime of
+Selenium IDE. Enter Zombie.js&hellip; a lightweight, insanely fast, headless browser for
+testing and automation within a single Node.js package. No browser required.
+You have just been bitten.</p>
 
-<p>FeatureForeverPM2</p>
+<h3>The Infection</h3>
 
-<p>Keep Alive</p>
+<p>Installation is simple. Because it is a Node.js package, installation is as simple
+as installing node.js on your local computer (<a href="http://nodejs.org">http://nodejs.org</a>), and then run
+<div>
+  <pre><code class='bash'>npm install zombie</code></pre>
+</div>
 
-<p>✔</p>
+You have just been infected.</p>
 
-<p>✔</p>
+<h3>Walking</h3>
 
-<p>Coffeescript</p>
+<p>You realize that writing simple tests and automation tools is simple. You select
+elements on the page using tools you know such as jQuery Selectors (Sizzle). The
+API is easy and intuitive. You are now walking.</p>
 
-<p>✔</p>
+<h3>Hunting and Feeding</h3>
 
-<p>Log aggregation</p>
+<p>You now cannot get enough&hellip; You are automating every mundane taks that you do
+within the UI. You now have a powerful command line application at your fingertips
+and realize that you do not need to build custom Services endpoints or custom Drush
+commands to do what you want. You hunger for more&hellip; welcome to the hunting phase.</p>
 
-<p>✔</p>
+<h3>Believing</h3>
 
-<p>API</p>
-
-<p>✔</p>
-
-<p>Terminal monitoring</p>
-
-<p>✔</p>
-
-<p>Clustering</p>
-
-<p>✔</p>
-
-<p>JSON configuration</p>
-
-<p>✔</p>
-
-<p>And now let me geek a tad more about the main features…</p>
-
-<h3>Native clusterization</h3>
-
-<p>Node v0.6 introduced the cluster feature, allowing you to share a socket across multiple networked Node applications. Problem is, it doesn&rsquo;t work out of the box and requires some tweaking to handle master and children processes.</p>
-
-<p>PM2 handles this natively, without any extra code: PM2 itself will act as the master process and wrap your code into a special clustered process, as Nodejs does, to add some global variables to your files.</p>
-
-<p>To start a clustered app using all the CPUs you just need to type something like that:</p>
-
-<pre><code>$ pm2 start app.js -i max
-</code></pre>
-
-<p>Then;</p>
-
-<pre><code>$ pm2 list
-</code></pre>
-
-<p>Which should display something like (ASCII UI FTW);</p>
-
-<p><img src="http://apps.hemca.com/pm2/pres/pm2-list.png" alt="pm2 list" /></p>
-
-<p>As you can see, your app is now forked into multiple processes depending on the number of CPUs available.</p>
-
-<h3>Monitoring <em>a la</em> termcaps-HTOP</h3>
-
-<p>It&rsquo;s nice enough to have an overview of the running processes and their status with the <code>pm2 list</code> command. But what about tracking their resources consumption? Fear not:</p>
-
-<pre><code>$ pm2 monit
-</code></pre>
-
-<p>You should get the CPU usage and memory consumption by process (and cluster).</p>
-
-<p><img src="http://apps.hemca.com/pm2/pres/pm2-monit.png" alt="pm2 monit" /></p>
-
-<p><strong>Disclaimer</strong>: <a href="https://github.com/arunoda/node-usage">node-usage</a> doesn&rsquo;t support MacOS for now (feel free to PR). It works just fine on Linux though.</p>
-
-<p>Now, what about checking on our clusters and GC cleaning of the memory stack?
-Let&rsquo;s consider you already have an HTTP benchmark tool (if not, you should definitely check <a href="https://github.com/wg/wrk">WRK</a>):</p>
-
-<pre><code>$ express bufallo     // Create an express app
-$ cd bufallo
-$ npm install
-$ pm2 start app.js -i max
-$ wrk -c 100 -d 100 http://localhost:3000/
-</code></pre>
-
-<p>In another terminal, launch the monitoring option:</p>
-
-<pre><code>$ pm2 monit
-</code></pre>
-
-<p>W00t!</p>
-
-<h3>Realtime log aggregation</h3>
-
-<p>Now you have to manage multiple clustered processes: one who&rsquo;s crawling data, another who is processing stuff, and so on so forth. That means logs, lots of it. You can still handle it the old fashioned way:</p>
-
-<pre><code>$ tail -f /path/to/log1 /path/to/log2 ...
-</code></pre>
-
-<p>But we&rsquo;re nice, so we wrote the <code>logs</code> feature:</p>
-
-<pre><code>$ pm2 logs
-</code></pre>
-
-<p><img src="http://apps.hemca.com/pm2/pres/pm2-logs.png" alt="pm2 monit" /></p>
-
-<h3>Resurrection</h3>
-
-<p>So things are nice and dandy, your processes are humming and you need to do a hard restart. What now? Well, first, dump things:</p>
-
-<pre><code>$ pm2 dump
-</code></pre>
-
-<p>From there, you should be able to resurrect things from file:</p>
-
-<pre><code>$ pm2 kill     // let's simulate a pm2 stop
-$ pm2 resurect // All my processes are now up and running 
-</code></pre>
-
-<h3>API Health point</h3>
-
-<p>Let&rsquo;s say you want to monitor all the processes managed by PM2, as well as the status of the machine they run on (and maybe even build a nice Angular app to consume this API…):</p>
-
-<pre><code>$ pm2 web
-</code></pre>
-
-<p>Point your browser at <code>http://localhost:9615</code>, aaaaand… done!</p>
-
-<h3>And there&rsquo;s more…</h3>
-
-<ul>
-<li>Full tests,</li>
-<li>Generation of <code>update-rc.d</code> (<code>pm2 startup</code>), though still very alpha,</li>
-<li>Development mode with auto restart on file change (<code>pm2 dev</code>), still very drafty too,</li>
-<li>Log flushing,</li>
-<li>Management of your applications fleet via JSON file,</li>
-<li>Log uncaught exceptions in error logs,</li>
-<li>Log of restart count and time,</li>
-<li>Automated killing of processes exiting too fast.</li>
-</ul>
-
-
-<h3>What&rsquo;s next?</h3>
-
-<p>Well first, you could show your love on Github (we love stars):
-<a href="https://github.com/Unitech/pm2">https://github.com/Unitech/pm2</a>.</p>
-
-<p>We developed PM2 to offer an advanced and complete solution for Node process management. We&rsquo;re looking forward to getting more people helping us getting there: pull requests are more than welcome. A few things already on the
-roadmap that we&rsquo;ll get right at once we have a stable core:</p>
-
-<ul>
-<li>Remote administration/status checking,</li>
-<li>Built-in inter-processes communication channel (message bus),</li>
-<li>V8 GC memory leak detection,</li>
-<li>Web interface,</li>
-<li>Persistent storage for monitoring data,</li>
-<li>Email notifications.</li>
-</ul>
-
-
-<p>Special thanks to <a href="https://github.com/makara">Makara Wang</a> for concepts/tools and <a href="https://github.com/rlidwka">Alex Kocharin</a> for advices and pull requests.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Code Reuse With Node.js]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/02/03/code-reuse-with-node-dot-js/"/>
-    <updated>2014-02-03T14:09:35-05:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/02/03/code-reuse-with-node-dot-js</id>
-    <content type="html"><![CDATA[<h2><a href="/blog/2013/07/11/code-reuse-with-nodejs.html">Code Reuse With Node.js</a></h2>
-
-<p><img src="http://devo.ps/images/posts/recycle.png" alt="Code recycling" /></p>
-
-<p>Any project that grows to a decent size will need to re-use parts of its code extensively. That often means, through the development cycle, a fair amount of rewrites and refactoring exercises. Elegant code re-use is hard to pull off.</p>
-
-<p>With node.js, which we use quite a bit at <a href="http://devo.ps">devo.ps</a>, the most common ways to do this often rely on prototype or class inheritance. The problem is, as the inheritance chain grows, managing attributes and functions
-can become quite complex.</p>
-
-<p>The truth is, people usually just need the objects. This led us to adopt a certain form of object-based prototyping. We believe it to be leaner and more straightforward in most cases. But before we get there, let&rsquo;s have a look at how people usually approach this issue.</p>
-
-<h2>The &ldquo;Function copy&rdquo;</h2>
-
-<p>Usually in the form of <code>this[key] = that[key]</code>. A quick example:</p>
-
-<pre><code>var objectA = {
-    lorem: 'lorem ipsum'
-};
-var objectB = {};
-
-// Direct copy of a string, but you get the idea
-objectB.lorem = objectA.lorem;
-console.log(objectB); // Will output: { lorem: 'lorem ipsum' }
-</code></pre>
-
-<p>Crude, but it works. Next…</p>
-
-<h2>Object.defineProperties()</h2>
-
-<p>The previous method may work with simple structures, but it won&rsquo;t hold when
-your use cases become more complex. That&rsquo;s when I usually call my buddy
-<code>Object.defineProperties()</code>:</p>
-
-<pre><code>var descriptor = Object.getOwnPropertyDescriptor;
-var defineProp = Object.defineProperty;
-
-var objectA = {};
-var objectB = {};
-var objectC = {};
-
-objectA.__defineGetter__('lorem', function() {
-    return 'lorem ipsum';
-});
-console.log(objectA); // Will output: { lorem: [Getter] }
-
-// Direct copy, which copies the result of the getter.
-objectB.lorem = objectA.lorem;
-console.log(objectB); // Will output: { lorem: 'lorem ipsum' }
-
-// Copying with Object.defineProperty(), and it copies the getter itself.
-defineProp(objectC, 'lorem', descriptor(objectA, 'lorem'));
-console.log(objectC); // Will output: { lorem: [Getter] }
-</code></pre>
-
-<p>I often use a library for that. A couple examples (more or less the same stuff
-with different coding styles):</p>
-
-<ol>
-<li><p> <strong><a href="https://github.com/medikoo/es5-ext">es5-ext</a></strong></p>
-
-<p> var extend = require(&lsquo;es5-ext/lib/Object/extend-properties&rsquo;);</p>
-
-<p> var objectA = {};
- var objectC = {};</p>
-
-<p> objectA.<strong>defineGetter</strong>(&lsquo;lorem&rsquo;, function() {
-     return &lsquo;lorem ipsum&rsquo;;
- });</p>
-
-<p> extend(objectC, objectA);
- console.log(objectC); // Will output: { lorem: [Getter] }</p></li>
-<li><p> <strong><a href="https://github.com/devo-ps/carcass">Carcass</a></strong></p>
-
-<p> var carcass = require(&lsquo;carcass&rsquo;);</p>
-
-<p> var objectA = {};
- var objectC = {};</p>
-
-<p> objectA.<strong>defineGetter</strong>(&lsquo;lorem&rsquo;, function() {
-     return &lsquo;lorem ipsum&rsquo;;
- });</p>
-
-<p> carcass.mixable(objectC);
- objectC.mixin(objectA);
- console.log(objectC); // Will output: { mixin: [Function: mixin], lorem: [Getter] }</p></li>
-</ol>
-
-
-<p>Slightly better, but not optimal. Now, let&rsquo;s see what we end up doing more and
-more often:</p>
-
-<h2>Prototyping through objects</h2>
-
-<p>The basic idea is that we prepare some functions, wrap them into an object which then becomes a &ldquo;feature&rdquo;. That feature can then be re-used by simply merging it with the targeted structure (object or prototype).</p>
-
-<p>Let&rsquo;s take the example of the <a href="https://github.com/devo-ps/carcass/blob/master/lib/proto/loaderSync.js">loaderSync</a> script in <a href="https://github.com/devo-ps/carcass">Carcass</a>:</p>
-
-<pre><code>module.exports = {
-    source: source,
-    parser: parser,
-    reload: reload,
-    get: get
-};
-
-function get() {
-
-(...)
-</code></pre>
-
-<p>Once you copy the functions to an object, this object becomes a &ldquo;loader&rdquo; that can load a &ldquo;source&rdquo; synchronously with a &ldquo;parser&rdquo;. A &ldquo;source&rdquo; can be a file path and the &ldquo;parser&rdquo; can be simply Node.js' <code>require</code> function.</p>
-
-<p>Let&rsquo;s now see how to use this with a couple object builders. Once again, I&rsquo;ll borrow an example from Carcass; the <a href="https://github.com/devo-ps/carcass/blob/master/benchmark/proto.loaderSync.js">loaderSync benchmark script</a>. The first builder generates a function and copies the methods from what we&rsquo;ve prepared. The second one copies the methods to the prototype of a builder class:</p>
-
-<pre><code>(...)
-
-function LoaderA(_source) {
-    function loader() {
-        return loader.get();
-    }
-    loader.mixin = mixin;
-    loader.mixin(loaderSync);
-    loader.source(_source);
-    return loader;
-}
-
-(...)
-
-function LoaderC(_source) {
-    if (!(this instanceof LoaderC)) return new LoaderC(_source);
-    this.source(_source);
-}
-LoaderC.prototype.mixin = mixin;
-LoaderC.prototype.mixin(loaderSync);
-
-(...)
-</code></pre>
-
-<p>Here we can see the two approaches. Let&rsquo;s compare them quickly:</p>
-
-<p>FeatureLoader ALoader C</p>
-
-<p><strong>Instantiating</strong>
-<code>var a = LoaderA(...)</code></p>
-
-<p><code>var c = LoaderC(...)</code> or <code>var c = new LoaderC(...)</code></p>
-
-<p><strong>Appearance</strong>
-Generates a function</p>
-
-<p>Builds a typical instance which is an object.</p>
-
-<p><strong>Invoking directly</strong>
-<code>a()</code> or <code>a.get()</code></p>
-
-<p><code>c.get()</code></p>
-
-<p><strong>Invoking as a callback</strong>
-<code>ipsum(a)</code></p>
-
-<p><code>ipsum(c.get.bind(c))</code></p>
-
-<h2><strong>Performance † of instantiating</strong></h2>
-
-<p>100x faster</p>
-
-<p><strong>Performance of invoking</strong>
-<em>idem</em></p>
-
-<p><em>idem</em></p>
-
-<p><strong>†</strong>: (check it yourself by <a href="https://github.com/devo-ps/carcass/blob/master/Makefile">benchmarking Carcass with <code>make bm</code></a>)</p>
-
-<h3>&ldquo;Protos&rdquo; and beyond</h3>
-
-<p>That last approach is gaining traction among our team; we prepare functions for our object builders (which, by the way, we call &ldquo;protos&rdquo;). While we still choose to use prototypes in some occurrences, it is mainly because it is
-faster to get done. For the sake of convenience, we also sometimes rely on functions rather than objects to invoke our &ldquo;protos&rdquo;, however keep in mind that this is a performance trade-off.</p>
-
-<p>I&rsquo;ll wrap this up mentioning one more method we use, admittedly less often: &ldquo;Object alter&rdquo;. The idea is to rely on an &ldquo;alter&rdquo; function designed to change objects passed to it. This is sometimes also called a &ldquo;mixin&rdquo;. An example from <a href="https://github.com/visionmedia/configurable.js">vsionmedia&rsquo;s trove of awesomeness on Github</a>:</p>
-
-<pre><code>(...)
-
-module.exports = function(obj){
-
-    obj.settings = {};
-
-    obj.set = function(name, val){
-        (...)
-    };
-
-    (...)
-
-    return obj;
-};
-</code></pre>
-
-<h3>Resources</h3>
-
-<ul>
-<li><a href="http://killdream.github.io/2011/10/09/understanding-javascript-oop.html">A case for prototypes</a></li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">MDN Object reference</a></li>
-</ul>
-
+<p>You are now a believer. Zombie.js is amazing and will make your life easier.</p>
 ]]></content>
   </entry>
   
