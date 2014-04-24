@@ -601,8 +601,6 @@
 				progress: true,
 				history: true,
 				center: true,
-				slideNumber: true,
-
 
 				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
 				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
@@ -621,6 +619,10 @@
 					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
 				]
 			});
+
+		Reveal.configure({ 
+			slideNumber: true 
+		});
 
 		</script>
 
