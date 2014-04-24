@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Recently I&rsquo;ve been working on a Groovy code that had many methods with long multibranch conditionals like this: def parse(message, options) { &hellip;">
+  <meta name="description" content="Well, there is nothing like a simple and easy innovative solutions to save the day -it&rsquo;s been around for quite a while and never really needed &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,115 +72,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/06/01/reversing-groovy-switch-statement/">Reversing Groovy Switch Statement</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-01T08:00:00-04:00" pubdate data-updated="true">Jun 1<span>st</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Recently I&rsquo;ve been working on a Groovy code that had many methods with long multibranch conditionals like this:</p>
-
-<pre><code>def parse(message, options) {
-    if (options.contains('A')) {
-        parseARule message
-    } else if (options.contains(2)) {
-        parseSmallDigitRule message
-    ...
-    } else if (options.contains(something)) {
-        parseSomeRule message
-    } else {
-        parseSomeOtherRule message
-    }
-}
-</code></pre>
-
-<p>Although this code is working, it is hard to see which branch is called under which condition. It would be much better if we could replace this code with something like Lisp <code>cond</code> macro. The best candidate for such a task in Groovy would be a <code>switch</code> statement. If we could only refactor the code above to something like following, it would significantly improve readability:</p>
-
-<pre><code>def parse(message, options) {
-    switch (options) {
-        case 'A' : return parseARule(message)
-        case 2   : return parseSmallDigitRule(message)
-        ...
-        case ... : return parseSomeRule(message)
-        default  : return parseSomeOtherRule(message)
-    }
-}
-</code></pre>
-
-<p>Unfortunately, this code doesn&rsquo;t work out of the box in Groovy, but it works if we do some metaprogramming.</p>
-
-<p>The way <code>switch</code> statement works in Groovy is a bit <a href="http://docs.codehaus.org/display/GROOVY/Logical+Branching#LogicalBranching-switchstatement">different</a> than in Java. Instead of equals() it uses isCase() method to match case-value and switch-value. The default implementation of isCase() method falls back to equals() method, but some classes, including <a href="http://groovy.codehaus.org/groovy-jdk/java/util/Collection.html#isCase(java.lang.Object)">Collection</a>, override this behaviour. That&rsquo;s why in Groovy you can do things like this:</p>
-
-<pre><code>switch (value) {
-    case ['A','E','I','O','U'] : return 'vowel'
-    case 0..9                  : return 'digit'
-    case Date                  : return 'date'
-    default                    : return 'something else'
-}
-</code></pre>
-
-<p>For our purposes we need some sort of reverse <code>switch</code>, where collection is used as a switch-value, and String and Integer are used as a case-value. To do this we need to override default implementation of isCase() method on String and Integer classes. It&rsquo;s not possible in Java, but is very easy in Groovy. You can change method implementation globally by replacing it in corresponding meta class, or locally with the help of categories. Let&rsquo;s create a category that swaps object and subject of isCase() method:</p>
-
-<pre><code>class CaseCategory {
-    static boolean isCase(String string, Collection col) {
-        reverseCase(string, col)
-    }
-    static boolean isCase(Integer integer, Collection col) {
-        reverseCase(integer, col)
-    }
-    // Add more overloaded methods here if needed
-
-    private static boolean reverseCase(left, right) {
-        right.isCase(left)
-    }
-}
-</code></pre>
-
-<p>Now we can use this category to achieve the goal we stated at the beginning of this post:</p>
-
-<pre><code>def parse(message, options) {
-    use (CaseCategory) {
-        switch (options) {
-            case 'A' : return parseARule(message)
-            case 2   : return parseSmallDigitRule(message)
-            ...
-            case ... : return parseSomeRule(message)
-            default  : return parseSomeOtherRule(message)
-        }
-    }
-}
-</code></pre>
-
-<p>If you are comfortable with global method replacement, you can amend String and Integer meta classes. In this case you don&rsquo;t need to wrap <code>switch</code> statement with <code>use</code> keyword.</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1080,6 +971,106 @@ Installing the bash_completion deb package adds a bunch of bash completion helpe
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/08/27/The-hudson-plugins-you-cant-live-without/">The Hudson Plug-ins You Can&#8217;t Live Without</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-27T09:18:00-04:00" pubdate data-updated="true">Aug 27<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/hudson_logo.png" title="'Hudson Logo'" >This post was originally posted &amp; active @: <a href="http://www.tikalk.com/node/4994">http://www.tikalk.com</a>
+As a big fan of hudson-ci I would like to take a note of the most commonly used hudson plug-ins (at least by me) needed in order to maintain a good build environment.
+This list was collected as part of my experience in the last couple of years. I am sure your may differ then mine mine :).</p>
+
+<p><strong>Setenv plug-in</strong></p>
+
+<p>The <a href="http://wiki.hudson-ci.org/display/HUDSON/Setenv+plug-in">The Setenv plug-in</a> lets you set environment variables for a job upon build execution. During migration from CruiseControl I found this plug-in extremely useful, for I could provide the imported script the exact environment it had on the CC machine without the need to change a thing in the build&rsquo;s logic / parameters, this also applied to the following recommended plug-in:</p>
+
+<p><strong>Parameterized Trigger plug-in</strong></p>
+
+<p>The <a href="http://wiki.hudson-ci.org/display/HUDSON/Parameterized+Trigger+plug-in">Parameterized Trigger</a> plug-in lets you add parameters to your build jobs that users enter when they trigger a build. This a very useful plug-in for release or deployment automation, for example, where you want to enter the version number (or label) you want to release or deploy. The biggest feature of this plug-in is the default value so even automatic / SCM triggers get a default value to execute silently.</p>
+
+<p><strong>The <a href="http://wiki.hudson-ci.org/display/HUDSON/Cygpath+plug-in">Cygpath plug-in</a></strong></p>
+
+<p><img class="left" src="/assets/images/small_cygwin-logo.jpg" title="'Cygpath plug-in'" > for a *nix oriented guy as myself, this was a great help, all our &ldquo;special&rdquo; shell script do not have to be re-written when we are running builds on Windows nodes &ndash; and yest we have too &hellip; :)</p>
+
+<p>The Cygpath gave me the opportunity to share tools between linux and windows machines this gave us the ability to maintain one tool repository for all our slave regardless of their architecture.</p>
+
+<p>And did I forget to say all you need it to enable this and automatically every batch executed on a windows slave will automatically use Cygwin ? from Cygpath wiki:</p>
+
+<ul>
+<li><p>You install Cygwin on all the Windows slaves</p></li>
+<li><p>Jobs on Hudson that assume Unix environment can now run on all the slaves (including Windows ones)</p></li>
+<li><p>In the system configuration, you use Unix paths for all your tools.</p></li>
+</ul>
+
+
+<p><strong>Promoted Builds plug-in</strong></p>
+
+<p><img class="left" src="/assets/images/promotion.png" title="'Promotion'" >Definitely the #1 plug-in on the list here &ndash; this plug-in enables you to do almost anything you can do in a certain Job but run it as a promotion task &ndash; if you wish to promote you build to your QA team for testing, or if you want to tag it in SVN or Deploy your artifacts to a maven repository, this is the plug-in you &ldquo;cannot live without&rdquo;. Without this plug-in you will need to configure a separate job or Bach Task (see <a href="http://wiki.hudson-ci.org/display/HUDSON/Batch+Task+plug-in">batch tasks plug-in</a> for more details) for every task you want to perform on your build &ndash; which makes managing Hudson job a nightmare &hellip;</p>
+
+<p><strong>Clover plug-in</strong></p>
+
+<p><img class="left" src="/assets/images/logo-clover.png" title="'Clover logo'" >
+<a href="http://www.atlassian.com/software/clover/">Clover</a> is a non-free code coverage tool which is the commercial alternative to Cobertura Emma etc, the Hudson <a href="http://wiki.hudson-ci.org/display/HUDSON/Clover+plug-in">Clover</a> plug-in is an amazing add on which integrates Clover reports and Historical reports into the build flow, which I found extremely helpful. Try configuring Clover to generate historical reports and then publish them to some third-party web server for viewing &ndash; this has made Clover integration a breeze, the challenge is even bigger with a distributed build environment which Hudson &amp; Clover plug-in have overcome.</p>
+
+<p><img src="/assets/images/CloverSS_0.png" alt="" /></p>
+
+<p>If you don&rsquo;t have Clover, as mentioned above &ndash; the <a href="http://wiki.hudson-ci.org/display/HUDSON/Cobertura+plug-in">Cobertura</a> and <a href="http://wiki.hudson-ci.org/display/HUDSON/Emma+plug-in">Emma</a> plug-ins are great too which will also integrate with:</p>
+
+<p><strong>Sonar plug-in</strong></p>
+
+<p><img class="left" src="/assets/images/sonar_0.png" title="'Sonar logo'" >
+Although I am only &ldquo;P.O.C ing&rdquo; Sonar+Hudson+Clover, The <a href="http://wiki.hudson-ci.org/display/HUDSON/Sonar+plug-in">Sonar</a> plug-in made it trivial to integrate hudson projects with Sonar. <a href="http://sonar.codehaus.org/">Sonar</a> is a powerful open source code quality metrics reporting tool, which displays code quality metrics for multiple projects in a variety of ways on a centralized web location.</p>
+
+<p>For Maven based builds you do not even need to change a line of code in order to get sonar to work which made this module a <a href="http://search.twitter.com/search?q=%232">#2</a> on my &ldquo;can&rsquo;t live without plug-ins&rdquo;.</p>
+
+<p><strong>Sectioned View plug-in<a href="http://wiki.hudson-ci.org/display/HUDSON/Setenv+plug-in"><br/>
+</a></strong></p>
+
+<p><a href="http://wiki.hudson-ci.org/display/HUDSON/Sectioned+View+plug-in">Sectioned view</a> gives you the ability to create a &ldquo;Dashboard view&rdquo; for your job(s) / project(s) &ndash; it is quite feature rich if you take a look at it&rsquo;s configuration and it is very simple to comprehend. A great example is taken from the plug-ins wiki page see:</p>
+
+<p><img src="/assets/images/sectioned.png" alt="Section view scrrenshot" /></p>
+
+<p><strong>Nested Views plug-in</strong></p>
+
+<p><a href="http://wiki.hudson-ci.org/display/HUDSON/Nested+View+plug-in">Nested view</a>s another View type which allows grouping job views into multiple levels instead of one big list of tabs &ndash; this is quite useful and the only disadvantage is you can have both a view and jobs in the same page it&rsquo;s either a nested view or a list of views &ndash; but I presume it will sure be included.</p>
+
+<p><strong>Shelve Project plug-in</strong></p>
+
+<p>If you ever wanted to Hide a jo you are working on and you also would like to prevent it from being triggered by mistake this is the plug-in for you. I often find my self setting up a job and it becomes a work in progress so hiding it to a later time is a great help &ndash; this plug-in does just that.</p>
+
+<p><strong>Bugzilla &amp; Jira plug-ins</strong> (&amp; there or others I presume)</p>
+
+<p><img class="left" src="/assets/images/bugzilla.png" title="'Bugzilla logo'" >Well the fact I need both in the same Hudson cluster and I can still have them work side by side was really important. In order for this plug-in to serve you well your CM team has to some extra work on your SCM side, that done you got yourself a link directly into your bug tracking system &ndash; the latest versions, query <a href="http://wiki.hudson-ci.org/display/HUDSON/Bugzilla+plug-in">Bugzilla</a> &amp; <a href="http://wiki.hudson-ci.org/display/HUDSON/JIRA+plug-in">Jira</a> and can display the Bug details.</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -1117,7 +1108,7 @@ Installing the bash_completion deb package adds a bunch of bash completion helpe
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
+        <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
       </li>
     
   </ul>

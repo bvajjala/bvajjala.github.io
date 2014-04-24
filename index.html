@@ -1156,102 +1156,13 @@
 
 <p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
 Balaji Vajjala
-@bvajjala <a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#x62;&#118;&#97;&#106;&#x6a;&#97;&#x6c;&#x61;&#64;&#x67;&#109;&#97;&#x69;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;">&#x62;&#x76;&#97;&#106;&#x6a;&#97;&#108;&#x61;&#x40;&#x67;&#109;&#x61;&#105;&#108;&#x2e;&#99;&#111;&#x6d;</a>
+@bvajjala <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#98;&#118;&#97;&#x6a;&#106;&#x61;&#108;&#x61;&#64;&#x67;&#x6d;&#97;&#x69;&#108;&#46;&#99;&#111;&#x6d;">&#98;&#x76;&#x61;&#106;&#x6a;&#x61;&#108;&#97;&#64;&#103;&#x6d;&#x61;&#105;&#x6c;&#46;&#99;&#x6f;&#109;</a>
 <a href="http://bvajjala.github.io/">http://bvajjala.github.io/</a>
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
 
 <h3>￼￼Thanks!</h3>
 
 <p><img src="/images/presentation-2.1.png" alt="" /></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/04/17/my-first-presentation/">My First Presentation</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-04-17T15:41:59-04:00" pubdate data-updated="true">Apr 17<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="/blog/2014/04/17/my-first-presentation/slides"><h2>View the Presentation</h2></a></p>
-
-<h5>Or view the slide sheet below</h5>
-
-
-<hr />
-
-
-<section class='slide'><div class='content'>
-
-<h2>Practical continuous deployment</h2>
-
-<h3>Balaji Vajjala</h3>
-
-<h5>Principal DevOps Consultant/Solution Architect</h5>
-
-<h5>Feb 2014</h5>
-
-</div>
-
-<aside class='notes'>
-
-<p>Hi, my name is Balaji Vajjala and I&rsquo;m the Chief Architet and DevOps Solution Architect.</p>
-
-<p>I have been developing software in the financial and Telecom industry since Mid 90&rsquo;s. Passionate about technology, I have delivered a diverse project portfolio initially as a software developer and subsequently as a leader of development organisations.</p>
-
-</aside>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<h3>DevOps</h3>
-
-<ul>
-<li>Continuous Deployment</li>
-<li>Continuous Delivery</li>
-<li>Continuous Integration</li>
-</ul>
-
-
-</div>
-
-<aside class='notes'>
-
-<p>I don&rsquo;t have to tell you guys about DevOps, but for our purposes the main point is that we can do more stuff using the DevOps principles and Deliver software ina Agile Fashion.</p>
-
-</aside>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<h2>Thanks!</h2>
 </div>
   
   
@@ -1828,6 +1739,224 @@ through:</p>
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/goodbye-node-forever/">Goodbye Node-forever</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:15:10-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/06/26/goodbye-node-forever-hello-pm2.html">Goodbye node-forever, hello PM2</a></h2>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm22.png" alt="pm2 logo" /></p>
+
+<p>It&rsquo;s no secret that the devo.ps team has a crush on Javascript; node.js in the backend, AngularJS for our clients, there isn&rsquo;t much of our stack that isn&rsquo;t at least in part built with it. Our approach of building <a href="http://devo.ps/blog/2013/01/31/farewell-to-regular-web-development-approaches.html">static clients and RESTful JSON APIs</a> means that we run a lot of node.js and I must admit that, despite all of it awesomeness, node.js still is a bit of a
+headache when it comes to running in production. Tooling and best practices (think monitoring, logging, error traces…) are still lacking when compared to some of the more established languages.</p>
+
+<p>So far, we had been relying on the pretty nifty <a href="https://github.com/nodejitsu/forever">node-forever</a>. Great tool, but a few things were missing:</p>
+
+<ul>
+<li>Limited monitoring and logging abilities,</li>
+<li>Poor support for process management configuration,</li>
+<li>No support for clusterization,</li>
+<li>Aging codebase (which meant frequent failures when upgrading Node).</li>
+</ul>
+
+
+<p>This is what led us to write <a href="https://github.com/Unitech/pm2">PM2</a> in the past couple months. We thought we&rsquo;d give you a quick look at it while we&rsquo;re nearing a production ready release.</p>
+
+<h3>So what&rsquo;s in the box?</h3>
+
+<p>First things first, you can install it with <code>npm</code>:</p>
+
+<pre><code>npm install -g pm2
+</code></pre>
+
+<p>Let&rsquo;s open things up with the usual comparison table:</p>
+
+<p>FeatureForeverPM2</p>
+
+<p>Keep Alive</p>
+
+<p>✔</p>
+
+<p>✔</p>
+
+<p>Coffeescript</p>
+
+<p>✔</p>
+
+<p>Log aggregation</p>
+
+<p>✔</p>
+
+<p>API</p>
+
+<p>✔</p>
+
+<p>Terminal monitoring</p>
+
+<p>✔</p>
+
+<p>Clustering</p>
+
+<p>✔</p>
+
+<p>JSON configuration</p>
+
+<p>✔</p>
+
+<p>And now let me geek a tad more about the main features…</p>
+
+<h3>Native clusterization</h3>
+
+<p>Node v0.6 introduced the cluster feature, allowing you to share a socket across multiple networked Node applications. Problem is, it doesn&rsquo;t work out of the box and requires some tweaking to handle master and children processes.</p>
+
+<p>PM2 handles this natively, without any extra code: PM2 itself will act as the master process and wrap your code into a special clustered process, as Nodejs does, to add some global variables to your files.</p>
+
+<p>To start a clustered app using all the CPUs you just need to type something like that:</p>
+
+<pre><code>$ pm2 start app.js -i max
+</code></pre>
+
+<p>Then;</p>
+
+<pre><code>$ pm2 list
+</code></pre>
+
+<p>Which should display something like (ASCII UI FTW);</p>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-list.png" alt="pm2 list" /></p>
+
+<p>As you can see, your app is now forked into multiple processes depending on the number of CPUs available.</p>
+
+<h3>Monitoring <em>a la</em> termcaps-HTOP</h3>
+
+<p>It&rsquo;s nice enough to have an overview of the running processes and their status with the <code>pm2 list</code> command. But what about tracking their resources consumption? Fear not:</p>
+
+<pre><code>$ pm2 monit
+</code></pre>
+
+<p>You should get the CPU usage and memory consumption by process (and cluster).</p>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-monit.png" alt="pm2 monit" /></p>
+
+<p><strong>Disclaimer</strong>: <a href="https://github.com/arunoda/node-usage">node-usage</a> doesn&rsquo;t support MacOS for now (feel free to PR). It works just fine on Linux though.</p>
+
+<p>Now, what about checking on our clusters and GC cleaning of the memory stack?
+Let&rsquo;s consider you already have an HTTP benchmark tool (if not, you should definitely check <a href="https://github.com/wg/wrk">WRK</a>):</p>
+
+<pre><code>$ express bufallo     // Create an express app
+$ cd bufallo
+$ npm install
+$ pm2 start app.js -i max
+$ wrk -c 100 -d 100 http://localhost:3000/
+</code></pre>
+
+<p>In another terminal, launch the monitoring option:</p>
+
+<pre><code>$ pm2 monit
+</code></pre>
+
+<p>W00t!</p>
+
+<h3>Realtime log aggregation</h3>
+
+<p>Now you have to manage multiple clustered processes: one who&rsquo;s crawling data, another who is processing stuff, and so on so forth. That means logs, lots of it. You can still handle it the old fashioned way:</p>
+
+<pre><code>$ tail -f /path/to/log1 /path/to/log2 ...
+</code></pre>
+
+<p>But we&rsquo;re nice, so we wrote the <code>logs</code> feature:</p>
+
+<pre><code>$ pm2 logs
+</code></pre>
+
+<p><img src="http://apps.hemca.com/pm2/pres/pm2-logs.png" alt="pm2 monit" /></p>
+
+<h3>Resurrection</h3>
+
+<p>So things are nice and dandy, your processes are humming and you need to do a hard restart. What now? Well, first, dump things:</p>
+
+<pre><code>$ pm2 dump
+</code></pre>
+
+<p>From there, you should be able to resurrect things from file:</p>
+
+<pre><code>$ pm2 kill     // let's simulate a pm2 stop
+$ pm2 resurect // All my processes are now up and running 
+</code></pre>
+
+<h3>API Health point</h3>
+
+<p>Let&rsquo;s say you want to monitor all the processes managed by PM2, as well as the status of the machine they run on (and maybe even build a nice Angular app to consume this API…):</p>
+
+<pre><code>$ pm2 web
+</code></pre>
+
+<p>Point your browser at <code>http://localhost:9615</code>, aaaaand… done!</p>
+
+<h3>And there&rsquo;s more…</h3>
+
+<ul>
+<li>Full tests,</li>
+<li>Generation of <code>update-rc.d</code> (<code>pm2 startup</code>), though still very alpha,</li>
+<li>Development mode with auto restart on file change (<code>pm2 dev</code>), still very drafty too,</li>
+<li>Log flushing,</li>
+<li>Management of your applications fleet via JSON file,</li>
+<li>Log uncaught exceptions in error logs,</li>
+<li>Log of restart count and time,</li>
+<li>Automated killing of processes exiting too fast.</li>
+</ul>
+
+
+<h3>What&rsquo;s next?</h3>
+
+<p>Well first, you could show your love on Github (we love stars):
+<a href="https://github.com/Unitech/pm2">https://github.com/Unitech/pm2</a>.</p>
+
+<p>We developed PM2 to offer an advanced and complete solution for Node process management. We&rsquo;re looking forward to getting more people helping us getting there: pull requests are more than welcome. A few things already on the
+roadmap that we&rsquo;ll get right at once we have a stable core:</p>
+
+<ul>
+<li>Remote administration/status checking,</li>
+<li>Built-in inter-processes communication channel (message bus),</li>
+<li>V8 GC memory leak detection,</li>
+<li>Web interface,</li>
+<li>Persistent storage for monitoring data,</li>
+<li>Email notifications.</li>
+</ul>
+
+
+<p>Special thanks to <a href="https://github.com/makara">Makara Wang</a> for concepts/tools and <a href="https://github.com/rlidwka">Alex Kocharin</a> for advices and pull requests.</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1863,7 +1992,7 @@ through:</p>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
+        <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
       </li>
     
   </ul>
