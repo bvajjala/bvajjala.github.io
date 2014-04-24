@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Automating and Testing Drupal with Zombie.js</title>
     <meta name="description" content="Automating and Testing Drupal with Zombie.js">
-    <meta name="author" content="Travis Tidwell">
+    <meta name="author" content="Balaji Vajjala">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -32,10 +32,10 @@
         <section>
           <h1>Automating and Testing Drupal with<br/>Z<img class="trans-image zombie-image" src="assets/drupal-zombie.png" />mbie.js</h1>
           <h3>From bite to believing</h3>
-          <p><small>Infected by <a href="http://github.com/travist">Travis Tidwell</a> (travist)</small></p>
-          <p><small><a href="http://github.com/travist">http://github.com/travist</a> | <a href="http://travistidwell.com">http://travistidwell.com</a> | <a href="http://twitter.com/softwaregnome">@softwaregnome</a> | <a href='https://allplayers.com'>AllPlayers.com</a></small></p>
-          <p><small>Follow along @ <a href='http://travistidwell.com/drupal-zombie'>http://travistidwell.com/drupal-zombie</a></small></p>
-          <p><small>Code @ <a href='https://github.com/travist/drupal-zombie'>https://github.com/travist/drupal-zombie</a></small></p>
+          <p><small>Infected by <a href="http://github.com/bvajjala">Balaji Vajjala</a> (bvajjala)</small></p>
+          <p><small><a href="http://github.com/bvajjala">http://github.com/bvajjala</a> | <a href="http://bvajjala.github.io">http://bvajjala.github.io</a> | <a href="http://twitter.com/bvajjala">@bvajjala</a> | <a href='https://allplayers.com'>AllPlayers.com</a></small></p>
+          <p><small>Follow along @ <a href='http://bvajjala.github.io/presentations/drupal-zombie'>http://bvajjala.github.io/drupal-zombie</a></small></p>
+          <p><small>Code @ <a href='https://github.com/bvajjala/presentations/drupal-zombie'>https://github.com/bvajjala/presentations/drupal-zombie</a></small></p>
         </section>
 
         <section>
@@ -93,7 +93,7 @@
             <pre class="fragment"><code contenteditable>
    https://github.com/creationix/nvm
    <span class="fragment">curl https://raw.github.com/creationix/nvm/master/install.sh | sh</span>
-   <span class="fragment">mac:~ travist$ nvm install 0.8</span>
+   <span class="fragment">mac:~ bvajjala$ nvm install 0.8</span>
             </code></pre>
           </section>
           <section>
@@ -108,9 +108,9 @@
             <h1>Infection</h1>
             <h4>Step 4: Setup your project.</h4>
             <pre><code contenteditable>
-   mac:~ travist$ mkdir drupal-zombie
-   <span class="fragment">mac:drupal-zombie travist$ cd drupal-zombie</span>
-   <span class="fragment">mac:drupal-zombie travist$ nano package.json</span>
+   mac:~ bvajjala$ mkdir drupal-zombie
+   <span class="fragment">mac:drupal-zombie bvajjala$ cd drupal-zombie</span>
+   <span class="fragment">mac:drupal-zombie bvajjala$ nano package.json</span>
    <span class="fragment">
       {
         "name": "drupal-zombie",
@@ -125,8 +125,8 @@
             <h1>Infection</h1>
             <h4>Step 5: Use Node.js v0.8 and install dependencies.</h4>
             <pre><code contenteditable>
-   mac:drupal-zombie travist$ nvm use 0.8
-   <span class="fragment">mac:drupal-zombie travist$ npm install</span>
+   mac:drupal-zombie bvajjala$ nvm use 0.8
+   <span class="fragment">mac:drupal-zombie bvajjala$ npm install</span>
             </code></pre>
           </section>
         </section>
@@ -136,7 +136,7 @@
             <h1>Walking</h1>
             <p>Create a new app.js file.</p>
             <pre><code contenteditable>
-   mac:drupal-zombie travist$ nano app.js
+   mac:drupal-zombie bvajjala$ nano app.js
    <span class="fragment">
     var Browser = require("zombie");
     <span class="fragment">var browser = new Browser();</span>
@@ -359,7 +359,7 @@ https://github.com/caolan/async
         "async": ">=0",
         ...
             </code></pre></div>
-            <div class="fragment"><pre><code>mac:drupal-zombie travist$ npm install</code></pre></div>
+            <div class="fragment"><pre><code>mac:drupal-zombie bvajjala$ npm install</code></pre></div>
           </section>
           <section>
             <h3><code>async.series</code> usage</h3>
@@ -525,7 +525,7 @@ https://github.com/caolan/async
         "nconf": ">=0",
         ...
             </code></pre></div>
-            <div class="fragment"><pre><code>mac:drupal-zombie travist$ npm install</code></pre></div>
+            <div class="fragment"><pre><code>mac:drupal-zombie bvajjala$ npm install</code></pre></div>
             <div class="fragment"><small style="margin: 1em 0 -1em -35em;">config.json</small>
             <pre><code contenteditable>
     {
@@ -571,7 +571,7 @@ https://github.com/caolan/async
         "prompt": ">=0",
         ...
             </code></pre></div>
-            <div class="fragment"><pre><code>mac:drupal-zombie travist$ npm install</code></pre></div>
+            <div class="fragment"><pre><code>mac:drupal-zombie bvajjala$ npm install</code></pre></div>
           </section>
           <section>
             <h3>Using Prompt</h3>
@@ -603,13 +603,13 @@ https://github.com/caolan/async
         <section>
           <section>
             <h1>Believing</h1>
-            <strong><a href="https://github.com/travist/drupal.go.js">drupal.go.js</a></strong>
+            <strong><a href="https://github.com/bvajjala/drupal.go.js">drupal.go.js</a></strong>
             <p><small>A node.js package to automate and test Drupal using Zombie.js.</small></p>
             <pre><code contenteditable style="text-align:center;">
-https://github.com/travist/drupal.go.js
+https://github.com/bvajjala/drupal.go.js
             </code></pre>
             <div class="fragment"><pre><code contenteditable style="text-align:center;">
-    mac:drupal-zombie travist$ npm install drupalgo
+    mac:drupal-zombie bvajjala$ npm install drupalgo
           </code></pre></div>
           </section>
           <section>
@@ -625,14 +625,14 @@ https://github.com/travist/drupal.go.js
     }
             </small></code></pre>
             <pre class="fragment"><code>
-    mac:drupal-zombie travist$ nvm use 0.8
-    mac:drupal-zombie travist$ npm install
+    mac:drupal-zombie bvajjala$ nvm use 0.8
+    mac:drupal-zombie bvajjala$ npm install
             </code></pre>
             <div class='fragment'><small style="margin: 1em 0 -1em -35em;">config.json</small>
             <pre><code contenteditable><small>
     {
       "host": "http://drupal.org",
-      "user": "travist"
+      "user": "bvajjala"
     }
             </small></code></pre></div>
           </section>
@@ -845,7 +845,7 @@ https://github.com/travist/drupal.go.js
           </section>
           <section>
             <h3>It's open source... so fork it!</h3>
-            <strong><a href='https://github.com/travist/drupal.go.js'>https://github.com/travist/drupal.go.js</a></strong>
+            <strong><a href='https://github.com/bvajjala/drupal.go.js'>https://github.com/bvajjala/drupal.go.js</a></strong>
             <img src='assets/drupal.go.jpg' />
           </section>
         </section>
@@ -884,12 +884,12 @@ https://github.com/travist/drupal.go.js
           <h1>Thanks</h1>
           <h3>References</h3>
           <ul>
-            <li>Blog Entry: <a href="http://travistidwell.com">http://travistidwell.com</a></li>
-            <li>Presentation: <a href='http://travistidwell.com/drupal-zombie'>http://travistidwell.com/drupal-zombie</a></li>
-            <li>Source: <a href='http://github.com/travist/drupal-zombie'>http://github.com/travist/drupal-zombie</a></li>
-            <li>Presentation Video: <a href='https://youtube.com/travist349'>https://youtube.com/travist349</a></li>
-            <li>drupal.go.js: <a href='http://github.com/travist/drupal.go.js'>http://github.com/travist/drupal.go.js</a></li>
-            <li>Github Profile: <a href='https://github.com/travist'>https://github.com/travist</a></li>
+            <li>Blog Entry: <a href="http://bvajjalaidwell.com">http://bvajjalaidwell.com</a></li>
+            <li>Presentation: <a href='http://bvajjalaidwell.com/drupal-zombie'>http://bvajjalaidwell.com/drupal-zombie</a></li>
+            <li>Source: <a href='http://github.com/bvajjala/drupal-zombie'>http://github.com/bvajjala/drupal-zombie</a></li>
+            <li>Presentation Video: <a href='https://youtube.com/bvajjala349'>https://youtube.com/bvajjala349</a></li>
+            <li>drupal.go.js: <a href='http://github.com/bvajjala/drupal.go.js'>http://github.com/bvajjala/drupal.go.js</a></li>
+            <li>Github Profile: <a href='https://github.com/bvajjala'>https://github.com/bvajjala</a></li>
             <li>Drupal.org Profile: <a href='http://drupal.org/user/98581'>http://drupal.org/user/98581</a></li>
           </ul>
         </section>

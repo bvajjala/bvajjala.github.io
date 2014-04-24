@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: drupal | Balaji Vajjala's Blog]]></title>
+  <title><![CDATA[Category: Drupal | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/drupal/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-24T12:06:36-04:00</updated>
+  <updated>2014-04-24T13:01:00-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -14,77 +14,29 @@
 
   
   <entry>
-    <title type="html"><![CDATA[All My Presntations]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/04/24/all-my-presntations/"/>
-    <updated>2014-04-24T11:43:42-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/04/24/all-my-presntations</id>
-    <content type="html"><![CDATA[<p>Today I gave a presentation over Automating and Testing Drupal with Zombie.js at the
-<a href="http://drupaldallas.org/">Drupal Dallas Days Conference</a>. I had a blast putting this
-presentation together and I think just as much fun giving it.  I also used the incredible
-library <a href="http://lab.hakim.se/reveal-js/#/">Reveal.js</a> for the first time which is an
-amazing way to build a presentation.  I hope you enjoy it&hellip;</p>
+    <title type="html"><![CDATA[Performing backup with Git]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/04/16/performing-backup-with-git/"/>
+    <updated>2013-04-16T16:30:00-04:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/04/16/performing-backup-with-git</id>
+    <content type="html"><![CDATA[<p><img class="left" src="/assets/images/git_logo.jpg" title="&lsquo;Git Logo&rsquo;" >~4 years ago I wrote a script which will sync my drupal files directory between two servers [ I used rsync for that ], the problem with rsync was that it fetches a checsum of every file and direcroty over SSH which was very slow, and the critical issue was I have no history of the data &ndash; and if I am maintaining multipule syncs whats the point in rsync.</p>
 
-<!-- more -->
+<p>I looked @ svn at the time which was extreemly slow with binaries [ zip, tars etc ], Git and the git protocol in specific did the full sync [ ~1GB ] in under 45 minuets &ndash; over the Internet which was quite good IMO.</p>
 
+<p>I was talking with a collegue on such a solution the other day and I thought why not share this. So for purely educational puposes I put thist scripup as a Gist @:&nbsp;<a href="https://gist.github.com/hagzag/5396510">https://gist.github.com/hagzag/5396510</a>&nbsp;[ or part of the repository @:&nbsp;<a href="https://github.com/hagzag/files_repo/blob/master/syncFiles.sh">https://github.com/hagzag/files_repo/blob/master/syncFiles.sh</a>, but i am not sure it will survive there]&nbsp;&nbsp;and an acompenying repository called &quot;<a href="https://github.com/hagzag/files_repo">files_repo</a>&quot;.</p>
 
-<h2>Presentation Video</h2>
-
-<iframe width="100%" height="450px" src="http://www.youtube.com/embed/gd3L9i7Yb8Y" frameborder="0" allowfullscreen></iframe>
-
-
-<h2>Presentation Slides</h2>
+<p>As you will see in the readme I am not sure it will do much for you but if you are consdering on using it read the following:</p>
 
 <ul>
-<li><a href="http://travistidwell.com/drupal-zombie">http://travistidwell.com/drupal-zombie</a></li>
-<li><a href="http://github.com/travist/drupal-zombie">http://github.com/travist/drupal-zombie</a></li>
+<li>create a repository [ e.g. on GitHub ]</li>
+<li>set the FILES_DIR parameter [ or default to /opt/data ]</li>
+<li>set the MY_GIT_REPO parameter [ or default to /opt/git-repo ]</li>
+<li>set my GIT_REMOTE parameter with the full git url of you repository [I didn&#39;t check this via https &hellip; ]</li>
 </ul>
 
 
-<iframe width="100%" height="500px" src="http://travistidwell.com/drupal-zombie" frameborder="0" allowfullscreen></iframe>
+<p>Run the script, this is really custom to my use case, but shows another awsome aspect of git.</p>
 
-
-<h2>From my blog</h2>
-
-<iframe width="100%" height="500px" src="http://bvajjala.github.io/presentations/drupal-zombie" frameborder="0" allowfullscreen></iframe>
-
-
-<h2>Overview</h2>
-
-<h3>The Bite</h3>
-
-<p>It all begins with the bite&hellip; Let&rsquo;s say you need to automate something repetitive
-that you always do within the Drupal UI. Or, maybe you would like to write automated
-tests for Drupal, but do not want to mess with the nasty installation and runtime of
-Selenium IDE. Enter Zombie.js&hellip; a lightweight, insanely fast, headless browser for
-testing and automation within a single Node.js package. No browser required.
-You have just been bitten.</p>
-
-<h3>The Infection</h3>
-
-<p>Installation is simple. Because it is a Node.js package, installation is as simple
-as installing node.js on your local computer (<a href="http://nodejs.org">http://nodejs.org</a>), and then run
-<div>
-  <pre><code class='bash'>npm install zombie</code></pre>
-</div>
-
-You have just been infected.</p>
-
-<h3>Walking</h3>
-
-<p>You realize that writing simple tests and automation tools is simple. You select
-elements on the page using tools you know such as jQuery Selectors (Sizzle). The
-API is easy and intuitive. You are now walking.</p>
-
-<h3>Hunting and Feeding</h3>
-
-<p>You now cannot get enough&hellip; You are automating every mundane taks that you do
-within the UI. You now have a powerful command line application at your fingertips
-and realize that you do not need to build custom Services endpoints or custom Drush
-commands to do what you want. You hunger for more&hellip; welcome to the hunting phase.</p>
-
-<h3>Believing</h3>
-
-<p>You are now a believer. Zombie.js is amazing and will make your life easier.</p>
+<p>Originally posted @: <a href="http://www.tikalk.com/alm/performing-backup-git">my Blog on tikalk.com</a></p>
 ]]></content>
   </entry>
   

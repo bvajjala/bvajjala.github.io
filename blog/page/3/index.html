@@ -9,7 +9,8 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="Originally posted on Tikal Knolwedge&rsquo;s webiste @ this link Deploy reveal.js slideshow on github-pages was ridiculously easy. Cloned reveal.js &hellip;">
+  <meta name="description" content="For the past ~6 monthes or so I have been working solely with chef-solo.
+There are quite a few helpers for solo out there such as: soloist &ndash; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,109 +73,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/11/05/deploy-reveal-dot-js-slideshow-on-github-pages/">Deploy reveal.js Slideshow on Github-pages</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-05T21:03:00-05:00" pubdate data-updated="true">Nov 5<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Originally posted on <a href="http://www.tikalk.com">Tikal Knolwedge&rsquo;s webiste</a> @ this <a href="http://www.tikalk.com/alm/deploy-revealjs-slideshow-github-pages">link</a><br></p>
-
-<p><img class="left" src="/assets/images/gh-pages.png" title="'gh-pages'" >Deploy <a href="https://github.com/hakimel/reveal.js/">reveal.js slideshow</a> on github-pages was ridiculously easy.</p>
-
-<p>Cloned reveal.js master branch to my local machine:</p>
-
-<pre><code>git clone git@github.com:hakimel/reveal.js.git
-</code></pre>
-
-<p>Remove the history &ndash; of you want to preserve history ( <strong>git remote rm origin</strong> and add your new remote)</p>
-
-<pre><code>rm -Rf .git 
-</code></pre>
-
-<p>Add your new remote (you need to create a repository first)</p>
-
-<pre><code>git remote add origin git@github.com:tikalk-cookbooks/chef_workshop_presentation.git
-</code></pre>
-
-<p>You know the rest &hellip;</p>
-
-<pre><code>git add .
-git commit -m "Initial commit"
-git push origin master
-</code></pre>
-
-<p>In order to push master to github pages you should create a branch names <em><strong>gh-pages</strong></em> and it&nbsp;<strong>must</strong> be named that, the commit &amp; push to this branch and about 2 minuets later you can browse to your presentation on gh-pages.</p>
-
-<p><em><strong>Create a branch</strong></em>:</p>
-
-<pre><code>git branch hg-pages
-git push origin gh-pages&lt;/pre&gt;
-</code></pre>
-
-<p>updating this &quot;site&quot; can be done by editing the stuff you want on the &quot;master&quot; branch, then merge     those changes in the gh-pages branch and finally push those changes to the remote gh-pages which will automatically deploy youe reveal.js presentaion.</p>
-
-<p>the merge sould look somthing like:</p>
-
-<pre><code>hagzag-Lap-hagzag:chef_workshop_presentaion(master) $ git checkout gh-pages&amp;nbsp;
-
-hagzag-Lap-hagzag:chef_workshop_presentaion(gh-pages) $ git merge master&amp;nbsp;
-Updating 0f4f1e1..fb0d73d
-
-Fast-forward
-
-css/custom.css | &amp;nbsp; 4 ++++
-
-index.html &amp;nbsp; &amp;nbsp; | 104 +++++++++++++++++++++++++++++++++++++++++++++++++-----------    --------------------------------------------
-
-2 files changed, 53 insertions(+), 55 deletions(-)
-
-create mode 100644 css/custom.css
-
-git push origin gh-pages
-</code></pre>
-
-<p>the url is built from the followng pattern:</p>
-
-<pre><code>[github_username].github.io/[repo_name]
-</code></pre>
-
-<p>in this case:</p>
-
-<p><a href="http://tikalk-cookbooks.github.io/chef_workshop_presentation/#/">http://tikalk-cookbooks.github.io/chef_workshop_presentation/</a></p>
-
-<p>Hope you find this useful !</p>
-
-<p>HP</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1205,6 +1103,60 @@ Well a common use case for doing stuff with Jenkins jobs / configuration [ for e
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/16/performing-backup-with-git/">Performing Backup With Git</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-16T16:30:00-04:00" pubdate data-updated="true">Apr 16<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/git_logo.jpg" title="'Git Logo'" >~4 years ago I wrote a script which will sync my drupal files directory between two servers [ I used rsync for that ], the problem with rsync was that it fetches a checsum of every file and direcroty over SSH which was very slow, and the critical issue was I have no history of the data &ndash; and if I am maintaining multipule syncs whats the point in rsync.</p>
+
+<p>I looked @ svn at the time which was extreemly slow with binaries [ zip, tars etc ], Git and the git protocol in specific did the full sync [ ~1GB ] in under 45 minuets &ndash; over the Internet which was quite good IMO.</p>
+
+<p>I was talking with a collegue on such a solution the other day and I thought why not share this. So for purely educational puposes I put thist scripup as a Gist @:&nbsp;<a href="https://gist.github.com/hagzag/5396510">https://gist.github.com/hagzag/5396510</a>&nbsp;[ or part of the repository @:&nbsp;<a href="https://github.com/hagzag/files_repo/blob/master/syncFiles.sh">https://github.com/hagzag/files_repo/blob/master/syncFiles.sh</a>, but i am not sure it will survive there]&nbsp;&nbsp;and an acompenying repository called &quot;<a href="https://github.com/hagzag/files_repo">files_repo</a>&quot;.</p>
+
+<p>As you will see in the readme I am not sure it will do much for you but if you are consdering on using it read the following:</p>
+
+<ul>
+<li>create a repository [ e.g. on GitHub ]</li>
+<li>set the FILES_DIR parameter [ or default to /opt/data ]</li>
+<li>set the MY_GIT_REPO parameter [ or default to /opt/git-repo ]</li>
+<li>set my GIT_REMOTE parameter with the full git url of you repository [I didn&#39;t check this via https &hellip; ]</li>
+</ul>
+
+
+<p>Run the script, this is really custom to my use case, but shows another awsome aspect of git.</p>
+
+<p>Originally posted @: <a href="http://www.tikalk.com/alm/performing-backup-git">my Blog on tikalk.com</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1226,10 +1178,6 @@ Well a common use case for doing stuff with Jenkins jobs / configuration [ for e
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/04/24/all-my-presntations/">All My Presntations</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/04/22/best-practices-of-continuous-integration/">Best Practices of Continuous Integration</a>
       </li>
     
@@ -1243,6 +1191,10 @@ Well a common use case for doing stuff with Jenkins jobs / configuration [ for e
     
       <li class="post">
         <a href="/blog/2014/04/21/practical-continuous-deployment/">Practical Continuous Deployment</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/17/my-first-presentation/">my first presentation</a>
       </li>
     
   </ul>

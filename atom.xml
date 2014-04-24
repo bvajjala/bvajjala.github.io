@@ -4,7 +4,7 @@
   <title><![CDATA[Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-04-24T12:06:36-04:00</updated>
+  <updated>2014-04-24T13:01:00-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -12,83 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[All My Presntations]]></title>
-    <link href="http://bvajjala.github.io/blog/2014/04/24/all-my-presntations/"/>
-    <updated>2014-04-24T11:43:42-04:00</updated>
-    <id>http://bvajjala.github.io/blog/2014/04/24/all-my-presntations</id>
-    <content type="html"><![CDATA[<p>Today I gave a presentation over Automating and Testing Drupal with Zombie.js at the
-<a href="http://drupaldallas.org/">Drupal Dallas Days Conference</a>. I had a blast putting this
-presentation together and I think just as much fun giving it.  I also used the incredible
-library <a href="http://lab.hakim.se/reveal-js/#/">Reveal.js</a> for the first time which is an
-amazing way to build a presentation.  I hope you enjoy it&hellip;</p>
-
-<!-- more -->
-
-
-<h2>Presentation Video</h2>
-
-<iframe width="100%" height="450px" src="http://www.youtube.com/embed/gd3L9i7Yb8Y" frameborder="0" allowfullscreen></iframe>
-
-
-<h2>Presentation Slides</h2>
-
-<ul>
-<li><a href="http://travistidwell.com/drupal-zombie">http://travistidwell.com/drupal-zombie</a></li>
-<li><a href="http://github.com/travist/drupal-zombie">http://github.com/travist/drupal-zombie</a></li>
-</ul>
-
-
-<iframe width="100%" height="500px" src="http://travistidwell.com/drupal-zombie" frameborder="0" allowfullscreen></iframe>
-
-
-<h2>From my blog</h2>
-
-<iframe width="100%" height="500px" src="http://bvajjala.github.io/presentations/drupal-zombie" frameborder="0" allowfullscreen></iframe>
-
-
-<h2>Overview</h2>
-
-<h3>The Bite</h3>
-
-<p>It all begins with the bite&hellip; Let&rsquo;s say you need to automate something repetitive
-that you always do within the Drupal UI. Or, maybe you would like to write automated
-tests for Drupal, but do not want to mess with the nasty installation and runtime of
-Selenium IDE. Enter Zombie.js&hellip; a lightweight, insanely fast, headless browser for
-testing and automation within a single Node.js package. No browser required.
-You have just been bitten.</p>
-
-<h3>The Infection</h3>
-
-<p>Installation is simple. Because it is a Node.js package, installation is as simple
-as installing node.js on your local computer (<a href="http://nodejs.org">http://nodejs.org</a>), and then run</p>
-
-<div>
-  <pre><code class='bash'>npm install zombie</code></pre>
-</div>
-
-
-<p>You have just been infected.</p>
-
-<h3>Walking</h3>
-
-<p>You realize that writing simple tests and automation tools is simple. You select
-elements on the page using tools you know such as jQuery Selectors (Sizzle). The
-API is easy and intuitive. You are now walking.</p>
-
-<h3>Hunting and Feeding</h3>
-
-<p>You now cannot get enough&hellip; You are automating every mundane taks that you do
-within the UI. You now have a powerful command line application at your fingertips
-and realize that you do not need to build custom Services endpoints or custom Drush
-commands to do what you want. You hunger for more&hellip; welcome to the hunting phase.</p>
-
-<h3>Believing</h3>
-
-<p>You are now a believer. Zombie.js is amazing and will make your life easier.</p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Best Practices of Continuous Integration]]></title>
@@ -1559,7 +1482,7 @@ commands to do what you want. You hunger for more&hellip; welcome to the hunting
 
 <p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
 Balaji Vajjala
-@bvajjala <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#x62;&#x76;&#97;&#x6a;&#106;&#x61;&#x6c;&#97;&#x40;&#x67;&#x6d;&#x61;&#x69;&#108;&#46;&#99;&#x6f;&#109;">&#x62;&#x76;&#97;&#106;&#106;&#97;&#108;&#97;&#64;&#x67;&#109;&#97;&#105;&#x6c;&#x2e;&#99;&#111;&#x6d;</a>
+@bvajjala <a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#98;&#x76;&#97;&#106;&#x6a;&#97;&#108;&#97;&#64;&#x67;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#99;&#x6f;&#109;">&#x62;&#x76;&#x61;&#x6a;&#106;&#x61;&#108;&#x61;&#x40;&#x67;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#99;&#x6f;&#x6d;</a>
 <a href="http://bvajjala.github.io/">http://bvajjala.github.io/</a>
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
 
@@ -3253,6 +3176,82 @@ It has proven resilient and will likely hold well until we have the resources
 to either customize its data propagation approach, or build our own solution
 that will answer some needs it is not likely to answer (we&rsquo;ve already looked
 into doing so with ZeroMQ and Go).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Deploy reveal.js slideshow on github-pages]]></title>
+    <link href="http://bvajjala.github.io/blog/2013/11/05/deploy-reveal-dot-js-slideshow-on-github-pages/"/>
+    <updated>2013-11-05T21:03:00-05:00</updated>
+    <id>http://bvajjala.github.io/blog/2013/11/05/deploy-reveal-dot-js-slideshow-on-github-pages</id>
+    <content type="html"><![CDATA[<p>Originally posted on <a href="http://www.tikalk.com">Tikal Knolwedge&rsquo;s webiste</a> @ this <a href="http://www.tikalk.com/alm/deploy-revealjs-slideshow-github-pages">link</a><br></p>
+
+<p><img class="left" src="http://bvajjala.github.io/assets/images/gh-pages.png" title="'gh-pages'" >Deploy <a href="https://github.com/hakimel/reveal.js/">reveal.js slideshow</a> on github-pages was ridiculously easy.</p>
+
+<p>Cloned reveal.js master branch to my local machine:</p>
+
+<pre><code>git clone git@github.com:hakimel/reveal.js.git
+</code></pre>
+
+<p>Remove the history &ndash; of you want to preserve history ( <strong>git remote rm origin</strong> and add your new remote)</p>
+
+<pre><code>rm -Rf .git 
+</code></pre>
+
+<p>Add your new remote (you need to create a repository first)</p>
+
+<pre><code>git remote add origin git@github.com:tikalk-cookbooks/chef_workshop_presentation.git
+</code></pre>
+
+<p>You know the rest &hellip;</p>
+
+<pre><code>git add .
+git commit -m "Initial commit"
+git push origin master
+</code></pre>
+
+<p>In order to push master to github pages you should create a branch names <em><strong>gh-pages</strong></em> and it&nbsp;<strong>must</strong> be named that, the commit &amp; push to this branch and about 2 minuets later you can browse to your presentation on gh-pages.</p>
+
+<p><em><strong>Create a branch</strong></em>:</p>
+
+<pre><code>git branch hg-pages
+git push origin gh-pages&lt;/pre&gt;
+</code></pre>
+
+<p>updating this &quot;site&quot; can be done by editing the stuff you want on the &quot;master&quot; branch, then merge     those changes in the gh-pages branch and finally push those changes to the remote gh-pages which will automatically deploy youe reveal.js presentaion.</p>
+
+<p>the merge sould look somthing like:</p>
+
+<pre><code>hagzag-Lap-hagzag:chef_workshop_presentaion(master) $ git checkout gh-pages&amp;nbsp;
+
+hagzag-Lap-hagzag:chef_workshop_presentaion(gh-pages) $ git merge master&amp;nbsp;
+Updating 0f4f1e1..fb0d73d
+
+Fast-forward
+
+css/custom.css | &amp;nbsp; 4 ++++
+
+index.html &amp;nbsp; &amp;nbsp; | 104 +++++++++++++++++++++++++++++++++++++++++++++++++-----------    --------------------------------------------
+
+2 files changed, 53 insertions(+), 55 deletions(-)
+
+create mode 100644 css/custom.css
+
+git push origin gh-pages
+</code></pre>
+
+<p>the url is built from the followng pattern:</p>
+
+<pre><code>[github_username].github.io/[repo_name]
+</code></pre>
+
+<p>in this case:</p>
+
+<p><a href="http://tikalk-cookbooks.github.io/chef_workshop_presentation/#/">http://tikalk-cookbooks.github.io/chef_workshop_presentation/</a></p>
+
+<p>Hope you find this useful !</p>
+
+<p>HP</p>
 ]]></content>
   </entry>
   
