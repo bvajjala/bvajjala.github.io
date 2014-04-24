@@ -167,739 +167,6 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/04/21/practical-continuous-deployment/">Practical Continuous Deployment</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-04-21T11:18:15-04:00" pubdate data-updated="true">Apr 21<span>st</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="/blog/2014/04/21/practical-continuous-deployment/slides"><h2>View the Presentation</h2></a></p>
-
-<h5>Or view the slide sheet below</h5>
-
-
-<hr />
-
-
-<section class='slide'><div class='content'>
-
-<h2>Practical continuous deployment</h2>
-
-<h3>Balaji Vajjala</h3>
-
-<h5>Principal DevOps Consultant/Solution Architect</h5>
-
-<h5>Feb 2014</h5>
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<h3>￼Who Am I?</h3>
-
-<h3>Balaji Vajjala!</h3>
-
-<ul>
-<li>A Full Stack DevOps Engineer/Solution Architect for 10+ years!</li>
-<li>Original company sysadmin!</li>
-<li>Developer for last 4 years!</li>
-<li>Now working out of East Coast</li>
-<li>Not a professional speaker</li>
-</ul>
-
-
-</div>
-
-<aside class='notes'>
-
-<p>Hi, my name is Balaji Vajjala and I&rsquo;m the Chief Architect and DevOps Solution Architect.</p>
-
-<p>I have been developing software in the financial and Telecom industry since Mid 90&rsquo;s.</p>
-
-<p>I am always passionate about technology, and have delivered diverse project portfolios initially as a software developer and subsequently as a leader at various development organisations.</p>
-
-</aside>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼What I’ve been up to&hellip;</h3>
-
-<ul>
-<li>Last 6 months converting our order systems to high-availability and continuous deployment.</li>
-<li>Why 6 months?
-
-<ul>
-<li>Because the concept is straightforward, but it’s implications affect a lot of your organisation.</li>
-</ul>
-</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<h3>What is DevOps?</h3>
-
-<ul>
-<li>Continuous Deployment</li>
-<li>Continuous Delivery</li>
-<li>Continuous Integration</li>
-</ul>
-
-
-</div>
-
-<aside class='notes'>
-
-<p>I don&rsquo;t have to tell you guys about DevOps, but for our purposes the main point is that we can do more stuff using the DevOps principles and Deliver software in a Agile Fashion.</p>
-
-</aside>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼“Deployment”? “Delivery”?</h3>
-
-<ul>
-<li>Continuous integration is continuous, automated build and test.!</li>
-<li>Continuous delivery is the next obvious step; be continuously release-ready !</li>
-<li>Continuous deployment is the final step, the continuous delivery of software to production.</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼“Deployment”? “Delivery”?</h3>
-
-<ul>
-<li>Constant QA is the common theme.!</li>
-<li>In practice there’s a continuous spectrum of options, each organisation has different needs and constraints.!</li>
-<li>But if you trust your testing and process you can adopt the level appropriate for you.</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼Why Continuous deployment?</h3>
-
-<ul>
-<li>We want to release features, not “what ever happens to be done”!</li>
-<li>Automation: Releasing is hard, automation makes it repeatable!</li>
-<li>Remove organisational bottlenecks to releases</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼Why Continuous deployment? Stakeholder benefits</h3>
-
-<ul>
-<li>To customers: You’ll get your requested feature faster!!</li>
-<li>To management: You’ll get results faster and clearer progress.!</li>
-<li>To devs: No more death-marches, mad- dashes, clean-up after releases.!</li>
-<li>To admins: You know which change broke the system!</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼Continuous deployment: So how do you actually do it?</h3>
-
-<ul>
-<li>Continuous deployment guides tend to focus on the high-level philosophy!</li>
-<li>But how do you actually get a feature from a customer request to your servers?</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼Development workflow</h3>
-
-<ul>
-<li>Continuous deployment implies a clearer development process.!</li>
-<li>You need to know what is going out when you release, not a dump of the current state.!</li>
-<li>Hence release by feature</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼Development</h3>
-
-<ul>
-<li>Track your feature requests in a bug tracker!</li>
-<li>Branch on each feature, automatically test!</li>
-<li>Pull requests for code-review/merge!</li>
-<li>Automatic release to staging on each merge!</li>
-<li>Promote from staging to production</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼Step 1: Track your requests</h3>
-
-<ul>
-<li>Each feature/update request should have a unique ID.!</li>
-<li>This allows tracking the state of a feature from request to deployment.!</li>
-<li>Bug-trackers are a good choice for this.
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>Step 2: Work on this feature in a branch</h3>
-
-<ul>
-<li>Create a branch for just this feature!</li>
-<li>Name it after the feature request!</li>
-<li>Jira/Stash integration will do this!</li>
-<li>The branch will be merged when complete!</li>
-<li>You need a sane version control system!</li>
-<li>We use git, Mercurial is good too
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Step 3: Automatically test the branch</h3>
-
-<ul>
-<li>Run a continuous integration tool that will automatically run tests against the branch.!</li>
-<li>Features may not be merged until all tests are passing.!</li>
-<li>Stash has some features to support this.
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Step 4: Code review</h3>
-
-<ul>
-<li>No code may be merged to the release branch until reviewed by other members of the team.!</li>
-<li>Team members have a responsibility to ensure quality.
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Step 4.1: Stash testing integration</h3>
-
-<p><img src="/images/presentation-2.0.png" alt="" />￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Step 5: Merge and release</h3>
-
-<ul>
-<li>Once all reviews and tests are passed them merge to release branch!</li>
-<li>At this point we have a separate Bamboo plan that performs a full release.
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Step 6: Deploy to staging</h3>
-
-<ul>
-<li>Allows testing of more advanced interactions and against production samples.!</li>
-<li>More testing can occur at this point, including testing by humans.
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Step 7: Release to production</h3>
-
-<ul>
-<li>Valid staging builds may be promoted up to production.
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Segue: “Continuous downtime”?</h3>
-
-<ul>
-<li>So if you’re doing all these releases, what about uptime?!</li>
-<li>For public-facing service clustering/HA is important.!</li>
-<li>Ideally you should be able to automate cluster configuration as part of the deployment
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Last mile</h3>
-
-<p><img src="/images/presentation-2.1.png" alt="" />
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Practical issue</h3>
-
-<ul>
-<li>How do you actually get releases onto your staging and production servers?!</li>
-<li>AKA “the last-mile problem”
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Last mile</h3>
-
-<ul>
-<li>Puppet/Chef are not appropriate!</li>
-<li>For simple/single-node applications you can use a Bamboo agent directly!</li>
-<li>For more complex setups use an automation tool
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Last mile</h3>
-
-<ul>
-<li>Puppet/Chef are not appropriate!</li>
-<li>.. if timing is critical!</li>
-<li>.. if cross-host coordination required
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Last mile</h3>
-
-<ul>
-<li>Roll your own!</li>
-<li>Bamboo SSH plugin + bash scripting!</li>
-<li>Number of existing automation solutions!</li>
-<li>func, capistrano, SaltStack, Ansible, mcollective, Fabric&hellip;
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Last mile</h3>
-
-<ul>
-<li>Bamboo agent per-node!</li>
-<li>SSH not required!</li>
-<li>Works for simple (single node) apps! *  Coordination is tricky
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Last mile</h3>
-
-<ul>
-<li>Agent-based frameworks!</li>
-<li>Powerful and flexible!</li>
-<li>Can parallelise deployments!</li>
-<li>Requires setup on all nodes!</li>
-<li>If you already have it setup then use it
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Last mile</h3>
-
-<ul>
-<li>SSH scripting!</li>
-<li>Requires management of SSH keys on agent!</li>
-<li>Bamboo SSH plugin!</li>
-<li>Scripting (Bash, Python, Ruby, etc.)!</li>
-<li>Automation frameworks (Ansible, SaltStack, Func, Fabric)
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Last mile</h3>
-
-<ul>
-<li>Our solution!</li>
-<li>Ansible for automation (explicit support for load-balancer integration)!</li>
-<li>Minimal requirements, SSH+Python!</li>
-<li>Bamboo pulls Ansible directly from their source repository!</li>
-<li>Ansible playbooks checked into git
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Practical issue</h3>
-
-<ul>
-<li>How do you manage what has been released, and to where?!</li>
-<li>How do you control who performs deployments?
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Bamboo deployment environments</h3>
-
-<ul>
-<li>The release build plan can be associated with certain environments!</li>
-<li>Normal ones are dev, staging (QA) and production
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Bamboo deployment environments</h3>
-
-<p><img src="/images/presentation-2.2.png" alt="" />
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Bamboo deployment environments</h3>
-
-<ul>
-<li>Environment has tasks, like a build plan!</li>
-<li>Tasks perform the actual deployment!</li>
-<li>Environments have permissions, limiting who may perform deployments!</li>
-<li>Generates releases, which are deployed!</li>
-<li>Has some nice integrations&hellip;
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Bamboo deployment release</h3>
-
-<p><img src="/images/presentation-2.3.png" alt="" />
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Bamboo deployment JIRA integration</h3>
-
-<p><img src="/images/presentation-2.4.png" alt="" />
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Procedural issues</h3>
-
-<ul>
-<li>Where’s the oversight in all this?!</li>
-<li>What about SoX, PCI, SEC requirements?!</li>
-<li>Who is allowed to do releases?!</li>
-<li>Who signs off?
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Procedural issues</h3>
-
-<ul>
-<li>Our solution &ndash; separate the infrastructure!</li>
-<li>Dedicated Bamboo server for business software!</li>
-<li>Dedicated agents for building!</li>
-<li>Separate, dedicated agents for deployment
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼￼Procedural issues</h3>
-
-<ul>
-<li>Access controls!</li>
-<li>Build team/admins control the server!</li>
-<li>Business analysts define features!</li>
-<li>Devs code, review, merge and release!</li>
-<li>Features pushed to staging for BA review!</li>
-<li>BAs can promote releases to production
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</li>
-</ul>
-
-
-</div>
-
-</section>
-
-<section class='slide'><div class='content'>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼￼Questions?</h3>
-
-<p>￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
-Balaji Vajjala
-@bvajjala <a href="&#109;&#x61;&#105;&#x6c;&#116;&#x6f;&#58;&#x62;&#118;&#97;&#x6a;&#x6a;&#x61;&#x6c;&#97;&#x40;&#103;&#109;&#x61;&#105;&#x6c;&#x2e;&#x63;&#111;&#109;">&#98;&#118;&#x61;&#106;&#x6a;&#97;&#108;&#x61;&#64;&#x67;&#x6d;&#97;&#x69;&#108;&#46;&#x63;&#x6f;&#x6d;</a>
-<a href="http://bvajjala.github.io/">http://bvajjala.github.io/</a>
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼</p>
-
-<h3>￼￼Thanks!</h3>
-
-<p><img src="/images/presentation-2.1.png" alt="" /></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
       <h1 class="entry-title"><a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned It</a></h1>
     
     
@@ -1749,6 +1016,243 @@ Ansible up and running is as easy as:</p>
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/code-reuse-with-node-dot-js/">Code Reuse With Node.js</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T14:09:35-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2><a href="/blog/2013/07/11/code-reuse-with-nodejs.html">Code Reuse With Node.js</a></h2>
+
+<p><img src="http://devo.ps/images/posts/recycle.png" alt="Code recycling" /></p>
+
+<p>Any project that grows to a decent size will need to re-use parts of its code extensively. That often means, through the development cycle, a fair amount of rewrites and refactoring exercises. Elegant code re-use is hard to pull off.</p>
+
+<p>With node.js, which we use quite a bit at <a href="http://devo.ps">devo.ps</a>, the most common ways to do this often rely on prototype or class inheritance. The problem is, as the inheritance chain grows, managing attributes and functions
+can become quite complex.</p>
+
+<p>The truth is, people usually just need the objects. This led us to adopt a certain form of object-based prototyping. We believe it to be leaner and more straightforward in most cases. But before we get there, let&rsquo;s have a look at how people usually approach this issue.</p>
+
+<h2>The &ldquo;Function copy&rdquo;</h2>
+
+<p>Usually in the form of <code>this[key] = that[key]</code>. A quick example:</p>
+
+<pre><code>var objectA = {
+    lorem: 'lorem ipsum'
+};
+var objectB = {};
+
+// Direct copy of a string, but you get the idea
+objectB.lorem = objectA.lorem;
+console.log(objectB); // Will output: { lorem: 'lorem ipsum' }
+</code></pre>
+
+<p>Crude, but it works. Next…</p>
+
+<h2>Object.defineProperties()</h2>
+
+<p>The previous method may work with simple structures, but it won&rsquo;t hold when
+your use cases become more complex. That&rsquo;s when I usually call my buddy
+<code>Object.defineProperties()</code>:</p>
+
+<pre><code>var descriptor = Object.getOwnPropertyDescriptor;
+var defineProp = Object.defineProperty;
+
+var objectA = {};
+var objectB = {};
+var objectC = {};
+
+objectA.__defineGetter__('lorem', function() {
+    return 'lorem ipsum';
+});
+console.log(objectA); // Will output: { lorem: [Getter] }
+
+// Direct copy, which copies the result of the getter.
+objectB.lorem = objectA.lorem;
+console.log(objectB); // Will output: { lorem: 'lorem ipsum' }
+
+// Copying with Object.defineProperty(), and it copies the getter itself.
+defineProp(objectC, 'lorem', descriptor(objectA, 'lorem'));
+console.log(objectC); // Will output: { lorem: [Getter] }
+</code></pre>
+
+<p>I often use a library for that. A couple examples (more or less the same stuff
+with different coding styles):</p>
+
+<ol>
+<li><p> <strong><a href="https://github.com/medikoo/es5-ext">es5-ext</a></strong></p>
+
+<p> var extend = require(&lsquo;es5-ext/lib/Object/extend-properties&rsquo;);</p>
+
+<p> var objectA = {};
+ var objectC = {};</p>
+
+<p> objectA.<strong>defineGetter</strong>(&lsquo;lorem&rsquo;, function() {
+     return &lsquo;lorem ipsum&rsquo;;
+ });</p>
+
+<p> extend(objectC, objectA);
+ console.log(objectC); // Will output: { lorem: [Getter] }</p></li>
+<li><p> <strong><a href="https://github.com/devo-ps/carcass">Carcass</a></strong></p>
+
+<p> var carcass = require(&lsquo;carcass&rsquo;);</p>
+
+<p> var objectA = {};
+ var objectC = {};</p>
+
+<p> objectA.<strong>defineGetter</strong>(&lsquo;lorem&rsquo;, function() {
+     return &lsquo;lorem ipsum&rsquo;;
+ });</p>
+
+<p> carcass.mixable(objectC);
+ objectC.mixin(objectA);
+ console.log(objectC); // Will output: { mixin: [Function: mixin], lorem: [Getter] }</p></li>
+</ol>
+
+
+<p>Slightly better, but not optimal. Now, let&rsquo;s see what we end up doing more and
+more often:</p>
+
+<h2>Prototyping through objects</h2>
+
+<p>The basic idea is that we prepare some functions, wrap them into an object which then becomes a &ldquo;feature&rdquo;. That feature can then be re-used by simply merging it with the targeted structure (object or prototype).</p>
+
+<p>Let&rsquo;s take the example of the <a href="https://github.com/devo-ps/carcass/blob/master/lib/proto/loaderSync.js">loaderSync</a> script in <a href="https://github.com/devo-ps/carcass">Carcass</a>:</p>
+
+<pre><code>module.exports = {
+    source: source,
+    parser: parser,
+    reload: reload,
+    get: get
+};
+
+function get() {
+
+(...)
+</code></pre>
+
+<p>Once you copy the functions to an object, this object becomes a &ldquo;loader&rdquo; that can load a &ldquo;source&rdquo; synchronously with a &ldquo;parser&rdquo;. A &ldquo;source&rdquo; can be a file path and the &ldquo;parser&rdquo; can be simply Node.js&#8217; <code>require</code> function.</p>
+
+<p>Let&rsquo;s now see how to use this with a couple object builders. Once again, I&rsquo;ll borrow an example from Carcass; the <a href="https://github.com/devo-ps/carcass/blob/master/benchmark/proto.loaderSync.js">loaderSync benchmark script</a>. The first builder generates a function and copies the methods from what we&rsquo;ve prepared. The second one copies the methods to the prototype of a builder class:</p>
+
+<pre><code>(...)
+
+function LoaderA(_source) {
+    function loader() {
+        return loader.get();
+    }
+    loader.mixin = mixin;
+    loader.mixin(loaderSync);
+    loader.source(_source);
+    return loader;
+}
+
+(...)
+
+function LoaderC(_source) {
+    if (!(this instanceof LoaderC)) return new LoaderC(_source);
+    this.source(_source);
+}
+LoaderC.prototype.mixin = mixin;
+LoaderC.prototype.mixin(loaderSync);
+
+(...)
+</code></pre>
+
+<p>Here we can see the two approaches. Let&rsquo;s compare them quickly:</p>
+
+<p>FeatureLoader ALoader C</p>
+
+<p><strong>Instantiating</strong>
+<code>var a = LoaderA(...)</code></p>
+
+<p><code>var c = LoaderC(...)</code> or <code>var c = new LoaderC(...)</code></p>
+
+<p><strong>Appearance</strong>
+Generates a function</p>
+
+<p>Builds a typical instance which is an object.</p>
+
+<p><strong>Invoking directly</strong>
+<code>a()</code> or <code>a.get()</code></p>
+
+<p><code>c.get()</code></p>
+
+<p><strong>Invoking as a callback</strong>
+<code>ipsum(a)</code></p>
+
+<p><code>ipsum(c.get.bind(c))</code></p>
+
+<h2><strong>Performance † of instantiating</strong></h2>
+
+<p>100x faster</p>
+
+<p><strong>Performance of invoking</strong>
+<em>idem</em></p>
+
+<p><em>idem</em></p>
+
+<p><strong>†</strong>: (check it yourself by <a href="https://github.com/devo-ps/carcass/blob/master/Makefile">benchmarking Carcass with <code>make bm</code></a>)</p>
+
+<h3>&ldquo;Protos&rdquo; and beyond</h3>
+
+<p>That last approach is gaining traction among our team; we prepare functions for our object builders (which, by the way, we call &ldquo;protos&rdquo;). While we still choose to use prototypes in some occurrences, it is mainly because it is
+faster to get done. For the sake of convenience, we also sometimes rely on functions rather than objects to invoke our &ldquo;protos&rdquo;, however keep in mind that this is a performance trade-off.</p>
+
+<p>I&rsquo;ll wrap this up mentioning one more method we use, admittedly less often: &ldquo;Object alter&rdquo;. The idea is to rely on an &ldquo;alter&rdquo; function designed to change objects passed to it. This is sometimes also called a &ldquo;mixin&rdquo;. An example from <a href="https://github.com/visionmedia/configurable.js">vsionmedia&rsquo;s trove of awesomeness on Github</a>:</p>
+
+<pre><code>(...)
+
+module.exports = function(obj){
+
+    obj.settings = {};
+
+    obj.set = function(name, val){
+        (...)
+    };
+
+    (...)
+
+    return obj;
+};
+</code></pre>
+
+<h3>Resources</h3>
+
+<ul>
+<li><a href="http://killdream.github.io/2011/10/09/understanding-javascript-oop.html">A case for prototypes</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">MDN Object reference</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1776,15 +1280,15 @@ Ansible up and running is as easy as:</p>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/21/practical-continuous-deployment/">Practical Continuous Deployment</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow from GitHub</a>
       </li>
     
   </ul>

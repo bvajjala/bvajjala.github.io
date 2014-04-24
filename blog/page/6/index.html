@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="This plug-in does something so simple yet very useful instead of archiving artifact it will list the deployments performed at build time to the Maven &hellip;">
+  <meta name="description" content="Remembering all the svn switches / CLI options, not necessary, well unless you are using some nifty GUI tool you will definitely need this one. Just &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,54 +72,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/03/07/maven-deployment-linker-plug-in/">Maven Deployment Linker - Plug-in</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-03-07T09:18:00-05:00" pubdate data-updated="true">Mar 7<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/images/hudson_logo.png" title="'Hudson Logo'" >This plug-in does something so simple yet very useful instead of archiving artifact it will list the deployments performed at build time to the Maven Proxy you are running regardless to the proxy vendor (Archiva, Artifactory or Nexus).
-All you need to do in your maven build is select 1 check-box:</p>
-
-<p><img src="/assets/images/link2m2deploy.png" title="'Link to maven deployments'" ></p>
-
-<p>You can also filter artifacts with regex.</p>
-
-<p><strong>The result is:</strong></p>
-
-<p><img src="/assets/images/artifacts.png" title="'artifacts'" ></p>
-
-<p>And the status bar shows:
-<img src="/assets/images/statusbar.png"></p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1059,6 +1011,87 @@ Although I am only &ldquo;P.O.C ing&rdquo; Sonar+Hudson+Clover, The <a href="htt
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/03/01/Start-tomcat-in-build-process/">Starting Tomcat as Part of the Build Process With HUDSON-CI</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-03-01T09:11:00-05:00" pubdate data-updated="true">Mar 1<span>st</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="/assets/images/hudson_logo.png" title="'Hudson Logo'" >In one of my previous projects I needed to deploy 2 Tomcat servers as part of the build process, this could be done by profiling the parent project with a Deploy life cycle although we wanted to avoid errors due to miss use &ndash; therefore leave this task for a continues integration server &ndash; you guessed right &ndash; HUDSON.</p>
+
+<p>My test consisted on completing two build life cycles of <em><strong>mvn clean install</strong> </em>then collect three wars, deploy into a remote Tomcat webapps dir, set some spring.properties and start both Tomcats.</p>
+
+<p>So this task seemed quite simple for Hudson to be able to execute, my recipe was:</p>
+
+<ol>
+<li>A parametrized build &ndash; which will set the remote tomcat home &amp; remote db variables (passed in spring.properties within wars) [<a href="#figure1">see example scrrenshot below</a>]</li>
+<li>A hudson slave instance (so I will build directly on the remote host)</li>
+<li><a href="http://wiki.hudson-ci.org//display/HUDSON/M2+Extra+Steps+Plugin">The m2 extras steps plugin</a></li>
+</ol>
+
+
+<p>After running the build about half a dozen times I learned that Hudson is killing those Tomcats as soon as the build is successful &ndash; this seemed odd.</p>
+
+<p>The build consisted of deploying 3 war files into webapps dir, taking tomcat down, overriding spring.properties files in each war and then start two tomcats instances so new setting are effective.</p>
+
+<p>On the remote machine during build time, <em>netstat</em> showed that services are up and running, in addition to Hudson&rsquo;s build log wchich showed all wars were copied and all spring.properties files are in place &ndash; so what could be the issue here?</p>
+
+<p>At some point it occurred to me &ndash; and seemed almost natural that these services should be killed, because they are forked / sub processes of Hudson, and therefore will not continue &ldquo;living&rdquo; once there parent process is dead.</p>
+
+<p>So still how do you solve this?</p>
+
+<p>The solution was to pass an argument to Hudson called BUILD_ID with a default value of dontkillme which solved the issue.</p>
+
+<p>you can read about this &ndash; it will probably save you some time if your in the same situation see: <a href="http://issues.hudson-ci.org/browse/HUDSON-2729?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel">HUDSON-2729</a></p>
+
+<p><em>Although according to the above link</em>:</p>
+
+<pre><code>"This is fixed in 1.283.
+
+The side effect of this is that if someone has been intentionally spawning
+processes, those will be killed, too. This is based on environment variables, so
+to work around this, you can spawn processes with one of the environment
+variables different from what Hudson sets. For example,
+BUILD_ID=dontKillMe catalina.sh start
+will start Tomcat in such a way that it'll escape the killing."
+</code></pre>
+
+<p>I am running on 1.338 and this is still an issue &ndash; but, I was performing the build via slave, which might complicate the issue. For it is not only a sub process of Hudson, but a &ldquo;sub-process of a sub-process&rdquo; &ndash; now, if you recall I am running a parametrized build so I set the BUILD_ID=dontkillme as a default parameter to this build, and I solved this issue.</p>
+
+<p><strong>Hope you find this useful</strong></p>
+
+<p>Parametrized build example:</p>
+
+<p><img src="/assets/images/Screenshot-1.png" alt="Hudson CI parameters" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -1088,15 +1121,15 @@ Although I am only &ldquo;P.O.C ing&rdquo; Sonar+Hudson+Clover, The <a href="htt
       </li>
     
       <li class="post">
-        <a href="/blog/2014/04/21/practical-continuous-deployment/">Practical Continuous Deployment</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/02/22/jenkins-job-builder-and-how-to-extned-it/">Jenkins Job Builder and How to Extned it</a>
       </li>
     
       <li class="post">
         <a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow from GitHub</a>
       </li>
     
   </ul>
