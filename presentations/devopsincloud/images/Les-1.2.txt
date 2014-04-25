@@ -1,0 +1,14 @@
+The Configuration files contain the settings for various system resources such as Applications, operating system settings and processes.
+
+The nice thing about using a cloud only infrastructure is that you can take advantage of the dynamic nature of all these resource, so you never need to enter a DNS, IP address or even a domain. These all can be dynamically created.
+The configuration effects how software system starts up and behave based on the values that are in. And the overall objective here is to externalize any value that could be modified outside of its source environment. 
+So typically these attributes and values are in text format that can be read by build and deployment scripts
+
+So looking at this diagram
+
+On the left here's your good I create a new cloud formation stack and we will be getting to the details of doing that 
+later. 
+Think you have already launched your cloud formation stack. we will talk about how to create templates and so in this case we already have a cloud formation template and it creates a stack,  a stack is essentially a set of AWS resources that define how the overall infrastructure operates.
+
+And this stack creates a simpleDB domain which is a NOSQL database and it holds these values in the simpleDB domain so the source of record is the cloud formation template and then any of the information that's captured as a part of the stack creation process is put into the simpleDB domain.
+So when you delete the stack if will actually delete this simpleDB domain and all the records associated with it so you can Actually create a very dynamic configuration environment.

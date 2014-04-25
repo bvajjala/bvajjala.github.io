@@ -1,0 +1,11 @@
+In this lesson you'll be introduced to deploying working software application into the cloud and other lessons you will learn the details of each of the sections were going through in this lesson to keep questions in line but know that we will all form a more complete picture later
+
+To start with checkin in some changes to the application code into GitHUb which hosts our version control system,
+then we'll discuss the overall configuration management approach,
+next we will make a change to that build infrastructure that is part of the continuous delivery system
+After this we will make some changes to some scripts that create the database
+then you modify the build script that builds the software that's been written
+Next you alter the deployment script that deploys this offer that's been Bill Beta make some changes to script secreting a perception
+Following this you can run a couple of CI jobs in this CI system, then you will view these jobs running as part of the delivery pipeline
+While we're in the CI system will discuss static analysis reports  and finally you will view all feedback on the continues delivery dashboard
+To the main point this lesson is it a high-level introduction to all parts of the CD system in the cloud, then we will cover more Details in the next class

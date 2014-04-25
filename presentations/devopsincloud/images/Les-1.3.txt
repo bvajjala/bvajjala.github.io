@@ -1,0 +1,23 @@
+As a part of overall delivery pipeline we are going to run some automated tests. 
+we are going to make some very simple changes and commit it into Github.
+So running automated tests is a very crucial steps in the overall Continuous Delivery system 
+and we are going to use a Tool like cucumber to write acceptance tests against the overall infrastructure 
+to ensure that infra is always in the expected state.
+tools like cucumber is also referred to as behaviour driven development which we will cover lot more detail later.
+So we're going to go to the Amazon Web services CLI the command line interface
+And we're going to start walking through the steps
+
+To make a very simple change To a test
+
+So in going to this EC2 instance
+
+We're going to use this command here working I just change the directory you were to get into a lot more detail how to use this later
+And then we're going to open up the file, Which is a ruby script is written in cucumber and we are going to make a very simple change 
+Where going to modify
+The description of this 
+Save the changes
+Going to go back to the root directory of the sample app
+ANd going to add the changes via the github
+And to commit the file
+This is going to go to the github master
+And this is all going to be picked up as a part of the overall delivery pipeline and the continuous integration system

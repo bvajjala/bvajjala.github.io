@@ -1,0 +1,89 @@
+In this lesson you will make a simple aesthetic change to a Ruby on Rails Example App that we will be using throught this lesson
+Then you'll go to the command line, and commit your changes via git which is our version control sytsem which we'll be using throughout this lesson
+using commands such as git add and git commit, git push and when we will commit this code to github will be picked up as a change is a part of a pulling mechanism running on the continuous integration system with the CI system.
+The CI system will then begin the process of building the various parts of the software system including the software application itself, the database and so forth.
+committing code and  scripts is one of the first steps in the continuous delivery process
+Before we do this however you'll need to set up the environments.
+so let's do that first.
+So if you go to the companion website you can go section 11 and you'll see set up and check in application code
+In this section you will set up your environments you'll Launch what's called a cloud formation stack 
+and you would be launching a couple of those and then you'll make a really simple application code change 
+and then you will commit it to github which is the version control repository that we're using for the this live lesson
+first you need to do is create an AWS account if you don't party have one , And you'll do this by registering for cloud formation
+If You are already an AWS user you can still register for cloud formation service because it gives you access to all the services that you need for throughout this live lesson so you can first click on this link
+You can select sign up now
+So if you're just an existing user you can just log into the application to into Amazon web services and then you can sign up for cloud formation which will then give you access to all other services 
+if you're not AWS user you can select I am a new user Radio button then you'll go through the process for signing up for AWS account so doing so you whiners the required information was completed credit card you also get a phone call from AWS and automate a phone call to verify that you're the one sign up for the count once you do that and you go through the confirmation of registration you'll get access to all the various services that you
+Need to once you've done that will send that
+Then you are going to create Key Pairs.
+You'll Doosing click on this link you go to list of key pairs
+NUI secreta new keeper
+You click on the create keep her body
+Then you're going to enter keep your name which is DITC for deadlocks McLeod
+Click the create button
+And then you will save this key onto your computer so this is a private key in this gives you access to the various AWS resources so 
+From on when we SSH into it easy to instance later on this will be part of that process and will be using this key throughout just make sure that you keep this in a safe place on your computer and that is secure
+This thing will do is Willallow AWS utility to sign-on aren't AWS commandline interface Warford of this route is the AWS CLI and this is a template that's been provided courtesy of AWS training you can click on this link
+Is to bring up confirmation will going to confirmation more detail in future lessons you click continue
+And then you'll hear in the keyname feel the winner DITC
+This is the name of the key that you just created in the previous section you'll click the checkbox this is diagnostic this temple Maitri I am resources I am is the identity and access management
+And will going to that in future lessons well you click continue
+Then you click continue again
+Than you wait around 3 to 5 minutes for the stack to create itself to see right now that the status is creating progress
+Sooner you can see that the status is great complete which means that the stack has been created so we know we can access San Francisco through couple more steps to access the essence that was just launched
+So first thing will do
+Is we'll go on into our commandline
+And will run this command chamade sore change the permissions on the DITC pen file that we had downloaded previously so I'll find it on my computer
+And I'll apply those permissions if you're using Windows or spend another operating system we don't have the stomach command line access you can do this through a told like potty Frensons and windows to apply the same can change permissions activitySo then we're going to SSH into the instance to do that 
+
+I'm in his copy this portion here I'm not a copy they Public DNS symbol why she don't go through that process a moment
+Then I'll go back a confirmation to get the public DNS so when you see here's not to be going to sugar to be using
+Him in fact designed to be the one I'm to be using cause him to go into the stack and then I'm to click on the outputs tabAnd outputs Tatashu gives me the public DNS that I can use such as going to the value I copy it and I go back to the command line and I pasted in
+Typing yes
+There you go I have access to Amazon when it's AMI am in the cloud and this is the Amazon Web services CLI the commandline interface and has all the veriest
+Goals that you can use for accessing AWS resourcesNow will go throughBut a couple more steps him for the set up the next one is to apply a bucket policy using confirmation so Wolfers I should treat a bucket
+And the examples here says DITC XYZ artifacts XYZ for your initials watch you go through this enough to couple more lessons as well but if you set up here you don't have to do in the future lessonSo I go back toThe aid of yesterdays or console I select S3
+Then I click the create bucketButtonAnd then INRDITC and then your cases can be the initials in my case am using PMD I'm artifacts just a note that I'm using a different bucket called still just labs in your to use something called DITC your initials artifacts and he needs to be globally unique am so throughout history he needs to go bleeding in eight which is why you have this kind of convoluted name that we have here so once you you can you've entered the name you can
+And then
+DUs for hosting all the artifacts are you going to use Thr
+app Whiteblossom
+That signaled
+His watch apply the bucket policy
+Him Emilys confirmation again for doing that so will click on this link hereAnd will click on continueIn your case you're going to be using your DITC your initials artifacts as I mention I'm using something called Selje labs
+Since it's globally unique you can't use that oneOn the cook on the continue button
+And then click on continue againAnd then you close it outThat takes about 30 seconds the rock
+Tonight to see the status is create complete for applying the bucket policySingle do is we'll create an S3 bucket to house your credentials
+And a gamer to create a globally unique on S3 bucket
+And it's called DITC XYZ crabs again XYZ being your initials so we go through this in the future lesson so but if you created here you don't need
+To go through that in that in the future lesson something to copy this and it'll go back to thePS3Tab in the ETA BS consulI'm going to click to create bucket again
+And I'm going to Intermind initials in your Internet yours
+Okay so we have the
+Biggest bucket created now are going to go to ask you last tab to create two new cues of the first is confirmation sax and the other is deployment
+Jen in the future lesson you to go through this process but if you do it now you don't need to do in the future
+Blessed so you click on create new queue
+And I'll just copy and confirmation stacks
+And I'm in a set the default visibility timeout zero and then click create Q
+And the other human to create is on the planet and this is used throughout some the activities for building the plane and crating some the environments in a store some information in the queue so this water going to the process
+And again create the queue to know we have two cues created
+Using SUS
+That will do is we'll set up get home account as a mentioned I get help is the sexy
+Bit of a toll for accessing yet so get is the version control to where using get hauled is a hosting provider forget
+So for single do Is
+able go through the you can go to the sign-up process him and of course it goes through number sets redesign of that you can sign up for free login
+They'll go to the Dunlops McLeod repository which is successful to you it's a public repository this is one of the main repositor number posits worries that make up the slide lesson that you'll have access to on the Dunlops cloud companion websiteBut this is one of the main repositories it has asked that you'll have access to play description for structure skirts of tests and so forth
+You can go to go through listening to some livers temp with the reason confirmation templates we have poppet modules and manifests and so forth
+Now what you'll need to do is you'll click on the fork buttonSo you can go to say Dunlops in the cloudYou see here it says a fork in this case I'm our other she already forked repository I'm from Stelten am so you'll go through the same process instead Bill say as you can see pierces where do you want to forecast annual forgot to take
+The repository to your user ID so you'll say for too you know
+Your user ID ominous for the Demoss McCloud repository it'll do the same thing for the sample application sample application provided by Michael Hartle
+Again are you see here I have your fork button in your case you'll there be a fork button and then you'll just click on that indole aspirin for this repository tune you can see right here I could fork this repository to useridSenac's mobile dues why seasons were he have access to the aid of the SCO I will go back to that on the commandline what we'll do is we'll set up an SSH key pair so that we don't have to and are userid and password again and again so we'll set up a public-private key
+So we'll go back to theAWS CLIthis or something like it cc here is my user ID of course this can be your user ID or your e-mail addressAssociated with your user ID to sit enter and get answers to the prompts as wellGo back to the commandline and this run this command
+And then you'll copy this intoThe SSH settings here she just click hereClick addresses HKEY so now we can doIt back to the AWS CLI and then just run this
+And we just get clone which if you used tools version control tools like subversion it said it's similar to the SCN check out so fuckCopy the sandYou can see here I'm using my username coarser to music using your username here
+
+And then we'll do the same for the Devaughan McLeodRepositoryNow you can see we have access to
+This is in our own repository but we have access to all the various parts of the delouse a cloud
+And go to the simplification from Michael Hartle and you canSee all the various files folders and so forth the make up the example application see you'll be using that throughout the slide lesson for the examples for both the simple application also for the intersection set up for the containers would reply for
+Now
+Go back to the sample application so I'll CD into sample app
+I'll go into the pages area
+Them to open up
