@@ -1,0 +1,10 @@
+AL-pipeline-process
+Agile-AppsDevelopment
+Agile-SCM
+SDLC-highlevel-Overview
+chef-talk
+ci_testing
+conti-delivery
+conti-delivery-toolchain
+devops-pipelines
+
