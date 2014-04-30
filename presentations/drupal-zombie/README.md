@@ -1,1 +1,0 @@
-This is the Automating and Testing Drupal with Zombie.js presentation.
