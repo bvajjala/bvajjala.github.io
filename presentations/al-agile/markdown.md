@@ -175,20 +175,16 @@
 
 
 
-# DAY-TO-DAY LIFE OF A CODE SUBMISSION
+## DAY-TO-DAY LIFE OF A CODE SUBMISSION
 
-
-
-
-
-## 1. DEVELOPER CODE
-### a. Team / Feature branches
+### 1. DEVELOPER CODE
+#### a. Team / Feature branches
 i. feature code
 ii. unit tests
 iii. developers are responsible for merging master into their development branch, to avoid merge conflicts later on. A poor or forgotten merge will be caught by the CI compilation and testing process
 iv. team lead and peer review should be an ongoing team task for all features in development
 
-### b. GATE: TAT (team testing environment)
+#### b. GATE: TAT (team testing environment)
 i. team deploys code to team environment
 ii. test
 iii. if fail... fix, redeploy, test
@@ -197,36 +193,41 @@ iv. if pass... merge to master
 
 
 
-## 2. MERGE TO MASTER
+## DAY-TO-DAY LIFE OF A CODE SUBMISSION
 
-### a. GATE: Pull requests for master.
-   i. developer will submit a pull request for master, a signal to code reviewer to review/approve code
-   ii. team/tech leads: check for code completeness, intent, quality, unit tests
-   iii. if fail... fix, test, review
-   iv.  if pass... push to CI
-### b. GATE: Push to CI
-   i. failing unit tests... code not merged
-   ii. broken code coverage... code not merged
-   iii. all good... master merge is complete
+### 2. MERGE TO MASTER
+
+#### a. GATE: Pull requests for master.
+i. developer will submit a pull request for master, a signal to code reviewer to review/approve code
+ii. team/tech leads: check for code completeness, intent, quality, unit tests
+iii. if fail... fix, test, review
+iv.  if pass... push to CI
+
+#### b. GATE: Push to CI
+i. failing unit tests... code not merged
+ii. broken code coverage... code not merged
+iii. all good... master merge is complete
 
 
 
 
-## 3. UAT (shared, central test environment for day-to-day testing)
+## DAY-TO-DAY LIFE OF A CODE SUBMISSION
 
-### a. push master twice daily (or on demand)
+### 3. UAT (shared, central test environment for day-to-day testing)
 
-### b. full production parity on apps/services/JAMS
+#### a. push master twice daily (or on demand)
 
-### c. GATE: automated integration testing
-i. failed test... broken deploy
-    i. go back to STEP 1. Fix, test, push to CI, redeploy to UAT... e2e tests run again
+#### b. full production parity on apps/services/JAMS
 
-### d. GATE: automated end-to-end testing
+#### c. GATE: automated integration testing
 i. failed test... broken deploy
     1. go back to STEP 1. Fix, test, push to CI, redeploy to UAT... e2e tests run again
 
-### e. GATE: manual integration testing (team)
+#### d. GATE: automated end-to-end testing
+i. failed test... broken deploy
+    1. go back to STEP 1. Fix, test, push to CI, redeploy to UAT... e2e tests run again
+
+#### e. GATE: manual integration testing (team)
 i. if success, mark feature/bug ticket as tested... move on to next backlog item
 ii. if fail... repeat fix, test, pull request, push to ci process (back to STEP 1)
 
@@ -235,6 +236,7 @@ ii. if fail... repeat fix, test, pull request, push to ci process (back to STEP 
 
 
 ## RELEASE
+
 1. Predetermined code complete date (every other Friday currently)
 
 2. Cut Release branch morning of code complete... deploy to STAGE
@@ -273,6 +275,10 @@ f. Deploy to PRODUCTION on successful GL
 
 4. GATE: Deploy verification testing in PRODUCTION
 
+
+
+
+
 ## HOT PATCH RELEASE
 1. A critical issue is found in production and needs to be resolved as soon as possible
 
@@ -296,6 +302,8 @@ f. Deploy to PRODUCTION on successful GL
 4. Deploy to PRODUCTION on successful GL
 5. GATE: Deploy verification testing in PRODUCTION
    a. QA Director and Engineering Managers accountable for production code.
+
+
 
 
 
