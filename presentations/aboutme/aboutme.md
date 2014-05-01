@@ -4,13 +4,10 @@
 
 ## Principal DevOps Consultant/Solution Architect
 
-Hi, my name is Balaji Vajjala and I'm the Chief Architet and DevOps Solution Architect.  
+  Hi, my name is Balaji Vajjala and I'm the Chief Architet and DevOps Solution Architect.  
 
-I will talk about implementing a Practical Continuous Deployment pipelines.
+  I will talk about implementing a Practical Continuous Deployment pipelines.
 
-Note: Hi, my name is Balaji Vajjala and I'm the Chief Architet and DevOps Solution Architect.  
-
-I have been developing software in the financial and Telecom industry since Mid 90's. Passionate about technology, I have delivered a diverse project portfolio initially as a software developer and subsequently as a leader of development organisations.
 
 
 ## Who Am I?
