@@ -1,11 +1,11 @@
 # Balaji Vajjala
 
+### Created by [Balaji Vajjala](https://bvajjala.github.io) / [@BVajjala](https://twitter.com/Bvajjala)
+
+
 
 
 ## Principal DevOps Consultant/Solution Architect
-
-
-#### Created by [Balaji Vajjala](https://bvajjala.github.io) / [@BVajjala](https://twitter.com/Bvajjala)
 
   Hi, my name is Balaji Vajjala and I'm the Chief Architect and DevOps Solution Architect. I will talk about implementing a Practical Continuous Deployment pipelines.
 
@@ -18,6 +18,7 @@
 * Original company sysadmin! and Developer since late 90's 
 * Now working out of East Coast
 * Not a professional speaker
+
 
 
 
