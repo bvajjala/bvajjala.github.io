@@ -22,8 +22,8 @@
 
 ## My Social Media Presence
 
-  * !['LinkedIn Profile'](www.linkedin.com/in/bvajjala)
-  * ![My Blog](bvajjala.github.io/about/resume)
-  * ![Facebook](www.facebook.com/bvajjala)
-  * ![My Resume](bvajjala.github.io/)
+  * [LinkedIn Profile](www.linkedin.com/in/bvajjala)
+  * [My Blog](bvajjala.github.io/about/resume)
+  * [Facebook](www.facebook.com/bvajjala)
+  * [My Resume](bvajjala.github.io/)
 
