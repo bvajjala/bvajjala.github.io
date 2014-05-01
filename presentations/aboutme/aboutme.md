@@ -4,7 +4,7 @@
 
 ## Principal DevOps Consultant/Solution Architect
 
-  Hi, my name is Balaji Vajjala and I'm the Chief Architet and DevOps Solution Architect.  
+  Hi, my name is Balaji Vajjala and I'm the Chief Architect and DevOps Solution Architect.  
 
   I will talk about implementing a Practical Continuous Deployment pipelines.
 
@@ -20,17 +20,10 @@
 
 
 
-## External 2
+## My Social Media Presence
 
-Content 2.1
+  * !['LinkedIn Profile'](www.linkedin.com/in/bvajjala)
+  * ![My Blog](bvajjala.github.io/about/resume)
+  * ![Facebook](www.facebook.com/bvajjala)
+  * ![My Resume](bvajjala.github.io/)
 
-
-
-## External 3.1
-
-Content 3.1
-
-
-## External 3.2
-
-Content 3.2
