@@ -26,82 +26,78 @@
 
 
 
+## Angie's List Git Workflow and merge process
 ![](images/Slide01.png)
 
 
 
-
+## Angie's List Git Workflow and merge process
 ![](images/Slide02.png)
 
 
 
-
+## Angie's List Git Workflow and merge process
 ![](images/Slide03.png)
 
 
 
-
+## Angie's List Git Workflow and merge process
 ![](images/Slide04.png)
 
 
 
-
+## Angie's List Git Workflow and merge process
 ![](images/Slide05.png)
 
 
 
-
+## Angie's List Git Workflow and merge process
 ![](images/Slide06.png)
 
 
 
-
+## Angie's List Git Workflow and merge process
 ![](images/Slide07.png)
 
 
 
-
+## Angie's List Git Workflow and merge process
 ![](images/Slide08.png)
 
 
 
-
-
+## Angie's List Git Workflow and merge process
 ![](images/Slide09.png)
 
 
 
-
-
+## Angie's List Git Workflow and merge process
 ![](images/Slide1.png)
 
 
 
-
+## Angie's List Git Workflow and merge process
 ![](images/Slide10.png)
 
 
 
-
+## Angie's List Git Workflow and merge process
 ![](images/Slide11.png)
 
 
 
-
+## Angie's List Git Workflow and merge process
 ![](images/Slide12.png)
 
 
 
-
+## Angie's List Git Workflow and merge process
 ![](images/Slide13.png)
 
 
 
-
+## Angie's List Git Workflow and merge process
 ![](images/Slide14.png)
-
-
-
 
 
 
@@ -116,9 +112,4 @@
 
 
 
-
-
-
-
 ## The End
-
