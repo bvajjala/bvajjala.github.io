@@ -174,128 +174,128 @@
 
 # Angies List 
 
-![](Slide1.png)
+![](images/Slide1.png)
 
 
 
 
-![](Slide2.png)
+![](images/Slide2.png)
 
 
 
 
-![](Slide3.png) 
+![](images/Slide3.png) 
 
 
 
 
-![](Slide4.png) 
+![](images/Slide4.png) 
 
 
 
 
-![](Slide5.png) 
+![](images/Slide5.png) 
 
 
 
 
-![](Slide6.png) 
+![](images/Slide6.png) 
 
 
 
 
-![](Slide7.png) 
+![](images/Slide7.png) 
 
 
 
 
-![](Slide8.png) 
+![](images/Slide8.png) 
 
 
 
 
-![](Slide9.png) 
+![](images/Slide9.png) 
 
 
 
 
-![](Slide10.png) 
+![](images/Slide10.png) 
 
 
 
 
-![](Slide11.png) 
+![](images/Slide11.png) 
 
 
 
 
-![](Slide12.png) 
+![](images/Slide12.png) 
 
 
 
 
 
-![](Slide13.png) 
+![](images/Slide13.png) 
 
 
 
 
 
-![](Slide14.png) 
+![](images/Slide14.png) 
 
 
 
 
 
-![](Slide15.png) 
+![](images/Slide15.png) 
 
 
 
 
-![](Slide16.png) 
+![](images/Slide16.png) 
 
 
 
 
-![](Slide17.png) 
+![](images/Slide17.png) 
 
 
 
 
-![](Slide18.png) 
+![](images/Slide18.png) 
 
 
 
 
 
-![](Slide19.png) 
+![](images/Slide19.png) 
 
 
 
 
 
-![](Slide20.png) 
+![](images/Slide20.png) 
 
 
 
 
-![](Slide21.png) 
+![](images/Slide21.png) 
 
 
 
 
-![](Slide22.png) 
+![](images/Slide22.png) 
 
 
 
 
 
-![](Slide23.png) 
+![](images/Slide23.png) 
 
 
 
 
-![](Slide24.png) 
+![](images/Slide24.png) 
 
 
 
