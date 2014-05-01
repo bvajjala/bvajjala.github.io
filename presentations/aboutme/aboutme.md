@@ -29,7 +29,7 @@
   * [My Blog](https://bvajjala.github.io/)
   * [My Facebook Profile](https://www.facebook.com/bvajjala)
   * [My Resume](https://bvajjala.github.io/about/resume/)
-  * [Contact me](email:bvajjala@gmail.com)
+  * [Contact me](mailto:bvajjala@gmail.com)
 
 
 
