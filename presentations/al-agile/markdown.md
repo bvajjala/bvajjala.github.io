@@ -21,6 +21,10 @@
 
 
 
+# Pre Agile Implementation
+
+
+
 
 ## CI Jenkins
 ![](images1/CIJenkins.png)
@@ -114,7 +118,7 @@
 
 
 
-![](images1/Stage GL.png)
+![](images1/StageGL.png)
 
 
 
@@ -163,6 +167,140 @@
 
 
 ![](images1/pyramid.png)
+
+
+
+
+
+# Angies List 
+
+![](Slide1.png)
+
+
+
+
+![](Slide2.png)
+
+
+
+
+![](Slide3.png) 
+
+
+
+
+![](Slide4.png) 
+
+
+
+
+![](Slide5.png) 
+
+
+
+
+![](Slide6.png) 
+
+
+
+
+![](Slide7.png) 
+
+
+
+
+![](Slide8.png) 
+
+
+
+
+![](Slide9.png) 
+
+
+
+
+![](Slide10.png) 
+
+
+
+
+![](Slide11.png) 
+
+
+
+
+![](Slide12.png) 
+
+
+
+
+
+![](Slide13.png) 
+
+
+
+
+
+![](Slide14.png) 
+
+
+
+
+
+![](Slide15.png) 
+
+
+
+
+![](Slide16.png) 
+
+
+
+
+![](Slide17.png) 
+
+
+
+
+![](Slide18.png) 
+
+
+
+
+
+![](Slide19.png) 
+
+
+
+
+
+![](Slide20.png) 
+
+
+
+
+![](Slide21.png) 
+
+
+
+
+![](Slide22.png) 
+
+
+
+
+
+![](Slide23.png) 
+
+
+
+
+![](Slide24.png) 
+
+
+
+
+
 
 
 
