@@ -141,34 +141,35 @@
 1. Predetermined code complete date (every other Friday currently)
 2. Cut Release branch morning of code complete... deploy to STAGE
 3. STAGE
-a. GATE: Automated Integration testing
-   i. failed test -> broken deploy
-b. GATE: Automated End-to-End testing
-   i. failed test -> broken deploy
-c.  GATE: Automated performance testing
-   i. verify no performance degradation in proposed code changes
-   ii. if performance degradation occurs... fix, test, push to ci for release branch, pull request to release branch, deploy to STAGE, verify fix
+  a. GATE: Automated Integration testing
+    i. failed test -> broken deploy
+  b. GATE: Automated End-to-End testing
+    i. failed test -> broken deploy
+  c.  GATE: Automated performance testing
+    i. verify no performance degradation in proposed code changes
+    ii. if performance degradation occurs... fix, test, push to ci for release branch, pull request to release branch, deploy to STAGE, verify fix
 
 
 
 ## Release
-d. If fix needed
-   i. fix in feature branch
-   ii. test in TAT
-   iii. GATE: Push to CI (for release branch)
+3. STAGE
+  d. If fix needed
+      i. fix in feature branch
+     ii. test in TAT
+     iii. GATE: Push to CI (for release branch)
        1. failing unit tests... build fails
        2. broken code coverage... build fails
-   iv. GATE: create pull request to release branch
+     iv. GATE: create pull request to release branch
        1. release manager: approves pull request
-       2. build & release: merges pull request
-   v. build & release team: deploy change to STAGE
-   vi. developer and team: verify fix on STAGE
-   vii. developer: merge change back to master(warning)
-e. GATE: Manual greenlight testing
-   i. if pass... notify release manager of successful greenlight
-   ii. if bugs found, prioritize
-       1. if critical... fix, test, push to ci for release branch, pull request to release branch, deploy to STAGE, verify fix
-f. Deploy to PRODUCTION on successful GL
+       2. build & release: merges pull request 
+    v. build & release team: deploy change to STAGE
+    vi. developer and team: verify fix on STAGE
+    vii. developer: merge change back to master(warning)
+  e. GATE: Manual greenlight testing
+     i. if pass... notify release manager of successful greenlight
+     ii. if bugs found, prioritize
+        1. if critical... fix, test, push to ci for release branch, pull request to release branch, deploy to STAGE, verify fix
+  f. Deploy to PRODUCTION on successful GL
 
 4. GATE: Deploy verification testing in PRODUCTION
 
