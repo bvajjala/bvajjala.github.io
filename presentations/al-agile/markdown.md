@@ -1,4 +1,4 @@
-# Balaji Vajjala
+# Angie's List Git Workflow and merge process
 
 ### Created by [Balaji Vajjala](https://bvajjala.github.io) / [@BVajjala](https://twitter.com/Bvajjala)
 
@@ -7,8 +7,8 @@
 
 ## Principal DevOps Consultant/Solution Architect
 
-  Hi, my name is Balaji Vajjala and I'm the Chief Architect and DevOps Solution Architect. Here I will be talking about implementing a Practical Continuous Deployment pipelines, DevOps Culture and other Misc Topics.
-  Hope you will enjoy these
+  Hi, my name is Balaji Vajjala and I'm the Chief DevOps Solution Architect here at Angie's List. Today  Here I will be talking about how we implemented a Continuous Deployment pipelines, DevOps Culture and other Misc Topics.
+  Hope you will enjoy this presentation.
 
 
 
@@ -17,11 +17,7 @@
 
 * A Full Stack DevOps Engineer/Solution Architect for last 10+ years!
 * Original !sysadmin! and !Developer! since late 90's 
-* Now working out of East Coast and Certainly Not a professional speaker
-
-
-
-# Angie's List Git Workflow and merge process
+* Now working at Angie's List and Certainly Not a professional speaker
 
 
 
