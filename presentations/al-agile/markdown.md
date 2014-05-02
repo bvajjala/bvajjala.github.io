@@ -96,6 +96,58 @@
 
 
 
+### Angie's List Git Workflow and merge process
+![](images/Slide15.png)
+
+
+
+### Angie's List Git Workflow and merge process
+![](images/Slide16.png)
+
+
+
+### Angie's List Git Workflow and merge process
+![](images/Slide17.png)
+
+
+
+### Angie's List Git Workflow and merge process
+![](images/Slide18.png)
+
+
+
+### Angie's List Git Workflow and merge process
+![](images/Slide19.png)
+
+
+
+### Angie's List Git Workflow and merge process
+![](images/Slide20.png)
+
+
+
+### Angie's List Git Workflow and merge process
+![](images/Slide21.png)
+
+
+
+### Angie's List Git Workflow and merge process
+![](images/Slide22.png)
+
+
+
+
+### Angie's List Git Workflow and merge process
+![](images/Slide23.png)
+
+
+
+### Angie's List Git Workflow and merge process
+![](images/Slide24.png)
+
+
+
+
 ## My Social Media Presence
 
   * [My LinkedIn Profile](https://www.linkedin.com/in/bvajjala)
