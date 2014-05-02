@@ -86,15 +86,17 @@ Version Control: Git, Mercurial, Perforce, Subversion, TFS
 ### Artifact Management
 * Packaged artifacts, rather than the application’s raw source code, are the focus of deployment pipelines. 
 * Artifacts are assembled pieces of an application that include packaged application code, application assets, infrastructure code, virtual machine images, and (typically) configuration data. 
-
 * Artifacts are identifiable (unique name), versioned (preferably semantic versioning), and immutable (we never edit them). Together, these artifacts allow developers to build a bill of materials (BOM) package describing the exact versions of all the artifacts in a particular version of their software system. Package metadata identifies when and how the package was tested or deployed into a particular environment. 
 
+
+
+
+### Artifact Management
 * Artifact management is most effective with an artifact repository manager. Artifact repositories contain a complete artifact usage history, similar to the way version control systems track source code changes. 
 * They use dependency resolution between the package versions and allow the system to build a dependency graph from the hardware all the way up to the user interface of the application. The ability to verify dependencies through an entire system is powerful for tracking exactly what was (or will be) tested or deployed.
 
 
 
-   
 ### Artifact Management
 
 * Version Control Systems: Git, Subversion, Mercurial
@@ -130,15 +132,16 @@ SpecFlow (BDD), LoadUI (Performance), PageSpeed (Performance), Netem(Network Emu
  
 ## Server Configuration and Deployment
 
-Current deployment tools support three models:
+  Current deployment tools support three models:
+
 * Push model: Manages the distribution and installation of packages to 
-multiple remote machines. It’s a good choice for smaller systems 
-because its usually simple and quick.
+multiple remote machines. It’s a good choice for smaller systems because its usually simple and quick.
 
 * Pull model: Requires an infrastructure configuration tool such as Chef or Puppet.  Supporters say it scales better than push and like that it treats the 
 deployment of application code as another step in configuring the infrastructure.
 
 * Hybrid model: Uses a push tool to trigger a pull client on target servers.  
+
 For any of the three models, your team must ensure that the process is fully automated, provides detailed information with standard output and error messages, and allows easy and rapid rollback to a stable state.
 
 
@@ -156,10 +159,8 @@ For any of the three models, your team must ensure that the process is fully aut
 ### Monitoring and Reporting
 
 * Monitoring your system logs is essential for spotting problems and halting 
-the deployment pipeline. 
-* Rather than manually collecting logs from each machine in an environment, logs should be shipped to a central store that indexes them and makes them available for searching via a web browser. 
-* This is a crucial capability for a Continuous Delivery environment. 
-* The log store should be connected to all environments (including the developers system) to speed up problem diagnosis and resolution. 
+the deployment pipeline. Rather than manually collecting logs from each machine in an environment, logs should be shipped to a central store that indexes them and makes them available for searching via a web browser. 
+* This is a crucial capability for a Continuous Delivery environment. The log store should be connected to all environments (including the developers system) to speed up problem diagnosis and resolution. 
 * Most monitoring tools should work in a dynamic infrastructure and integrate with yours through scripted configuration. 
 
 
@@ -182,6 +183,7 @@ the deployment pipeline.
   * [My Facebook Profile](https://www.facebook.com/bvajjala)
   * [My Resume](https://bvajjala.github.io/about/resume/)
   * [Contact me](mailto:bvajjala@gmail.com)
+
 
 
 ## The End
