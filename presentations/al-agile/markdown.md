@@ -70,65 +70,52 @@
   - ii. if fail... repeat fix, test, pull request, push to ci process (back to STEP 1)
 
 
-
 ### DAY-TO-DAY LIFE OF A CODE SUBMISSION
 ![](images/Slide01.png)
-
 
 
 ### DAY-TO-DAY LIFE OF A CODE SUBMISSION
 ![](images/Slide02.png)
 
 
-
 ### Angie's List Git Workflow and merge process
 ![](images/Slide03.png)
-
 
 
 ### Angie's List Git Workflow and merge process
 ![](images/Slide04.png)
 
 
-
 ### Angie's List Git Workflow and merge process
 ![](images/Slide05.png)
-
 
 
 ### Angie's List Git Workflow and merge process
 ![](images/Slide06.png)
 
 
-
 ### Angie's List Git Workflow and merge process
 ![](images/Slide07.png)
-
 
 
 ### Angie's List Git Workflow and merge process
 ![](images/Slide08.png)
 
 
-
 ### Angie's List Git Workflow and merge process
 ![](images/Slide09.png)
-
 
 
 ### Angie's List Git Workflow and merge process
 ![](images/Slide10.png)
 
 
-
 ### Angie's List Git Workflow and merge process
 ![](images/Slide11.png)
 
 
-
 ### Angie's List Git Workflow and merge process
 ![](images/Slide12.png)
-
 
 
 ### Angie's List Git Workflow and merge process
@@ -152,7 +139,6 @@
 
 
 ## Release
-
 3. STAGE
   * d. If fix needed
     - i. fix in feature branch
@@ -171,45 +157,35 @@
     - ii. if bugs found, prioritize
       - 1. if critical... fix, test, push to ci for release branch, pull request to release branch, deploy to STAGE, verify fix
   * f. Deploy to PRODUCTION on successful GL
-
 4. GATE: Deploy verification testing in PRODUCTION
-
-
 
 
 ### Release
 ![](images/Slide14.png)
 
 
-
 ### Release
 ![](images/Slide15.png)
-
 
 
 ### Angie's List Git Workflow and merge process
 ![](images/Slide16.png)
 
 
-
 ### Angie's List Git Workflow and merge process
 ![](images/Slide17.png)
-
 
 
 ### Angie's List Git Workflow and merge process
 ![](images/Slide18.png)
 
 
-
 ### Angie's List Git Workflow and merge process
 ![](images/Slide19.png)
 
 
-
 ### Angie's List Git Workflow and merge process
 ![](images/Slide20.png)
-
 
 
 ### Angie's List Git Workflow and merge process
@@ -219,39 +195,40 @@
 
 ## HOT PATCH RELEASE
 1. A critical issue is found in production and needs to be resolved as soon as possible
-
 2. Fix in feature branch
-   a. test in TAT
-   b. code review with team lead or designated approver
-   c. GATE: Push to CI (for release branch)
-       i. failing unit tests... build fails
-       ii. broken code coverage... build fails
-   d. GATE: create pull request to release branch
-       i. release manager: approves pull request
-       ii. build & release: merges pull request
-       iii. build & release team: deploy change to STAGE
-   e. GATES FOR INTEGRATION, E2E, AND PERFORMANCE WILL REPEAT AS NORMAL
-   f. developer and team: verify fix on STAGE
-   g. developer: merge change back to master(warning)
+   * a. test in TAT
+   * b. code review with team lead or designated approver
+   * c. GATE: Push to CI (for release branch)
+     - i. failing unit tests... build fails
+     - ii. broken code coverage... build fails
+   * d. GATE: create pull request to release branch
+      - i. release manager: approves pull request
+      - ii. build & release: merges pull request
+      - iii. build & release team: deploy change to STAGE
+   * e. GATES FOR INTEGRATION, E2E, AND PERFORMANCE WILL REPEAT AS NORMAL
+   * f. developer and team: verify fix on STAGE
+   * g. developer: merge change back to master(warning)
+
+
+
+
+## HOT PATCH RELEASE
+
 3. GATE: Manual greenlight testing
-   a. if pass... notify release manager of successful greenlight
-   b. if more bugs found, prioritize
-   i. if critical... fix, test, push to ci for release branch, pull request to release branch, deploy to STAGE, verify fix (ie. start over)
+   * a. if pass... notify release manager of successful greenlight
+   * b. if more bugs found, prioritize
+   * i. if critical... fix, test, push to ci for release branch, pull request to release branch, deploy to STAGE, verify fix (ie. start over)
 4. Deploy to PRODUCTION on successful GL
 5. GATE: Deploy verification testing in PRODUCTION
-   a. QA Director and Engineering Managers accountable for production code.
-
+   * a. QA Director and Engineering Managers accountable for production code.
 
 
 ### Angie's List Git Workflow and merge process
 ![](images/Slide22.png)
 
 
-
-
 ### Angie's List Git Workflow and merge process
 ![](images/Slide23.png)
-
 
 
 ### Angie's List Git Workflow and merge process
