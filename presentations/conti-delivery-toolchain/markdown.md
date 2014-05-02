@@ -1,6 +1,7 @@
-# Angie's List GitFlow
+# Continuous Delivery Toolchain
 
 ### Created by [Balaji Vajjala](https://bvajjala.github.io) / [@BVajjala](https://twitter.com/Bvajjala)
+
 
 
 ## Principal DevOps Consultant/Solution Architect
