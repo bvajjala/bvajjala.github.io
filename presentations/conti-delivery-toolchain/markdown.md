@@ -38,6 +38,7 @@
 
 
 
+
 ### Orchestration and Deployment Pipeline Visualization 
 
 * Dedicated Deployment Pipeline Tools  : Jenkins (with plugins or 
@@ -50,24 +51,25 @@ IBM UrbanCode, XebiaLabs XL
   
 
 
+
 ### Version Control
 
 *  Most software development teams use a version control system for the files they consider source code. however, many organizations forget to include configuration files, such as the configuration that defines the build and release system. 
 *  All text-based assets should be stored in a version control system that everyone can easily access. 
 *  The code changes should be very easy to review, line-by-line (ideally in a web browser), with a pull or merge request.
 
-
-
 ### Version Control
 
 Version Control: Git, Mercurial, Perforce, Subversion, TFS
-   
+
+
 
    
 ### Continuous Integration
 * CI tools can support orchestration and visualization, but their core functionality is to integrate new code with the stable main release line and alert stakeholders if any new code would cause issues with the final product. 
 * This makes it easy for teams to combine work on different features while keeping a master code branch ready for release. 
 * It should feel natural to integrate many times a day. Teams should also connect a code metrics and profiling utility that can stop integrations if certain metrics reach an undesirable threshold.  
+
 
 
    
@@ -79,6 +81,7 @@ Version Control: Git, Mercurial, Perforce, Subversion, TFS
 
 
 
+
 ### Artifact Management
 * Packaged artifacts, rather than the application’s raw source code, are the focus of deployment pipelines. 
 * Artifacts are assembled pieces of an application that include packaged application code, application assets, infrastructure code, virtual machine images, and (typically) configuration data. 
@@ -87,6 +90,7 @@ Version Control: Git, Mercurial, Perforce, Subversion, TFS
 
 * Artifact management is most effective with an artifact repository manager. Artifact repositories contain a complete artifact usage history, similar to the way version control systems track source code changes. 
 * They use dependency resolution between the package versions and allow the system to build a dependency graph from the hardware all the way up to the user interface of the application. The ability to verify dependencies through an entire system is powerful for tracking exactly what was (or will be) tested or deployed.
+
 
 
    
@@ -101,14 +105,15 @@ Version Control: Git, Mercurial, Perforce, Subversion, TFS
 * OS-level Package Managers: APT, Chocolatey, RPM
 
 
+
  
 ### Test and Environment Automation
 * The only manual testing in a deployment pipeline should be for tests that are tough for a computer to handle, such as exploratory testing, inspection of user interface designs, and user acceptance tests. The rest should be automated
 
-
 * Tools for automated testing should operate in a completely headless (non-interactive) manner and be lightweight enough to run across many test servers simultaneously. 
 
 * Teams also need to create testing environments on-demand by using environment automation tools that can provision a VM and configure an environment template.
+
 
 
  
@@ -118,6 +123,7 @@ Version Control: Git, Mercurial, Perforce, Subversion, TFS
 SpecFlow (BDD), LoadUI (Performance), PageSpeed (Performance), Netem(Network Emulation), SoapUI (Web Services), Test Kitchen (Infrastructure)
 
 * Environment Automation: Vagrant, Docker, Packer
+
 
 
  
@@ -136,12 +142,13 @@ For any of the three models, your team must ensure that the process is fully aut
 
 
 
+
 ### Server Configuration and Deployment
 
 * Push deployment: Capistrano, Fabric, ThoughtWorks Go, MSdeploy, Octopus, RunDeck, various CI and build tools, various ARA tools
 
-
 * Pull deployment: Ansible, Chef, CFEngine, Puppet, Salt.
+
 
 
 
@@ -156,11 +163,13 @@ the deployment pipeline.
 
 
 
+
 ### Monitoring and Reporting
 
 * Log Aggregation & Search: Fluentd, Graylog2, LogStash, nxlog, Splunk
 
 * Metrics, Monitoring, Audit: Collectd, Ganglia, Graphite, Icinga, Sensu, ScriptRock
+
 
 
 
