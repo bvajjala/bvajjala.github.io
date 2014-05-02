@@ -4,13 +4,10 @@
 
 
 
-
 ## Principal DevOps Consultant/Solution Architect
 
   Hi, my name is Balaji Vajjala and I'm the Chief DevOps Solution Architect here at Angie's List. Today  Here I will be talking about how we implemented a Continuous Deployment pipelines, DevOps Culture and other Misc Topics.
   Hope you will enjoy this presentation.
-
-
 
 
 ## Who Am I?
@@ -22,7 +19,6 @@
 
 
 # Code Develop to Production
-
 
 
 ## 1 COMMIT Code
@@ -134,7 +130,6 @@
     - ii. if performance degradation occurs... fix, test, push to ci for release branch, pull request to release branch, deploy to STAGE, verify fix
 
 
-
 ## Release
 3. STAGE
   * d. If fix needed
@@ -206,7 +201,6 @@
    * g. developer: merge change back to master(warning)
 
 
-
 ## HOT PATCH RELEASE
 
 3. GATE: Manual greenlight testing
@@ -238,7 +232,6 @@
   * [My Facebook Profile](https://www.facebook.com/bvajjala)
   * [My Resume](https://bvajjala.github.io/about/resume/)
   * [Contact me](mailto:bvajjala@gmail.com)
-
 
 
 ## The End
