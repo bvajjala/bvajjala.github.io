@@ -21,12 +21,11 @@
 
 
 
-# Code to Production
+# Code Develop to Production
 
 
 
-## 1 DEVELOP COde
-
+## 1 COMMIT Code
 * a.  Team / Feature branches
   - i. feature code
   - ii. unit tests
@@ -56,7 +55,6 @@
 
 
 ## 3. UAT (shared, central test environment for day-to-day testing)
-
 * a. push master twice daily (or on demand)
 * b. full production parity on apps/services/JAMS
 * c. GATE: automated integration testing
@@ -120,7 +118,6 @@
 
 ### Angie's List Git Workflow and merge process
 ![](images/Slide13.png)
-
 
 
 ## RELEASE
@@ -192,7 +189,6 @@
 ![](images/Slide21.png)
 
 
-
 ## HOT PATCH RELEASE
 1. A critical issue is found in production and needs to be resolved as soon as possible
 2. Fix in feature branch
@@ -208,7 +204,6 @@
    * e. GATES FOR INTEGRATION, E2E, AND PERFORMANCE WILL REPEAT AS NORMAL
    * f. developer and team: verify fix on STAGE
    * g. developer: merge change back to master(warning)
-
 
 
 
@@ -233,8 +228,6 @@
 
 ### Angie's List Git Workflow and merge process
 ![](images/Slide24.png)
-
-
 
 
 ## My Social Media Presence
