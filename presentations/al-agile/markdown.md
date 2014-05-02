@@ -29,17 +29,17 @@
 
 ## DAY-TO-DAY LIFE OF A CODE SUBMISSION
 
-### 1. DEVELOPER CODE
-####a.  Team / Feature branches
-#####i. feature code
-#####ii. unit tests
-#####iii.    developers are responsible for merging master into their development branch, to avoid merge conflicts later on. A poor or forgotten merge will be caught by the CI compilation and testing process
-#####iv. team lead and peer review should be an ongoing team task for all features in development
-####b. GATE: TAT (team testing environment)
-#####i. team deploys code to team environment
-#####ii. test
-#####iii. if fail... fix, redeploy, test
-#####iv. if pass... merge to master
+* 1. DEVELOPER CODE
+  - a.  Team / Feature branches
+    * i. feature code
+    * ii. unit tests
+    * iii.    developers are responsible for merging master into their development branch, to avoid merge conflicts later on. A poor or forgotten merge will be caught by the CI compilation and testing process
+    * iv. team lead and peer review should be an ongoing team task for all features in development
+  - b. GATE: TAT (team testing environment)
+    * i. team deploys code to team environment
+    * ii. test
+    * iii. if fail... fix, redeploy, test
+    * iv. if pass... merge to master
 
 
 
