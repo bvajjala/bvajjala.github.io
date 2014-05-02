@@ -16,7 +16,6 @@
 * Now working at Angie's List and Certainly Not a professional speaker
 
 
-
 # Pre-2013 Code Develop to Production
 
 

@@ -16,7 +16,6 @@
 * Now working at Angie's List and Certainly Not a professional speaker
 
 
-
 # CI & CD Pipeline
 
 

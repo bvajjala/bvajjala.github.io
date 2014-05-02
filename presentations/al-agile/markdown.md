@@ -3,7 +3,6 @@
 ### Created by [Balaji Vajjala](https://bvajjala.github.io) / [@BVajjala](https://twitter.com/Bvajjala)
 
 
-
 ## Principal DevOps Consultant/Solution Architect
 
   Hi, my name is Balaji Vajjala and I'm the Chief DevOps Solution Architect here at Angie's List. Today  Here I will be talking about how we implemented a Continuous Deployment pipelines, DevOps Culture and other Misc Topics.
@@ -15,7 +14,6 @@
 * A Full Stack DevOps Engineer/Solution Architect for last 10+ years!
 * Original !sysadmin! and !Developer! since late 90's 
 * Now working at Angie's List and Certainly Not a professional speaker
-
 
 
 # Code Develop to Production
@@ -35,7 +33,6 @@
   - iv. if pass... merge to master
 
 
-
 ## 2. MERGE TO MASTER
 
 * a. GATE: Pull requests for master.
@@ -47,7 +44,6 @@
   -  i. failing unit tests... code not merged
   -  ii. broken code coverage... code not merged
   -  iii. all good... master merge is complete
-
 
 
 ## 3. UAT (shared, central test environment for day-to-day testing)
