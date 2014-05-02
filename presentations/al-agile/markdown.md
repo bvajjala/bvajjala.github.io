@@ -27,46 +27,47 @@
 
 ## 1 DEVELOP COde
 
- a.  Team / Feature branches
-    i. feature code
-    ii. unit tests
-    iii.    developers are responsible for merging master into their development branch, to avoid merge conflicts later on. A poor or forgotten merge will be caught by the CI compilation and testing process
-    iv. team lead and peer review should be an ongoing team task for all features in development
-  b. GATE: TAT (team testing environment)
-     i. team deploys code to team environment
-     ii. test
-     iii. if fail... fix, redeploy, test
-     iv. if pass... merge to master
+* a.  Team / Feature branches
+  - i. feature code
+  - ii. unit tests
+  - iii.    developers are responsible for merging master into their development branch, to avoid merge conflicts later on. A poor or forgotten merge will be caught by the CI compilation and testing process
+  - iv. team lead and peer review should be an ongoing team task for all features in development
+
+* b. GATE: TAT (team testing environment)
+  - i. team deploys code to team environment
+  - ii. test
+  - iii. if fail... fix, redeploy, test
+  - iv. if pass... merge to master
 
 
 
 ## 2. MERGE TO MASTER
 
-   a. GATE: Pull requests for master.
-      i. developer will submit a pull request for master, a signal to code reviewer to review/approve code
-      ii. team/tech leads: check for code completeness, intent, quality, unit tests
-      iii. if fail... fix, test, review
-      iv.  if pass... push to CI
-   b. GATE: Push to CI
-      i. failing unit tests... code not merged
-      ii. broken code coverage... code not merged
-      iii. all good... master merge is complete
+* a. GATE: Pull requests for master.
+  - i. developer will submit a pull request for master, a signal to code reviewer to review/approve code
+  - ii. team/tech leads: check for code completeness, intent, quality, unit tests
+  - iii. if fail... fix, test, review
+  - iv.  if pass... push to CI
+* b. GATE: Push to CI
+  -  i. failing unit tests... code not merged
+  -  ii. broken code coverage... code not merged
+  -  iii. all good... master merge is complete
 
 
 
 ## 3. UAT (shared, central test environment for day-to-day testing)
 
-   a. push master twice daily (or on demand)
-   b. full production parity on apps/services/JAMS
-   c. GATE: automated integration testing
-     i. failed test... broken deploy
-       1. go back to STEP 1. Fix, test, push to CI, redeploy to UAT... e2e tests run again
-   d. GATE: automated end-to-end testing
-     i. failed test... broken deploy
-        1. go back to STEP 1. Fix, test, push to CI, redeploy to UAT... e2e tests run again
-  e. GATE: manual integration testing (team)
-     i. if success, mark feature/bug ticket as tested... move on to next backlog item
-     ii. if fail... repeat fix, test, pull request, push to ci process (back to STEP 1)
+* a. push master twice daily (or on demand)
+* b. full production parity on apps/services/JAMS
+* c. GATE: automated integration testing
+  -  i. failed test... broken deploy
+     -  1. go back to STEP 1. Fix, test, push to CI, redeploy to UAT... e2e tests run again
+* d. GATE: automated end-to-end testing
+  -  i. failed test... broken deploy
+     -  1. go back to STEP 1. Fix, test, push to CI, redeploy to UAT... e2e tests run again
+* e. GATE: manual integration testing (team)
+  - i. if success, mark feature/bug ticket as tested... move on to next backlog item
+  - ii. if fail... repeat fix, test, pull request, push to ci process (back to STEP 1)
 
 
 
