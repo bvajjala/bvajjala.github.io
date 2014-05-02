@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Vagrant | Balaji Vajjala's Blog]]></title>
   <link href="http://bvajjala.github.io/blog/categories/vagrant/atom.xml" rel="self"/>
   <link href="http://bvajjala.github.io/"/>
-  <updated>2014-05-02T14:31:50-04:00</updated>
+  <updated>2014-05-02T14:45:46-04:00</updated>
   <id>http://bvajjala.github.io/</id>
   <author>
     <name><![CDATA[Balaji Vajjala]]></name>
@@ -209,7 +209,7 @@ processes.</p>
 </span><span class='line'>&lt;li>&lt;p>Great, but we&rsquo;ll need more than a vanilla Linux. To add our dependencies, for example to run a Node.js + MongoDB app, we&rsquo;re gonna start by creating a &lt;code>Dockerfile&lt;/code>:&lt;/p>
 </span><span class='line'>
 </span><span class='line'>&lt;p>FROM ubuntu
-</span><span class='line'>MAINTAINER My Self &lt;a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6d;&#x65;&#x40;&#x65;&#120;&#x61;&#109;&#x70;&#108;&#101;&#46;&#99;&#x6f;&#x6d;">&#x6d;&#x65;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#108;&#101;&#46;&#x63;&#x6f;&#x6d;&lt;/a>&lt;/p>
+</span><span class='line'>MAINTAINER My Self &lt;a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x6d;&#x65;&#64;&#x65;&#120;&#97;&#x6d;&#x70;&#108;&#101;&#46;&#99;&#111;&#x6d;">&#109;&#101;&#64;&#x65;&#120;&#x61;&#109;&#112;&#108;&#x65;&#x2e;&#x63;&#111;&#109;&lt;/a>&lt;/p>
 </span><span class='line'>
 </span><span class='line'>&lt;h1>Fetch Nodejs from the official repo (binary .. no hassle to build, etc.)&lt;/h1>
 </span><span class='line'>
