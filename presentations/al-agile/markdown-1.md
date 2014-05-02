@@ -3,14 +3,10 @@
 ### Created by [Balaji Vajjala](https://bvajjala.github.io) / [@BVajjala](https://twitter.com/Bvajjala)
 
 
-
-
 ## Principal DevOps Consultant/Solution Architect
 
   Hi, my name is Balaji Vajjala and I'm the Chief DevOps Solution Architect here at Angie's List. Today  Here I will be talking about how we implemented a Continuous Deployment pipelines, DevOps Culture and other Misc Topics.
   Hope you will enjoy this presentation.
-
-
 
 
 ## Who Am I?
@@ -24,13 +20,12 @@
 # Pre-2013 Code Develop to Production
 
 
-
 ### DAY-TO-DAY LIFE OF A CODE SUBMISSION
 ![](images1/Slide01.png)
 
 
 ### DAY-TO-DAY LIFE OF A CODE SUBMISSION
-![](images1/Slide02.png)
+![](images1/Slide01.png)
 
 
 ### Angie's List Git Workflow and merge process
