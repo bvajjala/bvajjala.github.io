@@ -9,7 +9,7 @@
   <meta name="author" content="Balaji Vajjala">
 
   
-  <meta name="description" content="What is Continuous Integration Martin Fowler has the best description of CI Continuous Integration is a software development practice where members &hellip;">
+  <meta name="description" content="Implementing Continuous Delivery (CD) is being listed as one of the key initiatives for many enterprises. CD’s ability to rapidly and repeatedly &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -85,6 +85,131 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/07/6-challenges-in-implementing-enterprise-continuous-delivery/">6 Challenges in implementing Enterprise Continuous Delivery</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-07T09:39:38-04:00" pubdate data-updated="true">May 7<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p> Implementing Continuous Delivery (CD) is being listed as one of the key initiatives for many enterprises. CD’s ability to rapidly and repeatedly bring feature improvements to market, aligns naturally with business initiatives to accelerate time-to-market and stay a step ahead of the competition, while maintaining quality.</p>
+
+<p> It also helps to meet the expectations of today’s “always-on” consumer, who has come to expect simple, one-click installation of applications that update automatically and regularly.</p>
+
+<p> However, putting CD into practice can be challenging, to say the least.</p>
+
+<p> Particularly in the context of the existing development and release environment in a large enterprise.</p>
+
+<p> In this article, I’ll examine some key challenges that we’ve encountered when helping clients introduce CD and related automation, along with some helpful suggestions on dealing with them.</p>
+
+<h1>Challenge-1 Massive, monolithic applications</h1>
+
+<p> A key aspect of CD is making small, incremental changes to an application, to enable fast feedback and faster fixes.</p>
+
+<p> Large, tightly-coupled applications with multiple components that need to be compiled, tested and deployed together are tough to update incrementally, leading to long development, test and deploy cycles.</p>
+
+<p> Quality control and root cause analysis is harder too, as many changes are being implemented at the same time. Also, as each release procedure needs to differ slightly, it is hard to create a standardized delivery pipeline and benefit from the resulting increase in reliability.</p>
+
+<p> When faced with this challenge in the past, we have tried to initiate a workstream to incrementally break out components of the application into separate modules.</p>
+
+<p> These can then be built and deployed independently, allowing for faster feedback cycles with smaller changesets.</p>
+
+<h1>Challenge-2 Minimal automation</h1>
+
+<p> We shouldn’t be automating for the sake of automation: manual activities aren’t “banned” from a CD pipeline on principle.</p>
+
+<p> However, a high percentage of manual steps will likely slow down your delivery pipeline and increase the chance of errors, thus preventing you from being able to scale your CD implementation.</p>
+
+<p> In order to meet your throughput and consistency goals, it is usually required to either automate a bulk of the manual steps in your delivery process, or replace them with suitable alternatives.</p>
+
+<p> It is important to treat this automation effort as seriously as any other development effort, applying appropriate design, coding and testing practices in order to avoid ending up with an impossible to maintain “ball of mud”.</p>
+
+<p> The Infrastructure as Code movement has made significant steps in this area, for instance promoting test-driven development of provisioning and deployment automation and providing supporting tooling.</p>
+
+<h1>Challenge-3 Limited environments</h1>
+
+<p> A limited pool of shared test environments increases the risk of bottlenecks during your CD implementation.</p>
+
+<p> You would need to “block” or “reserve” an environment to avoid two pipelines running side-by-side from attempting to deploy and test in the same environment.</p>
+
+<p> Measures also need to be taken to prevent one pipeline blocking an environment for too long, or for one pipeline to always just beat the other to the required environment, leading to “starvation” for the other project.</p>
+
+<p> Furthermore, an interesting data point from the aforementioned survey is that misconfigured or “broken” environments, that have been unexpectedly modified by previous teams or test runs, are one of the leading causes of deployment failures.</p>
+
+<p> If you plan to be running delivery pipelines at scale, a dynamic pool of available, “clean” target environments is required. Private, public or hybrid cloud platforms, coupled with provisioning and configuration management tools, allow you to grow and shrink this pool automatically and on-demand.</p>
+
+<h1>Challenge-4 Enterprise” release management</h1>
+
+<p> As soon as we approach QA or production in most enterprise environments, an increasing number of release management requirements must be met</p>
+
+<ul>
+<li>creation of a change ticket, placing the change on the agenda of the next Change Board meeting, receiving Change Board approval, confirming deployment windows etc. etc.</li>
+</ul>
+
+
+<p> How do you integrate such requirements into your delivery pipelines?</p>
+
+<p> Some possibilities:
+ * Simply cap all delivery pipelines at the test stage, before running into any release management conditions. The goal is typically to take CD further than just test environments, though.</p>
+
+<ul>
+<li><p>Integrate the various release management steps into the pipeline, e.g. by manually and, eventually, automatically creating and scheduling a change ticket, or by automatically setting a start time on the pipeline’s deployment phase from the change management system.</p></li>
+<li><p>Revisit the need for certain change management conditions. The origin of such practices is typically to ensure that only changes of an approved level of quality and stability make it to production
+– precisely the level of quality and stability that prior stages of a delivery pipeline are intended to verify.</p></li>
+</ul>
+
+
+<h1>Challenge-5 Managing multiple “custom” pipelines.</h1>
+
+<p> In a large organization with a diverse service portfolio, spanning different technology platforms, departments, customers, and teams there will be many pipelines to manage as you scale your CD implementation.</p>
+
+<p> If every pipeline ends at a different stage in the delivery process, it would be difficult to compare metrics such as cycle time, throughput or percentage of successful executions</p>
+
+<p> A large set of pipelines is easier to manage if each one is based on a standard template. Standardized pipelines also allow for more meaningful comparative reporting as well as providing useful feedback that can be applied to other pipelines. Templates can be as simple as a shared Wiki page but can also supported by CD tools. The number of templates you should start with depends on the variation across your service portfolio; one per technology stack is often a useful starting point. Over time, you will hopefully be able to consolidate towards just a handful of pipeline types.</p>
+
+<h1>Challenge-6 Ownership and security</h1>
+
+<p> Automated delivery pipelines span multiple teams of the IT organization, something that is especially highlighted when pipeline stages fail and it’s hard to find who needs to fix it.</p>
+
+<p> Every pipeline stage needs to have an owner(s) tasked not only with fixing problems and getting the delivery stream running again, but also with contributing to feedback-driven improvement of the pipeline as a whole. Since visibility into the state of the entire pipeline is important for all stakeholders, it is important that any orchestration tool considered offers a suitable security model.</p>
+
+<p> For example, developers will probably need to examine the results of a functional test phase to help identify the cause of test failures. However, they should not be able to disable or modify the configuration of the functional testing step.</p>
+
+<h1>In Summary</h1>
+
+<p> Analyzing which of the common challenges to putting CD into practice apply in your situation should be a first preparatory step in your implementation. Gain an accurate picture of your current baseline, structure your implementation in measurable phases, and then work on dealing with these challenges to clear the way for your first delivery pipelines with defined roles and responsibilities for each phase.</p>
+
+<p> Mitigating any challenges that you identify early in the project cycle will help your implementation progress smoothly and help you address future challenges.</p>
+
+<p> Your CD implementation will then be on the way to providing faster releases, more reliable feature delivery and steady improvement driven by quicker feedback and better insight.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1029,243 +1154,6 @@ Ansible up and running is as easy as:</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/03/code-reuse-with-node-dot-js/">Code Reuse With Node.js</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-03T14:09:35-05:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2><a href="/blog/2013/07/11/code-reuse-with-nodejs.html">Code Reuse With Node.js</a></h2>
-
-<p><img src="http://devo.ps/images/posts/recycle.png" alt="Code recycling" /></p>
-
-<p>Any project that grows to a decent size will need to re-use parts of its code extensively. That often means, through the development cycle, a fair amount of rewrites and refactoring exercises. Elegant code re-use is hard to pull off.</p>
-
-<p>With node.js, which we use quite a bit at <a href="http://devo.ps">devo.ps</a>, the most common ways to do this often rely on prototype or class inheritance. The problem is, as the inheritance chain grows, managing attributes and functions
-can become quite complex.</p>
-
-<p>The truth is, people usually just need the objects. This led us to adopt a certain form of object-based prototyping. We believe it to be leaner and more straightforward in most cases. But before we get there, let&rsquo;s have a look at how people usually approach this issue.</p>
-
-<h2>The &ldquo;Function copy&rdquo;</h2>
-
-<p>Usually in the form of <code>this[key] = that[key]</code>. A quick example:</p>
-
-<pre><code>var objectA = {
-    lorem: 'lorem ipsum'
-};
-var objectB = {};
-
-// Direct copy of a string, but you get the idea
-objectB.lorem = objectA.lorem;
-console.log(objectB); // Will output: { lorem: 'lorem ipsum' }
-</code></pre>
-
-<p>Crude, but it works. Next…</p>
-
-<h2>Object.defineProperties()</h2>
-
-<p>The previous method may work with simple structures, but it won&rsquo;t hold when
-your use cases become more complex. That&rsquo;s when I usually call my buddy
-<code>Object.defineProperties()</code>:</p>
-
-<pre><code>var descriptor = Object.getOwnPropertyDescriptor;
-var defineProp = Object.defineProperty;
-
-var objectA = {};
-var objectB = {};
-var objectC = {};
-
-objectA.__defineGetter__('lorem', function() {
-    return 'lorem ipsum';
-});
-console.log(objectA); // Will output: { lorem: [Getter] }
-
-// Direct copy, which copies the result of the getter.
-objectB.lorem = objectA.lorem;
-console.log(objectB); // Will output: { lorem: 'lorem ipsum' }
-
-// Copying with Object.defineProperty(), and it copies the getter itself.
-defineProp(objectC, 'lorem', descriptor(objectA, 'lorem'));
-console.log(objectC); // Will output: { lorem: [Getter] }
-</code></pre>
-
-<p>I often use a library for that. A couple examples (more or less the same stuff
-with different coding styles):</p>
-
-<ol>
-<li><p> <strong><a href="https://github.com/medikoo/es5-ext">es5-ext</a></strong></p>
-
-<p> var extend = require(&lsquo;es5-ext/lib/Object/extend-properties&rsquo;);</p>
-
-<p> var objectA = {};
- var objectC = {};</p>
-
-<p> objectA.<strong>defineGetter</strong>(&lsquo;lorem&rsquo;, function() {
-     return &lsquo;lorem ipsum&rsquo;;
- });</p>
-
-<p> extend(objectC, objectA);
- console.log(objectC); // Will output: { lorem: [Getter] }</p></li>
-<li><p> <strong><a href="https://github.com/devo-ps/carcass">Carcass</a></strong></p>
-
-<p> var carcass = require(&lsquo;carcass&rsquo;);</p>
-
-<p> var objectA = {};
- var objectC = {};</p>
-
-<p> objectA.<strong>defineGetter</strong>(&lsquo;lorem&rsquo;, function() {
-     return &lsquo;lorem ipsum&rsquo;;
- });</p>
-
-<p> carcass.mixable(objectC);
- objectC.mixin(objectA);
- console.log(objectC); // Will output: { mixin: [Function: mixin], lorem: [Getter] }</p></li>
-</ol>
-
-
-<p>Slightly better, but not optimal. Now, let&rsquo;s see what we end up doing more and
-more often:</p>
-
-<h2>Prototyping through objects</h2>
-
-<p>The basic idea is that we prepare some functions, wrap them into an object which then becomes a &ldquo;feature&rdquo;. That feature can then be re-used by simply merging it with the targeted structure (object or prototype).</p>
-
-<p>Let&rsquo;s take the example of the <a href="https://github.com/devo-ps/carcass/blob/master/lib/proto/loaderSync.js">loaderSync</a> script in <a href="https://github.com/devo-ps/carcass">Carcass</a>:</p>
-
-<pre><code>module.exports = {
-    source: source,
-    parser: parser,
-    reload: reload,
-    get: get
-};
-
-function get() {
-
-(...)
-</code></pre>
-
-<p>Once you copy the functions to an object, this object becomes a &ldquo;loader&rdquo; that can load a &ldquo;source&rdquo; synchronously with a &ldquo;parser&rdquo;. A &ldquo;source&rdquo; can be a file path and the &ldquo;parser&rdquo; can be simply Node.js&#8217; <code>require</code> function.</p>
-
-<p>Let&rsquo;s now see how to use this with a couple object builders. Once again, I&rsquo;ll borrow an example from Carcass; the <a href="https://github.com/devo-ps/carcass/blob/master/benchmark/proto.loaderSync.js">loaderSync benchmark script</a>. The first builder generates a function and copies the methods from what we&rsquo;ve prepared. The second one copies the methods to the prototype of a builder class:</p>
-
-<pre><code>(...)
-
-function LoaderA(_source) {
-    function loader() {
-        return loader.get();
-    }
-    loader.mixin = mixin;
-    loader.mixin(loaderSync);
-    loader.source(_source);
-    return loader;
-}
-
-(...)
-
-function LoaderC(_source) {
-    if (!(this instanceof LoaderC)) return new LoaderC(_source);
-    this.source(_source);
-}
-LoaderC.prototype.mixin = mixin;
-LoaderC.prototype.mixin(loaderSync);
-
-(...)
-</code></pre>
-
-<p>Here we can see the two approaches. Let&rsquo;s compare them quickly:</p>
-
-<p>FeatureLoader ALoader C</p>
-
-<p><strong>Instantiating</strong>
-<code>var a = LoaderA(...)</code></p>
-
-<p><code>var c = LoaderC(...)</code> or <code>var c = new LoaderC(...)</code></p>
-
-<p><strong>Appearance</strong>
-Generates a function</p>
-
-<p>Builds a typical instance which is an object.</p>
-
-<p><strong>Invoking directly</strong>
-<code>a()</code> or <code>a.get()</code></p>
-
-<p><code>c.get()</code></p>
-
-<p><strong>Invoking as a callback</strong>
-<code>ipsum(a)</code></p>
-
-<p><code>ipsum(c.get.bind(c))</code></p>
-
-<h2><strong>Performance † of instantiating</strong></h2>
-
-<p>100x faster</p>
-
-<p><strong>Performance of invoking</strong>
-<em>idem</em></p>
-
-<p><em>idem</em></p>
-
-<p><strong>†</strong>: (check it yourself by <a href="https://github.com/devo-ps/carcass/blob/master/Makefile">benchmarking Carcass with <code>make bm</code></a>)</p>
-
-<h3>&ldquo;Protos&rdquo; and beyond</h3>
-
-<p>That last approach is gaining traction among our team; we prepare functions for our object builders (which, by the way, we call &ldquo;protos&rdquo;). While we still choose to use prototypes in some occurrences, it is mainly because it is
-faster to get done. For the sake of convenience, we also sometimes rely on functions rather than objects to invoke our &ldquo;protos&rdquo;, however keep in mind that this is a performance trade-off.</p>
-
-<p>I&rsquo;ll wrap this up mentioning one more method we use, admittedly less often: &ldquo;Object alter&rdquo;. The idea is to rely on an &ldquo;alter&rdquo; function designed to change objects passed to it. This is sometimes also called a &ldquo;mixin&rdquo;. An example from <a href="https://github.com/visionmedia/configurable.js">vsionmedia&rsquo;s trove of awesomeness on Github</a>:</p>
-
-<pre><code>(...)
-
-module.exports = function(obj){
-
-    obj.settings = {};
-
-    obj.set = function(name, val){
-        (...)
-    };
-
-    (...)
-
-    return obj;
-};
-</code></pre>
-
-<h3>Resources</h3>
-
-<ul>
-<li><a href="http://killdream.github.io/2011/10/09/understanding-javascript-oop.html">A case for prototypes</a></li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">MDN Object reference</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1285,6 +1173,10 @@ module.exports = function(obj){
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/07/6-challenges-in-implementing-enterprise-continuous-delivery/">6 Challenges in implementing Enterprise Continuous Delivery</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/22/best-practices-of-continuous-integration/">Best Practices of Continuous Integration</a>
       </li>
     
@@ -1298,10 +1190,6 @@ module.exports = function(obj){
     
       <li class="post">
         <a href="/blog/2014/02/04/nodejs-deployment-building-and-configuring-on-amazon-linux-ami/">Nodejs Deployment: Building and Configuring on Amazon Linux AMI</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/04/deploy-slash-release-workflow-from-github/">Deploy/Release Workflow from GitHub</a>
       </li>
     
   </ul>
