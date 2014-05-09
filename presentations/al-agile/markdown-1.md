@@ -44,26 +44,6 @@
 
 
 ### Pre-2013 Release Process
-![](images1/Slide05.png)
-
-
-### Pre-2013 Release Process
-![](images1/Slide06.png)
-
-
-### Pre-2013 Release Process
-![](images1/Slide07.png)
-
-
-### Pre-2013 Release Process
-![](images1/Slide08.png)
-
-
-### Pre-2013 Release Process
-![](images1/Slide09.png)
-
-
-### Pre-2013 Release Process
 ![](images1/Slide10.png)
 
 
@@ -121,14 +101,6 @@
 
 ### New Release Process
 ![](images1/TAT.png)
-
-
-### New Release Process
-![](images1/TAT2Master.1.png)
-
-
-### New Release Process
-![](images1/TAT2Master.png)
 
 
 ### New Release Process
