@@ -16,15 +16,14 @@
 * Now working at Angie's List and Certainly Not a professional speaker
 
 
-# Pre-2013 Release Process
+### Pre-2013 Release Process
 
 * Invalid hardware, os, software and configurations on Stage01 and Stage02. This should keep us up at night. At times we literally close our eyes and pray.
 * Improper use of Git. (Manually merging team branches into release candidates, no use of Master/Release.)
 * Some teams had team testing environments, not all. Very old, slow machines. With 9 QA environments of varying quality of hardware, OS, software, it was near impossible to properly regression test.
 
 
-
-# Pre-2013 Release Process
+### Pre-2013 Release Process
 
 * Too many QA environments caused confusion as to what version of code was where. 
 * Due to the vagaries between environments, "Greenlight" testing needs to take place in QA, Stage, and Prod. An extreme waste of time and resources.
@@ -52,83 +51,101 @@
 ![](images1/Slide06.png)
 
 
-### Angie's List Git Workflow and merge process
+### Pre-2013 Release Process
 ![](images1/Slide07.png)
 
 
-### Angie's List Git Workflow and merge process
+### Pre-2013 Release Process
 ![](images1/Slide08.png)
 
 
-### Angie's List Git Workflow and merge process
+### Pre-2013 Release Process
 ![](images1/Slide09.png)
 
 
-### Angie's List Git Workflow and merge process
+### Pre-2013 Release Process
 ![](images1/Slide10.png)
 
 
-### Angie's List Git Workflow and merge process
+### Pre-2013 Release Process
 ![](images1/Slide11.png)
 
 
-### Angie's List Git Workflow and merge process
+### Pre-2013 Release Process
 ![](images1/Slide12.png)
 
 
-### Angie's List Git Workflow and merge process
+### Pre-2013 Release Process
 ![](images1/Slide13.png)
 
 
+### New Release Process
 ![](images1/CIJenkins.png)
 
 
+### New Release Process
 ![](images1/Code2Prod.png)
 
 
+### New Release Process
 ![](images1/CodeComplete.1.png)
 
 
+### New Release Process
 ![](images1/CodeComplete.png)
 
 
+### New Release Process
 ![](images1/Master2UAT.1.png)
 
 
+### New Release Process
 ![](images1/Master2UAT.png)
 
 
+### New Release Process
 ![](images1/Stage2Prod.1.png)
 
 
+### New Release Process
 ![](images1/Stage2Prod.png)
 
 
+### New Release Process
 ![](images1/StageGL.png)
 
 
+### New Release Process
 ![](images1/TAT.1.png)
 
 
+### New Release Process
 ![](images1/TAT.png)
 
 
+### New Release Process
 ![](images1/TAT2Master.1.png)
 
 
+### New Release Process
 ![](images1/TAT2Master.png)
 
 
+### New Release Process
 ![](images1/UAT.png)
 
 
+### New Release Process
 ![](images1/pyramid.1.png)
 
 
+### New Release Process
 ![](images1/pyramid.2.png)
 
 
+### New Release Process
 ![](images1/pyramid.png)
+
 
 
 ## My Social Media Presence
