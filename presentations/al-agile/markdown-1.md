@@ -115,7 +115,6 @@
 ![](images1/pyramid.png)
 
 
-
 ## My Social Media Presence
 
   * [My LinkedIn Profile](https://www.linkedin.com/in/bvajjala)
