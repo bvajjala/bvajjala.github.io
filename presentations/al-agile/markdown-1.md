@@ -16,30 +16,39 @@
 * Now working at Angie's List and Certainly Not a professional speaker
 
 
-# Pre-2013 Code Develop to Production
+# Pre-2013 Release Process
+
+* Invalid hardware, os, software and configurations on Stage01 and Stage02. This should keep us up at night. At times we literally close our eyes and pray.
+* Improper use of Git. (Manually merging team branches into release candidates, no use of Master/Release.)
+* Some teams had team testing environments, not all. Very old, slow machines. With 9 QA environments of varying quality of hardware, OS, software, it was near impossible to properly regression test.
 
 
-### DAY-TO-DAY LIFE OF A CODE SUBMISSION
+
+# Pre-2013 Release Process
+
+* Too many QA environments caused confusion as to what version of code was where. 
+* Due to the vagaries between environments, "Greenlight" testing needs to take place in QA, Stage, and Prod. An extreme waste of time and resources.
+* No integration with Python apps. To be fair, up until February 2013, no true integration was needed, as .NET and Python development could happen in isolation.
+* No performance testing.
+
+
+### Pre-2013 Release Process
 ![](images1/Slide01.png)
 
 
-### DAY-TO-DAY LIFE OF A CODE SUBMISSION
-![](images1/Slide01.png)
-
-
-### Angie's List Git Workflow and merge process
+### Pre-2013 Release Process
 ![](images1/Slide03.png)
 
 
-### Angie's List Git Workflow and merge process
+### Pre-2013 Release Process
 ![](images1/Slide04.png)
 
 
-### Angie's List Git Workflow and merge process
+### Pre-2013 Release Process
 ![](images1/Slide05.png)
 
 
-### Angie's List Git Workflow and merge process
+### Pre-2013 Release Process
 ![](images1/Slide06.png)
 
 
