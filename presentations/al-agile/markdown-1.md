@@ -52,10 +52,6 @@
 
 
 ### Pre-2013 Release Process
-![](images1/Slide12.png)
-
-
-### Pre-2013 Release Process
 ![](images1/Slide13.png)
 
 
